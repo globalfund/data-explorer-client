@@ -24,7 +24,6 @@ import {
   isChartDraggingAtom,
 } from "app/state/recoil/atoms";
 import { IFramesArray } from "../../views/create/data";
-import { filter } from "lodash";
 import { AnchorPlugin } from "@draft-js-plugins/anchor";
 import { StaticToolBarPlugin } from "@draft-js-plugins/static-toolbar";
 import {
@@ -141,6 +140,7 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
           setHandleDisplay(true);
         },
       };
+
   useOnClickOutside(ref, () => setHandleDisplay(false));
 
   const border =
@@ -565,9 +565,7 @@ const Box = (props: {
   };
 
   const onResize = () => {
-    if (!isResizing) {
-      setIsResizing(true);
-    }
+    setIsResizing(true);
   };
 
   const textResizableRef = React.useRef<HTMLDivElement>(null);
@@ -654,6 +652,7 @@ const Box = (props: {
           onResizeStop={onResizeStop}
           size={{ width: width, height: `${props.height}px` }}
           maxWidth={!viewOnlyMode ? containerWidth : undefined}
+          minWidth={78}
           enable={{
             right: !viewOnlyMode,
             bottom: !viewOnlyMode,

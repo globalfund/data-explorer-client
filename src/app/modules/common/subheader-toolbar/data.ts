@@ -11,6 +11,8 @@ export interface SubheaderToolbarProps {
   rawViz?: any;
   reportName: string;
   setHasSubHeaderTitleFocused?: (value: boolean) => void;
+  setHasSubHeaderTitleBlurred?: (value: boolean) => void;
+
   headerDetails: IHeaderDetails;
   appliedHeaderDetails: IHeaderDetails;
   framesArray: IFramesArray[];

@@ -420,7 +420,7 @@ const ActionMenu = () => {
           `}
         >
           <Link to="/dataset-upload" onClick={handleCloseActionPopover}>
-            <button>Add Data</button>
+            <button>Connect Data</button>
           </Link>
 
           <Link to="/chart/new/data" onClick={handleCloseActionPopover}>

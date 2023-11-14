@@ -99,7 +99,6 @@ export default function DatasetsGrid(props: Props) {
     //load data if intersection observer is triggered
     if (datasetCount > limit) {
       if (isObserved) {
-        console.log(loadedDatasets.length, datasetCount);
         if (loadedDatasets.length !== datasetCount) {
           //update the offset value for the next load
           setOffset(offset + limit);

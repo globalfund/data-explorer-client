@@ -9,30 +9,33 @@ import VeronikaAvi from "app/modules/home-module/assets/veronika.png";
 import StefanosAvi from "app/modules/home-module/assets/stefanos.png";
 import EmmanuellaAvi from "app/modules/home-module/assets/emmanuella.png";
 import { subParagraphcss } from "app/modules/home-module/sub-modules/about/style";
-import { ReactComponent as BtmEllipse } from "app/modules/home-module/assets/about-btm-ellipse.svg";
-import { ReactComponent as BtmLeftEllipse } from "app/modules/home-module/assets/about-btm-left-ellipse.svg";
-import { ReactComponent as BtmRightEllipse } from "app/modules/home-module/assets/about-right-full-ellipse.svg";
-import { ReactComponent as BtmRightSmEllipse } from "app/modules/home-module/assets/about-right-small-ellipse.svg";
 
 export default function TeamBlock() {
   return (
     <>
-      <div css={subParagraphcss}>
+      <div
+        css={`
+          ${subParagraphcss} p {
+            text-align: center;
+          }
+          margin-bottom: 80px;
+        `}
+      >
         <h3>
           <b>Team</b>
         </h3>
         <p>
-          By combining more than two decades of experience in data and global
-          health development, we help organizations to more clearly and
-          effectively communicate through our transformative data solutions.
+          With over two decades of expertise in data and global health
+          development, we empower organizations to enhance their communication
+          with revolutionary data solutions.
         </p>
-        <p> Working to have an impact on people&apos;s lives is a privilege.</p>
         <p>
           {" "}
-          Through our work in the last 10 years, fuelled by an unstoppable
-          devotion to make a difference, new levels of communicating data are
-          continuously unlocked.
+          Working to have an impact on people's lives is a privilege. Over the
+          past decade, our unwavering dedication to making a difference has
+          consistently pushed the boundaries of data communication.{" "}
         </p>
+        <p> Discover the true potential of data with DataXplorer!</p>
         <p> Let us help you unlock the power of your data!</p>
       </div>
       <Grid
@@ -99,38 +102,6 @@ export default function TeamBlock() {
             role="UI/UX Design Intern"
           />
         </Grid>
-        <BtmRightEllipse
-          css={`
-            position: absolute;
-            right: -4%;
-            top: -6%;
-            z-index: -1;
-          `}
-        />
-        <BtmLeftEllipse
-          css={`
-            position: absolute;
-            left: 15%;
-            top: 25%;
-            z-index: -1;
-          `}
-        />
-        <BtmRightSmEllipse
-          css={`
-            position: absolute;
-            right: 15%;
-            bottom: 20%;
-            z-index: -1;
-          `}
-        />
-        <BtmEllipse
-          css={`
-            position: absolute;
-            right: 27%;
-            bottom: -3%;
-            z-index: -1;
-          `}
-        />
       </Grid>
     </>
   );

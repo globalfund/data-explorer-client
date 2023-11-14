@@ -214,55 +214,59 @@ function ChartBuilderMappingDimension(
 
   const dimensionMapping = get(mapping, dimension.id, {});
 
-  const [{ isOver }, drop] = useDrop(() => ({
-    accept: ["column", "card"],
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-    }),
-    drop: (item: any) => {
-      const mappingFromStorage = get(
-        JSON.parse(
-          sessionStorage.getItem("[EasyPeasyStore][0][charts.mapping]") ?? ""
-        ),
-        "data.value",
-        {}
-      ) as { [key: string]: any };
+  const [{ isOver }, drop] = useDrop(
+    () => ({
+      accept: ["column", "card"],
+      collect: (monitor) => ({
+        isOver: monitor.isOver(),
+      }),
+      drop: (item: any) => {
+        const mappingFromStorage = get(
+          JSON.parse(
+            sessionStorage.getItem("[EasyPeasyStore][0][charts.mapping]") ?? ""
+          ),
+          "data.value",
+          {}
+        ) as { [key: string]: any };
 
-      const localDimensionMapping = get(mappingFromStorage, dimension.id, {});
-      if (item.type === "column") {
-        const defaulAggregation = dimension.aggregation
-          ? getDefaultDimensionAggregation(dimension, dataTypes[item.id])
-          : null;
-        const columnDataType = getTypeName(dataTypes[item.id]);
-        const isValid =
-          dimension.validTypes?.length === 0 ||
-          dimension.validTypes?.includes(columnDataType);
-        setMapping({
-          [dimension.id]: {
-            ids: (localDimensionMapping.ids || []).concat(uniqueId()),
-            value: [...(localDimensionMapping.value || []), item.id],
-            isValid: isValid,
-            mappedType: columnDataType,
-            config: dimension.aggregation
-              ? {
-                  aggregation: [
-                    ...(get(localDimensionMapping, "config.aggregation") || []),
-                    defaulAggregation,
-                  ],
-                }
-              : undefined,
-          },
-        });
-      } else if (item.dimensionId !== dimension.id) {
-        replaceDimension(
-          item.dimensionId,
-          dimension.id,
-          item.index,
-          localDimensionMapping.value ? localDimensionMapping.value.length : 0
-        );
-      }
-    },
-  }));
+        const localDimensionMapping = get(mappingFromStorage, dimension.id, {});
+        if (item.type === "column") {
+          const defaulAggregation = dimension.aggregation
+            ? getDefaultDimensionAggregation(dimension, dataTypes[item.id])
+            : null;
+          const columnDataType = getTypeName(dataTypes[item.id]);
+          const isValid =
+            dimension.validTypes?.length === 0 ||
+            dimension.validTypes?.includes(columnDataType);
+          setMapping({
+            [dimension.id]: {
+              ids: (localDimensionMapping.ids || []).concat(uniqueId()),
+              value: [...(localDimensionMapping.value || []), item.id],
+              isValid: isValid,
+              mappedType: columnDataType,
+              config: dimension.aggregation
+                ? {
+                    aggregation: [
+                      ...(get(localDimensionMapping, "config.aggregation") ||
+                        []),
+                      defaulAggregation,
+                    ],
+                  }
+                : undefined,
+            },
+          });
+        } else if (item.dimensionId !== dimension.id) {
+          replaceDimension(
+            item.dimensionId,
+            dimension.id,
+            item.index,
+            localDimensionMapping.value ? localDimensionMapping.value.length : 0
+          );
+        }
+      },
+    }),
+    [dataTypes]
+  );
 
   const setAggregation = React.useCallback(
     (newAggregations) => {

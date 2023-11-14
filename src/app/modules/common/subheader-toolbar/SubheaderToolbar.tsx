@@ -186,9 +186,14 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
         values: chart,
       });
     }
+  };
 
-    //completes chart creation, returns back to persisted report view
-    if (createChartFromReport.state) {
+  React.useEffect(() => {
+    if (
+      (editChartSuccess || createChartSuccess) &&
+      createChartFromReport.state
+    ) {
+      //returns back to persisted report view
       setCreateChartFromReport({
         ...createChartFromReport,
         state: false,
@@ -202,7 +207,14 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
         );
       }
     }
-  };
+  }, [editChartSuccess, createChartSuccess]);
+
+  React.useEffect(() => {
+    if (editChartSuccess && createChartFromReport.view === "") {
+      console.log(createChartFromReport.state, "state");
+      history.push(`/chart/${page}`);
+    }
+  }, [editChartSuccess]);
 
   React.useEffect(() => {
     return () => {
@@ -237,22 +249,19 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
 
   React.useEffect(() => {
     if (
-      (createChartSuccess &&
-        createChartData.id &&
-        createChartData.id.length > 0) ||
-      editChartSuccess
+      createChartSuccess &&
+      createChartData.id &&
+      createChartData.id.length > 0
     ) {
       setShowSnackbar(
-        `Chart ${
-          view !== undefined && page !== "new" ? "saved" : "created"
-        } successfully!`
+        createChartSuccess ? `Chart created successfully!` : null
       );
-      const id = createChartSuccess ? createChartData.id : page;
+      const chartId = createChartSuccess ? createChartData.id : page;
       if (createChartFromReport.view === "") {
-        history.push(`/chart/${id}`);
+        history.push(`/chart/${chartId}`);
       }
     }
-  }, [createChartSuccess, editChartSuccess, createChartData]);
+  }, [createChartSuccess, createChartData]);
 
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
@@ -434,7 +443,11 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
             placeholder="Title"
             css={styles.nameInput}
             onChange={onNameChange}
-            onFocus={() => props.setHasSubHeaderTitleFocused?.(true)}
+            onFocus={() => {
+              props.setHasSubHeaderTitleFocused?.(true);
+              props.setHasSubHeaderTitleBlurred?.(false);
+            }}
+            onBlur={() => props.setHasSubHeaderTitleBlurred?.(true)}
             onClick={(e) => {
               if (props.name === "Untitled report") {
                 e.currentTarget.value = "";

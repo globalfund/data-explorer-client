@@ -94,6 +94,8 @@ export default function ReportModule() {
   const [reportName, setReportName] = React.useState("Untitled report");
   const [hasSubHeaderTitleFocused, setHasSubHeaderTitleFocused] =
     React.useState(false);
+  const [hasSubHeaderTitleBlurred, setHasSubHeaderTitleBlurred] =
+    React.useState(false);
 
   const [isPreviewSaveEnabled, setIsPreviewSaveEnabled] = React.useState(false);
   const [reportType, setReportType] = React.useState<
@@ -112,6 +114,13 @@ export default function ReportModule() {
     React.useState(headerDetails);
   const [stopInitializeFramesWidth, setStopInitializeFramesWidth] =
     React.useState(false);
+
+  React.useEffect(() => {
+    //set report name back to untitled report if it is empty and user is not focused on subheader title
+    if (reportName === "" && hasSubHeaderTitleBlurred) {
+      setReportName("Untitled report");
+    }
+  }, [hasSubHeaderTitleBlurred]);
 
   const handleRowFrameItemResize = (
     rowId: string,
@@ -263,7 +272,7 @@ export default function ReportModule() {
                 rowFrame.content.length === 1 &&
                 rowFrame.content[0] === ReportElementsType.DIVIDER;
 
-              const content = rowFrame.items.map((item, index) => {
+              const content = rowFrame?.items?.map((item, index) => {
                 return rowFrame.contentTypes[index] === "text"
                   ? EditorState.createWithContent(convertFromRaw(item as any))
                   : item;
@@ -283,7 +292,7 @@ export default function ReportModule() {
                 },
 
                 type: rowFrame.type,
-                content,
+                content: content ?? [],
                 contentWidths: rowFrame.contentWidths,
                 contentHeights: rowFrame.contentHeights,
                 contentTypes: rowFrame.contentTypes,
@@ -385,6 +394,48 @@ export default function ReportModule() {
 
   const resetReport = () => {
     const id = v4();
+    setPersistedReportState({
+      reportName: "Untitled report",
+      headerDetails: {
+        title: "",
+        description: JSON.stringify(
+          convertToRaw(EditorState.createEmpty().getCurrentContent())
+        ),
+        showHeader: true,
+        backgroundColor: "#252c34",
+        titleColor: "#ffffff",
+        descriptionColor: "#ffffff",
+        dateColor: "#ffffff",
+      },
+      appliedHeaderDetails: {
+        title: "",
+        description: JSON.stringify(
+          convertToRaw(EditorState.createEmpty().getCurrentContent())
+        ),
+        showHeader: true,
+        backgroundColor: "#252c34",
+        titleColor: "#ffffff",
+        descriptionColor: "#ffffff",
+        dateColor: "#ffffff",
+      },
+      framesArray: JSON.stringify([
+        {
+          id,
+          frame: {
+            rowIndex: 0,
+            rowId: id,
+            handlePersistReportState,
+            handleRowFrameItemResize,
+            type: "rowFrame",
+          },
+          content: [],
+          contentWidths: [],
+          contentHeights: [],
+          contentTypes: [],
+          structure: null,
+        },
+      ]),
+    });
     setFramesArray([
       {
         id,
@@ -501,6 +552,7 @@ export default function ReportModule() {
           onReportSave={onSave}
           setName={setReportName}
           setHasSubHeaderTitleFocused={setHasSubHeaderTitleFocused}
+          setHasSubHeaderTitleBlurred={setHasSubHeaderTitleBlurred}
           forceEnablePreviewSave={isPreviewSaveEnabled}
           name={page !== "new" && !view ? reportGetData.name : reportName}
           reportName={reportName}
