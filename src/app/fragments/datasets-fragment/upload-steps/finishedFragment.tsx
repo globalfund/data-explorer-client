@@ -38,14 +38,16 @@ export default function FinishedFragment(props: Props) {
   });
 
   React.useEffect(() => {
-    console.log("noyay");
+    let snackbarTimeOut: any;
     if (props.dataTotalCount > 0) {
-      console.log("yay");
       setSnackbarState({ ...snackbarState, open: true });
-      setTimeout(() => {
+      snackbarTimeOut = setTimeout(() => {
         setSnackbarState({ ...snackbarState, open: false });
       }, 10000);
     }
+    return () => {
+      clearTimeout(snackbarTimeOut);
+    };
   }, [props.dataTotalCount]);
 
   return (
