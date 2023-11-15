@@ -9,6 +9,7 @@ import VeronikaAvi from "app/modules/home-module/assets/veronika.png";
 import StefanosAvi from "app/modules/home-module/assets/stefanos.png";
 import EmmanuellaAvi from "app/modules/home-module/assets/emmanuella.png";
 import { subParagraphcss } from "app/modules/home-module/sub-modules/about/style";
+import { ReactComponent as LnIcon } from "app/modules/home-module/assets/linkedIn-icon.svg";
 
 export default function TeamBlock() {
   return (
@@ -51,6 +52,7 @@ export default function TeamBlock() {
             img={SiemAvi}
             name="Siem Vaessen"
             role="Managing Director"
+            linkedIn="https://nl.linkedin.com/in/siemvaessen"
           />
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
@@ -58,6 +60,7 @@ export default function TeamBlock() {
             img={JohnAvi}
             name="John Busch"
             role="Digital Communications Specialist"
+            linkedIn="https://ch.linkedin.com/in/johnbusch74"
           />
         </Grid>{" "}
         <Grid item xs={12} sm={6} md={4}>
@@ -65,6 +68,7 @@ export default function TeamBlock() {
             img={StefanosAvi}
             name="Stefanos Hadjipetrou"
             role="Software Developer"
+            linkedIn="https://cy.linkedin.com/in/hadjipetroustefanos"
           />
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
@@ -72,6 +76,7 @@ export default function TeamBlock() {
             img={SylvanAvi}
             name="Sylvan Ridderinkhof"
             role="Data Engineer"
+            linkedIn="https://nl.linkedin.com/in/sylvan-ridderinkhof-86a020107?challengeId=AQFDWDx46Olg2QAAAYr1KwXeEdh97rpAAaQ8gLnOm7H190q2qCasdaA6guAGANQJsR6xepqoUXXzQ5bKND5vTO0rAenHnXWF3Q&submissionId=68766498-7793-8a17-5f6f-70c0142d6e27&challengeSource=AgFrhytD0Prn8AAAAYr1Kx5jGtAEYxmekwbj5CA-UhQ7pDdjcNDxjGbYTSR_DwE&challegeType=AgH0D6bojPuGUQAAAYr1Kx5mnIsbC9qB6FFID57du71lohYZdSGH_40&memberId=AgEcNgR_on6EGwAAAYr1Kx5oosRjIGYUVqGTRyOYKRTNLdI&recognizeDevice=AgET4m70YC1oOwAAAYr1Kx5rI2LeNWRuokkcc9dL0vH-7MKIkf77"
           />
         </Grid>{" "}
         <Grid item xs={12} sm={6} md={4}>
@@ -79,6 +84,7 @@ export default function TeamBlock() {
             img={KennyAvi}
             name="Kennet Z. Porter"
             role="UI/UX & Data Visualisation Designer"
+            linkedIn="https://es.linkedin.com/in/kennet-z-porter/en"
           />
         </Grid>{" "}
         <Grid item xs={12} sm={6} md={4}>
@@ -86,6 +92,7 @@ export default function TeamBlock() {
             img={EmmanuellaAvi}
             name="Emmanuella Okorie "
             role="Frontend Developer"
+            linkedIn="https://ng.linkedin.com/in/okorie-emmanuella-350916173"
           />
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
@@ -93,6 +100,7 @@ export default function TeamBlock() {
             img={VeronikaAvi}
             name="Veronika Ivanova"
             role="UI/UX Design Intern"
+            linkedIn="https://nl.linkedin.com/in/veronika-ivanova-448b6b1b6"
           />
         </Grid>
         <Grid item xs={12} sm={6} md={4}>
@@ -100,6 +108,7 @@ export default function TeamBlock() {
             img={AylinAvi}
             name="Aylin Paçaci"
             role="UI/UX Design Intern"
+            linkedIn="https://tr.linkedin.com/in/aylinpacaci?challengeId=AQGCezNLhQB5VAAAAYr1LsyqInpecECsz0f1D032FrhjK53S0QxwLaFrnvD3BTPyZqw3EiwG4dUCGfYwbrX2QYEkUPehESPhcA&submissionId=23a4be36-b193-8a17-763d-43964760bb5d&challengeSource=AgFbFYc7O7cBCwAAAYr1Lw4R7zCEZuxI9v0AfSWFvI6vfM5UAz1w4rCbRqG0t_o&challegeType=AgH0plkkpgehOwAAAYr1Lw4UkFu-5d_Th_klMyVozCAMZlWzC6FMFxU&memberId=AgGD_QYvN6PzHgAAAYr1Lw4X1y5FvFFmoiDNJphRNKC2Iqc&recognizeDevice=AgGSDMbPuggcNQAAAYr1Lw4adUncXjOjYUgn-oI477FV4Aw2IxXu"
           />
         </Grid>
       </Grid>
@@ -107,7 +116,12 @@ export default function TeamBlock() {
   );
 }
 
-const TeamCard = (props: { img: string; name: string; role: string }) => {
+const TeamCard = (props: {
+  img: string;
+  name: string;
+  role: string;
+  linkedIn: string;
+}) => {
   return (
     <div
       css={`
@@ -150,9 +164,17 @@ const TeamCard = (props: { img: string; name: string; role: string }) => {
           margin-top: 25px;
           margin-bottom: 5px;
           font-family: "Gotham Narrow", sans-serif;
+          display: flex;
+          align-items: center;
+          gap: 16px;
         `}
       >
-        <b>{props.name}</b>
+        <b>{props.name}</b>{" "}
+        <span>
+          <a href={props.linkedIn} target="_blank" rel="noopener noreferrer">
+            <LnIcon />
+          </a>
+        </span>
       </p>
       <p
         css={`
