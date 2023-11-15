@@ -4,9 +4,8 @@ import { useDXcss } from "app/modules/home-module/sub-modules/partners/style";
 export default function DXBlock() {
   return (
     <div css={useDXcss}>
-      <h2>
-        See how the world&apos;s largest health organisations use DataXplorer{" "}
-      </h2>
+      <h2>Partner Case Study: The Global Fund</h2>
+
       <h3>The Global Fund to fight AIDS, Tuberculosis and Malaria</h3>
       <p>
         The Global Fund is a partnership designed to accelerate the end of AIDS,

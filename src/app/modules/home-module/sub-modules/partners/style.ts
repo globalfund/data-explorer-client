@@ -108,7 +108,7 @@ export const useDXcss = css`
   width: 60%;
   h2 {
     font-weight: 350;
-    font-size: 48px;
+    font-size: 40px;
     line-height: 58px;
     text-align: center;
     font-weight: bold;
@@ -118,11 +118,13 @@ export const useDXcss = css`
     line-height: 29px;
     font-family: "Gotham Narrow Bold", sans-serif;
     text-align: center;
+    margin-bottom: 0;
   }
   p {
     font-size: 16px;
     line-height: 19px;
     text-align: center;
+    margin-top: 8px;
   }
 `;
 
@@ -136,7 +138,7 @@ export const quotecss = css`
   width: 78%;
   p {
     font-weight: 500;
-    font-size: 48px;
+    font-size: 40px;
     line-height: 58px;
     text-align: center;
     font-family: "Inter", sans-serif;
@@ -172,26 +174,55 @@ export const bestDecisioncss = css`
     margin: 0;
     margin-bottom: 36px;
   }
-  button {
-    outline: none;
-    border: none;
-    background: #ffffff;
-    border-radius: 30px;
-    height: 41px;
-    color: #231d2c;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 12px 27px;
-    gap: 10px;
-    text-transform: uppercase;
-    font-family: "Inter", sans-serif;
-    font-weight: 700;
-    font-size: 14px;
-    color: #231d2c;
-    :hover {
-      opacity: 0.9;
-      cursor: pointer;
+  div {
+    button {
+      gap: 10px;
+      color: #231d2c;
+      display: flex;
+      padding: 9px 18px;
+      background: #fff;
+      font-weight: 700;
+      font-family: "Inter", sans-serif;
+      font-size: 14px;
+      align-items: center;
+      justify-content: center;
+      text-transform: uppercase;
+      border: none;
+      outline: none;
+      border-radius: 30px;
+      :hover {
+        opacity: 0.95;
+        cursor: pointer;
+      }
+      > svg {
+        transform: scale(0.8);
+      }
+    }
+  }
+  a {
+    button {
+      outline: none;
+      border: none;
+      background: #ffffff;
+      border-radius: 30px;
+      height: 41px;
+      color: #231d2c;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 12px 27px;
+      gap: 10px;
+      p {
+        text-transform: uppercase;
+        font-family: "Inter", sans-serif;
+        font-weight: 700;
+        font-size: 14px;
+        color: #231d2c;
+      }
+      :hover {
+        opacity: 0.95;
+        cursor: pointer;
+      }
     }
   }
 `;

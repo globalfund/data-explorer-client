@@ -9,7 +9,7 @@ export default function OurPartnersBlock() {
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 10px 0;
+        padding: 17px 0;
         border-bottom: 1px solid #e4e4e4;
         gap: 80px;
         img {
