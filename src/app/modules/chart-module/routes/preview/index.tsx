@@ -35,7 +35,7 @@ export function ChartBuilderPreview(props: ChartBuilderPreviewProps) {
     setActivePanels(1);
 
     if (props.data.length === 0 && dataset) {
-      props.loadDataset(`data-themes/sample-data/${dataset}`);
+      props.loadDataset(`chart/sample-data/${dataset}`);
     }
   }, []);
 
