@@ -1,9 +1,6 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import axios, { AxiosError, AxiosResponse } from "axios";
-import { emailSchema } from "app/utils/emailValidation";
+import { FieldErrors } from "react-hook-form";
 import { ReactComponent as MailImg } from "app/modules/report-module/asset/mail-img.svg";
 import { ReactComponent as TopEllipse } from "app/modules/report-module/asset/ai-newsletter-top-ellipse.svg";
 import { ReactComponent as BigEllipse } from "app/modules/report-module/asset/ai-newsletter-big-ellipse.svg";
@@ -28,55 +25,17 @@ import {
   topEllipsecss,
 } from "./style";
 import SneakPreview from "./sneakPreview";
+import NewsletterForm from "app/modules/common/newsletterForm";
 
 export default function AITemplate() {
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm<{ email: string }>({ resolver: yupResolver(emailSchema) });
-  const [email, setEmail] = React.useState("");
   const [isSubscribed, setIsSubscribed] = React.useState(false);
   const [isSubscriptionFailed, setIsSubscriptionFailed] = React.useState(false);
   const [modalDisplay, setModalDisplay] = React.useState<boolean>(true);
-
-  const handleSubscribeAction = () => {
-    axios
-      .post(
-        `https://api.hsforms.com/submissions/v3/integration/submit/${process.env.REACT_APP_HUBSPOT_PORTAL_ID}/${process.env.REACT_APP_HUBSPOT_SUBSCRIBE_FORM_ID}`,
-        {
-          portalId: process.env.REACT_APP_HUBSPOT_PORTAL_ID,
-          formGuid: process.env.REACT_APP_HUBSPOT_SUBSCRIBE_FORM_ID,
-          fields: [
-            {
-              name: "email",
-              value: email,
-            },
-          ],
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then((response: AxiosResponse) => {
-        if (response.status === 200) {
-          setEmail("");
-          setIsSubscribed(true);
-        } else {
-          setIsSubscriptionFailed(true);
-        }
-      })
-      .catch((error: AxiosError) => {
-        setIsSubscriptionFailed(true);
-        console.log(error.response, "res");
-      });
-  };
-
-  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
-  };
+  const [formError, setFormError] = React.useState<
+    FieldErrors<{
+      email: string;
+    }>
+  >({});
 
   return (
     <Grid
@@ -145,7 +104,7 @@ export default function AITemplate() {
             </div>
           </div>
         ) : (
-          <div css={notSubscribedcss(Boolean(errors.email))}>
+          <div css={notSubscribedcss(Boolean(formError.email))}>
             <div>
               <MailImg />
               <div
@@ -182,7 +141,7 @@ export default function AITemplate() {
                   }
                 `}
               >
-                {errors.email && "Please enter a valid email address."}
+                {formError.email && "Please enter a valid email address."}
                 {isSubscriptionFailed && (
                   <p>
                     <span>
@@ -201,21 +160,11 @@ export default function AITemplate() {
                   border-radius: 40px;
                 `}
               >
-                <form
-                  css={`
-                    width: 100%;
-                    display: flex;
-                  `}
-                  onSubmit={handleSubmit(handleSubscribeAction)}
-                >
-                  <input
-                    type="text"
-                    placeholder="Email address"
-                    {...register("email", { required: true })}
-                    onChange={handleEmailChange}
-                  />
-                  <button type="submit">SUBSCRIBE</button>
-                </form>
+                <NewsletterForm
+                  setFormError={setFormError}
+                  setIsSubscriptionFailed={setIsSubscriptionFailed}
+                  setIsSubscribed={setIsSubscribed}
+                />
               </div>
               <p
                 css={`

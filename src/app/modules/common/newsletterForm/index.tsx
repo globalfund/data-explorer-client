@@ -2,12 +2,21 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { emailSchema } from "app/utils/emailValidation";
 import axios, { AxiosResponse, AxiosError } from "axios";
 import React from "react";
-import { useForm } from "react-hook-form";
+import { FieldErrors, useForm } from "react-hook-form";
 
-export default function NewsletterForm(props: {
-  setIsSubscribed: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsSubscriptionFailed: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
+export default function NewsletterForm(
+  props: Readonly<{
+    setIsSubscribed: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsSubscriptionFailed: React.Dispatch<React.SetStateAction<boolean>>;
+    setFormError: React.Dispatch<
+      React.SetStateAction<
+        FieldErrors<{
+          email: string;
+        }>
+      >
+    >;
+  }>
+) {
   const {
     register,
     formState: { errors },
@@ -15,7 +24,13 @@ export default function NewsletterForm(props: {
   } = useForm<{ email: string }>({ resolver: yupResolver(emailSchema) });
   const [email, setEmail] = React.useState("");
 
+  React.useEffect(() => {
+    props.setFormError(errors);
+  }, [errors]);
+
   const handleSubscribeAction = () => {
+    props.setIsSubscribed(false);
+    props.setIsSubscriptionFailed(false);
     axios
       .post(
         `https://api.hsforms.com/submissions/v3/integration/submit/${process.env.REACT_APP_HUBSPOT_PORTAL_ID}/${process.env.REACT_APP_HUBSPOT_SUBSCRIBE_FORM_ID}`,
@@ -45,7 +60,6 @@ export default function NewsletterForm(props: {
       })
       .catch((error: AxiosError) => {
         props.setIsSubscriptionFailed(true);
-        console.log(error.response, "res");
       });
   };
 
@@ -66,6 +80,7 @@ export default function NewsletterForm(props: {
         placeholder="Email address"
         {...register("email", { required: true })}
         onChange={handleEmailChange}
+        value={email}
       />
       <button type="submit">SUBSCRIBE</button>
     </form>

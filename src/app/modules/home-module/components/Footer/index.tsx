@@ -6,10 +6,16 @@ import { ReactComponent as CopyIcon } from "app/modules/home-module/components/F
 import { ReactComponent as LogoIcon } from "app/modules/home-module/components/Footer/asset/logo.svg";
 import { Link } from "react-router-dom";
 import NewsletterForm from "app/modules/common/newsletterForm";
+import { FieldErrors } from "react-hook-form";
 
 export default function HomeFooter() {
   const [isSubscribed, setIsSubscribed] = React.useState(false);
   const [isSubscriptionFailed, setIsSubscriptionFailed] = React.useState(false);
+  const [formError, setFormError] = React.useState<
+    FieldErrors<{
+      email: string;
+    }>
+  >({});
   return (
     <div css={homeFootercss}>
       <Container
@@ -127,6 +133,18 @@ export default function HomeFooter() {
             >
               Subscribe to our newsletter
             </p>
+            <label
+              css={`
+                font-family: "Inter", sans-serif;
+                font-size: 12px;
+                text-align: left;
+                width: 100%;
+                padding-left: 10px;
+                color: #e75656;
+              `}
+            >
+              {formError.email && "Please enter a valid email address."}
+            </label>
             <div
               css={`
                 border-radius: 40px;
@@ -160,6 +178,7 @@ export default function HomeFooter() {
               <NewsletterForm
                 setIsSubscribed={setIsSubscribed}
                 setIsSubscriptionFailed={setIsSubscriptionFailed}
+                setFormError={setFormError}
               />
             </div>
             <p
