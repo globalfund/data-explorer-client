@@ -1,10 +1,11 @@
 import React from "react";
 import EmpowerBlock from "../partners/components/empowerBlock";
-import { Box, Container, TextField } from "@material-ui/core";
+import { Box, Container, Snackbar, TextField } from "@material-ui/core";
 import HomeFooter from "../../components/Footer";
 import { ReactComponent as FullEllipse } from "app/modules/home-module/assets/contact-lg-ellispe.svg";
 import NewsletterForm from "app/modules/common/newsletterForm";
 import { FieldErrors } from "react-hook-form";
+import axios, { AxiosError, AxiosResponse } from "axios";
 
 const DXLogo = (
   <svg
@@ -28,13 +29,91 @@ const DXLogo = (
 export default function ContactModule() {
   const [isSubscribed, setIsSubscribed] = React.useState(false);
   const [isSubscriptionFailed, setIsSubscriptionFailed] = React.useState(false);
+  const [openSnackbar, setOpenSnackbar] = React.useState(false);
+  const [message, setMessage] = React.useState("");
   const [formError, setFormError] = React.useState<
     FieldErrors<{
       email: string;
     }>
   >({});
+
+  const [contactFormDetails, setContactFormDetails] = React.useState([
+    { name: "email", value: "" },
+    { name: "firstname", value: "" },
+    { name: "lastname", value: "" },
+    { name: "company", value: "" },
+    { name: "message", value: "" },
+  ]);
+
+  const resetForm = () => {
+    setContactFormDetails([
+      { name: "email", value: "" },
+      { name: "firstname", value: "" },
+      { name: "lastname", value: "" },
+      { name: "company", value: "" },
+      { name: "message", value: "" },
+    ]);
+  };
+  const [contactFormFailed, setContactFormFailed] = React.useState(false);
+
+  const handleContactFormChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const { name, value } = event.target;
+    setContactFormDetails((prevState) => {
+      const newState = prevState.map((item) => {
+        if (item.name === name) {
+          return { ...item, value };
+        }
+        return item;
+      });
+      return newState;
+    });
+  };
+
+  const handleContactFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    axios
+      .post(
+        `https://api.hsforms.com/submissions/v3/integration/submit/${process.env.REACT_APP_HUBSPOT_PORTAL_ID}/${process.env.REACT_APP_HUBSPOT_CONTACT_FORM_ID}`,
+        {
+          portalId: process.env.REACT_APP_HUBSPOT_PORTAL_ID,
+          formGuid: process.env.REACT_APP_HUBSPOT_CONTACT_FORM_ID,
+          fields: contactFormDetails,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response: AxiosResponse) => {
+        if (response.status === 200) {
+          setOpenSnackbar(true);
+          setMessage(response.data.inlineMessage);
+          resetForm();
+        } else {
+          setContactFormFailed(true);
+        }
+      })
+      .catch((error: AxiosError) => {
+        console.log(error);
+        setContactFormFailed(true);
+      });
+  };
   return (
     <>
+      <Snackbar
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        open={openSnackbar}
+        autoHideDuration={5000}
+        onClose={() => setOpenSnackbar(false)}
+        message={message}
+      />
       <EmpowerBlock view="contact" />
       <Container maxWidth="lg">
         <div
@@ -60,6 +139,7 @@ export default function ContactModule() {
             `}
           />
           <form
+            onSubmit={handleContactFormSubmit}
             css={`
               width: 522px;
               height: 100%;
@@ -95,24 +175,37 @@ export default function ContactModule() {
               variant="standard"
               fullWidth
               required
+              name="email"
+              type="email"
+              onChange={handleContactFormChange}
+              value={contactFormDetails[0].value}
             />
             <TextField
               id="standard-basic"
               label="First Name"
               variant="standard"
               fullWidth
+              name="firstname"
+              value={contactFormDetails[1].value}
+              onChange={handleContactFormChange}
             />
             <TextField
               id="standard-basic"
               label="Last Name"
               variant="standard"
               fullWidth
+              name="lastname"
+              value={contactFormDetails[2].value}
+              onChange={handleContactFormChange}
             />
             <TextField
               id="standard-basic"
               label="Company Name"
               variant="standard"
               fullWidth
+              name="company"
+              value={contactFormDetails[3].value}
+              onChange={handleContactFormChange}
             />
             <TextField
               id="standard-basic"
@@ -120,6 +213,9 @@ export default function ContactModule() {
               variant="standard"
               fullWidth
               required
+              name="message"
+              value={contactFormDetails[4].value}
+              onChange={handleContactFormChange}
             />
             <Box height={60} />
             <button
