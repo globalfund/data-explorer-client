@@ -210,6 +210,7 @@ export function ChartBuilderPreviewTheme(props: ChartBuilderPreviewThemeProps) {
       >
         <Skeleton animation="wave" variant="rect" width="100%" height="100%" />
       </div>
+
       <div
         css={`
           height: 80px;

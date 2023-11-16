@@ -18,7 +18,7 @@ import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 
 export default function EmpowerBlock(props: {
-  view?: "why-dx" | "contact" | "about";
+  view?: "why-dx" | "contact" | "about" | "partners";
 }) {
   const { isAuthenticated, loginWithRedirect } = useAuth0();
   const handleLogin = () => {
@@ -44,6 +44,12 @@ export default function EmpowerBlock(props: {
       subText =
         "DataXplorer simplifies and empowers visual data reporting for all.";
       break;
+    case "partners":
+      mainText = `Global Health and International Development\nOrganizations are using DataXplorer`;
+      subText =
+        "DataXplorer simplifies and empowers visual data reporting for all.";
+      break;
+
     default:
       mainText = "Empower people with meaningful data";
       subText = "AI-powered solution to communicate your data with more impact";
