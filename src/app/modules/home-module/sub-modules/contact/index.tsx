@@ -3,6 +3,8 @@ import EmpowerBlock from "../partners/components/empowerBlock";
 import { Box, Container, TextField } from "@material-ui/core";
 import HomeFooter from "../../components/Footer";
 import { ReactComponent as FullEllipse } from "app/modules/home-module/assets/contact-lg-ellispe.svg";
+import NewsletterForm from "app/modules/common/newsletterForm";
+import { FieldErrors } from "react-hook-form";
 
 const DXLogo = (
   <svg
@@ -24,6 +26,13 @@ const DXLogo = (
 );
 
 export default function ContactModule() {
+  const [isSubscribed, setIsSubscribed] = React.useState(false);
+  const [isSubscriptionFailed, setIsSubscriptionFailed] = React.useState(false);
+  const [formError, setFormError] = React.useState<
+    FieldErrors<{
+      email: string;
+    }>
+  >({});
   return (
     <>
       <EmpowerBlock view="contact" />
@@ -193,6 +202,18 @@ export default function ContactModule() {
             >
               Subscribe to our newsletter
             </p>
+            <label
+              css={`
+                font-family: "Inter", sans-serif;
+                font-size: 12px;
+                text-align: left;
+                width: 100%;
+                padding-left: 10px;
+                color: #e75656;
+              `}
+            >
+              {formError.email && "Please enter a valid email address."}
+            </label>
             <div
               css={`
                 border-radius: 40px;
@@ -220,9 +241,25 @@ export default function ContactModule() {
                 }
               `}
             >
-              <input type="text" placeholder="Email address" />
-              <button>Subscribe</button>
+              <NewsletterForm
+                setIsSubscribed={setIsSubscribed}
+                setIsSubscriptionFailed={setIsSubscriptionFailed}
+                setFormError={setFormError}
+              />
             </div>
+            <p
+              css={`
+                line-height: normal;
+                font-size: 12px;
+                color: #fff;
+              `}
+            >
+              {isSubscribed
+                ? "Thank you for subscribing!"
+                : isSubscriptionFailed
+                ? "Oops! Something went wrong with the request! Please fill your email again."
+                : ""}
+            </p>
           </div>
         </div>
         <div

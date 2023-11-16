@@ -104,7 +104,7 @@ export function MainRoutes() {
           <RouteWithAppBar exact path="/contact">
             <ContactModule />
           </RouteWithAppBar>
-          <RouteWithAppBar exact path="/why-dx">
+          <RouteWithAppBar exact path="/why-dataXplorer">
             <WhyDXModule />
           </RouteWithAppBar>
           <RouteWithAppBar exact path="/explore">
