@@ -228,7 +228,7 @@ export function AppBar() {
                 `}
               >
                 <div css={navLinkcss("why-dx", navLocation)}>
-                  <NavLink to="/why-dx">
+                  <NavLink to="/why-dataXplorer">
                     <b>Why DataXplorer?</b>
                   </NavLink>
                 </div>

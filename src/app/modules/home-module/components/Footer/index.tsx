@@ -62,7 +62,7 @@ export default function HomeFooter() {
                 </Link>
               </li>
               <li>
-                <Link to="/why-dx">Why DataXplorer?</Link>{" "}
+                <Link to="/why-dataXplorer">Why DataXplorer?</Link>{" "}
               </li>
               <li>
                 <Link to="/explore">Explore</Link>{" "}
