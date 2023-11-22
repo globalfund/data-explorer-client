@@ -1,21 +1,16 @@
 import React from "react";
-import { useAuth0 } from "@auth0/auth0-react";
 import Checkbox from "@material-ui/core/Checkbox";
+import { socialAuth } from "app/utils/socialAuth";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { socialloginbuttoncss, termsOfServiceCss } from "./style";
 import { ReactComponent as GoogleIcon } from "../../asset/google-img.svg";
 import { ReactComponent as LinkedInIcon } from "../../asset/linkedIn-img.svg";
 
 export default function AuthCard(props: { isLogin?: boolean }) {
-  const { loginWithRedirect } = useAuth0();
   const [checked, setChecked] = React.useState(false);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked);
-  };
-
-  const onButtonClick = () => {
-    loginWithRedirect();
   };
 
   return (
@@ -34,10 +29,18 @@ export default function AuthCard(props: { isLogin?: boolean }) {
         }
       `}
     >
-      <button type="button" css={socialloginbuttoncss} onClick={onButtonClick}>
+      <button
+        type="button"
+        css={socialloginbuttoncss}
+        onClick={() => socialAuth("google-oauth2")}
+      >
         <GoogleIcon /> {props.isLogin ? "Log in" : "Sign up"} with Google
       </button>
-      <button type="button" css={socialloginbuttoncss} onClick={onButtonClick}>
+      <button
+        type="button"
+        css={socialloginbuttoncss}
+        onClick={() => socialAuth("linkedin")}
+      >
         <LinkedInIcon />
         {props.isLogin ? "Log in" : "Sign up"} with LinkedIn
       </button>

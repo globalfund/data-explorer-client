@@ -1,12 +1,15 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
+import { useAuth0 } from "@auth0/auth0-react";
+import { socialAuth } from "app/utils/socialAuth";
 import { HomePrimaryButton } from "app/components/Styled/button";
+import { ReactComponent as GoogleIcon } from "app/modules/onboarding-module/asset/google-img.svg";
 import { ReactComponent as SmallEllipse } from "app/modules/home-module/assets/cases-sm-ellipse.svg";
+import { ReactComponent as LinkedInIcon } from "app/modules/onboarding-module/asset/linkedIn-img.svg";
 import { ReactComponent as TopRightEllipse } from "app/modules/home-module/assets/top-right-ellipse.svg";
 import { ReactComponent as BottomLeftEllipse } from "app/modules/home-module/assets/bottom-left-ellipse.svg";
 import { ReactComponent as BottomRightEllipse } from "app/modules/home-module/assets/bottom-right-ellipse.svg";
-import { ReactComponent as GoogleIcon } from "app/modules/onboarding-module/asset/google-img.svg";
-import { ReactComponent as LinkedInIcon } from "app/modules/onboarding-module/asset/linkedIn-img.svg";
 import {
   empowercss,
   SmallEllipseCss,
@@ -14,16 +17,11 @@ import {
   BottomLeftEllipseCss,
   BottomRightEllipseCss,
 } from "app/modules/home-module/sub-modules/partners/style";
-import { Link } from "react-router-dom";
-import { useAuth0 } from "@auth0/auth0-react";
 
 export default function EmpowerBlock(props: {
   view?: "why-dx" | "contact" | "about" | "partners";
 }) {
-  const { isAuthenticated, loginWithRedirect } = useAuth0();
-  const handleLogin = () => {
-    loginWithRedirect();
-  };
+  const { isAuthenticated } = useAuth0();
 
   let mainText = "";
   let subText = "";
@@ -100,10 +98,10 @@ export default function EmpowerBlock(props: {
             }
           `}
         >
-          <button onClick={handleLogin}>
+          <button onClick={() => socialAuth("google-oauth2")}>
             <GoogleIcon /> sign in for free
           </button>
-          <button onClick={handleLogin}>
+          <button onClick={() => socialAuth("linkedin")}>
             <LinkedInIcon /> sign in for free
           </button>
         </div>

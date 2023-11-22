@@ -17,7 +17,7 @@ const ProcessingIcon = () => (
       cy="80"
       fill="transparent"
       stroke="#DADAF8"
-      stroke-width="8px"
+      strokeWidth="8px"
     ></circle>
     <circle
       r="70"
@@ -25,10 +25,10 @@ const ProcessingIcon = () => (
       cy="80"
       fill="transparent"
       stroke="#6061E5"
-      stroke-linecap="round"
-      stroke-width="10px"
-      stroke-dasharray="239.6px"
-      stroke-dashoffset="109.9px"
+      strokeLinecap="round"
+      strokeWidth="10px"
+      strokeDasharray="239.6px"
+      strokeDashoffset="109.9px"
     ></circle>
   </svg>
 );

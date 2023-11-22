@@ -6,11 +6,13 @@ import { PageLoader } from "app/modules/common/page-loader";
 
 function AuthCallbackModule() {
   const history = useHistory();
-  const { error, isAuthenticated } = useAuth0();
+  const { error, isAuthenticated, getAccessTokenSilently } = useAuth0();
 
   React.useEffect(() => {
     if (isAuthenticated) {
       history.replace("/");
+    } else {
+      getAccessTokenSilently();
     }
   }, [isAuthenticated]);
 

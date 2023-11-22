@@ -7,6 +7,7 @@ import { useRecoilState, useResetRecoilState } from "recoil";
 import { Box, Grid, Container, IconButton, Popover } from "@material-ui/core";
 /* project */
 import { Tab } from "app/components/Styled/tabs";
+import { socialAuth } from "app/utils/socialAuth";
 import HomeFooter from "app/modules/home-module/components/Footer";
 import ChartsGrid from "app/modules/home-module/components/Charts/chartsGrid";
 import ReportsGrid from "app/modules/home-module/components/Reports/reportsGrid";
@@ -43,7 +44,7 @@ import {
 export default function HomeModule() {
   useTitle("DX DataXplorer");
 
-  const { isAuthenticated, loginWithRedirect } = useAuth0();
+  const { isAuthenticated } = useAuth0();
 
   // clear persisted states
   const clearPersistedReportState = useResetRecoilState(
@@ -129,10 +130,6 @@ export default function HomeModule() {
 
   const handleCloseSortPopover = () => {
     setSortPopoverAnchorEl(null);
-  };
-
-  const handleLogin = () => {
-    loginWithRedirect();
   };
 
   const openSortPopover = Boolean(sortPopoverAnchorEl);
@@ -230,10 +227,10 @@ export default function HomeModule() {
                       }
                     `}
                   >
-                    <button onClick={handleLogin}>
+                    <button onClick={() => socialAuth("google-oauth2")}>
                       <GoogleIcon /> sign in for free
                     </button>
-                    <button onClick={handleLogin}>
+                    <button onClick={() => socialAuth("linkedin")}>
                       <LinkedInIcon /> sign in for free
                     </button>
                   </div>

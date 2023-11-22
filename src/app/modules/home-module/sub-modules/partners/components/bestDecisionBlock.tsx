@@ -1,16 +1,15 @@
-import { Grid } from "@material-ui/core";
 import React from "react";
-import RightArr from "app/modules/home-module/assets/right-arr-icon.svg";
+import { Link } from "react-router-dom";
+import { Grid } from "@material-ui/core";
+import { useAuth0 } from "@auth0/auth0-react";
+import { socialAuth } from "app/utils/socialAuth";
 import { bestDecisioncss } from "app/modules/home-module/sub-modules/partners/style";
 import { ReactComponent as GoogleIcon } from "app/modules/onboarding-module/asset/google-img.svg";
 import { ReactComponent as LinkedInIcon } from "app/modules/onboarding-module/asset/linkedIn-img.svg";
-import { Link } from "react-router-dom";
-import { useAuth0 } from "@auth0/auth0-react";
+
 export default function BestDecisionBlock() {
-  const { isAuthenticated, loginWithRedirect } = useAuth0();
-  const handleLogin = () => {
-    loginWithRedirect();
-  };
+  const { isAuthenticated } = useAuth0();
+
   return (
     <Grid css={bestDecisioncss}>
       <h4>Best decisions are based on data</h4>
@@ -71,10 +70,10 @@ export default function BestDecisionBlock() {
         >
           {!isAuthenticated && (
             <div id="auth-buttons">
-              <button onClick={handleLogin}>
+              <button onClick={() => socialAuth("google-oauth2")}>
                 <GoogleIcon /> sign in for free
               </button>
-              <button onClick={handleLogin}>
+              <button onClick={() => socialAuth("linkedin")}>
                 <LinkedInIcon /> sign in for free
               </button>
             </div>

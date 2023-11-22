@@ -1,15 +1,14 @@
 import React from "react";
-import { ReactComponent as RightArr } from "app/modules/home-module/assets/right-arr-icon.svg";
 import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
+import { socialAuth } from "app/utils/socialAuth";
+import { ReactComponent as RightArr } from "app/modules/home-module/assets/right-arr-icon.svg";
 import { ReactComponent as GoogleIcon } from "app/modules/onboarding-module/asset/google-img.svg";
 import { ReactComponent as LinkedInIcon } from "app/modules/onboarding-module/asset/linkedIn-img.svg";
 
 export default function TryUsBlock() {
-  const { isAuthenticated, loginWithRedirect } = useAuth0();
-  const handleLogin = () => {
-    loginWithRedirect();
-  };
+  const { isAuthenticated } = useAuth0();
+
   return (
     <>
       <p
@@ -158,10 +157,10 @@ export default function TryUsBlock() {
               }
             `}
           >
-            <button onClick={handleLogin}>
+            <button onClick={() => socialAuth("google-oauth2")}>
               <GoogleIcon /> sign in for free
             </button>
-            <button onClick={handleLogin}>
+            <button onClick={() => socialAuth("linkedin")}>
               <LinkedInIcon /> sign in for free
             </button>
           </div>
