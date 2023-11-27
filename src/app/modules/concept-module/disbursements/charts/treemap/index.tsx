@@ -17,6 +17,10 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { TooltipComponent, TooltipComponentOption } from "echarts/components";
 import {
+  LabelValue,
+  traverseOptions,
+} from "app/modules/concept-module/disbursements";
+import {
   TreemapSeriesOption,
   TreemapChart as EchartsTreemap,
 } from "echarts/charts";
@@ -68,6 +72,10 @@ export function DisbursementConceptTreemap(props: Props) {
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
   const setAppliedFilters = useStoreActions(
     (actions) => actions.AppliedFiltersState
+  );
+  const partnerTypeFilterOptions = useStoreState(
+    (state) =>
+      get(state.PartnerTypeFilterOptions, "data.options", []) as LabelValue[]
   );
 
   const filtersLabelArray = React.useMemo(() => {
@@ -254,6 +262,12 @@ export function DisbursementConceptTreemap(props: Props) {
       chart.resize();
     }
   };
+
+  const partnersFlattenOptions = React.useMemo(() => {
+    const arr: LabelValue[] = [];
+    traverseOptions(partnerTypeFilterOptions, arr);
+    return arr;
+  }, [partnerTypeFilterOptions]);
 
   React.useEffect(() => {
     let filterString = "";
@@ -443,7 +457,15 @@ export function DisbursementConceptTreemap(props: Props) {
           names = appliedFilters.components;
           break;
         case "PartnerType":
-          names = [...appliedFilters.partners, ...appliedFilters.partnerTypes];
+          const ids = [
+            ...appliedFilters.partners,
+            ...appliedFilters.partnerTypes,
+            ...appliedFilters.partnerSubTypes,
+          ];
+          names = ids.map((id) => {
+            const option = find(partnersFlattenOptions, (o) => o.value === id);
+            return option?.label ?? id;
+          });
           break;
         case "GrantStatus":
           names = appliedFilters.status;

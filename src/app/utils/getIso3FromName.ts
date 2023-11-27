@@ -252,6 +252,11 @@ export const countryList = [
     iso3: "COM",
   },
   {
+    name: "Congo",
+    iso2: "CG",
+    iso3: "COG",
+  },
+  {
     name: "Congo (Democratic Republic)",
     iso2: "CD",
     iso3: "COD",
@@ -307,7 +312,7 @@ export const countryList = [
     iso3: "DMA",
   },
   {
-    name: "Dominican Republic (the)",
+    name: "Dominican Republic",
     iso2: "DO",
     iso3: "DOM",
   },
@@ -392,7 +397,7 @@ export const countryList = [
     iso3: "GAB",
   },
   {
-    name: "Gambia (the)",
+    name: "Gambia",
     iso2: "GM",
     iso3: "GMB",
   },
@@ -512,7 +517,7 @@ export const countryList = [
     iso3: "IDN",
   },
   {
-    name: "Iran (Islamic Republic of)",
+    name: "Iran (Islamic Republic)",
     iso2: "IR",
     iso3: "IRN",
   },
@@ -577,7 +582,7 @@ export const countryList = [
     iso3: "KIR",
   },
   {
-    name: "Korea (the Democratic People's Republic of)",
+    name: "Korea (Democratic Peoples Republic)",
     iso2: "KP",
     iso3: "PRK",
   },
@@ -602,7 +607,7 @@ export const countryList = [
     iso3: "KGZ",
   },
   {
-    name: "Lao People's Democratic Republic (the)",
+    name: "Lao (Peoples Democratic Republic)",
     iso2: "LA",
     iso3: "LAO",
   },
@@ -722,7 +727,7 @@ export const countryList = [
     iso3: "FSM",
   },
   {
-    name: "Moldova (the Republic of)",
+    name: "Moldova",
     iso2: "MD",
     iso3: "MDA",
   },
@@ -802,7 +807,7 @@ export const countryList = [
     iso3: "NIC",
   },
   {
-    name: "Niger (the)",
+    name: "Niger",
     iso2: "NE",
     iso3: "NER",
   },
@@ -872,7 +877,7 @@ export const countryList = [
     iso3: "PER",
   },
   {
-    name: "Philippines (the)",
+    name: "Philippines",
     iso2: "PH",
     iso3: "PHL",
   },
@@ -912,7 +917,7 @@ export const countryList = [
     iso3: "ROU",
   },
   {
-    name: "Russian Federation (the)",
+    name: "Russian Federation",
     iso2: "RU",
     iso3: "RUS",
   },
@@ -1037,7 +1042,7 @@ export const countryList = [
     iso3: "LKA",
   },
   {
-    name: "Sudan (the)",
+    name: "Sudan",
     iso2: "SD",
     iso3: "SDN",
   },

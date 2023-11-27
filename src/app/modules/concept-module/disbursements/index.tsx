@@ -22,13 +22,13 @@ import {
   pathnameToFilterGroups,
 } from "app/components/ToolBoxPanel/components/filters/data";
 
-interface LabelValue {
+export interface LabelValue {
   label: string;
   value: string;
   subOptions?: LabelValue[];
 }
 
-function traverseOptions(options: LabelValue[], arr: LabelValue[]) {
+export function traverseOptions(options: LabelValue[], arr: LabelValue[]) {
   options.forEach((option) => {
     arr.push({
       label: option.label,
