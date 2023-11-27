@@ -284,6 +284,22 @@ export default createTheme({
         },
       },
     },
+    MuiListItem: {
+      root: {
+        "&$selected": {
+          color: "#231d2c !important",
+          background: "#f1f3f5",
+          "&:hover": {
+            color: "#231d2c",
+            background: "#f1f3f5",
+          },
+        },
+        "&:hover": {
+          color: "#231d2c",
+          background: "#f1f3f5",
+        },
+      },
+    },
   },
   breakpoints: {
     keys: ["xs", "sm", "md", "lg", "xl"],

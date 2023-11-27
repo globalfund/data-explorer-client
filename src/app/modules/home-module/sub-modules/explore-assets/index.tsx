@@ -1,8 +1,7 @@
 /* third-party */
 import React from "react";
-import { useRecoilState, useResetRecoilState } from "recoil";
-import { Link } from "react-router-dom";
 import useTitle from "react-use/lib/useTitle";
+import { useRecoilState, useResetRecoilState } from "recoil";
 import {
   Tab,
   Box,

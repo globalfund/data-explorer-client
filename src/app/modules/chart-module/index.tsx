@@ -492,7 +492,7 @@ export default function ChartModule() {
               />
             </Route>
             <Route path="/chart/:page/data">
-              <ChartModuleDataView />
+              <ChartModuleDataView loadDataset={loadDataset} />
             </Route>
             <Route path="/chart/:page/preview">
               <ChartBuilderPreviewTheme

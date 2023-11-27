@@ -159,6 +159,7 @@ export function ChartToolBoxSelectDataset(
         history.push(`/chart/${page}/preview-data`);
       });
     };
+
   return (
     <div
       css={`
