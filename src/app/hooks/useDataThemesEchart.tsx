@@ -52,6 +52,9 @@ export function useDataThemesEchart() {
       marginRight,
       marginBottom,
       marginLeft,
+      barWidth,
+      stack,
+      label,
       // chart options
       // orientation,
       // Tooltip
@@ -111,9 +114,14 @@ export function useDataThemesEchart() {
       series: [
         {
           name: "",
-          // height,
+          stack: stack ? "" : undefined,
           type: "bar",
           data: sizes,
+          label: {
+            show: label,
+            position: "inside",
+          },
+          barWidth,
           realtimeSort: realTimeSort ?? true,
           itemStyle: {
             color: color,
@@ -140,17 +148,18 @@ export function useDataThemesEchart() {
 
   function echartsGeomap(data: any, visualOptions: any) {
     const {
-      // artboard
       height,
+      width,
       background,
       // margins
       marginTop,
       marginRight,
       marginBottom,
       marginLeft,
-      // Tooltip
       palette,
-
+      scaleLimitMin,
+      scaleLimitMax,
+      roam,
       showTooltip,
       isMonetaryValue,
     } = visualOptions;
@@ -161,8 +170,7 @@ export function useDataThemesEchart() {
 
     const option = {
       tooltip: {
-        trigger: showTooltip ? "item" : "none",
-        showDelay: 0,
+        show: showTooltip,
         transitionDuration: 0.2,
         confine: true,
         formatter: (params: any) => {
@@ -172,9 +180,12 @@ export function useDataThemesEchart() {
                 ? formatFinancialValue(params.value, true)
                 : params.value
             }`;
+          } else {
+            return `${params.name}: No data`;
           }
         },
       },
+      backgroundColor: background,
       visualMap: {
         left: "right",
         min: Math.min(...sizes),
@@ -189,13 +200,18 @@ export function useDataThemesEchart() {
         {
           type: "map",
           height,
-          roam: false,
+          width,
+          roam,
           map: "World",
           data: data.results,
           top: marginTop,
           left: marginLeft,
           right: marginRight,
           bottom: marginBottom,
+          scaleLimit: {
+            min: scaleLimitMin,
+            max: scaleLimitMax,
+          },
           emphasis: {
             label: {
               show: false,
@@ -224,6 +240,10 @@ export function useDataThemesEchart() {
       showLegend,
       showTooltip,
       isMonetaryValue,
+      lineType,
+      lineWidth,
+      legendHoverLink,
+      label,
     } = visualOptions;
 
     return {
@@ -264,6 +284,15 @@ export function useDataThemesEchart() {
           stack: stack ? "Total" : undefined,
           z: -1,
           zlevel: -1,
+          lineStyle: {
+            type: lineType,
+            width: lineWidth,
+          },
+          legendHoverLink,
+          label: {
+            show: label,
+            position: "insideTop",
+          },
         })
       ),
       tooltip: {
