@@ -173,6 +173,7 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
           bottom: 0px;
           display: flex;
           position: absolute;
+          display: ${viewOnlyMode ? "none" : "block"};
         `}
       >
         <div
@@ -566,9 +567,7 @@ const Box = (props: {
   };
 
   const onResize = () => {
-    if (!isResizing) {
-      setIsResizing(true);
-    }
+    setIsResizing(true);
   };
 
   const textResizableRef = React.useRef<HTMLDivElement>(null);
@@ -613,7 +612,7 @@ const Box = (props: {
 
             &:focus-within,
             &:hover {
-              border: 1px solid #262c34;
+              border: ${viewOnlyMode ? "none" : "1px solid #262c34"};
             }
 
             .public-DraftEditorPlaceholder-inner {

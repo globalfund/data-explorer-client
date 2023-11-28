@@ -35,6 +35,7 @@ import { ReactComponent as ActiveElementsIcon } from "app/modules/report-module/
 import { ReactComponent as ActiveMediaIcon } from "app/modules/report-module/asset/active-media-icon.svg";
 import { ReactComponent as FilterIcon } from "app/modules/report-module/asset/filter-icon.svg";
 import { ReactComponent as RowframeIcon } from "app/modules/report-module/asset/rowframe-icon.svg";
+import { Tooltip } from "@material-ui/core";
 
 const Button = withStyles(() => ({
   root: {
@@ -155,6 +156,7 @@ export function ReportRightPanelCreateView(props: Props) {
       previewImg: RowFramePreviewImg,
       name: "Add row frame",
       description: "Start adding placeholders to fit with your content",
+      openTooltip: false,
     },
     {
       elementType: ReportElementsType.FILTER,
@@ -162,6 +164,7 @@ export function ReportRightPanelCreateView(props: Props) {
       previewImg: TextPreviewImg,
       name: "Add filtering",
       description: "Add general filters to your report",
+      openTooltip: false,
     },
     {
       elementType: ReportElementsType.DIVIDER,
@@ -169,10 +172,11 @@ export function ReportRightPanelCreateView(props: Props) {
       previewImg: DividerPreviewImg,
       name: "Add divider",
       description: "Use dividers to separate sections ",
+      openTooltip: false,
     },
   ];
 
-  const mediaItemDetails = [
+  const [mediaItemDetails, setMediaItemDetails] = React.useState([
     {
       elementType: ReportElementsType.TEXT,
       leftIcon: (
@@ -186,6 +190,7 @@ export function ReportRightPanelCreateView(props: Props) {
       previewImg: RowFramePreviewImg,
       name: "Add text box",
       description: "Include written content to enrich your reports",
+      openTooltip: false,
     },
     {
       elementType: ReportElementsType.IMAGE,
@@ -200,9 +205,9 @@ export function ReportRightPanelCreateView(props: Props) {
       previewImg: TextPreviewImg,
       name: "Add image",
       description: "Include imagery content to enrich your reports",
+      openTooltip: false,
     },
-  ];
-
+  ]);
   React.useEffect(() => {
     if (!props.headerDetails.showHeader && currentView === "editHeader") {
       setCurrentView("elements");
@@ -501,15 +506,15 @@ export function ReportRightPanelCreateView(props: Props) {
                 }
               `}
             >
-              {mediaItemDetails.map((item) => (
+              {mediaItemDetails.map((item, index) => (
                 <ElementItem
                   key={item.elementType}
                   {...item}
-                  disabled={
-                    item.elementType === ReportElementsType.HEADER
-                      ? !props.showHeaderItem
-                      : false
-                  }
+                  disabled={item.elementType === ReportElementsType.IMAGE}
+                  openTooltip={item.openTooltip}
+                  ItemDetails={mediaItemDetails}
+                  setIemDetails={setMediaItemDetails}
+                  index={index}
                 />
               ))}
             </div>
@@ -749,6 +754,11 @@ function ElementItem(props: {
   name: string;
   description: string;
   disabled?: boolean;
+  openTooltip?: boolean;
+  setOpenTooltip?: React.Dispatch<React.SetStateAction<boolean>>;
+  ItemDetails?: any[];
+  setIemDetails?: React.Dispatch<React.SetStateAction<any[]>>;
+  index?: number;
 }) {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: props.elementType,
@@ -760,6 +770,7 @@ function ElementItem(props: {
       isDragging: !!monitor.isDragging(),
     }),
   }));
+  const nullRef = React.useRef(null);
 
   const [isItemDragging, setIsItemDragging] = useRecoilState(
     isDividerOrRowFrameDraggingAtom
@@ -775,17 +786,49 @@ function ElementItem(props: {
     }
   }, [isDragging]);
 
+  const isImageElement = props.elementType === ReportElementsType.IMAGE;
+
   return (
-    <div
-      ref={drag}
-      style={props.disabled ? { opacity: 0.5, pointerEvents: "none" } : {}}
+    <Tooltip
+      title={"To be implemented"}
+      placement="bottom-end"
+      open={props.openTooltip}
+      onClose={() => {
+        if (props.ItemDetails && props.index) {
+          props.setIemDetails?.((prev) => {
+            const tempPrev = prev.map((item) => ({ ...item }));
+            tempPrev[props.index as number].openTooltip = false;
+            return [...tempPrev];
+          });
+        }
+      }}
+      onOpen={() => {
+        if (props.disabled) {
+          if (props.ItemDetails && props.index) {
+            props.setIemDetails?.((prev) => {
+              const tempPrev = prev.map((item) => ({ ...item }));
+              tempPrev[props.index as number].openTooltip = true;
+              return [...tempPrev];
+            });
+          }
+        }
+      }}
     >
-      {props.leftIcon}
-      <div>
-        <b>{props.name}</b>
-        <p>{props.description}</p>
+      <div
+        ref={isImageElement ? nullRef : drag}
+        style={
+          props.disabled
+            ? { opacity: 0.5, cursor: isImageElement ? "not-allowed" : "grab" }
+            : { cursor: isDragging ? "grabbing" : "grab" }
+        }
+      >
+        {props.leftIcon}
+        <div>
+          <b>{props.name}</b>
+          <p>{props.description}</p>
+        </div>
       </div>
-    </div>
+    </Tooltip>
   );
 }
 
@@ -852,6 +895,7 @@ function ChartItem(props: {
         font-size: 12px;
         user-select: none;
         cursor: ${added ? "auto" : "grab"};
+        ${isDragging && "cursor: grabbing;"}
         transform: translate(0, 0);
 
         ${!added &&
