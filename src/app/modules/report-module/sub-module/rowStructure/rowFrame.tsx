@@ -936,8 +936,8 @@ export function Divider(props: {
       <hr
         css={`
           width: 100%;
-          margin: 0 0 50px 0;
-          border: 2px solid #cfd4da;
+          margin: 0px;
+          border: 1px solid #cfd4da;
         `}
       />
     </div>

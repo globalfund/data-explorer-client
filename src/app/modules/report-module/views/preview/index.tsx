@@ -129,8 +129,8 @@ export function ReportPreviewView(props: {
               <hr
                 key={`${"hr" + index}`}
                 css={`
-                  margin: 0 0 50px 0;
-                  border: 2px solid #cfd4da;
+                  margin: 0 0 0px 0;
+                  border: 1px solid #cfd4da;
                 `}
               />
             );
