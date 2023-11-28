@@ -139,14 +139,12 @@ export function ReportPreviewView(props: {
             <RowFrame
               key={"rowframe" + `${index}`}
               rowId={""}
-              rowIndex={index}
               forceSelectedType={rowFrame.structure ?? undefined}
-              previewItems={rowFrame.items.map((item, index) => {
-                return contentTypes[index] === "text"
+              previewItems={rowFrame.items.map((item, itemIndex) => {
+                return contentTypes[itemIndex] === "text"
                   ? EditorState.createWithContent(convertFromRaw(item as any))
                   : item;
               })}
-              handlePersistReportState={() => {}}
               handleRowFrameItemResize={() => {}}
               type="rowFrame"
               setFramesArray={() => {}}

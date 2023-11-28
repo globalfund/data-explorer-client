@@ -302,8 +302,8 @@ export default function ReportModule() {
                 rowFrame.content.length === 1 &&
                 rowFrame.content[0] === ReportElementsType.DIVIDER;
 
-              const content = rowFrame.items.map((item, index) => {
-                return rowFrame.contentTypes[index] === "text"
+              const content = rowFrame.items.map((item, itemIndex) => {
+                return rowFrame.contentTypes[itemIndex] === "text"
                   ? EditorState.createWithContent(convertFromRaw(item as any))
                   : item;
               });
@@ -356,7 +356,6 @@ export default function ReportModule() {
   };
 
   const resetReport = () => {
-    const id = v4();
     setFramesArray([]);
     setPickedCharts([]);
     setHeaderDetails({

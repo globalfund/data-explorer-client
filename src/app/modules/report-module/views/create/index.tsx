@@ -160,7 +160,7 @@ export const PlaceHolder = (props: PlaceholderProps) => {
     }),
     drop: (item: any) => {
       props.setFramesArray((prev) => {
-        const tempPrev = prev.map((item) => ({ ...item }));
+        const tempPrev = prev.map((prevItem) => ({ ...prevItem }));
         const tempIndex = tempPrev.findIndex(
           (frame) => frame.id === props.index
         );

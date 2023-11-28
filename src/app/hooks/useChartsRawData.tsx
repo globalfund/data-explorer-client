@@ -7,7 +7,6 @@ import { useMount, useUpdateEffect } from "react-use";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
-import { ChartRenderedItem } from "app/modules/chart-module/data";
 
 function checkIfIsEditMode(view?: string): boolean {
   if (view) return true;
@@ -151,10 +150,9 @@ export function useChartsRawData(props: {
     chartId?: string
   ) {
     const body = {
-      previewAppliedFilters: customAppliedFilters
-        ? customAppliedFilters
-        : appliedFilters,
+      previewAppliedFilters: customAppliedFilters ?? appliedFilters,
     };
+
     setLoading(true);
     axios
       .post(

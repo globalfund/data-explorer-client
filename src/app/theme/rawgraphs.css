@@ -3644,7 +3644,6 @@ fieldset:disabled .btn {
 .dropend .dropdown-toggle::after {
   display: inline-block;
   margin-left: 0.255em;
-  /* vertical-align: 0.255em; */
   vertical-align: 0;
 
   content: "";

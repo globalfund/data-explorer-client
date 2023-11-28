@@ -1,7 +1,6 @@
 /* third-party */
 import React from "react";
 import useTitle from "react-use/lib/useTitle";
-import { useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
 import { styles as commonStyles } from "app/modules/chart-module/routes/common/styles";

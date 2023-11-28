@@ -84,19 +84,11 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
 
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
   const [isPublicTheme, setIsPublicTheme] = React.useState(false);
-  const [isSavedEnabled] = React.useState(false);
-  const [isPreviewEnabled] = React.useState(false);
+  const [isSavedEnabled, setIsSavedEnabled] = React.useState(false);
+  const [isPreviewEnabled, setIsPreviewEnabled] = React.useState(false);
   const [showSnackbar, setShowSnackbar] = React.useState<string | null>(null);
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
-  );
-
-  const loadReports = useStoreActions(
-    (actions) => actions.reports.ReportGetList.fetch
-  );
-
-  const loadCharts = useStoreActions(
-    (actions) => actions.charts.ChartGetList.fetch
   );
 
   const createOrEditChartLoading = useStoreState(

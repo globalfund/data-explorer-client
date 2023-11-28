@@ -1,6 +1,5 @@
 import { EditorState } from "draft-js";
 import { IFramesArray } from "app/modules/report-module/views/create/data";
-import { ReportContentWidthsType } from "app/state/recoil/atoms";
 
 export interface ReportEditViewProps {
   open: boolean;

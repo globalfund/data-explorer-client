@@ -1,6 +1,5 @@
 import React from "react";
 import { v4 } from "uuid";
-import get from "lodash/get";
 import Box from "@material-ui/core/Box";
 import { useRecoilState } from "recoil";
 import { useUpdateEffect } from "react-use";
@@ -16,9 +15,7 @@ import HeaderBlock from "app/modules/report-module/sub-module/components/headerB
 import { ReportOrderContainer } from "app/modules/report-module/components/order-container";
 import { ReportElementsType } from "app/modules/report-module/components/right-panel-create-view";
 import AddRowFrameButton from "app/modules/report-module/sub-module/rowStructure/addRowFrameButton";
-import RowFrame, {
-  Divider,
-} from "app/modules/report-module/sub-module/rowStructure/rowFrame";
+import RowFrame from "app/modules/report-module/sub-module/rowStructure/rowFrame";
 import {
   IRowFrameStructure,
   persistedReportStateAtom,
@@ -103,8 +100,8 @@ export function ReportEditView(props: ReportEditViewProps) {
             }
             return typeof item === "object" ? "text" : "chart";
           });
-          const content = rowFrame.items.map((item, index) => {
-            return contentTypes[index] === "text"
+          const content = rowFrame.items.map((item, itemIndex) => {
+            return contentTypes[itemIndex] === "text"
               ? EditorState.createWithContent(convertFromRaw(item as any))
               : item;
           });

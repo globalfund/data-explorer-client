@@ -7,7 +7,6 @@ import TableCell from "@material-ui/core/TableCell";
 import IconButton from "@material-ui/core/IconButton";
 import TableContainer from "@material-ui/core/TableContainer";
 import { previewTablecss } from "app/components/Table/Preview-table/style";
-import StatisticDisplay from "app/components/Table/Preview-table/statisticDisplay";
 import StatisticalTableToolBox, {
   ColumnDetailsProps,
 } from "app/components/Table/Preview-table/StatisticalTableToolBox";

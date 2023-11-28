@@ -1,5 +1,5 @@
 import React from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { useUpdateEffect } from "react-use";
 import IconButton from "@material-ui/core/IconButton";
 import { itemSpacing, containerGap } from "app/modules/report-module/data";
@@ -138,7 +138,6 @@ const _rowStructureDetailItems = [
 ];
 
 export interface RowFrameProps {
-  rowIndex: number;
   rowId: string;
   forceSelectedType?: string;
   handleRowFrameItemResize: (
@@ -148,7 +147,6 @@ export interface RowFrameProps {
     height: number
   ) => void;
   previewItems?: (string | object)[];
-  handlePersistReportState: () => void;
   setFramesArray: (value: React.SetStateAction<IFramesArray[]>) => void;
   framesArray: IFramesArray[];
   rowContentHeights: number[];
@@ -158,7 +156,6 @@ export interface RowFrameProps {
 }
 
 export interface IRowStructureType {
-  selectedType: string;
   setSelectedType: React.Dispatch<React.SetStateAction<string>>;
   isHoldingChartValue: {
     state: boolean;
@@ -172,7 +169,7 @@ export interface IRowStructureType {
   }) => void;
 }
 
-export default function RowFrame(props: RowFrameProps) {
+export default function RowFrame(props: Readonly<RowFrameProps>) {
   const [selectedType, setSelectedType] = React.useState<string>(
     props.forceSelectedType || ""
   );
@@ -357,16 +354,13 @@ export default function RowFrame(props: RowFrameProps) {
         gap={containerGap}
         height={316}
         rowId={props.rowId}
-        rowIndex={props.rowIndex}
         selectedType={selectedType}
         deleteFrame={deleteFrame}
-        setSelectedType={setSelectedType}
         selectedTypeHistory={selectedTypeHistory}
         setSelectedTypeHistory={setSelectedTypeHistory}
         rowStructureDetailItems={rowStructureDetailItems[0]}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
-        handlePersistReportState={props.handlePersistReportState}
         rowContentHeights={props.rowContentHeights}
         rowContentWidths={props.rowContentWidths}
         setFramesArray={props.setFramesArray}
@@ -377,17 +371,14 @@ export default function RowFrame(props: RowFrameProps) {
       <RowstructureDisplay
         gap={containerGap}
         height={316}
-        rowIndex={props.rowIndex}
         rowId={props.rowId}
         selectedType={selectedType}
         deleteFrame={deleteFrame}
-        setSelectedType={setSelectedType}
         selectedTypeHistory={selectedTypeHistory}
         setSelectedTypeHistory={setSelectedTypeHistory}
         rowStructureDetailItems={rowStructureDetailItems[1]}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
-        handlePersistReportState={props.handlePersistReportState}
         rowContentHeights={props.rowContentHeights}
         rowContentWidths={props.rowContentWidths}
         setFramesArray={props.setFramesArray}
@@ -399,16 +390,13 @@ export default function RowFrame(props: RowFrameProps) {
         gap={containerGap}
         height={316}
         rowId={props.rowId}
-        rowIndex={props.rowIndex}
         selectedType={selectedType}
         deleteFrame={deleteFrame}
-        setSelectedType={setSelectedType}
         selectedTypeHistory={selectedTypeHistory}
         setSelectedTypeHistory={setSelectedTypeHistory}
         rowStructureDetailItems={rowStructureDetailItems[2]}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
-        handlePersistReportState={props.handlePersistReportState}
         rowContentHeights={props.rowContentHeights}
         rowContentWidths={props.rowContentWidths}
         setFramesArray={props.setFramesArray}
@@ -420,16 +408,13 @@ export default function RowFrame(props: RowFrameProps) {
         gap={containerGap}
         height={316}
         rowId={props.rowId}
-        rowIndex={props.rowIndex}
         selectedType={selectedType}
         deleteFrame={deleteFrame}
-        setSelectedType={setSelectedType}
         selectedTypeHistory={selectedTypeHistory}
         setSelectedTypeHistory={setSelectedTypeHistory}
         rowStructureDetailItems={rowStructureDetailItems[3]}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
-        handlePersistReportState={props.handlePersistReportState}
         rowContentHeights={props.rowContentHeights}
         rowContentWidths={props.rowContentWidths}
         setFramesArray={props.setFramesArray}
@@ -442,16 +427,13 @@ export default function RowFrame(props: RowFrameProps) {
         gap={containerGap}
         height={316}
         rowId={props.rowId}
-        rowIndex={props.rowIndex}
         selectedType={selectedType}
         deleteFrame={deleteFrame}
-        setSelectedType={setSelectedType}
         selectedTypeHistory={selectedTypeHistory}
         setSelectedTypeHistory={setSelectedTypeHistory}
         rowStructureDetailItems={rowStructureDetailItems[4]}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
-        handlePersistReportState={props.handlePersistReportState}
         rowContentHeights={props.rowContentHeights}
         rowContentWidths={props.rowContentWidths}
         setFramesArray={props.setFramesArray}
@@ -462,17 +444,14 @@ export default function RowFrame(props: RowFrameProps) {
       <RowstructureDisplay
         gap={containerGap}
         height={316}
-        rowIndex={props.rowIndex}
         rowId={props.rowId}
         selectedType={selectedType}
         deleteFrame={deleteFrame}
-        setSelectedType={setSelectedType}
         selectedTypeHistory={selectedTypeHistory}
         setSelectedTypeHistory={setSelectedTypeHistory}
         rowStructureDetailItems={rowStructureDetailItems[5]}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
-        handlePersistReportState={props.handlePersistReportState}
         rowContentHeights={props.rowContentHeights}
         rowContentWidths={props.rowContentWidths}
         setFramesArray={props.setFramesArray}
@@ -483,17 +462,14 @@ export default function RowFrame(props: RowFrameProps) {
       <RowstructureDisplay
         gap={containerGap}
         height={316}
-        rowIndex={props.rowIndex}
         rowId={props.rowId}
         selectedType={selectedType}
         deleteFrame={deleteFrame}
-        setSelectedType={setSelectedType}
         selectedTypeHistory={selectedTypeHistory}
         setSelectedTypeHistory={setSelectedTypeHistory}
         rowStructureDetailItems={rowStructureDetailItems[6]}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
-        handlePersistReportState={props.handlePersistReportState}
         rowContentWidths={props.rowContentWidths}
         setFramesArray={props.setFramesArray}
         rowContentHeights={props.rowContentHeights}
@@ -504,17 +480,14 @@ export default function RowFrame(props: RowFrameProps) {
       <RowstructureDisplay
         gap={containerGap}
         height={316}
-        rowIndex={props.rowIndex}
         rowId={props.rowId}
         selectedType={selectedType}
         deleteFrame={deleteFrame}
-        setSelectedType={setSelectedType}
         selectedTypeHistory={selectedTypeHistory}
         setSelectedTypeHistory={setSelectedTypeHistory}
         rowStructureDetailItems={rowStructureDetailItems[7]}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
-        handlePersistReportState={props.handlePersistReportState}
         rowContentHeights={props.rowContentHeights}
         rowContentWidths={props.rowContentWidths}
         setFramesArray={props.setFramesArray}
@@ -557,50 +530,42 @@ export default function RowFrame(props: RowFrameProps) {
                 `}
               >
                 <OneByOne
-                  selectedType={selectedType}
                   setSelectedType={setSelectedType}
                   isHoldingChartValue={isHoldingChartValue}
                   setIsHoldingChartValue={setIsHoldingChartValue}
                 />
                 <OneByTwo
-                  selectedType={selectedType}
                   setSelectedType={setSelectedType}
                   isHoldingChartValue={isHoldingChartValue}
                   setIsHoldingChartValue={setIsHoldingChartValue}
                 />
                 <OneByThree
-                  selectedType={selectedType}
                   setSelectedType={setSelectedType}
                   isHoldingChartValue={isHoldingChartValue}
                   setIsHoldingChartValue={setIsHoldingChartValue}
                 />
                 <OneByFour
-                  selectedType={selectedType}
                   setSelectedType={setSelectedType}
                   isHoldingChartValue={isHoldingChartValue}
                   setIsHoldingChartValue={setIsHoldingChartValue}
                 />
 
                 <OneToFour
-                  selectedType={selectedType}
                   setSelectedType={setSelectedType}
                   isHoldingChartValue={isHoldingChartValue}
                   setIsHoldingChartValue={setIsHoldingChartValue}
                 />
                 <FourToOne
-                  selectedType={selectedType}
                   setSelectedType={setSelectedType}
                   isHoldingChartValue={isHoldingChartValue}
                   setIsHoldingChartValue={setIsHoldingChartValue}
                 />
                 <TwoToThree
-                  selectedType={selectedType}
                   setSelectedType={setSelectedType}
                   isHoldingChartValue={isHoldingChartValue}
                   setIsHoldingChartValue={setIsHoldingChartValue}
                 />
                 <ThreeToTwo
-                  selectedType={selectedType}
                   setSelectedType={setSelectedType}
                   isHoldingChartValue={isHoldingChartValue}
                   setIsHoldingChartValue={setIsHoldingChartValue}

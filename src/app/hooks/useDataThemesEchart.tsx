@@ -168,7 +168,7 @@ export function useDataThemesEchart() {
 
     const sizes = data.results.map((d: any) => d.value);
 
-    const option = {
+    return {
       tooltip: {
         show: showTooltip,
         transitionDuration: 0.2,
@@ -226,8 +226,6 @@ export function useDataThemesEchart() {
         },
       ],
     };
-
-    return option;
   }
 
   function echartsLinechart(data: any, visualOptions: any) {

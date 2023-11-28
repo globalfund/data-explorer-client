@@ -51,9 +51,7 @@ export default function ToolboxNav(props: {
   React.useEffect(() => {
     //on first render, set activestep based on url
     if (page !== "new") {
-      const step = stepPaths.find(
-        (step) => step.path === location.pathname
-      )?.name;
+      const step = stepPaths.find((s) => s.path === location.pathname)?.name;
       props.setActiveStep(step as ToolboxNavType);
     }
   }, []);

@@ -9,7 +9,6 @@ import { useStoreState, useStoreActions } from "app/state/store/hooks";
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 
 import ToolboxSubHeader from "app/modules/chart-module/components/toolbox/views/steps/sub-header";
-import { DatasetListItemAPIModel } from "app/modules/datasets-module/data";
 
 export const DEFAULT_DATASETS = [
   {

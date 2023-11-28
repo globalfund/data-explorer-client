@@ -1,5 +1,4 @@
 import { EditorState } from "draft-js";
-import { ReportContentWidthsType } from "app/state/recoil/atoms";
 
 export interface IRowFrame {
   rowIndex: number;

@@ -51,7 +51,7 @@ export function ChartToolBoxMapping(props: ChartToolBoxMappingProps) {
   const mapping = useStoreState((state) => state.charts.mapping.value);
   const handleButtonToggle = (id: string) => {
     setNonStaticDimensions((prev) => {
-      const tempPrev = prev.map((data) => {
+      return prev.map((data) => {
         if (data.id === id) {
           return {
             ...data,
@@ -60,22 +60,8 @@ export function ChartToolBoxMapping(props: ChartToolBoxMappingProps) {
         }
         return data;
       });
-      return tempPrev;
     });
   };
-
-  // React.useEffect(() => {
-  //   console.log("dimensions");
-  //   setNonStaticDimensions(
-  //     filter(props.dimensions, (d: any) => !d.static).map((d: any) => {
-  //       return {
-  //         ...d,
-  //         mappedValue: null,
-  //         mapValuesDisplayed: true,
-  //       };
-  //     })
-  //   );
-  // }, [props.dimensions]);
 
   React.useEffect(() => {
     const updatedNonStaticDimensions = [...nonStaticDimensions];
@@ -360,7 +346,7 @@ export function ChartToolBoxMappingItem(props: ChartToolBoxMappingItemProps) {
       dimension.validTypes?.includes(columnDataType);
     if (isValid) {
       props.setNonStaticDimensions((prev) => {
-        const tempPrev = prev.map((data) => {
+        return prev.map((data) => {
           if (data.id === props.nonStaticDimensionsId) {
             return {
               ...data,
@@ -370,7 +356,6 @@ export function ChartToolBoxMappingItem(props: ChartToolBoxMappingItemProps) {
           }
           return data;
         });
-        return tempPrev;
       });
 
       const mappingFromStorage = get(

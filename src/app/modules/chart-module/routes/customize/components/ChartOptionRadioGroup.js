@@ -25,7 +25,6 @@ const ChartOptionCheckboxes = ({
   }, [radioValue]);
 
   return (
-    <>
      <RadioGroup aria-label="palette" name="palette" value={radioValue} onChange={handleChange}>
       {checkLists.map((item) => (
         <div
@@ -85,7 +84,7 @@ const ChartOptionCheckboxes = ({
         </div>
       ))}
       </RadioGroup>
-    </>
+   
   );
 };
 

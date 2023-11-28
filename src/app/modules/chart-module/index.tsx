@@ -5,7 +5,7 @@ import { DndProvider } from "react-dnd";
 import { useSessionStorage } from "react-use";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { Switch, Route, useParams, useHistory } from "react-router-dom";
+import { Switch, Route, useParams } from "react-router-dom";
 import {
   getOptionsConfig,
   getDefaultOptionsValues,

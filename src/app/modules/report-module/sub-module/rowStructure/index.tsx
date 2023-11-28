@@ -30,12 +30,10 @@ import { IFramesArray } from "../../views/create/data";
 interface RowStructureDisplayProps {
   gap: string;
   height: number;
-  rowIndex: number;
   rowId: string;
   selectedType: string;
   deleteFrame: (id: string) => void;
   selectedTypeHistory: string[];
-  setSelectedType: React.Dispatch<React.SetStateAction<string>>;
   setSelectedTypeHistory: React.Dispatch<React.SetStateAction<string[]>>;
   rowStructureDetailItems: {
     rowId: string;
@@ -44,7 +42,6 @@ interface RowStructureDisplayProps {
     rowType: string;
   }[];
   previewItems?: (string | object)[];
-  handlePersistReportState: () => void;
   onRowBoxItemResize: (
     rowId: string,
     itemIndex: number,
@@ -57,7 +54,9 @@ interface RowStructureDisplayProps {
   framesArray: IFramesArray[];
 }
 
-export default function RowstructureDisplay(props: RowStructureDisplayProps) {
+export default function RowstructureDisplay(
+  props: Readonly<RowStructureDisplayProps>
+) {
   const location = useLocation();
   const { page } = useParams<{ page: string }>();
   const [modalDisplay, setModalDisplay] = React.useState(false);
@@ -74,14 +73,12 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
     if (modalType === "delete-row") {
       setModalTitle("Delete row frame");
       setModalSubtitle(
-        <>
-          <p>
-            <b>
-              Proceed with caution!
-              <br /> No turning back after this action
-            </b>
-          </p>
-        </>
+        <p>
+          <b>
+            Proceed with caution!
+            <br /> No turning back after this action
+          </b>
+        </p>
       );
       setModalDescription(
         "Are you going to delete your row frame? You will permanently delete all the content placed."
@@ -90,14 +87,12 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
     } else if (modalType === "edit-row") {
       setModalTitle("Edit row frame?");
       setModalSubtitle(
-        <>
-          <p>
-            <b>
-              Proceed with caution!
-              <br /> You might lose content in placeholders
-            </b>
-          </p>
-        </>
+        <p>
+          <b>
+            Proceed with caution!
+            <br /> You might lose content in placeholders
+          </b>
+        </p>
       );
       setModalDescription(
         "TGF Data Explorer platform will try to fit your current content in your new placeholder row estructure. Please save your changes before proceeding."
@@ -290,8 +285,6 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
             onRowBoxItemResize={props.onRowBoxItemResize}
             setFramesArray={props.setFramesArray}
             previewItem={get(props.previewItems, `[${index}]`, undefined)}
-            handlePersistReportState={props.handlePersistReportState}
-            rowItemsCount={props.rowStructureDetailItems.length}
           />
         ))}
       </div>
@@ -314,7 +307,6 @@ const Box = (props: {
   height: number;
   rowId: string;
   itemIndex: number;
-  handlePersistReportState: () => void;
   setFramesArray: (value: React.SetStateAction<IFramesArray[]>) => void;
   rowType: string;
   onRowBoxItemResize: (
@@ -323,7 +315,6 @@ const Box = (props: {
     width: number,
     height: number
   ) => void;
-  rowItemsCount: number;
   previewItem?: string | any;
 }) => {
   const location = useLocation();
@@ -458,7 +449,7 @@ const Box = (props: {
 
   const containerWidth = useRecoilValue(reportContentContainerWidth);
   const [reportPreviewMode] = useRecoilState(unSavedReportPreviewModeAtom);
-  const [isResizing, setIsResizing] = useRecoilState(
+  const [_isResizing, setIsResizing] = useRecoilState(
     reportContentIsResizingAtom
   );
 

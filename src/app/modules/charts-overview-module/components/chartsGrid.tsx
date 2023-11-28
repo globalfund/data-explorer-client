@@ -153,7 +153,7 @@ export default function ChartsGrid(props: Props) {
     <>
       {!props.tableView && (
         <Grid container spacing={2}>
-          {charts.map((chart, index) => (
+          {charts.map((chart, _index) => (
             <Grid
               item
               xs={12}
