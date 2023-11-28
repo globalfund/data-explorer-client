@@ -1,7 +1,7 @@
 import { css } from "styled-components";
 
 export const stepcss = (activeStep: boolean, isClickable: boolean) => css`
-  width: 67px;
+  width: 79px;
   height: 67px;
   display: flex;
   justify-content: center;

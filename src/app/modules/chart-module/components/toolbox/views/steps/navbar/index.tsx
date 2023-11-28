@@ -8,7 +8,6 @@ import { useHistory, useLocation, useParams } from "react-router-dom";
 import CloudDoneIcon from "@material-ui/icons/CloudDone";
 import TableChartIcon from "@material-ui/icons/TableChart";
 import AssessmentIcon from "@material-ui/icons/Assessment";
-import NoEncryptionIcon from "@material-ui/icons/NoEncryption";
 import { stepcss } from "app/modules/chart-module/components/toolbox/views/steps/navbar/style";
 
 export type ToolboxNavType =
@@ -47,7 +46,6 @@ export default function ToolboxNav(props: {
     { name: "mapping", path: `/chart/${page}/mapping` },
     { name: "filters", path: `/chart/${page}/filters` },
     { name: "customize", path: `/chart/${page}/customize` },
-    { name: "lock", path: `/chart/${page}/lock` },
   ];
 
   React.useEffect(() => {
@@ -79,7 +77,6 @@ export default function ToolboxNav(props: {
 
     { name: "filters", icon: <TuneIcon /> },
     { name: "customize", icon: <PaletteIcon /> },
-    { name: "lock", icon: <NoEncryptionIcon /> },
   ];
 
   const activeStepIndex =
