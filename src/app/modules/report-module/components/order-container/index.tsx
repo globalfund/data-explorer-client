@@ -61,24 +61,24 @@ function Handle(props: { top: string; left: string; radius: string }) {
 
 function ItemComponent(props: ItemComponentProps) {
   const { content } = props;
-  const dragRef = React.useRef<HTMLDivElement | null>(null);
-  const dropRef = React.useRef<HTMLDivElement | null>(null);
-
   const nullRef = React.useRef<HTMLDivElement | null>(null);
-
   const [{ handlerId }, drop] = useDrop<
     DragItem,
     void,
     { handlerId: Identifier | null }
   >({
     accept: ItemTypes.CARD,
+    canDrop: () => {
+      return props.isAnyHandleOpen;
+    },
     collect(monitor) {
       return {
         handlerId: monitor.getHandlerId(),
       };
     },
+
     hover(item: DragItem, monitor) {
-      if (!dropRef.current) {
+      if (!nullRef.current) {
         return;
       }
       const dragIndex = item.index;
@@ -90,7 +90,7 @@ function ItemComponent(props: ItemComponentProps) {
       }
 
       // Determine rectangle on screen
-      const hoverBoundingRect = dropRef.current?.getBoundingClientRect();
+      const hoverBoundingRect = nullRef.current?.getBoundingClientRect();
 
       // Get vertical middle
       const hoverMiddleY =
@@ -135,111 +135,45 @@ function ItemComponent(props: ItemComponentProps) {
     collect: (monitor: any) => ({
       isDragging: monitor.isDragging(),
     }),
+    canDrag: props.isHandleOpen,
   });
-  drag(dragRef);
-  drop(dropRef);
 
-  const opacity = isDragging ? 0 : 1;
+  drag(drop(nullRef));
+
+  const opacity = isDragging ? 0.5 : 1;
 
   return (
     <>
-      {props.isHandleOpen ? (
-        <ItemContent
-          opacity={opacity}
-          isHandleOpen={props.isHandleOpen}
-          content={content}
-          handlerId={handlerId}
-          id={props.id}
-          ref={dragRef}
-        />
-      ) : (
-        <ItemContent
-          opacity={opacity}
-          isHandleOpen={props.isHandleOpen}
-          content={content}
-          handlerId={handlerId}
-          id={props.id}
-          ref={dropRef}
-        />
-      )}
-    </>
-  );
-}
-
-const ItemContent = React.forwardRef(
-  (
-    {
-      opacity,
-      id,
-      handlerId,
-      isHandleOpen,
-      content,
-    }: {
-      opacity: number;
-      id: string;
-      handlerId: Identifier | null;
-      isHandleOpen: boolean;
-      content: React.ReactNode;
-    },
-    ref: React.Ref<HTMLDivElement>
-  ) => {
-    return (
       <div
+        ref={nullRef}
         style={{ ...style, opacity }}
         css={`
           height: 100%;
         `}
-        id={`item-${id}`}
+        id={props.id}
         data-handler-id={handlerId}
-        ref={ref}
       >
-        {isHandleOpen ? (
+        {props.isHandleOpen ? (
           <Handle top="0" left="0" radius="20px 0px 0px 20px" />
         ) : null}
 
         {content}
-        {isHandleOpen ? (
+        {props.isHandleOpen ? (
           <Handle top="0" left="99%" radius="0 20px 20px 0" />
         ) : null}
       </div>
-    );
-  }
-);
+    </>
+  );
+}
 
-interface Props {
+interface ReportOrderContainerProps {
   enabled: boolean;
   children: React.ReactNode[];
   childrenData: any[];
   setFramesArray: (value: React.SetStateAction<IFramesArray[]>) => void;
 }
 
-const Items = React.memo(
-  ({
-    items: localItems,
-    moveCard,
-  }: {
-    items: Item[];
-    moveCard: (dragIndex: number, hoverIndex: number) => void;
-  }) => {
-    return (
-      <React.Fragment>
-        {localItems.map((item: Item, index: number) => (
-          <ItemComponent
-            key={item.id}
-            index={index}
-            id={item.id}
-            content={item.content}
-            moveCard={moveCard}
-            isHandleOpen={item.isHandleOpen}
-            isAnyHandleOpen={item.isAnyHandleOpen}
-          />
-        ))}
-      </React.Fragment>
-    );
-  }
-);
-
-export function ReportOrderContainer(props: Props) {
+export function ReportOrderContainer(props: ReportOrderContainerProps) {
   const [items, setItems] = React.useState(
     props.children.map((child: React.ReactNode, index: number) => ({
       content: child,
