@@ -213,16 +213,14 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
           {view !== "initial" && (
             <div css={styles.endContainer}>
               {view === "preview" && props.pageType !== "chart" && (
-                <>
-                  <button
-                    onClick={handleBackToEdit}
-                    css={styles.backToEdit}
-                    type="button"
-                  >
-                    <EditIcon htmlColor="#fff" />
-                    Go back to editing
-                  </button>
-                </>
+                <button
+                  onClick={handleBackToEdit}
+                  css={styles.backToEdit}
+                  type="button"
+                >
+                  <EditIcon htmlColor="#fff" />
+                  Go back to editing
+                </button>
               )}
               <div css={styles.iconbtns}>
                 {(page === "new" || view) && (
@@ -238,6 +236,8 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
                           css={`
                             :disabled {
                               opacity: 0.5;
+                              cursor: not-allowed;
+                              pointer-events: all;
                             }
                           `}
                         >
@@ -246,18 +246,23 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
                       </span>
                     </Tooltip>
                     <Tooltip title="Share">
-                      <span>
+                      <span
+                        css={`
+                          button {
+                            :disabled {
+                              opacity: 0.5;
+                              cursor: not-allowed;
+                              pointer-events: all;
+                            }
+                          }
+                        `}
+                      >
                         <IconButton
                           disabled={
                             props.forceEnablePreviewSave
                               ? !props.forceEnablePreviewSave
                               : !isSavedEnabled
                           }
-                          css={`
-                            :disabled {
-                              opacity: 0.5;
-                            }
-                          `}
                         >
                           <LinkIcon />
                         </IconButton>
@@ -274,6 +279,8 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
                           css={`
                             :disabled {
                               opacity: 0.5;
+                              cursor: not-allowed;
+                              pointer-events: all;
                             }
                           `}
                         >

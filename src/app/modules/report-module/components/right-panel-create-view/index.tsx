@@ -36,6 +36,7 @@ import { ReactComponent as ActiveMediaIcon } from "app/modules/report-module/ass
 import { ReactComponent as FilterIcon } from "app/modules/report-module/asset/filter-icon.svg";
 import { ReactComponent as RowframeIcon } from "app/modules/report-module/asset/rowframe-icon.svg";
 import { Tooltip } from "@material-ui/core";
+import { elementItemcss } from "app/modules/report-module/components/right-panel-create-view/style";
 
 const Button = withStyles(() => ({
   root: {
@@ -144,12 +145,12 @@ interface Props {
   onSave: () => void;
 }
 
-export function ReportRightPanelCreateView(props: Props) {
+export function ReportRightPanelCreateView(props: Readonly<Props>) {
   const [currentView, setCurrentView] = useRecoilState(
     reportRightPanelViewAtom
   );
 
-  const elementItemDetails = [
+  const [elementItemDetails, setElementItemDetails] = React.useState([
     {
       elementType: ReportElementsType.ROWFRAME,
       leftIcon: <RowframeIcon />,
@@ -174,7 +175,7 @@ export function ReportRightPanelCreateView(props: Props) {
       description: "Use dividers to separate sections ",
       openTooltip: false,
     },
-  ];
+  ]);
 
   const [mediaItemDetails, setMediaItemDetails] = React.useState([
     {
@@ -388,65 +389,26 @@ export function ReportRightPanelCreateView(props: Props) {
         />
 
         {currentView === "elements" && (
-          <>
-            <div
-              css={`
-                width: 100%;
-                display: flex;
-                user-select: none;
-                flex-direction: column;
-
-                > div {
-                  width: 90%;
-                  cursor: grab;
-                  height: 64px;
-                  display: flex;
-                  align-items: center;
-                  gap: 16px;
-                  padding: 0 8px 0 16px;
-                  background: #dfe3e5;
-                  border-radius: 8px;
-                  margin: 8px auto;
-                  transform: translate(0, 0);
-                  p {
-                    margin: 0px;
-                    line-height: normal;
-                    font-size: 12px;
-                  }
-                  b {
-                    font-size: 14px;
-                    line-height: normal;
-                    margin: 0;
-                  }
-                  &:hover {
-                    background: #252c34;
-
-                    svg {
-                      path {
-                        fill: #fff;
-                      }
-                    }
-                    b,
-                    p {
-                      color: #fff;
-                    }
-                  }
-                }
-              `}
-            >
-              {elementItemDetails.map((item) => (
-                <ElementItem
-                  key={item.elementType}
-                  {...item}
-                  disabled={
-                    item.elementType === ReportElementsType.HEADER
-                      ? !props.showHeaderItem
-                      : false
-                  }
-                />
-              ))}
-            </div>
-          </>
+          <div
+            css={`
+              width: 100%;
+              display: flex;
+              user-select: none;
+              flex-direction: column;
+            `}
+          >
+            {elementItemDetails.map((item, index) => (
+              <ElementItem
+                key={item.elementType}
+                {...item}
+                disabled={item.elementType === ReportElementsType.FILTER}
+                ItemDetails={elementItemDetails}
+                setIemDetails={setElementItemDetails}
+                index={index}
+                openTooltip={item.openTooltip}
+              />
+            ))}
+          </div>
         )}
         {currentView === "charts" && (
           <ReportRightPanelCreateViewChartList
@@ -459,66 +421,27 @@ export function ReportRightPanelCreateView(props: Props) {
           />
         )}
         {currentView === "media" && (
-          <>
-            <div
-              css={`
-                width: 100%;
-                display: flex;
-                user-select: none;
-                flex-direction: column;
-                background: transparent;
-
-                > div {
-                  width: 90%;
-                  cursor: grab;
-                  height: 64px;
-                  display: flex;
-                  align-items: center;
-                  gap: 16px;
-                  padding: 0 8px 0 16px;
-                  background: #dfe3e5;
-                  border-radius: 8px;
-                  margin: 8px auto;
-                  transform: translate(0, 0);
-
-                  p {
-                    margin: 0px;
-                    line-height: normal;
-                    font-size: 12px;
-                  }
-                  b {
-                    font-size: 14px;
-                    line-height: normal;
-                    margin: 0;
-                  }
-                  &:hover {
-                    svg {
-                      path {
-                        fill: #fff;
-                      }
-                    }
-                    background: #252c34;
-                    b,
-                    p {
-                      color: #fff;
-                    }
-                  }
-                }
-              `}
-            >
-              {mediaItemDetails.map((item, index) => (
-                <ElementItem
-                  key={item.elementType}
-                  {...item}
-                  disabled={item.elementType === ReportElementsType.IMAGE}
-                  openTooltip={item.openTooltip}
-                  ItemDetails={mediaItemDetails}
-                  setIemDetails={setMediaItemDetails}
-                  index={index}
-                />
-              ))}
-            </div>
-          </>
+          <div
+            css={`
+              width: 100%;
+              display: flex;
+              user-select: none;
+              flex-direction: column;
+              background: transparent;
+            `}
+          >
+            {mediaItemDetails.map((item, index) => (
+              <ElementItem
+                key={item.elementType}
+                {...item}
+                disabled={item.elementType === ReportElementsType.IMAGE}
+                openTooltip={item.openTooltip}
+                ItemDetails={mediaItemDetails}
+                setIemDetails={setMediaItemDetails}
+                index={index}
+              />
+            ))}
+          </div>
         )}
 
         {currentView === "editHeader" && <EditHeaderPanelView {...props} />}
@@ -575,14 +498,16 @@ const sortByOptions = [
   { value: "name asc", label: "Name (ASC)" },
 ];
 
-function ReportRightPanelCreateViewChartList(props: {
-  pickedCharts: string[];
-  setPickedCharts: React.Dispatch<React.SetStateAction<any[]>>;
-  headerDetails: IHeaderDetails;
-  appliedHeaderDetails: IHeaderDetails;
-  framesArray: IFramesArray[];
-  reportName: string;
-}) {
+function ReportRightPanelCreateViewChartList(
+  props: Readonly<{
+    pickedCharts: string[];
+    setPickedCharts: React.Dispatch<React.SetStateAction<any[]>>;
+    headerDetails: IHeaderDetails;
+    appliedHeaderDetails: IHeaderDetails;
+    framesArray: IFramesArray[];
+    reportName: string;
+  }>
+) {
   const [search, setSearch] = React.useState("");
   const [sortBy, setSortBy] = React.useState(sortByOptions[0]);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -747,19 +672,21 @@ function ReportRightPanelCreateViewChartList(props: {
   );
 }
 
-function ElementItem(props: {
-  leftIcon: JSX.Element;
-  previewImg: string;
-  elementType: string;
-  name: string;
-  description: string;
-  disabled?: boolean;
-  openTooltip?: boolean;
-  setOpenTooltip?: React.Dispatch<React.SetStateAction<boolean>>;
-  ItemDetails?: any[];
-  setIemDetails?: React.Dispatch<React.SetStateAction<any[]>>;
-  index?: number;
-}) {
+function ElementItem(
+  props: Readonly<{
+    leftIcon: JSX.Element;
+    previewImg: string;
+    elementType: string;
+    name: string;
+    description: string;
+    disabled?: boolean;
+    openTooltip?: boolean;
+    setOpenTooltip?: React.Dispatch<React.SetStateAction<boolean>>;
+    ItemDetails?: any[];
+    setIemDetails?: React.Dispatch<React.SetStateAction<any[]>>;
+    index?: number;
+  }>
+) {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: props.elementType,
     item: {
@@ -787,6 +714,7 @@ function ElementItem(props: {
   }, [isDragging]);
 
   const isImageElement = props.elementType === ReportElementsType.IMAGE;
+  const isFilterElement = props.elementType === ReportElementsType.FILTER;
 
   return (
     <Tooltip
@@ -815,12 +743,8 @@ function ElementItem(props: {
       }}
     >
       <div
-        ref={isImageElement ? nullRef : drag}
-        style={
-          props.disabled
-            ? { opacity: 0.5, cursor: isImageElement ? "not-allowed" : "grab" }
-            : { cursor: isDragging ? "grabbing" : "grab" }
-        }
+        ref={isImageElement || isFilterElement ? nullRef : drag}
+        css={elementItemcss(props.disabled as boolean, isDragging)}
       >
         {props.leftIcon}
         <div>
@@ -851,19 +775,21 @@ export const getFormattedType = (vizType: string) => {
   }
 };
 
-function ChartItem(props: {
-  id: string;
-  name: string;
-  description: string;
-  dataset: string;
-  vizType: string;
-  datasetId: string;
-  elementType: string;
-  editedDate: string;
-  createdDate: string;
-  pickedCharts: string[];
-  setPickedCharts: React.Dispatch<React.SetStateAction<string[]>>;
-}) {
+function ChartItem(
+  props: Readonly<{
+    id: string;
+    name: string;
+    description: string;
+    dataset: string;
+    vizType: string;
+    datasetId: string;
+    elementType: string;
+    editedDate: string;
+    createdDate: string;
+    pickedCharts: string[];
+    setPickedCharts: React.Dispatch<React.SetStateAction<string[]>>;
+  }>
+) {
   const nullRef = React.useRef(null);
   const [{ isDragging }, drag] = useDrag(() => ({
     type: props.elementType,
@@ -1003,7 +929,7 @@ function ChartItem(props: {
   );
 }
 
-function EditHeaderPanelView(props: Props) {
+function EditHeaderPanelView(props: Readonly<Props>) {
   const [_, setCurrentView] = useRecoilState(reportRightPanelViewAtom);
   return (
     <div

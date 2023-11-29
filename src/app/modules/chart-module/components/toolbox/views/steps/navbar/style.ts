@@ -6,7 +6,9 @@ export const stepcss = (activeStep: boolean, isClickable: boolean) => css`
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: ${isClickable ? "pointer" : "default"};
+  border: none;
+  outline: none;
+  cursor: ${isClickable ? "pointer" : "not-allowed"};
   svg {
     width: ${activeStep ? "32px" : "24px"};
     height: ${activeStep ? "32px" : "24px"};

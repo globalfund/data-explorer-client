@@ -19,11 +19,13 @@ export type ToolboxNavType =
   | "chart"
   | "selectDataset";
 
-export default function ToolboxNav(props: {
-  setActiveStep: ActionCreator<ToolboxNavType>;
-  activeStep: string;
-  mappedData: any;
-}) {
+export default function ToolboxNav(
+  props: Readonly<{
+    setActiveStep: ActionCreator<ToolboxNavType>;
+    activeStep: string;
+    mappedData: any;
+  }>
+) {
   const { page } = useParams<{ page: string }>();
   const history = useHistory();
   const location = useLocation();
@@ -115,7 +117,7 @@ export default function ToolboxNav(props: {
       name === "chart" ||
       name === "mapping"
     ) {
-      if (name === "dataset" && !isEmpty(dataset)) {
+      if (name === "dataset") {
         setIsClickable(true);
       }
       if (name === "chart" && !isEmpty(dataset)) {
@@ -140,7 +142,7 @@ export default function ToolboxNav(props: {
       `}
     >
       {navContent.map((item, index) => (
-        <div
+        <button
           css={`
             ${stepcss(
               item.name === props.activeStep || index === activeStepIndex,
@@ -169,9 +171,18 @@ export default function ToolboxNav(props: {
             console.log("mouse out");
             setIsClickable(false);
           }}
+          //corresponding keyboard events for accessiblity
+          onBlur={() => {
+            console.log("blur");
+            setIsClickable(false);
+          }}
+          onFocus={() => {
+            console.log("focus");
+            setIsClickable(true);
+          }}
         >
           {item.icon}
-        </div>
+        </button>
       ))}
     </div>
   );
