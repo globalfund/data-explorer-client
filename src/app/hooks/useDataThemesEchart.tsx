@@ -64,7 +64,7 @@ export function useDataThemesEchart() {
       barRadius,
       xAxisLineColor,
       xAxisLabelFontSize,
-      focus,
+      // focus,
       xAxisLabelColor,
       xAxisLabelInterval,
       showTooltip,
@@ -73,6 +73,11 @@ export function useDataThemesEchart() {
 
     const bars = data.map((d: any) => d.bars);
     const sizes = data.map((d: any) => d.size);
+
+    const labelObject = {
+      show: label,
+      position: "inside",
+    };
 
     return {
       grid: {
@@ -107,9 +112,6 @@ export function useDataThemesEchart() {
           show: splitLineY ?? true,
         },
       },
-      // xAxis: orientation === "horizontal" ? { type: "value" } : { data: bars },
-      // yAxis: orientation === "vertical" ? { type: "value" } : { data: bars },
-      // backgroundColor: background,
       backgroundColor: "transparent",
       series: [
         {
@@ -117,10 +119,7 @@ export function useDataThemesEchart() {
           stack: stack ? "" : undefined,
           type: "bar",
           data: sizes,
-          label: {
-            show: label,
-            position: "inside",
-          },
+          label: label ? labelObject : undefined,
           barWidth,
           realtimeSort: realTimeSort ?? true,
           itemStyle: {
@@ -128,7 +127,7 @@ export function useDataThemesEchart() {
             borderRadius: barRadius,
           },
           emphasis: {
-            focus,
+            focus: true,
           },
         },
       ],
