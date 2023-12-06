@@ -21,14 +21,6 @@ import { getRandNoBetween0and1 } from "app/utils/getSecureRandomNumbers";
 export function ChartBuilderPreviewThemePage(
   props: ChartBuilderPreviewThemePageProps
 ) {
-  // if (
-  //   page === "new" &&
-  //   activePanels < 3 &&
-  //   (activePanels > 1 ? !props.validMapping : true)
-  // ) {
-  //   return <Redirect to="/chart/new/data" />;
-  // }
-
   if (props.loading) {
     return <PageLoader />;
   }

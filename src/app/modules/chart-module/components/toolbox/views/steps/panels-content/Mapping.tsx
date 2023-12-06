@@ -308,21 +308,16 @@ interface ChartToolBoxMappingItemProps {
   dataTypes: any[];
   marginBottom: string;
   backgroundColor?: string;
-  onDeleteItem?: () => void;
   type: "string" | "number" | "date";
-  relatedAggregation?: any;
-  aggregators?: any;
-  isValid?: boolean;
   nonStaticDimensionsId: number;
   nonStaticDimensionsIndex: number;
   setNonStaticDimensions: React.Dispatch<React.SetStateAction<any[]>>;
   nonStaticDimensions: any[];
-  onChangeAggregation?: (index: number, value: any) => void;
-  onChangeDimension?: (index: number, item: any) => void;
-  onMove?: (dragIndex: number, hoverIndex: number) => void;
 }
 
-export function ChartToolBoxMappingItem(props: ChartToolBoxMappingItemProps) {
+export function ChartToolBoxMappingItem(
+  props: Readonly<ChartToolBoxMappingItemProps>
+) {
   const { index, dimension, dataTypes } = props;
 
   const setMapping = useStoreActions(

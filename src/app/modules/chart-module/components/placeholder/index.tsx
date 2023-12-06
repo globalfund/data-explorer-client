@@ -181,6 +181,7 @@ export default function ChartPlaceholder(props: {
             </div>
           </>
         );
+
       case "chart":
         return (
           <>

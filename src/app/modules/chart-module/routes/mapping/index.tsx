@@ -13,7 +13,7 @@ import { ChartBuilderMappingProps } from "app/modules/chart-module/routes/mappin
 import ChartPlaceholder from "../../components/placeholder";
 import { isEmpty } from "lodash";
 
-export function ChartBuilderMapping(props: ChartBuilderMappingProps) {
+export function ChartBuilderMapping(props: Readonly<ChartBuilderMappingProps>) {
   useTitle("DX DataXplorer - Mapping");
 
   const history = useHistory();
