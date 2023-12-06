@@ -74,11 +74,6 @@ export function useDataThemesEchart() {
     const bars = data.map((d: any) => d.bars);
     const sizes = data.map((d: any) => d.size);
 
-    const labelObject = {
-      show: label,
-      position: "inside",
-    };
-
     return {
       grid: {
         top: marginTop,
@@ -119,7 +114,10 @@ export function useDataThemesEchart() {
           stack: stack ? "" : undefined,
           type: "bar",
           data: sizes,
-          label: label ? labelObject : undefined,
+          label: {
+            show: label,
+            position: "inside",
+          },
           barWidth,
           realtimeSort: realTimeSort ?? true,
           itemStyle: {
@@ -128,6 +126,10 @@ export function useDataThemesEchart() {
           },
           emphasis: {
             focus: true,
+            label: {
+              show: label,
+              position: "inside",
+            },
           },
         },
       ],
