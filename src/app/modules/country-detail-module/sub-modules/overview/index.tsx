@@ -51,10 +51,10 @@ export function LocationDetailOverviewModule(props: Props) {
     })
   );
   const countrySummaryCMSData = useStoreState((state) =>
-    get(state.cms.countrySummary, "data.entries[0].summary", null)
+    get(state.cms.countrySummary, "data.summary", null)
   );
-  const notesDisclaimersCMSData = useStoreState((state) =>
-    get(state.cms.notesAndDisclaimers, "data.entries[0].content", null)
+  const notesDisclaimersCMSData = useStoreState((state) => 
+    get(state.cms.notesAndDisclaimers, "data.content", null)
   );
 
   let investmentLgValue: GridSize = 12;

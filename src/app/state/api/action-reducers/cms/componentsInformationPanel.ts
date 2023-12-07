@@ -3,7 +3,7 @@ import { CMSApiCallModel } from "app/state/api/interfaces";
 
 const componentsInformationPanel: CMSApiCallModel = {
   ...APIModel(
-    `${process.env.REACT_APP_CMS_API}/singletons/get/componentsInformationPanel?token=${process.env.REACT_APP_CMS_TOKEN}`
+    `${process.env.REACT_APP_CMS_API}/content/item/componentsInformationPanel`
   ),
 };
 
