@@ -8,9 +8,6 @@ import createInlineToolbarPlugin, {
 import {
   ItalicButton,
   BoldButton,
-  UnderlineButton,
-  HeadlineOneButton,
-  HeadlineTwoButton,
   BlockquoteButton,
 } from "@draft-js-plugins/buttons";
 
@@ -22,6 +19,7 @@ import toolbarStyles from "./toolbarStyles.module.css";
 import buttonInvertedStyles from "./buttonInvertedStyles.module.css";
 import toolbarInvertedStyles from "./toolbarInvertedStyles.module.css";
 import "@draft-js-plugins/inline-toolbar/lib/plugin.css";
+import { HeaderOneButton, HeaderThreeButton, HeaderTwoButton } from "./buttons";
 
 export const RichEditor = (props: {
   editMode: boolean;
@@ -33,7 +31,10 @@ export const RichEditor = (props: {
   setTextContent: (value: EditorState) => void;
   focusOnMount?: boolean;
 }): ReactElement => {
-  const linkPlugin = createLinkPlugin();
+  const linkPlugin = createLinkPlugin({
+    linkTarget: "_blank",
+    placeholder: "Enter a URL and press enter",
+  });
   const [plugins, InlineToolbar] = useMemo(() => {
     const inlineToolbarPlugin = createInlineToolbarPlugin({
       theme: {
@@ -114,12 +115,6 @@ export const RichEditor = (props: {
           font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
         }
 
-        #headline-two-button {
-          font-size: 14px;
-          margin-bottom: -5px;
-          font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
-        }
-
         #quotes-button {
           > svg {
             margin-bottom: -10px;
@@ -165,21 +160,21 @@ export const RichEditor = (props: {
                 id: "italic-button",
               }}
             />
-            <UnderlineButton {...externalProps} />
             <linkPlugin.LinkButton {...externalProps} />
             <Separator />
-            <HeadlineOneButton
+            <HeaderOneButton
               {...externalProps}
               buttonProps={{
                 id: "headline-one-button",
               }}
             />
-            <HeadlineTwoButton
+            <HeaderTwoButton
               {...externalProps}
               buttonProps={{
                 id: "headline-two-button",
               }}
             />
+            <HeaderThreeButton {...externalProps} />
             <BlockquoteButton
               {...externalProps}
               buttonProps={{

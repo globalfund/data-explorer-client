@@ -131,7 +131,6 @@ export default function ToolboxNav(
     } else if (!isEmpty(props.mappedData)) {
       setIsClickable(true);
     }
-    console.log(isClickable, "isclick");
   };
 
   return (
@@ -168,16 +167,13 @@ export default function ToolboxNav(
             onMouseOverNavBtn(item.name);
           }}
           onMouseOut={() => {
-            console.log("mouse out");
             setIsClickable(false);
           }}
           //corresponding keyboard events for accessiblity
           onBlur={() => {
-            console.log("blur");
             setIsClickable(false);
           }}
           onFocus={() => {
-            console.log("focus");
             setIsClickable(true);
           }}
         >

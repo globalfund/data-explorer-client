@@ -15,17 +15,17 @@ import { MoreVert } from "@material-ui/icons";
 import { IFramesArray } from "app/modules/report-module/views/create/data";
 
 const _rowStructureDetailItems = [
-  [{ rowType: "oneByOne", rowId: "oneByOne-1", width: "100%", factor: 1 }],
+  [{ rowType: "oneByOne", boxId: "oneByOne-1", width: "100%", factor: 1 }],
   [
     {
       rowType: "oneByTwo",
-      rowId: "oneByTwo-1",
+      boxId: "oneByTwo-1",
       width: `calc(50% - ${itemSpacing})`,
       factor: 0.5,
     },
     {
       rowType: "oneByTwo",
-      rowId: "oneByTwo-2",
+      boxId: "oneByTwo-2",
       width: `calc(50% - ${itemSpacing})`,
       factor: 0.5,
     },
@@ -33,19 +33,19 @@ const _rowStructureDetailItems = [
   [
     {
       rowType: "oneByThree",
-      rowId: "oneByThree-1",
+      boxId: "oneByThree-1",
       width: `calc(100% / 3 - ${itemSpacing})`,
       factor: 0.33,
     },
     {
       rowType: "oneByThree",
-      rowId: "oneByThree-2",
+      boxId: "oneByThree-2",
       width: `calc(100% / 3 - ${itemSpacing})`,
       factor: 0.33,
     },
     {
       rowType: "oneByThree",
-      rowId: "oneByThree-3",
+      boxId: "oneByThree-3",
       width: `calc(100% / 3 - ${itemSpacing})`,
       factor: 0.33,
     },
@@ -53,25 +53,25 @@ const _rowStructureDetailItems = [
   [
     {
       rowType: "oneByFour",
-      rowId: "oneByFour-1",
+      boxId: "oneByFour-1",
       width: `calc(100% / 4 - ${itemSpacing})`,
       factor: 0.25,
     },
     {
       rowType: "oneByFour",
-      rowId: "oneByFour-2",
+      boxId: "oneByFour-2",
       width: `calc(100% / 4 - ${itemSpacing})`,
       factor: 0.25,
     },
     {
       rowType: "oneByFour",
-      rowId: "oneByFour-3",
+      boxId: "oneByFour-3",
       width: `calc(100% / 4 - ${itemSpacing})`,
       factor: 0.25,
     },
     {
       rowType: "oneByFour",
-      rowId: "oneByFour-4",
+      boxId: "oneByFour-4",
       width: `calc(100% / 4 - ${itemSpacing})`,
       factor: 0.25,
     },
@@ -80,13 +80,13 @@ const _rowStructureDetailItems = [
   [
     {
       rowType: "oneToFour",
-      rowId: "oneToFour-1",
+      boxId: "oneToFour-1",
       width: `calc(20% - ${itemSpacing})`,
       factor: 0.2,
     },
     {
       rowType: "oneToFour",
-      rowId: "oneToFour-2",
+      boxId: "oneToFour-2",
       width: `calc(80% - ${itemSpacing})`,
       factor: 0.8,
     },
@@ -94,13 +94,13 @@ const _rowStructureDetailItems = [
   [
     {
       rowType: "fourToOne",
-      rowId: "fourToOne-1",
+      boxId: "fourToOne-1",
       width: `calc(80% - ${itemSpacing})`,
       factor: 0.8,
     },
     {
       rowType: "fourToOne",
-      rowId: "fourToOne-2",
+      boxId: "fourToOne-2",
       width: `calc(20% - ${itemSpacing})`,
       factor: 0.2,
     },
@@ -109,13 +109,13 @@ const _rowStructureDetailItems = [
   [
     {
       rowType: "twoToThree",
-      rowId: "twoToThree-1",
+      boxId: "twoToThree-1",
       width: `calc(40% - ${itemSpacing})`,
       factor: 0.4,
     },
     {
       rowType: "twoToThree",
-      rowId: "twoToThree-2",
+      boxId: "twoToThree-2",
       width: `calc(60% - ${itemSpacing})`,
       factor: 0.6,
     },
@@ -124,13 +124,13 @@ const _rowStructureDetailItems = [
   [
     {
       rowType: "threeTotwo",
-      rowId: "threeTotwo-1",
+      boxId: "threeTotwo-1",
       width: `calc(60% - ${itemSpacing})`,
       factor: 0.6,
     },
     {
       rowType: "threeTotwo",
-      rowId: "threeTotwo-2",
+      boxId: "threeTotwo-2",
       width: `calc(40% - ${itemSpacing})`,
       factor: 0.4,
     },
@@ -181,7 +181,7 @@ export default function RowFrame(props: Readonly<RowFrameProps>) {
   >([""]);
   const [rowStructureDetailItems, setRowStructureDetailItems] = React.useState<
     {
-      rowId: string;
+      boxId: string;
       width: number;
       rowType: string;
       factor: number;

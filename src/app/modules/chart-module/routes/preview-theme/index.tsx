@@ -9,7 +9,7 @@ import { useHistory, useParams } from "react-router-dom";
 import Skeleton from "@material-ui/lab/Skeleton";
 import { PageLoader } from "app/modules/common/page-loader";
 import { CHART_DEFAULT_WIDTH } from "app/modules/chart-module/data";
-import { useDataThemesEchart } from "app/hooks/useDataThemesEchart";
+import { useEchart } from "app/hooks/useEchart";
 import { useUpdateEffectOnce } from "app/hooks/useUpdateEffectOnce";
 import { styles as commonStyles } from "app/modules/chart-module/routes/common/styles";
 import {
@@ -50,7 +50,7 @@ export function ChartBuilderPreviewTheme(props: ChartBuilderPreviewThemeProps) {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const { page } = useParams<{ page: string }>();
   const history = useHistory();
-  const { render } = useDataThemesEchart();
+  const { render } = useEchart();
 
   const { visualOptions, setVisualOptions } = props;
 

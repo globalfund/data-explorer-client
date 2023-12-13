@@ -12,7 +12,7 @@ interface ChartToolBoxFiltersProps {
   loadDataFromAPI?: (customAppliedFilters?: { [key: string]: any[] }) => void;
 }
 
-export function ChartToolBoxFilters(props: ChartToolBoxFiltersProps) {
+export function ChartToolBoxFilters(props: Readonly<ChartToolBoxFiltersProps>) {
   const { filterOptionGroups } = props;
   const [expandedGroup, setExpandedGroup] =
     React.useState<FilterGroupModel | null>(null);

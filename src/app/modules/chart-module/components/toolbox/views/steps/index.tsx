@@ -96,7 +96,7 @@ interface ChartToolBoxStepsProps {
   setDatasetName: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export function ChartToolBoxSteps(props: ChartToolBoxStepsProps) {
+export function ChartToolBoxSteps(props: Readonly<ChartToolBoxStepsProps>) {
   const { loadDataset, filterOptionGroups } = props;
   const history = useHistory();
   const [expanded, setExpanded] = React.useState<number>(props.openPanel ?? 0);

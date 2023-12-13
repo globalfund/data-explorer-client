@@ -1,52 +1,21 @@
 /* third-party */
 import React from "react";
 import { useHistory, useParams } from "react-router-dom";
-import MuiButton from "@material-ui/core/Button";
-import { withStyles } from "@material-ui/core/styles";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { styles } from "app/modules/chart-module/components/toolbox/styles";
 import { ChartExporter } from "app/modules/chart-module/components/exporter";
 import { ChartToolBoxProps } from "app/modules/chart-module/components/toolbox/data";
 import { ChartToolBoxSteps } from "app/modules/chart-module/components/toolbox/views/steps";
-import { ChartToolBoxPreview } from "app/modules/chart-module/components/toolbox/views/preview";
 import { useRecoilState } from "recoil";
 import { createChartFromReportAtom } from "app/state/recoil/atoms";
 import ToolboxNav from "./views/steps/navbar";
 import { Slide, useMediaQuery } from "@material-ui/core";
 import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
 
-const Button = withStyles(() => ({
-  root: {
-    width: "100%",
-    height: "48px",
-    borderRadius: "0px",
-    backgroundColor: "#262C34",
-    fontFamily: "GothamNarrow-Book, sans-serif",
-    "&:first-child": {
-      borderRight: "1px solid #f1f3f5",
-    },
-    "&:hover": {
-      backgroundColor: "#495057",
-    },
-  },
-  label: {
-    color: "#fff",
-    fontSize: "14px",
-    textTransform: "none",
-    fontFamily: "GothamNarrow-Book, sans-serif",
-  },
-  disabled: {
-    backgroundColor: "#ADB5BD",
-  },
-}))(MuiButton);
-
-export function ChartModuleToolBox(props: ChartToolBoxProps) {
+export function ChartModuleToolBox(props: Readonly<ChartToolBoxProps>) {
   const history = useHistory();
   const { page, view } = useParams<{ page: string; view?: string }>();
-
-  const [isSavedEnabled] = React.useState(false);
-
   const mapping = useStoreState((state) => state.charts.mapping.value);
   const dataset = useStoreState((state) => state.charts.dataset.value);
   const appliedFilters = useStoreState(
@@ -201,36 +170,6 @@ export function ChartModuleToolBox(props: ChartToolBoxProps) {
         {props.exportView && props.rawViz && (
           <div css={styles.exportview}>
             <ChartExporter />
-          </div>
-        )}
-        {props.filtersView && (
-          <div
-            css={`
-              width: 400px;
-              overflow-y: scroll;
-              position: relative;
-              height: calc(100vh - 97px);
-
-              ::-webkit-scrollbar {
-                display: none;
-              }
-            `}
-          >
-            <ChartToolBoxPreview
-              loadDataFromAPI={props.loadDataFromAPI}
-              filterOptionGroups={props.filterOptionGroups}
-            />
-            {isSavedEnabled && props.isEditMode && (
-              <div
-                css={`
-                  bottom: 0;
-                  width: 100%;
-                  position: absolute;
-                `}
-              >
-                <Button onClick={onSave}>Save</Button>
-              </div>
-            )}
           </div>
         )}
       </div>

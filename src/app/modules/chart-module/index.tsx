@@ -364,7 +364,7 @@ export default function ChartModule() {
               dimensions={dimensions}
               mappedData={mappedData}
               renderedChart={content}
-              datasetName={datasetName as string}
+              datasetName={datasetName}
               visualOptions={visualOptions}
               setVisualOptions={setVisualOptions}
               renderedChartSsr={activeRenderedChartSsr}
@@ -388,7 +388,7 @@ export default function ChartModule() {
             <ChartBuilderFilters
               loading={loading}
               renderedChart={content}
-              datasetName={datasetName as string}
+              datasetName={datasetName}
               dimensions={dimensions}
               visualOptions={visualOptions}
               setVisualOptions={setVisualOptions}
@@ -398,7 +398,7 @@ export default function ChartModule() {
           </Route>
           <Route path="/chart/:page/mapping">
             <ChartBuilderMapping
-              datasetName={datasetName as string}
+              datasetName={datasetName}
               loading={isChartLoading}
               loadedChart={loadedChart}
               visualOptions={visualOptions}
@@ -413,7 +413,7 @@ export default function ChartModule() {
           <Route path="/chart/:page/chart-type">
             <ChartBuilderChartType
               loading={loading}
-              datasetName={datasetName as string}
+              datasetName={datasetName}
             />
           </Route>
           <Route path="/chart/:page/preview-data">

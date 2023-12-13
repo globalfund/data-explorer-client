@@ -34,7 +34,7 @@ interface Props {
   >;
 }
 
-export default function HeaderBlock(props: Props) {
+export default function HeaderBlock(props: Readonly<Props>) {
   const location = useLocation();
   const { page } = useParams<{ page: string }>();
 
@@ -129,14 +129,13 @@ export default function HeaderBlock(props: Props) {
             css={`
               width: 60%;
               max-height: 52px;
-              overflow-y: hidden;
               color: ${props.headerDetails.descriptionColor} !important;
               font-size: 14px;
               font-weight: 400;
               min-width: 600px;
               line-height: 16.8px;
-              background: inherit;
-              position: relative;
+              position: static;
+
               letter-spacing: 0.692603px;
               ${props.previewMode && "pointer-events: none;"}
 

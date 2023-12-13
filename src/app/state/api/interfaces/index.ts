@@ -51,23 +51,6 @@ import {
   DataPathStepsStateModel,
 } from "app/state/api/action-reducers/sync/dataPath";
 import {
-  DataThemesActivePanelsStateModel,
-  DataThemesEnabledFilterOptionGroupsStateModel,
-  DataThemesIdsStateModel,
-  DataThemesIndexStateModel,
-  DataThemesMappingStateModel,
-  DataThemesPublicStateModel,
-  DataThemesStepChartTypeStateModel,
-  DataThemesStepSelectionsStateModel,
-  DataThemesTabDeletedStateModel,
-  DataThemesTextContentStateModel,
-  DataThemesTitlesStateModel,
-  DataThemesVizDeletedStateModel,
-  DataThemesVizDuplicatedStateModel,
-  DataThemesVizOrderStateModel,
-} from "app/state/api/action-reducers/sync/data-themes";
-import { DataThemesAppliedFiltersStateModel } from "app/state/api/action-reducers/sync/data-themes/filters";
-import {
   ChartsActivePanelsStateModel,
   ChartsChartTypeStateModel,
   ChartsDatasetStateModel,
@@ -292,40 +275,6 @@ export interface StoreModel {
   ReplenishmentPeriodFilterOptions: ApiCallModel;
   DonorFilterOptions: ApiCallModel;
 
-  //data themes api
-  dataThemes: {
-    activeTabIndex: DataThemesIndexStateModel;
-    activeVizIndex: DataThemesIndexStateModel;
-    ids: DataThemesIdsStateModel;
-    activePanels: DataThemesActivePanelsStateModel;
-    titles: DataThemesTitlesStateModel;
-    textContent: DataThemesTextContentStateModel;
-    sync: {
-      stepSelections: DataThemesStepSelectionsStateModel;
-      chartType: DataThemesStepChartTypeStateModel;
-      mapping: DataThemesMappingStateModel;
-      public: DataThemesPublicStateModel;
-      vizOrderData: DataThemesVizOrderStateModel;
-      vizDeleted: DataThemesVizDeletedStateModel;
-      vizDuplicated: DataThemesVizDuplicatedStateModel;
-      tabDeleted: DataThemesTabDeletedStateModel;
-      enabledFilterOptionGroups: DataThemesEnabledFilterOptionGroupsStateModel;
-    };
-    appliedFilters: DataThemesAppliedFiltersStateModel;
-    DataThemeGet: ApiCallModel;
-    DataThemeCreate: ApiCallModel;
-    DataThemeUpdate: ApiCallModel;
-    DataThemeDelete: ApiCallModel;
-    DataThemeDuplicate: ApiCallModel;
-    DataThemeGetList: ApiCallModel;
-    DatasetGetList: ApiCallModel;
-    DatasetCreate: ApiCallModel;
-  };
-
-  //datasetsApi
-  Datasets: {
-    EligibilityDataset: ApiCallModel;
-  };
   //charts api
   charts: {
     ChartGet: ApiCallModel;

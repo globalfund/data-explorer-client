@@ -36,7 +36,7 @@ interface RowStructureDisplayProps {
   selectedTypeHistory: string[];
   setSelectedTypeHistory: React.Dispatch<React.SetStateAction<string[]>>;
   rowStructureDetailItems: {
-    rowId: string;
+    boxId: string;
     width: number;
     factor: number;
     rowType: string;
@@ -276,7 +276,7 @@ export default function RowstructureDisplay(
       >
         {props.rowStructureDetailItems.map((row, index) => (
           <Box
-            key={row.rowId}
+            key={`${row.boxId} - ${props.rowId}`}
             width={get(props.rowContentWidths, `[${index}]`, "fit-content")}
             height={get(props.rowContentHeights, `[${index}]`, props.height)}
             itemIndex={index}
@@ -594,9 +594,7 @@ const Box = (props: {
             bottomRight: !viewOnlyMode,
           }}
           css={`
-            overflow-y: auto;
             background: #fff;
-            overflow-x: hidden;
             position: static;
             border-radius: 20px;
             box-shadow: 0px 0px 10px 0px rgba(152, 161, 170, 0.6);

@@ -176,23 +176,7 @@ import PledgesContributionsTable from "app/state/api/action-reducers/viz/pledges
 import componentsSidebar from "app/state/api/action-reducers/cms/componentsSidebar";
 import componentsTable from "app/state/api/action-reducers/cms/componentsTable";
 import componentsDialogBox from "app/state/api/action-reducers/cms/componentsDialogBox";
-import {
-  DataThemesActivePanelsState,
-  DataThemesEnabledFilterOptionGroupsState,
-  DataThemesIdsState,
-  DataThemesIndexState,
-  DataThemesMappingState,
-  DataThemesPublicState,
-  DataThemesStepChartTypeState,
-  DataThemesStepSelectionsState,
-  DataThemesTabDeletedState,
-  DataThemesTextContentState,
-  DataThemesTitlesState,
-  DataThemesVizDeletedState,
-  DataThemesVizDuplicatedState,
-  DataThemesVizIndexState,
-  DataThemesVizOrderState,
-} from "app/state/api/action-reducers/sync/data-themes";
+
 import {
   ChartsActivePanelsState,
   ChartsDatasetState,
@@ -201,17 +185,6 @@ import {
   ChartsEnabledFilterOptionGroupsState,
 } from "app/state/api/action-reducers/sync/charts";
 import { ChartsAppliedFiltersState } from "app/state/api/action-reducers/sync/charts/filters";
-import { DataThemesAppliedFiltersState } from "app/state/api/action-reducers/sync/data-themes/filters";
-import {
-  DataThemeCreate,
-  DataThemeDelete,
-  DataThemeDuplicate,
-  DataThemeGet,
-  DataThemeGetList,
-  DataThemeUpdate,
-  DatasetCreate,
-  DatasetGetList,
-} from "app/state/api/action-reducers/data-themes";
 import {
   ChartGet,
   ChartCreate,
@@ -455,41 +428,6 @@ const storeContent: StoreModel = {
     notesAndDisclaimers: persist(notesAndDisclaimers),
   },
 
-  //data themes api
-  dataThemes: {
-    activeTabIndex: persist(DataThemesIndexState),
-    activeVizIndex: persist(DataThemesVizIndexState),
-    ids: persist(DataThemesIdsState),
-    activePanels: persist(DataThemesActivePanelsState),
-    titles: persist(DataThemesTitlesState),
-    textContent: persist(DataThemesTextContentState),
-    sync: {
-      stepSelections: persist(DataThemesStepSelectionsState),
-      chartType: persist(DataThemesStepChartTypeState),
-      mapping: persist(DataThemesMappingState),
-      public: persist(DataThemesPublicState),
-      vizOrderData: persist(DataThemesVizOrderState),
-      vizDeleted: persist(DataThemesVizDeletedState),
-      vizDuplicated: persist(DataThemesVizDuplicatedState),
-      tabDeleted: persist(DataThemesTabDeletedState),
-      enabledFilterOptionGroups: persist(
-        DataThemesEnabledFilterOptionGroupsState
-      ),
-    },
-    appliedFilters: persist(DataThemesAppliedFiltersState),
-    DataThemeGet: persist(DataThemeGet),
-    DataThemeCreate: persist(DataThemeCreate),
-    DataThemeUpdate: persist(DataThemeUpdate),
-    DataThemeDelete: persist(DataThemeDelete),
-    DataThemeDuplicate: persist(DataThemeDuplicate),
-    DataThemeGetList: persist(DataThemeGetList),
-    DatasetGetList: persist(DatasetGetList),
-    DatasetCreate: persist(DatasetCreate),
-  },
-  //datasets api
-  Datasets: {
-    EligibilityDataset: persist(EligibilityDataset),
-  },
   //charts api
   charts: {
     ChartGet: persist(ChartGet),

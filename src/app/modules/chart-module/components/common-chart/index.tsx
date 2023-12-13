@@ -1,7 +1,7 @@
 import React from "react";
 import { useStoreState } from "app/state/store/hooks";
 import { PageLoader } from "app/modules/common/page-loader";
-import { useDataThemesEchart } from "app/hooks/useDataThemesEchart";
+import { useEchart } from "app/hooks/useEchart";
 import { useUpdateEffectOnce } from "app/hooks/useUpdateEffectOnce";
 
 interface Props {
@@ -22,8 +22,8 @@ interface Props {
     | "echartsTreemap";
 }
 
-export function CommonChart(props: Props) {
-  const { render } = useDataThemesEchart();
+export function CommonChart(props: Readonly<Props>) {
+  const { render } = useEchart();
 
   const domRef = React.useRef<HTMLDivElement>(null);
   const chartType = useStoreState((state) => state.charts.chartType.value);

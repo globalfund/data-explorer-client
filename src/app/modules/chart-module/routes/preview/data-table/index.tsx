@@ -6,7 +6,7 @@ import PreviewTable from "app/components/Table/Preview-table";
 import { tableToolBoxData } from "app/components/Table/Preview-table/data";
 import { DataTableProps } from "app/modules/chart-module/routes/preview/data-table/data";
 
-export function DataTable(props: DataTableProps) {
+export function DataTable(props: Readonly<DataTableProps>) {
   const [data, setData] = React.useState<
     { [key: string]: number | string | null | boolean }[]
   >([]);

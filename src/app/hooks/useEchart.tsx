@@ -33,7 +33,7 @@ echarts.use([
   VisualMapComponent,
 ]);
 
-export function useDataThemesEchart() {
+export function useEchart() {
   function onResize(chart: echarts.EChartsType, id: string, height?: number) {
     const container = document.getElementById(id);
     chart.resize({

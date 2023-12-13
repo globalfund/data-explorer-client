@@ -1,20 +1,20 @@
-import BarChartIcon from "app/assets/icons/data-themes-chart-types/bar";
-import ColoredBarChartIcon from "app/assets/icons/data-themes-chart-types/coloredBarChart";
+import BarChartIcon from "app/assets/icons/chart-types/bar";
+import ColoredBarChartIcon from "app/assets/icons/chart-types/coloredBarChart";
 
-import GeomapChartIcon from "app/assets/icons/data-themes-chart-types/geomap";
-import ColoredGeomapChartIcon from "app/assets/icons/data-themes-chart-types/coloredGeomap";
+import GeomapChartIcon from "app/assets/icons/chart-types/geomap";
+import ColoredGeomapChartIcon from "app/assets/icons/chart-types/coloredGeomap";
 
-import LineChartIcon from "app/assets/icons/data-themes-chart-types/line";
-import ColoredLineChartIcon from "app/assets/icons/data-themes-chart-types/coloredLineChart";
+import LineChartIcon from "app/assets/icons/chart-types/line";
+import ColoredLineChartIcon from "app/assets/icons/chart-types/coloredLineChart";
 
-import SankeyChartIcon from "app/assets/icons/data-themes-chart-types/sankeydiagram";
-import ColoredSankeyChartIcon from "app/assets/icons/data-themes-chart-types/coloredSankeyDiagram";
+import SankeyChartIcon from "app/assets/icons/chart-types/sankeydiagram";
+import ColoredSankeyChartIcon from "app/assets/icons/chart-types/coloredSankeyDiagram";
 
-import TreeMapIcon from "app/assets/icons/data-themes-chart-types/treemap";
-import ColoredTreeMapIcon from "app/assets/icons/data-themes-chart-types/coloredTreemap";
+import TreeMapIcon from "app/assets/icons/chart-types/treemap";
+import ColoredTreeMapIcon from "app/assets/icons/chart-types/coloredTreemap";
 
-import BigNumberIcon from "app/assets/icons/data-themes-chart-types/bigNumber";
-import ColoredBigNumberIcon from "app/assets/icons/data-themes-chart-types/coloredBigNumber";
+import BigNumberIcon from "app/assets/icons/chart-types/bigNumber";
+import ColoredBigNumberIcon from "app/assets/icons/chart-types/coloredBigNumber";
 import { ReactComponent as GeomapPreviewImg } from "app/modules/chart-module/assets/geomapPreview.svg";
 import { ReactComponent as BigNumberPreviewImg } from "app/modules/chart-module/assets/bigNumberPreview.svg";
 import { ReactComponent as LineChartPreviewImg } from "app/modules/chart-module/assets/lineChartPreview.svg";
