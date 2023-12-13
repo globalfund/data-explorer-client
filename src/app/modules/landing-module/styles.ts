@@ -9,6 +9,7 @@ export const container = css`
   align-items: center;
   flex-direction: column;
   justify-content: flex-start;
+  margin-left: 0px;
 
   @media (max-width: 767px) {
     padding-top: 20vh;

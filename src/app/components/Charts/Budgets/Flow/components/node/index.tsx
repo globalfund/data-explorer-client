@@ -1,6 +1,7 @@
 import React from "react";
 import { appColors } from "app/theme";
 import { css } from "styled-components/macro";
+import { getRandNoBetween0and1 } from "app/utils/getSecureRandomNumbers";
 
 export const styles = {
   spacer: css`
@@ -43,7 +44,7 @@ function getInnerNodes(
         fill={item.color}
         width={node.width}
         css={_selectedNode && !selectedNode ? "opacity: 0.3;" : ""}
-        key={Math.random().toString(36).substring(7)}
+        key={getRandNoBetween0and1().toString(36).substring(7)}
       />
     );
   });
@@ -76,7 +77,7 @@ function getInnerNodes(
           });
         }}
         css={_selectedNode && selectedNode ? "" : styles.nodeStyle}
-        key={Math.random().toString(36).substring(7)}
+        key={getRandNoBetween0and1().toString(36).substring(7)}
         data-cy="bf-sankey-bar-comp"
       />
     );

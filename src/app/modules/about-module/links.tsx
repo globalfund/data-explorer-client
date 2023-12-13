@@ -1,8 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import Grid from "@material-ui/core/Grid";
-import useTitle from "react-use/lib/useTitle";
-import { PageHeader } from "app/components/PageHeader";
 import get from "lodash/get";
 import { useCMSData } from "app/hooks/useCMSData";
 import { appColors } from "app/theme";

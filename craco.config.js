@@ -13,6 +13,8 @@ module.exports = {
   webpack: {
     alias: {
       // 'react-dom': '@hot-loader/react-dom',
+      "react/jsx-dev-runtime": "react/jsx-dev-runtime.js",
+      "react/jsx-runtime": "react/jsx-runtime.js",
     },
     plugins: [
       // new StyleLintPlugin({

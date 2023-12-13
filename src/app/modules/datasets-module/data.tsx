@@ -13,6 +13,15 @@ export interface DatasetItemModel {
   preview: JSX.Element;
 }
 
+export interface DatasetListItemAPIModel {
+  id: string;
+  name: string;
+  description: string;
+  public: boolean;
+  category: string;
+  createdDate: Date;
+}
+
 export const datasets: DatasetItemModel[] = [
   {
     name: "Pledges & Contributions",
