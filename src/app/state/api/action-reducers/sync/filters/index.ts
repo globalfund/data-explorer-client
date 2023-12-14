@@ -144,6 +144,7 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
     state.donorSubCategories = payload.donorSubCategories;
     state.trpWindows = payload.trpWindows;
     state.portfolioCategories = payload.portfolioCategories;
+    state.documentTypes = payload.documentTypes;
     state.appliedFiltersCount =
       payload.locations.length +
       payload.components.length +
@@ -156,7 +157,8 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
       payload.donorCategories.length +
       payload.donorSubCategories.length +
       payload.trpWindows.length +
-      payload.portfolioCategories.length;
+      payload.portfolioCategories.length +
+      payload.documentTypes.length;
   }),
   actionDefaultNone: action((state, payload: string[]) => {
     console.log("Incorrect filter type");

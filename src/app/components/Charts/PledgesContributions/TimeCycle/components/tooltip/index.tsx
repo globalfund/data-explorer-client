@@ -10,7 +10,7 @@ export function PledgesContributionsTimeCycleTooltip(props: any) {
         min-width: 250px;
         padding: 16px 25px;
         position: relative;
-        color: ${appColors.TIME_CYCLE.TOOLTIP_BACKGROUND_COLOR};
+        background: ${appColors.TIME_CYCLE.TOOLTIP_BACKGROUND_COLOR};
         border-radius: 20px;
       `}
     >
