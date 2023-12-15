@@ -1,4 +1,5 @@
 /* eslint-disable no-param-reassign */
+import get from "lodash/get";
 import { action, thunk } from "easy-peasy";
 import axios, { AxiosResponse } from "axios";
 import {
@@ -18,7 +19,6 @@ export const APIModel = <QueryModel, ResponseModel>(
     data: [],
   },
   crudData: null,
-
   errorData: null,
   onError: action((state, payload: Errors) => {
     state.loading = false;
@@ -55,15 +55,20 @@ export const APIModel = <QueryModel, ResponseModel>(
   }),
   fetch: thunk(async (actions, query: RequestValues<QueryModel>) => {
     actions.onRequest();
+    const token = get(query, "token", undefined);
+    let Authorization: string | undefined = undefined;
+    if (token) {
+      Authorization = `Bearer ${token}`;
+    }
     axios
       .get(
         `${url}${query.getId ? "/" + query.getId : ""}${
           query.filterString ? "?" : ""
         }${query.filterString ?? ""}`,
-
         {
           headers: {
             "Content-Type": "application/json",
+            Authorization,
           },
         }
       )
@@ -95,10 +100,18 @@ export const APIModel = <QueryModel, ResponseModel>(
   }),
   post: thunk(async (actions, query: RequestValues<QueryModel>) => {
     actions.onRequest();
+    const token = get(query, "values.token", undefined);
+    let Authorization: string | undefined = undefined;
+    if (token) {
+      Authorization = `Bearer ${token}`;
+      // @ts-ignore
+      if (query.values && query.values.token) delete query.values.token;
+    }
     axios
       .post(url, query.values, {
         headers: {
           "Content-Type": "application/json",
+          Authorization,
         },
       })
       .then(
@@ -115,6 +128,7 @@ export const APIModel = <QueryModel, ResponseModel>(
       .patch(`${url}/${query.patchId}`, query.values, {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${get(query, "token", undefined)}`,
         },
       })
       .then(
@@ -128,6 +142,7 @@ export const APIModel = <QueryModel, ResponseModel>(
       .delete(`${url}/${query.deleteId}`, {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${get(query, "token", undefined)}`,
         },
       })
       .then(

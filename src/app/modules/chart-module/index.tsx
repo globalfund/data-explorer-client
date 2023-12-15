@@ -4,8 +4,9 @@ import get from "lodash/get";
 import { DndProvider } from "react-dnd";
 import { useSessionStorage } from "react-use";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { Switch, Route, useParams } from "react-router-dom";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import {
   getOptionsConfig,
   getDefaultOptionsValues,
@@ -25,6 +26,8 @@ import { ChartBuilderFilters } from "app/modules/chart-module/routes/filters";
 import { ChartModuleToolBox } from "app/modules/chart-module/components/toolbox";
 import { ChartBuilderCustomize } from "app/modules/chart-module/routes/customize";
 import { ChartBuilderChartType } from "app/modules/chart-module/routes/chart-type";
+import { IHeaderDetails } from "app/modules/report-module/components/right-panel/data";
+import { NotAuthorizedMessageModule } from "app/modules/common/not-authorized-message";
 import { ChartBuilderPreviewTheme } from "app/modules/chart-module/routes/preview-theme";
 import { getRequiredFieldsAndErrors } from "app/modules/chart-module/routes/mapping/utils";
 import {
@@ -34,9 +37,9 @@ import {
   emptyChartAPI,
   defaultChartOptions,
 } from "app/modules/chart-module/data";
-import { IHeaderDetails } from "app/modules/report-module/components/right-panel/data";
 
-export default function ChartModule() {
+function ChartModule() {
+  const { isLoading } = useAuth0();
   const { page, view } = useParams<{ page: string; view?: string }>();
   const [visualOptions, setVisualOptions] = useSessionStorage<any>(
     "visualOptions",
@@ -54,6 +57,7 @@ export default function ChartModule() {
     sampleData,
     isEditMode,
     loadDataset,
+    error401,
     loadDataFromAPI,
     chartFromAPI,
     setChartFromAPI,
@@ -62,6 +66,7 @@ export default function ChartModule() {
     setVisualOptions,
   });
 
+  const token = useStoreState((state) => state.AuthToken.value);
   const chartType = useStoreState((state) => state.charts.chartType.value);
   const mapping = useStoreState((state) => state.charts.mapping.value);
   const isSaveLoading = useStoreState(
@@ -74,6 +79,12 @@ export default function ChartModule() {
   const loadedChart = useStoreState(
     (state) =>
       (state.charts.ChartGet.crudData ?? emptyChartAPI) as ChartAPIModel
+  );
+  const chartError401 = useStoreState(
+    (state) =>
+      get(state.charts.ChartGet.errorData, "data.error.statusCode", 0) ===
+        401 ||
+      get(state.charts.ChartGet.crudData, "error", "") === "Unauthorized"
   );
   const clearChart = useStoreActions(
     (actions) => actions.charts.ChartGet.clear
@@ -273,12 +284,12 @@ export default function ChartModule() {
   }, [chartType, loading]);
 
   React.useEffect(() => {
-    if (page !== "new") {
-      loadChart({ getId: page });
+    if (page !== "new" && !isLoading && token) {
+      loadChart({ token, getId: page });
     } else {
       clearChart();
     }
-  }, [page]);
+  }, [page, isLoading, token]);
 
   React.useEffect(() => {
     if (loadedChart && loadedChart.id !== "") {
@@ -287,6 +298,15 @@ export default function ChartModule() {
       }
     }
   }, [loadedChart]);
+
+  if (chartError401 || error401) {
+    return (
+      <>
+        <div css="width: 100%; height: 100px;" />
+        <NotAuthorizedMessageModule asset="chart" />
+      </>
+    );
+  }
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -459,3 +479,5 @@ export default function ChartModule() {
     </DndProvider>
   );
 }
+
+export default withAuthenticationRequired(ChartModule);

@@ -517,6 +517,7 @@ function ReportRightPanelCreateViewChartList(
   const loadChartList = useStoreActions(
     (actions) => actions.charts.ChartGetList.fetch
   );
+  const token = useStoreState((state) => state.AuthToken.value);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -528,6 +529,7 @@ function ReportRightPanelCreateViewChartList(
 
   React.useEffect(() => {
     loadChartList({
+      token,
       storeInCrudData: true,
       filterString: `filter={"where":{"name":{"like":"${search}.*","options":"i"}},"order":"${sortBy.value}"}`,
     });

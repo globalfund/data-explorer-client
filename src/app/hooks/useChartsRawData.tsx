@@ -3,6 +3,7 @@ import React from "react";
 import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
 import { useParams } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 import { useMount, useUpdateEffect } from "react-use";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -59,6 +60,7 @@ export function useChartsRawData(props: {
 }) {
   const { visualOptions, setVisualOptions } = props;
 
+  const { isLoading } = useAuth0();
   const { page, view } = useParams<{ page: string; view?: string }>();
 
   const [dataTypes, setDataTypes] = React.useState([]);
@@ -66,6 +68,7 @@ export function useChartsRawData(props: {
   const [sampleData, setSampleData] = React.useState([]);
   const [loading, setLoading] = React.useState(page !== "new");
   const [notFound, setNotFound] = React.useState(false);
+  const [error401, setError401] = React.useState(false);
   const [dataTotalCount, setDataTotalCount] = React.useState(0);
   const [isEditMode, setIsEditMode] = React.useState(checkIfIsEditMode(view));
   const localChartFromAPI = JSON.parse(
@@ -95,6 +98,7 @@ export function useChartsRawData(props: {
   const selectedChartType = useStoreState(
     (state) => state.charts.chartType.value
   );
+  const token = useStoreState((state) => state.AuthToken.value);
   const dataset = useStoreState((state) => state.charts.dataset.value);
   const setDataset = useStoreActions(
     (actions) => actions.charts.dataset.setValue
@@ -161,6 +165,7 @@ export function useChartsRawData(props: {
         {
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       )
@@ -186,6 +191,8 @@ export function useChartsRawData(props: {
       .catch((error) => {
         console.log("API call error: " + error.message);
         setLoading(false);
+        setNotFound(true);
+        setError401(error.response?.status === 401);
       });
   }
 
@@ -203,10 +210,16 @@ export function useChartsRawData(props: {
   }, [view]);
 
   React.useEffect(() => {
-    if (!props.inChartWrapper && page !== "new" && !isEditMode) {
+    if (
+      !props.inChartWrapper &&
+      page !== "new" &&
+      !isEditMode &&
+      !isLoading &&
+      token
+    ) {
       loadDataFromAPI();
     }
-  }, [page, isEditMode]);
+  }, [page, isEditMode, isLoading, token]);
 
   useUpdateEffect(() => {
     if (
@@ -238,6 +251,7 @@ export function useChartsRawData(props: {
         .post(`${process.env.REACT_APP_API}/chart/${page}/render`, body, {
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         })
         .then((response) => {
@@ -251,6 +265,8 @@ export function useChartsRawData(props: {
         .catch((error) => {
           console.log("API call error: " + error.message);
           setLoading(false);
+          setNotFound(true);
+          setError401(error.response?.status === 401);
           if (extraLoader) {
             extraLoader.style.display = "none";
           }
@@ -268,6 +284,7 @@ export function useChartsRawData(props: {
   return {
     loading,
     notFound,
+    error401,
     dataTypes,
     dataStats,
     sampleData,

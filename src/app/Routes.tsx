@@ -17,33 +17,39 @@ import { useUrlFilters } from "app/hooks/useUrlFilters";
 import { V1RouteRedirections } from "app/utils/v1Routes";
 import { useScrollToTop } from "app/hooks/useScrollToTop";
 import { PageLoader } from "app/modules/common/page-loader";
+import useLocalStorage from "react-use/lib/useLocalStorage";
 import { useFilterOptions } from "app/hooks/useFilterOptions";
 import { useClearDataPathStepsOnDatasetChange } from "app/hooks/useClearDataPathStepsOnDatasetChange";
+import {
+  useAuth0,
+  withAuthenticationRequired,
+  WithAuthenticationRequiredOptions,
+} from "@auth0/auth0-react";
 
 // modules
 const VizModule = lazy(() => import("app/modules/viz-module"));
 const AboutModule = lazy(() => import("app/modules/about-module"));
+const ChartModule = lazy(() => import("app/modules/chart-module"));
+const ReportModule = lazy(() => import("app/modules/report-module"));
 const GrantsModule = lazy(() => import("app/modules/grants-module"));
 const ResultsModule = lazy(() => import("app/modules/results-module"));
-const SitemapModule = lazy(() => import("app/modules/sitemap-module/index"));
+const SitemapModule = lazy(() => import("app/modules/sitemap-module"));
 const LandingModule = lazy(() => import("app/modules/landing-module"));
 const DatasetsModule = lazy(() => import("app/modules/datasets-module"));
 const DocumentsModule = lazy(() => import("app/modules/documents-module"));
-const ReportsOverviewModule = lazy(
-  () => import("app/modules/reports-overview-module")
-);
-const ChartsOverviewModule = lazy(
-  () => import("app/modules/charts-overview-module")
-);
-const ReportModule = lazy(() => import("app/modules/report-module"));
-const ChartModule = lazy(() => import("app/modules/chart-module"));
-
+const AuthCallbackModule = lazy(() => import("app/modules/callback-module"));
 const GrantDetailModule = lazy(() => import("app/modules/grant-detail-module"));
 const CountryDetailModule = lazy(
   () => import("app/modules/country-detail-module")
 );
 const PartnerDetailModule = lazy(
   () => import("app/modules/partner-detail-module")
+);
+const ReportsOverviewModule = lazy(
+  () => import("app/modules/reports-overview-module")
+);
+const ChartsOverviewModule = lazy(
+  () => import("app/modules/charts-overview-module")
 );
 
 function GrantPeriodRedirect(props: RouteComponentProps<any>) {
@@ -77,6 +83,49 @@ function GrantPeriodRedirect(props: RouteComponentProps<any>) {
   return <PageLoader />;
 }
 
+const ProtectedRoute = (props: {
+  component: React.ComponentType<any>;
+  args?: WithAuthenticationRequiredOptions;
+}) => {
+  const setAuthRedirectRoute = useLocalStorage("authRedirectRoute", "/")[1];
+
+  let compArgs = props.args;
+
+  if (!compArgs?.onRedirecting) {
+    compArgs = {
+      ...compArgs,
+      onRedirecting: () => {
+        setAuthRedirectRoute(window.location.pathname);
+        return <PageLoader />;
+      },
+    };
+  }
+
+  const Component = withAuthenticationRequired(props.component, compArgs);
+
+  return <Component />;
+};
+
+const AuthLoader = () => {
+  const { isLoading } = useAuth0();
+
+  if (isLoading) {
+    return (
+      <div
+        css={`
+          > div {
+            background: #fff;
+          }
+        `}
+      >
+        <PageLoader />;
+      </div>
+    );
+  }
+
+  return null;
+};
+
 export function MainRoutes() {
   useClearDataPathStepsOnDatasetChange();
   useFilterOptions({
@@ -85,121 +134,127 @@ export function MainRoutes() {
   useScrollToTop();
   useUrlFilters();
   useGA();
-
   useCMSData({
     loadData: true,
   });
 
   return (
-    <Suspense fallback={<PageLoader />}>
-      <Switch>
-        <Route exact path="/">
-          <LandingModule />
-        </Route>
+    <React.Fragment>
+      <AuthLoader />
+      <Suspense fallback={<PageLoader />}>
+        <Switch>
+          <Route exact path="/callback">
+            <AuthCallbackModule />
+          </Route>
 
-        <Route exact path="/about">
-          <AboutModule />
-        </Route>
+          <Route exact path="/">
+            <LandingModule />
+          </Route>
 
-        <Route exact path="/datasets">
-          <DatasetsModule />
-        </Route>
+          <Route exact path="/about">
+            <AboutModule />
+          </Route>
 
-        <Route exact path="/grants/:subType?">
-          <GrantsModule />
-        </Route>
+          <Route exact path="/datasets">
+            <DatasetsModule />
+          </Route>
 
-        <Route exact path="/results">
-          <ResultsModule />
-        </Route>
+          <Route exact path="/grants/:subType?">
+            <GrantsModule />
+          </Route>
 
-        <Route exact path="/documents">
-          <DocumentsModule />
-        </Route>
+          <Route exact path="/results">
+            <ResultsModule />
+          </Route>
 
-        <Route exact path="/reports">
-          <ReportsOverviewModule />
-        </Route>
-        <Route exact path="/charts">
-          <ChartsOverviewModule />
-        </Route>
+          <Route exact path="/documents">
+            <DocumentsModule />
+          </Route>
 
-        <Route exact path={"/report/:page/:view?"}>
-          <ReportModule />
-        </Route>
-        <Route exact path="/chart/:page/:view?">
-          <ChartModule />
-        </Route>
+          <Route exact path="/reports">
+            <ProtectedRoute component={ReportsOverviewModule} />
+          </Route>
+          <Route exact path="/charts">
+            <ProtectedRoute component={ChartsOverviewModule} />
+          </Route>
 
-        <Route exact path="/get-sitemap">
-          <SitemapModule />
-        </Route>
-        <Route exact path="/viz/:vizType/:subType?">
-          <VizModule />
-        </Route>
+          <Route exact path="/report/:page/:view?">
+            <ProtectedRoute component={ReportModule} />
+          </Route>
+          <Route exact path="/chart/:page/:view?">
+            <ChartModule />
+          </Route>
 
-        <Route
-          exact
-          path="/location/:code"
-          render={(props: RouteComponentProps<any>) => (
-            <Redirect to={`/location/${props.match.params.code}/overview`} />
-          )}
-        />
+          <Route exact path="/get-sitemap">
+            <SitemapModule />
+          </Route>
+          <Route exact path="/viz/:vizType/:subType?">
+            <VizModule />
+          </Route>
 
-        <Route exact path="/location/:code/:vizType/:subType?">
-          <CountryDetailModule />
-        </Route>
+          <Route
+            exact
+            path="/location/:code"
+            render={(props: RouteComponentProps<any>) => (
+              <Redirect to={`/location/${props.match.params.code}/overview`} />
+            )}
+          />
 
-        <Route
-          exact
-          path="/partner/:code"
-          render={(props: RouteComponentProps<any>) => (
-            <Redirect
-              to={`/partner/${props.match.params.code}/signed/treemap`}
-            />
-          )}
-        />
+          <Route exact path="/location/:code/:vizType/:subType?">
+            <CountryDetailModule />
+          </Route>
 
-        <Route exact path="/partner/:code/:vizType/:subType?">
-          <PartnerDetailModule />
-        </Route>
+          <Route
+            exact
+            path="/partner/:code"
+            render={(props: RouteComponentProps<any>) => (
+              <Redirect
+                to={`/partner/${props.match.params.code}/signed/treemap`}
+              />
+            )}
+          />
 
-        <Route
-          exact
-          path="/grant/:code"
-          render={(props: RouteComponentProps<any>) => (
-            <GrantPeriodRedirect {...props} />
-          )}
-        />
+          <Route exact path="/partner/:code/:vizType/:subType?">
+            <PartnerDetailModule />
+          </Route>
 
-        <Route
-          exact
-          path="/grant/:code/period/:vizType/:subType?"
-          render={(props: RouteComponentProps<any>) => (
-            <GrantPeriodRedirect {...props} />
-          )}
-        />
+          <Route
+            exact
+            path="/grant/:code"
+            render={(props: RouteComponentProps<any>) => (
+              <GrantPeriodRedirect {...props} />
+            )}
+          />
 
-        <Route
-          exact
-          path="/grant/:code/:period"
-          render={(props: RouteComponentProps<any>) => (
-            <Redirect
-              to={`/grant/${props.match.params.code}/${props.match.params.period}/overview`}
-            />
-          )}
-        />
+          <Route
+            exact
+            path="/grant/:code/period/:vizType/:subType?"
+            render={(props: RouteComponentProps<any>) => (
+              <GrantPeriodRedirect {...props} />
+            )}
+          />
 
-        <Route exact path="/grant/:code/:period/:vizType/:subType?">
-          <GrantDetailModule />
-        </Route>
+          <Route
+            exact
+            path="/grant/:code/:period"
+            render={(props: RouteComponentProps<any>) => (
+              <Redirect
+                to={`/grant/${props.match.params.code}/${props.match.params.period}/overview`}
+              />
+            )}
+          />
 
-        <Route exact path="/viz">
-          <Redirect to="/datasets" />
-        </Route>
+          <Route exact path="/grant/:code/:period/:vizType/:subType?">
+            <GrantDetailModule />
+          </Route>
 
-        <V1RouteRedirections />
-      </Switch>
-    </Suspense>
+          <Route exact path="/viz">
+            <Redirect to="/datasets" />
+          </Route>
+
+          <V1RouteRedirections />
+        </Switch>
+      </Suspense>
+    </React.Fragment>
   );
 }

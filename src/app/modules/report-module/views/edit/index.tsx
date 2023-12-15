@@ -25,6 +25,7 @@ import { IFramesArray } from "../create/data";
 
 export function ReportEditView(props: ReportEditViewProps) {
   const { page } = useParams<{ page: string }>();
+  const token = useStoreState((state) => state.AuthToken.value);
 
   const { ref, width } = useResizeObserver<HTMLDivElement>();
 
@@ -58,8 +59,8 @@ export function ReportEditView(props: ReportEditViewProps) {
   }
 
   React.useEffect(() => {
-    fetchReportData({ getId: page });
-  }, [page]);
+    fetchReportData({ token, getId: page });
+  }, [page, token]);
 
   React.useEffect(() => {
     if (width && width !== containerWidth) {

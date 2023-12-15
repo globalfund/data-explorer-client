@@ -16,6 +16,8 @@ import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
 export function ChartModuleToolBox(props: Readonly<ChartToolBoxProps>) {
   const history = useHistory();
   const { page, view } = useParams<{ page: string; view?: string }>();
+
+  const token = useStoreState((state) => state.AuthToken.value);
   const mapping = useStoreState((state) => state.charts.mapping.value);
   const dataset = useStoreState((state) => state.charts.dataset.value);
   const appliedFilters = useStoreState(
@@ -58,11 +60,13 @@ export function ChartModuleToolBox(props: Readonly<ChartToolBoxProps>) {
     };
     if (props.isEditMode && page !== "new") {
       editChart({
+        token,
         patchId: page,
         values: chart,
       });
     } else {
       createChart({
+        token,
         values: chart,
       });
     }

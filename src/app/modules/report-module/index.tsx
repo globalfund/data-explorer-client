@@ -128,6 +128,7 @@ export default function ReportModule() {
   const reportOrder = useStoreState(
     (state) => state.reports.orderData.value.order
   );
+  const token = useStoreState((state) => state.AuthToken.value);
 
   let localPickedCharts: string[] = [];
   localReportState.map((data: any, _i: number) => {
@@ -375,6 +376,7 @@ export default function ReportModule() {
     action({
       patchId: page === "new" ? undefined : page,
       values: {
+        token,
         name: reportName,
         showHeader: headerDetails.showHeader,
         title: headerDetails.showHeader ? headerDetails.title : undefined,

@@ -3,6 +3,7 @@ import { StoreModel } from "app/state/api/interfaces";
 
 import { AppliedFiltersState } from "app/state/api/action-reducers/sync/filters";
 import {
+  AuthTokenState,
   PageHeaderVizDrilldownsState,
   ReportOrderState,
   ToolBoxPanelAggregateByState,
@@ -388,6 +389,7 @@ const storeContent: StoreModel = {
   // sync data path vars
   DataPathSteps: persist(DataPathStepsState),
   DataPathActiveStep: DataPathActiveStep,
+  AuthToken: AuthTokenState,
   // CMS API
   cms: {
     componentsAppBar: persist(componentsAppBar),

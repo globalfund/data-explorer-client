@@ -33,6 +33,8 @@ export default function ReportsGrid(props: Props) {
     }[]
   >([]);
 
+  const token = useStoreState((state) => state.AuthToken.value);
+
   const reports = useStoreState(
     (state) => (state.reports.ReportGetList.crudData ?? []) as any[]
   );
@@ -55,6 +57,7 @@ export default function ReportsGrid(props: Props) {
         ? `"where":{"name":{"like":"${searchStr}.*","options":"i"}},`
         : "";
     loadReports({
+      token,
       storeInCrudData: true,
       filterString: `filter={${value}"order":"${sortByStr} desc"}`,
     });
@@ -82,9 +85,14 @@ export default function ReportsGrid(props: Props) {
     setModalType("");
     setCardId("");
     axios
-      .delete(`${process.env.REACT_APP_API}/report/${cardId}`)
+      .delete(`${process.env.REACT_APP_API}/report/${cardId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then(() => {
         loadReports({
+          token,
           storeInCrudData: true,
           filterString: "filter[order]=createdDate desc",
         });
@@ -97,10 +105,16 @@ export default function ReportsGrid(props: Props) {
     setCardId("");
     axios
       .get(
-        `${process.env.REACT_APP_API}/report/duplicate/${cardId}/${duplicateName}`
+        `${process.env.REACT_APP_API}/report/duplicate/${cardId}/${duplicateName}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       )
       .then(() => {
         loadReports({
+          token,
           storeInCrudData: true,
           filterString: "filter[order]=createdDate desc",
         });

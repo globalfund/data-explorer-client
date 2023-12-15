@@ -22,6 +22,8 @@ export function ReportChartWrapper(props: Props) {
       inChartWrapper: true,
     }
   );
+
+  const token = useStoreState((state) => state.AuthToken.value);
   const loadChart = useStoreActions((actions) => actions.charts.ChartGet.fetch);
   const loadedChart = useStoreState(
     (state) =>
@@ -49,7 +51,7 @@ export function ReportChartWrapper(props: Props) {
   }, [chartFromAPI]);
 
   React.useEffect(() => {
-    loadChart({ getId: props.id });
+    loadChart({ token, getId: props.id });
   }, [props.id]);
 
   React.useEffect(() => {

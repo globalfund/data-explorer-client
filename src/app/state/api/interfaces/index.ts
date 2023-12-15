@@ -1,5 +1,6 @@
 import { Action, Thunk } from "easy-peasy";
 import {
+  AuthTokenModel,
   PageHeaderVizDrilldownsStateModel,
   ReportOrderStateModel,
   ToolBoxPanelAggregateByStateModel,
@@ -61,6 +62,7 @@ import { ChartsAppliedFiltersStateModel } from "../action-reducers/sync/charts/f
 
 export interface RequestValues<T> {
   values?: T;
+  token?: string;
   getId?: string;
   patchId?: string;
   deleteId?: string;
@@ -319,6 +321,7 @@ export interface StoreModel {
   // sync data path vars
   DataPathSteps: DataPathStepsStateModel;
   DataPathActiveStep: DataPathActiveStepStateModel;
+  AuthToken: AuthTokenModel;
   // CMS
   cms: {
     componentsAppBar: CMSApiCallModel;

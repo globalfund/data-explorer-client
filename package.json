@@ -7,6 +7,7 @@
     "url": "https://github.com/globalfund/data-explorer-client.git"
   },
   "dependencies": {
+    "@auth0/auth0-react": "^2.2.4",
     "@craco/craco": "^6.4.3",
     "@devhammed/use-cookie": "^1.1.1",
     "@draft-js-plugins/anchor": "4.1.4",
@@ -28,6 +29,7 @@
     "@turf/bezier-spline": "^6.3.0",
     "@turf/center": "^6.3.0",
     "@turf/helpers": "^6.3.0",
+    "@types/auth0-js": "^9.21.5",
     "@types/d3-shape": "^3.0.2",
     "@types/detect-it": "^4.0.1",
     "@types/draft-js": "0.11.9",
@@ -36,6 +38,7 @@
     "@types/react-csv": "^1.1.2",
     "@types/react-router-hash-link": "^2.4.0",
     "apexcharts": "^3.27.0",
+    "auth0-js": "^9.24.0",
     "axios": "^0.21.3",
     "craco-plugin-react-hot-reload": "^0.1.0",
     "d3-shape": "^3.0.1",

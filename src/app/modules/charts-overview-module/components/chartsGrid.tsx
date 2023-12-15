@@ -26,6 +26,7 @@ export default function ChartsGrid(props: Props) {
   const [modalType, setModalType] = React.useState("");
   const [duplicateName, setDuplicateName] = React.useState("");
 
+  const token = useStoreState((state) => state.AuthToken.value);
   const charts = useStoreState(
     (state) => (state.charts.ChartGetList.crudData ?? []) as any[]
   );
@@ -62,6 +63,7 @@ export default function ChartsGrid(props: Props) {
         ? `"where":{"name":{"like":"${searchStr}.*","options":"i"}},`
         : "";
     loadCharts({
+      token,
       storeInCrudData: true,
       filterString: `filter={${value}"order":"${sortByStr} desc"}`,
     });
@@ -89,9 +91,14 @@ export default function ChartsGrid(props: Props) {
     setModalType("");
     setCardId("");
     axios
-      .delete(`${process.env.REACT_APP_API}/chart/${cardId}`)
+      .delete(`${process.env.REACT_APP_API}/chart/${cardId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then(() => {
         loadCharts({
+          token,
           storeInCrudData: true,
           filterString: "filter[order]=createdDate desc",
         });
@@ -104,10 +111,16 @@ export default function ChartsGrid(props: Props) {
     setCardId("");
     axios
       .get(
-        `${process.env.REACT_APP_API}/chart/duplicate/${cardId}/${duplicateName}`
+        `${process.env.REACT_APP_API}/chart/duplicate/${cardId}/${duplicateName}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       )
       .then(() => {
         loadCharts({
+          token,
           storeInCrudData: true,
           filterString: "filter[order]=createdDate desc",
         });
