@@ -55,22 +55,15 @@ export const APIModel = <QueryModel, ResponseModel>(
   }),
   fetch: thunk(async (actions, query: RequestValues<QueryModel>) => {
     actions.onRequest();
-    const token = get(query, "token", undefined);
-    let Authorization: string | undefined = undefined;
-    if (token) {
-      Authorization = `Bearer ${token}`;
-    }
+    const headers: any = {
+      "Content-Type": "application/json",
+      ...(process.env.REACT_APP_CMS_API && url.includes(process.env.REACT_APP_CMS_API) ? {"api-key": process.env.REACT_APP_CMS_TOKEN} : {}),
+    };
+    if (url.includes('content/items')) console.log('debuggy - querying url', url)
     axios
       .get(
-        `${url}${query.getId ? "/" + query.getId : ""}${
-          query.filterString ? "?" : ""
-        }${query.filterString ?? ""}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization,
-          },
-        }
+        `${url}${query.getId ? "/" + query.getId : ""}${query.filterString ? "?" : ""}${query.filterString ?? ""}`,
+        { headers }
       )
       .then(
         (resp: AxiosResponse) =>

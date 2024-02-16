@@ -3,7 +3,7 @@ import { CMSApiCallModel } from "app/state/api/interfaces";
 
 const componentsChartsBudgets: CMSApiCallModel = {
   ...APIModel(
-    `${process.env.REACT_APP_CMS_API}/singletons/get/componentsChartsBudgets?token=${process.env.REACT_APP_CMS_TOKEN}`
+    `${process.env.REACT_APP_CMS_API}/content/item/componentsChartsBudgets`
   ),
 };
 

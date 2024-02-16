@@ -130,7 +130,11 @@
     "build": "craco build",
     "test": "craco test",
     "eject": "craco eject",
-    "upgrade-all": "yarn-upgrade-all"
+    "upgrade-all": "yarn-upgrade-all",
+    "docker-dev": "craco start",
+    "docker-staging": "cp -r /app/client/build /app/client/staging && tail -f /dev/null",
+    "docker-test": "cp -r /app/client/build /app/client/test && tail -f /dev/null",
+    "docker-prod": "cp -r /app/client/build /app/client/prod && tail -f /dev/null"
   },
   "browserslist": {
     "production": [
