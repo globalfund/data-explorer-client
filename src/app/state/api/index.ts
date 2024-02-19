@@ -55,10 +55,21 @@ export const APIModel = <QueryModel, ResponseModel>(
   }),
   fetch: thunk(async (actions, query: RequestValues<QueryModel>) => {
     actions.onRequest();
-    const headers: any = {
+    const token = get(query, "token", undefined);
+    let headers: any = {
       "Content-Type": "application/json",
-      ...(process.env.REACT_APP_CMS_API && url.includes(process.env.REACT_APP_CMS_API) ? {"api-key": process.env.REACT_APP_CMS_TOKEN} : {}),
     };
+    if (process.env.REACT_APP_CMS_API && url.includes(process.env.REACT_APP_CMS_API)) {
+      headers = {
+        ...headers,
+        "api-key": process.env.REACT_APP_CMS_TOKEN,
+      };
+    } else if (token) {
+      headers = {
+        ...headers,
+        Authorization: `Bearer ${token}`,
+      };
+    }
     if (url.includes('content/items')) console.log('debuggy - querying url', url)
     axios
       .get(
@@ -93,12 +104,10 @@ export const APIModel = <QueryModel, ResponseModel>(
   }),
   post: thunk(async (actions, query: RequestValues<QueryModel>) => {
     actions.onRequest();
-    const token = get(query, "values.token", undefined);
+    const token = get(query, "token", undefined);
     let Authorization: string | undefined = undefined;
     if (token) {
       Authorization = `Bearer ${token}`;
-      // @ts-ignore
-      if (query.values && query.values.token) delete query.values.token;
     }
     axios
       .post(url, query.values, {

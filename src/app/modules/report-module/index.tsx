@@ -374,9 +374,9 @@ export default function ReportModule() {
   const onSave = () => {
     const action = page === "new" ? reportCreate : reportEdit;
     action({
+      token,
       patchId: page === "new" ? undefined : page,
       values: {
-        token,
         name: reportName,
         showHeader: headerDetails.showHeader,
         title: headerDetails.showHeader ? headerDetails.title : undefined,
