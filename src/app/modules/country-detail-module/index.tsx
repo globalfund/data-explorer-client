@@ -83,13 +83,13 @@ export default function CountryDetail() {
     (store) => store.EligibilityCountry.clear
   );
   const countrySummaryCMSAction = useStoreActions(
-    (actions) => actions.cms.countrySummary.post
+    (actions) => actions.cms.countrySummary.fetch
   );
   const clearCountrySummaryCMS = useStoreActions(
     (store) => store.cms.countrySummary.clear
   );
   const notesDisclaimersCMSAction = useStoreActions(
-    (actions) => actions.cms.notesAndDisclaimers.post
+    (actions) => actions.cms.notesAndDisclaimers.fetch
   );
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
