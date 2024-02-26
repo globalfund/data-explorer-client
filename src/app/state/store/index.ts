@@ -2,21 +2,7 @@ import { createStore, persist } from "easy-peasy";
 import { StoreModel } from "app/state/api/interfaces";
 
 import { AppliedFiltersState } from "app/state/api/action-reducers/sync/filters";
-import {
-  PageHeaderVizDrilldownsState,
-  ToolBoxPanelAggregateByState,
-  ToolBoxPanelAllocationsPeriodState,
-  ToolBoxPanelBudgetFlowDrilldownSelectors,
-  ToolBoxPanelBudgetTimeCycleDrilldownYearSelector,
-  ToolBoxPanelDisbursementsSliderValues,
-  ToolBoxPanelDonorMapTypeState,
-  ToolBoxPanelDonorMapViewState,
-  ToolBoxPanelEligibilityAdvancedCheckboxState,
-  ToolBoxPanelEligibilityYearState,
-  ToolBoxPanelInvestmentsMapViewState,
-  ToolBoxPanelPFPeriodState,
-  ToolBoxPanelResultsYearState,
-} from "app/state/api/action-reducers/sync";
+import { CMSData } from "app/state/api/action-reducers/sync";
 
 import GrantsList from "app/state/api/action-reducers/viz/grantsList";
 import Allocations, {
@@ -167,10 +153,6 @@ import modulesGrantDetail from "app/state/api/action-reducers/cms/modulesGrantDe
 import modulesGrants from "app/state/api/action-reducers/cms/modulesGrants";
 import countrySummary from "../api/action-reducers/cms/countrySummary";
 import notesAndDisclaimers from "../api/action-reducers/cms/notesAndDisclaimers";
-import {
-  DataPathActiveStep,
-  DataPathStepsState,
-} from "../api/action-reducers/sync/dataPath";
 import PledgesContributionsTable from "../api/action-reducers/viz/pledgesContributionsTable";
 import {
   EligibilityLocation,
@@ -338,29 +320,8 @@ const storeContent: StoreModel = {
   DonorFilterOptions: persist(DonorFilterOptions),
   // sync state variables
   AppliedFiltersState: persist(AppliedFiltersState),
-  ToolBoxPanelPFPeriodState: persist(ToolBoxPanelPFPeriodState),
-  PageHeaderVizDrilldownsState: persist(PageHeaderVizDrilldownsState),
-  ToolBoxPanelAggregateByState: persist(ToolBoxPanelAggregateByState),
-  ToolBoxPanelResultsYearState: persist(ToolBoxPanelResultsYearState),
-  ToolBoxPanelDonorMapTypeState: persist(ToolBoxPanelDonorMapTypeState),
-  ToolBoxPanelDonorMapViewState: persist(ToolBoxPanelDonorMapViewState),
-  ToolBoxPanelEligibilityYearState: persist(ToolBoxPanelEligibilityYearState),
-  ToolBoxPanelInvestmentsMapViewState: persist(
-    ToolBoxPanelInvestmentsMapViewState
-  ),
-  ToolBoxPanelAllocationsPeriodState: persist(
-    ToolBoxPanelAllocationsPeriodState
-  ),
-  ToolBoxPanelDisbursementsSliderValues,
-  ToolBoxPanelEligibilityAdvancedCheckboxState: persist(
-    ToolBoxPanelEligibilityAdvancedCheckboxState
-  ),
-  ToolBoxPanelBudgetFlowDrilldownSelectors,
-  ToolBoxPanelBudgetTimeCycleDrilldownYearSelector,
-  // sync data path vars
-  DataPathSteps: persist(DataPathStepsState),
-  DataPathActiveStep: DataPathActiveStep,
   // CMS API
+  CMSData: persist(CMSData),
   cms: {
     componentsAppBar: persist(componentsAppBar),
     componentsTable: persist(componentsTable),

@@ -1,13 +1,13 @@
 import React from "react";
 import isEqual from "lodash/isEqual";
 import { useUnmount, useUpdateEffect } from "react-use";
-import { useHistory, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useComponentWillMount } from "app/hooks/useCompWillMount";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 
 export function useUrlFilters(): null {
-  const history = useHistory();
+  const nav = useNavigate();
   const location = useLocation();
 
   const data = useStoreState((state) => state.AppliedFiltersState);
@@ -162,8 +162,8 @@ export function useUrlFilters(): null {
     }
 
     const queryString = decodeURIComponent(currentUrlParams.toString());
-    history.push({
-      pathname: history.location.pathname,
+    nav({
+      pathname: location.pathname,
       search: queryString,
     });
   }, [data]);

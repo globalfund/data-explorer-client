@@ -1,20 +1,6 @@
 import { Action, Thunk } from "easy-peasy";
-import {
-  PageHeaderVizDrilldownsStateModel,
-  ToolBoxPanelAggregateByStateModel,
-  ToolBoxPanelAllocationsPeriodStateModel,
-  ToolBoxPanelBudgetFlowDrilldownSelectorsModel,
-  ToolBoxPanelBudgetTimeCycleDrilldownYearSelectorModel,
-  ToolBoxPanelDisbursementsSliderValuesModel,
-  ToolBoxPanelDonorMapTypeStateModel,
-  ToolBoxPanelDonorMapViewStateModel,
-  ToolBoxPanelEligibilityAdvancedCheckboxStateModel,
-  ToolBoxPanelEligibilityYearStateModel,
-  ToolBoxPanelInvestmentsMapViewStateModel,
-  ToolBoxPanelPFPeriodStateModel,
-  ToolBoxPanelResultsYearStateModel,
-} from "app/state/api/action-reducers/sync";
-import { AppliedFiltersStateModel } from "../action-reducers/sync/filters";
+import { CMSDataModel } from "app/state/api/action-reducers/sync";
+import { AppliedFiltersStateModel } from "app/state/api/action-reducers/sync/filters";
 import {
   CMSApiComponentsAppBar,
   CMSApiComponentsChartsBudgets,
@@ -45,10 +31,6 @@ import {
   CMSApiNotesAndDisclaimers,
   CMSApiModulesFundingRequests,
 } from "app/state/api/interfaces/cms";
-import {
-  DataPathActiveStepStateModel,
-  DataPathStepsStateModel,
-} from "../action-reducers/sync/dataPath";
 
 export interface RequestValues<T> {
   values?: T;
@@ -253,28 +235,12 @@ export interface StoreModel {
   DonorFilterOptions: ApiCallModel;
   // sync state variables
   AppliedFiltersState: AppliedFiltersStateModel;
-  ToolBoxPanelPFPeriodState: ToolBoxPanelPFPeriodStateModel;
-  PageHeaderVizDrilldownsState: PageHeaderVizDrilldownsStateModel;
-  ToolBoxPanelAggregateByState: ToolBoxPanelAggregateByStateModel;
-  ToolBoxPanelResultsYearState: ToolBoxPanelResultsYearStateModel;
-  ToolBoxPanelDonorMapTypeState: ToolBoxPanelDonorMapTypeStateModel;
-  ToolBoxPanelDonorMapViewState: ToolBoxPanelDonorMapViewStateModel;
-  ToolBoxPanelEligibilityYearState: ToolBoxPanelEligibilityYearStateModel;
-  ToolBoxPanelAllocationsPeriodState: ToolBoxPanelAllocationsPeriodStateModel;
-  ToolBoxPanelInvestmentsMapViewState: ToolBoxPanelInvestmentsMapViewStateModel;
-  ToolBoxPanelDisbursementsSliderValues: ToolBoxPanelDisbursementsSliderValuesModel;
-  ToolBoxPanelBudgetFlowDrilldownSelectors: ToolBoxPanelBudgetFlowDrilldownSelectorsModel;
-  ToolBoxPanelEligibilityAdvancedCheckboxState: ToolBoxPanelEligibilityAdvancedCheckboxStateModel;
-  ToolBoxPanelBudgetTimeCycleDrilldownYearSelector: ToolBoxPanelBudgetTimeCycleDrilldownYearSelectorModel;
-  // sync data path vars
-  DataPathSteps: DataPathStepsStateModel;
-  DataPathActiveStep: DataPathActiveStepStateModel;
   // CMS
+  CMSData: CMSDataModel;
   cms: {
     componentsAppBar: CMSApiCallModel;
     componentsTable: CMSApiCallModel;
     componentsDialogBox: CMSApiCallModel;
-
     componentsChartsBudgets: CMSApiCallModel;
     componentsChartsCommon: CMSApiCallModel;
     componentsChartsEligibility: CMSApiCallModel;
@@ -293,7 +259,6 @@ export interface StoreModel {
     componentsSearch: CMSApiCallModel;
     componentsSlideInPanel: CMSApiCallModel;
     componentsSidebar: CMSApiCallModel;
-
     modulesLanding: CMSApiCallModel;
     modulesAbout: CMSApiCallModel;
     modulesCommon: CMSApiCallModel;

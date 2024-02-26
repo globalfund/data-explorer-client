@@ -1,20 +1,18 @@
-/// <reference types="styled-components/cssprop" />
-
 import React from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 import "./index.css";
-import { App } from "app";
+import App from "app";
+import Providers from "app/Providers";
+import reportWebVitals from "./reportWebVitals";
 
-// this import looks unused; it isn't so please do not remove
-// eslint-disable-next-line @typescript-eslint/no-unused-vars,import/no-unresolved
-import * as _ from "styled-components/cssprop";
+const root = ReactDOM.createRoot(
+  document.getElementById("root") as HTMLElement
+);
 
-import reportWebVitals from "reportWebVitals";
-
-import * as serviceWorker from "./serviceWorker";
-
-ReactDOM.render(<App />, document.getElementById("root"));
+root.render(
+  <Providers>
+    <App />
+  </Providers>
+);
 
 reportWebVitals();
-
-serviceWorker.unregister();

@@ -3,7 +3,8 @@ import get from "lodash/get";
 import find from "lodash/find";
 import { useLocation } from "react-router-dom";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { FilterGroupOptionModel } from "app/components/ToolBoxPanel/components/filters/data";
+
+interface FilterGroupOptionModel {}
 
 interface UseFilterOptionsProps {
   loadFilterOptions?: boolean;
@@ -65,10 +66,6 @@ export function useFilterOptions(
   const getDonors = useStoreActions((store) => store.DonorFilterOptions.fetch);
   const donors = useStoreState((state) =>
     get(state.DonorFilterOptions.data, "options", [])
-  );
-
-  const donorsMapView = useStoreState(
-    (state) => state.ToolBoxPanelDonorMapViewState.value
   );
 
   const documentTypes = [
@@ -158,10 +155,7 @@ export function useFilterOptions(
       "Grant Status": status,
       "Replenishment Periods": replenishmentPeriods,
       "Document Types": documentTypes,
-      Donors:
-        location.pathname === "/viz/pledges-contributions/map"
-          ? get(find(donors, { label: donorsMapView }), "subOptions", donors)
-          : donors,
+      Donors: donors,
       "Eligibility Status": eligibilityStatusCodelist,
       "Disease Burden": EligibilityDiseaseBurdenCodelist,
       "Eligibility Years": EligibilityYearOptions.map((item: string) => ({

@@ -1,44 +1,24 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "baseUrl": "src",
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": "src",
-    "noFallthroughCasesInSwitch": true
+    "paths": {
+      "@mui/styled-engine": ["./node_modules/@mui/styled-engine-sc"]
+    }
   },
-  "include": [
-    "src"
-  ],
-  "exclude": [
-    "build",
-    "scripts",
-    "config",
-    ".storybook",
-    "node_modules",
-    "**/story.tsx",
-    "**/*.spec.ts",
-    "@nivo/bar",
-    ".vscode",
-    "cypress",
-    ".history",
-    "e2e",
-    "etc",
-    "public",
-    ".git"
-  ]
+  "include": ["src"]
 }
