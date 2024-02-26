@@ -8,6 +8,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Container from "@mui/material/Container";
 import IconButton from "@mui/material/IconButton";
 import IconSearch from "@mui/icons-material/Search";
+import { HeaderMenu } from "app/components/header-menu";
 import { ReactComponent as HeaderToolbarLogo } from "app/assets/vectors/HeaderToolbarLogo.svg";
 
 export const Header: React.FC = () => {
@@ -43,9 +44,10 @@ export const Header: React.FC = () => {
                 <Tooltip title="Search">
                   <IconButton
                     sx={{
-                      padding: "4px",
+                      padding: 0,
                       background: colors.primary.black,
                       "> svg": {
+                        transform: "scale(0.7)",
                         color: colors.primary.white,
                       },
                       "&:hover": {
@@ -61,7 +63,7 @@ export const Header: React.FC = () => {
                   </IconButton>
                 </Tooltip>
               </Box>
-              <Box></Box>
+              <HeaderMenu />
             </Box>
           </Toolbar>
         </Container>

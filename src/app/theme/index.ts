@@ -151,7 +151,7 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: "Finlandica",
+    fontFamily: "Inter, sans-serif",
     h1: {
       fontSize: "64px",
       fontWeight: "400",
@@ -257,8 +257,8 @@ const theme = createTheme({
     MuiPopover: {
       styleOverrides: {
         paper: {
-          borderRadius: "20px",
-          boxShadow: colors.shadows.main,
+          borderRadius: 0,
+          boxShadow: "none",
         },
       },
     },
