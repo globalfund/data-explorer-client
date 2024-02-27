@@ -5,13 +5,21 @@ import AppBar from "@mui/material/AppBar";
 import { NavLink } from "react-router-dom";
 import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
+import { Search } from "app/components/search";
 import Container from "@mui/material/Container";
 import IconButton from "@mui/material/IconButton";
+import IconClose from "@mui/icons-material/Close";
 import IconSearch from "@mui/icons-material/Search";
 import { HeaderMenu } from "app/components/header-menu";
 import { ReactComponent as HeaderToolbarLogo } from "app/assets/vectors/HeaderToolbarLogo.svg";
 
 export const Header: React.FC = () => {
+  const [searchOpen, setSearchOpen] = React.useState(false);
+
+  const onSearchBtnClick = () => {
+    setSearchOpen(!searchOpen);
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -41,10 +49,33 @@ export const Header: React.FC = () => {
                   justifyContent: "flex-end",
                 }}
               >
-                <Tooltip title="Search">
+                {searchOpen && (
+                  <Box
+                    sx={{
+                      width: "500px",
+                      "#search-container": {
+                        padding: "0 10px",
+                      },
+                      "#search-category-dropdown": {
+                        display: "none",
+                      },
+                      "#search-results-container": {
+                        top: "35px",
+                      },
+                      "> div": {
+                        width: "100%",
+                      },
+                    }}
+                  >
+                    <Search hocClose={() => setSearchOpen(false)} />
+                  </Box>
+                )}
+                <Tooltip title={!searchOpen ? "Search" : "Close"}>
                   <IconButton
+                    onClick={onSearchBtnClick}
                     sx={{
                       padding: 0,
+                      marginLeft: "10px",
                       background: colors.primary.black,
                       "> svg": {
                         transform: "scale(0.7)",
@@ -59,7 +90,7 @@ export const Header: React.FC = () => {
                       },
                     }}
                   >
-                    <IconSearch />
+                    {!searchOpen ? <IconSearch /> : <IconClose />}
                   </IconButton>
                 </Tooltip>
               </Box>
