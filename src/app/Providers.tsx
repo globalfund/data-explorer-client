@@ -4,7 +4,7 @@ import { store } from "app/state/store";
 import { HelmetProvider } from "react-helmet-async";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
-import { PageLoader } from "app/components/pageLoader";
+import { PageLoader } from "app/components/page-loader";
 import { StoreProvider, useStoreRehydrated } from "easy-peasy";
 
 interface ProviderProps {

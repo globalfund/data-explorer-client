@@ -155,63 +155,63 @@ const theme = createTheme({
     h1: {
       fontSize: "64px",
       fontWeight: "400",
-      color: colors.primary.blue,
+      color: colors.primary.white,
     },
     h2: {
       fontSize: "48px",
       fontWeight: "400",
-      color: colors.primary.blue,
+      color: colors.primary.white,
     },
     h3: {
       fontSize: "36px",
       fontWeight: "400",
-      color: colors.primary.blue,
+      color: colors.primary.white,
     },
     h4: {
       fontSize: "32px",
       fontWeight: "700",
-      color: colors.primary.blue,
+      color: colors.primary.white,
     },
     h5: {
       fontSize: "24px",
       fontWeight: "700",
-      color: colors.primary.blue,
+      color: colors.primary.white,
     },
     h6: {
       fontSize: "18px",
       fontWeight: "700",
-      color: colors.primary.blue,
+      color: colors.primary.white,
     },
     subtitle1: {
       fontSize: "16px",
       fontWeight: "700",
-      color: colors.primary.blue,
+      color: colors.primary.white,
     },
     subtitle2: {
       fontSize: "14px",
       fontWeight: "700",
-      color: colors.primary.blue,
+      color: colors.primary.white,
     },
     body1: {
       fontSize: "16px",
       fontWeight: "400",
-      color: colors.primary.blue,
+      color: colors.primary.white,
     },
     body2: {
       fontSize: "14px",
       fontWeight: "400",
-      color: colors.primary.blue,
+      color: colors.primary.white,
     },
     button: {
       fontSize: "14px",
       fontWeight: "700",
-      color: colors.primary.blue,
+      color: colors.primary.white,
     },
     overline: {
       fontSize: "12px",
       fontWeight: "400",
       textTransform: "none",
-      color: colors.primary.blue,
+      color: colors.primary.white,
     },
   },
   components: {
@@ -244,13 +244,6 @@ const theme = createTheme({
           "@media (max-width: 768px)": {
             padding: "0 24px",
           },
-        },
-      },
-    },
-    MuiSvgIcon: {
-      styleOverrides: {
-        root: {
-          color: colors.primary.blue,
         },
       },
     },
@@ -432,6 +425,7 @@ const GRADIENT = "linear-gradient(90deg, #cdd4df 0%, #252c34 100%)";
 export const appColors = {
   COMMON: {
     WHITE,
+    BLACK,
     PRIMARY_COLOR_1,
     PRIMARY_COLOR_2,
     SECONDARY_COLOR_1,

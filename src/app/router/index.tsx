@@ -1,6 +1,6 @@
 import React from "react";
 import { ROUTES } from "app/router/data";
-import { PageLoader } from "app/components/pageLoader";
+import { PageLoader } from "app/components/page-loader";
 import {
   RouteObject,
   RouterProvider,
