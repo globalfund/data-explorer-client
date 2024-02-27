@@ -4,7 +4,6 @@ import { appColors } from "app/theme";
 import * as echarts from "echarts/core";
 import { SVGRenderer } from "echarts/renderers";
 import { formatLocale } from "app/utils/formatLocale";
-import { TooltipComponent } from "echarts/components";
 import { onEchartResize } from "app/utils/onEchartResize";
 import { TreemapProps } from "app/components/charts/treemap/data";
 import {
@@ -12,7 +11,7 @@ import {
   TreemapChart as EchartsTreemap,
 } from "echarts/charts";
 
-echarts.use([TooltipComponent, EchartsTreemap, SVGRenderer]);
+echarts.use([EchartsTreemap, SVGRenderer]);
 
 export const Treemap: React.FC<TreemapProps> = (props: TreemapProps) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
