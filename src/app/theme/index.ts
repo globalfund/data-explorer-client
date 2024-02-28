@@ -824,4 +824,10 @@ export const appColors = {
     ],
     CHART_ELIGIBILITY_COLORS: ["#00B5AE", "#ABC7E7", "#013E77", "#CFD4DA"],
   },
+  LINE_CHART: {
+    AXIS_COLOR: "#6E7079",
+    CHART_TEXT_COLOR: "#6E7079",
+    CHART_BG_COLOR: SECONDARY_COLOR_10,
+    CHART_LINE_COLORS: ["#EC1642", "#FAC858", "#5470C6", "#575757"],
+  },
 };
