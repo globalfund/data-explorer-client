@@ -189,7 +189,7 @@ export const BarChart: React.FC<BarChartProps> = (props: BarChartProps) => {
   return (
     <React.Fragment>
       <Box
-        id="treemap-chart"
+        id="bar-chart"
         ref={containerRef}
         width="100%"
         height="400px"

@@ -111,7 +111,7 @@ export const LineChart: React.FC<LineChartProps> = (props: LineChartProps) => {
   return (
     <React.Fragment>
       <Box
-        id="treemap-chart"
+        id="line-chart"
         ref={containerRef}
         width="100%"
         height="480px"

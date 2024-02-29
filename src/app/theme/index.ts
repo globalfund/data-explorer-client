@@ -830,4 +830,7 @@ export const appColors = {
     CHART_BG_COLOR: SECONDARY_COLOR_10,
     CHART_LINE_COLORS: ["#EC1642", "#FAC858", "#5470C6", "#575757"],
   },
+  RADIAL_CHART: {
+    ITEM_COLORS: ["#0A2840", "#013E77", "#00B5AE", "#C3EDFD", "#F3F5F4"],
+  },
 };

@@ -4,23 +4,23 @@ const ranges = [
   {
     divider: 1e9,
     suffix: "Bn",
-    abbr_en: "€ bn",
-    abbr_fi: "€ mrd.",
-    abbr_se: "€ miljarder",
+    abbr_en: " bln",
+    abbr_fi: " mrd.",
+    abbr_se: " miljarder",
   },
   {
     divider: 1e6,
     suffix: "MM",
-    abbr_en: "€ mill.",
-    abbr_fi: "€ milj.",
-    abbr_se: "€ miljoner",
+    abbr_en: " mln",
+    abbr_fi: " milj.",
+    abbr_se: " miljoner",
   },
   {
     divider: 1e3,
     suffix: "k",
-    abbr_en: "€ K",
-    abbr_fi: "€ tuhatta",
-    abbr_se: "€ tusen",
+    abbr_en: " K",
+    abbr_fi: " tuhatta",
+    abbr_se: " tusen",
   },
 ];
 
@@ -64,10 +64,11 @@ export function getRange(
 
 export function getFinancialValueWithMetricPrefix(
   n: number,
-  rangeIndex: number
+  rangeIndex: number,
+  toFixed = 0
 ): string {
   if (rangeIndex) {
-    return (n / ranges[rangeIndex].divider).toFixed(0).toString();
+    return (n / ranges[rangeIndex].divider).toFixed(toFixed).toString();
   }
   for (const range of ranges) {
     if (n >= range.divider) {
