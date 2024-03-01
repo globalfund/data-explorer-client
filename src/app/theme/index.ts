@@ -833,4 +833,13 @@ export const appColors = {
   RADIAL_CHART: {
     ITEM_COLORS: ["#0A2840", "#013E77", "#00B5AE", "#C3EDFD", "#F3F5F4"],
   },
+  SANKEY_CHART: {
+    NODE_COLOR: "#252C34",
+    LINK_COLORS: ["#3B5366", "#013E77", "#33C4BE"],
+  },
+  TOOLTIP: {
+    TEXT_COLOR: "#262C34",
+    BORDER_COLOR: "#DFE3E5",
+    BACKGROUND_COLOR: WHITE,
+  },
 };
