@@ -842,4 +842,7 @@ export const appColors = {
     BORDER_COLOR: "#DFE3E5",
     BACKGROUND_COLOR: WHITE,
   },
+  PIE_CHART: {
+    ITEM_COLORS: ["#0A2840", "#013E77", "#00B5AE", "#C3EDFD", "#F3F5F4"],
+  },
 };
