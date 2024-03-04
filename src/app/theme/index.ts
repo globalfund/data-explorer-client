@@ -189,7 +189,7 @@ const theme = createTheme({
     },
     subtitle2: {
       fontSize: "14px",
-      fontWeight: "700",
+      fontWeight: "400",
       color: colors.primary.black,
     },
     body1: {
@@ -844,5 +844,11 @@ export const appColors = {
   },
   PIE_CHART: {
     ITEM_COLORS: ["#0A2840", "#013E77", "#00B5AE", "#C3EDFD", "#F3F5F4"],
+  },
+  CHART_BLOCK_CYCLES: {
+    BUTTON_TEXT_COLOR: BLACK,
+    BUTTON_BACKGROUND_COLOR: "#F1F3F4",
+    BUTTON_ACTIVE_TEXT_COLOR: WHITE,
+    BUTTON_ACTIVE_BACKGROUND_COLOR: BLACK,
   },
 };

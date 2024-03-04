@@ -125,7 +125,7 @@ export const CategoryButton = styled(Button)`
   background: ${(props) =>
     props.theme.anchorEl
       ? appColors.SEARCH.DROPDOWN_BUTTON_BACKGROUND_HOVER_COLOR
-      : appColors.SEARCH.DROPDOWN_BUTTON_TEXT_HOVER_COLOR};
+      : appColors.SEARCH.DROPDOWN_BUTTON_BACKGROUND_COLOR};
 
   &:hover {
     color: ${appColors.SEARCH.DROPDOWN_BUTTON_TEXT_HOVER_COLOR};

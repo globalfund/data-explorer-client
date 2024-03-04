@@ -4,7 +4,7 @@ import { Search } from "app/components/search";
 import { withRouter } from "storybook-addon-react-router-v6";
 
 const meta = {
-  title: "Search",
+  title: "Components/Search",
   component: Search,
   decorators: [withRouter],
   parameters: {
