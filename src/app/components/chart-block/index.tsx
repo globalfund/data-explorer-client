@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
 import { ChartBlockProps } from "app/components/chart-block/data";
 import { ChartBlockCycles } from "app/components/chart-block/components/cycles";
+import { ChartBlockButtonToolbar } from "app/components/chart-block/components/button-toolbar";
 
 export const ChartBlock: React.FC<ChartBlockProps> = (
   props: ChartBlockProps
@@ -63,6 +64,8 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
           </Box>
         )}
       </Box>
+      <Box width="100%" minHeight="400px" />
+      <ChartBlockButtonToolbar />
     </Box>
   );
 };
