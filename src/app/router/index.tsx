@@ -10,7 +10,6 @@ import {
 export default function Router() {
   const setUpRouter = () => {
     const result: RouteObject[] = ROUTES;
-
     return createBrowserRouter(result);
   };
 
