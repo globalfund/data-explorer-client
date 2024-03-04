@@ -4,7 +4,7 @@ import { Header } from "app/components/header";
 import { withRouter } from "storybook-addon-react-router-v6";
 
 const meta = {
-  title: "Header",
+  title: "Components/Header",
   component: Header,
   decorators: [withRouter],
   parameters: {

@@ -5,7 +5,7 @@ import { withRouter } from "storybook-addon-react-router-v6";
 import { STORY_DATA_VARIANT_1 } from "app/components/charts/sankey/data";
 
 const meta = {
-  title: "Sankey chart",
+  title: "Charts/Sankey chart",
   component: SankeyChart,
   decorators: [withRouter],
   parameters: {

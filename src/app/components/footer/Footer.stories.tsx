@@ -4,7 +4,7 @@ import { Footer } from "app/components/footer";
 import { withRouter } from "storybook-addon-react-router-v6";
 
 const meta = {
-  title: "Footer",
+  title: "Components/Footer",
   component: Footer,
   decorators: [withRouter],
   parameters: {
