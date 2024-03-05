@@ -244,11 +244,11 @@ export function SearchLayout(props: SearchLayoutProps) {
       )}
       <Container
         id="search-container"
-        // @ts-ignore
-        focused={open}
-        withCatMenu={
-          !isMobile && Boolean(props.category) && Boolean(props.setCategory)
-        }
+        theme={{
+          focused: open,
+          withCatMenu:
+            !isMobile && Boolean(props.category) && Boolean(props.setCategory),
+        }}
       >
         {isMobile && open && (
           <MobileBackButton
@@ -301,7 +301,7 @@ export function SearchLayout(props: SearchLayoutProps) {
             <CloseIcon />
           </IconButton>
         )}
-        <SearchIcon />
+        <SearchIcon htmlColor={appColors.COMMON.BLACK} />
       </Container>
       {open && (
         <ClickAwayListener

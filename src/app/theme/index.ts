@@ -178,7 +178,7 @@ const theme = createTheme({
       color: colors.primary.black,
     },
     h6: {
-      fontSize: "18px",
+      fontSize: "20px",
       fontWeight: "700",
       color: colors.primary.black,
     },
