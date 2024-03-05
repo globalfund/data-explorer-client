@@ -32,7 +32,8 @@ export const Treemap: React.FC<TreemapProps> = (props: TreemapProps) => {
           top: 0,
           left: 0,
           right: 0,
-          bottom: 0,
+          bottom: 16,
+          roam: false,
           leafDepth: 1,
           type: "treemap",
           data: props.data,
@@ -49,8 +50,8 @@ export const Treemap: React.FC<TreemapProps> = (props: TreemapProps) => {
                 fontFamily: "Inter, sans-serif",
                 formatter: (params: any) => {
                   return [
-                    `{name| ${params.data.name}}`,
-                    `{value| ${formatLocale(params.value)}}`,
+                    `{name|${params.data.name}}`,
+                    `{value|${formatLocale(params.value)}}`,
                   ].join("\n");
                 },
                 rich: {
@@ -82,14 +83,14 @@ export const Treemap: React.FC<TreemapProps> = (props: TreemapProps) => {
                 fontFamily: "Inter, sans-serif",
                 formatter: (params: any) => {
                   return [
-                    `{name| ${params.data.name}}`,
-                    `{value| ${formatLocale(params.value)}}`,
+                    `{name|${params.data.name}}`,
+                    `{value|${formatLocale(params.value)}}`,
                   ].join("\n");
                 },
                 rich: {
                   name: {
+                    lineHeight: 25,
                     fontWeight: "bold",
-                    lineHeight: isMultilevel ? 15 : 25,
                     fontSize: isMultilevel ? "14px" : "16px",
                   },
                   value: {

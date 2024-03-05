@@ -11,7 +11,7 @@ export const HomeHero: React.FC = () => {
         The Global Fund invests US$4 billion a year to defeat HIV, TB and
         Malaria and ensure a healthier, safer, equitable future for all.
       </Typography>
-      <Typography variant="body1" maxWidth="60%">
+      <Typography variant="body1" maxWidth="60%" lineHeight={1.2}>
         We unite the world to find solutions that have the most impact, and we
         take them to scale worldwide. It’s working. We won’t stop until the job
         is finished.

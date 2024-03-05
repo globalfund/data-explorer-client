@@ -5,9 +5,9 @@ export const Scrollable = styled.div`
   display: flex;
   padding: 10px;
   max-width: 100%;
-  max-height: calc(60vh - 50px);
   overflow-x: auto;
   overflow-y: auto;
+  max-height: calc(60vh - 50px);
 
   &::-webkit-scrollbar {
     width: 4px;
@@ -52,7 +52,7 @@ export const RowName = styled.div`
   word-wrap: break-word;
   justify-content: flex-end;
   color: ${appColors.HEATMAP.CHART_TEXT_COLOR};
-  background: ${appColors.HEATMAP.CHART_BG_COLOR};
+  // background: ${appColors.HEATMAP.CHART_BG_COLOR};
 `;
 
 export const ColName = styled.div`

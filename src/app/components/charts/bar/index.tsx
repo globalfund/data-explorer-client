@@ -13,6 +13,7 @@ import {
   getFinancialValueWithMetricPrefix,
 } from "app/utils/getFinancialValueWithMetricPrefix";
 import {
+  GridComponentOption,
   XAXisComponentOption,
   YAXisComponentOption,
   LegendComponentOption,
@@ -24,7 +25,7 @@ export const BarChart: React.FC<BarChartProps> = (props: BarChartProps) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   const range = React.useMemo(() => {
-    return getRange(props.data, ["exclusive", "other"]);
+    return getRange(props.data, ["value", "value1"]);
   }, [props.data]);
 
   const xAxisKeys = React.useMemo(() => {
@@ -46,10 +47,6 @@ export const BarChart: React.FC<BarChartProps> = (props: BarChartProps) => {
     return [values, values1];
   }, [props.data]);
 
-  const max = React.useMemo(() => {
-    return Math.max(...seriesData[0], ...(seriesData[1] ? seriesData[1] : []));
-  }, [seriesData]);
-
   React.useEffect(() => {
     if (containerRef.current) {
       const chart = echarts.init(containerRef.current, undefined, {
@@ -58,16 +55,23 @@ export const BarChart: React.FC<BarChartProps> = (props: BarChartProps) => {
 
       const option: echarts.ComposeOption<
         | BarSeriesOption
+        | GridComponentOption
         | YAXisComponentOption
         | XAXisComponentOption
         | LegendComponentOption
       > = {
+        grid: {
+          top: 40,
+          left: 20,
+          right: 0,
+          bottom: 20,
+          containLabel: true,
+        },
         yAxis: {
           type: "value",
           name: range.abbr,
           position: "left",
           alignTicks: true,
-          max,
           nameTextStyle: {
             fontSize: "8px",
             fontFamily: "Inter, sans-serif",
@@ -145,7 +149,7 @@ export const BarChart: React.FC<BarChartProps> = (props: BarChartProps) => {
               : undefined,
         })),
         legend: {
-          right: "10%",
+          right: 0,
           itemWidth: 8,
           itemHeight: 8,
           align: "left",
@@ -177,14 +181,7 @@ export const BarChart: React.FC<BarChartProps> = (props: BarChartProps) => {
 
       chart.setOption(option);
     }
-  }, [
-    max,
-    range,
-    xAxisKeys,
-    seriesData,
-    props.valueLabels,
-    containerRef.current,
-  ]);
+  }, [range, xAxisKeys, seriesData, props.valueLabels, containerRef.current]);
 
   return (
     <React.Fragment>
@@ -192,7 +189,7 @@ export const BarChart: React.FC<BarChartProps> = (props: BarChartProps) => {
         id="bar-chart"
         ref={containerRef}
         width="100%"
-        height="400px"
+        height="450px"
         sx={{
           "> div": {
             borderRadius: "8px",

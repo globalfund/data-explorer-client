@@ -209,7 +209,7 @@ export function Heatmap(props: HeatmapProps) {
       maxWidth="100%"
       maxHeight="60vh"
       borderRadius="16px"
-      bgcolor={appColors.HEATMAP.CHART_BG_COLOR}
+      // bgcolor={appColors.HEATMAP.CHART_BG_COLOR}
     >
       <Scrollable>
         <Container
@@ -220,7 +220,7 @@ export function Heatmap(props: HeatmapProps) {
               zIndex: 2,
               top: "-10px",
               position: "sticky",
-              background: appColors.HEATMAP.CHART_BG_COLOR,
+              // background: appColors.HEATMAP.CHART_BG_COLOR,
             }}
           >
             <RowName theme={{ width: rowNameWidth }} />
@@ -229,7 +229,7 @@ export function Heatmap(props: HeatmapProps) {
                 key={column.name}
                 style={{
                   fontWeight: column.expanded ? 700 : 400,
-                  background: appColors.HEATMAP.CHART_BG_COLOR,
+                  // background: appColors.HEATMAP.CHART_BG_COLOR,
                   width: props.itemWidth
                     ? `${props.itemWidth}px`
                     : `calc((100% - 112px) / ${flatVisibleColumns.length})`,

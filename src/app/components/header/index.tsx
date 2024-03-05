@@ -21,7 +21,7 @@ export const Header: React.FC = () => {
   };
 
   return (
-    <Box sx={{ flexGrow: 1, top: 0, position: "sticky" }}>
+    <Box sx={{ zIndex: 1000, flexGrow: 1, top: 0, position: "sticky" }}>
       <AppBar position="static">
         <Container maxWidth="lg" disableGutters>
           <Toolbar>

@@ -6,8 +6,12 @@ import { SVGRenderer } from "echarts/renderers";
 import { GridComponent } from "echarts/components";
 import { onEchartResize } from "app/utils/onEchartResize";
 import { LineChartProps } from "app/components/charts/line/data";
-import { XAXisComponentOption, YAXisComponentOption } from "echarts";
 import { LineSeriesOption, LineChart as EChartsLine } from "echarts/charts";
+import {
+  GridComponentOption,
+  XAXisComponentOption,
+  YAXisComponentOption,
+} from "echarts";
 
 echarts.use([EChartsLine, GridComponent, SVGRenderer]);
 
@@ -21,8 +25,17 @@ export const LineChart: React.FC<LineChartProps> = (props: LineChartProps) => {
       });
 
       const option: echarts.ComposeOption<
-        LineSeriesOption | YAXisComponentOption | XAXisComponentOption
+        | LineSeriesOption
+        | GridComponentOption
+        | YAXisComponentOption
+        | XAXisComponentOption
       > = {
+        grid: {
+          top: 40,
+          left: 40,
+          right: 0,
+          bottom: 40,
+        },
         yAxis: {
           type: "value",
           name: "Coverage",

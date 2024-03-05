@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
 import { ChartBlockProps } from "app/components/chart-block/data";
+import { splitStringInMiddle } from "app/utils/splitStringInMiddle";
 import { ChartBlockCycles } from "app/components/chart-block/components/cycles";
 import { ChartBlockButtonToolbar } from "app/components/chart-block/components/button-toolbar";
 
@@ -24,17 +25,23 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
     props.unitButtons,
   ]);
 
+  const textSplits = React.useMemo(
+    () => splitStringInMiddle(props.text),
+    [props.text]
+  );
+
   return (
     <Box>
       <Typography variant="h2" lineHeight={1}>
-        $84 Billion
+        {props.title}
       </Typography>
       <Typography variant="h5" marginBottom="5px">
-        Funds raised to date
+        {props.subtitle}
       </Typography>
-      <Typography variant="subtitle2" maxWidth="350px" lineHeight="normal">
-        Government, private sector, nongovernment and other donor pledges and
-        contributions
+      <Typography variant="subtitle2" lineHeight="normal">
+        {textSplits[0]}
+        <br />
+        {textSplits[1]}
       </Typography>
       <Box
         width="100%"
@@ -64,8 +71,12 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
           </Box>
         )}
       </Box>
-      <Box width="100%" minHeight="400px" />
-      <ChartBlockButtonToolbar />
+      <Box width="100%" minHeight="400px" padding="0 32px">
+        {props.children}
+      </Box>
+      <Box width="100%" paddingRight="32px">
+        <ChartBlockButtonToolbar />
+      </Box>
     </Box>
   );
 };

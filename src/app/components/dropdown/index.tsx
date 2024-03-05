@@ -94,7 +94,7 @@ export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
         disableTouchRipple
         onClick={handleClick}
         theme={{ anchorEl: true }}
-        style={{ maxHeight: "32px" }}
+        style={{ maxHeight: "32px", marginRight: 0 }}
       >
         <span style={{ letterSpacing: "0" }}>
           <b>{props.dropdownSelected}</b>

@@ -1,8 +1,10 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 
+import { BarChart } from "app/components/charts/bar";
 import { ChartBlock } from "app/components/chart-block";
 import { withRouter } from "storybook-addon-react-router-v6";
+import { STORY_DATA_VARIANT_2 } from "app/components/charts/bar/data";
 
 const cycles = [
   "All",
@@ -24,9 +26,20 @@ const Wrapper: React.FC = () => {
   return (
     <ChartBlock
       cycles={cycles}
+      title="$84 Billion"
       selectedCycle={selectedCycle}
+      subtitle="Funds raised to date"
       handleCycleChange={handleCycleChange}
-    />
+      text="Government, private sector, nongovernment and other donor pledges and contributions"
+    >
+      <BarChart
+        data={STORY_DATA_VARIANT_2}
+        valueLabels={{
+          value: "Pledge",
+          value1: "Contribution",
+        }}
+      />
+    </ChartBlock>
   );
 };
 
