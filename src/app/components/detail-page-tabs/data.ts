@@ -4,6 +4,8 @@ interface DetailPageTabItem {
 }
 
 export interface DetailPageTabsProps {
+  baseRoute: string;
+  activeTab?: string;
   tabs: DetailPageTabItem[];
   dropdown?: {
     dropdownSelected: string;

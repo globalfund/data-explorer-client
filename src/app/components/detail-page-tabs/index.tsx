@@ -1,7 +1,7 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { styled } from "styled-components";
 import { Dropdown } from "app/components/dropdown";
 import { DetailPageTabsProps } from "app/components/detail-page-tabs/data";
@@ -25,6 +25,8 @@ const ButtonTab = styled(NavLink)`
 export const DetailPageTabs: React.FC<DetailPageTabsProps> = (
   props: DetailPageTabsProps
 ) => {
+  const params = useParams<{ id: string; tab: string }>();
+
   return (
     <Box
       width="100%"
@@ -38,7 +40,7 @@ export const DetailPageTabs: React.FC<DetailPageTabsProps> = (
     >
       {props.dropdown && (
         <Dropdown
-          width={237}
+          width={223}
           dropdownItems={props.dropdown.dropdownItems}
           dropdownSelected={props.dropdown.dropdownSelected}
           handleDropdownChange={props.dropdown.handleDropdownChange}
@@ -46,7 +48,13 @@ export const DetailPageTabs: React.FC<DetailPageTabsProps> = (
       )}
       <Box gap="16px" display="flex">
         {props.tabs.map((tab) => (
-          <ButtonTab key={tab.label} to={tab.link}>
+          <ButtonTab
+            key={tab.label}
+            to={`${props.baseRoute}/${params.id}${tab.link}`}
+            theme={{
+              active: props.activeTab === tab.link.replace("/", ""),
+            }}
+          >
             {tab.label}
           </ButtonTab>
         ))}

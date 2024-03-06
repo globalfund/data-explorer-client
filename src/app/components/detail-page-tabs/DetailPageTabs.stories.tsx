@@ -21,6 +21,8 @@ const Wrapper: React.FC<DetailPageTabsProps> = (props: DetailPageTabsProps) => {
 
   return (
     <DetailPageTabs
+      baseRoute={props.baseRoute}
+      activeTab={props.activeTab}
       tabs={props.tabs}
       dropdown={
         props.dropdown
@@ -52,6 +54,7 @@ type StoryType = StoryObj<typeof meta>;
 export const Grant: StoryType = {
   args: {
     tabs: GRANT_TABS,
+    baseRoute: "/grant",
     dropdown: {
       dropdownSelected: GRANT_DROPDOWN_ITEMS[0].value,
       dropdownItems: GRANT_DROPDOWN_ITEMS,
@@ -63,5 +66,6 @@ export const Grant: StoryType = {
 export const Location: StoryType = {
   args: {
     tabs: LOCATION_TABS,
+    baseRoute: "/location",
   },
 };
