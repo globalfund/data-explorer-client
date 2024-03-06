@@ -115,6 +115,11 @@ export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
         anchorEl={anchorEl}
         onClose={handleClose}
         open={Boolean(anchorEl)}
+        sx={{
+          "& .MuiPaper-root": {
+            width: props.width,
+          },
+        }}
       >
         {props.dropdownItems.map((item) => (
           <StyledMenuItem
