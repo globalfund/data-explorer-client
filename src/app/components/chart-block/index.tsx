@@ -25,6 +25,15 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
     props.unitButtons,
   ]);
 
+  const showCycles = React.useMemo(() => {
+    return (
+      props.cycles &&
+      props.cycles.length > 0 &&
+      props.selectedCycle &&
+      props.handleCycleChange
+    );
+  }, [props.cycles, props.selectedCycle, props.handleCycleChange]);
+
   const textSplits = React.useMemo(
     () => splitStringInMiddle(props.text),
     [props.text]
@@ -43,35 +52,44 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
         <br />
         {textSplits[1]}
       </Typography>
-      <Box
-        width="100%"
-        padding="32px"
-        display="flex"
-        flexDirection="row"
-        justifyContent="space-between"
-      >
-        <ChartBlockCycles
-          cycles={props.cycles}
-          selectedCycle={props.selectedCycle}
-          handleCycleChange={props.handleCycleChange}
-        />
-        {showRightComponents && (
-          <Box gap="8px" display="flex" flexDirection="row" alignItems="center">
-            {props.unitButtons && props.unitButtons}
-            {props.dropdownItems &&
-              props.dropdownItems.length > 0 &&
-              props.dropdownSelected &&
-              props.handleDropdownChange && (
-                <Dropdown
-                  dropdownItems={props.dropdownItems}
-                  dropdownSelected={props.dropdownSelected}
-                  handleDropdownChange={props.handleDropdownChange}
-                />
-              )}
-          </Box>
-        )}
-      </Box>
-      <Box width="100%" minHeight="400px" padding="0 32px">
+      {(showCycles || showRightComponents) && (
+        <Box
+          width="100%"
+          padding="32px"
+          display="flex"
+          flexDirection="row"
+          justifyContent="space-between"
+        >
+          {props.cycles && props.selectedCycle && props.handleCycleChange && (
+            <ChartBlockCycles
+              cycles={props.cycles}
+              selectedCycle={props.selectedCycle}
+              handleCycleChange={props.handleCycleChange}
+            />
+          )}
+          {showRightComponents && (
+            <Box
+              gap="8px"
+              display="flex"
+              flexDirection="row"
+              alignItems="center"
+            >
+              {props.unitButtons && props.unitButtons}
+              {props.dropdownItems &&
+                props.dropdownItems.length > 0 &&
+                props.dropdownSelected &&
+                props.handleDropdownChange && (
+                  <Dropdown
+                    dropdownItems={props.dropdownItems}
+                    dropdownSelected={props.dropdownSelected}
+                    handleDropdownChange={props.handleDropdownChange}
+                  />
+                )}
+            </Box>
+          )}
+        </Box>
+      )}
+      <Box width="100%" minHeight="400px" padding="0 32px" position="relative">
         {props.children}
       </Box>
       <Box width="100%" paddingRight="32px">

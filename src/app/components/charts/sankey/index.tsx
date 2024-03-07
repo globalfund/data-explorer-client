@@ -38,9 +38,9 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
       > = {
         blendMode: "color",
         series: {
-          top: 27,
+          top: 10,
           left: 0,
-          bottom: 0,
+          bottom: 16,
           right: 200,
           nodeWidth: 13,
           type: "sankey",

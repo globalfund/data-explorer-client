@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 import { GrantOverview } from "app/pages/grant/views/overview";
 import { DetailPageTabs } from "app/components/detail-page-tabs";
 import { splitStringInMiddle } from "app/utils/splitStringInMiddle";
+import { GrantImplementation } from "app/pages/grant/views/grant-implementation";
 import {
   GRANT_TABS,
   GRANT_DROPDOWN_ITEMS,
@@ -30,7 +31,7 @@ export const Grant: React.FC = () => {
       case "overview":
         return <GrantOverview />;
       case "grant-implementation":
-        return <div>Grant Implementation</div>;
+        return <GrantImplementation />;
       case "targets-results":
         return <div>Targets & Results</div>;
       case "documents":

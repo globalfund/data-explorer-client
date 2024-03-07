@@ -523,7 +523,7 @@ export const appColors = {
     BAR_COLOR_2: "#013E77",
     BAR_COLOR_3: "#00B5AE",
     BAR_COLOR_4: "#C3EDFD",
-    BAR_COLOR_5: "#F3F5F4",
+    BAR_COLOR_5: "#D9D9D9",
   },
   TREEMAP: {
     TEXT_COLOR: WHITE,
