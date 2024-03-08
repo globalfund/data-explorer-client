@@ -45,6 +45,7 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
           nodeWidth: 13,
           type: "sankey",
           draggable: false,
+          layoutIterations: 0,
           nodes: props.data.nodes,
           links: props.data.links,
           emphasis: {
@@ -126,7 +127,6 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
           },
           backgroundColor: appColors.TOOLTIP.BACKGROUND_COLOR,
           formatter: (params: any) => {
-            console.log(params);
             const data = params.data;
             if (data.source && data.target) {
               return `<div>${data.source} -> ${
