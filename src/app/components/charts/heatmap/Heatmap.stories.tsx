@@ -10,7 +10,7 @@ import {
 } from "app/components/charts/heatmap/data";
 
 const meta = {
-  title: "Charts/Heatmap",
+  title: "Components/Charts/Heatmap",
   component: Heatmap,
   decorators: [withRouter],
   parameters: {

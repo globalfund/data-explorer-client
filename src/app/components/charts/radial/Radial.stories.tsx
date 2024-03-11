@@ -11,7 +11,7 @@ import {
 } from "app/components/charts/radial/data";
 
 const meta = {
-  title: "Charts/Radial chart",
+  title: "Components/Charts/Radial chart",
   component: RadialChart,
   decorators: [withRouter],
   parameters: {

@@ -1,20 +1,22 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { HomeHero } from "app/pages/home/components/hero";
+import { PageLoader } from "app/components/page-loader";
 import { withRouter } from "storybook-addon-react-router-v6";
 
 const meta = {
-  title: "Pages/Home/Components/Hero",
-  component: HomeHero,
+  title: "Components/Page loader",
+  component: PageLoader,
   decorators: [withRouter],
   parameters: {
     layout: "fullscreen",
   },
   tags: ["autodocs"],
   argTypes: {},
-} satisfies Meta<typeof HomeHero>;
+} satisfies Meta<typeof PageLoader>;
 
 export default meta;
 type StoryType = StoryObj<typeof meta>;
 
-export const HomeHeroStory: StoryType = {};
+export const Primary: StoryType = {
+  args: {},
+};

@@ -8,7 +8,7 @@ import {
 } from "app/components/charts/bar/data";
 
 const meta = {
-  title: "Charts/Bar chart",
+  title: "Components/Charts/Bar chart",
   component: BarChart,
   decorators: [withRouter],
   parameters: {

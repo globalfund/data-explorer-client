@@ -8,7 +8,7 @@ import {
 } from "app/components/charts/treemap/data";
 
 const meta = {
-  title: "Charts/Treemap",
+  title: "Components/Charts/Treemap",
   component: Treemap,
   decorators: [withRouter],
   parameters: {

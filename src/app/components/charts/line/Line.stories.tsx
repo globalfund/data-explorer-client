@@ -5,7 +5,7 @@ import { withRouter } from "storybook-addon-react-router-v6";
 import { STORY_DATA_VARIANT_1 } from "app/components/charts/line/data";
 
 const meta = {
-  title: "Charts/Line chart",
+  title: "Components/Charts/Line chart",
   component: LineChart,
   decorators: [withRouter],
   parameters: {

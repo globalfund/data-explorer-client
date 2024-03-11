@@ -5,7 +5,7 @@ import { withRouter } from "storybook-addon-react-router-v6";
 import { STORY_DATA_VARIANT_1 } from "app/components/charts/race-bar/data";
 
 const meta = {
-  title: "Charts/Race bar chart",
+  title: "Components/Charts/Race bar chart",
   component: RaceBarChart,
   decorators: [withRouter],
   parameters: {

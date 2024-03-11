@@ -11,7 +11,7 @@ import {
 } from "app/components/charts/pie/data";
 
 const meta = {
-  title: "Charts/Pie chart",
+  title: "Components/Charts/Pie chart",
   component: PieChart,
   decorators: [withRouter],
   parameters: {

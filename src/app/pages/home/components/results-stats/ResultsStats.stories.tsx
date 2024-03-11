@@ -4,7 +4,7 @@ import { withRouter } from "storybook-addon-react-router-v6";
 import { HomeResultsStats } from "app/pages/home/components/results-stats";
 
 const meta = {
-  title: "Home/Results stats",
+  title: "Pages/Home/Components/Results stats",
   component: HomeResultsStats,
   decorators: [withRouter],
   parameters: {
