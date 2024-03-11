@@ -6,6 +6,7 @@ import { DetailPageTabs } from "app/components/detail-page-tabs";
 import { LocationOverview } from "app/pages/location/views/overview";
 import { LOCATION_TABS } from "app/components/detail-page-tabs/data";
 import { GrantImplementation } from "app/pages/location/views/grant-implementation";
+import { ResourceMobilization } from "app/pages/location/views/resource-mobilization";
 
 export const Location: React.FC = () => {
   const params = useParams<{ id: string; tab: string }>();
@@ -16,6 +17,8 @@ export const Location: React.FC = () => {
         return <LocationOverview />;
       case "grant-implementation":
         return <GrantImplementation />;
+      case "resource-mobilization":
+        return <ResourceMobilization />;
       case "targets-results":
         return <div>Targets & Results</div>;
       case "documents":
@@ -40,8 +43,8 @@ export const Location: React.FC = () => {
       </Typography>
       <DetailPageTabs
         tabs={LOCATION_TABS}
-        baseRoute={`/grant`}
         activeTab={params.tab}
+        baseRoute={`/location`}
       />
       <Box marginTop="24px">{view}</Box>
     </Box>
