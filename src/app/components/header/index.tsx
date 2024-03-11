@@ -54,6 +54,7 @@ export const Header: React.FC = () => {
                     sx={{
                       width: "500px",
                       "#search-container": {
+                        width: "100%",
                         padding: "0 10px",
                       },
                       "#search-category-dropdown": {

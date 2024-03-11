@@ -73,8 +73,4 @@ export const LOCATION_TABS: DetailPageTabItem[] = [
     label: "Results",
     link: "/results",
   },
-  {
-    label: "Documents",
-    link: "/documents",
-  },
 ];
