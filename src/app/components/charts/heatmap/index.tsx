@@ -209,7 +209,7 @@ export function Heatmap(props: HeatmapProps) {
       maxWidth="100%"
       maxHeight="60vh"
       borderRadius="16px"
-      // bgcolor={appColors.HEATMAP.CHART_BG_COLOR}
+      bgcolor={props.bgColor}
     >
       <Scrollable>
         <Container

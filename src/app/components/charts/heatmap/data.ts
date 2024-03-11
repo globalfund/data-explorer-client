@@ -25,6 +25,7 @@ export interface HeatmapProps {
   itemWidth?: number;
   contentProp: string;
   getItemColor: (item?: HeatmapDataItem) => string;
+  bgColor?: string;
 }
 
 export function getPercentageColor(item?: HeatmapDataItem) {
