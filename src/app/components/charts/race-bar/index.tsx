@@ -3,8 +3,8 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { RaceBarChartProps } from "app/components/charts/race-bar/data";
 import {
-  getFinancialValueWithMetricPrefix,
   getRange,
+  getFinancialValueWithMetricPrefix,
 } from "app/utils/getFinancialValueWithMetricPrefix";
 
 export const RaceBarChart: React.FC<RaceBarChartProps> = (
@@ -12,7 +12,7 @@ export const RaceBarChart: React.FC<RaceBarChartProps> = (
 ) => {
   return (
     <Box
-      gap="16px"
+      gap="12px"
       width="100%"
       display="flex"
       padding="32px"
@@ -29,7 +29,12 @@ export const RaceBarChart: React.FC<RaceBarChartProps> = (
             alignItems="center"
             flexDirection="row"
           >
-            <Typography fontSize="14px" color="#333" minWidth="70px">
+            <Typography
+              fontSize="14px"
+              color="#333"
+              minWidth="90px"
+              textAlign="right"
+            >
               {item.name}
             </Typography>
             <Box
@@ -39,8 +44,14 @@ export const RaceBarChart: React.FC<RaceBarChartProps> = (
               width={`calc(${item.percentage}% - 120px)`}
             />
             <Typography fontSize="14px" color="#333" whiteSpace="nowrap">
-              ${getFinancialValueWithMetricPrefix(item.value, range.index, 2)}{" "}
-              {range.abbr} - {item.percentage}%
+              {!props.noValuesFormat
+                ? `$${getFinancialValueWithMetricPrefix(
+                    item.value,
+                    range.index,
+                    2
+                  )} ${range.abbr}`
+                : item.value}{" "}
+              - {item.percentage}%
             </Typography>
           </Box>
         );

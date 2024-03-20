@@ -3,8 +3,10 @@ export interface ChartBlockProps {
   title: string;
   subtitle: string;
   cycles?: string[];
+  noSplitText?: boolean;
   selectedCycle?: string;
   children: React.ReactNode;
+  noBottomToolbar?: boolean;
   dropdownSelected?: string;
   unitButtons?: React.ReactNode;
   handleCycleChange?: (cycle: string) => void;

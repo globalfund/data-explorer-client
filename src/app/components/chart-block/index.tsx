@@ -34,10 +34,28 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
     );
   }, [props.cycles, props.selectedCycle, props.handleCycleChange]);
 
-  const textSplits = React.useMemo(
-    () => splitStringInMiddle(props.text),
-    [props.text]
-  );
+  const text = React.useMemo(() => {
+    if (props.noSplitText) {
+      return (
+        <Box
+          sx={{
+            a: { textDecoration: "none", fontWeight: "700", color: "#000" },
+          }}
+          dangerouslySetInnerHTML={{
+            __html: props.text,
+          }}
+        />
+      );
+    }
+    const splits = splitStringInMiddle(props.text);
+    return (
+      <React.Fragment>
+        {splits[0]}
+        <br />
+        {splits[1]}
+      </React.Fragment>
+    );
+  }, [props.text, props.noSplitText]);
 
   return (
     <Box>
@@ -48,9 +66,7 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
         {props.subtitle}
       </Typography>
       <Typography variant="subtitle2" lineHeight="normal">
-        {textSplits[0]}
-        <br />
-        {textSplits[1]}
+        {text}
       </Typography>
       {(showCycles || showRightComponents) && (
         <Box
@@ -92,9 +108,11 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
       <Box width="100%" minHeight="400px" padding="0 32px" position="relative">
         {props.children}
       </Box>
-      <Box width="100%" paddingRight="32px">
-        <ChartBlockButtonToolbar />
-      </Box>
+      {!props.noBottomToolbar && (
+        <Box width="100%" paddingRight="32px">
+          <ChartBlockButtonToolbar />
+        </Box>
+      )}
     </Box>
   );
 };

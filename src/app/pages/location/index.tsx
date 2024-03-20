@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 import { DetailPageTabs } from "app/components/detail-page-tabs";
 import { LocationOverview } from "app/pages/location/views/overview";
 import { LOCATION_TABS } from "app/components/detail-page-tabs/data";
+import { AccessToFunding } from "app/pages/location/views/access-to-funding";
 import { GrantImplementation } from "app/pages/location/views/grant-implementation";
 import { ResourceMobilization } from "app/pages/location/views/resource-mobilization";
 
@@ -19,8 +20,8 @@ export const Location: React.FC = () => {
         return <GrantImplementation />;
       case "resource-mobilization":
         return <ResourceMobilization />;
-      case "targets-results":
-        return <div>Targets & Results</div>;
+      case "access-to-funding":
+        return <AccessToFunding />;
       case "documents":
         return <div>Documents</div>;
       default:

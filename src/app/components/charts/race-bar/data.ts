@@ -6,6 +6,7 @@ export interface RaceBarChartDataItem {
 }
 
 export interface RaceBarChartProps {
+  noValuesFormat?: boolean;
   data: RaceBarChartDataItem[];
 }
 
@@ -25,6 +26,27 @@ export const STORY_DATA_VARIANT_1: RaceBarChartDataItem[] = [
   {
     name: "Signed",
     value: 66330000,
+    color: "#00B5AE",
+    percentage: 90,
+  },
+];
+
+export const STORY_DATA_VARIANT_2: RaceBarChartDataItem[] = [
+  {
+    name: "Signed",
+    value: 212,
+    color: "#0A2840",
+    percentage: 73,
+  },
+  {
+    name: "M. Process",
+    value: 215,
+    color: "#013E77",
+    percentage: 78,
+  },
+  {
+    name: "Submitted",
+    value: 233,
     color: "#00B5AE",
     percentage: 90,
   },

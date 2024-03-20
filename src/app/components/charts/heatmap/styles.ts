@@ -51,8 +51,8 @@ export const RowName = styled.div`
   align-items: center;
   word-wrap: break-word;
   justify-content: flex-end;
+  background: ${appColors.COMMON.WHITE};
   color: ${appColors.HEATMAP.CHART_TEXT_COLOR};
-  // background: ${appColors.HEATMAP.CHART_BG_COLOR};
 `;
 
 export const ColName = styled.div`
