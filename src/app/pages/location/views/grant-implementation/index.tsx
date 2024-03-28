@@ -10,6 +10,8 @@ import { LineChart } from "app/components/charts/line";
 import { ChartBlock } from "app/components/chart-block";
 import { Heatmap } from "app/components/charts/heatmap";
 import { SankeyChart } from "app/components/charts/sankey";
+import { TableContainer } from "app/components/table-container";
+import { ChartBlockCycles } from "app/components/chart-block/components/cycles";
 import { STORY_DATA_VARIANT_1 as LINE_CHART_DATA } from "app/components/charts/line/data";
 import { STORY_DATA_VARIANT_1 as SANKEY_CHART_DATA } from "app/components/charts/sankey/data";
 import {
@@ -25,7 +27,10 @@ import {
   STORY_DATA_VARIANT_2 as PIE_CHART_DATA_2,
   STORY_DATA_VARIANT_3 as PIE_CHART_DATA_3,
 } from "app/components/charts/pie/data";
-import { ChartBlockCycles } from "app/components/chart-block/components/cycles";
+import {
+  TABLE_VARIATION_5_DATA,
+  TABLE_VARIATION_5_COLUMNS,
+} from "app/components/table/data";
 
 export const GrantImplementation: React.FC = () => {
   const [chart1Cycle, setChart1Cycle] = React.useState(CYCLES[0]);
@@ -269,16 +274,10 @@ export const GrantImplementation: React.FC = () => {
         selectedCycle={chart4Cycle}
         handleCycleChange={(value: string) => handleChartCycleChange(value, 4)}
       />
-      <Box
-        width="100%"
-        height="311px"
-        display="flex"
-        bgcolor="#EBEBEB"
-        alignItems="center"
-        justifyContent="center"
-      >
-        Grants table
-      </Box>
+      <TableContainer
+        data={TABLE_VARIATION_5_DATA}
+        columns={TABLE_VARIATION_5_COLUMNS}
+      />
     </Box>
   );
 };
