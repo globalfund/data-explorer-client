@@ -4002,6 +4002,11 @@
   resolved "https://registry.yarnpkg.com/@types/stylis/-/stylis-4.2.0.tgz#199a3f473f0c3a6f6e4e1b17cdbc967f274bdc6b"
   integrity sha512-n4sx2bqL0mW1tvDf/loQ+aMX7GQD3lc3fkCMC55VFNDu/vBOabO+LTIeXKM14xK0ppk5TUGcWRjiSpIlUpghKw==
 
+"@types/tabulator-tables@^5.6.0":
+  version "5.6.0"
+  resolved "https://registry.yarnpkg.com/@types/tabulator-tables/-/tabulator-tables-5.6.0.tgz#4eb77373688c435177527b076e44c84acb60ca8d"
+  integrity sha512-si5S49dCsVgUhLS2PIP93xXZtdrZEPldWDXzCTMtCgmoKP7rTM6eQOpeR+EW5YtyNDS2vAqQPlQ1ddBoFKIbAQ==
+
 "@types/testing-library__jest-dom@^5.9.1":
   version "5.14.9"
   resolved "https://registry.yarnpkg.com/@types/testing-library__jest-dom/-/testing-library__jest-dom-5.14.9.tgz#0fb1e6a0278d87b6737db55af5967570b67cb466"
@@ -12538,6 +12543,11 @@ synchronous-promise@^2.0.15:
   version "2.0.17"
   resolved "https://registry.yarnpkg.com/synchronous-promise/-/synchronous-promise-2.0.17.tgz#38901319632f946c982152586f2caf8ddc25c032"
   integrity sha512-AsS729u2RHUfEra9xJrE39peJcc2stq2+poBXX8bcM08Y6g9j/i/PUzwNQqkaJde7Ntg1TO7bSREbR5sdosQ+g==
+
+tabulator-tables@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/tabulator-tables/-/tabulator-tables-6.1.0.tgz#f468c3a06abc716095c2f596cf10ba8c313673b1"
+  integrity sha512-J+FgWNTxrOoafOeNTUmFDFgKAqctFKtQmV6RwLuDcJJe2qsxKaeQ2OQ6OdaIDIPZ0mykpdKXYqjioOdUagvTZg==
 
 tailwindcss@^3.0.2:
   version "3.4.1"
