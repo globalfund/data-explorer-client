@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import { GrantOverview } from "app/pages/grant/views/overview";
 import { DetailPageTabs } from "app/components/detail-page-tabs";
+import { GrantDocuments } from "app/pages/grant/views/documents";
 import { splitStringInMiddle } from "app/utils/splitStringInMiddle";
 import { GrantImplementation } from "app/pages/grant/views/grant-implementation";
 import {
@@ -35,7 +36,7 @@ export const Grant: React.FC = () => {
       case "targets-results":
         return <div>Targets & Results</div>;
       case "documents":
-        return <div>Documents</div>;
+        return <GrantDocuments />;
       default:
         return <div />;
     }

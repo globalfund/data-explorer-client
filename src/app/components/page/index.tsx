@@ -9,7 +9,13 @@ export const Page: React.FC = () => {
   return (
     <React.Fragment>
       <Header />
-      <Container maxWidth="lg" disableGutters>
+      <Container
+        maxWidth="lg"
+        disableGutters
+        sx={{
+          minHeight: "calc(100vh - 91px - 256px)",
+        }}
+      >
         <Box id="main">
           <Outlet />
         </Box>

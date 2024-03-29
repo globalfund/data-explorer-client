@@ -86,6 +86,7 @@ export const AccessToFunding: React.FC = () => {
         <TableContainer
           dataTree
           withCycles
+          id="funding-requests-table"
           data={TABLE_VARIATION_2_DATA}
           columns={TABLE_VARIATION_2_COLUMNS.slice(0, 7)}
           extraColumns={TABLE_VARIATION_2_COLUMNS.slice(7)}
@@ -239,6 +240,8 @@ export const AccessToFunding: React.FC = () => {
         <Box height="64px" />
         <TableContainer
           dataTree
+          id="documents-table"
+          dataTreeStartExpanded
           data={TABLE_VARIATION_6_DATA}
           columns={TABLE_VARIATION_6_COLUMNS}
         />

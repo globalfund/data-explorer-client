@@ -6,12 +6,14 @@ import {
 } from "tabulator-tables";
 
 export interface TableProps {
+  id: string;
   data: {
     [key: string]: string | number | boolean | null | object | Array<object>;
   }[];
   columns: ColumnDefinition[];
   dataTree?: boolean;
   dataTreeBranchElement?: boolean;
+  dataTreeStartExpanded?: boolean;
   extraColumns?: ColumnDefinition[];
 }
 

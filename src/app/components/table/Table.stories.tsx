@@ -35,6 +35,7 @@ type StoryType = StoryObj<typeof meta>;
 
 export const Variant1: StoryType = {
   args: {
+    id: "table",
     dataTree: true,
     data: TABLE_VARIATION_1_DATA,
     columns: TABLE_VARIATION_1_COLUMNS,
@@ -43,6 +44,7 @@ export const Variant1: StoryType = {
 
 export const Variant2: StoryType = {
   args: {
+    id: "table",
     dataTree: true,
     dataTreeBranchElement: false,
     data: TABLE_VARIATION_2_DATA,
@@ -56,6 +58,7 @@ export const Variant2: StoryType = {
 
 export const Variant3: StoryType = {
   args: {
+    id: "table",
     dataTree: true,
     dataTreeBranchElement: false,
     data: TABLE_VARIATION_3_DATA,
@@ -65,6 +68,7 @@ export const Variant3: StoryType = {
 
 export const Variant4: StoryType = {
   args: {
+    id: "table",
     dataTree: true,
     data: TABLE_VARIATION_4_DATA,
     columns: TABLE_VARIATION_4_COLUMNS.slice(0, 1),
@@ -77,6 +81,7 @@ export const Variant4: StoryType = {
 
 export const Variant5: StoryType = {
   args: {
+    id: "table",
     dataTree: true,
     data: TABLE_VARIATION_5_DATA,
     columns: TABLE_VARIATION_5_COLUMNS,
@@ -85,6 +90,7 @@ export const Variant5: StoryType = {
 
 export const Variant6: StoryType = {
   args: {
+    id: "table",
     dataTree: true,
     data: TABLE_VARIATION_6_DATA,
     columns: TABLE_VARIATION_6_COLUMNS,
@@ -93,6 +99,7 @@ export const Variant6: StoryType = {
 
 export const Variant7: StoryType = {
   args: {
+    id: "table",
     dataTree: true,
     data: TABLE_VARIATION_7_DATA,
     columns: TABLE_VARIATION_7_COLUMNS,

@@ -50,6 +50,7 @@ type StoryType = StoryObj<typeof meta>;
 export const Variant1: StoryType = {
   args: {
     dataTree: true,
+    id: "table-container",
     data: TABLE_VARIATION_1_DATA,
     columns: TABLE_VARIATION_1_COLUMNS,
   },
@@ -58,6 +59,7 @@ export const Variant1: StoryType = {
 export const Variant2: StoryType = {
   args: {
     dataTree: true,
+    id: "table-container",
     data: TABLE_VARIATION_1_DATA,
     columns: TABLE_VARIATION_1_COLUMNS,
     tabsView: {

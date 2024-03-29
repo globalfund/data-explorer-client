@@ -15,7 +15,6 @@ export const ChartBlockCycles: React.FC<ChartBlockCyclesProps> = (
     <Box
       zIndex="1"
       gap="16px"
-      width="100%"
       display="flex"
       flexDirection="row"
       position="relative"

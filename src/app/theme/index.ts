@@ -303,6 +303,7 @@ const theme = createTheme({
     MuiCheckbox: {
       styleOverrides: {
         root: {
+          color: "#000 !important",
           padding: "0 4px 0 0",
         },
       },

@@ -29,6 +29,7 @@ export const Results: React.FC = () => {
       >
         <TableContainer
           withCycles
+          id="results-table"
           data={TABLE_VARIATION_7_DATA}
           columns={TABLE_VARIATION_7_COLUMNS}
         />
@@ -41,6 +42,7 @@ export const Results: React.FC = () => {
       >
         <TableContainer
           dataTree
+          id="documnents-table"
           data={TABLE_VARIATION_6_DATA}
           columns={TABLE_VARIATION_6_COLUMNS}
         />

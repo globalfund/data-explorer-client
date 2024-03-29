@@ -277,6 +277,7 @@ export const GrantImplementation: React.FC = () => {
       <TableContainer
         withCycles
         data={TABLE_VARIATION_5_DATA}
+        id="grant-implementation-table"
         columns={TABLE_VARIATION_5_COLUMNS}
       />
     </Box>

@@ -17,6 +17,7 @@ export const Table: React.FC<TableProps> = (props: TableProps) => {
         layout: "fitDataStretch",
         dataTree: props.dataTree,
         dataTreeBranchElement: props.dataTreeBranchElement,
+        dataTreeStartExpanded: Boolean(props.dataTreeStartExpanded),
         dataTreeExpandElement: `<svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin:0 4px -4px 0;"><path d="M3.88754 5L2.75 6.13754L8.43766 11.8252L14.1253 6.13756L12.9878 5.00002L8.43768 9.55015L3.88754 5Z" fill="#373D43"/></svg>`,
         dataTreeCollapseElement: `<svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin:0 4px -4px 0;"><path d="M13.348 11.3986L14.4144 10.3322L9.08223 5L3.75 10.3322L4.81644 11.3987L9.08223 7.13287L13.348 11.3986Z" fill="#373D43"/></svg>`,
       });
@@ -39,10 +40,14 @@ export const Table: React.FC<TableProps> = (props: TableProps) => {
   }, []);
 
   React.useEffect(() => {
-    if (ref.current && props.extraColumns && props.extraColumns.length > 0) {
-      const tables = Tabulator.findTable("#table");
+    if (ref.current) {
+      const tables = Tabulator.findTable(`#${props.id}`);
       if (tables.length > 0 && tables[0]) {
-        if (expandedCount > 0) {
+        if (
+          expandedCount > 0 &&
+          props.extraColumns &&
+          props.extraColumns.length > 0
+        ) {
           tables[0].setColumns(props.columns.concat(props.extraColumns));
         } else {
           setTimeout(() => {
@@ -51,12 +56,12 @@ export const Table: React.FC<TableProps> = (props: TableProps) => {
         }
       }
     }
-  }, [expandedCount, props.extraColumns]);
+  }, [expandedCount, props.columns, props.extraColumns]);
 
   return (
     <Box
-      id="table"
       ref={ref}
+      id={props.id}
       borderRadius="8px"
       border="1px solid #CFD4DA"
       sx={{
