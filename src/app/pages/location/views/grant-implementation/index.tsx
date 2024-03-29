@@ -275,6 +275,7 @@ export const GrantImplementation: React.FC = () => {
         handleCycleChange={(value: string) => handleChartCycleChange(value, 4)}
       />
       <TableContainer
+        withCycles
         data={TABLE_VARIATION_5_DATA}
         columns={TABLE_VARIATION_5_COLUMNS}
       />

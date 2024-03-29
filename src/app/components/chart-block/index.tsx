@@ -71,9 +71,9 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
       {(showCycles || showRightComponents) && (
         <Box
           width="100%"
-          padding="32px"
           display="flex"
           flexDirection="row"
+          padding="56px 32px 32px 32px"
           justifyContent="space-between"
         >
           {props.cycles && props.selectedCycle && props.handleCycleChange && (
@@ -90,7 +90,7 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
               flexDirection="row"
               alignItems="center"
             >
-              {props.unitButtons && props.unitButtons}
+              {props.unitButtons ?? props.unitButtons}
               {props.dropdownItems &&
                 props.dropdownItems.length > 0 &&
                 props.dropdownSelected &&

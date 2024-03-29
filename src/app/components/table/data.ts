@@ -804,11 +804,48 @@ export const TABLE_VARIATION_6_DATA: {
             documents:
               "https://gfdatastore.blob.core.windows.net/files/Applications/Fast-track%20Covid%20Funding%20Requests/QPA/2021/NA/en/QPA-X_FastCovidFundingRequest_1_en.zip",
           },
+          {
+            name: "Combined Grant To Support HIV/AIDS, Tuberculosis & Malaria Programs And Healthcare",
+            documents:
+              "https://gfdatastore.blob.core.windows.net/files/Applications/Fast-track%20Covid%20Funding%20Requests/QPA/2021/NA/en/QPA-X_FastCovidFundingRequest_1_en.zip",
+          },
+          {
+            name: "Combined Grant To Support HIV/AIDS, Tuberculosis & Malaria Programs And Healthcare",
+            documents:
+              "https://gfdatastore.blob.core.windows.net/files/Applications/Fast-track%20Covid%20Funding%20Requests/QPA/2021/NA/en/QPA-X_FastCovidFundingRequest_1_en.zip",
+          },
+          {
+            name: "Combined Grant To Support HIV/AIDS, Tuberculosis & Malaria Programs And Healthcare",
+            documents:
+              "https://gfdatastore.blob.core.windows.net/files/Applications/Fast-track%20Covid%20Funding%20Requests/QPA/2021/NA/en/QPA-X_FastCovidFundingRequest_1_en.zip",
+          },
         ],
       },
       {
         name: "Other documents",
         documents: 15,
+        _children: [
+          {
+            name: "Combined Grant To Support HIV/AIDS, Tuberculosis & Malaria Programs And Healthcare",
+            documents:
+              "https://gfdatastore.blob.core.windows.net/files/Applications/Fast-track%20Covid%20Funding%20Requests/QPA/2021/NA/en/QPA-X_FastCovidFundingRequest_1_en.zip",
+          },
+          {
+            name: "Combined Grant To Support HIV/AIDS, Tuberculosis & Malaria Programs And Healthcare",
+            documents:
+              "https://gfdatastore.blob.core.windows.net/files/Applications/Fast-track%20Covid%20Funding%20Requests/QPA/2021/NA/en/QPA-X_FastCovidFundingRequest_1_en.zip",
+          },
+          {
+            name: "Combined Grant To Support HIV/AIDS, Tuberculosis & Malaria Programs And Healthcare",
+            documents:
+              "https://gfdatastore.blob.core.windows.net/files/Applications/Fast-track%20Covid%20Funding%20Requests/QPA/2021/NA/en/QPA-X_FastCovidFundingRequest_1_en.zip",
+          },
+          {
+            name: "Combined Grant To Support HIV/AIDS, Tuberculosis & Malaria Programs And Healthcare",
+            documents:
+              "https://gfdatastore.blob.core.windows.net/files/Applications/Fast-track%20Covid%20Funding%20Requests/QPA/2021/NA/en/QPA-X_FastCovidFundingRequest_1_en.zip",
+          },
+        ],
       },
     ],
   },
@@ -852,5 +889,22 @@ export const TABLE_VARIATION_7_DATA: {
       "Other vulnerable populations reached with HIV prevention programs",
     component: "HIV",
     result: 100000,
+  },
+  {
+    description:
+      "People in contact with TB patients received preventive therapy",
+    component: "Tuberculosis",
+    result: 100000,
+  },
+  {
+    description: "Rifampicin - and/or multidrug-resistant TB cases notified",
+    component: "Tuberculosis",
+    result: 10000,
+  },
+  {
+    description:
+      "People in contact with TB patients received preventive therapy",
+    component: "Tuberculosis",
+    result: 200000,
   },
 ];

@@ -1,6 +1,7 @@
 import { TableProps } from "app/components/table/data";
 
 export interface TableContainerProps extends TableProps {
+  withCycles?: boolean;
   tabsView?: {
     tabs: string[];
     selectedTab: string;

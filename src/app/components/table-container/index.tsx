@@ -52,12 +52,18 @@ export const TableContainer: React.FC<TableContainerProps> = (
       borderRadius="32px"
       ref={fullscreenRef}
       flexDirection="column"
+      sx={{
+        "&:fullscreen": {
+          padding: "32px",
+        },
+      }}
     >
       {!props.tabsView && (
         <Box
           gap="8px"
           display="flex"
           justifyContent="flex-end"
+          marginTop={props.withCycles ? "-64px" : "0px"}
           sx={{
             "& > button": {
               padding: "0px",

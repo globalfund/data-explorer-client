@@ -7,17 +7,18 @@ import { ChartBlockCyclesProps } from "app/components/chart-block/components/cyc
 export const ChartBlockCycles: React.FC<ChartBlockCyclesProps> = (
   props: ChartBlockCyclesProps
 ) => {
-  const handleCycleClick =
-    (cycle: string) => (event: React.MouseEvent<HTMLButtonElement>) => {
-      props.handleCycleChange(cycle);
-    };
+  const handleCycleClick = (cycle: string) => () => {
+    props.handleCycleChange(cycle);
+  };
 
   return (
     <Box
+      zIndex="1"
       gap="16px"
       width="100%"
       display="flex"
       flexDirection="row"
+      position="relative"
       sx={{
         "& > button": {
           height: "32px",

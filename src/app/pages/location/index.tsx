@@ -2,6 +2,7 @@ import React from "react";
 import Box from "@mui/material/Box";
 import { useParams } from "react-router-dom";
 import Typography from "@mui/material/Typography";
+import { Results } from "app/pages/location/views/results";
 import { DetailPageTabs } from "app/components/detail-page-tabs";
 import { LocationOverview } from "app/pages/location/views/overview";
 import { LOCATION_TABS } from "app/components/detail-page-tabs/data";
@@ -22,8 +23,8 @@ export const Location: React.FC = () => {
         return <ResourceMobilization />;
       case "access-to-funding":
         return <AccessToFunding />;
-      case "documents":
-        return <div>Documents</div>;
+      case "results":
+        return <Results />;
       default:
         return <div />;
     }
@@ -47,7 +48,7 @@ export const Location: React.FC = () => {
         activeTab={params.tab}
         baseRoute={`/location`}
       />
-      <Box marginTop="24px">{view}</Box>
+      <Box marginTop="40px">{view}</Box>
     </Box>
   );
 };
