@@ -12544,10 +12544,10 @@ synchronous-promise@^2.0.15:
   resolved "https://registry.yarnpkg.com/synchronous-promise/-/synchronous-promise-2.0.17.tgz#38901319632f946c982152586f2caf8ddc25c032"
   integrity sha512-AsS729u2RHUfEra9xJrE39peJcc2stq2+poBXX8bcM08Y6g9j/i/PUzwNQqkaJde7Ntg1TO7bSREbR5sdosQ+g==
 
-tabulator-tables@^6.1.0:
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/tabulator-tables/-/tabulator-tables-6.1.0.tgz#f468c3a06abc716095c2f596cf10ba8c313673b1"
-  integrity sha512-J+FgWNTxrOoafOeNTUmFDFgKAqctFKtQmV6RwLuDcJJe2qsxKaeQ2OQ6OdaIDIPZ0mykpdKXYqjioOdUagvTZg==
+tabulator-tables@^6.2.0:
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/tabulator-tables/-/tabulator-tables-6.2.0.tgz#48322183130a957dbe83c3a3b4c5025bf5308dc0"
+  integrity sha512-x7K2m3sizHJZdjBCn1xH6oewtlkqkXFfKNw2wli7Px7DFSG7dOqrUrRey0LINeuJ0Oyfn17yUWjLZvqRw8V3eA==
 
 tailwindcss@^3.0.2:
   version "3.4.1"

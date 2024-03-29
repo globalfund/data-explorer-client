@@ -570,7 +570,8 @@ export const TABLE_VARIATION_4_COLUMNS: ColumnDefinition[] = [
         ],
       });
 
-      cell.getElement().style.height = "max-content";
+      // cell.getElement().style.height = "max-content";
+      cell.getElement().style.padding = "0";
 
       return tableEl;
     },
@@ -598,7 +599,8 @@ export const TABLE_VARIATION_4_COLUMNS: ColumnDefinition[] = [
         ],
       });
 
-      cell.getElement().style.height = "max-content";
+      // cell.getElement().style.height = "max-content";
+      cell.getElement().style.padding = "0";
 
       return tableEl;
     },
@@ -674,6 +676,23 @@ export const TABLE_VARIATION_4_DATA: {
             baselineYear: "2018",
             baselineSource: "--",
             "2020": [
+              {
+                target: "T:0.5%",
+                result: "T:0.5%",
+                achievement: "100%",
+              },
+              {
+                target: "T:0.5%",
+                result: "T:0.5%",
+                achievement: "100%",
+              },
+              {
+                target: "T:0.5%",
+                result: "T:0.5%",
+                achievement: "100%",
+              },
+            ],
+            "2021": [
               {
                 target: "T:0.5%",
                 result: "T:0.5%",

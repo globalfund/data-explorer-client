@@ -2,6 +2,7 @@ import React from "react";
 import Box from "@mui/material/Box";
 import { useParams } from "react-router-dom";
 import Typography from "@mui/material/Typography";
+import { GrantTargetsResults } from "./views/targets-results";
 import { GrantOverview } from "app/pages/grant/views/overview";
 import { DetailPageTabs } from "app/components/detail-page-tabs";
 import { GrantDocuments } from "app/pages/grant/views/documents";
@@ -34,7 +35,7 @@ export const Grant: React.FC = () => {
       case "grant-implementation":
         return <GrantImplementation />;
       case "targets-results":
-        return <div>Targets & Results</div>;
+        return <GrantTargetsResults />;
       case "documents":
         return <GrantDocuments />;
       default:

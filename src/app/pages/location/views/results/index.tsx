@@ -42,6 +42,7 @@ export const Results: React.FC = () => {
       >
         <TableContainer
           dataTree
+          dataTreeStartExpanded
           id="documnents-table"
           data={TABLE_VARIATION_6_DATA}
           columns={TABLE_VARIATION_6_COLUMNS}

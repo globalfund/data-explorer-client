@@ -101,12 +101,53 @@ export const TableContainer: React.FC<TableContainerProps> = (
         },
       }}
     >
-      {!props.tabsView && (
+      <Box
+        width="100%"
+        display="flex"
+        flexDirection="row"
+        alignItems="center"
+        justifyContent={props.tabsView ? "space-between" : "flex-end"}
+      >
+        {props.tabsView && (
+          <Box
+            gap="8px"
+            display="flex"
+            flexDirection="row"
+            alignItems="center"
+            sx={{
+              "& > button": {
+                height: "32px",
+                fontSize: "14px",
+                fontWeight: "400",
+                padding: "0px 8px",
+                borderRadius: "8px",
+                textTransform: "none",
+                "&:hover": {
+                  color: "#fff",
+                  background: "#000",
+                },
+              },
+            }}
+          >
+            {props.tabsView.tabs.map((tab) => (
+              <Button
+                key={tab}
+                onClick={() => props.tabsView?.onTabChange(tab)}
+                sx={{
+                  color: props.tabsView?.selectedTab === tab ? "#fff" : "#000",
+                  background:
+                    props.tabsView?.selectedTab === tab ? "#000" : "#F1F3F4",
+                }}
+              >
+                {tab}
+              </Button>
+            ))}
+          </Box>
+        )}
         <Box
           gap="8px"
           display="flex"
           justifyContent="flex-end"
-          marginTop={props.withCycles ? "-64px" : "0px"}
           sx={{
             "& > button": {
               padding: "0px",
@@ -202,54 +243,7 @@ export const TableContainer: React.FC<TableContainerProps> = (
             </Box>
           </Popover>
         </Box>
-      )}
-      {props.tabsView && (
-        <Box
-          width="100%"
-          display="flex"
-          flexDirection="row"
-          alignItems="center"
-          justifyContent="space-between"
-        >
-          <Box
-            gap="8px"
-            display="flex"
-            flexDirection="row"
-            alignItems="center"
-            sx={{
-              "& > button": {
-                height: "32px",
-                fontSize: "14px",
-                fontWeight: "400",
-                padding: "0px 24px",
-                borderRadius: "8px",
-                textTransform: "none",
-                "&:hover": {
-                  color: "#fff",
-                  background: "#000",
-                },
-              },
-            }}
-          >
-            {props.tabsView.tabs.map((tab) => (
-              <Button
-                key={tab}
-                onClick={() => props.tabsView?.onTabChange(tab)}
-                sx={{
-                  color: props.tabsView?.selectedTab === tab ? "#fff" : "#000",
-                  background:
-                    props.tabsView?.selectedTab === tab ? "#000" : "#F1F3F4",
-                }}
-              >
-                {tab}
-              </Button>
-            ))}
-          </Box>
-          <IconButton disableRipple>
-            <SearchIcon />
-          </IconButton>
-        </Box>
-      )}
+      </Box>
       <Table {...props} columns={columns} extraColumns={extraColumns} />
     </Box>
   );

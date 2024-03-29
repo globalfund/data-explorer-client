@@ -33,6 +33,12 @@ export const Table: React.FC<TableProps> = (props: TableProps) => {
         }
       });
 
+      if (props.dataTreeStartExpanded) {
+        setTimeout(() => {
+          table.redraw();
+        }, 100);
+      }
+
       return () => {
         table.destroy();
       };
@@ -77,6 +83,9 @@ export const Table: React.FC<TableProps> = (props: TableProps) => {
         },
         ".tabulator-header": {
           borderColor: "#CFD4DA",
+        },
+        ".tabulator-col": {
+          background: "#F1F3F5 !important",
         },
         ".tabulator-row": {
           "&:hover": {
