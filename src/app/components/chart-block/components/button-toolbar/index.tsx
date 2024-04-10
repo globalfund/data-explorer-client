@@ -179,19 +179,13 @@ export const ChartBlockButtonToolbar: React.FC = () => {
           sx={{
             "& > button": {
               padding: "0",
-              borderRadius: "8px",
-              width: "fit-content",
-              height: "fit-content",
+              width: "40px",
+              height: "30px",
+              borderRadius: "4px",
               background: "transparent",
+              border: "1px solid #DFE3E5",
               "&:hover": {
-                "> svg": {
-                  "> path": {
-                    fill: "#fff",
-                  },
-                  "> rect": {
-                    fill: "#000",
-                  },
-                },
+                borderColor: "#70777E",
               },
             },
           }}
@@ -241,9 +235,10 @@ export const ChartBlockButtonToolbar: React.FC = () => {
               />
             </React.Fragment>
           )}
-          <Tooltip title="Download">
-            <IconButton onClick={handleButtonClick("download")}>
-              <DownloadIcon />
+
+          <Tooltip title="Info" onClick={handleButtonClick("info")}>
+            <IconButton>
+              <InfoIcon />
             </IconButton>
           </Tooltip>
           <Tooltip title="Share">
@@ -251,14 +246,14 @@ export const ChartBlockButtonToolbar: React.FC = () => {
               <ShareIcon />
             </IconButton>
           </Tooltip>
+          <Tooltip title="Download">
+            <IconButton onClick={handleButtonClick("download")}>
+              <DownloadIcon />
+            </IconButton>
+          </Tooltip>
           <Tooltip title="Favourite">
             <IconButton onClick={handleButtonClick("favorite")}>
               <FavoriteIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Info" onClick={handleButtonClick("info")}>
-            <IconButton>
-              <InfoIcon />
             </IconButton>
           </Tooltip>
         </Box>
