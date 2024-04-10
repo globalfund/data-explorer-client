@@ -3,8 +3,8 @@ import get from "lodash/get";
 import uniqBy from "lodash/uniqBy";
 import Box from "@mui/material/Box";
 import orderBy from "lodash/orderBy";
+import { appColors } from "app/theme";
 import isNumber from "lodash/isNumber";
-import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import ChevronRight from "@mui/icons-material/ChevronRight";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
@@ -87,7 +87,13 @@ export function Heatmap(props: HeatmapProps) {
           };
         }),
         "name"
-      )
+      ).sort((a, b) => {
+        if (a.name === "Income Level") return 1;
+        if (b.name === "Income Level") return -1;
+        if (a.name > b.name) return 1;
+        if (b.name > a.name) return -1;
+        return 0;
+      })
     );
   }, [rootData, expandedRows]);
 
@@ -131,19 +137,22 @@ export function Heatmap(props: HeatmapProps) {
 
   const flatVisibleRows = React.useMemo(() => {
     const result: ItemModel[] = [];
-    let sortedVisibleRows = orderBy(visibleRows, "name", "asc");
-    if (props.rowCategory === "period") {
-      sortedVisibleRows = orderBy(
-        visibleRows,
-        (item) => parseInt(item.name, 10),
-        "desc"
-      );
-    } else if (props.rowCategory === "grantCycle") {
-      sortedVisibleRows = orderBy(
-        visibleRows,
-        (item) => parseInt(item.name.split(",")[0], 10),
-        "desc"
-      );
+    let sortedVisibleRows = visibleRows;
+    if (!props.noItemOrdering) {
+      sortedVisibleRows = orderBy(visibleRows, "name", "asc");
+      if (props.rowCategory === "period") {
+        sortedVisibleRows = orderBy(
+          visibleRows,
+          (item) => parseInt(item.name, 10),
+          "desc"
+        );
+      } else if (props.rowCategory === "grantCycle") {
+        sortedVisibleRows = orderBy(
+          visibleRows,
+          (item) => parseInt(item.name.split(",")[0], 10),
+          "desc"
+        );
+      }
     }
     sortedVisibleRows.forEach((row) => {
       result.push(row);
@@ -161,19 +170,22 @@ export function Heatmap(props: HeatmapProps) {
 
   const flatVisibleColumns = React.useMemo(() => {
     const result: ItemModel[] = [];
-    let sortedVisibleColumns = orderBy(visibleColumns, "name", "asc");
-    if (props.columnCategory === "period") {
-      sortedVisibleColumns = orderBy(
-        visibleColumns,
-        (item) => parseInt(item.name, 10),
-        "desc"
-      );
-    } else if (props.columnCategory === "grantCycle") {
-      sortedVisibleColumns = orderBy(
-        visibleColumns,
-        (item) => parseInt(item.name.split(",")[0], 10),
-        "desc"
-      );
+    let sortedVisibleColumns = visibleColumns;
+    if (!props.noItemOrdering) {
+      sortedVisibleColumns = orderBy(visibleColumns, "name", "asc");
+      if (props.columnCategory === "period") {
+        sortedVisibleColumns = orderBy(
+          visibleColumns,
+          (item) => parseInt(item.name, 10),
+          "desc"
+        );
+      } else if (props.columnCategory === "grantCycle") {
+        sortedVisibleColumns = orderBy(
+          visibleColumns,
+          (item) => parseInt(item.name.split(",")[0], 10),
+          "desc"
+        );
+      }
     }
     sortedVisibleColumns.forEach((column) => {
       result.push(column);
@@ -220,7 +232,7 @@ export function Heatmap(props: HeatmapProps) {
               zIndex: 2,
               top: "-10px",
               position: "sticky",
-              // background: appColors.HEATMAP.CHART_BG_COLOR,
+              background: appColors.HEATMAP.CHART_BG_COLOR,
             }}
           >
             <RowName theme={{ width: rowNameWidth }} />

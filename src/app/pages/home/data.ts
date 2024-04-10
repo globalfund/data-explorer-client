@@ -16,8 +16,8 @@ export const CHART_4_DROPDOWN_ITEMS = [
 ];
 
 export const CHART_5_DROPDOWN_ITEMS = [
-  { label: "Investment Landscape", value: "Investment Landscape" },
-  { label: "Modules & Interventions", value: "Modules & Interventions" },
+  { label: "Grouped Component", value: "Grouped Component" },
+  { label: "Un-Grouped Component", value: "Un-Grouped Component" },
 ];
 
 export const LINE_CHART_X_AXIS_KEYS = [

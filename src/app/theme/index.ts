@@ -815,7 +815,7 @@ export const appColors = {
   },
   HEATMAP: {
     CHART_TEXT_COLOR: BLACK,
-    CHART_BG_COLOR: SECONDARY_COLOR_10,
+    CHART_BG_COLOR: WHITE,
     CHART_PERCENTAGE_COLORS: [
       "#5BA053",
       "#8CCD81",

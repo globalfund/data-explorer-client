@@ -217,13 +217,13 @@ export const Home: React.FC = () => {
         unitButtons={chart5UnitButtons}
       >
         <Heatmap
-          valueType="amount"
           data={HEATMAP_DATA}
-          contentProp="value"
           hoveredLegend={null}
-          columnCategory="cycle"
-          rowCategory="component"
+          valueType={chart5Unit}
+          columnCategory="component"
+          rowCategory="principalRecipient"
           getItemColor={getPercentageColor}
+          contentProp={chart5Unit === "percentage" ? "percentage" : "value"}
         />
       </ChartBlock>
     </Box>

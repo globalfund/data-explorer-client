@@ -220,6 +220,7 @@ export const AccessToFunding: React.FC = () => {
           </Box>
         </Box>
         <Heatmap
+          noItemOrdering
           itemWidth={42}
           valueType="amount"
           data={HEATMAP_DATA}
