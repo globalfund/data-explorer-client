@@ -30,6 +30,7 @@ const FooterHeader = styled(Typography)`
   font-size: 10px;
   font-weight: 900;
   margin-bottom: 23px;
+  color: ${appColors.COMMON.WHITE};
 `;
 
 const FooterInternalLink = styled(Link)`

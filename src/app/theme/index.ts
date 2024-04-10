@@ -178,7 +178,7 @@ const theme = createTheme({
       color: colors.primary.black,
     },
     h6: {
-      fontSize: "20px",
+      fontSize: "18px",
       fontWeight: "700",
       color: colors.primary.black,
     },
@@ -352,6 +352,16 @@ const theme = createTheme({
         },
         toolbar: {
           marginLeft: 0,
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        outlined: {
+          fontWeight: "400",
+          padding: "2px 12px",
+          textTransform: "none",
+          borderColor: "#DFE3E5",
         },
       },
     },

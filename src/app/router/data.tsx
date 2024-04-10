@@ -5,6 +5,7 @@ import { Location } from "app/pages/location";
 import { RouteObject } from "react-router-dom";
 import { Geography } from "app/pages/geography";
 import { Redirect } from "app/components/redirect";
+import { DatasetPage } from "app/pages/datasets/common/page";
 
 export const ROUTES: RouteObject[] = [
   {
@@ -21,6 +22,19 @@ export const ROUTES: RouteObject[] = [
         element: <Redirect to="/location/:id/overview" />,
       },
       { path: "/location/:id/:tab", element: <Location /> },
+      {
+        path: "/dataset/page",
+        element: (
+          <DatasetPage
+            title="Resource Mobilization"
+            subtitle="Government, private sector, non-government and other donor pledges and contributions."
+            breadcrumbs={[
+              { label: "Datasets" },
+              { label: "Resource Mobilization" },
+            ]}
+          />
+        ),
+      },
     ],
   },
 ];
