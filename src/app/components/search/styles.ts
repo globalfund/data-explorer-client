@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 
 export const Container = styled(Box)`
   display: flex;
-  padding: 9px 20px;
+  padding: 4px 20px;
   position: relative;
   border-radius: 8px;
   background: ${appColors.SEARCH.CONTAINER_BACKGROUND};
@@ -110,9 +110,9 @@ export const CategoryButton = styled(Button)`
   width: 200px;
   display: flex;
   font-size: 14px;
-  padding: 8px 16px;
-  border-radius: 8px;
-  margin-right: 16px;
+  padding: 7px 12px;
+  border-radius: 4px;
+  margin-right: 14px;
   text-transform: capitalize;
   max-width: calc(50vw - 32px);
   justify-content: space-between;

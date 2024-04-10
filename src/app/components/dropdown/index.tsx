@@ -3,9 +3,9 @@ import { appColors } from "app/theme";
 import { styled } from "@mui/material/styles";
 import MenuItem from "@mui/material/MenuItem";
 import Menu, { MenuProps } from "@mui/material/Menu";
+import ChevronRight from "@mui/icons-material/ChevronRight";
 import { DropdownProps } from "app/components/dropdown/data";
 import { CategoryButton } from "app/components/search/styles";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 const StyledMenu = styled((props: MenuProps) => (
   <Menu
@@ -25,9 +25,9 @@ const StyledMenu = styled((props: MenuProps) => (
 ))({
   "& .MuiPaper-root": {
     width: 200,
-    borderRadius: 8,
+    borderRadius: 4,
     background: appColors.SEARCH.DROPDOWN_BACKGROUND_COLOR,
-    boxShadow: "0px 0px 10px 0px rgba(152, 161, 170, 0.60)",
+    border: `1px solid ${appColors.SEARCH.DROPDOWN_BUTTON_BORDER_COLOR}`,
     "&::-webkit-scrollbar": {
       width: 5,
       borderRadius: 2,
@@ -43,17 +43,16 @@ const StyledMenu = styled((props: MenuProps) => (
     },
   },
   "& .MuiMenu-list": {
-    padding: 8,
+    padding: 4,
     maxHeight: 280,
   },
 });
 
 const StyledMenuItem = styled(MenuItem)(() => ({
-  height: 36,
   width: "100%",
   fontSize: "14px",
-  padding: "0 8px",
-  borderRadius: "8px",
+  padding: "2px 4px",
+  borderRadius: "4px",
   color: appColors.SEARCH.DROPDOWN_ITEM_BACKGROUND_COLOR,
   "& svg": {
     marginRight: "8px",
@@ -88,26 +87,24 @@ export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
     setAnchorEl(null);
   };
 
+  const dropdownSelectedIcon = React.useMemo(() => {
+    const selected = props.dropdownItems.find(
+      (item) => item.label === props.dropdownSelected
+    );
+    return selected ? selected.icon : null;
+  }, [props.dropdownItems, props.dropdownSelected]);
+
   return (
     <React.Fragment>
       <CategoryButton
         disableTouchRipple
         onClick={handleClick}
-        theme={{ anchorEl: true }}
+        theme={{ anchorEl: Boolean(anchorEl) }}
         style={{ maxHeight: "32px", marginRight: 0 }}
       >
-        <span style={{ letterSpacing: "0" }}>
-          <b>{props.dropdownSelected}</b>
-        </span>
-        <ArrowDropDownIcon
-          sx={
-            anchorEl
-              ? {
-                  transform: "rotate(180deg)",
-                }
-              : {}
-          }
-        />
+        {dropdownSelectedIcon}
+        <span style={{ letterSpacing: "0" }}>{props.dropdownSelected}</span>
+        <ChevronRight sx={{ transform: `rotate(${anchorEl ? -90 : 90}deg)` }} />
       </CategoryButton>
       <StyledMenu
         keepMounted
@@ -137,6 +134,7 @@ export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
                 : {}
             }
           >
+            {item.icon}
             <span>{item.label}</span>
           </StyledMenuItem>
         ))}

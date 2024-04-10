@@ -5,7 +5,7 @@ import { HashLink as Link } from "react-router-hash-link";
 export const Container = styled.div`
   left: 0;
   top: 52px;
-  z-index: 1;
+  z-index: 2;
   width: 100%;
   display: flex;
   border-radius: 8px;

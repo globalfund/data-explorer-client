@@ -5,18 +5,15 @@ import get from "lodash/get";
 import Box from "@mui/material/Box";
 import { appColors } from "app/theme";
 import findIndex from "lodash/findIndex";
-import { styled } from "@mui/material/styles";
-import MenuItem from "@mui/material/MenuItem";
 import { useCMSData } from "app/hooks/useCMSData";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import { Dropdown } from "app/components/dropdown";
 import SearchIcon from "@mui/icons-material/Search";
-import Menu, { MenuProps } from "@mui/material/Menu";
 import { categories } from "app/components/search/data";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import IconChevronRight from "@mui/icons-material/ChevronRight";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { SearchResults } from "app/components/search/components/results";
 import {
   SearchResultModel,
@@ -25,7 +22,6 @@ import {
 import {
   Input,
   Container,
-  CategoryButton,
   MobileContainer,
   MobileBackButton,
 } from "app/components/search/styles";
@@ -42,71 +38,6 @@ interface SearchLayoutProps {
   setStoredValue: (value: string) => void;
 }
 
-const StyledMenu = styled((props: MenuProps) => (
-  <Menu
-    elevation={0}
-    // getContentAnchorEl={null}
-    anchorOrigin={{
-      vertical: 60,
-      horizontal: "left",
-    }}
-    transformOrigin={{
-      vertical: "top",
-      horizontal: "left",
-    }}
-    autoFocus={false}
-    {...props}
-  />
-))({
-  "& .MuiPaper-root": {
-    width: 200,
-    borderRadius: 8,
-    background: appColors.SEARCH.DROPDOWN_BACKGROUND_COLOR,
-    boxShadow: "0px 0px 10px 0px rgba(152, 161, 170, 0.60)",
-    "&::-webkit-scrollbar": {
-      width: 5,
-      borderRadius: 2,
-      background: appColors.SEARCH.DROPDOWN_SCROLLBAR_BACKGROUND_COLOR,
-    },
-    "&::-webkit-scrollbar-track": {
-      borderRadius: 2,
-      background: appColors.SEARCH.DROPDOWN_SCROLLBAR_TRACK_BACKGROUND_COLOR,
-    },
-    "&::-webkit-scrollbar-thumb": {
-      borderRadius: 2,
-      background: appColors.SEARCH.DROPDOWN_SCROLLBAR_THUMB_BACKGROUND_COLOR,
-    },
-  },
-  "& .MuiMenu-list": {
-    padding: 8,
-    maxHeight: 280,
-  },
-});
-
-const StyledMenuItem = styled(MenuItem)(() => ({
-  height: 36,
-  width: "100%",
-  fontSize: "14px",
-  padding: "0 8px",
-  borderRadius: "8px",
-  color: appColors.SEARCH.DROPDOWN_ITEM_BACKGROUND_COLOR,
-  "& svg": {
-    marginRight: "8px",
-    path: {
-      fill: appColors.SEARCH.DROPDOWN_ITEM_BACKGROUND_COLOR,
-    },
-  },
-  "&:hover": {
-    color: appColors.SEARCH.DROPDOWN_ITEM_HOVER_COLOR,
-    background: appColors.SEARCH.DROPDOWN_ITEM_HOVER_BACKGROUND_COLOR,
-    "& svg": {
-      path: {
-        fill: appColors.SEARCH.DROPDOWN_ITEM_HOVER_COLOR,
-      },
-    },
-  },
-}));
-
 export function SearchLayout(props: SearchLayoutProps) {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const cmsData = useCMSData({ returnData: true });
@@ -118,15 +49,6 @@ export function SearchLayout(props: SearchLayoutProps) {
     props.value.length > 0 ||
       (props.forceFocus !== undefined && props.forceFocus)
   );
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   const handleItemClick = (value: string) => () => {
     if (props.setCategory) {
@@ -139,7 +61,6 @@ export function SearchLayout(props: SearchLayoutProps) {
       props.setStoredValue("");
       props.setValue("");
       setOpen(false);
-      handleClose();
       if (props.onClose) {
         props.onClose();
       }
@@ -186,61 +107,13 @@ export function SearchLayout(props: SearchLayoutProps) {
   return (
     <MobileContainer>
       {!isMobile && props.category && props.setCategory && (
-        <React.Fragment>
-          <CategoryButton
-            id="search-category-dropdown"
-            disableTouchRipple
-            onClick={handleClick}
-            theme={{
-              anchorEl: Boolean(anchorEl),
-            }}
-          >
-            <span>{props.category}</span>
-            <ArrowDropDownIcon
-              sx={
-                anchorEl
-                  ? {
-                      transform: "rotate(180deg)",
-                    }
-                  : {}
-              }
-            />
-          </CategoryButton>
-          <StyledMenu
-            keepMounted
-            id="search-menu"
-            disableScrollLock
-            anchorEl={anchorEl}
-            onClose={handleClose}
-            open={Boolean(anchorEl)}
-          >
-            {categories.map((category) => (
-              <StyledMenuItem
-                disableRipple
-                disableTouchRipple
-                key={category.label}
-                onClick={handleItemClick(category.label)}
-                sx={
-                  props.category === category.label
-                    ? {
-                        color: appColors.SEARCH.DROPDOWN_ITEM_ACTIVE_COLOR,
-                        background:
-                          appColors.SEARCH
-                            .DROPDOWN_ITEM_ACTIVE_BACKGROUND_COLOR,
-                        svg: {
-                          path: {
-                            fill: appColors.SEARCH.DROPDOWN_ITEM_ACTIVE_COLOR,
-                          },
-                        },
-                      }
-                    : {}
-                }
-              >
-                {category.icon} <span>{category.label}</span>
-              </StyledMenuItem>
-            ))}
-          </StyledMenu>
-        </React.Fragment>
+        <Box id="search-category-dropdown" marginRight="16px">
+          <Dropdown
+            dropdownItems={categories}
+            dropdownSelected={props.category}
+            handleDropdownChange={props.setCategory}
+          />
+        </Box>
       )}
       <Container
         id="search-container"

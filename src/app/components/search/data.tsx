@@ -9,11 +9,15 @@ import {
 } from "app/components/search/icons";
 
 export const categories = [
-  { label: "All Categories", icon: <AllCategoriesIcon /> },
-  { label: "Locations", icon: <LocationsIcon /> },
-  { label: "Partners", icon: <PartnersIcon /> },
-  { label: "Donors", icon: <DonorsIcon /> },
-  { label: "Grants", icon: <GrantsIcon /> },
-  { label: "Results", icon: <ResultsIcon /> },
-  { label: "Documents", icon: <DocumentsIcon /> },
+  {
+    value: "All Categories",
+    label: "All Categories",
+    icon: <AllCategoriesIcon />,
+  },
+  { value: "Locations", label: "Locations", icon: <LocationsIcon /> },
+  { value: "Partners", label: "Partners", icon: <PartnersIcon /> },
+  { value: "Donors", label: "Donors", icon: <DonorsIcon /> },
+  { value: "Grants", label: "Grants", icon: <GrantsIcon /> },
+  { value: "Results", label: "Results", icon: <ResultsIcon /> },
+  { value: "Documents", label: "Documents", icon: <DocumentsIcon /> },
 ];
