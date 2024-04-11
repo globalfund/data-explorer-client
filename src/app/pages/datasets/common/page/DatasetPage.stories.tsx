@@ -21,6 +21,7 @@ type StoryType = StoryObj<typeof meta>;
 export const Primary: StoryType = {
   args: {
     title: "Resource Mobilization",
+    children: <div>Content</div>,
     subtitle:
       "Government, private sector, non-government and other donor pledges and contributions.",
     breadcrumbs: [{ label: "Datasets" }, { label: "Resource Mobilization" }],

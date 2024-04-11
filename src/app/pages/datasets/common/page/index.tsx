@@ -53,6 +53,7 @@ export const DatasetPage: React.FC<DatasetPageProps> = (
           borderColor: "#CFD4DA",
         }}
       />
+      {props.children}
     </Box>
   );
 };
