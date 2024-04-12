@@ -163,7 +163,7 @@ const theme = createTheme({
       color: colors.primary.black,
     },
     h3: {
-      fontSize: "32px",
+      fontSize: "40px",
       fontWeight: "700",
       color: colors.primary.black,
     },
@@ -732,7 +732,7 @@ export const appColors = {
     DROPDOWN_ITEM_ACTIVE_COLOR: WHITE,
     DROPDOWN_ITEM_ACTIVE_BACKGROUND_COLOR: BLACK,
     DROPDOWN_BUTTON_BACKGROUND_COLOR: "transparent",
-    DROPDOWN_BUTTON_BORDER_COLOR: SECONDARY_COLOR_3,
+    DROPDOWN_BUTTON_BORDER_COLOR: "#DFE3E5",
     DROPDOWN_BUTTON_TEXT_HOVER_COLOR: WHITE,
     DROPDOWN_BUTTON_BACKGROUND_HOVER_COLOR: BLACK,
     DROPDOWN_BUTTON_TEXT_COLOR: BLACK,

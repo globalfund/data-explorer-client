@@ -3,9 +3,25 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
+import { BarChart } from "app/components/charts/bar";
 import { DatasetPage } from "app/pages/datasets/common/page";
+import { STORY_DATA_VARIANT_2 } from "app/components/charts/bar/data";
+import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
+
+const dropdownItems = [
+  { label: "Bar Chart", value: "Bar Chart" },
+  { label: "Table View", value: "Table View" },
+];
 
 export const ResourceMobilizationPage: React.FC = () => {
+  const [dropdownSelected, setDropdownSelected] = React.useState(
+    dropdownItems[0].value
+  );
+
+  const handleSelectionChange = (value: string) => {
+    setDropdownSelected(value);
+  };
+
   return (
     <DatasetPage
       title="Resource Mobilization"
@@ -13,7 +29,7 @@ export const ResourceMobilizationPage: React.FC = () => {
       breadcrumbs={[{ label: "Datasets" }, { label: "Resource Mobilization" }]}
     >
       <Box width="100%" marginTop="50px">
-        <Grid container>
+        <Grid container marginBottom="50px">
           <Grid
             item
             sm={12}
@@ -175,6 +191,31 @@ export const ResourceMobilizationPage: React.FC = () => {
             </Grid>
           </Grid>
         </Grid>
+        <Divider
+          sx={{
+            left: 0,
+            width: "100vw",
+            position: "absolute",
+            borderColor: "#CFD4DA",
+          }}
+        />
+        <Box paddingTop="50px">
+          <DatasetChartBlock
+            title="Pledges & Contributions"
+            subtitle="Government, private sector, non-government and other donor pledges and contributions."
+            dropdownItems={dropdownItems}
+            dropdownSelected={dropdownSelected}
+            handleDropdownChange={handleSelectionChange}
+          >
+            <BarChart
+              data={STORY_DATA_VARIANT_2}
+              valueLabels={{
+                value: "Pledge",
+                value1: "Contribution",
+              }}
+            />
+          </DatasetChartBlock>
+        </Box>
       </Box>
     </DatasetPage>
   );

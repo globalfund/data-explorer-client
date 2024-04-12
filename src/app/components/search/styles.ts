@@ -116,26 +116,16 @@ export const CategoryButton = styled(Button)`
   text-transform: capitalize;
   max-width: calc(50vw - 32px);
   justify-content: space-between;
+  color: ${appColors.SEARCH.DROPDOWN_BUTTON_TEXT_COLOR};
   background: ${appColors.SEARCH.DROPDOWN_BUTTON_BACKGROUND_COLOR};
-  border: 1px solid ${appColors.SEARCH.DROPDOWN_BUTTON_BORDER_COLOR};
-  color: ${(props) =>
-    props.theme.anchorEl
-      ? appColors.SEARCH.DROPDOWN_BUTTON_TEXT_HOVER_COLOR
-      : appColors.SEARCH.DROPDOWN_BUTTON_TEXT_COLOR};
-  background: ${(props) =>
-    props.theme.anchorEl
-      ? appColors.SEARCH.DROPDOWN_BUTTON_BACKGROUND_HOVER_COLOR
-      : appColors.SEARCH.DROPDOWN_BUTTON_BACKGROUND_COLOR};
+  border: 1px solid
+    ${(props) =>
+      props.theme.anchorEl
+        ? appColors.SEARCH.DROPDOWN_BUTTON_TEXT_COLOR
+        : appColors.SEARCH.DROPDOWN_BUTTON_BORDER_COLOR};
 
   &:hover {
-    color: ${appColors.SEARCH.DROPDOWN_BUTTON_TEXT_HOVER_COLOR};
-    background: ${appColors.SEARCH.DROPDOWN_BUTTON_BACKGROUND_HOVER_COLOR};
-
-    svg {
-      > path {
-        fill: ${appColors.SEARCH.DROPDOWN_BUTTON_TEXT_HOVER_COLOR};
-      }
-    }
+    border-color: ${appColors.SEARCH.DROPDOWN_BUTTON_TEXT_COLOR};
   }
 
   .MuiButton-label {
