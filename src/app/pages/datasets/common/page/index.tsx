@@ -27,23 +27,25 @@ export const DatasetPage: React.FC<DatasetPageProps> = (
         }}
       />
       <Box
-        gap="20px"
         width="100%"
         height="82px"
         display="flex"
         marginTop="50px"
         flexDirection="row"
-        alignItems="center"
+        justifyContent="space-between"
       >
-        <Typography variant="h6" gap="5px" display="flex" alignItems="center">
-          {props.title} Filters{" "}
-          <Tooltip title={props.title}>
-            <InfoOutlined fontSize="small" />
-          </Tooltip>
-        </Typography>
-        <Button variant="outlined" startIcon={<Add />}>
-          Filters
-        </Button>
+        <Box gap="20px" display="flex" flexDirection="row" alignItems="center">
+          <Typography variant="h6" gap="5px" display="flex" alignItems="center">
+            {props.title} Filters{" "}
+            <Tooltip title={props.title}>
+              <InfoOutlined fontSize="small" />
+            </Tooltip>
+          </Typography>
+          <Button variant="outlined" startIcon={<Add />}>
+            Filters
+          </Button>
+        </Box>
+        {props.toolbarRightContent && props.toolbarRightContent}
       </Box>
       <Divider
         sx={{

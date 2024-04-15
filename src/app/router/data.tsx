@@ -5,6 +5,7 @@ import { Location } from "app/pages/location";
 import { RouteObject } from "react-router-dom";
 import { Geography } from "app/pages/geography";
 import { Redirect } from "app/components/redirect";
+import { AnnualResultsPage } from "app/pages/datasets/annual-results";
 import { ResourceMobilizationPage } from "app/pages/datasets/resource-mobilization";
 
 export const ROUTES: RouteObject[] = [
@@ -25,6 +26,10 @@ export const ROUTES: RouteObject[] = [
       {
         path: "/resource-mobilization/pledges-contributions",
         element: <ResourceMobilizationPage />,
+      },
+      {
+        path: "/annual-results",
+        element: <AnnualResultsPage />,
       },
     ],
   },

@@ -5,4 +5,5 @@ export interface DatasetPageProps {
   subtitle: string;
   children: React.ReactNode;
   breadcrumbs: BreadcrumbItem[];
+  toolbarRightContent?: React.ReactNode;
 }
