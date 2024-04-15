@@ -151,7 +151,7 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
           onEchartResize(
             // @ts-ignore
             chart,
-            "treemap-chart",
+            "sankey-chart",
             containerRef.current?.clientHeight
           )
         ).observe(containerRef?.current);

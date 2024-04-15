@@ -52,7 +52,7 @@ export const RadialChart: React.FC<RadialChartProps> = (
           onEchartResize(
             // @ts-ignore
             chart,
-            "treemap-chart",
+            "radial-chart",
             containerRef.current?.clientHeight
           )
         ).observe(containerRef?.current);

@@ -111,7 +111,7 @@ export const LineChart: React.FC<LineChartProps> = (props: LineChartProps) => {
           onEchartResize(
             // @ts-ignore
             chart,
-            "treemap-chart",
+            "line-chart",
             containerRef.current?.clientHeight
           )
         ).observe(containerRef?.current);

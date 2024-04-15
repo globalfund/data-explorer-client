@@ -3,10 +3,10 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
-import { BarChart } from "app/components/charts/bar";
 import { DatasetPage } from "app/pages/datasets/common/page";
-import { STORY_DATA_VARIANT_2 } from "app/components/charts/bar/data";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
+import { ExpandableHorizontalBar } from "app/components/charts/expandable-horizontal-bar";
+import { STORY_DATA_VARIANT_1 } from "app/components/charts/expandable-horizontal-bar/data";
 
 const dropdownItems = [
   { label: "Bar Chart", value: "Bar Chart" },
@@ -207,8 +207,8 @@ export const ResourceMobilizationPage: React.FC = () => {
             dropdownSelected={dropdownSelected}
             handleDropdownChange={handleSelectionChange}
           >
-            <BarChart
-              data={STORY_DATA_VARIANT_2}
+            <ExpandableHorizontalBar
+              data={STORY_DATA_VARIANT_1}
               valueLabels={{
                 value: "Pledge",
                 value1: "Contribution",

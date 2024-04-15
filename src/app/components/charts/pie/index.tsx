@@ -47,7 +47,7 @@ export const PieChart: React.FC<PieChartProps> = (props: PieChartProps) => {
           onEchartResize(
             // @ts-ignore
             chart,
-            "treemap-chart",
+            "pie-chart",
             containerRef.current?.clientHeight
           )
         ).observe(containerRef?.current);
