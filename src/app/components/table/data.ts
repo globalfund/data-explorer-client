@@ -1,4 +1,5 @@
 import { formatLocale } from "app/utils/formatLocale";
+import _ from "lodash";
 import {
   CellComponent,
   ColumnDefinition,
@@ -32,7 +33,7 @@ const financialFormatter = (cell: CellComponent) => {
 };
 
 export const TABLE_VARIATION_1_COLUMNS: ColumnDefinition[] = [
-  { title: "Name", field: "name" },
+  { title: "Name", field: "name", width: "20%" },
   {
     title: "Years",
     columns: [
@@ -927,5 +928,110 @@ export const TABLE_VARIATION_7_DATA: {
       "People in contact with TB patients received preventive therapy",
     component: "Tuberculosis",
     result: 200000,
+  },
+];
+
+export const TABLE_VARIATION_8_COLUMNS: ColumnDefinition[] = [
+  {
+    title: "Donors Types & Donors",
+    field: "name",
+    formatter: cellBGColorFormatter,
+    width: "50%",
+  },
+  { title: "Pledge", field: "pledge", formatter: "money", width: "25%" },
+  { title: "Contribution", field: "contribution", formatter: "money" },
+];
+
+export const TABLE_VARIATION_8_DATA: {
+  [key: string]: string | number | boolean | null | object | Array<object>;
+}[] = [
+  {
+    name: "Affordable Medicines Facility - malaria (AMFm)",
+    pledge: 1000000,
+    contribution: 1000000,
+    _children: [
+      {
+        name: "AMFm Bill & Melinda Gates Foundation",
+        pledge: 24365000,
+        contribution: 24365000,
+      },
+      {
+        name: "AMFm Canada",
+        pledge: 39596763.03,
+        contribution: 39596763.03,
+      },
+      {
+        name: "AMFm United Kingdom",
+        pledge: 273496422.4,
+        contribution: 273496422.4,
+      },
+      {
+        name: "AMFm World Health Organization-Unitaid",
+        pledge: 200000000,
+        contribution: 200000000,
+      },
+    ],
+  },
+  {
+    name: "Debt2Health",
+    pledge: 1000000,
+    contribution: 1000000,
+    _children: [
+      {
+        name: "Debt2Health - Australia-Indonesia",
+        pledge: 35267489.57,
+        contribution: 35267489.56,
+      },
+      {
+        name: "Debt2Health - Germany - El Salvador",
+        pledge: 11222085.1,
+        contribution: 11222085.07,
+      },
+      {
+        name: "Debt2Health - Germany-Côte d'Ivoire",
+        pledge: 12540097.18,
+        contribution: 12540096.85,
+      },
+      {
+        name: "Debt2Health - Germany-Egypt",
+        pledge: 4807118.2,
+        contribution: 4807118.2,
+      },
+      {
+        name: "Debt2Health - Germany-Indonesia",
+        pledge: 90905435.51,
+        contribution: 90905435.49,
+      },
+      {
+        name: "Debt2Health - Germany-Pakistan",
+        pledge: 26374033.3,
+        contribution: 26374033.3,
+      },
+      {
+        name: "Debt2Health - Germany-Sri Lanka",
+        pledge: 22444170.2,
+        contribution: 16114812.86,
+      },
+      {
+        name: "Debt2Health - Jordan-Germany",
+        pledge: 11222085.1,
+        contribution: 11222085.09,
+      },
+      {
+        name: "Debt2Health - Spain-Cameroon",
+        pledge: 10456922.93,
+        contribution: 10456922.93,
+      },
+      {
+        name: "Debt2Health - Spain-Congo (Democratic Republic)",
+        pledge: 3403543.45,
+        contribution: 3403543.45,
+      },
+      {
+        name: "Debt2Health - Spain-Ethiopia",
+        pledge: 3581142.41,
+        contribution: 3581142.41,
+      },
+    ],
   },
 ];

@@ -68,7 +68,6 @@ export const Table: React.FC<TableProps> = (props: TableProps) => {
     <Box
       ref={ref}
       id={props.id}
-      borderRadius="8px"
       border="1px solid #CFD4DA"
       sx={{
         ".tabulator-col-title, .tabulator-cell": {

@@ -2,18 +2,30 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
+import { Table } from "app/components/table";
 import Typography from "@mui/material/Typography";
 import { DatasetPage } from "app/pages/datasets/common/page";
 import { SunburstChart } from "app/components/charts/sunburst";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
+import { ReactComponent as TableIcon } from "app/assets/vectors/Select_Table.svg";
+import { ReactComponent as BarChartIcon } from "app/assets/vectors/Select_BarChart.svg";
 import { ExpandableHorizontalBar } from "app/components/charts/expandable-horizontal-bar";
-import { STORY_DATA_VARIANT_1 as HORIZONTAL_BAR_CHART_DATA } from "app/components/charts/expandable-horizontal-bar/data";
+import { ReactComponent as SunburstChartIcon } from "app/assets/vectors/Select_SunburstChart.svg";
 import { STORY_DATA_VARIANT_1 as SUNBURST_CHART_DATA } from "app/components/charts/expandable-horizontal-bar/data";
+import { STORY_DATA_VARIANT_1 as HORIZONTAL_BAR_CHART_DATA } from "app/components/charts/expandable-horizontal-bar/data";
+import {
+  TABLE_VARIATION_8_DATA,
+  TABLE_VARIATION_8_COLUMNS,
+} from "app/components/table/data";
 
 const dropdownItems = [
-  { label: "Bar Chart", value: "Bar Chart" },
-  { label: "Sunburst Chart", value: "Sunburst Chart" },
-  { label: "Table View", value: "Table View" },
+  { label: "Bar Chart", value: "Bar Chart", icon: <BarChartIcon /> },
+  {
+    label: "Sunburst Chart",
+    value: "Sunburst Chart",
+    icon: <SunburstChartIcon />,
+  },
+  { label: "Table View", value: "Table View", icon: <TableIcon /> },
 ];
 
 export const ResourceMobilizationPage: React.FC = () => {
@@ -40,7 +52,14 @@ export const ResourceMobilizationPage: React.FC = () => {
       case dropdownItems[1].value:
         return <SunburstChart data={SUNBURST_CHART_DATA} />;
       case dropdownItems[2].value:
-        return <div>Table View</div>;
+        return (
+          <Table
+            dataTree
+            id="pledges-contributions-table"
+            data={TABLE_VARIATION_8_DATA}
+            columns={TABLE_VARIATION_8_COLUMNS}
+          />
+        );
       default:
         return null;
     }
@@ -223,13 +242,25 @@ export const ResourceMobilizationPage: React.FC = () => {
             borderColor: "#CFD4DA",
           }}
         />
-        <Box paddingTop="50px">
+        <Box
+          paddingTop="50px"
+          sx={
+            dropdownSelected === dropdownItems[2].value
+              ? {
+                  "#content": {
+                    padding: 0,
+                  },
+                }
+              : {}
+          }
+        >
           <DatasetChartBlock
             title="Pledges & Contributions"
             subtitle="Government, private sector, non-government and other donor pledges and contributions."
             dropdownItems={dropdownItems}
             dropdownSelected={dropdownSelected}
             handleDropdownChange={handleSelectionChange}
+            disableCollapse={dropdownSelected === dropdownItems[2].value}
           >
             {chartContent}
           </DatasetChartBlock>

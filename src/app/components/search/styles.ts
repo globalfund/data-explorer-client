@@ -132,17 +132,6 @@ export const CategoryButton = styled(Button)`
     justify-content: space-between;
   }
 
-  svg {
-    transition: all 0.2s ease-in-out;
-
-    > path {
-      fill: ${(props) =>
-        props.theme.anchorEl
-          ? appColors.SEARCH.DROPDOWN_BUTTON_TEXT_HOVER_COLOR
-          : appColors.SEARCH.DROPDOWN_BUTTON_TEXT_COLOR};
-    }
-  }
-
   > span {
     font-weight: 400;
     overflow: hidden;

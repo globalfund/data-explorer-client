@@ -56,9 +56,6 @@ const StyledMenuItem = styled(MenuItem)(() => ({
   color: appColors.SEARCH.DROPDOWN_ITEM_BACKGROUND_COLOR,
   "& svg": {
     marginRight: "8px",
-    path: {
-      fill: appColors.SEARCH.DROPDOWN_ITEM_BACKGROUND_COLOR,
-    },
   },
   "&:hover": {
     color: appColors.SEARCH.DROPDOWN_ITEM_HOVER_COLOR,

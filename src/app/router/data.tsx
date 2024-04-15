@@ -23,7 +23,7 @@ export const ROUTES: RouteObject[] = [
       },
       { path: "/location/:id/:tab", element: <Location /> },
       {
-        path: "/dataset/resource-mobilization",
+        path: "/resource-mobilization/pledges-contributions",
         element: <ResourceMobilizationPage />,
       },
     ],

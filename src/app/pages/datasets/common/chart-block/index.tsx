@@ -37,7 +37,15 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
           <Button variant="outlined" startIcon={<SettingsIcon />}>
             Settings
           </Button>
-          <Button variant="outlined" startIcon={<CollpaseIcon />}>
+          <Button
+            variant="outlined"
+            startIcon={<CollpaseIcon />}
+            sx={
+              props.disableCollapse
+                ? { pointerEvents: "none", opacity: 0.4 }
+                : {}
+            }
+          >
             Collapse
           </Button>
         </Box>
@@ -51,7 +59,13 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
             />
           )}
       </Box>
-      <Box width="100%" minHeight="400px" padding="0 32px" position="relative">
+      <Box
+        id="content"
+        width="100%"
+        minHeight="400px"
+        padding="0 32px"
+        position="relative"
+      >
         {props.children}
       </Box>
       <Box width="100%" paddingRight="32px" marginTop="40px">
