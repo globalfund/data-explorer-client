@@ -4,12 +4,15 @@ import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import { DatasetPage } from "app/pages/datasets/common/page";
+import { SunburstChart } from "app/components/charts/sunburst";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { ExpandableHorizontalBar } from "app/components/charts/expandable-horizontal-bar";
-import { STORY_DATA_VARIANT_1 } from "app/components/charts/expandable-horizontal-bar/data";
+import { STORY_DATA_VARIANT_1 as HORIZONTAL_BAR_CHART_DATA } from "app/components/charts/expandable-horizontal-bar/data";
+import { STORY_DATA_VARIANT_1 as SUNBURST_CHART_DATA } from "app/components/charts/expandable-horizontal-bar/data";
 
 const dropdownItems = [
   { label: "Bar Chart", value: "Bar Chart" },
+  { label: "Sunburst Chart", value: "Sunburst Chart" },
   { label: "Table View", value: "Table View" },
 ];
 
@@ -21,6 +24,27 @@ export const ResourceMobilizationPage: React.FC = () => {
   const handleSelectionChange = (value: string) => {
     setDropdownSelected(value);
   };
+
+  const chartContent = React.useMemo(() => {
+    switch (dropdownSelected) {
+      case dropdownItems[0].value:
+        return (
+          <ExpandableHorizontalBar
+            data={HORIZONTAL_BAR_CHART_DATA}
+            valueLabels={{
+              value: "Pledge",
+              value1: "Contribution",
+            }}
+          />
+        );
+      case dropdownItems[1].value:
+        return <SunburstChart data={SUNBURST_CHART_DATA} />;
+      case dropdownItems[2].value:
+        return <div>Table View</div>;
+      default:
+        return null;
+    }
+  }, [dropdownSelected]);
 
   return (
     <DatasetPage
@@ -207,13 +231,7 @@ export const ResourceMobilizationPage: React.FC = () => {
             dropdownSelected={dropdownSelected}
             handleDropdownChange={handleSelectionChange}
           >
-            <ExpandableHorizontalBar
-              data={STORY_DATA_VARIANT_1}
-              valueLabels={{
-                value: "Pledge",
-                value1: "Contribution",
-              }}
-            />
+            {chartContent}
           </DatasetChartBlock>
         </Box>
       </Box>

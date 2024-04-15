@@ -865,4 +865,15 @@ export const appColors = {
     BUTTON_ACTIVE_TEXT_COLOR: WHITE,
     BUTTON_ACTIVE_BACKGROUND_COLOR: BLACK,
   },
+  SUNBURST: {
+    ITEM_COLORS: [
+      "#DEE1E7",
+      "#013E77",
+      "#D9D9D9",
+      "#2196F3",
+      "#00B5AE",
+      "#C3EDFD",
+      "#0A2840",
+    ],
+  },
 };
