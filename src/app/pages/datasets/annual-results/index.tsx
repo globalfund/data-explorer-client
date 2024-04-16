@@ -1,6 +1,7 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
+import { Table } from "app/components/table";
 import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
 import { DatasetPage } from "app/pages/datasets/common/page";
@@ -9,6 +10,10 @@ import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { ReactComponent as TableIcon } from "app/assets/vectors/Select_Table.svg";
 import { ReactComponent as BarChartIcon } from "app/assets/vectors/Select_BarChart.svg";
 import { STORY_DATA_VARIANT_1 as POLYLINE_TREE_DATA } from "app/components/charts/polyline-tree/data";
+import {
+  TABLE_VARIATION_9_DATA,
+  TABLE_VARIATION_9_COLUMNS,
+} from "app/components/table/data";
 import {
   stats,
   geographyGroupingOptions,
@@ -99,14 +104,15 @@ export const AnnualResultsPage: React.FC = () => {
       case dropdownItems[0].value:
         return <PolylineTree data={POLYLINE_TREE_DATA} />;
       case dropdownItems[1].value:
-      // return (
-      //   <Table
-      //     dataTree
-      //     id="pledges-contributions-table"
-      //     data={TABLE_VARIATION_8_DATA}
-      //     columns={TABLE_VARIATION_8_COLUMNS}
-      //   />
-      // );
+        return (
+          <Table
+            dataTree
+            dataTreeStartExpanded
+            id="annual-results-table"
+            data={TABLE_VARIATION_9_DATA}
+            columns={TABLE_VARIATION_9_COLUMNS}
+          />
+        );
       default:
         return null;
     }

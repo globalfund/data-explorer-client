@@ -19,6 +19,8 @@ import {
   TABLE_VARIATION_7_COLUMNS,
   TABLE_VARIATION_8_DATA,
   TABLE_VARIATION_8_COLUMNS,
+  TABLE_VARIATION_9_DATA,
+  TABLE_VARIATION_9_COLUMNS,
 } from "app/components/table/data";
 
 const meta = {
@@ -114,5 +116,15 @@ export const Variant8: StoryType = {
     dataTree: true,
     data: TABLE_VARIATION_8_DATA,
     columns: TABLE_VARIATION_8_COLUMNS,
+  },
+};
+
+export const Variant9: StoryType = {
+  args: {
+    id: "table",
+    dataTree: true,
+    dataTreeStartExpanded: true,
+    data: TABLE_VARIATION_9_DATA,
+    columns: TABLE_VARIATION_9_COLUMNS,
   },
 };
