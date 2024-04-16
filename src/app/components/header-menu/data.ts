@@ -13,65 +13,17 @@ export const PAGES: HeaderMenuPage[] = [
       {
         id: "resource-mobilization",
         label: "Resource Mobilization",
-        subPages: [
-          {
-            id: "pledges-contributions",
-            label: "Pledges & Contributions",
-            link: "/resource-mobilization/pledges-contributions",
-          },
-        ],
+        link: "/resource-mobilization",
       },
       {
         id: "access-to-funding",
         label: "Access to Funding",
-        subPages: [
-          {
-            id: "eligibility",
-            label: "Eligibility",
-            link: "/access-to-funding/eligibility",
-          },
-          {
-            id: "allocation",
-            label: "Allocation",
-            link: "/access-to-funding/allocation",
-          },
-          {
-            id: "funding-request",
-            label: "Funding Request",
-            link: "/access-to-funding/funding-request",
-          },
-        ],
+        link: "/access-to-funding",
       },
       {
         id: "grant-implementation",
         label: "Grant Implementation",
-        subPages: [
-          {
-            id: "signed-amounts",
-            label: "Signed Amounts",
-            link: "/grant-implementation/signed-amounts",
-          },
-          {
-            id: "commitments",
-            label: "Commitments",
-            link: "/grant-implementation/commitments",
-          },
-          {
-            id: "disbursements",
-            label: "Disbursements",
-            link: "/grant-implementation/disbursements",
-          },
-          {
-            id: "budgets",
-            label: "Budgets",
-            link: "/grant-implementation/budgets",
-          },
-          {
-            id: "expenditures",
-            label: "Expenditures",
-            link: "/grant-implementation/expenditures",
-          },
-        ],
+        link: "/grant-implementation",
       },
       {
         id: "annual-results",
