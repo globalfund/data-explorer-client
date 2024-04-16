@@ -4,11 +4,21 @@ import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
 import { DatasetPage } from "app/pages/datasets/common/page";
+import { PolylineTree } from "app/components/charts/polyline-tree";
+import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
+import { ReactComponent as TableIcon } from "app/assets/vectors/Select_Table.svg";
+import { ReactComponent as BarChartIcon } from "app/assets/vectors/Select_BarChart.svg";
+import { STORY_DATA_VARIANT_1 as POLYLINE_TREE_DATA } from "app/components/charts/polyline-tree/data";
 import {
   stats,
   geographyGroupingOptions,
   componentsGroupingOptions,
 } from "app/pages/datasets/annual-results/data";
+
+const dropdownItems = [
+  { label: "Polyline Tree", value: "Polyline Tree", icon: <BarChartIcon /> },
+  { label: "Table View", value: "Table View", icon: <TableIcon /> },
+];
 
 const StatComp: React.FC<{
   label: string;
@@ -33,12 +43,19 @@ const StatComp: React.FC<{
 };
 
 export const AnnualResultsPage: React.FC = () => {
+  const [dropdownSelected, setDropdownSelected] = React.useState(
+    dropdownItems[0].value
+  );
   const [geographyGrouping, setGeographyGrouping] = React.useState(
     geographyGroupingOptions[0].value
   );
   const [componentsGrouping, setComponentsGrouping] = React.useState(
     componentsGroupingOptions[0].value
   );
+
+  const handleSelectionChange = (value: string) => {
+    setDropdownSelected(value);
+  };
 
   const handleGeographyGroupingChange = (value: string) => {
     setGeographyGrouping(value);
@@ -77,6 +94,24 @@ export const AnnualResultsPage: React.FC = () => {
     );
   }, []);
 
+  const chartContent = React.useMemo(() => {
+    switch (dropdownSelected) {
+      case dropdownItems[0].value:
+        return <PolylineTree data={POLYLINE_TREE_DATA} />;
+      case dropdownItems[1].value:
+      // return (
+      //   <Table
+      //     dataTree
+      //     id="pledges-contributions-table"
+      //     data={TABLE_VARIATION_8_DATA}
+      //     columns={TABLE_VARIATION_8_COLUMNS}
+      //   />
+      // );
+      default:
+        return null;
+    }
+  }, [dropdownSelected]);
+
   return (
     <DatasetPage
       title="Annual Results"
@@ -104,6 +139,25 @@ export const AnnualResultsPage: React.FC = () => {
             borderColor: "#CFD4DA",
           }}
         />
+        <Box
+          paddingTop="50px"
+          sx={{
+            "#content": {
+              padding: 0,
+            },
+          }}
+        >
+          <DatasetChartBlock
+            title="Annual Results"
+            subtitle="Lorem Ipsum."
+            dropdownItems={dropdownItems}
+            dropdownSelected={dropdownSelected}
+            handleDropdownChange={handleSelectionChange}
+            disableCollapse={dropdownSelected === dropdownItems[1].value}
+          >
+            {chartContent}
+          </DatasetChartBlock>
+        </Box>
       </Box>
     </DatasetPage>
   );
