@@ -19,13 +19,42 @@ export interface TableProps {
 }
 
 const cellBGColorFormatter = (cell: CellComponent) => {
-  if (!cell.getValue()) {
-    cell.getElement().style.backgroundColor = "#DFE3E5";
+  const cellValue = cell.getValue();
+  let text = "";
+  let backgroundColor = "#FFFFFF";
+  if (!cellValue) {
+    backgroundColor = "#DFE3E5";
+  } else {
+    switch (cellValue) {
+      case "Eligible":
+        backgroundColor = "#013E77";
+        break;
+      case "Transition Funding":
+        backgroundColor = "#00B5AE";
+        break;
+      case "Not Eligible":
+        backgroundColor = "#D9D9D9";
+        break;
+      case "High":
+        backgroundColor = "#FA7355";
+        break;
+      case "Not High":
+        backgroundColor = "#FFD646";
+        break;
+      case "Low":
+        backgroundColor = "#FFD646";
+        break;
+      default:
+        text = cellValue.toString();
+        break;
+    }
   }
   if (cell.getRow().getTreeChildren().length > 0) {
     cell.getElement().style.fontWeight = "bold";
+    backgroundColor = "#FFFFFF";
   }
-  return cell.getValue();
+  cell.getElement().style.backgroundColor = backgroundColor;
+  return text;
 };
 
 const financialFormatter = (cell: CellComponent) => {
@@ -1437,6 +1466,312 @@ export const TABLE_VARIATION_9_DATA: {
             itemStyle: {
               color: "#D9D9D9",
             },
+          },
+        ],
+      },
+    ],
+  },
+];
+
+export const TABLE_VARIATION_10_COLUMNS: ColumnDefinition[] = [
+  {
+    title: "Geography",
+    field: "name",
+    formatter: cellBGColorFormatter,
+    width: "20%",
+  },
+  { title: "2023", field: "2023", formatter: cellBGColorFormatter },
+  { title: "2022", field: "2022", formatter: cellBGColorFormatter },
+  { title: "2021", field: "2021", formatter: cellBGColorFormatter },
+  { title: "2020", field: "2020", formatter: cellBGColorFormatter },
+  { title: "2019", field: "2019", formatter: cellBGColorFormatter },
+  { title: "2018", field: "2018", formatter: cellBGColorFormatter },
+  { title: "2017", field: "2017", formatter: cellBGColorFormatter },
+  { title: "2016", field: "2016", formatter: cellBGColorFormatter },
+  { title: "2015", field: "2015", formatter: cellBGColorFormatter },
+  { title: "2014", field: "2014", formatter: cellBGColorFormatter },
+  { title: "2013", field: "2013", formatter: cellBGColorFormatter },
+  { title: "2012", field: "2012", formatter: cellBGColorFormatter },
+  { title: "2011", field: "2011", formatter: cellBGColorFormatter },
+  { title: "2010", field: "2010", formatter: cellBGColorFormatter },
+];
+
+export const TABLE_VARIATION_10_DATA: {
+  [key: string]: string | number | boolean | null | object | Array<object>;
+}[] = [
+  {
+    name: "Algeria",
+    _children: [
+      {
+        name: "Income Level",
+        2023: "Low Income",
+        2022: "Low Income",
+        2021: "Low Income",
+        2020: "Low Income",
+        2019: "Low Income",
+        2018: "Low Income",
+        2017: "Low Income",
+        2016: "Low Income",
+        2015: "Low Income",
+        2014: "Low Income",
+        2013: "Low Income",
+        2012: "Low Income",
+        2011: "Low Income",
+        2010: "Low Income",
+      },
+      {
+        name: "HIV",
+        _children: [
+          {
+            name: "Disease Burden",
+            2023: "Low",
+            2022: "Low",
+            2021: "Low",
+            2020: "Low",
+            2019: "Low",
+            2018: "Low",
+            2017: "Low",
+            2016: "Low",
+            2015: "Low",
+            2014: "Low",
+            2013: "Low",
+            2012: "Low",
+            2011: "Low",
+            2010: "Low",
+          },
+          {
+            name: "Eligibility",
+            2023: "Eligible",
+            2022: "Eligible",
+            2021: "Eligible",
+            2020: "Eligible",
+            2019: "Eligible",
+            2018: "Eligible",
+            2017: "Eligible",
+            2016: "Eligible",
+            2015: "Eligible",
+            2014: "Eligible",
+            2013: "Eligible",
+            2012: "Eligible",
+            2011: "Eligible",
+            2010: "Eligible",
+          },
+        ],
+      },
+      {
+        name: "Malaria",
+        _children: [
+          {
+            name: "Disease Burden",
+            2023: "Low",
+            2022: "Low",
+            2021: "Low",
+            2020: "Low",
+            2019: "Low",
+            2018: "Low",
+            2017: "Low",
+            2016: "Low",
+            2015: "Low",
+            2014: "Low",
+            2013: "Low",
+            2012: "Low",
+            2011: "Low",
+            2010: "Low",
+          },
+          {
+            name: "Eligibility",
+            2023: "Eligible",
+            2022: "Eligible",
+            2021: "Eligible",
+            2020: "Eligible",
+            2019: "Eligible",
+            2018: "Eligible",
+            2017: "Eligible",
+            2016: "Eligible",
+            2015: "Eligible",
+            2014: "Eligible",
+            2013: "Eligible",
+            2012: "Eligible",
+            2011: "Eligible",
+            2010: "Eligible",
+          },
+        ],
+      },
+      {
+        name: "Tuberculosis",
+        _children: [
+          {
+            name: "Disease Burden",
+            2023: "Low",
+            2022: "Low",
+            2021: "Low",
+            2020: "Low",
+            2019: "Low",
+            2018: "Low",
+            2017: "Low",
+            2016: "Low",
+            2015: "Low",
+            2014: "Low",
+            2013: "Low",
+            2012: "Low",
+            2011: "Low",
+            2010: "Low",
+          },
+          {
+            name: "Eligibility",
+            2023: "Eligible",
+            2022: "Eligible",
+            2021: "Eligible",
+            2020: "Eligible",
+            2019: "Eligible",
+            2018: "Eligible",
+            2017: "Eligible",
+            2016: "Eligible",
+            2015: "Eligible",
+            2014: "Eligible",
+            2013: "Eligible",
+            2012: "Eligible",
+            2011: "Eligible",
+            2010: "Eligible",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    name: "Afghanistan",
+    _children: [
+      {
+        name: "Income Level",
+        2023: "Low Income",
+        2022: "Low Income",
+        2021: "Low Income",
+        2020: "Low Income",
+        2019: "Low Income",
+        2018: "Low Income",
+        2017: "Low Income",
+        2016: "Low Income",
+        2015: "Low Income",
+        2014: "Low Income",
+        2013: "Low Income",
+        2012: "Low Income",
+        2011: "Low Income",
+        2010: "Low Income",
+      },
+      {
+        name: "HIV",
+        _children: [
+          {
+            name: "Disease Burden",
+            2023: "Low",
+            2022: "Low",
+            2021: "Low",
+            2020: "Low",
+            2019: "Low",
+            2018: "Low",
+            2017: "Low",
+            2016: "Low",
+            2015: "Low",
+            2014: "Low",
+            2013: "Low",
+            2012: "Low",
+            2011: "Low",
+            2010: "Low",
+          },
+          {
+            name: "Eligibility",
+            2023: "Eligible",
+            2022: "Eligible",
+            2021: "Eligible",
+            2020: "Eligible",
+            2019: "Eligible",
+            2018: "Eligible",
+            2017: "Eligible",
+            2016: "Eligible",
+            2015: "Eligible",
+            2014: "Eligible",
+            2013: "Eligible",
+            2012: "Eligible",
+            2011: "Eligible",
+            2010: "Eligible",
+          },
+        ],
+      },
+      {
+        name: "Malaria",
+        _children: [
+          {
+            name: "Disease Burden",
+            2023: "Low",
+            2022: "Low",
+            2021: "Low",
+            2020: "Low",
+            2019: "Low",
+            2018: "Low",
+            2017: "Low",
+            2016: "Low",
+            2015: "Low",
+            2014: "Low",
+            2013: "Low",
+            2012: "Low",
+            2011: "Low",
+            2010: "Low",
+          },
+          {
+            name: "Eligibility",
+            2023: "Eligible",
+            2022: "Eligible",
+            2021: "Eligible",
+            2020: "Eligible",
+            2019: "Eligible",
+            2018: "Eligible",
+            2017: "Eligible",
+            2016: "Eligible",
+            2015: "Eligible",
+            2014: "Eligible",
+            2013: "Eligible",
+            2012: "Eligible",
+            2011: "Eligible",
+            2010: "Eligible",
+          },
+        ],
+      },
+      {
+        name: "Tuberculosis",
+        _children: [
+          {
+            name: "Disease Burden",
+            2023: "Low",
+            2022: "Low",
+            2021: "Low",
+            2020: "Low",
+            2019: "Low",
+            2018: "Low",
+            2017: "Low",
+            2016: "Low",
+            2015: "Low",
+            2014: "Low",
+            2013: "Low",
+            2012: "Low",
+            2011: "Low",
+            2010: "Low",
+          },
+          {
+            name: "Eligibility",
+            2023: "Eligible",
+            2022: "Eligible",
+            2021: "Eligible",
+            2020: "Eligible",
+            2019: "Eligible",
+            2018: "Eligible",
+            2017: "Eligible",
+            2016: "Eligible",
+            2015: "Eligible",
+            2014: "Eligible",
+            2013: "Eligible",
+            2012: "Eligible",
+            2011: "Eligible",
+            2010: "Eligible",
           },
         ],
       },
