@@ -8,7 +8,12 @@ import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
 import Info from "@mui/icons-material/InfoOutlined";
 import { DatasetPage } from "app/pages/datasets/common/page";
+import { BarSeriesChart } from "app/components/charts/bar-series";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
+import {
+  STORY_DATA_VARIANT_1 as BAR_SERIES_DATA,
+  KEYS,
+} from "app/components/charts/bar-series/data";
 import {
   geographyGroupingOptions,
   componentsGroupingOptions,
@@ -18,6 +23,7 @@ import {
   TABLE_VARIATION_10_DATA as ELIGIBILITY_TABLE_DATA,
   TABLE_VARIATION_10_COLUMNS as ELIGIBILITY_TABLE_COLUMNS,
 } from "app/components/table/data";
+import { getRange } from "app/utils/getFinancialValueWithMetricPrefix";
 
 export const AccessToFundingPage: React.FC = () => {
   const [geographyGrouping, setGeographyGrouping] = React.useState(
@@ -41,6 +47,18 @@ export const AccessToFundingPage: React.FC = () => {
   const handleEligibilityYearChange = (value: string) => {
     setEligibilityYear(value);
   };
+
+  const range = React.useMemo(() => {
+    const values: {
+      value: number;
+    }[] = [];
+    BAR_SERIES_DATA.forEach((item) => {
+      item.values.forEach((value) => {
+        values.push({ value });
+      });
+    });
+    return getRange(values, ["value"]);
+  }, [BAR_SERIES_DATA]);
 
   const toolbarRightContent = React.useMemo(() => {
     return (
@@ -157,7 +175,7 @@ export const AccessToFundingPage: React.FC = () => {
           }}
         />
         <Box
-          paddingTop="50px"
+          padding="50px 0"
           sx={{
             "#content": {
               padding: 0,
@@ -246,7 +264,56 @@ export const AccessToFundingPage: React.FC = () => {
             />
           </DatasetChartBlock>
         </Box>
+        <Divider
+          sx={{
+            left: 0,
+            width: "100vw",
+            position: "absolute",
+            borderColor: "#CFD4DA",
+          }}
+        />
+        <Box padding="50px 0">
+          <Typography fontSize="10px">Allocations</Typography>
+          <Typography variant="h5">Cumulative Allocation by Cycles</Typography>
+          <Typography fontSize="14px" fontWeight="700">
+            Cumulative Allocation by Cycles
+          </Typography>
+          <Box marginTop="25px" position="relative">
+            <Typography
+              left="10px"
+              bottom="40px"
+              fontSize="10px"
+              fontWeight="700"
+              position="absolute"
+              sx={{
+                transformOrigin: "left",
+                transform: "rotate(-90deg)",
+              }}
+            >
+              Allocated Amount (USD {range.abbr})
+            </Typography>
+            <BarSeriesChart data={BAR_SERIES_DATA} keys={KEYS} />
+            <Info
+              htmlColor="#373D43"
+              sx={{
+                top: "4px",
+                width: "14px",
+                height: "14px",
+                right: "-25px",
+                position: "absolute",
+              }}
+            />
+          </Box>
+        </Box>
       </Box>
+      <Divider
+        sx={{
+          left: 0,
+          width: "100vw",
+          position: "absolute",
+          borderColor: "#CFD4DA",
+        }}
+      />
     </DatasetPage>
   );
 };
