@@ -115,7 +115,7 @@ export const SunburstChart: React.FC<SunburstProps> = (
             justifyContent: "center",
           }}
         >
-          <Typography variant="h5">Total Pledge</Typography>
+          <Typography variant="h5">{props.centerLabel}</Typography>
           <Typography variant="h5" fontWeight="400">
             {formatFinancialValue(total)}
           </Typography>

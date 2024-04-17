@@ -1,5 +1,5 @@
 import { formatLocale } from "app/utils/formatLocale";
-import _ from "lodash";
+import _, { random } from "lodash";
 import {
   CellComponent,
   ColumnDefinition,
@@ -912,7 +912,7 @@ export const TABLE_VARIATION_7_COLUMNS: ColumnDefinition[] = [
     formatter: cellBGColorFormatter,
   },
   { title: "Component", field: "component", formatter: cellBGColorFormatter },
-  { title: "Result", field: "result", formatter: "money" },
+  { title: "Result", field: "result", formatter: financialFormatter },
 ];
 
 export const TABLE_VARIATION_7_DATA: {
@@ -970,8 +970,17 @@ export const TABLE_VARIATION_8_COLUMNS: ColumnDefinition[] = [
     formatter: cellBGColorFormatter,
     width: "50%",
   },
-  { title: "Pledge", field: "pledge", formatter: "money", width: "25%" },
-  { title: "Contribution", field: "contribution", formatter: "money" },
+  {
+    title: "Pledge",
+    field: "pledge",
+    formatter: financialFormatter,
+    width: "25%",
+  },
+  {
+    title: "Contribution",
+    field: "contribution",
+    formatter: financialFormatter,
+  },
 ];
 
 export const TABLE_VARIATION_8_DATA: {
@@ -1077,7 +1086,7 @@ export const TABLE_VARIATION_9_COLUMNS: ColumnDefinition[] = [
   {
     title: "Total Number",
     field: "value",
-    formatter: "money",
+    formatter: financialFormatter,
   },
 ];
 
@@ -1774,6 +1783,164 @@ export const TABLE_VARIATION_10_DATA: {
             2010: "Eligible",
           },
         ],
+      },
+    ],
+  },
+];
+
+export const TABLE_VARIATION_11_COLUMNS: ColumnDefinition[] = [
+  {
+    title: "Geography",
+    field: "name",
+    formatter: cellBGColorFormatter,
+    width: "20%",
+  },
+  {
+    title: "2014 - 2016",
+    field: "2014 - 2016",
+    formatter: financialFormatter,
+    width: "20%",
+  },
+  {
+    title: "2017 - 2019",
+    field: "2017 - 2019",
+    formatter: financialFormatter,
+    width: "20%",
+  },
+  {
+    title: "2020 - 2022",
+    field: "2020 - 2022",
+    formatter: financialFormatter,
+    width: "20%",
+  },
+  {
+    title: "2023 - 2025",
+    field: "2023 - 2025",
+    formatter: financialFormatter,
+    width: "20%",
+  },
+];
+
+export const TABLE_VARIATION_11_DATA: {
+  [key: string]: string | number | boolean | null | object | Array<object>;
+}[] = [
+  {
+    name: "Algeria",
+    "2014 - 2016": random(1000000, 10000000),
+    "2017 - 2019": random(1000000, 10000000),
+    "2020 - 2022": random(1000000, 10000000),
+    "2023 - 2025": random(1000000, 10000000),
+    _children: [
+      {
+        name: "HIV",
+        "2014 - 2016": random(1000000, 10000000),
+        "2017 - 2019": random(1000000, 10000000),
+        "2020 - 2022": random(1000000, 10000000),
+        "2023 - 2025": random(1000000, 10000000),
+      },
+      {
+        name: "Tuberculosis",
+        "2014 - 2016": random(1000000, 10000000),
+        "2017 - 2019": random(1000000, 10000000),
+        "2020 - 2022": random(1000000, 10000000),
+        "2023 - 2025": random(1000000, 10000000),
+      },
+      {
+        name: "Malaria",
+        "2014 - 2016": random(1000000, 10000000),
+        "2017 - 2019": random(1000000, 10000000),
+        "2020 - 2022": random(1000000, 10000000),
+        "2023 - 2025": random(1000000, 10000000),
+      },
+    ],
+  },
+  {
+    name: "Angola",
+    "2014 - 2016": random(1000000, 10000000),
+    "2017 - 2019": random(1000000, 10000000),
+    "2020 - 2022": random(1000000, 10000000),
+    "2023 - 2025": random(1000000, 10000000),
+    _children: [
+      {
+        name: "HIV",
+        "2014 - 2016": random(1000000, 10000000),
+        "2017 - 2019": random(1000000, 10000000),
+        "2020 - 2022": random(1000000, 10000000),
+        "2023 - 2025": random(1000000, 10000000),
+      },
+      {
+        name: "Tuberculosis",
+        "2014 - 2016": random(1000000, 10000000),
+        "2017 - 2019": random(1000000, 10000000),
+        "2020 - 2022": random(1000000, 10000000),
+        "2023 - 2025": random(1000000, 10000000),
+      },
+      {
+        name: "Malaria",
+        "2014 - 2016": random(1000000, 10000000),
+        "2017 - 2019": random(1000000, 10000000),
+        "2020 - 2022": random(1000000, 10000000),
+        "2023 - 2025": random(1000000, 10000000),
+      },
+    ],
+  },
+  {
+    name: "Benin",
+    "2014 - 2016": random(1000000, 10000000),
+    "2017 - 2019": random(1000000, 10000000),
+    "2020 - 2022": random(1000000, 10000000),
+    "2023 - 2025": random(1000000, 10000000),
+    _children: [
+      {
+        name: "HIV",
+        "2014 - 2016": random(1000000, 10000000),
+        "2017 - 2019": random(1000000, 10000000),
+        "2020 - 2022": random(1000000, 10000000),
+        "2023 - 2025": random(1000000, 10000000),
+      },
+      {
+        name: "Tuberculosis",
+        "2014 - 2016": random(1000000, 10000000),
+        "2017 - 2019": random(1000000, 10000000),
+        "2020 - 2022": random(1000000, 10000000),
+        "2023 - 2025": random(1000000, 10000000),
+      },
+      {
+        name: "Malaria",
+        "2014 - 2016": random(1000000, 10000000),
+        "2017 - 2019": random(1000000, 10000000),
+        "2020 - 2022": random(1000000, 10000000),
+        "2023 - 2025": random(1000000, 10000000),
+      },
+    ],
+  },
+  {
+    name: "Botswana",
+    "2014 - 2016": random(1000000, 10000000),
+    "2017 - 2019": random(1000000, 10000000),
+    "2020 - 2022": random(1000000, 10000000),
+    "2023 - 2025": random(1000000, 10000000),
+    _children: [
+      {
+        name: "HIV",
+        "2014 - 2016": random(1000000, 10000000),
+        "2017 - 2019": random(1000000, 10000000),
+        "2020 - 2022": random(1000000, 10000000),
+        "2023 - 2025": random(1000000, 10000000),
+      },
+      {
+        name: "Tuberculosis",
+        "2014 - 2016": random(1000000, 10000000),
+        "2017 - 2019": random(1000000, 10000000),
+        "2020 - 2022": random(1000000, 10000000),
+        "2023 - 2025": random(1000000, 10000000),
+      },
+      {
+        name: "Malaria",
+        "2014 - 2016": random(1000000, 10000000),
+        "2017 - 2019": random(1000000, 10000000),
+        "2020 - 2022": random(1000000, 10000000),
+        "2023 - 2025": random(1000000, 10000000),
       },
     ],
   },

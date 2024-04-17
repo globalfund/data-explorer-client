@@ -1,3 +1,7 @@
+import { ReactComponent as TableIcon } from "app/assets/vectors/Select_Table.svg";
+import { ReactComponent as TreemapIcon } from "app/assets/vectors/Select_Treemap.svg";
+import { ReactComponent as SunburstChartIcon } from "app/assets/vectors/Select_SunburstChart.svg";
+
 export const geographyGroupingOptions = [
   { value: "Portfolio View", label: "Portfolio View" },
 ];
@@ -31,4 +35,14 @@ export const eligibilityYears = [
   { value: "2021", label: "2021" },
   { value: "2020", label: "2020" },
   { value: "2019", label: "2019" },
+];
+
+export const dropdownItemsAllocations = [
+  {
+    label: "Sunburst Chart",
+    value: "Sunburst Chart",
+    icon: <SunburstChartIcon />,
+  },
+  { label: "Treemap", value: "Treemap", icon: <TreemapIcon /> },
+  { label: "Table View", value: "Table View", icon: <TableIcon /> },
 ];

@@ -11,7 +11,7 @@ import { ReactComponent as TableIcon } from "app/assets/vectors/Select_Table.svg
 import { ReactComponent as BarChartIcon } from "app/assets/vectors/Select_BarChart.svg";
 import { ExpandableHorizontalBar } from "app/components/charts/expandable-horizontal-bar";
 import { ReactComponent as SunburstChartIcon } from "app/assets/vectors/Select_SunburstChart.svg";
-import { STORY_DATA_VARIANT_1 as SUNBURST_CHART_DATA } from "app/components/charts/expandable-horizontal-bar/data";
+import { STORY_DATA_VARIANT_1 as SUNBURST_CHART_DATA } from "app/components/charts/sunburst/data";
 import { STORY_DATA_VARIANT_1 as HORIZONTAL_BAR_CHART_DATA } from "app/components/charts/expandable-horizontal-bar/data";
 import {
   TABLE_VARIATION_8_DATA,
@@ -50,7 +50,12 @@ export const ResourceMobilizationPage: React.FC = () => {
           />
         );
       case dropdownItems[1].value:
-        return <SunburstChart data={SUNBURST_CHART_DATA} />;
+        return (
+          <SunburstChart
+            data={SUNBURST_CHART_DATA}
+            centerLabel="Total Pledge"
+          />
+        );
       case dropdownItems[2].value:
         return (
           <Table

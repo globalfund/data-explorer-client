@@ -150,7 +150,7 @@ export const BarSeriesChart: React.FC<BarSeriesChartProps> = (
 
       chart.setOption(option);
     }
-  }, [range, props.keys, props.data, , containerRef.current]);
+  }, [range, props.keys, props.data, containerRef.current]);
 
   return (
     <React.Fragment>

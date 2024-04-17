@@ -7,9 +7,14 @@ import { Table } from "app/components/table";
 import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
 import Info from "@mui/icons-material/InfoOutlined";
+import { Treemap } from "app/components/charts/treemap";
 import { DatasetPage } from "app/pages/datasets/common/page";
+import { SunburstChart } from "app/components/charts/sunburst";
 import { BarSeriesChart } from "app/components/charts/bar-series";
+import { getRange } from "app/utils/getFinancialValueWithMetricPrefix";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
+import { STORY_DATA_VARIANT_2 as TREEMAP_DATA } from "app/components/charts/treemap/data";
+import { STORY_DATA_VARIANT_2 as SUNBURST_CHART_DATA } from "app/components/charts/sunburst/data";
 import {
   STORY_DATA_VARIANT_1 as BAR_SERIES_DATA,
   KEYS,
@@ -18,12 +23,14 @@ import {
   geographyGroupingOptions,
   componentsGroupingOptions,
   eligibilityYears,
+  dropdownItemsAllocations,
 } from "app/pages/datasets/access-to-funding/data";
 import {
   TABLE_VARIATION_10_DATA as ELIGIBILITY_TABLE_DATA,
   TABLE_VARIATION_10_COLUMNS as ELIGIBILITY_TABLE_COLUMNS,
+  TABLE_VARIATION_11_DATA as ALLOCATIONS_TABLE_DATA,
+  TABLE_VARIATION_11_COLUMNS as ALLOCATIONS_TABLE_COLUMNS,
 } from "app/components/table/data";
-import { getRange } from "app/utils/getFinancialValueWithMetricPrefix";
 
 export const AccessToFundingPage: React.FC = () => {
   const [geographyGrouping, setGeographyGrouping] = React.useState(
@@ -35,6 +42,13 @@ export const AccessToFundingPage: React.FC = () => {
   const [eligibilityYear, setEligibilityYear] = React.useState(
     eligibilityYears[0].value
   );
+  const [dropdownSelected, setDropdownSelected] = React.useState(
+    dropdownItemsAllocations[0].value
+  );
+
+  const handleSelectionChange = (value: string) => {
+    setDropdownSelected(value);
+  };
 
   const handleGeographyGroupingChange = (value: string) => {
     setGeographyGrouping(value);
@@ -47,6 +61,31 @@ export const AccessToFundingPage: React.FC = () => {
   const handleEligibilityYearChange = (value: string) => {
     setEligibilityYear(value);
   };
+
+  const chartContent = React.useMemo(() => {
+    switch (dropdownSelected) {
+      case dropdownItemsAllocations[0].value:
+        return (
+          <SunburstChart
+            data={SUNBURST_CHART_DATA}
+            centerLabel="Total Allocation"
+          />
+        );
+      case dropdownItemsAllocations[1].value:
+        return <Treemap data={TREEMAP_DATA.slice(2, 5)} />;
+      case dropdownItemsAllocations[2].value:
+        return (
+          <Table
+            dataTree
+            id="allocations-table"
+            data={ALLOCATIONS_TABLE_DATA}
+            columns={ALLOCATIONS_TABLE_COLUMNS}
+          />
+        );
+      default:
+        return null;
+    }
+  }, [dropdownSelected]);
 
   const range = React.useMemo(() => {
     const values: {
@@ -305,15 +344,36 @@ export const AccessToFundingPage: React.FC = () => {
             />
           </Box>
         </Box>
+        <Divider
+          sx={{
+            left: 0,
+            width: "100vw",
+            position: "absolute",
+            borderColor: "#CFD4DA",
+          }}
+        />
+        <Box
+          padding="50px 0"
+          sx={{
+            "#content": {
+              padding: 0,
+            },
+          }}
+        >
+          <DatasetChartBlock
+            title="Allocations"
+            subtitle="Allocations amounts for countries."
+            dropdownItems={dropdownItemsAllocations}
+            dropdownSelected={dropdownSelected}
+            handleDropdownChange={handleSelectionChange}
+            disableCollapse={
+              dropdownSelected === dropdownItemsAllocations[2].value
+            }
+          >
+            {chartContent}
+          </DatasetChartBlock>
+        </Box>
       </Box>
-      <Divider
-        sx={{
-          left: 0,
-          width: "100vw",
-          position: "absolute",
-          borderColor: "#CFD4DA",
-        }}
-      />
     </DatasetPage>
   );
 };

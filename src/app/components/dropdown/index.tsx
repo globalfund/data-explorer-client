@@ -58,13 +58,7 @@ const StyledMenuItem = styled(MenuItem)(() => ({
     marginRight: "8px",
   },
   "&:hover": {
-    color: appColors.SEARCH.DROPDOWN_ITEM_HOVER_COLOR,
     background: appColors.SEARCH.DROPDOWN_ITEM_HOVER_BACKGROUND_COLOR,
-    "& svg": {
-      path: {
-        fill: appColors.SEARCH.DROPDOWN_ITEM_HOVER_COLOR,
-      },
-    },
   },
 }));
 
@@ -124,7 +118,6 @@ export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
             sx={
               props.dropdownSelected === item.label
                 ? {
-                    color: appColors.SEARCH.DROPDOWN_ITEM_ACTIVE_COLOR,
                     background:
                       appColors.SEARCH.DROPDOWN_ITEM_ACTIVE_BACKGROUND_COLOR,
                   }
