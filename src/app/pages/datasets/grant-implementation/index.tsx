@@ -2,14 +2,17 @@ import React from "react";
 import maxBy from "lodash/maxBy";
 import Box from "@mui/material/Box";
 import { appColors } from "app/theme";
+import Divider from "@mui/material/Divider";
 import { Table } from "app/components/table";
 import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
 import { BarChart } from "app/components/charts/bar";
 import { LineChart } from "app/components/charts/line";
+import { RadialChart } from "app/components/charts/radial";
 import { DatasetPage } from "app/pages/datasets/common/page";
 import { getRange } from "app/utils/getFinancialValueWithMetricPrefix";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
+import { STORY_DATA_VARIANT_3 as BUDGET_RADIAL_DATA } from "app/components/charts/radial/data";
 import { STORY_DATA_VARIANT_3 as DISBURSEMENTS_BAR_DATA } from "app/components/charts/bar/data";
 import { STORY_DATA_VARIANT_2 as DISBURSEMENTS_LINE_DATA } from "app/components/charts/line/data";
 import {
@@ -272,6 +275,47 @@ export const GrantImplementationPage: React.FC = () => {
           </DatasetChartBlock>
         </Box>
         <FullWidthDivider />
+        <Box
+          gap="20px"
+          width="100%"
+          display="flex"
+          padding="50px 0"
+          flexDirection="row"
+        >
+          <Box
+            sx={{
+              gap: "20px",
+              width: "40%",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <Box>
+              <Typography variant="h5">38,923,078,121 USD</Typography>
+              <Typography fontSize="14px" fontWeight="700">
+                Total Budget Amount
+              </Typography>
+            </Box>
+            <Divider />
+            <Box>
+              <Typography variant="h5">Budget Breakdown</Typography>
+              <Typography fontSize="14px" fontWeight="700">
+                By grant component
+              </Typography>
+              <RadialChart
+                height="350px"
+                data={BUDGET_RADIAL_DATA}
+                itemLabelFormatterType="name-percent"
+              />
+            </Box>
+          </Box>
+          <Divider orientation="vertical" flexItem />
+          <Box
+            sx={{
+              width: "60%",
+            }}
+          ></Box>
+        </Box>
       </Box>
     </DatasetPage>
   );

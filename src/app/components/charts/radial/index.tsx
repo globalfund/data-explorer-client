@@ -32,7 +32,8 @@ export const RadialChart: React.FC<RadialChartProps> = (
           radius: ["60%", "100%"],
           label: {
             show: true,
-            fontSize: "14px",
+            fontSize: "10px",
+            minMargin: 0,
             fontFamily: "'Inter', sans-serif",
             formatter: (params) => {
               return itemLabelFormatter(params, props.itemLabelFormatterType);
@@ -43,6 +44,10 @@ export const RadialChart: React.FC<RadialChartProps> = (
                 fontWeight: "bold",
               },
             },
+          },
+          labelLine: {
+            length: 5,
+            length2: 5,
           },
         },
       };
@@ -68,7 +73,7 @@ export const RadialChart: React.FC<RadialChartProps> = (
         id="radial-chart"
         ref={containerRef}
         width="100%"
-        height="480px"
+        height={props.height ?? "480px"}
         sx={{
           "> div": {
             borderRadius: "8px",
