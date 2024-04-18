@@ -21,9 +21,9 @@ export const PAGES: HeaderMenuPage[] = [
         link: "/access-to-funding",
       },
       {
-        id: "grant-implementation",
-        label: "Grant Implementation",
-        link: "/grant-implementation",
+        id: "financial-insights",
+        label: "Financial Insights",
+        link: "/financial-insights",
       },
       {
         id: "annual-results",

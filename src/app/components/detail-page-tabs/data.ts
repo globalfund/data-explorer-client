@@ -20,8 +20,8 @@ export const GRANT_TABS: DetailPageTabItem[] = [
     link: "/overview",
   },
   {
-    label: "Grant Implementation",
-    link: "/grant-implementation",
+    label: "Financial Insights",
+    link: "/financial-insights",
   },
   {
     label: "Targets & Results",
@@ -66,8 +66,8 @@ export const LOCATION_TABS: DetailPageTabItem[] = [
     link: "/access-to-funding",
   },
   {
-    label: "Grant Implementation",
-    link: "/grant-implementation",
+    label: "Financial Insights",
+    link: "/financial-insights",
   },
   {
     label: "Results",

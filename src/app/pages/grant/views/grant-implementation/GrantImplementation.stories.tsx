@@ -5,7 +5,7 @@ import { GrantImplementation } from "app/pages/grant/views/grant-implementation"
 import { withRouter } from "storybook-addon-react-router-v6";
 
 const meta = {
-  title: "Pages/Grant/Views/Grant Implementation",
+  title: "Pages/Grant/Views/Financial Insights",
   component: GrantImplementation,
   decorators: [withRouter],
   parameters: {

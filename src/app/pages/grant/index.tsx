@@ -32,7 +32,7 @@ export const Grant: React.FC = () => {
     switch (params.tab) {
       case "overview":
         return <GrantOverview />;
-      case "grant-implementation":
+      case "financial-insights":
         return <GrantImplementation />;
       case "targets-results":
         return <GrantTargetsResults />;

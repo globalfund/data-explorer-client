@@ -17,7 +17,7 @@ export const Location: React.FC = () => {
     switch (params.tab) {
       case "overview":
         return <LocationOverview />;
-      case "grant-implementation":
+      case "financial-insights":
         return <GrantImplementation />;
       case "resource-mobilization":
         return <ResourceMobilization />;

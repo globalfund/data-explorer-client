@@ -34,7 +34,7 @@ export const ROUTES: RouteObject[] = [
         element: <AccessToFundingPage />,
       },
       {
-        path: "/grant-implementation",
+        path: "/financial-insights",
         element: <GrantImplementationPage />,
       },
       {
