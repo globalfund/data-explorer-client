@@ -73,12 +73,12 @@ export const BarChart: React.FC<BarChartProps> = (props: BarChartProps) => {
           position: "left",
           alignTicks: true,
           nameTextStyle: {
-            fontSize: "8px",
+            fontSize: "12px",
             fontFamily: "Inter, sans-serif",
             color: appColors.TIME_CYCLE.AXIS_TEXT_COLOR,
           },
           axisLabel: {
-            fontSize: "8px",
+            fontSize: "12px",
             fontFamily: "Inter, sans-serif",
             color: appColors.TIME_CYCLE.AXIS_TEXT_COLOR,
             formatter: (value: number) => {
@@ -99,12 +99,12 @@ export const BarChart: React.FC<BarChartProps> = (props: BarChartProps) => {
             show: false,
           },
           nameTextStyle: {
-            fontSize: "10px",
+            fontSize: "12px",
             fontFamily: "Inter, sans-serif",
             color: appColors.TIME_CYCLE.AXIS_TEXT_COLOR,
           },
           axisLabel: {
-            fontSize: "10px",
+            fontSize: "12px",
             fontFamily: "Inter, sans-serif",
             color: appColors.TIME_CYCLE.AXIS_TEXT_COLOR,
           },
@@ -146,7 +146,7 @@ export const BarChart: React.FC<BarChartProps> = (props: BarChartProps) => {
                     appColors.TIME_CYCLE.BAR_COLOR_3,
                   ][index],
                 }
-              : undefined,
+              : props.itemStyle,
         })),
         legend: {
           right: 0,

@@ -295,7 +295,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           padding: "4px 0",
-          userSelect: "none",
+          // userSelect: "none",
           alignItems: "flex-start",
         },
       },
@@ -846,6 +846,14 @@ export const appColors = {
     CHART_TEXT_COLOR: "#6E7079",
     CHART_BG_COLOR: SECONDARY_COLOR_10,
     CHART_LINE_COLORS: ["#EC1642", "#FAC858", "#5470C6", "#575757"],
+    CHART_LINE_COLORS_1: [
+      "#0A2840",
+      "#DEE1E7",
+      "#00B5AE",
+      "#013E77",
+      "#D9D9D9",
+      "#C3EDFD",
+    ],
   },
   RADIAL_CHART: {
     ITEM_COLORS: ["#0A2840", "#013E77", "#00B5AE", "#C3EDFD", "#F3F5F4"],

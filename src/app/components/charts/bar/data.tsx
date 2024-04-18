@@ -15,6 +15,9 @@ export interface BarChartProps {
     value: string;
     value1?: string;
   };
+  itemStyle?: {
+    color: (params: any) => string;
+  };
 }
 
 export const STORY_DATA_VARIANT_1: BarChartDataItem[] = [
@@ -95,5 +98,50 @@ export const STORY_DATA_VARIANT_2: BarChartDataItem[] = [
     name: "2023-2025",
     value: 15683762516.83,
     value1: 3783056228.59,
+  },
+];
+
+export const STORY_DATA_VARIANT_3: BarChartDataItem[] = [
+  {
+    name: "HIV",
+    value: 26437879421,
+    itemStyle: {
+      color: appColors.TIME_CYCLE.BAR_COLOR_3,
+    },
+  },
+  {
+    name: "Malaria",
+    value: 18840725255,
+    itemStyle: {
+      color: appColors.TIME_CYCLE.BAR_COLOR_2,
+    },
+  },
+  {
+    name: "Tubercolosis",
+    value: 9780269156,
+    itemStyle: {
+      color: appColors.TIME_CYCLE.BAR_COLOR_2,
+    },
+  },
+  {
+    name: "TB/HIV",
+    value: 7136630738,
+    itemStyle: {
+      color: appColors.TIME_CYCLE.BAR_COLOR_2,
+    },
+  },
+  {
+    name: "Multicomponent",
+    value: 995195842,
+    itemStyle: {
+      color: appColors.TIME_CYCLE.BAR_COLOR_2,
+    },
+  },
+  {
+    name: "RSSH",
+    value: 1268794162,
+    itemStyle: {
+      color: appColors.TIME_CYCLE.BAR_COLOR_2,
+    },
   },
 ];

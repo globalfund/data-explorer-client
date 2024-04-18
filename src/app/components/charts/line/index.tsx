@@ -12,11 +12,25 @@ import {
   XAXisComponentOption,
   YAXisComponentOption,
 } from "echarts";
+import {
+  getRange,
+  getFinancialValueWithMetricPrefix,
+} from "app/utils/getFinancialValueWithMetricPrefix";
 
 echarts.use([EChartsLine, GridComponent, SVGRenderer]);
 
 export const LineChart: React.FC<LineChartProps> = (props: LineChartProps) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
+
+  const range = React.useMemo(() => {
+    const values: { value: number }[] = [];
+    props.data.forEach((line) => {
+      line.data.forEach((value) => {
+        values.push({ value });
+      });
+    });
+    return getRange(values, ["value"]);
+  }, [props.data]);
 
   React.useEffect(() => {
     if (containerRef.current) {
@@ -38,10 +52,8 @@ export const LineChart: React.FC<LineChartProps> = (props: LineChartProps) => {
         },
         yAxis: {
           type: "value",
-          name: "Coverage",
           position: "left",
           alignTicks: true,
-          max: 100,
           nameTextStyle: {
             fontSize: "12px",
             fontFamily: "Inter, sans-serif",
@@ -50,8 +62,10 @@ export const LineChart: React.FC<LineChartProps> = (props: LineChartProps) => {
           axisLabel: {
             fontSize: "12px",
             fontFamily: "Inter, sans-serif",
-            formatter: (value: number) => `${value}%`,
             color: appColors.LINE_CHART.CHART_TEXT_COLOR,
+            formatter: (value: number) => {
+              return getFinancialValueWithMetricPrefix(value, range.index);
+            },
           },
           axisTick: {
             show: false,

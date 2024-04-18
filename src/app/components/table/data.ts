@@ -61,7 +61,7 @@ const financialFormatter = (cell: CellComponent) => {
   if (!cell.getValue()) {
     return cellBGColorFormatter(cell);
   }
-  return formatLocale(cell.getValue());
+  return formatLocale(cell.getValue()).replace(" USD", "");
 };
 
 export const TABLE_VARIATION_1_COLUMNS: ColumnDefinition[] = [
@@ -782,12 +782,12 @@ export const TABLE_VARIATION_5_COLUMNS: ColumnDefinition[] = [
     formatter: cellBGColorFormatter,
   },
   {
-    title: "Signed",
+    title: "Signed (USD)",
     field: "signed",
     formatter: financialFormatter,
   },
   {
-    title: "Disbursed",
+    title: "Disbursed (USD)",
     field: "disbursed",
     formatter: financialFormatter,
   },
@@ -971,13 +971,13 @@ export const TABLE_VARIATION_8_COLUMNS: ColumnDefinition[] = [
     width: "50%",
   },
   {
-    title: "Pledge",
+    title: "Pledge (USD)",
     field: "pledge",
     formatter: financialFormatter,
     width: "25%",
   },
   {
-    title: "Contribution",
+    title: "Contribution (USD)",
     field: "contribution",
     formatter: financialFormatter,
   },
@@ -1796,25 +1796,25 @@ export const TABLE_VARIATION_11_COLUMNS: ColumnDefinition[] = [
     width: "20%",
   },
   {
-    title: "2014 - 2016",
+    title: "2014 - 2016 (USD)",
     field: "2014 - 2016",
     formatter: financialFormatter,
     width: "20%",
   },
   {
-    title: "2017 - 2019",
+    title: "2017 - 2019 (USD)",
     field: "2017 - 2019",
     formatter: financialFormatter,
     width: "20%",
   },
   {
-    title: "2020 - 2022",
+    title: "2020 - 2022 (USD)",
     field: "2020 - 2022",
     formatter: financialFormatter,
     width: "20%",
   },
   {
-    title: "2023 - 2025",
+    title: "2023 - 2025 (USD)",
     field: "2023 - 2025",
     formatter: financialFormatter,
     width: "20%",
@@ -3003,5 +3003,85 @@ export const TABLE_VARIATION_12_DATA: {
         ],
       },
     ],
+  },
+];
+
+export const TABLE_VARIATION_13_COLUMNS: ColumnDefinition[] = [
+  {
+    title: "Components",
+    field: "component",
+    width: "20%",
+    formatter: cellBGColorFormatter,
+  },
+  {
+    title: "Grants",
+    field: "grants",
+    width: "20%",
+    formatter: cellBGColorFormatter,
+  },
+  {
+    title: "Signed (USD)",
+    field: "signed",
+    width: "20%",
+    formatter: financialFormatter,
+  },
+  {
+    title: "Committed (USD)",
+    field: "committed",
+    width: "20%",
+    formatter: financialFormatter,
+  },
+  {
+    title: "Disbursed (USD)",
+    field: "disbursed",
+    width: "20%",
+    formatter: financialFormatter,
+  },
+];
+
+export const TABLE_VARIATION_13_DATA: {
+  [key: string]: string | number | boolean | null | object | Array<object>;
+}[] = [
+  {
+    component: "HIV",
+    grants: 593,
+    signed: 29459468145,
+    committed: 27299357062,
+    disbursed: 26437879421,
+  },
+  {
+    component: "Tuberculosis",
+    grants: 398,
+    signed: 11448613884,
+    committed: 10457135012,
+    disbursed: 9780269155,
+  },
+  {
+    component: "Malaria",
+    grants: 380,
+    signed: 21837104346,
+    committed: 19846470503,
+    disbursed: 18840725255,
+  },
+  {
+    component: "HIV/TB",
+    grants: 118,
+    signed: 9966218523,
+    committed: 8132388389,
+    disbursed: 7136635738,
+  },
+  {
+    component: "RSSH",
+    grants: 51,
+    signed: 1823833441,
+    committed: 1497839822,
+    disbursed: 1268794162,
+  },
+  {
+    component: "Multicomponent",
+    grants: 23,
+    signed: 1778547724,
+    committed: 1273385674,
+    disbursed: 1130730744,
   },
 ];
