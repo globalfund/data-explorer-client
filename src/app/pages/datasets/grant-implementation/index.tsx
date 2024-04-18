@@ -212,6 +212,44 @@ export const GrantImplementationPage: React.FC = () => {
     >
       <Box width="100%" marginTop="50px">
         <Box
+          width="100%"
+          display="flex"
+          flexDirection="row"
+          marginBottom="50px"
+          sx={{
+            "> div": {
+              width: "calc(100% / 3)",
+              padding: "0 20px",
+              "&:not(:last-child)": {
+                borderRight: "1px solid #DFE3E5",
+              },
+              "&:first-child": {
+                paddingLeft: 0,
+              },
+            },
+          }}
+        >
+          <Box>
+            <Typography variant="h5">64,115,766,558 USD</Typography>
+            <Typography fontSize="14px" fontWeight="700">
+              Total Signed Amount
+            </Typography>
+          </Box>
+          <Box>
+            <Typography variant="h5">67,807,043,574 USD</Typography>
+            <Typography fontSize="14px" fontWeight="700">
+              Total Committed Amount
+            </Typography>
+          </Box>
+          <Box>
+            <Typography variant="h5">75,719,225,185 USD</Typography>
+            <Typography fontSize="14px" fontWeight="700">
+              Total Disbursed Amount
+            </Typography>
+          </Box>
+        </Box>
+        <FullWidthDivider />
+        <Box
           padding="50px 0"
           sx={{
             "#content": {
