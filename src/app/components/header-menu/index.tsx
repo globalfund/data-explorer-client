@@ -95,7 +95,7 @@ export const HeaderMenu: React.FC = () => {
           "& .MuiPopover-paper": {
             maxWidth: "100vw",
             left: "0 !important",
-            top: "92px !important",
+            top: "91px !important",
           },
         }}
       >

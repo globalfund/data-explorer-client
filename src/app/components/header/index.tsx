@@ -2,7 +2,7 @@ import React from "react";
 import { colors } from "app/theme";
 import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import { Search } from "app/components/search";
@@ -14,11 +14,18 @@ import { HeaderMenu } from "app/components/header-menu";
 import { ReactComponent as HeaderToolbarLogo } from "app/assets/vectors/HeaderToolbarLogo.svg";
 
 export const Header: React.FC = () => {
+  const { pathname } = useLocation();
   const [searchOpen, setSearchOpen] = React.useState(false);
 
   const onSearchBtnClick = () => {
     setSearchOpen(!searchOpen);
   };
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, 100);
+  }, [pathname]);
 
   return (
     <Box sx={{ zIndex: 1000, flexGrow: 1, top: 0, position: "sticky" }}>

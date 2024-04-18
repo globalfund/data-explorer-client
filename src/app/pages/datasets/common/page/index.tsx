@@ -7,7 +7,10 @@ import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { Breadcrumbs } from "app/components/breadcrumbs";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
-import { DatasetPageProps } from "app/pages/datasets/common/page/data";
+import {
+  DatasetPageProps,
+  TooltipTitle,
+} from "app/pages/datasets/common/page/data";
 
 export const DatasetPage: React.FC<DatasetPageProps> = (
   props: DatasetPageProps
@@ -37,7 +40,7 @@ export const DatasetPage: React.FC<DatasetPageProps> = (
         <Box gap="20px" display="flex" flexDirection="row" alignItems="center">
           <Typography variant="h6" gap="5px" display="flex" alignItems="center">
             {props.title} Filters{" "}
-            <Tooltip title={props.title}>
+            <Tooltip title={TooltipTitle} arrow>
               <InfoOutlined fontSize="small" />
             </Tooltip>
           </Typography>

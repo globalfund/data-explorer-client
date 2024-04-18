@@ -7,6 +7,7 @@ import { Geography } from "app/pages/geography";
 import { Redirect } from "app/components/redirect";
 import { AnnualResultsPage } from "app/pages/datasets/annual-results";
 import { AccessToFundingPage } from "app/pages/datasets/access-to-funding";
+import { GrantImplementationPage } from "app/pages/datasets/grant-implementation";
 import { ResourceMobilizationPage } from "app/pages/datasets/resource-mobilization";
 
 export const ROUTES: RouteObject[] = [
@@ -31,6 +32,10 @@ export const ROUTES: RouteObject[] = [
       {
         path: "/access-to-funding",
         element: <AccessToFundingPage />,
+      },
+      {
+        path: "/grant-implementation",
+        element: <GrantImplementationPage />,
       },
       {
         path: "/annual-results",

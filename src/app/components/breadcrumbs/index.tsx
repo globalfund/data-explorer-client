@@ -1,14 +1,20 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import { Link } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
+import { Link, useNavigate } from "react-router-dom";
 import ArrowBack from "@mui/icons-material/ArrowBack";
 import { BreadcrumbsProps } from "app/components/breadcrumbs/data";
 
 export const Breadcrumbs: React.FC<BreadcrumbsProps> = (
   props: BreadcrumbsProps
 ) => {
+  const navigate = useNavigate();
+
+  const onBackButtonClick = () => {
+    navigate(-1);
+  };
+
   return (
     <Box
       gap="8px"
@@ -22,7 +28,7 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = (
         },
       }}
     >
-      <IconButton>
+      <IconButton sx={{ marginLeft: "-8px" }} onClick={onBackButtonClick}>
         <ArrowBack fontSize="small" />
       </IconButton>
       {props.items.map((item, index) => {
