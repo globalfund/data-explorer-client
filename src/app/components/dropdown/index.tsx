@@ -75,7 +75,7 @@ export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
 
   const handleItemClick = (value: string) => () => {
     props.handleDropdownChange(value);
-    setAnchorEl(null);
+    handleClose();
   };
 
   const dropdownSelectedIcon = React.useMemo(() => {

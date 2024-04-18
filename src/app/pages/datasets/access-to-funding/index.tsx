@@ -1,8 +1,8 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import Divider from "@mui/material/Divider";
 import Tooltip from "@mui/material/Tooltip";
+import Divider from "@mui/material/Divider";
 import { Table } from "app/components/table";
 import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
@@ -16,20 +16,24 @@ import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { STORY_DATA_VARIANT_2 as TREEMAP_DATA } from "app/components/charts/treemap/data";
 import { STORY_DATA_VARIANT_2 as SUNBURST_CHART_DATA } from "app/components/charts/sunburst/data";
 import {
-  STORY_DATA_VARIANT_1 as BAR_SERIES_DATA,
   KEYS,
+  STORY_DATA_VARIANT_1 as BAR_SERIES_DATA,
 } from "app/components/charts/bar-series/data";
 import {
-  geographyGroupingOptions,
-  componentsGroupingOptions,
+  BOXES,
   eligibilityYears,
+  FullWidthDivider,
+  geographyGroupingOptions,
   dropdownItemsAllocations,
+  componentsGroupingOptions,
 } from "app/pages/datasets/access-to-funding/data";
 import {
   TABLE_VARIATION_10_DATA as ELIGIBILITY_TABLE_DATA,
   TABLE_VARIATION_10_COLUMNS as ELIGIBILITY_TABLE_COLUMNS,
   TABLE_VARIATION_11_DATA as ALLOCATIONS_TABLE_DATA,
   TABLE_VARIATION_11_COLUMNS as ALLOCATIONS_TABLE_COLUMNS,
+  TABLE_VARIATION_12_DATA as FUNDING_REQUESTS_TABLE_DATA,
+  TABLE_VARIATION_12_COLUMNS as FUNDING_REQUESTS_TABLE_COLUMNS,
 } from "app/components/table/data";
 
 export const AccessToFundingPage: React.FC = () => {
@@ -205,14 +209,7 @@ export const AccessToFundingPage: React.FC = () => {
             </Grid>
           </Grid>
         </Box>
-        <Divider
-          sx={{
-            left: 0,
-            width: "100vw",
-            position: "absolute",
-            borderColor: "#CFD4DA",
-          }}
-        />
+        <FullWidthDivider />
         <Box
           padding="50px 0"
           sx={{
@@ -303,14 +300,7 @@ export const AccessToFundingPage: React.FC = () => {
             />
           </DatasetChartBlock>
         </Box>
-        <Divider
-          sx={{
-            left: 0,
-            width: "100vw",
-            position: "absolute",
-            borderColor: "#CFD4DA",
-          }}
-        />
+        <FullWidthDivider />
         <Box padding="50px 0">
           <Typography fontSize="10px">Allocations</Typography>
           <Typography variant="h5">Cumulative Allocation by Cycles</Typography>
@@ -344,14 +334,7 @@ export const AccessToFundingPage: React.FC = () => {
             />
           </Box>
         </Box>
-        <Divider
-          sx={{
-            left: 0,
-            width: "100vw",
-            position: "absolute",
-            borderColor: "#CFD4DA",
-          }}
-        />
+        <FullWidthDivider />
         <Box
           padding="50px 0"
           sx={{
@@ -371,6 +354,68 @@ export const AccessToFundingPage: React.FC = () => {
             }
           >
             {chartContent}
+          </DatasetChartBlock>
+        </Box>
+        <FullWidthDivider />
+        <Box
+          gap="20px"
+          display="flex"
+          padding="50px 0"
+          flexDirection="row"
+          justifyContent="space-between"
+          sx={{
+            "> div": {
+              display: "flex",
+              flexDirection: "column",
+            },
+          }}
+        >
+          {BOXES.map((b, i) => (
+            <React.Fragment key={b.datasetName}>
+              <Box key={b.datasetName}>
+                <Typography fontSize="10px" marginBottom="5px">
+                  {b.datasetName}
+                </Typography>
+                <Typography
+                  fontSize="14px"
+                  marginBottom="2px"
+                  lineHeight="normal"
+                >
+                  {b.title}
+                </Typography>
+                <img src={b.image} alt={`${b.datasetName} img`} height={250} />
+              </Box>
+              {i !== BOXES.length - 1 && (
+                <Divider orientation="vertical" sx={{ height: "323px" }} />
+              )}
+            </React.Fragment>
+          ))}
+        </Box>
+        <FullWidthDivider />
+        <Box
+          padding="50px 0"
+          sx={{
+            "#content": {
+              padding: 0,
+            },
+          }}
+        >
+          <DatasetChartBlock
+            title="Funding Requests"
+            subtitle="Funding request applications by countries."
+            disableCollapse
+            dropdownItems={[]}
+          >
+            <Table
+              dataTree
+              id="funding-requests-table"
+              data={FUNDING_REQUESTS_TABLE_DATA}
+              columns={FUNDING_REQUESTS_TABLE_COLUMNS.slice(0, 7)}
+              extraColumns={FUNDING_REQUESTS_TABLE_COLUMNS.slice(
+                7,
+                FUNDING_REQUESTS_TABLE_COLUMNS.length - 1
+              )}
+            />
           </DatasetChartBlock>
         </Box>
       </Box>

@@ -1,3 +1,4 @@
+import Divider from "@mui/material/Divider";
 import { ReactComponent as TableIcon } from "app/assets/vectors/Select_Table.svg";
 import { ReactComponent as TreemapIcon } from "app/assets/vectors/Select_Treemap.svg";
 import { ReactComponent as SunburstChartIcon } from "app/assets/vectors/Select_SunburstChart.svg";
@@ -45,4 +46,42 @@ export const dropdownItemsAllocations = [
   },
   { label: "Treemap", value: "Treemap", icon: <TreemapIcon /> },
   { label: "Table View", value: "Table View", icon: <TableIcon /> },
+];
+
+export const FullWidthDivider = () => (
+  <Divider
+    sx={{
+      left: 0,
+      width: "100vw",
+      position: "absolute",
+      borderColor: "#CFD4DA",
+    }}
+  />
+);
+
+export const BOXES = [
+  {
+    datasetName: "Relating Dataset Name",
+    title:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.",
+    image: "/static/images/ImagePlaceholder.png",
+  },
+  {
+    datasetName: "Relating Dataset Name",
+    title:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.",
+    image: "/static/images/ImagePlaceholder.png",
+  },
+  {
+    datasetName: "Relating Dataset Name",
+    title:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.",
+    image: "/static/images/ImagePlaceholder.png",
+  },
+  {
+    datasetName: "Relating Dataset Name",
+    title:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.",
+    image: "/static/images/ImagePlaceholder.png",
+  },
 ];
