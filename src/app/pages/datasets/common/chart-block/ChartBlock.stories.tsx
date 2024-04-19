@@ -2,7 +2,7 @@ import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { BarChart } from "app/components/charts/bar";
-import { withRouter } from "storybook-addon-react-router-v6";
+import { withRouter } from "storybook-addon-remix-react-router";
 import { STORY_DATA_VARIANT_2 } from "app/components/charts/bar/data";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 

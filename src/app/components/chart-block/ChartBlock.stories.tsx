@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 
 import { BarChart } from "app/components/charts/bar";
 import { ChartBlock } from "app/components/chart-block";
-import { withRouter } from "storybook-addon-react-router-v6";
+import { withRouter } from "storybook-addon-remix-react-router";
 import { STORY_DATA_VARIANT_2 } from "app/components/charts/bar/data";
 
 const cycles = [

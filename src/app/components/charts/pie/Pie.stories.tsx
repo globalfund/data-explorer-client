@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { PieChart } from "app/components/charts/pie";
-import { withRouter } from "storybook-addon-react-router-v6";
+import { withRouter } from "storybook-addon-remix-react-router";
 import {
   STORY_DATA_VARIANT_1,
   STORY_DATA_VARIANT_2,

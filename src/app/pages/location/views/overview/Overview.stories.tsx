@@ -2,7 +2,7 @@ import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { LocationOverview } from "app/pages/location/views/overview";
-import { withRouter } from "storybook-addon-react-router-v6";
+import { withRouter } from "storybook-addon-remix-react-router";
 
 const meta = {
   title: "Pages/Location/Views/Overview",

@@ -2,7 +2,7 @@ import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { DetailPageTabs } from "app/components/detail-page-tabs";
-import { withRouter } from "storybook-addon-react-router-v6";
+import { withRouter } from "storybook-addon-remix-react-router";
 import {
   GRANT_TABS,
   GRANT_DROPDOWN_ITEMS,

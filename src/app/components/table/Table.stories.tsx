@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { Table } from "app/components/table";
-import { withRouter } from "storybook-addon-react-router-v6";
+import { withRouter } from "storybook-addon-remix-react-router";
 import {
   TABLE_VARIATION_1_DATA,
   TABLE_VARIATION_1_COLUMNS,
