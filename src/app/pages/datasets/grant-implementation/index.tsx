@@ -8,10 +8,12 @@ import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
 import { BarChart } from "app/components/charts/bar";
 import { LineChart } from "app/components/charts/line";
+import { RadarChart } from "app/components/charts/radar";
 import { RadialChart } from "app/components/charts/radial";
 import { DatasetPage } from "app/pages/datasets/common/page";
 import { getRange } from "app/utils/getFinancialValueWithMetricPrefix";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
+import { STORY_DATA_VARIANT_1 as RADAR_CHART_DATA } from "app/components/charts/radar/data";
 import { STORY_DATA_VARIANT_3 as BUDGET_RADIAL_DATA } from "app/components/charts/radial/data";
 import { STORY_DATA_VARIANT_3 as DISBURSEMENTS_BAR_DATA } from "app/components/charts/bar/data";
 import { STORY_DATA_VARIANT_2 as DISBURSEMENTS_LINE_DATA } from "app/components/charts/line/data";
@@ -314,7 +316,15 @@ export const GrantImplementationPage: React.FC = () => {
             sx={{
               width: "60%",
             }}
-          ></Box>
+          >
+            <Box>
+              <Typography variant="h5">Budget Utilisation</Typography>
+              <Typography fontSize="14px" fontWeight="700" marginBottom="30px">
+                By grant component
+              </Typography>
+              <RadarChart height="350px" data={RADAR_CHART_DATA} />
+            </Box>
+          </Box>
         </Box>
       </Box>
     </DatasetPage>

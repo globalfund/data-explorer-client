@@ -858,6 +858,10 @@ export const appColors = {
   RADIAL_CHART: {
     ITEM_COLORS: ["#0A2840", "#013E77", "#00B5AE", "#C3EDFD", "#F3F5F4"],
   },
+  RADAR_CHART: {
+    AXIS_NAME_COLOR: "#373D43",
+    COLORS: ["#013E77", "#00B5AE"],
+  },
   SANKEY_CHART: {
     NODE_COLOR: "#252C34",
     LINK_COLORS: ["#3B5366", "#013E77", "#33C4BE"],
