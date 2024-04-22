@@ -1,3 +1,5 @@
+import { appColors } from "app/theme";
+
 interface SankeyChartNode {
   name: string;
   level: number;
@@ -218,6 +220,209 @@ export const STORY_DATA_VARIANT_1: SankeyChartData = {
     },
     {
       source: "Program Management Related Costs",
+      target: "Infrastructure and Non-Health Equipment",
+      value: 1757399456.15,
+    },
+    {
+      source: "Program related costs",
+      target: "Communication Material and Publications - CMP",
+      value: 479233220.56999993,
+    },
+    {
+      source: "Program related costs",
+      target: "Living support to client/ target population - LSCTP",
+      value: 720630999.53,
+    },
+    {
+      source: "Program related costs",
+      target: "Payment for Results",
+      value: 1319834598.92,
+    },
+    {
+      source: "Program related costs",
+      target: "Travel related costs - TRC",
+      value: 5095815972.43,
+    },
+  ],
+};
+
+export const STORY_DATA_VARIANT_2: SankeyChartData = {
+  nodes: [
+    {
+      level: 0,
+      name: "Total",
+    },
+    {
+      level: 1,
+      name: "Capacity Building and Technical Assistance",
+      itemStyle: {
+        color: appColors.SANKEY_CHART.NODE_COLOR,
+      },
+    },
+    {
+      level: 2,
+      name: "Communication Material and Publications - CMP",
+    },
+    {
+      level: 2,
+      name: "External Professional services - EPS",
+    },
+    {
+      level: 1,
+      name: "Health Equipment",
+      itemStyle: {
+        color: appColors.SANKEY_CHART.NODE_COLOR,
+      },
+    },
+    {
+      level: 2,
+      name: "Health Products - Equipment - HPE",
+    },
+    {
+      level: 2,
+      name: "Health Products - Non-Pharmaceuticals - HPNP",
+    },
+    {
+      level: 2,
+      name: "Health Products - Pharmaceutical Products - HPPP",
+    },
+    {
+      level: 1,
+      name: "Health products/commodities and PSM related costs",
+      itemStyle: {
+        color: appColors.SANKEY_CHART.NODE_COLOR,
+      },
+    },
+    {
+      level: 2,
+      name: "Human Resources - HR",
+    },
+    {
+      level: 1,
+      name: "Human Resources including Fiscal Agents",
+      itemStyle: {
+        color: appColors.SANKEY_CHART.NODE_COLOR,
+      },
+    },
+    {
+      level: 1,
+      name: "Indirect and Overhead Costs",
+      itemStyle: {
+        color: appColors.SANKEY_CHART.NODE_COLOR,
+      },
+    },
+    {
+      level: 2,
+      name: "Infrastructure - INF",
+    },
+    {
+      level: 1,
+      name: "Infrastructure and Non-Health Equipment",
+      itemStyle: {
+        color: appColors.SANKEY_CHART.NODE_COLOR,
+      },
+    },
+    {
+      level: 2,
+      name: "Living support to client/ target population - LSCTP",
+    },
+    {
+      level: 2,
+      name: "Non-health equipment - NHP",
+    },
+    {
+      level: 2,
+      name: "Payment for Results",
+    },
+    {
+      level: 2,
+      name: "Procurement and Supply-Chain Management costs - PSM",
+    },
+    {
+      level: 1,
+      name: "Program related costs",
+      itemStyle: {
+        color: appColors.SANKEY_CHART.NODE_COLOR,
+      },
+    },
+    {
+      level: 2,
+      name: "Travel related costs - TRC",
+    },
+  ],
+  links: [
+    {
+      source: "Capacity Building and Technical Assistance",
+      target: "External Professional services - EPS",
+      value: 1308872984.64,
+    },
+    {
+      source: "Health Equipment",
+      target: "Health Products - Equipment - HPE",
+      value: 1661789445.15,
+    },
+    {
+      source: "Total",
+      target: "Health Equipment",
+      value: 1661789445.15,
+    },
+    {
+      source: "Total",
+      target: "Health products/commodities and PSM related costs",
+      value: 19396073525.93,
+    },
+    {
+      source: "Health products/commodities and PSM related costs",
+      target: "Health Products - Non-Pharmaceuticals - HPNP",
+      value: 8235849999.26,
+    },
+    {
+      source: "Health products/commodities and PSM related costs",
+      target: "Health Products - Pharmaceutical Products - HPPP",
+      value: 7300870157.99,
+    },
+    {
+      source: "Health products/commodities and PSM related costs",
+      target: "Procurement and Supply-Chain Management costs - PSM",
+      value: 3859353368.68,
+    },
+    {
+      source: "Human Resources including Fiscal Agents",
+      target: "Human Resources - HR",
+      value: 5616817480.77,
+    },
+    {
+      source: "Infrastructure and Non-Health Equipment",
+      target: "Infrastructure - INF",
+      value: 565078298.36,
+    },
+    {
+      source: "Infrastructure and Non-Health Equipment",
+      target: "Non-health equipment - NHP",
+      value: 1192321157.79,
+    },
+    {
+      source: "Total",
+      target: "Capacity Building and Technical Assistance",
+      value: 1308872984.64,
+    },
+    {
+      source: "Total",
+      target: "Program related costs",
+      value: 7615514791.45,
+    },
+    {
+      source: "Total",
+      target: "Human Resources including Fiscal Agents",
+      value: 5616817480.77,
+    },
+    {
+      source: "Total",
+      target: "Indirect and Overhead Costs",
+      value: 1640270169.25,
+    },
+    {
+      source: "Total",
       target: "Infrastructure and Non-Health Equipment",
       value: 1757399456.15,
     },

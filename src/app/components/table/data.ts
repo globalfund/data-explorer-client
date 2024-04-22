@@ -3085,3 +3085,138 @@ export const TABLE_VARIATION_13_DATA: {
     disbursed: 1130730744,
   },
 ];
+
+export const TABLE_VARIATION_14_COLUMNS: ColumnDefinition[] = [
+  {
+    title: "Investment Landscapes & Cost Category",
+    field: "name",
+    width: "40%",
+    formatter: cellBGColorFormatter,
+  },
+  {
+    title: "Grants",
+    field: "grants",
+    width: "30%",
+    formatter: financialFormatter,
+  },
+  {
+    title: "Budget Amount (USD)",
+    field: "amount",
+    width: "30%",
+    formatter: financialFormatter,
+  },
+];
+
+export const TABLE_VARIATION_14_DATA: {
+  [key: string]: string | number | boolean | null | object | Array<object>;
+}[] = [
+  {
+    name: "Capacity Building and Technical Assistance",
+    grants: 593,
+    amount: 29459468145,
+    _children: [
+      {
+        name: "Capacity Building",
+        grants: 593,
+        amount: 29459468145,
+      },
+      {
+        name: "Technical Assistance",
+        grants: 593,
+        amount: 29459468145,
+      },
+    ],
+  },
+  {
+    name: "Health Equipment",
+    grants: 398,
+    amount: 11448613884,
+    _children: [
+      {
+        name: "Health Equipment",
+        grants: 398,
+        amount: 11448613884,
+      },
+    ],
+  },
+  {
+    name: "Health products/commodities and PSM related costs",
+    grants: 381,
+    amount: 21837104346,
+    _children: [
+      {
+        name: "Health products/commodities",
+        grants: 381,
+        amount: 21837104346,
+      },
+      {
+        name: "PSM related costs",
+        grants: 381,
+        amount: 21837104346,
+      },
+    ],
+  },
+  {
+    name: "Human Resources including Fiscal Agents",
+    grants: 118,
+    amount: 9966218523,
+    _children: [
+      {
+        name: "Human Resources",
+        grants: 118,
+        amount: 9966218523,
+      },
+      {
+        name: "Fiscal Agents",
+        grants: 118,
+        amount: 9966218523,
+      },
+    ],
+  },
+  {
+    name: "Indirect and Overhead Costs",
+    grants: 51,
+    amount: 1823833441,
+    _children: [
+      {
+        name: "Indirect Costs",
+        grants: 51,
+        amount: 1823833441,
+      },
+      {
+        name: "Overhead Costs",
+        grants: 51,
+        amount: 1823833441,
+      },
+    ],
+  },
+  {
+    name: "Infrastructure and Non-Health Equipment",
+    grants: 23,
+    amount: 1778547724,
+    _children: [
+      {
+        name: "Infrastructure",
+        grants: 23,
+        amount: 1778547724,
+      },
+      {
+        name: "Non-Health Equipment",
+        grants: 23,
+        amount: 1778547724,
+      },
+    ],
+  },
+  {
+    name: "Program related costs",
+    grants: 21,
+    amount: 1778547724,
+    _children: [
+      {
+        name: "Program related costs",
+        grants: 21,
+        amount: 1778547724,
+      },
+    ],
+  },
+];

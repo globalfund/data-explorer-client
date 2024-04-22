@@ -41,7 +41,7 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
           top: 10,
           left: 0,
           bottom: 16,
-          right: 200,
+          right: 250,
           nodeWidth: 13,
           type: "sankey",
           draggable: false,

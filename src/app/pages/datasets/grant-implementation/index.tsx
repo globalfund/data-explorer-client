@@ -8,21 +8,28 @@ import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
 import { BarChart } from "app/components/charts/bar";
 import { LineChart } from "app/components/charts/line";
+import { Treemap } from "app/components/charts/treemap";
 import { RadarChart } from "app/components/charts/radar";
 import { RadialChart } from "app/components/charts/radial";
+import { SankeyChart } from "app/components/charts/sankey";
 import { DatasetPage } from "app/pages/datasets/common/page";
 import { getRange } from "app/utils/getFinancialValueWithMetricPrefix";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { STORY_DATA_VARIANT_1 as RADAR_CHART_DATA } from "app/components/charts/radar/data";
 import { STORY_DATA_VARIANT_3 as BUDGET_RADIAL_DATA } from "app/components/charts/radial/data";
+import { STORY_DATA_VARIANT_2 as BUDGET_SANKEY_DATA } from "app/components/charts/sankey/data";
 import { STORY_DATA_VARIANT_3 as DISBURSEMENTS_BAR_DATA } from "app/components/charts/bar/data";
+import { STORY_DATA_VARIANT_2 as BUDGET_TREEMAP_DATA } from "app/components/charts/treemap/data";
 import { STORY_DATA_VARIANT_2 as DISBURSEMENTS_LINE_DATA } from "app/components/charts/line/data";
 import {
+  TABLE_VARIATION_14_DATA as BUDGET_TABLE_DATA,
+  TABLE_VARIATION_14_COLUMNS as BUDGET_TABLE_COLUMNS,
   TABLE_VARIATION_13_DATA as DISBURSEMENTS_TABLE_DATA,
   TABLE_VARIATION_13_COLUMNS as DISBURSEMENTS_TABLE_COLUMNS,
 } from "app/components/table/data";
 import {
   FullWidthDivider,
+  dropdownItemsBudgets,
   geographyGroupingOptions,
   componentsGroupingOptions,
   dropdownItemsDisbursements,
@@ -37,6 +44,9 @@ export const GrantImplementationPage: React.FC = () => {
   );
   const [disbursementsDropdownSelected, setDisbursementsDropdownSelected] =
     React.useState(dropdownItemsDisbursements[0].value);
+  const [budgetsDropdownSelected, setBudgetsDropdownSelected] = React.useState(
+    dropdownItemsBudgets[0].value
+  );
 
   const handleDisbursementsSelectionChange = (value: string) => {
     setDisbursementsDropdownSelected(value);
@@ -50,7 +60,7 @@ export const GrantImplementationPage: React.FC = () => {
     setComponentsGrouping(value);
   };
 
-  const chartContent = React.useMemo(() => {
+  const disbursementsChartContent = React.useMemo(() => {
     let range;
     let maxValue = 0;
     switch (disbursementsDropdownSelected) {
@@ -179,6 +189,26 @@ export const GrantImplementationPage: React.FC = () => {
     }
   }, [disbursementsDropdownSelected]);
 
+  const budgetsChartContent = React.useMemo(() => {
+    switch (budgetsDropdownSelected) {
+      case dropdownItemsBudgets[0].value:
+        return <SankeyChart data={BUDGET_SANKEY_DATA} />;
+      case dropdownItemsBudgets[1].value:
+        return <Treemap data={BUDGET_TREEMAP_DATA} />;
+      case dropdownItemsBudgets[2].value:
+        return (
+          <Table
+            dataTree
+            id="budgets-table"
+            data={BUDGET_TABLE_DATA}
+            columns={BUDGET_TABLE_COLUMNS}
+          />
+        );
+      default:
+        return null;
+    }
+  }, [budgetsDropdownSelected]);
+
   const toolbarRightContent = React.useMemo(() => {
     return (
       <Box gap="20px" display="flex" flexDirection="row" alignItems="center">
@@ -273,7 +303,7 @@ export const GrantImplementationPage: React.FC = () => {
               dropdownItemsDisbursements[2].value
             }
           >
-            {chartContent}
+            {disbursementsChartContent}
           </DatasetChartBlock>
         </Box>
         <FullWidthDivider />
@@ -325,6 +355,28 @@ export const GrantImplementationPage: React.FC = () => {
               <RadarChart height="350px" data={RADAR_CHART_DATA} />
             </Box>
           </Box>
+        </Box>
+        <FullWidthDivider />
+        <Box
+          padding="50px 0"
+          sx={{
+            "#content": {
+              padding: 0,
+            },
+          }}
+        >
+          <DatasetChartBlock
+            title="Budgets"
+            subtitle="Detailed budgets for each implementation period from the 2017-2019 Allocation Period and onwards."
+            dropdownItems={dropdownItemsBudgets}
+            dropdownSelected={budgetsDropdownSelected}
+            handleDropdownChange={(value) => setBudgetsDropdownSelected(value)}
+            disableCollapse={
+              budgetsDropdownSelected === dropdownItemsBudgets[2].value
+            }
+          >
+            {budgetsChartContent}
+          </DatasetChartBlock>
         </Box>
       </Box>
     </DatasetPage>

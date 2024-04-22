@@ -1,7 +1,9 @@
 import Divider from "@mui/material/Divider";
 import { ReactComponent as TableIcon } from "app/assets/vectors/Select_Table.svg";
-import { ReactComponent as LineChartIcon } from "app/assets/vectors/Select_LineChart.svg";
+import { ReactComponent as TreemapIcon } from "app/assets/vectors/Select_Treemap.svg";
 import { ReactComponent as BarChartIcon } from "app/assets/vectors/Select_BarChart.svg";
+import { ReactComponent as LineChartIcon } from "app/assets/vectors/Select_LineChart.svg";
+import { ReactComponent as SankeyChartIcon } from "app/assets/vectors/Select_SankeyChart.svg";
 
 export const geographyGroupingOptions = [
   { value: "Portfolio View", label: "Portfolio View" },
@@ -37,6 +39,16 @@ export const dropdownItemsDisbursements = [
     icon: <BarChartIcon />,
   },
   { label: "Line Chart", value: "Line Chart", icon: <LineChartIcon /> },
+  { label: "Table View", value: "Table View", icon: <TableIcon /> },
+];
+
+export const dropdownItemsBudgets = [
+  {
+    label: "Sankey Chart",
+    value: "Sankey Chart",
+    icon: <SankeyChartIcon />,
+  },
+  { label: "Treemap", value: "Treemap", icon: <TreemapIcon /> },
   { label: "Table View", value: "Table View", icon: <TableIcon /> },
 ];
 
