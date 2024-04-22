@@ -34,6 +34,7 @@ import {
   componentsGroupingOptions,
   dropdownItemsDisbursements,
 } from "app/pages/datasets/grant-implementation/data";
+import { DonutChart } from "app/components/charts/donut";
 
 export const GrantImplementationPage: React.FC = () => {
   const [geographyGrouping, setGeographyGrouping] = React.useState(
@@ -348,7 +349,7 @@ export const GrantImplementationPage: React.FC = () => {
             }}
           >
             <Box>
-              <Typography variant="h5">Budget Utilisation</Typography>
+              <Typography variant="h5">Budget Utilization</Typography>
               <Typography fontSize="14px" fontWeight="700" marginBottom="30px">
                 By grant component
               </Typography>
@@ -377,6 +378,148 @@ export const GrantImplementationPage: React.FC = () => {
           >
             {budgetsChartContent}
           </DatasetChartBlock>
+        </Box>
+        <FullWidthDivider />
+        <Box
+          gap="20px"
+          width="100%"
+          display="flex"
+          padding="50px 0"
+          flexDirection="row"
+          sx={{
+            "> div": {
+              width: "calc(100% / 3)",
+            },
+          }}
+        >
+          <Box
+            sx={{
+              gap: "20px",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+            }}
+          >
+            <Box>
+              <Typography fontSize="10px">Expenditures</Typography>
+              <Typography variant="h5">56,678,123,111 USD</Typography>
+              <Typography fontSize="14px" fontWeight="700">
+                Cumulative Expenditure
+              </Typography>
+            </Box>
+            <Divider />
+            <Box>
+              <Typography fontSize="10px">Expenditures</Typography>
+              <Typography variant="h5">52,134,005,111 USD</Typography>
+              <Typography fontSize="14px" fontWeight="700">
+                Reported Expenditure
+              </Typography>
+            </Box>
+          </Box>
+          <Divider orientation="vertical" flexItem />
+          <Box>
+            <Box>
+              <Typography fontSize="10px">Expenditures</Typography>
+              <Typography variant="h5">In-Country Absorption</Typography>
+              <Typography fontSize="14px" fontWeight="700" marginBottom="30px">
+                By the current cycle.
+              </Typography>
+              <Box
+                width="100%"
+                display="flex"
+                alignItems="center"
+                flexDirection="column"
+              >
+                <DonutChart
+                  value={84.2}
+                  label="reported"
+                  valueColor="#013E77"
+                />
+                <Box
+                  width="100%"
+                  display="flex"
+                  marginTop="20px"
+                  flexDirection="row"
+                  justifyContent="space-evenly"
+                  sx={{
+                    "> div": {
+                      gap: "5px",
+                      display: "flex",
+                      alignItems: "baseline",
+                      "> div": {
+                        width: "15px",
+                        height: "9px",
+                        borderRadius: "2px",
+                      },
+                    },
+                  }}
+                >
+                  <Box>
+                    <Box bgcolor="#013E77" />
+                    <Typography fontSize="12px">
+                      Reported Expenditure
+                    </Typography>
+                  </Box>
+                  <Box>
+                    <Box bgcolor="#CFD4DA" />
+                    <Typography fontSize="12px">
+                      Cumulative Expenditure
+                    </Typography>
+                  </Box>
+                </Box>
+              </Box>
+            </Box>
+          </Box>
+          <Divider orientation="vertical" flexItem />
+          <Box>
+            <Box>
+              <Typography fontSize="10px">
+                Disbursements & Expenditures
+              </Typography>
+              <Typography variant="h5">Disbursement Utilization</Typography>
+              <Typography fontSize="14px" fontWeight="700" marginBottom="30px">
+                By the current cycle.
+              </Typography>
+            </Box>
+            <Box
+              width="100%"
+              display="flex"
+              alignItems="center"
+              flexDirection="column"
+            >
+              <DonutChart value={97.8} label="utilized" valueColor="#00B5AE" />
+              <Box
+                width="100%"
+                display="flex"
+                marginTop="20px"
+                flexDirection="row"
+                justifyContent="space-evenly"
+                sx={{
+                  "> div": {
+                    gap: "5px",
+                    display: "flex",
+                    alignItems: "baseline",
+                    "> div": {
+                      width: "15px",
+                      height: "9px",
+                      borderRadius: "2px",
+                    },
+                  },
+                }}
+              >
+                <Box>
+                  <Box bgcolor="#00B5AE" />
+                  <Typography fontSize="12px">Disbursement</Typography>
+                </Box>
+                <Box>
+                  <Box bgcolor="#CFD4DA" />
+                  <Typography fontSize="12px">
+                    Cumulative Expenditure
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
+          </Box>
         </Box>
       </Box>
     </DatasetPage>
