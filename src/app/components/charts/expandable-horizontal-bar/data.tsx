@@ -9,9 +9,14 @@ export interface ExpandableHorizontalBarChartDataItem {
 
 export interface ExpandableHorizontalBarChartProps {
   data: ExpandableHorizontalBarChartDataItem[];
+  yAxisLabel: string;
+  xAxisLabel: string;
   valueLabels: {
     value: string;
     value1?: string;
+  };
+  itemStyle?: {
+    color: (params: any) => string;
   };
 }
 
@@ -35,5 +40,20 @@ export const STORY_DATA_VARIANT_1: ExpandableHorizontalBarChartDataItem[] = [
     name: "Faith-Based Organization",
     value: 2500000,
     value1: 6000000,
+  },
+];
+
+export const STORY_DATA_VARIANT_2: ExpandableHorizontalBarChartDataItem[] = [
+  {
+    name: "Health Commodities/Equipments and Supply Chain Costs",
+    value: 1000000,
+  },
+  {
+    name: "Program Management Related Costs",
+    value: 500000,
+  },
+  {
+    name: "Program Related Activity Costs",
+    value: 2000000,
   },
 ];

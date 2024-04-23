@@ -43,6 +43,8 @@ export const ResourceMobilizationPage: React.FC = () => {
         return (
           <ExpandableHorizontalBar
             data={HORIZONTAL_BAR_CHART_DATA}
+            yAxisLabel="Donor Types & Donors"
+            xAxisLabel="Amount"
             valueLabels={{
               value: "Pledge",
               value1: "Contribution",

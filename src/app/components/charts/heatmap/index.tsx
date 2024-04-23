@@ -21,6 +21,8 @@ import {
   Container,
   Scrollable,
 } from "app/components/charts/heatmap/styles";
+import { pickTextColorBasedOnBgColorAdvanced } from "app/utils/pickTextColorBasedOnBgColorAdvanced";
+import Typography from "@mui/material/Typography";
 
 export function Heatmap(props: HeatmapProps) {
   const [visibleRows, setVisibleRows] = React.useState<ItemModel[]>([]);
@@ -202,6 +204,9 @@ export function Heatmap(props: HeatmapProps) {
   }, [visibleColumns, expandedColumns]);
 
   const rowNameWidth = React.useMemo(() => {
+    if (props.contentProp === "diseaseBurden") {
+      return "100px";
+    }
     if (props.rowCategory === "period") {
       return "50px";
     }
@@ -210,9 +215,9 @@ export function Heatmap(props: HeatmapProps) {
       props.rowCategory === "investmentLandscape" ||
       props.rowCategory === "principalRecipient"
     ) {
-      return "150px";
+      return "450px";
     }
-    return "100px";
+    return "400px";
   }, [props.rowCategory]);
 
   return (
@@ -220,9 +225,22 @@ export function Heatmap(props: HeatmapProps) {
       padding="10px"
       maxWidth="100%"
       maxHeight="60vh"
+      position="relative"
       borderRadius="16px"
       bgcolor={props.bgColor}
     >
+      {props.rowHeader && (
+        <Typography
+          top="0px"
+          fontSize="10px"
+          fontWeight="700"
+          paddingLeft="20px"
+          left={rowNameWidth}
+          position="absolute"
+        >
+          {props.rowHeader}
+        </Typography>
+      )}
       <Scrollable>
         <Container
           style={flatVisibleColumns.length < 10 ? { width: "100%" } : {}}
@@ -235,7 +253,12 @@ export function Heatmap(props: HeatmapProps) {
               background: appColors.HEATMAP.CHART_BG_COLOR,
             }}
           >
-            <RowName theme={{ width: rowNameWidth }} />
+            <RowName
+              theme={{ width: rowNameWidth }}
+              style={{ fontWeight: "700" }}
+            >
+              {props.columnHeader}
+            </RowName>
             {flatVisibleColumns.map((column) => (
               <ColName
                 key={column.name}
@@ -269,7 +292,6 @@ export function Heatmap(props: HeatmapProps) {
                 theme={{ width: rowNameWidth }}
                 style={row.expanded ? { fontWeight: 700 } : {}}
               >
-                {row.name}
                 {row.children ? (
                   <IconButton
                     onClick={onRowExpandClick(row.name)}
@@ -281,8 +303,13 @@ export function Heatmap(props: HeatmapProps) {
                     <ChevronRight fontSize="small" />
                   </IconButton>
                 ) : (
-                  <Box minWidth="20px" minHeight="20px" />
+                  <React.Fragment>
+                    {props.contentProp !== "diseaseBurden" && (
+                      <Box minWidth="28px" minHeight="28px" />
+                    )}
+                  </React.Fragment>
                 )}
+                {row.name}
               </RowName>
               {flatVisibleColumns.map((column) => {
                 const data = props.data.find(
@@ -313,6 +340,11 @@ export function Heatmap(props: HeatmapProps) {
                     key={column.name}
                     style={{
                       opacity,
+                      color: pickTextColorBasedOnBgColorAdvanced(
+                        color,
+                        "#fff",
+                        "#000"
+                      ),
                       background: color,
                       width: props.itemWidth
                         ? `${props.itemWidth}px`

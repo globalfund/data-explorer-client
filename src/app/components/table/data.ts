@@ -3220,3 +3220,138 @@ export const TABLE_VARIATION_14_DATA: {
     ],
   },
 ];
+
+export const TABLE_VARIATION_15_COLUMNS: ColumnDefinition[] = [
+  {
+    title: "Modules & Interventions",
+    field: "name",
+    width: "40%",
+    formatter: cellBGColorFormatter,
+  },
+  {
+    title: "Cumulative Expenditure",
+    field: "cumulativeExpenditure",
+    width: "30%",
+    formatter: financialFormatter,
+  },
+  {
+    title: "Expenditure For Reported Period",
+    field: "periodExpenditure",
+    width: "30%",
+    formatter: financialFormatter,
+  },
+];
+
+export const TABLE_VARIATION_15_DATA: {
+  [key: string]: string | number | boolean | null | object | Array<object>;
+}[] = [
+  {
+    name: "Capacity Building and Technical Assistance",
+    cumulativeExpenditure: 593,
+    periodExpenditure: 29459468145,
+    _children: [
+      {
+        name: "Capacity Building",
+        cumulativeExpenditure: 593,
+        periodExpenditure: 29459468145,
+      },
+      {
+        name: "Technical Assistance",
+        cumulativeExpenditure: 593,
+        periodExpenditure: 29459468145,
+      },
+    ],
+  },
+  {
+    name: "Health Equipment",
+    cumulativeExpenditure: 398,
+    periodExpenditure: 11448613884,
+    _children: [
+      {
+        name: "Health Equipment",
+        cumulativeExpenditure: 398,
+        periodExpenditure: 11448613884,
+      },
+    ],
+  },
+  {
+    name: "Health products/commodities and PSM related costs",
+    cumulativeExpenditure: 381,
+    periodExpenditure: 21837104346,
+    _children: [
+      {
+        name: "Health products/commodities",
+        cumulativeExpenditure: 381,
+        periodExpenditure: 21837104346,
+      },
+      {
+        name: "PSM related costs",
+        cumulativeExpenditure: 381,
+        periodExpenditure: 21837104346,
+      },
+    ],
+  },
+  {
+    name: "Human Resources including Fiscal Agents",
+    cumulativeExpenditure: 118,
+    periodExpenditure: 9966218523,
+    _children: [
+      {
+        name: "Human Resources",
+        cumulativeExpenditure: 118,
+        periodExpenditure: 9966218523,
+      },
+      {
+        name: "Fiscal Agents",
+        cumulativeExpenditure: 118,
+        periodExpenditure: 9966218523,
+      },
+    ],
+  },
+  {
+    name: "Indirect and Overhead Costs",
+    cumulativeExpenditure: 51,
+    periodExpenditure: 1823833441,
+    _children: [
+      {
+        name: "Indirect Costs",
+        cumulativeExpenditure: 51,
+        periodExpenditure: 1823833441,
+      },
+      {
+        name: "Overhead Costs",
+        cumulativeExpenditure: 51,
+        periodExpenditure: 1823833441,
+      },
+    ],
+  },
+  {
+    name: "Infrastructure and Non-Health Equipment",
+    cumulativeExpenditure: 23,
+    periodExpenditure: 1778547724,
+    _children: [
+      {
+        name: "Infrastructure",
+        cumulativeExpenditure: 23,
+        periodExpenditure: 1778547724,
+      },
+      {
+        name: "Non-Health Equipment",
+        cumulativeExpenditure: 23,
+        periodExpenditure: 1778547724,
+      },
+    ],
+  },
+  {
+    name: "Program related costs",
+    cumulativeExpenditure: 21,
+    periodExpenditure: 1778547724,
+    _children: [
+      {
+        name: "Program related costs",
+        cumulativeExpenditure: 21,
+        periodExpenditure: 1778547724,
+      },
+    ],
+  },
+];

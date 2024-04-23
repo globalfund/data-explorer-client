@@ -27,6 +27,8 @@ export interface HeatmapProps {
   getItemColor: (item?: HeatmapDataItem) => string;
   bgColor?: string;
   noItemOrdering?: boolean;
+  columnHeader?: string;
+  rowHeader?: string;
 }
 
 export function getPercentageColor(item?: HeatmapDataItem) {

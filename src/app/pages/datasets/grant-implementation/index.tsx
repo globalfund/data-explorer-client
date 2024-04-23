@@ -9,22 +9,32 @@ import { Dropdown } from "app/components/dropdown";
 import { BarChart } from "app/components/charts/bar";
 import { LineChart } from "app/components/charts/line";
 import { Treemap } from "app/components/charts/treemap";
+import { Heatmap } from "app/components/charts/heatmap";
 import { RadarChart } from "app/components/charts/radar";
+import { DonutChart } from "app/components/charts/donut";
 import { RadialChart } from "app/components/charts/radial";
 import { SankeyChart } from "app/components/charts/sankey";
 import { DatasetPage } from "app/pages/datasets/common/page";
 import { getRange } from "app/utils/getFinancialValueWithMetricPrefix";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
+import { ExpandableHorizontalBar } from "app/components/charts/expandable-horizontal-bar";
 import { STORY_DATA_VARIANT_1 as RADAR_CHART_DATA } from "app/components/charts/radar/data";
 import { STORY_DATA_VARIANT_3 as BUDGET_RADIAL_DATA } from "app/components/charts/radial/data";
 import { STORY_DATA_VARIANT_2 as BUDGET_SANKEY_DATA } from "app/components/charts/sankey/data";
 import { STORY_DATA_VARIANT_3 as DISBURSEMENTS_BAR_DATA } from "app/components/charts/bar/data";
 import { STORY_DATA_VARIANT_2 as BUDGET_TREEMAP_DATA } from "app/components/charts/treemap/data";
 import { STORY_DATA_VARIANT_2 as DISBURSEMENTS_LINE_DATA } from "app/components/charts/line/data";
+import { STORY_DATA_VARIANT_2 as EXPENDITURES_BAR_CHART } from "app/components/charts/expandable-horizontal-bar/data";
+import {
+  getPercentageColor,
+  STORY_DATA_VARIANT_1 as EXPENDITURES_HEATMAP_DATA,
+} from "app/components/charts/heatmap/data";
 import {
   TABLE_VARIATION_14_DATA as BUDGET_TABLE_DATA,
+  TABLE_VARIATION_15_DATA as EXPENDITURES_TABLE_DATA,
   TABLE_VARIATION_14_COLUMNS as BUDGET_TABLE_COLUMNS,
   TABLE_VARIATION_13_DATA as DISBURSEMENTS_TABLE_DATA,
+  TABLE_VARIATION_15_COLUMNS as EXPENDITURES_TABLE_COLUMNS,
   TABLE_VARIATION_13_COLUMNS as DISBURSEMENTS_TABLE_COLUMNS,
 } from "app/components/table/data";
 import {
@@ -33,8 +43,8 @@ import {
   geographyGroupingOptions,
   componentsGroupingOptions,
   dropdownItemsDisbursements,
+  dropdownItemsExpenditures,
 } from "app/pages/datasets/grant-implementation/data";
-import { DonutChart } from "app/components/charts/donut";
 
 export const GrantImplementationPage: React.FC = () => {
   const [geographyGrouping, setGeographyGrouping] = React.useState(
@@ -48,6 +58,8 @@ export const GrantImplementationPage: React.FC = () => {
   const [budgetsDropdownSelected, setBudgetsDropdownSelected] = React.useState(
     dropdownItemsBudgets[0].value
   );
+  const [expendituresDropdownSelected, setExpendituresDropdownSelected] =
+    React.useState(dropdownItemsExpenditures[0].value);
 
   const handleDisbursementsSelectionChange = (value: string) => {
     setDisbursementsDropdownSelected(value);
@@ -209,6 +221,50 @@ export const GrantImplementationPage: React.FC = () => {
         return null;
     }
   }, [budgetsDropdownSelected]);
+
+  const expendituresChartContent = React.useMemo(() => {
+    switch (expendituresDropdownSelected) {
+      case dropdownItemsExpenditures[0].value:
+        return (
+          <Heatmap
+            valueType="amount"
+            contentProp="value"
+            hoveredLegend={null}
+            columnCategory="cycle"
+            rowCategory="component"
+            data={EXPENDITURES_HEATMAP_DATA}
+            getItemColor={getPercentageColor}
+            columnHeader="Principal Recipients"
+            rowHeader="Components"
+          />
+        );
+      case dropdownItemsExpenditures[1].value:
+        return (
+          <ExpandableHorizontalBar
+            data={EXPENDITURES_BAR_CHART}
+            yAxisLabel="Investment Landscapes & Analytical Group Name"
+            xAxisLabel="Cumulative Expenditure"
+            valueLabels={{
+              value: "amount",
+            }}
+            itemStyle={{
+              color: () => appColors.TIME_CYCLE.BAR_COLOR_1,
+            }}
+          />
+        );
+      case dropdownItemsExpenditures[2].value:
+        return (
+          <Table
+            dataTree
+            id="expenditures-table"
+            data={EXPENDITURES_TABLE_DATA}
+            columns={EXPENDITURES_TABLE_COLUMNS}
+          />
+        );
+      default:
+        return null;
+    }
+  }, [expendituresDropdownSelected]);
 
   const toolbarRightContent = React.useMemo(() => {
     return (
@@ -520,6 +576,31 @@ export const GrantImplementationPage: React.FC = () => {
               </Box>
             </Box>
           </Box>
+        </Box>
+        <FullWidthDivider />
+        <Box
+          padding="50px 0"
+          sx={{
+            "#content": {
+              padding: 0,
+            },
+          }}
+        >
+          <DatasetChartBlock
+            title="Expenditures"
+            subtitle="Lorem Ipsum"
+            dropdownItems={dropdownItemsExpenditures}
+            dropdownSelected={expendituresDropdownSelected}
+            handleDropdownChange={(value) =>
+              setExpendituresDropdownSelected(value)
+            }
+            disableCollapse={
+              expendituresDropdownSelected ===
+              dropdownItemsExpenditures[2].value
+            }
+          >
+            {expendituresChartContent}
+          </DatasetChartBlock>
         </Box>
       </Box>
     </DatasetPage>

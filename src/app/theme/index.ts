@@ -832,11 +832,12 @@ export const appColors = {
   HEATMAP: {
     CHART_TEXT_COLOR: BLACK,
     CHART_BG_COLOR: WHITE,
+    CHART_ROW_BORDER_COLOR: "#DFE3E5",
     CHART_PERCENTAGE_COLORS: [
-      "#5BA053",
-      "#8CCD81",
-      "#ECC854",
-      "#EE5D52",
+      "#0A2840",
+      "#013E77",
+      "#00B5AE",
+      "#C3EDFD",
       "#DADADA",
     ],
     CHART_ELIGIBILITY_COLORS: ["#00B5AE", "#ABC7E7", "#013E77", "#CFD4DA"],

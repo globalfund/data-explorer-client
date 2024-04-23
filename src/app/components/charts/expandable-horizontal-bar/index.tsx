@@ -155,7 +155,7 @@ export const ExpandableHorizontalBar: React.FC<
                 return value;
               }
               const isExpanded = expandedBars.includes(value);
-              return `${isExpanded ? "▲" : "▼"} ${value}`;
+              return `${value} ${isExpanded ? "▲" : "▼"} `;
             },
           },
           axisLine: {
@@ -177,7 +177,7 @@ export const ExpandableHorizontalBar: React.FC<
           name:
             index === 0 ? props.valueLabels.value : props.valueLabels.value1,
           data: values,
-          barWidth: "15px",
+          barWidth: seriesData.length > 1 ? "15px" : "30px",
           colorBy: seriesData.length > 1 ? "series" : "data",
           color:
             seriesData.length > 1
@@ -203,7 +203,7 @@ export const ExpandableHorizontalBar: React.FC<
                     appColors.TIME_CYCLE.CONTRIBUTION_COLOR,
                   ][index],
                 }
-              : undefined,
+              : props.itemStyle,
         })),
         legend: {
           right: 0,
@@ -251,7 +251,9 @@ export const ExpandableHorizontalBar: React.FC<
   React.useEffect(() => {
     if (expandedBars.length > 0) {
       const newData = [];
-      for (const item of props.data) {
+      const temp = [...props.data];
+      temp.reverse();
+      for (const item of temp) {
         newData.push(item);
         if (expandedBars.includes(item.name)) {
           newData.push({
@@ -276,7 +278,7 @@ export const ExpandableHorizontalBar: React.FC<
           position: "absolute",
         }}
       >
-        Y Axis / <b>Donor Types & Donors</b>
+        Y Axis / <b>{props.yAxisLabel}</b>
       </Typography>
       <Typography
         fontSize="12px"
@@ -286,7 +288,10 @@ export const ExpandableHorizontalBar: React.FC<
           left: "calc(100% / 3)",
         }}
       >
-        X Axis / <b>Amount (USD in {range.abbr})</b>
+        X Axis /{" "}
+        <b>
+          {props.xAxisLabel} (USD in {range.abbr})
+        </b>
       </Typography>
       <Box
         id="expandable-horizontal-bar-chart"

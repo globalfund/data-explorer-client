@@ -21,6 +21,8 @@ type StoryType = StoryObj<typeof meta>;
 export const BarChartVariant1: StoryType = {
   args: {
     data: STORY_DATA_VARIANT_1,
+    yAxisLabel: "Donor Types & Donors",
+    xAxisLabel: "Amount",
     valueLabels: {
       value: "Pledge",
       value1: "Contribution",

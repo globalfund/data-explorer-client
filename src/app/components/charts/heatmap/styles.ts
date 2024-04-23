@@ -23,35 +23,36 @@ export const Scrollable = styled.div`
 `;
 
 export const Container = styled.div`
-  gap: 12px;
   height: 100%;
   display: flex;
   flex-direction: column;
 `;
 
 export const Row = styled.div`
-  gap: 12px;
+  gap: 4px;
   display: flex;
   flex-direction: row;
   align-items: center;
+  border-bottom: 1px solid ${appColors.HEATMAP.CHART_ROW_BORDER_COLOR};
 `;
 
 export const RowName = styled.div`
   z-index: 1;
   left: -10px;
   display: flex;
+  margin-top: 2px;
   font-size: 10px;
   position: sticky;
-  min-height: 36px;
-  max-height: 36px;
-  text-align: right;
+  min-height: 30px;
+  max-height: 30px;
   line-height: 12px;
-  min-width: ${(props) => props.theme.width};
-  max-width: ${(props) => props.theme.width};
+  margin-bottom: 2px;
   align-items: center;
   word-wrap: break-word;
-  justify-content: flex-end;
+  justify-content: flex-start;
   background: ${appColors.COMMON.WHITE};
+  min-width: ${(props) => props.theme.width};
+  max-width: ${(props) => props.theme.width};
   color: ${appColors.HEATMAP.CHART_TEXT_COLOR};
 `;
 
@@ -71,9 +72,8 @@ export const RowCol = styled.div`
   padding: 6px;
   display: flex;
   font-size: 10px;
-  min-height: 36px;
-  max-height: 36px;
-  border-radius: 4px;
+  min-height: 30px;
+  max-height: 30px;
   align-items: center;
   justify-content: center;
   color: ${appColors.HEATMAP.CHART_TEXT_COLOR};

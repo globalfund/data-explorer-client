@@ -1,6 +1,7 @@
 import Divider from "@mui/material/Divider";
 import { ReactComponent as TableIcon } from "app/assets/vectors/Select_Table.svg";
 import { ReactComponent as TreemapIcon } from "app/assets/vectors/Select_Treemap.svg";
+import { ReactComponent as HeatmapIcon } from "app/assets/vectors/Select_Heatmap.svg";
 import { ReactComponent as BarChartIcon } from "app/assets/vectors/Select_BarChart.svg";
 import { ReactComponent as LineChartIcon } from "app/assets/vectors/Select_LineChart.svg";
 import { ReactComponent as SankeyChartIcon } from "app/assets/vectors/Select_SankeyChart.svg";
@@ -49,6 +50,16 @@ export const dropdownItemsBudgets = [
     icon: <SankeyChartIcon />,
   },
   { label: "Treemap", value: "Treemap", icon: <TreemapIcon /> },
+  { label: "Table View", value: "Table View", icon: <TableIcon /> },
+];
+
+export const dropdownItemsExpenditures = [
+  {
+    label: "Heatmap",
+    value: "Heatmap",
+    icon: <HeatmapIcon />,
+  },
+  { label: "Bar Chart", value: "Bar Chart", icon: <BarChartIcon /> },
   { label: "Table View", value: "Table View", icon: <TableIcon /> },
 ];
 
