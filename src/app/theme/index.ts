@@ -259,9 +259,18 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           width: "100%",
-          borderBottom: `3px solid ${colors.primary.gray}`,
+          borderRadius: 0,
+          boxShadow: "none",
+          borderBottom: "1px solid #CFD4DA",
           "&:before": {
             display: "none",
+          },
+          "&.Mui-expanded": {
+            margin: 0,
+            paddingBottom: "10px",
+          },
+          "&:last-of-type": {
+            borderBottomStyle: "none",
           },
         },
       },
@@ -270,21 +279,28 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           padding: 0,
-          minHeight: "50px",
+          minHeight: "30px",
+          maxHeight: "30px",
           flexDirection: "row",
+          "&.Mui-expanded": {
+            minHeight: "30px",
+            maxHeight: "30px",
+          },
         },
         content: {
           margin: 0,
+          "&.Mui-expanded": {
+            margin: 0,
+          },
         },
       },
     },
     MuiAccordionDetails: {
       styleOverrides: {
         root: {
+          margin: 0,
           padding: 0,
           display: "flex",
-          margin: "15px 0",
-          justifyContent: "flex-end",
           ".MuiGrid-container": {
             width: "calc(100% - 50px)",
           },

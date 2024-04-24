@@ -2,19 +2,33 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Add from "@mui/icons-material/Add";
 import Button from "@mui/material/Button";
+import Popover from "@mui/material/Popover";
 import Divider from "@mui/material/Divider";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { Breadcrumbs } from "app/components/breadcrumbs";
+import { FilterPanel } from "app/components/filters/panel";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import {
-  DatasetPageProps,
   TooltipTitle,
+  DatasetPageProps,
 } from "app/pages/datasets/common/page/data";
 
 export const DatasetPage: React.FC<DatasetPageProps> = (
   props: DatasetPageProps
 ) => {
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  const handleFilterButtonClick = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleFilterPanelClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <Box padding="60px 0">
       <Breadcrumbs items={props.breadcrumbs} />
@@ -44,9 +58,37 @@ export const DatasetPage: React.FC<DatasetPageProps> = (
               <InfoOutlined fontSize="small" />
             </Tooltip>
           </Typography>
-          <Button variant="outlined" startIcon={<Add />}>
+          <Button
+            variant="outlined"
+            startIcon={<Add />}
+            onClick={handleFilterButtonClick}
+          >
             Filters
           </Button>
+          <Popover
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleFilterPanelClose}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "left",
+            }}
+          >
+            <FilterPanel
+              onClose={handleFilterPanelClose}
+              appliedFilters={[
+                "Africa",
+                "Asia",
+                "Americas",
+                "Europe",
+                "Oceania",
+              ]}
+              appliedFilterBgColors={{
+                hover: "#FF9800",
+                normal: "rgba(255, 152, 0, 0.2)",
+              }}
+            />
+          </Popover>
         </Box>
         {props.toolbarRightContent && props.toolbarRightContent}
       </Box>
