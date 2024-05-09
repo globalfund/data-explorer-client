@@ -39,6 +39,7 @@ import componentsDatasetCarousel from "app/state/api/action-reducers/cms/compone
 import componentsInformationPanel from "app/state/api/action-reducers/cms/componentsInformationPanel";
 import componentsChartsEligibility from "app/state/api/action-reducers/cms/componentsChartsEligibility";
 import componentsChartsInvestments from "app/state/api/action-reducers/cms/componentsChartsInvestments";
+import { HomeAllocationsRadialChart } from "app/state/api/action-reducers/home/allocations-radial-chart";
 import ReplenishmentPeriodFilterOptions from "app/state/api/action-reducers/filters/replenishmentPeriods";
 import componentsChartsPerformanceRating from "app/state/api/action-reducers/cms/componentsChartsPerformanceRating";
 import { HomePledgesContributionsBarChart } from "app/state/api/action-reducers/home/pledges-contributions-bar-chart";
@@ -53,6 +54,7 @@ const storeContent: StoreModel = {
   // homepage
   HomeResultsStats: persist(HomeResultsStats),
   HomePledgesContributionsBarChart: persist(HomePledgesContributionsBarChart),
+  HomeAllocationsRadialChart: persist(HomeAllocationsRadialChart),
   // search
   GlobalSearch: persist(GlobalSearch),
   // filter options api

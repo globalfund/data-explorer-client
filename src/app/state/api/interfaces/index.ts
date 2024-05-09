@@ -120,6 +120,7 @@ export interface StoreModel {
   // homepage
   HomeResultsStats: ApiCallModel;
   HomePledgesContributionsBarChart: ApiCallModel;
+  HomeAllocationsRadialChart: ApiCallModel;
   // search
   GlobalSearch: ApiCallModel;
   // filter options api

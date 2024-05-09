@@ -66,6 +66,12 @@ export const Home: React.FC = () => {
   const fetchPledgesContributionsBarChart = useStoreActions(
     (actions) => actions.HomePledgesContributionsBarChart.fetch
   );
+  const dataAllocationsRadialChart = useStoreState(
+    (state) => get(state.HomeAllocationsRadialChart, "data.data", []) as any[]
+  );
+  const fetchAllocationsRadialChart = useStoreActions(
+    (actions) => actions.HomeAllocationsRadialChart.fetch
+  );
 
   const handleChartCycleChange = (cycle: string, index: number) => {
     switch (index) {
@@ -137,6 +143,7 @@ export const Home: React.FC = () => {
       filterString: "cycle=2022",
     });
     fetchPledgesContributionsBarChart({});
+    fetchAllocationsRadialChart({});
   }, []);
 
   const totalPledge = React.useMemo(() => {
@@ -169,7 +176,7 @@ export const Home: React.FC = () => {
       <Box height="64px" />
       <ChartBlock
         cycles={CYCLES}
-        title="$84 Billion"
+        title={`$${totalContribution}`}
         selectedCycle={chart1Cycle}
         subtitle="Funds raised to date"
         handleCycleChange={(value) => handleChartCycleChange(value, 1)}
@@ -222,7 +229,10 @@ export const Home: React.FC = () => {
         handleCycleChange={(value) => handleChartCycleChange(value, 2)}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
-        <RadialChart data={RADIAL_CHART_DATA} itemLabelFormatterType="name" />
+        <RadialChart
+          data={dataAllocationsRadialChart}
+          itemLabelFormatterType="name"
+        />
       </ChartBlock>
       <Box height="64px" />
       <ChartBlock
