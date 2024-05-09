@@ -121,6 +121,7 @@ export interface StoreModel {
   HomeResultsStats: ApiCallModel;
   HomePledgesContributionsBarChart: ApiCallModel;
   HomeAllocationsRadialChart: ApiCallModel;
+  HomeBudgetsTreemap: ApiCallModel;
   // search
   GlobalSearch: ApiCallModel;
   // filter options api

@@ -20,6 +20,7 @@ import LocationFilterOptions from "app/state/api/action-reducers/filters/locatio
 import componentsSidebar from "app/state/api/action-reducers/cms/componentsSidebar";
 import ComponentFilterOptions from "app/state/api/action-reducers/filters/components";
 import modulesGrantDetail from "app/state/api/action-reducers/cms/modulesGrantDetail";
+import { HomeBudgetsTreemap } from "app/state/api/action-reducers/home/budgets-treemap";
 import notesAndDisclaimers from "app/state/api/action-reducers/cms/notesAndDisclaimers";
 import componentsDialogBox from "app/state/api/action-reducers/cms/componentsDialogBox";
 import componentsPageHeader from "app/state/api/action-reducers/cms/componentsPageHeader";
@@ -55,6 +56,7 @@ const storeContent: StoreModel = {
   HomeResultsStats: persist(HomeResultsStats),
   HomePledgesContributionsBarChart: persist(HomePledgesContributionsBarChart),
   HomeAllocationsRadialChart: persist(HomeAllocationsRadialChart),
+  HomeBudgetsTreemap: persist(HomeBudgetsTreemap),
   // search
   GlobalSearch: persist(GlobalSearch),
   // filter options api

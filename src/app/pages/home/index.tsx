@@ -13,13 +13,13 @@ import { Treemap } from "app/components/charts/treemap";
 import { HomeHero } from "app/pages/home/components/hero";
 import { RadialChart } from "app/components/charts/radial";
 import { BarChartDataItem } from "app/components/charts/bar/data";
+import { TreemapDataItem } from "app/components/charts/treemap/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { RadialChartDataItem } from "app/components/charts/radial/data";
 import { HomeResultsStats } from "app/pages/home/components/results-stats";
 import { applyResultValueFormula } from "app/utils/applyResultValueFormula";
 import { StatCompProps } from "app/pages/home/components/results-stats/data";
-import { STORY_DATA_VARIANT_2 as TREEMAP_DATA } from "app/components/charts/treemap/data";
 import { STORY_DATA_VARIANT_1 as LINE_CHART_DATA } from "app/components/charts/line/data";
-import { STORY_DATA_VARIANT_2 as RADIAL_CHART_DATA } from "app/components/charts/radial/data";
 import {
   CYCLES,
   CHART_4_DROPDOWN_ITEMS,
@@ -67,10 +67,22 @@ export const Home: React.FC = () => {
     (actions) => actions.HomePledgesContributionsBarChart.fetch
   );
   const dataAllocationsRadialChart = useStoreState(
-    (state) => get(state.HomeAllocationsRadialChart, "data.data", []) as any[]
+    (state) =>
+      get(
+        state.HomeAllocationsRadialChart,
+        "data.data",
+        []
+      ) as RadialChartDataItem[]
   );
   const fetchAllocationsRadialChart = useStoreActions(
     (actions) => actions.HomeAllocationsRadialChart.fetch
+  );
+  const dataBudgetsTreemap = useStoreState(
+    (state) =>
+      get(state.HomeBudgetsTreemap, "data.data", []) as TreemapDataItem[]
+  );
+  const fetchBudgetsTreemap = useStoreActions(
+    (actions) => actions.HomeBudgetsTreemap.fetch
   );
 
   const handleChartCycleChange = (cycle: string, index: number) => {
@@ -144,6 +156,7 @@ export const Home: React.FC = () => {
     });
     fetchPledgesContributionsBarChart({});
     fetchAllocationsRadialChart({});
+    fetchBudgetsTreemap({});
   }, []);
 
   const totalPledge = React.useMemo(() => {
@@ -243,7 +256,7 @@ export const Home: React.FC = () => {
         handleCycleChange={(value) => handleChartCycleChange(value, 3)}
         text="Our Grant Implementation programs are developed meticulously, each Grant follows a well executed plan, always supervised by TGF Implementation team."
       >
-        <Treemap data={TREEMAP_DATA} />
+        <Treemap data={dataBudgetsTreemap} />
       </ChartBlock>
       <Box height="64px" />
       <ChartBlock

@@ -5,7 +5,7 @@ import {
   getFinancialValueWithMetricPrefix,
 } from "app/utils/getFinancialValueWithMetricPrefix";
 
-interface RadialChartDataItem {
+export interface RadialChartDataItem {
   name: string;
   value: number;
   itemStyle?: {
