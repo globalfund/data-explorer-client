@@ -4,10 +4,10 @@ import Box from "@mui/material/Box";
 import { appColors } from "app/theme";
 import * as echarts from "echarts/core";
 import { SVGRenderer } from "echarts/renderers";
-import { onEchartResize } from "app/utils/onEchartResize";
 import { BarChartProps } from "app/components/charts/bar/data";
 import { GridComponent, LegendComponent } from "echarts/components";
 import { BarSeriesOption, BarChart as EChartsBar } from "echarts/charts";
+import { useChartResizeObserver } from "app/hooks/useChartResizeObserver";
 import {
   getRange,
   getFinancialValueWithMetricPrefix,
@@ -23,6 +23,15 @@ echarts.use([EChartsBar, GridComponent, LegendComponent, SVGRenderer]);
 
 export const BarChart: React.FC<BarChartProps> = (props: BarChartProps) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
+
+  const [stateChart, setStateChart] =
+    React.useState<echarts.EChartsType | null>(null);
+
+  useChartResizeObserver({
+    chart: stateChart,
+    containerId: "bar-chart",
+    containerRef: containerRef,
+  });
 
   const range = React.useMemo(() => {
     return getRange(props.data, ["value", "value1"]);
@@ -168,18 +177,8 @@ export const BarChart: React.FC<BarChartProps> = (props: BarChartProps) => {
         },
       };
 
-      if (containerRef.current) {
-        new ResizeObserver(() =>
-          onEchartResize(
-            // @ts-ignore
-            chart,
-            "bar-chart",
-            containerRef.current?.clientHeight
-          )
-        ).observe(containerRef?.current);
-      }
-
       chart.setOption(option);
+      setStateChart(chart);
     }
   }, [range, xAxisKeys, seriesData, props.valueLabels, containerRef.current]);
 

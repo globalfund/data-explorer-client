@@ -6,9 +6,9 @@ import { appColors } from "app/theme";
 import * as echarts from "echarts/core";
 import { SVGRenderer } from "echarts/renderers";
 import Typography from "@mui/material/Typography";
-import { onEchartResize } from "app/utils/onEchartResize";
 import { GridComponent, LegendComponent } from "echarts/components";
 import { BarSeriesOption, BarChart as EChartsBar } from "echarts/charts";
+import { useChartResizeObserver } from "app/hooks/useChartResizeObserver";
 import { ExpandableHorizontalBarChartProps } from "app/components/charts/expandable-horizontal-bar/data";
 import {
   getRange,
@@ -31,6 +31,14 @@ export const ExpandableHorizontalBar: React.FC<
 
   const [data, setData] = React.useState(props.data.reverse());
   const [expandedBars, setExpandedBars] = React.useState<string[]>([]);
+  const [stateChart, setStateChart] =
+    React.useState<echarts.EChartsType | null>(null);
+
+  useChartResizeObserver({
+    chart: stateChart,
+    containerId: "expandable-horizontal-bar-chart",
+    containerRef: containerRef,
+  });
 
   const range = React.useMemo(() => {
     return getRange(data, ["value", "value1"]);
@@ -225,17 +233,6 @@ export const ExpandableHorizontalBar: React.FC<
         },
       };
 
-      if (containerRef.current) {
-        new ResizeObserver(() =>
-          onEchartResize(
-            // @ts-ignore
-            chart,
-            "expandable-horizontal-bar-chart",
-            containerRef.current?.clientHeight
-          )
-        ).observe(containerRef?.current);
-      }
-
       if (!isMounted.current) {
         chart.on("click", "yAxis", (params) => {
           const { value } = params;
@@ -244,6 +241,7 @@ export const ExpandableHorizontalBar: React.FC<
       }
 
       chart.setOption(option);
+      setStateChart(chart);
       isMounted.current = true;
     }
   }, [containerRef.current, seriesData, range, xAxisKeys]);
@@ -255,11 +253,13 @@ export const ExpandableHorizontalBar: React.FC<
       temp.reverse();
       for (const item of temp) {
         newData.push(item);
-        if (expandedBars.includes(item.name)) {
-          newData.push({
-            name: `${item.name} - item1`,
-            value: (item.value ?? 0) / 2,
-            value1: (item.value1 ?? 0) / 2,
+        if (
+          expandedBars.includes(item.name) &&
+          item.items &&
+          item.items.length > 0
+        ) {
+          item.items.forEach((item) => {
+            newData.push(item);
           });
         }
       }

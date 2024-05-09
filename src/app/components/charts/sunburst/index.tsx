@@ -5,9 +5,9 @@ import { appColors } from "app/theme";
 import * as echarts from "echarts/core";
 import { SVGRenderer } from "echarts/renderers";
 import Typography from "@mui/material/Typography";
-import { onEchartResize } from "app/utils/onEchartResize";
 import { SunburstProps } from "app/components/charts/sunburst/data";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
+import { useChartResizeObserver } from "app/hooks/useChartResizeObserver";
 import {
   SunburstSeriesOption,
   SunburstChart as EChartsSunburst,
@@ -19,6 +19,15 @@ export const SunburstChart: React.FC<SunburstProps> = (
   props: SunburstProps
 ) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
+
+  const [stateChart, setStateChart] =
+    React.useState<echarts.EChartsType | null>(null);
+
+  useChartResizeObserver({
+    chart: stateChart,
+    containerId: "sunburst-chart",
+    containerRef: containerRef,
+  });
 
   const total = React.useMemo(() => {
     return sumBy(props.data, "value");
@@ -64,18 +73,8 @@ export const SunburstChart: React.FC<SunburstProps> = (
         },
       };
 
-      if (containerRef.current) {
-        new ResizeObserver(() =>
-          onEchartResize(
-            // @ts-ignore
-            chart,
-            "sunburst-chart",
-            containerRef.current?.clientHeight
-          )
-        ).observe(containerRef?.current);
-      }
-
       chart.setOption(option);
+      setStateChart(chart);
     }
   }, [containerRef.current]);
 

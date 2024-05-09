@@ -2,8 +2,8 @@ import React from "react";
 import Box from "@mui/material/Box";
 import * as echarts from "echarts/core";
 import { SVGRenderer } from "echarts/renderers";
-import { onEchartResize } from "app/utils/onEchartResize";
 import { PieSeriesOption, PieChart as EChartsPie } from "echarts/charts";
+import { useChartResizeObserver } from "app/hooks/useChartResizeObserver";
 import {
   RadialChartProps,
   itemLabelFormatter,
@@ -15,6 +15,15 @@ export const RadialChart: React.FC<RadialChartProps> = (
   props: RadialChartProps
 ) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
+
+  const [stateChart, setStateChart] =
+    React.useState<echarts.EChartsType | null>(null);
+
+  useChartResizeObserver({
+    chart: stateChart,
+    containerId: "radial-chart",
+    containerRef: containerRef,
+  });
 
   React.useEffect(() => {
     if (containerRef.current) {
@@ -52,18 +61,8 @@ export const RadialChart: React.FC<RadialChartProps> = (
         },
       };
 
-      if (containerRef.current) {
-        new ResizeObserver(() =>
-          onEchartResize(
-            // @ts-ignore
-            chart,
-            "radial-chart",
-            containerRef.current?.clientHeight
-          )
-        ).observe(containerRef?.current);
-      }
-
       chart.setOption(option);
+      setStateChart(chart);
     }
   }, [props.data, containerRef.current]);
 

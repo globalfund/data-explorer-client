@@ -4,8 +4,8 @@ import { appColors } from "app/theme";
 import * as echarts from "echarts/core";
 import { SVGRenderer } from "echarts/renderers";
 import { GridComponent } from "echarts/components";
-import { onEchartResize } from "app/utils/onEchartResize";
 import { LineChartProps } from "app/components/charts/line/data";
+import { useChartResizeObserver } from "app/hooks/useChartResizeObserver";
 import { LineSeriesOption, LineChart as EChartsLine } from "echarts/charts";
 import {
   GridComponentOption,
@@ -21,6 +21,15 @@ echarts.use([EChartsLine, GridComponent, SVGRenderer]);
 
 export const LineChart: React.FC<LineChartProps> = (props: LineChartProps) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
+
+  const [stateChart, setStateChart] =
+    React.useState<echarts.EChartsType | null>(null);
+
+  useChartResizeObserver({
+    chart: stateChart,
+    containerId: "line-chart",
+    containerRef: containerRef,
+  });
 
   const range = React.useMemo(() => {
     const values: { value: number }[] = [];
@@ -120,18 +129,8 @@ export const LineChart: React.FC<LineChartProps> = (props: LineChartProps) => {
         })),
       };
 
-      if (containerRef.current) {
-        new ResizeObserver(() =>
-          onEchartResize(
-            // @ts-ignore
-            chart,
-            "line-chart",
-            containerRef.current?.clientHeight
-          )
-        ).observe(containerRef?.current);
-      }
-
       chart.setOption(option);
+      setStateChart(chart);
     }
   }, [props.data, props.xAxisKeys, containerRef.current]);
 

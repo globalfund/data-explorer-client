@@ -7,6 +7,7 @@ import { SVGRenderer } from "echarts/renderers";
 import { onEchartResize } from "app/utils/onEchartResize";
 import { SankeyChartProps } from "app/components/charts/sankey/data";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
+import { useChartResizeObserver } from "app/hooks/useChartResizeObserver";
 import { SankeyChartTooltip } from "app/components/charts/sankey/tooltip";
 import { TooltipComponent, TooltipComponentOption } from "echarts/components";
 import {
@@ -20,6 +21,15 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
   props: SankeyChartProps
 ) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
+
+  const [stateChart, setStateChart] =
+    React.useState<echarts.EChartsType | null>(null);
+
+  useChartResizeObserver({
+    chart: stateChart,
+    containerId: "sankey-chart",
+    containerRef: containerRef,
+  });
 
   const totalValue = React.useMemo(() => {
     return props.data.links
@@ -72,7 +82,7 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
                 color: appColors.COMMON.WHITE,
               },
               lineStyle: {
-                color: appColors.SANKEY_CHART.LINK_COLORS[0],
+                color: appColors.SANKEY_CHART.LINK_COLORS[1],
               },
               itemStyle: {
                 color: appColors.SANKEY_CHART.NODE_COLOR,
@@ -85,7 +95,7 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
                 color: appColors.COMMON.WHITE,
               },
               lineStyle: {
-                color: appColors.SANKEY_CHART.LINK_COLORS[1],
+                color: appColors.SANKEY_CHART.LINK_COLORS[2],
               },
             },
             {
@@ -146,18 +156,8 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
         },
       };
 
-      if (containerRef.current) {
-        new ResizeObserver(() =>
-          onEchartResize(
-            // @ts-ignore
-            chart,
-            "sankey-chart",
-            containerRef.current?.clientHeight
-          )
-        ).observe(containerRef?.current);
-      }
-
       chart.setOption(option);
+      setStateChart(chart);
     }
   }, [containerRef.current, totalValue, props.data]);
 

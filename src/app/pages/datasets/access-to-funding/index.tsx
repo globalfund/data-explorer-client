@@ -47,7 +47,7 @@ export const AccessToFundingPage: React.FC = () => {
     eligibilityYears[0].value
   );
   const [dropdownSelected, setDropdownSelected] = React.useState(
-    dropdownItemsAllocations[0].value
+    dropdownItemsAllocations[2].value
   );
 
   const handleSelectionChange = (value: string) => {
@@ -371,7 +371,7 @@ export const AccessToFundingPage: React.FC = () => {
           }}
         >
           {BOXES.map((b, i) => (
-            <React.Fragment key={b.datasetName}>
+            <React.Fragment key={i}>
               <Box key={b.datasetName}>
                 <Typography fontSize="10px" marginBottom="5px">
                   {b.datasetName}

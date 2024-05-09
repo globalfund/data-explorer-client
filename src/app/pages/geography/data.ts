@@ -23,6 +23,94 @@ export interface GeoItem {
 
 export const GEO_CATEGORIES: GeoCategoryProps[] = [
   {
+    name: "World",
+    value: "QMZ",
+    items: [
+      {
+        name: "Multicountries",
+        value: "Multicountries",
+        items: [
+          {
+            name: "Multicountry HIV Caribbean PCC Consortium",
+            value: "MCLACPCC",
+          },
+          {
+            name: "Multicountry Americas (Andean)",
+            value: "MCANDEAN",
+          },
+          {
+            name: "Multicountry Americas (CRN+)",
+            value: "MCCRN",
+          },
+          {
+            name: "Multicountry East Asia and Pacific APN",
+            value: "MCAPN",
+          },
+          {
+            name: "Multicountry Americas COPRECOS",
+            value: "MCCOPRECOS",
+          },
+          {
+            name: "Multicountry HIV EECA APH",
+            value: "MCEECAAPH",
+          },
+          {
+            name: "Multicountry SEAF RMCC",
+            value: "MCSEAF",
+          },
+          {
+            name: "Multicountry HIV Latin America ALEP",
+            value: "MCALEP",
+          },
+          {
+            name: "Multicountry HIV SEA AFAO",
+            value: "MCSEAAFAO",
+          },
+          {
+            name: "Multicountry MENA Key Populations",
+            value: "MCMENA",
+          },
+          {
+            name: "Multicountry MENA HRA",
+            value: "MCMENAHRA",
+          },
+          {
+            name: "Multicountry EECA ECOM",
+            value: "MCECOM",
+          },
+          {
+            name: "Multicountry EECA ECUO",
+            value: "MCECUO",
+          },
+          {
+            name: "The Lutheran World Federation",
+            value: "MCLWF",
+          },
+          {
+            name: "Multicountry East Asia and Pacific KPRA SCF",
+            value: "MCKPRA",
+          },
+          {
+            name: "Multicountry EECA EHRN",
+            value: "MCEHRN",
+          },
+          {
+            name: "Multicountry EECA PAS",
+            value: "MCPAS",
+          },
+          {
+            name: "Multicountry EECA IHAU",
+            value: "MCIHAU",
+          },
+          {
+            name: "Multicountry Africa (RMCC)",
+            value: "MCRMCC",
+          },
+        ],
+      },
+    ],
+  },
+  {
     name: "Africa",
     value: "QPA",
     items: [
@@ -67,24 +155,12 @@ export const GEO_CATEGORIES: GeoCategoryProps[] = [
             value: "MUS",
           },
           {
-            name: "Mayotte",
-            value: "MYT",
-          },
-          {
             name: "Mozambique",
             value: "MOZ",
           },
           {
             name: "Rwanda",
             value: "RWA",
-          },
-          {
-            name: "Réunion",
-            value: "REU",
-          },
-          {
-            name: "Seychelles",
-            value: "SYC",
           },
           {
             name: "Somalia",
@@ -171,10 +247,6 @@ export const GEO_CATEGORIES: GeoCategoryProps[] = [
             value: "EGY",
           },
           {
-            name: "Libya",
-            value: "LBY",
-          },
-          {
             name: "Morocco",
             value: "MAR",
           },
@@ -185,10 +257,6 @@ export const GEO_CATEGORIES: GeoCategoryProps[] = [
           {
             name: "Tunisia",
             value: "TUN",
-          },
-          {
-            name: "Western Sahara",
-            value: "ESH",
           },
         ],
       },
@@ -275,10 +343,6 @@ export const GEO_CATEGORIES: GeoCategoryProps[] = [
             value: "NGA",
           },
           {
-            name: "Saint Helena",
-            value: "SHN",
-          },
-          {
             name: "Senegal",
             value: "SEN",
           },
@@ -294,35 +358,47 @@ export const GEO_CATEGORIES: GeoCategoryProps[] = [
       },
       {
         name: "Multicountries",
-        value: "",
+        value: "Multicountries",
         items: [
           {
-            name: "Multicountry Eastern Africa IGAD",
-            value: "Multicountry Eastern Africa IGAD",
+            name: "Multicountry Africa ECSA-HC",
+            value: "MCECSA-HC",
           },
           {
-            name: "Multicountry Eastern Africa KANCO",
-            value: "Multicountry Eastern Africa KANCO",
+            name: "Multicountry Eastern Africa ANECCA",
+            value: "MCANECCA",
           },
           {
-            name: "Multicountry North Africa",
-            value: "Multicountry North Africa",
+            name: "Multicountry Southern Africa ARASA",
+            value: "MCARASA-ENDA",
           },
           {
-            name: "Multicountry West Africa ALCO",
-            value: "Multicountry West Africa ALCO",
+            name: "Multicountry Southern Africa E8",
+            value: "MCE8",
           },
           {
-            name: "Multicountry West Africa ITPC",
-            value: "Multicountry West Africa ITPC",
+            name: "Multicountry Southern Africa HIVOS",
+            value: "MCHIVOS",
           },
           {
-            name: "Multicountry Western Africa ANCS",
-            value: "Multicountry Western Africa ANCS",
+            name: "Multicountry Southern Africa MOSASWA",
+            value: "MCMOSASWA",
           },
           {
-            name: "Multicountry Western Africa HI",
-            value: "Multicountry Western Africa HI",
+            name: "Multicountry Southern Africa SADC",
+            value: "MCSADC",
+          },
+          {
+            name: "Multicountry Southern Africa TIMS",
+            value: "MCTIMS",
+          },
+          {
+            name: "Multicountry Southern Africa WHC",
+            value: "MCWHC",
+          },
+          {
+            name: "Multicountry TB WC Africa NTP/SRL",
+            value: "MCNTPSRL",
           },
         ],
       },
@@ -337,60 +413,12 @@ export const GEO_CATEGORIES: GeoCategoryProps[] = [
         value: "QRB",
         items: [
           {
-            name: "Anguilla",
-            value: "AIA",
-          },
-          {
-            name: "Antigua and Barbuda",
-            value: "ATG",
-          },
-          {
-            name: "Aruba",
-            value: "ABW",
-          },
-          {
-            name: "Bahamas",
-            value: "BHS",
-          },
-          {
-            name: "Barbados",
-            value: "BRB",
-          },
-          {
-            name: "Bonaire, Sint Eustatius and Saba",
-            value: "BES",
-          },
-          {
-            name: "British Virgin Islands",
-            value: "VGB",
-          },
-          {
-            name: "Cayman Islands",
-            value: "CYM",
-          },
-          {
             name: "Cuba",
             value: "CUB",
           },
           {
-            name: "Curacao",
-            value: "CUW",
-          },
-          {
-            name: "Dominica",
-            value: "DMA",
-          },
-          {
             name: "Dominican Republic",
             value: "DOM",
-          },
-          {
-            name: "Grenada",
-            value: "GRD",
-          },
-          {
-            name: "Guadeloupe",
-            value: "GLP",
           },
           {
             name: "Haiti",
@@ -399,50 +427,6 @@ export const GEO_CATEGORIES: GeoCategoryProps[] = [
           {
             name: "Jamaica",
             value: "JAM",
-          },
-          {
-            name: "Martinique",
-            value: "MTQ",
-          },
-          {
-            name: "Montserrat",
-            value: "MSR",
-          },
-          {
-            name: "Netherlands Antilles",
-            value: "ANT",
-          },
-          {
-            name: "Puerto Rico",
-            value: "PRI",
-          },
-          {
-            name: "Saint Kitts and Nevis",
-            value: "KNA",
-          },
-          {
-            name: "Saint Lucia",
-            value: "LCA",
-          },
-          {
-            name: "Saint Vincent and Grenadines",
-            value: "VCT",
-          },
-          {
-            name: "Sint Maarten (Dutch part)",
-            value: "SXM",
-          },
-          {
-            name: "Trinidad and Tobago",
-            value: "TTO",
-          },
-          {
-            name: "Turks and Caicos Islands",
-            value: "TCA",
-          },
-          {
-            name: "United States Virgin Islands",
-            value: "VIR",
           },
         ],
       },
@@ -485,32 +469,6 @@ export const GEO_CATEGORIES: GeoCategoryProps[] = [
         ],
       },
       {
-        name: "Northern America",
-        value: "QRE",
-        items: [
-          {
-            name: "Bermuda",
-            value: "BMU",
-          },
-          {
-            name: "Canada",
-            value: "CAN",
-          },
-          {
-            name: "Greenland",
-            value: "GRL",
-          },
-          {
-            name: "Saint Pierre and Miquelon",
-            value: "SPM",
-          },
-          {
-            name: "United States",
-            value: "USA",
-          },
-        ],
-      },
-      {
         name: "South America",
         value: "QRD",
         items: [
@@ -537,14 +495,6 @@ export const GEO_CATEGORIES: GeoCategoryProps[] = [
           {
             name: "Ecuador",
             value: "ECU",
-          },
-          {
-            name: "Falkland Islands (Malvinas)",
-            value: "FLK",
-          },
-          {
-            name: "French Guiana",
-            value: "GUF",
           },
           {
             name: "Guyana",
@@ -574,23 +524,43 @@ export const GEO_CATEGORIES: GeoCategoryProps[] = [
       },
       {
         name: "Multicountries",
-        value: "",
+        value: "Multicountries",
         items: [
           {
-            name: "Multicountry Americas (Andean)",
-            value: "Multicountry Americas (Andean)",
+            name: "Multicountry Americas CVC-COIN",
+            value: "MCCVC/COIN",
           },
           {
-            name: "Multicountry Americas (OECS)",
-            value: "Multicountry Americas (OECS)",
+            name: "Multicountry Americas EMMIE",
+            value: "MCEMMIE",
           },
           {
-            name: "Multicountry Caribbean MCC",
-            value: "Multicountry Caribbean MCC",
+            name: "Multicountry Americas ICW",
+            value: "MCICW",
           },
           {
-            name: "Multicountry Central Americas REDCA",
-            value: "Multicountry Central Americas REDCA",
+            name: "Multicountry Americas ORAS-CONHU",
+            value: "MCORAS-CONHU",
+          },
+          {
+            name: "Multicountry Americas REDLACTRANS",
+            value: "MCREDLACTRANS",
+          },
+          {
+            name: "Multicountry Americas REDTRASEX",
+            value: "MCREDTRASEX",
+          },
+          {
+            name: "Multicountry Caribbean CARICOM-PANCAP",
+            value: "MCCARICOM/PANCAP",
+          },
+          {
+            name: "Multicountry South-Eastern Asia HIV",
+            value: "MCSAHIV",
+          },
+          {
+            name: "Multicountry TB LAC PIH",
+            value: "MCPIH",
           },
         ],
       },
@@ -635,32 +605,12 @@ export const GEO_CATEGORIES: GeoCategoryProps[] = [
             value: "CHN",
           },
           {
-            name: "Hong Kong",
-            value: "HKG",
-          },
-          {
-            name: "Japan",
-            value: "JPN",
-          },
-          {
             name: "Korea (Democratic Peoples Republic)",
             value: "PRK",
           },
           {
-            name: "Korea (Republic)",
-            value: "KOR",
-          },
-          {
-            name: "Macao",
-            value: "MAC",
-          },
-          {
             name: "Mongolia",
             value: "MNG",
-          },
-          {
-            name: "Taiwan",
-            value: "TWN",
           },
         ],
       },
@@ -668,10 +618,6 @@ export const GEO_CATEGORIES: GeoCategoryProps[] = [
         name: "South-Eastern Asia",
         value: "QSE",
         items: [
-          {
-            name: "Brunei Darussalam",
-            value: "BRN",
-          },
           {
             name: "Cambodia",
             value: "KHM",
@@ -695,10 +641,6 @@ export const GEO_CATEGORIES: GeoCategoryProps[] = [
           {
             name: "Philippines",
             value: "PHL",
-          },
-          {
-            name: "Singapore",
-            value: "SGP",
           },
           {
             name: "Thailand",
@@ -769,14 +711,6 @@ export const GEO_CATEGORIES: GeoCategoryProps[] = [
             value: "AZE",
           },
           {
-            name: "Bahrain",
-            value: "BHR",
-          },
-          {
-            name: "Cyprus",
-            value: "CYP",
-          },
-          {
             name: "Georgia",
             value: "GEO",
           },
@@ -785,36 +719,12 @@ export const GEO_CATEGORIES: GeoCategoryProps[] = [
             value: "IRQ",
           },
           {
-            name: "Israel",
-            value: "ISR",
-          },
-          {
             name: "Jordan",
             value: "JOR",
           },
           {
-            name: "Kuwait",
-            value: "KWT",
-          },
-          {
-            name: "Lebanon",
-            value: "LBN",
-          },
-          {
-            name: "Oman",
-            value: "OMN",
-          },
-          {
             name: "Palestine",
             value: "PSE",
-          },
-          {
-            name: "Qatar",
-            value: "QAT",
-          },
-          {
-            name: "Saudi Arabia",
-            value: "SAU",
           },
           {
             name: "Syrian Arab Republic",
@@ -825,10 +735,6 @@ export const GEO_CATEGORIES: GeoCategoryProps[] = [
             value: "TUR",
           },
           {
-            name: "United Arab Emirates",
-            value: "ARE",
-          },
-          {
             name: "Yemen",
             value: "YEM",
           },
@@ -836,35 +742,19 @@ export const GEO_CATEGORIES: GeoCategoryProps[] = [
       },
       {
         name: "Multicountries",
-        value: "",
+        value: "Multicountries",
         items: [
           {
-            name: "Multicountry East Asia and Pacific HIVOS",
-            value: "Multicountry East Asia and Pacific HIVOS",
-          },
-          {
-            name: "Multicountry East Asia and Pacific RAI",
-            value: "Multicountry East Asia and Pacific RAI",
-          },
-          {
-            name: "Multicountry Middle East MER",
-            value: "Multicountry Middle East MER",
-          },
-          {
-            name: "Multicountry South Asia",
-            value: "Multicountry South Asia",
-          },
-          {
-            name: "Multicountry South-Eastern Asia AFAO",
-            value: "Multicountry South-Eastern Asia AFAO",
+            name: "Multicountry Asia IHAA",
+            value: "MCIHAA",
           },
           {
             name: "Multicountry TB Asia TEAM",
-            value: "Multicountry TB Asia TEAM",
+            value: "MCASIATEAM",
           },
           {
             name: "Multicountry TB Asia UNDP",
-            value: "Multicountry TB Asia UNDP",
+            value: "MCASIAUNDP",
           },
         ],
       },
@@ -887,20 +777,8 @@ export const GEO_CATEGORIES: GeoCategoryProps[] = [
             value: "BGR",
           },
           {
-            name: "Czechia",
-            value: "CZE",
-          },
-          {
-            name: "Hungary",
-            value: "HUN",
-          },
-          {
             name: "Moldova",
             value: "MDA",
-          },
-          {
-            name: "Poland",
-            value: "POL",
           },
           {
             name: "Romania",
@@ -909,10 +787,6 @@ export const GEO_CATEGORIES: GeoCategoryProps[] = [
           {
             name: "Russian Federation",
             value: "RUS",
-          },
-          {
-            name: "Slovakia",
-            value: "SVK",
           },
           {
             name: "Ukraine",
@@ -925,68 +799,8 @@ export const GEO_CATEGORIES: GeoCategoryProps[] = [
         value: "QTC",
         items: [
           {
-            name: "Aland Islands",
-            value: "ALA",
-          },
-          {
-            name: "Denmark",
-            value: "DNK",
-          },
-          {
             name: "Estonia",
             value: "EST",
-          },
-          {
-            name: "Faeroe Islands",
-            value: "FRO",
-          },
-          {
-            name: "Finland",
-            value: "FIN",
-          },
-          {
-            name: "Guernsey",
-            value: "GGY",
-          },
-          {
-            name: "Iceland",
-            value: "ISL",
-          },
-          {
-            name: "Ireland",
-            value: "IRL",
-          },
-          {
-            name: "Isle of Man",
-            value: "IMN",
-          },
-          {
-            name: "Jersey",
-            value: "JEY",
-          },
-          {
-            name: "Latvia",
-            value: "LVA",
-          },
-          {
-            name: "Lithuania",
-            value: "LTU",
-          },
-          {
-            name: "Norway",
-            value: "NOR",
-          },
-          {
-            name: "Svalbard and Jan Mayen Islands",
-            value: "SJM",
-          },
-          {
-            name: "Sweden",
-            value: "SWE",
-          },
-          {
-            name: "United Kingdom",
-            value: "GBR",
           },
         ],
       },
@@ -999,10 +813,6 @@ export const GEO_CATEGORIES: GeoCategoryProps[] = [
             value: "ALB",
           },
           {
-            name: "Andorra",
-            value: "AND",
-          },
-          {
             name: "Bosnia and Herzegovina",
             value: "BIH",
           },
@@ -1011,28 +821,8 @@ export const GEO_CATEGORIES: GeoCategoryProps[] = [
             value: "HRV",
           },
           {
-            name: "Gibraltar",
-            value: "GIB",
-          },
-          {
-            name: "Greece",
-            value: "GRC",
-          },
-          {
-            name: "Holy See",
-            value: "VAT",
-          },
-          {
-            name: "Italy",
-            value: "ITA",
-          },
-          {
             name: "Kosovo",
             value: "QNA",
-          },
-          {
-            name: "Malta",
-            value: "MLT",
           },
           {
             name: "Montenegro",
@@ -1043,76 +833,8 @@ export const GEO_CATEGORIES: GeoCategoryProps[] = [
             value: "MKD",
           },
           {
-            name: "Portugal",
-            value: "PRT",
-          },
-          {
-            name: "San Marino",
-            value: "SMR",
-          },
-          {
             name: "Serbia",
             value: "SRB",
-          },
-          {
-            name: "Slovenia",
-            value: "SVN",
-          },
-          {
-            name: "Spain",
-            value: "ESP",
-          },
-        ],
-      },
-      {
-        name: "Western Europe",
-        value: "QTE",
-        items: [
-          {
-            name: "Austria",
-            value: "AUT",
-          },
-          {
-            name: "Belgium",
-            value: "BEL",
-          },
-          {
-            name: "France",
-            value: "FRA",
-          },
-          {
-            name: "Germany",
-            value: "DEU",
-          },
-          {
-            name: "Liechtenstein",
-            value: "LIE",
-          },
-          {
-            name: "Luxembourg",
-            value: "LUX",
-          },
-          {
-            name: "Monaco",
-            value: "MCO",
-          },
-          {
-            name: "Netherlands",
-            value: "NLD",
-          },
-          {
-            name: "Switzerland",
-            value: "CHE",
-          },
-        ],
-      },
-      {
-        name: "Multicountries",
-        value: "",
-        items: [
-          {
-            name: "The Lutheran World Federation",
-            value: "The Lutheran World Federation",
           },
         ],
       },
@@ -1123,34 +845,12 @@ export const GEO_CATEGORIES: GeoCategoryProps[] = [
     value: "QUA",
     items: [
       {
-        name: "Australia and New Zealand",
-        value: "QUB",
-        items: [
-          {
-            name: "Australia",
-            value: "AUS",
-          },
-          {
-            name: "New Zealand",
-            value: "NZL",
-          },
-          {
-            name: "Norfolk Island",
-            value: "NFK",
-          },
-        ],
-      },
-      {
         name: "Melanesia",
         value: "QUC",
         items: [
           {
             name: "Fiji",
             value: "FJI",
-          },
-          {
-            name: "New Caledonia",
-            value: "NCL",
           },
           {
             name: "Papua New Guinea",
@@ -1160,89 +860,15 @@ export const GEO_CATEGORIES: GeoCategoryProps[] = [
             name: "Solomon Islands",
             value: "SLB",
           },
-          {
-            name: "Vanuatu",
-            value: "VUT",
-          },
         ],
       },
       {
-        name: "Micronesia",
-        value: "QUD",
+        name: "Multicountries",
+        value: "Multicountries",
         items: [
           {
-            name: "Guam",
-            value: "GUM",
-          },
-          {
-            name: "Kiribati",
-            value: "KIR",
-          },
-          {
-            name: "Marshall Islands",
-            value: "MHL",
-          },
-          {
-            name: "Micronesia (Federated States)",
-            value: "FSM",
-          },
-          {
-            name: "Nauru",
-            value: "NRU",
-          },
-          {
-            name: "Northern Mariana Islands",
-            value: "MNP",
-          },
-          {
-            name: "Palau",
-            value: "PLW",
-          },
-        ],
-      },
-      {
-        name: "Polynesia",
-        value: "QUE",
-        items: [
-          {
-            name: "American Samoa",
-            value: "ASM",
-          },
-          {
-            name: "Cook Islands",
-            value: "COK",
-          },
-          {
-            name: "French Polynesia",
-            value: "PYF",
-          },
-          {
-            name: "Niue",
-            value: "NIU",
-          },
-          {
-            name: "Pitcairn",
-            value: "PCN",
-          },
-          {
-            name: "Samoa",
-            value: "WSM",
-          },
-          {
-            name: "Tokelau",
-            value: "TKL",
-          },
-          {
-            name: "Tonga",
-            value: "TON",
-          },
-          {
-            name: "Tuvalu",
-            value: "TUV",
-          },
-          {
-            name: "Wallis and Futuna Islands",
-            value: "WLF",
+            name: "Multicountry Western Pacific",
+            value: "MCWP",
           },
         ],
       },

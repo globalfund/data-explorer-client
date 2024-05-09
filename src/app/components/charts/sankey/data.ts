@@ -249,202 +249,307 @@ export const STORY_DATA_VARIANT_1: SankeyChartData = {
 export const STORY_DATA_VARIANT_2: SankeyChartData = {
   nodes: [
     {
+      name: "COVID-19",
+      level: 1,
+      itemStyle: {
+        color: "#252C34",
+      },
+    },
+    {
+      name: "Case management, clinical operations and therapeutics",
+      level: 2,
+      itemStyle: {
+        color: "#252C34",
+      },
+    },
+    {
+      name: "COVID diagnostics and testing",
+      level: 2,
+      itemStyle: {
+        color: "#252C34",
+      },
+    },
+    {
+      name: "COVID-19 control and containment including health systems strengthening",
+      level: 2,
+      itemStyle: {
+        color: "#252C34",
+      },
+    },
+    {
+      name: "Laboratory systems",
+      level: 2,
+      itemStyle: {
+        color: "#252C34",
+      },
+    },
+    {
+      name: "Infection prevention and control, and protection of the health workforce",
+      level: 2,
+      itemStyle: {
+        color: "#252C34",
+      },
+    },
+    {
+      name: "Health products and waste management systems",
+      level: 2,
+      itemStyle: {
+        color: "#252C34",
+      },
+    },
+    {
+      name: "Risk mitigation for disease programs",
+      level: 2,
+      itemStyle: {
+        color: "#252C34",
+      },
+    },
+    {
+      name: "Surveillance systems",
+      level: 2,
+      itemStyle: {
+        color: "#252C34",
+      },
+    },
+    {
+      name: "Mitigation for TB programs",
+      level: 2,
+      itemStyle: {
+        color: "#252C34",
+      },
+    },
+    {
+      name: "Mitigation for HIV programs",
+      level: 2,
+      itemStyle: {
+        color: "#252C34",
+      },
+    },
+    {
+      name: "Surveillance: Epidemiological investigation and contact tracing",
+      level: 2,
+      itemStyle: {
+        color: "#252C34",
+      },
+    },
+    {
+      name: "Mitigation for Malaria programs",
+      level: 2,
+      itemStyle: {
+        color: "#252C34",
+      },
+    },
+    {
+      name: "Country-level coordination and planning",
+      level: 2,
+      itemStyle: {
+        color: "#252C34",
+      },
+    },
+    {
+      name: "RSSH/PP: Community health workers: Selection, pre-service training and certification",
+      level: 2,
+      itemStyle: {
+        color: "#252C34",
+      },
+    },
+    {
+      name: "COVID-19 CSS: Community-led monitoring",
+      level: 2,
+      itemStyle: {
+        color: "#252C34",
+      },
+    },
+    {
+      name: "Risk communication",
+      level: 2,
+      itemStyle: {
+        color: "#252C34",
+      },
+    },
+    {
+      name: "COVID-19 CSS: Community-based organizations institutional capacity building",
+      level: 2,
+      itemStyle: {
+        color: "#252C34",
+      },
+    },
+    {
+      name: "RSSH/PP: Community health workers: In-service training",
+      level: 2,
+      itemStyle: {
+        color: "#252C34",
+      },
+    },
+    {
+      name: "COVID-19 CSS: Social mobilization",
+      level: 2,
+      itemStyle: {
+        color: "#252C34",
+      },
+    },
+    {
+      name: "RSSH/PP: Community health workers: Integrated supportive supervision",
+      level: 2,
+      itemStyle: {
+        color: "#252C34",
+      },
+    },
+    {
+      name: "Gender-based violence prevention and post violence care (COVID-19)",
+      level: 2,
+      itemStyle: {
+        color: "#252C34",
+      },
+    },
+    {
+      name: "Respond to human rights and gender related barriers to services",
+      level: 2,
+      itemStyle: {
+        color: "#252C34",
+      },
+    },
+    {
+      name: "COVID-19 CSS: Community-led advocacy and research",
+      level: 2,
+      itemStyle: {
+        color: "#252C34",
+      },
+    },
+    {
+      name: "Total budget",
       level: 0,
-      name: "Total",
-    },
-    {
-      level: 1,
-      name: "Capacity Building and Technical Assistance",
       itemStyle: {
-        color: appColors.SANKEY_CHART.NODE_COLOR,
+        color: "#252C34",
       },
-    },
-    {
-      level: 2,
-      name: "Communication Material and Publications - CMP",
-    },
-    {
-      level: 2,
-      name: "External Professional services - EPS",
-    },
-    {
-      level: 1,
-      name: "Health Equipment",
-      itemStyle: {
-        color: appColors.SANKEY_CHART.NODE_COLOR,
-      },
-    },
-    {
-      level: 2,
-      name: "Health Products - Equipment - HPE",
-    },
-    {
-      level: 2,
-      name: "Health Products - Non-Pharmaceuticals - HPNP",
-    },
-    {
-      level: 2,
-      name: "Health Products - Pharmaceutical Products - HPPP",
-    },
-    {
-      level: 1,
-      name: "Health products/commodities and PSM related costs",
-      itemStyle: {
-        color: appColors.SANKEY_CHART.NODE_COLOR,
-      },
-    },
-    {
-      level: 2,
-      name: "Human Resources - HR",
-    },
-    {
-      level: 1,
-      name: "Human Resources including Fiscal Agents",
-      itemStyle: {
-        color: appColors.SANKEY_CHART.NODE_COLOR,
-      },
-    },
-    {
-      level: 1,
-      name: "Indirect and Overhead Costs",
-      itemStyle: {
-        color: appColors.SANKEY_CHART.NODE_COLOR,
-      },
-    },
-    {
-      level: 2,
-      name: "Infrastructure - INF",
-    },
-    {
-      level: 1,
-      name: "Infrastructure and Non-Health Equipment",
-      itemStyle: {
-        color: appColors.SANKEY_CHART.NODE_COLOR,
-      },
-    },
-    {
-      level: 2,
-      name: "Living support to client/ target population - LSCTP",
-    },
-    {
-      level: 2,
-      name: "Non-health equipment - NHP",
-    },
-    {
-      level: 2,
-      name: "Payment for Results",
-    },
-    {
-      level: 2,
-      name: "Procurement and Supply-Chain Management costs - PSM",
-    },
-    {
-      level: 1,
-      name: "Program related costs",
-      itemStyle: {
-        color: appColors.SANKEY_CHART.NODE_COLOR,
-      },
-    },
-    {
-      level: 2,
-      name: "Travel related costs - TRC",
     },
   ],
   links: [
     {
-      source: "Capacity Building and Technical Assistance",
-      target: "External Professional services - EPS",
-      value: 1308872984.64,
+      source: "Total budget",
+      target: "COVID-19",
+      value: 5240925580.83,
     },
     {
-      source: "Health Equipment",
-      target: "Health Products - Equipment - HPE",
-      value: 1661789445.15,
+      source: "COVID-19",
+      target: "Case management, clinical operations and therapeutics",
+      value: 1157149994.69,
     },
     {
-      source: "Total",
-      target: "Health Equipment",
-      value: 1661789445.15,
+      source: "COVID-19",
+      target: "COVID diagnostics and testing",
+      value: 603187156.5,
     },
     {
-      source: "Total",
-      target: "Health products/commodities and PSM related costs",
-      value: 19396073525.93,
+      source: "COVID-19",
+      target:
+        "COVID-19 control and containment including health systems strengthening",
+      value: 579886839.16,
     },
     {
-      source: "Health products/commodities and PSM related costs",
-      target: "Health Products - Non-Pharmaceuticals - HPNP",
-      value: 8235849999.26,
+      source: "COVID-19",
+      target: "Laboratory systems",
+      value: 453280310.69,
     },
     {
-      source: "Health products/commodities and PSM related costs",
-      target: "Health Products - Pharmaceutical Products - HPPP",
-      value: 7300870157.99,
+      source: "COVID-19",
+      target:
+        "Infection prevention and control, and protection of the health workforce",
+      value: 440643675.6,
     },
     {
-      source: "Health products/commodities and PSM related costs",
-      target: "Procurement and Supply-Chain Management costs - PSM",
-      value: 3859353368.68,
+      source: "COVID-19",
+      target: "Health products and waste management systems",
+      value: 377999875.42,
     },
     {
-      source: "Human Resources including Fiscal Agents",
-      target: "Human Resources - HR",
-      value: 5616817480.77,
+      source: "COVID-19",
+      target: "Risk mitigation for disease programs",
+      value: 300430143.99,
     },
     {
-      source: "Infrastructure and Non-Health Equipment",
-      target: "Infrastructure - INF",
-      value: 565078298.36,
+      source: "COVID-19",
+      target: "Surveillance systems",
+      value: 258417064.02,
     },
     {
-      source: "Infrastructure and Non-Health Equipment",
-      target: "Non-health equipment - NHP",
-      value: 1192321157.79,
+      source: "COVID-19",
+      target: "Mitigation for TB programs",
+      value: 237200083.37,
     },
     {
-      source: "Total",
-      target: "Capacity Building and Technical Assistance",
-      value: 1308872984.64,
+      source: "COVID-19",
+      target: "Mitigation for HIV programs",
+      value: 139074198.83,
     },
     {
-      source: "Total",
-      target: "Program related costs",
-      value: 7615514791.45,
+      source: "COVID-19",
+      target: "Surveillance: Epidemiological investigation and contact tracing",
+      value: 123389685.56,
     },
     {
-      source: "Total",
-      target: "Human Resources including Fiscal Agents",
-      value: 5616817480.77,
+      source: "COVID-19",
+      target: "Mitigation for Malaria programs",
+      value: 110303023.48,
     },
     {
-      source: "Total",
-      target: "Indirect and Overhead Costs",
-      value: 1640270169.25,
+      source: "COVID-19",
+      target: "Country-level coordination and planning",
+      value: 75989589.64,
     },
     {
-      source: "Total",
-      target: "Infrastructure and Non-Health Equipment",
-      value: 1757399456.15,
+      source: "COVID-19",
+      target:
+        "RSSH/PP: Community health workers: Selection, pre-service training and certification",
+      value: 67460622.95,
     },
     {
-      source: "Program related costs",
-      target: "Communication Material and Publications - CMP",
-      value: 479233220.56999993,
+      source: "COVID-19",
+      target: "COVID-19 CSS: Community-led monitoring",
+      value: 59160427.89,
     },
     {
-      source: "Program related costs",
-      target: "Living support to client/ target population - LSCTP",
-      value: 720630999.53,
+      source: "COVID-19",
+      target: "Risk communication",
+      value: 47618350.8,
     },
     {
-      source: "Program related costs",
-      target: "Payment for Results",
-      value: 1319834598.92,
+      source: "COVID-19",
+      target:
+        "COVID-19 CSS: Community-based organizations institutional capacity building",
+      value: 47324822.19,
     },
     {
-      source: "Program related costs",
-      target: "Travel related costs - TRC",
-      value: 5095815972.43,
+      source: "COVID-19",
+      target: "RSSH/PP: Community health workers: In-service training",
+      value: 36073879.83,
+    },
+    {
+      source: "COVID-19",
+      target: "COVID-19 CSS: Social mobilization",
+      value: 34918200.1,
+    },
+    {
+      source: "COVID-19",
+      target:
+        "RSSH/PP: Community health workers: Integrated supportive supervision",
+      value: 34096231.44,
+    },
+    {
+      source: "COVID-19",
+      target:
+        "Gender-based violence prevention and post violence care (COVID-19)",
+      value: 23146180.68,
+    },
+    {
+      source: "COVID-19",
+      target: "Respond to human rights and gender related barriers to services",
+      value: 21713556.3,
+    },
+    {
+      source: "COVID-19",
+      target: "COVID-19 CSS: Community-led advocacy and research",
+      value: 12461667.7,
     },
   ],
 };

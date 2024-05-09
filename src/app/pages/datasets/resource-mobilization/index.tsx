@@ -17,6 +17,7 @@ import {
   TABLE_VARIATION_8_DATA,
   TABLE_VARIATION_8_COLUMNS,
 } from "app/components/table/data";
+import { formatFinancialValue } from "app/utils/formatFinancialValue";
 
 const dropdownItems = [
   { label: "Bar Chart", value: "Bar Chart", icon: <BarChartIcon /> },
@@ -84,7 +85,6 @@ export const ResourceMobilizationPage: React.FC = () => {
             item
             sm={12}
             md={4}
-            xl={3}
             gap="20px"
             display="flex"
             flexDirection="column"
@@ -98,26 +98,27 @@ export const ResourceMobilizationPage: React.FC = () => {
             }}
           >
             <Box>
-              <Typography fontSize="10px">Pledges & Contributions</Typography>
-              <Typography variant="h5">84% of Pledges Committed</Typography>
-              <Typography variant="body2" fontWeight="700">
-                in Cumulative Commitments
+              <Typography variant="h5">83%</Typography>
+              <Typography fontSize="14px" fontWeight="700">
+                Pledge Conversion based on the announce pledge
               </Typography>
             </Box>
             <Divider />
             <Box>
-              <Typography fontSize="10px">Pledges & Contributions</Typography>
-              <Typography variant="h5">88,959,272,546 USD</Typography>
-              <Typography variant="body2" fontWeight="700">
-                Total Pledges
+              <Typography variant="h5">
+                {formatFinancialValue(88959272549.89)}
+              </Typography>
+              <Typography fontSize="14px" fontWeight="700">
+                Total Pledged
               </Typography>
             </Box>
             <Divider />
             <Box>
-              <Typography fontSize="10px">Pledges & Contributions</Typography>
-              <Typography variant="h5">73,703,118,022 USD</Typography>
-              <Typography variant="body2" fontWeight="700">
-                Total Contributions
+              <Typography variant="h5">
+                {formatFinancialValue(73703118028.53)}
+              </Typography>
+              <Typography fontSize="14px" fontWeight="700">
+                Total Contributed
               </Typography>
             </Box>
           </Grid>
@@ -125,7 +126,6 @@ export const ResourceMobilizationPage: React.FC = () => {
             item
             sm={12}
             md={8}
-            xl={9}
             sx={{
               paddingLeft: "21px",
               "@media (max-width: 600px)": {
@@ -134,7 +134,6 @@ export const ResourceMobilizationPage: React.FC = () => {
             }}
           >
             <Box marginBottom="20px">
-              <Typography fontSize="10px">Pledges & Contributions</Typography>
               <Typography variant="h5">Total Donors Mobilized</Typography>
               <Typography variant="body2" fontWeight="700">
                 Grouped by their Donor types
@@ -155,7 +154,7 @@ export const ResourceMobilizationPage: React.FC = () => {
                   borderRadius="5px"
                 >
                   <Typography fontSize="40px" fontWeight="700">
-                    210
+                    154
                   </Typography>
                   <Typography variant="body2">
                     Total number of donors
@@ -185,7 +184,7 @@ export const ResourceMobilizationPage: React.FC = () => {
               >
                 <Grid item xs={12} sm={6} md={6} lg={3}>
                   <Box bgcolor="#F1F3F5" padding="5px 10px">
-                    <Typography variant="h5">67</Typography>
+                    <Typography variant="h5">4</Typography>
                     <Typography fontSize="12px">
                       from Affordable Medicines Facility - malaria (AMFm).
                     </Typography>
@@ -193,19 +192,19 @@ export const ResourceMobilizationPage: React.FC = () => {
                 </Grid>
                 <Grid item xs={12} sm={6} md={6} lg={3}>
                   <Box bgcolor="#F1F3F5" padding="5px 10px">
-                    <Typography variant="h5">58</Typography>
+                    <Typography variant="h5">17</Typography>
                     <Typography fontSize="12px">from corporations.</Typography>
                   </Box>
                 </Grid>
                 <Grid item xs={12} sm={6} md={6} lg={3}>
                   <Box bgcolor="#F1F3F5" padding="5px 10px">
-                    <Typography variant="h5">34</Typography>
+                    <Typography variant="h5">11</Typography>
                     <Typography fontSize="12px">from Debt2Health.</Typography>
                   </Box>
                 </Grid>
                 <Grid item xs={12} sm={6} md={6} lg={3}>
                   <Box bgcolor="#F1F3F5" padding="5px 10px">
-                    <Typography variant="h5">22</Typography>
+                    <Typography variant="h5">2</Typography>
                     <Typography fontSize="12px">
                       from faith-based organizations.
                     </Typography>
@@ -213,19 +212,19 @@ export const ResourceMobilizationPage: React.FC = () => {
                 </Grid>
                 <Grid item xs={12} sm={6} md={6} lg={3}>
                   <Box bgcolor="#F1F3F5" padding="5px 10px">
-                    <Typography variant="h5">20</Typography>
+                    <Typography variant="h5">18</Typography>
                     <Typography fontSize="12px">from foundations.</Typography>
                   </Box>
                 </Grid>
                 <Grid item xs={12} sm={6} md={6} lg={3}>
                   <Box bgcolor="#F1F3F5" padding="5px 10px">
-                    <Typography variant="h5">19</Typography>
+                    <Typography variant="h5">1</Typography>
                     <Typography fontSize="12px">from individuals.</Typography>
                   </Box>
                 </Grid>
                 <Grid item xs={12} sm={6} md={6} lg={3}>
                   <Box bgcolor="#F1F3F5" padding="5px 10px">
-                    <Typography variant="h5">15</Typography>
+                    <Typography variant="h5">11</Typography>
                     <Typography fontSize="12px">
                       from private sector & non-government.
                     </Typography>
@@ -233,7 +232,7 @@ export const ResourceMobilizationPage: React.FC = () => {
                 </Grid>
                 <Grid item xs={12} sm={6} md={6} lg={3}>
                   <Box bgcolor="#F1F3F5" padding="5px 10px">
-                    <Typography variant="h5">12</Typography>
+                    <Typography variant="h5">90</Typography>
                     <Typography fontSize="12px">from public sector.</Typography>
                   </Box>
                 </Grid>

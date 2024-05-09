@@ -43,6 +43,25 @@ export const dropdownItemsDisbursements = [
   { label: "Table View", value: "Table View", icon: <TableIcon /> },
 ];
 
+export const dropdownItemsBudgetBreakdown = [
+  {
+    label: "2017-2019",
+    value: "2017-2019",
+  },
+  {
+    label: "2020-2022",
+    value: "2020-2022",
+  },
+  {
+    label: "2023-2025",
+    value: "2023-2025",
+  },
+  {
+    label: "2026-2028",
+    value: "2026-2028",
+  },
+];
+
 export const dropdownItemsBudgets = [
   {
     label: "Sankey Chart",
@@ -73,3 +92,31 @@ export const FullWidthDivider = () => (
     }}
   />
 );
+
+export const BUDGET_BREAKDOWN_DATA = [
+  {
+    name: "Multi-Component",
+    value: 37.41334776474775,
+    color: "#0A2840",
+  },
+  {
+    name: "HIV/AIDS",
+    value: 26.03209507797034,
+    color: "#013E77",
+  },
+  {
+    name: "Malaria",
+    value: 17.556574762349314,
+    color: "#00B5AE",
+  },
+  {
+    name: "Tuberculosis",
+    value: 10.822421383684201,
+    color: "#C3EDFD",
+  },
+  {
+    name: "RSSH",
+    value: 8.175561011248398,
+    color: "#F3F5F4",
+  },
+];

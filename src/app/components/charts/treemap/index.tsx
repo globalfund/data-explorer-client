@@ -4,8 +4,8 @@ import { appColors } from "app/theme";
 import * as echarts from "echarts/core";
 import { SVGRenderer } from "echarts/renderers";
 import { formatLocale } from "app/utils/formatLocale";
-import { onEchartResize } from "app/utils/onEchartResize";
 import { TreemapProps } from "app/components/charts/treemap/data";
+import { useChartResizeObserver } from "app/hooks/useChartResizeObserver";
 import {
   TreemapSeriesOption,
   TreemapChart as EchartsTreemap,
@@ -15,6 +15,15 @@ echarts.use([EchartsTreemap, SVGRenderer]);
 
 export const Treemap: React.FC<TreemapProps> = (props: TreemapProps) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
+
+  const [stateChart, setStateChart] =
+    React.useState<echarts.EChartsType | null>(null);
+
+  useChartResizeObserver({
+    chart: stateChart,
+    containerId: "treemap-chart",
+    containerRef: containerRef,
+  });
 
   const isMultilevel = React.useMemo(() => {
     return props.data.some((item) => item.children);
@@ -113,18 +122,8 @@ export const Treemap: React.FC<TreemapProps> = (props: TreemapProps) => {
         },
       };
 
-      if (containerRef.current) {
-        new ResizeObserver(() =>
-          onEchartResize(
-            // @ts-ignore
-            chart,
-            "treemap-chart",
-            containerRef.current?.clientHeight
-          )
-        ).observe(containerRef?.current);
-      }
-
       chart.setOption(option);
+      setStateChart(chart);
     }
   }, [containerRef.current, isMultilevel, props.data]);
 

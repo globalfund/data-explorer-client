@@ -139,38 +139,38 @@ export const STORY_DATA_VARIANT_2: RadialChartDataItem[] = [
 
 export const STORY_DATA_VARIANT_3: RadialChartDataItem[] = [
   {
-    name: "HIV",
-    value: random(1000000, 10000000),
+    name: "HIV/AIDS",
+    value: 11706734676.03,
     itemStyle: {
-      color: appColors.RADIAL_CHART.ITEM_COLORS[0],
-    },
-  },
-  {
-    name: "Tuberculosis",
-    value: random(1000000, 10000000),
-    itemStyle: {
-      color: appColors.RADIAL_CHART.ITEM_COLORS[1],
+      color: "#0A2840",
     },
   },
   {
     name: "Malaria",
-    value: random(1000000, 10000000),
+    value: 8209420455.49,
     itemStyle: {
-      color: appColors.RADIAL_CHART.ITEM_COLORS[2],
+      color: "#013E77",
+    },
+  },
+  {
+    name: "Multi-Component",
+    value: 10920830650.98,
+    itemStyle: {
+      color: "#00B5AE",
     },
   },
   {
     name: "RSSH",
-    value: random(1000000, 10000000),
+    value: 3852950735.94,
     itemStyle: {
-      color: appColors.RADIAL_CHART.ITEM_COLORS[3],
+      color: "#C3EDFD",
     },
   },
   {
-    name: "Others",
-    value: random(1000000, 10000000),
+    name: "Tuberculosis",
+    value: 5197007040.04,
     itemStyle: {
-      color: appColors.RADIAL_CHART.ITEM_COLORS[4],
+      color: "#F3F5F4",
     },
   },
 ];

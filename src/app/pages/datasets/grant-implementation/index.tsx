@@ -10,16 +10,12 @@ import { BarChart } from "app/components/charts/bar";
 import { LineChart } from "app/components/charts/line";
 import { Treemap } from "app/components/charts/treemap";
 import { Heatmap } from "app/components/charts/heatmap";
-import { RadarChart } from "app/components/charts/radar";
-import { DonutChart } from "app/components/charts/donut";
-import { RadialChart } from "app/components/charts/radial";
 import { SankeyChart } from "app/components/charts/sankey";
 import { DatasetPage } from "app/pages/datasets/common/page";
 import { getRange } from "app/utils/getFinancialValueWithMetricPrefix";
+import { FinancialMetric } from "app/components/charts/financial-metric";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { ExpandableHorizontalBar } from "app/components/charts/expandable-horizontal-bar";
-import { STORY_DATA_VARIANT_1 as RADAR_CHART_DATA } from "app/components/charts/radar/data";
-import { STORY_DATA_VARIANT_3 as BUDGET_RADIAL_DATA } from "app/components/charts/radial/data";
 import { STORY_DATA_VARIANT_2 as BUDGET_SANKEY_DATA } from "app/components/charts/sankey/data";
 import { STORY_DATA_VARIANT_3 as DISBURSEMENTS_BAR_DATA } from "app/components/charts/bar/data";
 import { STORY_DATA_VARIANT_2 as BUDGET_TREEMAP_DATA } from "app/components/charts/treemap/data";
@@ -29,6 +25,11 @@ import {
   getPercentageColor,
   STORY_DATA_VARIANT_1 as EXPENDITURES_HEATMAP_DATA,
 } from "app/components/charts/heatmap/data";
+import {
+  STORY_DATA_VARIANT_1 as FINANCIAL_METRICS_DATA_1,
+  STORY_DATA_VARIANT_2 as FINANCIAL_METRICS_DATA_2,
+  STORY_DATA_VARIANT_3 as FINANCIAL_METRICS_DATA_3,
+} from "app/components/charts/financial-metric/data";
 import {
   TABLE_VARIATION_14_DATA as BUDGET_TABLE_DATA,
   TABLE_VARIATION_15_DATA as EXPENDITURES_TABLE_DATA,
@@ -44,6 +45,8 @@ import {
   componentsGroupingOptions,
   dropdownItemsDisbursements,
   dropdownItemsExpenditures,
+  dropdownItemsBudgetBreakdown,
+  BUDGET_BREAKDOWN_DATA,
 } from "app/pages/datasets/grant-implementation/data";
 
 export const GrantImplementationPage: React.FC = () => {
@@ -55,6 +58,8 @@ export const GrantImplementationPage: React.FC = () => {
   );
   const [disbursementsDropdownSelected, setDisbursementsDropdownSelected] =
     React.useState(dropdownItemsDisbursements[0].value);
+  const [budgetBreakdownDropdownSelected, setBudgetBreakdownDropdownSelected] =
+    React.useState(dropdownItemsBudgetBreakdown[0].value);
   const [budgetsDropdownSelected, setBudgetsDropdownSelected] = React.useState(
     dropdownItemsBudgets[0].value
   );
@@ -63,6 +68,10 @@ export const GrantImplementationPage: React.FC = () => {
 
   const handleDisbursementsSelectionChange = (value: string) => {
     setDisbursementsDropdownSelected(value);
+  };
+
+  const handleBudgetBreakdownSelectionChange = (value: string) => {
+    setBudgetBreakdownDropdownSelected(value);
   };
 
   const handleGeographyGroupingChange = (value: string) => {
@@ -201,6 +210,16 @@ export const GrantImplementationPage: React.FC = () => {
         return null;
     }
   }, [disbursementsDropdownSelected]);
+
+  const financialMetricsContent = React.useMemo(() => {
+    return (
+      <Box gap="40px" width="100%" display="flex" flexDirection="column">
+        <FinancialMetric {...FINANCIAL_METRICS_DATA_1} />
+        <FinancialMetric {...FINANCIAL_METRICS_DATA_2} />
+        <FinancialMetric {...FINANCIAL_METRICS_DATA_3} />
+      </Box>
+    );
+  }, []);
 
   const budgetsChartContent = React.useMemo(() => {
     switch (budgetsDropdownSelected) {
@@ -365,56 +384,6 @@ export const GrantImplementationPage: React.FC = () => {
         </Box>
         <FullWidthDivider />
         <Box
-          gap="20px"
-          width="100%"
-          display="flex"
-          padding="50px 0"
-          flexDirection="row"
-        >
-          <Box
-            sx={{
-              gap: "20px",
-              width: "40%",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <Box>
-              <Typography variant="h5">38,923,078,121 USD</Typography>
-              <Typography fontSize="14px" fontWeight="700">
-                Total Budget Amount
-              </Typography>
-            </Box>
-            <Divider />
-            <Box>
-              <Typography variant="h5">Budget Breakdown</Typography>
-              <Typography fontSize="14px" fontWeight="700">
-                By grant component
-              </Typography>
-              <RadialChart
-                height="350px"
-                data={BUDGET_RADIAL_DATA}
-                itemLabelFormatterType="name-percent"
-              />
-            </Box>
-          </Box>
-          <Divider orientation="vertical" flexItem />
-          <Box
-            sx={{
-              width: "60%",
-            }}
-          >
-            <Box>
-              <Typography variant="h5">Budget Utilization</Typography>
-              <Typography fontSize="14px" fontWeight="700" marginBottom="30px">
-                By grant component
-              </Typography>
-              <RadarChart height="350px" data={RADAR_CHART_DATA} />
-            </Box>
-          </Box>
-        </Box>
-        <FullWidthDivider />
-        <Box
           padding="50px 0"
           sx={{
             "#content": {
@@ -441,141 +410,80 @@ export const GrantImplementationPage: React.FC = () => {
           width="100%"
           display="flex"
           padding="50px 0"
-          flexDirection="row"
+          flexDirection="column"
+        >
+          <Box
+            width="100%"
+            display="flex"
+            flexDirection="row"
+            justifyContent="space-between"
+          >
+            <Box>
+              <Typography variant="h5">Budget Breakdown</Typography>
+              <Typography fontSize="14px" fontWeight="700">
+                By grant component
+              </Typography>
+            </Box>
+            <Box>
+              <Dropdown
+                dropdownItems={dropdownItemsBudgetBreakdown}
+                dropdownSelected={budgetBreakdownDropdownSelected}
+                handleDropdownChange={handleBudgetBreakdownSelectionChange}
+              />
+            </Box>
+          </Box>
+          <Box
+            width="100%"
+            height="45px"
+            display="flex"
+            marginTop="40px"
+            flexDirection="row"
+          >
+            {BUDGET_BREAKDOWN_DATA.map((i) => (
+              <Box
+                key={i.name}
+                display="flex"
+                bgcolor={i.color}
+                width={`${i.value}%`}
+                flexDirection="column"
+                alignItems="center"
+                position="relative"
+              >
+                <Box
+                  top="-25px"
+                  fontSize="12px"
+                  fontWeight="400"
+                  position="absolute"
+                >
+                  {i.name} ({i.value.toFixed(2).replace(".00", "")}%)
+                </Box>
+                <Divider
+                  orientation="vertical"
+                  sx={{
+                    marginTop: "-5px",
+                    borderColor: i.color,
+                  }}
+                />
+              </Box>
+            ))}
+          </Box>
+        </Box>
+        <FullWidthDivider />
+        <Box
+          padding="50px 0"
           sx={{
-            "> div": {
-              width: "calc(100% / 3)",
+            "#content": {
+              padding: 0,
             },
           }}
         >
-          <Box
-            sx={{
-              gap: "20px",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-            }}
+          <DatasetChartBlock
+            title="Financial Metrics"
+            subtitle=""
+            dropdownItems={[]}
           >
-            <Box>
-              <Typography fontSize="10px">Expenditures</Typography>
-              <Typography variant="h5">56,678,123,111 USD</Typography>
-              <Typography fontSize="14px" fontWeight="700">
-                Cumulative Expenditure
-              </Typography>
-            </Box>
-            <Divider />
-            <Box>
-              <Typography fontSize="10px">Expenditures</Typography>
-              <Typography variant="h5">52,134,005,111 USD</Typography>
-              <Typography fontSize="14px" fontWeight="700">
-                Reported Expenditure
-              </Typography>
-            </Box>
-          </Box>
-          <Divider orientation="vertical" flexItem />
-          <Box>
-            <Box>
-              <Typography fontSize="10px">Expenditures</Typography>
-              <Typography variant="h5">In-Country Absorption</Typography>
-              <Typography fontSize="14px" fontWeight="700" marginBottom="30px">
-                By the current cycle.
-              </Typography>
-              <Box
-                width="100%"
-                display="flex"
-                alignItems="center"
-                flexDirection="column"
-              >
-                <DonutChart
-                  value={84.2}
-                  label="reported"
-                  valueColor="#013E77"
-                />
-                <Box
-                  width="100%"
-                  display="flex"
-                  marginTop="20px"
-                  flexDirection="row"
-                  justifyContent="space-evenly"
-                  sx={{
-                    "> div": {
-                      gap: "5px",
-                      display: "flex",
-                      alignItems: "baseline",
-                      "> div": {
-                        width: "15px",
-                        height: "9px",
-                        borderRadius: "2px",
-                      },
-                    },
-                  }}
-                >
-                  <Box>
-                    <Box bgcolor="#013E77" />
-                    <Typography fontSize="12px">
-                      Reported Expenditure
-                    </Typography>
-                  </Box>
-                  <Box>
-                    <Box bgcolor="#CFD4DA" />
-                    <Typography fontSize="12px">
-                      Cumulative Expenditure
-                    </Typography>
-                  </Box>
-                </Box>
-              </Box>
-            </Box>
-          </Box>
-          <Divider orientation="vertical" flexItem />
-          <Box>
-            <Box>
-              <Typography fontSize="10px">
-                Disbursements & Expenditures
-              </Typography>
-              <Typography variant="h5">Disbursement Utilization</Typography>
-              <Typography fontSize="14px" fontWeight="700" marginBottom="30px">
-                By the current cycle.
-              </Typography>
-            </Box>
-            <Box
-              width="100%"
-              display="flex"
-              alignItems="center"
-              flexDirection="column"
-            >
-              <DonutChart value={97.8} label="utilized" valueColor="#00B5AE" />
-              <Box
-                width="100%"
-                display="flex"
-                marginTop="20px"
-                flexDirection="row"
-                justifyContent="space-evenly"
-                sx={{
-                  "> div": {
-                    gap: "5px",
-                    display: "flex",
-                    alignItems: "baseline",
-                    "> div": {
-                      width: "15px",
-                      height: "9px",
-                      borderRadius: "2px",
-                    },
-                  },
-                }}
-              >
-                <Box>
-                  <Box bgcolor="#00B5AE" />
-                  <Typography fontSize="12px">Disbursement</Typography>
-                </Box>
-                <Box>
-                  <Box bgcolor="#CFD4DA" />
-                  <Typography fontSize="12px">
-                    Cumulative Expenditure
-                  </Typography>
-                </Box>
-              </Box>
-            </Box>
-          </Box>
+            {financialMetricsContent}
+          </DatasetChartBlock>
         </Box>
         <FullWidthDivider />
         <Box

@@ -7,9 +7,9 @@ import * as echarts from "echarts/core";
 import findIndex from "lodash/findIndex";
 import { SVGRenderer } from "echarts/renderers";
 import { LegendComponent } from "echarts/components";
-import { onEchartResize } from "app/utils/onEchartResize";
 import { RadarChartProps } from "app/components/charts/radar/data";
 import { LegendComponentOption, RadarComponentOption } from "echarts";
+import { useChartResizeObserver } from "app/hooks/useChartResizeObserver";
 import { RadarSeriesOption, RadarChart as EChartsRadar } from "echarts/charts";
 
 echarts.use([EChartsRadar, SVGRenderer, LegendComponent]);
@@ -18,6 +18,15 @@ export const RadarChart: React.FC<RadarChartProps> = (
   props: RadarChartProps
 ) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
+
+  const [stateChart, setStateChart] =
+    React.useState<echarts.EChartsType | null>(null);
+
+  useChartResizeObserver({
+    chart: stateChart,
+    containerId: "radar-chart",
+    containerRef: containerRef,
+  });
 
   React.useEffect(() => {
     if (containerRef.current) {
@@ -89,18 +98,8 @@ export const RadarChart: React.FC<RadarChartProps> = (
         },
       };
 
-      if (containerRef.current) {
-        new ResizeObserver(() =>
-          onEchartResize(
-            // @ts-ignore
-            chart,
-            "radar-chart",
-            containerRef.current?.clientHeight
-          )
-        ).observe(containerRef?.current);
-      }
-
       chart.setOption(option);
+      setStateChart(chart);
     }
   }, [props.data, containerRef.current]);
 

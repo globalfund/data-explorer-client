@@ -5,9 +5,11 @@ import Box from "@mui/material/Box";
 import orderBy from "lodash/orderBy";
 import { appColors } from "app/theme";
 import isNumber from "lodash/isNumber";
+import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import ChevronRight from "@mui/icons-material/ChevronRight";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
+import { pickTextColorBasedOnBgColorAdvanced } from "app/utils/pickTextColorBasedOnBgColorAdvanced";
 import {
   ItemModel,
   HeatmapProps,
@@ -21,8 +23,6 @@ import {
   Container,
   Scrollable,
 } from "app/components/charts/heatmap/styles";
-import { pickTextColorBasedOnBgColorAdvanced } from "app/utils/pickTextColorBasedOnBgColorAdvanced";
-import Typography from "@mui/material/Typography";
 
 export function Heatmap(props: HeatmapProps) {
   const [visibleRows, setVisibleRows] = React.useState<ItemModel[]>([]);
@@ -321,9 +321,9 @@ export function Heatmap(props: HeatmapProps) {
                   if ((value as number) > 0) {
                     value = (value as number).toFixed(2).replace(".00", "");
                   } else {
-                    value = "--";
+                    value = "N/A";
                   }
-                  if (value !== "--") {
+                  if (value !== "N/A") {
                     if (props.valueType === "percentage") {
                       value = value + "%";
                     } else {
@@ -340,11 +340,12 @@ export function Heatmap(props: HeatmapProps) {
                     key={column.name}
                     style={{
                       opacity,
-                      color: pickTextColorBasedOnBgColorAdvanced(
-                        color,
-                        "#fff",
-                        "#000"
-                      ),
+                      // color: pickTextColorBasedOnBgColorAdvanced(
+                      //   color,
+                      //   "#fff",
+                      //   "#000"
+                      // ),
+                      color: "#000",
                       background: color,
                       width: props.itemWidth
                         ? `${props.itemWidth}px`

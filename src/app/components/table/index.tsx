@@ -44,7 +44,7 @@ export const Table: React.FC<TableProps> = (props: TableProps) => {
       }
 
       return () => {
-        table.destroy();
+        // table.destroy();
       };
     }
   }, []);
@@ -74,6 +74,7 @@ export const Table: React.FC<TableProps> = (props: TableProps) => {
       id={props.id}
       border="1px solid #CFD4DA"
       sx={{
+        maxHeight: "500px",
         ".tabulator-col-title, .tabulator-cell": {
           color: "#373D43",
           fontSize: "12px",

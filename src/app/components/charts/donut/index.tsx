@@ -2,9 +2,9 @@ import React from "react";
 import Box from "@mui/material/Box";
 import * as echarts from "echarts/core";
 import { SVGRenderer } from "echarts/renderers";
-import { onEchartResize } from "app/utils/onEchartResize";
 import { DonutChartProps } from "app/components/charts/donut/data";
 import { PieSeriesOption, PieChart as EChartsPie } from "echarts/charts";
+import { useChartResizeObserver } from "app/hooks/useChartResizeObserver";
 
 echarts.use([EChartsPie, SVGRenderer]);
 
@@ -12,6 +12,15 @@ export const DonutChart: React.FC<DonutChartProps> = (
   props: DonutChartProps
 ) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
+
+  const [stateChart, setStateChart] =
+    React.useState<echarts.EChartsType | null>(null);
+
+  useChartResizeObserver({
+    chart: stateChart,
+    containerId: "pie-chart",
+    containerRef: containerRef,
+  });
 
   React.useEffect(() => {
     if (containerRef.current) {
@@ -43,25 +52,15 @@ export const DonutChart: React.FC<DonutChartProps> = (
         },
       };
 
-      if (containerRef.current) {
-        new ResizeObserver(() =>
-          onEchartResize(
-            // @ts-ignore
-            chart,
-            "pie-chart",
-            containerRef.current?.clientHeight
-          )
-        ).observe(containerRef?.current);
-      }
-
       chart.setOption(option);
+      setStateChart(chart);
     }
   }, [props.value, containerRef.current]);
 
   return (
     <React.Fragment>
       <Box
-        id="donut-chart"
+        id={props.id ?? "donut-chart"}
         ref={containerRef}
         width="150px"
         height="150px"
@@ -89,7 +88,7 @@ export const DonutChart: React.FC<DonutChartProps> = (
         }}
       >
         <span>
-          <b>{props.value}%</b>
+          <b>{props.value.toFixed(1).replace(".0", "")}%</b>
           {props.label}
         </span>
       </Box>

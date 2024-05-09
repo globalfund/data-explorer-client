@@ -2,14 +2,23 @@ import React from "react";
 import Box from "@mui/material/Box";
 import * as echarts from "echarts/core";
 import { SVGRenderer } from "echarts/renderers";
-import { onEchartResize } from "app/utils/onEchartResize";
 import { PieChartProps } from "app/components/charts/pie/data";
 import { PieSeriesOption, PieChart as EChartsPie } from "echarts/charts";
+import { useChartResizeObserver } from "app/hooks/useChartResizeObserver";
 
 echarts.use([EChartsPie, SVGRenderer]);
 
 export const PieChart: React.FC<PieChartProps> = (props: PieChartProps) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
+
+  const [stateChart, setStateChart] =
+    React.useState<echarts.EChartsType | null>(null);
+
+  useChartResizeObserver({
+    chart: stateChart,
+    containerId: "pie-chart",
+    containerRef: containerRef,
+  });
 
   React.useEffect(() => {
     if (containerRef.current) {
@@ -42,18 +51,8 @@ export const PieChart: React.FC<PieChartProps> = (props: PieChartProps) => {
         },
       };
 
-      if (containerRef.current) {
-        new ResizeObserver(() =>
-          onEchartResize(
-            // @ts-ignore
-            chart,
-            "pie-chart",
-            containerRef.current?.clientHeight
-          )
-        ).observe(containerRef?.current);
-      }
-
       chart.setOption(option);
+      setStateChart(chart);
     }
   }, [props.data, containerRef.current]);
 

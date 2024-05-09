@@ -3,10 +3,10 @@ import Box from "@mui/material/Box";
 import { appColors } from "app/theme";
 import * as echarts from "echarts/core";
 import { SVGRenderer } from "echarts/renderers";
-import { onEchartResize } from "app/utils/onEchartResize";
+import { formatLocale } from "app/utils/formatLocale";
+import { useChartResizeObserver } from "app/hooks/useChartResizeObserver";
 import { TreeSeriesOption, TreeChart as EchartsTree } from "echarts/charts";
 import { PolylineTreeProps } from "app/components/charts/polyline-tree/data";
-import { formatLocale, formatLocaleN } from "app/utils/formatLocale";
 
 echarts.use([EchartsTree, SVGRenderer]);
 
@@ -14,6 +14,15 @@ export const PolylineTree: React.FC<PolylineTreeProps> = (
   props: PolylineTreeProps
 ) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
+
+  const [stateChart, setStateChart] =
+    React.useState<echarts.EChartsType | null>(null);
+
+  useChartResizeObserver({
+    chart: stateChart,
+    containerId: "polyline-tree",
+    containerRef: containerRef,
+  });
 
   React.useEffect(() => {
     if (containerRef.current) {
@@ -87,18 +96,8 @@ export const PolylineTree: React.FC<PolylineTreeProps> = (
         },
       };
 
-      if (containerRef.current) {
-        new ResizeObserver(() =>
-          onEchartResize(
-            // @ts-ignore
-            chart,
-            "polyline-tree",
-            containerRef.current?.clientHeight
-          )
-        ).observe(containerRef?.current);
-      }
-
       chart.setOption(option);
+      setStateChart(chart);
     }
   }, [containerRef.current]);
 

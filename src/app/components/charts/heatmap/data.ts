@@ -32,10 +32,13 @@ export interface HeatmapProps {
 }
 
 export function getPercentageColor(item?: HeatmapDataItem) {
-  if (!item) return appColors.HEATMAP.CHART_PERCENTAGE_COLORS[4];
+  if (!item) return "#fff";
   const value = item.percentage;
+  const actualValue = item.value as number;
 
-  if (!value || value > 100) {
+  if (!value || actualValue === 0) return "#fff";
+
+  if (value > 100) {
     return appColors.HEATMAP.CHART_PERCENTAGE_COLORS[4];
   }
   if (value >= 85) {
