@@ -3399,3 +3399,30 @@ export const STORY_DATA_VARIANT_2: HeatmapDataItem[] = [
     diseaseBurden: "Low",
   },
 ];
+
+export const LEGENDS = [
+  {
+    label: "> 85%",
+    color: "#5BA053",
+  },
+  {
+    label: "75% - 84%",
+    color: "#8CCD81",
+  },
+  {
+    label: "65% - 74%",
+    color: "#ECC854",
+  },
+  {
+    label: "< 65%",
+    color: "#EE5D52",
+  },
+  {
+    label: "> 120% outlier",
+    color: "#DADADA",
+  },
+  {
+    label: "N/A",
+    color: "#FFFFFF",
+  },
+];

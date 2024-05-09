@@ -29,6 +29,7 @@ import {
 import {
   getPercentageColor,
   STORY_DATA_VARIANT_1 as HEATMAP_DATA,
+  HeatmapDataItem,
 } from "app/components/charts/heatmap/data";
 
 export const Home: React.FC = () => {
@@ -93,6 +94,13 @@ export const Home: React.FC = () => {
   );
   const fetchDisbursementsLineChart = useStoreActions(
     (actions) => actions.HomeDisbursementsLineChart.fetch
+  );
+  const dataExpendituresHeatmap = useStoreState(
+    (state) =>
+      get(state.HomeExpendituresHeatmap, "data.data", []) as HeatmapDataItem[]
+  );
+  const fetchExpendituresHeatmap = useStoreActions(
+    (actions) => actions.HomeExpendituresHeatmap.fetch
   );
 
   const handleChartCycleChange = (cycle: string, index: number) => {
@@ -168,6 +176,12 @@ export const Home: React.FC = () => {
     fetchAllocationsRadialChart({});
     fetchBudgetsTreemap({});
     fetchDisbursementsLineChart({});
+    fetchExpendituresHeatmap({
+      routeParams: {
+        row: "principalRecipientType,principalRecipient",
+        column: "component",
+      },
+    });
   }, []);
 
   const totalPledge = React.useMemo(() => {
@@ -297,7 +311,7 @@ export const Home: React.FC = () => {
         unitButtons={chart5UnitButtons}
       >
         <Heatmap
-          data={HEATMAP_DATA}
+          data={dataExpendituresHeatmap}
           hoveredLegend={null}
           valueType={chart5Unit}
           columnCategory="component"

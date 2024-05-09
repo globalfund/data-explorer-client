@@ -36,6 +36,7 @@ import componentsChartsBudgets from "app/state/api/action-reducers/cms/component
 import componentsChartsNetwork from "app/state/api/action-reducers/cms/componentsChartsNetwork";
 import componentsChartsPledges from "app/state/api/action-reducers/cms/componentsChartsPledges";
 import { FundingRequestsTableGeneric } from "app/state/api/action-reducers/viz/fundingRequests";
+import { HomeExpendituresHeatmap } from "app/state/api/action-reducers/home/expenditures-heatmap";
 import componentsDatasetCarousel from "app/state/api/action-reducers/cms/componentsDatasetCarousel";
 import componentsInformationPanel from "app/state/api/action-reducers/cms/componentsInformationPanel";
 import componentsChartsEligibility from "app/state/api/action-reducers/cms/componentsChartsEligibility";
@@ -59,6 +60,7 @@ const storeContent: StoreModel = {
   HomeAllocationsRadialChart: persist(HomeAllocationsRadialChart),
   HomeBudgetsTreemap: persist(HomeBudgetsTreemap),
   HomeDisbursementsLineChart: persist(HomeDisbursementsLineChart),
+  HomeExpendituresHeatmap: persist(HomeExpendituresHeatmap),
   // search
   GlobalSearch: persist(GlobalSearch),
   // filter options api

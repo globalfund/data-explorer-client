@@ -1,4 +1,5 @@
 /* eslint-disable no-param-reassign */
+import forEach from "lodash/forEach";
 import { action, thunk } from "easy-peasy";
 import axios, { AxiosResponse } from "axios";
 import {
@@ -55,6 +56,11 @@ export const APIModel = <QueryModel, ResponseModel>(
         ? { "api-key": process.env.REACT_APP_CMS_TOKEN }
         : {}),
     };
+    if (query.routeParams) {
+      forEach(query.routeParams, (value, key) => {
+        url = url.replace(`{${key}}`, value);
+      });
+    }
     if (url.includes("content/items"))
       console.log("debuggy - querying url", url);
     axios

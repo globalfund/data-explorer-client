@@ -14,6 +14,7 @@ import {
   ItemModel,
   HeatmapProps,
   getPercentageColor,
+  LEGENDS,
 } from "app/components/charts/heatmap/data";
 import {
   Row,
@@ -221,148 +222,180 @@ export function Heatmap(props: HeatmapProps) {
   }, [props.rowCategory]);
 
   return (
-    <Box
-      padding="10px"
-      maxWidth="100%"
-      maxHeight="60vh"
-      position="relative"
-      borderRadius="16px"
-      bgcolor={props.bgColor}
-    >
-      {props.rowHeader && (
-        <Typography
-          top="0px"
-          fontSize="10px"
-          fontWeight="700"
-          paddingLeft="20px"
-          left={rowNameWidth}
-          position="absolute"
-        >
-          {props.rowHeader}
-        </Typography>
-      )}
-      <Scrollable>
-        <Container
-          style={flatVisibleColumns.length < 10 ? { width: "100%" } : {}}
-        >
-          <Row
-            style={{
-              zIndex: 2,
-              top: "-10px",
-              position: "sticky",
-              background: appColors.HEATMAP.CHART_BG_COLOR,
-            }}
+    <React.Fragment>
+      <Box
+        gap="20px"
+        width="100%"
+        display="flex"
+        flexDirection="row"
+        justifyContent="flex-end"
+        sx={{
+          "> div": {
+            gap: "5px",
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            "> div": {
+              width: "11px",
+              height: "11px",
+            },
+          },
+        }}
+      >
+        {LEGENDS.map((item) => (
+          <Box>
+            <Box bgcolor={item.color} />
+            <Typography fontSize="12px" color="#495057">
+              {item.label}
+            </Typography>
+          </Box>
+        ))}
+      </Box>
+      <Box
+        padding="10px"
+        maxWidth="100%"
+        maxHeight="60vh"
+        position="relative"
+        borderRadius="16px"
+        bgcolor={props.bgColor}
+      >
+        {props.rowHeader && (
+          <Typography
+            top="0px"
+            fontSize="10px"
+            fontWeight="700"
+            paddingLeft="20px"
+            left={rowNameWidth}
+            position="absolute"
           >
-            <RowName
-              theme={{ width: rowNameWidth }}
-              style={{ fontWeight: "700" }}
+            {props.rowHeader}
+          </Typography>
+        )}
+        <Scrollable>
+          <Container
+            style={flatVisibleColumns.length < 10 ? { width: "100%" } : {}}
+          >
+            <Row
+              style={{
+                zIndex: 2,
+                top: "-10px",
+                position: "sticky",
+                background: appColors.HEATMAP.CHART_BG_COLOR,
+              }}
             >
-              {props.columnHeader}
-            </RowName>
-            {flatVisibleColumns.map((column) => (
-              <ColName
-                key={column.name}
-                style={{
-                  fontWeight: column.expanded ? 700 : 400,
-                  // background: appColors.HEATMAP.CHART_BG_COLOR,
-                  width: props.itemWidth
-                    ? `${props.itemWidth}px`
-                    : `calc((100% - 112px) / ${flatVisibleColumns.length})`,
-                  minWidth: props.itemWidth ? `${props.itemWidth}px` : "92px",
-                }}
-              >
-                {column.name}
-                {column.children && (
-                  <IconButton
-                    onClick={onColumnExpandClick(column.name)}
-                    sx={{
-                      padding: "4px",
-                      transform: `rotate(${column.expanded ? 180 : 0}deg)`,
-                    }}
-                  >
-                    <ChevronRight fontSize="small" />
-                  </IconButton>
-                )}
-              </ColName>
-            ))}
-          </Row>
-          {flatVisibleRows.map((row) => (
-            <Row key={row.name}>
               <RowName
                 theme={{ width: rowNameWidth }}
-                style={row.expanded ? { fontWeight: 700 } : {}}
+                style={{ fontWeight: "700" }}
               >
-                {row.children ? (
-                  <IconButton
-                    onClick={onRowExpandClick(row.name)}
-                    sx={{
-                      padding: "4px",
-                      transform: `rotate(${row.expanded ? -90 : 90}deg)`,
-                    }}
-                  >
-                    <ChevronRight fontSize="small" />
-                  </IconButton>
-                ) : (
-                  <React.Fragment>
-                    {props.contentProp !== "diseaseBurden" && (
-                      <Box minWidth="28px" minHeight="28px" />
-                    )}
-                  </React.Fragment>
-                )}
-                {row.name}
+                {props.columnHeader}
               </RowName>
-              {flatVisibleColumns.map((column) => {
-                const data = props.data.find(
-                  (d) => d.row === row.name && d.column === column.name
-                );
-                const color = props.getItemColor(data);
-                let value: number | string = get(data, props.contentProp, 0);
-                if (isNumber(value)) {
-                  if ((value as number) > 0) {
-                    value = (value as number).toFixed(2).replace(".00", "");
-                  } else {
-                    value = "N/A";
-                  }
-                  if (value !== "N/A") {
-                    if (props.valueType === "percentage") {
-                      value = value + "%";
+              {flatVisibleColumns.map((column) => (
+                <ColName
+                  key={column.name}
+                  style={{
+                    fontWeight: column.expanded ? 700 : 400,
+                    // background: appColors.HEATMAP.CHART_BG_COLOR,
+                    width: props.itemWidth
+                      ? `${props.itemWidth}px`
+                      : `calc((100% - 112px) / ${flatVisibleColumns.length})`,
+                    minWidth: props.itemWidth
+                      ? `${props.itemWidth}px`
+                      : "105px",
+                  }}
+                >
+                  {column.name}
+                  {column.children && (
+                    <IconButton
+                      onClick={onColumnExpandClick(column.name)}
+                      sx={{
+                        padding: "4px",
+                        transform: `rotate(${column.expanded ? 180 : 0}deg)`,
+                      }}
+                    >
+                      <ChevronRight fontSize="small" />
+                    </IconButton>
+                  )}
+                </ColName>
+              ))}
+            </Row>
+            {flatVisibleRows.map((row) => (
+              <Row key={row.name}>
+                <RowName
+                  theme={{ width: rowNameWidth }}
+                  style={row.expanded ? { fontWeight: 700 } : {}}
+                >
+                  {row.children ? (
+                    <IconButton
+                      onClick={onRowExpandClick(row.name)}
+                      sx={{
+                        padding: "4px",
+                        transform: `rotate(${row.expanded ? -90 : 90}deg)`,
+                      }}
+                    >
+                      <ChevronRight fontSize="small" />
+                    </IconButton>
+                  ) : (
+                    <React.Fragment>
+                      {props.contentProp !== "diseaseBurden" && (
+                        <Box minWidth="28px" minHeight="28px" />
+                      )}
+                    </React.Fragment>
+                  )}
+                  {row.name}
+                </RowName>
+                {flatVisibleColumns.map((column) => {
+                  const data = props.data.find(
+                    (d) => d.row === row.name && d.column === column.name
+                  );
+                  const color = props.getItemColor(data);
+                  let value: number | string = get(data, props.contentProp, 0);
+                  if (isNumber(value)) {
+                    if ((value as number) > 0) {
+                      value = (value as number).toFixed(2).replace(".00", "");
                     } else {
-                      value = formatFinancialValue(
-                        parseInt(value.toString(), 10)
-                      );
+                      value = "N/A";
+                    }
+                    if (value !== "N/A") {
+                      if (props.valueType === "percentage") {
+                        value = value + "%";
+                      } else {
+                        value = formatFinancialValue(
+                          parseInt(value.toString(), 10)
+                        );
+                      }
                     }
                   }
-                }
-                let opacity = props.hoveredLegend === color ? 1 : 0.5;
-                if (!props.hoveredLegend) opacity = 1;
-                return (
-                  <RowCol
-                    key={column.name}
-                    style={{
-                      opacity,
-                      // color: pickTextColorBasedOnBgColorAdvanced(
-                      //   color,
-                      //   "#fff",
-                      //   "#000"
-                      // ),
-                      color: "#000",
-                      background: color,
-                      width: props.itemWidth
-                        ? `${props.itemWidth}px`
-                        : `calc((100% - 112px) / ${flatVisibleColumns.length})`,
-                      minWidth: props.itemWidth
-                        ? `${props.itemWidth}px`
-                        : "92px",
-                    }}
-                  >
-                    {value}
-                  </RowCol>
-                );
-              })}
-            </Row>
-          ))}
-        </Container>
-      </Scrollable>
-    </Box>
+                  let opacity = props.hoveredLegend === color ? 1 : 0.5;
+                  if (!props.hoveredLegend) opacity = 1;
+                  return (
+                    <RowCol
+                      key={column.name}
+                      style={{
+                        opacity,
+                        // color: pickTextColorBasedOnBgColorAdvanced(
+                        //   color,
+                        //   "#fff",
+                        //   "#000"
+                        // ),
+                        color: "#000",
+                        background: color,
+                        width: props.itemWidth
+                          ? `${props.itemWidth}px`
+                          : `calc((100% - 112px) / ${flatVisibleColumns.length})`,
+                        minWidth: props.itemWidth
+                          ? `${props.itemWidth}px`
+                          : "105px",
+                      }}
+                    >
+                      {value}
+                    </RowCol>
+                  );
+                })}
+              </Row>
+            ))}
+          </Container>
+        </Scrollable>
+      </Box>
+    </React.Fragment>
   );
 }

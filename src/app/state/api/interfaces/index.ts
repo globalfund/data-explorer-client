@@ -37,6 +37,9 @@ export interface RequestValues<T> {
   addOnData?: boolean;
   isCMSfetch?: boolean;
   filterString?: string;
+  routeParams?: {
+    [key: string]: string;
+  };
 }
 
 export interface ResponseData<T> {
@@ -123,6 +126,7 @@ export interface StoreModel {
   HomeAllocationsRadialChart: ApiCallModel;
   HomeBudgetsTreemap: ApiCallModel;
   HomeDisbursementsLineChart: ApiCallModel;
+  HomeExpendituresHeatmap: ApiCallModel;
   // search
   GlobalSearch: ApiCallModel;
   // filter options api
