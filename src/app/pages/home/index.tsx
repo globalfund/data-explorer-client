@@ -12,6 +12,7 @@ import { Heatmap } from "app/components/charts/heatmap";
 import { Treemap } from "app/components/charts/treemap";
 import { HomeHero } from "app/pages/home/components/hero";
 import { RadialChart } from "app/components/charts/radial";
+import { LineChartProps } from "app/components/charts/line/data";
 import { BarChartDataItem } from "app/components/charts/bar/data";
 import { TreemapDataItem } from "app/components/charts/treemap/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -19,7 +20,6 @@ import { RadialChartDataItem } from "app/components/charts/radial/data";
 import { HomeResultsStats } from "app/pages/home/components/results-stats";
 import { applyResultValueFormula } from "app/utils/applyResultValueFormula";
 import { StatCompProps } from "app/pages/home/components/results-stats/data";
-import { STORY_DATA_VARIANT_1 as LINE_CHART_DATA } from "app/components/charts/line/data";
 import {
   CYCLES,
   CHART_4_DROPDOWN_ITEMS,
@@ -83,6 +83,16 @@ export const Home: React.FC = () => {
   );
   const fetchBudgetsTreemap = useStoreActions(
     (actions) => actions.HomeBudgetsTreemap.fetch
+  );
+  const dataDisbursementsLineChart = useStoreState(
+    (state) =>
+      get(state.HomeDisbursementsLineChart, "data", {
+        data: [],
+        xAxisKeys: [],
+      }) as LineChartProps
+  );
+  const fetchDisbursementsLineChart = useStoreActions(
+    (actions) => actions.HomeDisbursementsLineChart.fetch
   );
 
   const handleChartCycleChange = (cycle: string, index: number) => {
@@ -157,6 +167,7 @@ export const Home: React.FC = () => {
     fetchPledgesContributionsBarChart({});
     fetchAllocationsRadialChart({});
     fetchBudgetsTreemap({});
+    fetchDisbursementsLineChart({});
   }, []);
 
   const totalPledge = React.useMemo(() => {
@@ -270,7 +281,7 @@ export const Home: React.FC = () => {
         handleCycleChange={(value) => handleChartCycleChange(value, 4)}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
-        <LineChart data={LINE_CHART_DATA} xAxisKeys={LINE_CHART_X_AXIS_KEYS} />
+        <LineChart {...dataDisbursementsLineChart} />
       </ChartBlock>
       <Box height="64px" />
       <ChartBlock
