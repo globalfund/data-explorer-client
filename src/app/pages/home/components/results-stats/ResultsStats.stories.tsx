@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { withRouter } from "storybook-addon-remix-react-router";
+import { stats } from "app/pages/home/components/results-stats/data";
 import { HomeResultsStats } from "app/pages/home/components/results-stats";
 
 const meta = {
@@ -17,4 +18,8 @@ const meta = {
 export default meta;
 type StoryType = StoryObj<typeof meta>;
 
-export const HomeResultsStatsStory: StoryType = {};
+export const HomeResultsStatsStory: StoryType = {
+  args: {
+    stats,
+  },
+};

@@ -1,4 +1,5 @@
 import React from "react";
+import get from "lodash/get";
 import Box from "@mui/material/Box";
 import { Search } from "app/components/search";
 import Typography from "@mui/material/Typography";
@@ -10,6 +11,7 @@ import { Heatmap } from "app/components/charts/heatmap";
 import { Treemap } from "app/components/charts/treemap";
 import { HomeHero } from "app/pages/home/components/hero";
 import { RadialChart } from "app/components/charts/radial";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { HomeResultsStats } from "app/pages/home/components/results-stats";
 import { STORY_DATA_VARIANT_2 as BAR_CHART_DATA } from "app/components/charts/bar/data";
 import { STORY_DATA_VARIANT_2 as TREEMAP_DATA } from "app/components/charts/treemap/data";
@@ -25,6 +27,7 @@ import {
   getPercentageColor,
   STORY_DATA_VARIANT_1 as HEATMAP_DATA,
 } from "app/components/charts/heatmap/data";
+import { StatCompProps } from "./components/results-stats/data";
 
 export const Home: React.FC = () => {
   const [chart1Cycle, setChart1Cycle] = React.useState(CYCLES[0]);
@@ -42,6 +45,13 @@ export const Home: React.FC = () => {
 
   const [chart5Unit, setChart5Unit] = React.useState<"amount" | "percentage">(
     "percentage"
+  );
+
+  const dataResultsStats = useStoreState(
+    (state) => get(state.HomeResultsStats, "data.stats", []) as StatCompProps[]
+  );
+  const fetchResultsStats = useStoreActions(
+    (actions) => actions.HomeResultsStats.fetch
   );
 
   const handleChartCycleChange = (cycle: string, index: number) => {
@@ -109,11 +119,17 @@ export const Home: React.FC = () => {
     [chart5Unit]
   );
 
+  React.useEffect(() => {
+    fetchResultsStats({
+      filterString: "cycle=2022",
+    });
+  }, []);
+
   return (
     <Box padding="60px 0">
       <HomeHero />
       <Box height="64px" />
-      <HomeResultsStats />
+      <HomeResultsStats stats={dataResultsStats} />
       <Box height="64px" />
       <Box display="flex" flexDirection="row" justifyContent="center">
         <Box width="800px">

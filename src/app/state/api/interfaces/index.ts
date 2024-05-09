@@ -69,9 +69,6 @@ export interface ApiModel<QueryModel, ResponseModel> {
   post: Thunk<ApiModel<QueryModel, ResponseModel>, RequestValues<QueryModel>>;
 }
 
-// todo: add all available filters
-interface ApiCallParamsFilters {}
-
 export interface ApiCallParams {}
 
 export interface ApiResponseModel {
@@ -120,112 +117,10 @@ export type CMSApiCallModel = ApiModel<
 export interface CMSApiCallParams {}
 
 export interface StoreModel {
-  // data viz api
-  Documents: ApiCallModel;
-  GrantsList: ApiCallModel;
-  Allocations: ApiCallModel;
-  AllocationsPeriods: ApiCallModel;
-  AllocationsDrilldown: ApiCallModel;
-  AllocationsGeomap: ApiCallModel;
-  AllocationsMCGeomap: ApiCallModel;
-  AllocationsTable: ApiCallModel;
-  Eligibility: ApiCallModel;
-  EligibilityTable: ApiCallModel;
-  EligibilityYears: ApiCallModel;
-  EligibilityStatusCodelist: ApiCallModel;
-  EligibilityDiseaseBurdenCodelist: ApiCallModel;
-  BudgetsFlow: ApiCallModel;
-  BudgetsFlowDrilldownLevel1: ApiCallModel;
-  BudgetsFlowDrilldownLevel2: ApiCallModel;
-  BudgetsGeomap: ApiCallModel;
-  BudgetsMCGeomap: ApiCallModel;
-  BudgetsTimeCycle: ApiCallModel;
-  BudgetsTimeCycleDrilldownLevel1: ApiCallModel;
-  BudgetsTimeCycleDrilldownLevel2: ApiCallModel;
-  DisbursementsGeomap: ApiCallModel;
-  DisbursementsGeomapMulticountries: ApiCallModel;
-  DisbursementsTreemap: ApiCallModel;
-  DisbursementsTreemapDrilldown: ApiCallModel;
-  DisbursementsTimeCycle: ApiCallModel;
-  DisbursementsTimeCycleDrilldown: ApiCallModel;
-  DisbursementsTimeCycleDrilldown2: ApiCallModel;
-  SignedTreemap: ApiCallModel;
-  SignedTreemapDrilldown: ApiCallModel;
-  SignedTimeCycle: ApiCallModel;
-  SignedTimeCycleDrilldown: ApiCallModel;
-  SignedTimeCycleDrilldown2: ApiCallModel;
-  CommitmentTreemap: ApiCallModel;
-  CommitmentTreemapDrilldown: ApiCallModel;
-  CommitmentTimeCycle: ApiCallModel;
-  CommitmentTimeCycleDrilldown: ApiCallModel;
-  CommitmentTimeCycleDrilldown2: ApiCallModel;
-  PledgesContributionsGeomap: ApiCallModel;
-  PledgesContributionsTimeCycle: ApiCallModel;
-  PledgesContributionsTimeCycleDrilldown: ApiCallModel;
-  PledgesContributionsTreemap: ApiCallModel;
-  PledgesContributionsTable: ApiCallModel;
-  ResultsList: ApiCallModel;
-  ResultsStats: ApiCallModel;
-  ResultsYears: ApiCallModel;
-  FundingRequestsTable: ApiCallModel;
-  // global search
+  // homepage
+  HomeResultsStats: ApiCallModel;
+  // search
   GlobalSearch: ApiCallModel;
-  // grant detail api
-  GrantDetailInfo: ApiCallModel;
-  GrantDetailPeriods: ApiCallModel;
-  GrantDetailPeriodInfo: ApiCallModel;
-  GrantDetailBudgetsFlow: ApiCallModel;
-  GrantDetailBudgetsFlowDrilldownLevel1: ApiCallModel;
-  GrantDetailBudgetsFlowDrilldownLevel2: ApiCallModel;
-  GrantDetailBudgetsTimeCycle: ApiCallModel;
-  GrantDetailBudgetsTimeCycleDrilldownLevel1: ApiCallModel;
-  GrantDetailBudgetsTimeCycleDrilldownLevel2: ApiCallModel;
-  GrantDetailDisbursementsTreemap: ApiCallModel;
-  GrantDetailSignedTreemap: ApiCallModel;
-  GrantDetailCommitmentTreemap: ApiCallModel;
-  GrantDetailDisbursementsTimeCycle: ApiCallModel;
-  GrantDetailSignedTimeCycle: ApiCallModel;
-  GrantDetailCommitmentTimeCycle: ApiCallModel;
-  GrantDetailPerformanceRating: ApiCallModel;
-  GrantDetailPerformanceFramework: ApiCallModel;
-  GrantDetailPerformanceFrameworkExpand: ApiCallModel;
-  GrantDetailDocuments: ApiCallModel;
-  GrantDetailPeriodGoalsObjectives: ApiCallModel;
-  // location detail api
-  LocationDetailInfo: ApiCallModel;
-  EligibilityCountry: ApiCallModel;
-  LocationDetailDisbursementsTreemap: ApiCallModel;
-  LocationDetailSignedTreemap: ApiCallModel;
-  LocationDetailCommitmentTreemap: ApiCallModel;
-  LocationDetailDocuments: ApiCallModel;
-  LocationDetailBudgetsFlow: ApiCallModel;
-  LocationDetailBudgetsFlowDrilldownLevel1: ApiCallModel;
-  LocationDetailBudgetsFlowDrilldownLevel2: ApiCallModel;
-  LocationDetailBudgetsTimeCycle: ApiCallModel;
-  LocationDetailBudgetsTimeCycleDrilldownLevel1: ApiCallModel;
-  LocationDetailBudgetsTimeCycleDrilldownLevel2: ApiCallModel;
-  LocationGrants: ApiCallModel;
-  LocationAccessToFunding: {
-    EligibilityTable: ApiCallModel;
-    FundingRequestsTable: ApiCallModel;
-    GrantCycles: ApiCallModel;
-  };
-  FundingRequestsTRPWindowCodelist: ApiCallModel;
-  FundingRequestsPortfolioCategoryCodelist: ApiCallModel;
-  // partner detail api
-  PartnerDetailInfo: ApiCallModel;
-  PartnerDetailDisbursementsTreemap: ApiCallModel;
-  PartnerDetailDisbursementsTreemapDrilldown: ApiCallModel;
-  PartnerDetailSignedTreemap: ApiCallModel;
-  PartnerDetailSignedTreemapDrilldown: ApiCallModel;
-  PartnerDetailCommitmentTreemap: ApiCallModel;
-  PartnerDetailCommitmentTreemapDrilldown: ApiCallModel;
-  PartnerDetailBudgetsFlow: ApiCallModel;
-  PartnerDetailBudgetsFlowDrilldownLevel1: ApiCallModel;
-  PartnerDetailBudgetsFlowDrilldownLevel2: ApiCallModel;
-  PartnerDetailBudgetsTimeCycle: ApiCallModel;
-  PartnerDetailBudgetsTimeCycleDrilldownLevel1: ApiCallModel;
-  PartnerDetailBudgetsTimeCycleDrilldownLevel2: ApiCallModel;
   // filter options api
   LocationFilterOptions: ApiCallModel;
   ComponentFilterOptions: ApiCallModel;
@@ -233,6 +128,15 @@ export interface StoreModel {
   StatusFilterOptions: ApiCallModel;
   ReplenishmentPeriodFilterOptions: ApiCallModel;
   DonorFilterOptions: ApiCallModel;
+  EligibilityStatusCodelist: ApiCallModel;
+  EligibilityDiseaseBurdenCodelist: ApiCallModel;
+  EligibilityYearsCodelist: ApiCallModel;
+  EligibilityYears: ApiCallModel;
+  FundingRequestsTRPWindowCodelist: ApiCallModel;
+  FundingRequestsPortfolioCategoryCodelist: ApiCallModel;
+  LocationAccessToFunding: {
+    GrantCycles: ApiCallModel;
+  };
   // sync state variables
   AppliedFiltersState: AppliedFiltersStateModel;
   // CMS

@@ -3,25 +3,31 @@ import { ReactComponent as HIVIcon } from "app/assets/vectors/HIV.svg";
 import { ReactComponent as MalariaIcon } from "app/assets/vectors/Malaria.svg";
 
 export interface StatCompProps {
-  icon: React.ReactNode;
-  value: string;
+  value: number;
   label: string;
+  icon?: React.ReactNode;
+}
+
+export interface HomeResultsStatsProps {
+  stats: StatCompProps[];
 }
 
 export const stats: StatCompProps[] = [
   {
     icon: <HIVIcon />,
-    value: "24.5 million",
-    label: "People on antiretroviral therapy for <b>HIV</b> in 2022",
+    value: 24500000,
+    label: "People on antiretroviral therapy for HIV in 2022",
   },
   {
     icon: <TBIcon />,
-    value: "6.7 million",
-    label: "People with <b>TB</b> treated in 2022",
+    value: 6700000,
+    label: "People with TB treated in 2022",
   },
   {
     icon: <MalariaIcon />,
-    value: "220 million",
-    label: "<b>Mosquito nets</b> distributed in 2022",
+    value: 220000000,
+    label: "Mosquito nets distributed in 2022",
   },
 ];
+
+export const statsOrder = ["HIV", "TB", "Mosquito nets"];

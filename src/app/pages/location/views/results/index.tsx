@@ -2,6 +2,7 @@ import React from "react";
 import Box from "@mui/material/Box";
 import { ChartBlock } from "app/components/chart-block";
 import { TableContainer } from "app/components/table-container";
+import { stats } from "app/pages/home/components/results-stats/data";
 import { RESULT_YEARS } from "app/pages/location/views/results/data";
 import { HomeResultsStats } from "app/pages/home/components/results-stats";
 import {
@@ -16,7 +17,7 @@ export const Results: React.FC = () => {
 
   return (
     <Box gap="24px" display="flex" flexDirection="column">
-      <HomeResultsStats />
+      <HomeResultsStats stats={stats} />
       <Box height="62px" />
       <ChartBlock
         title="Results"
