@@ -1,5 +1,6 @@
 import React from "react";
 import get from "lodash/get";
+import sumBy from "lodash/sumBy";
 import Box from "@mui/material/Box";
 import { Search } from "app/components/search";
 import Typography from "@mui/material/Typography";
@@ -11,9 +12,11 @@ import { Heatmap } from "app/components/charts/heatmap";
 import { Treemap } from "app/components/charts/treemap";
 import { HomeHero } from "app/pages/home/components/hero";
 import { RadialChart } from "app/components/charts/radial";
+import { BarChartDataItem } from "app/components/charts/bar/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { HomeResultsStats } from "app/pages/home/components/results-stats";
-import { STORY_DATA_VARIANT_2 as BAR_CHART_DATA } from "app/components/charts/bar/data";
+import { applyResultValueFormula } from "app/utils/applyResultValueFormula";
+import { StatCompProps } from "app/pages/home/components/results-stats/data";
 import { STORY_DATA_VARIANT_2 as TREEMAP_DATA } from "app/components/charts/treemap/data";
 import { STORY_DATA_VARIANT_1 as LINE_CHART_DATA } from "app/components/charts/line/data";
 import { STORY_DATA_VARIANT_2 as RADIAL_CHART_DATA } from "app/components/charts/radial/data";
@@ -27,7 +30,6 @@ import {
   getPercentageColor,
   STORY_DATA_VARIANT_1 as HEATMAP_DATA,
 } from "app/components/charts/heatmap/data";
-import { StatCompProps } from "./components/results-stats/data";
 
 export const Home: React.FC = () => {
   const [chart1Cycle, setChart1Cycle] = React.useState(CYCLES[0]);
@@ -52,6 +54,17 @@ export const Home: React.FC = () => {
   );
   const fetchResultsStats = useStoreActions(
     (actions) => actions.HomeResultsStats.fetch
+  );
+  const dataPledgesContributionsBarChart = useStoreState(
+    (state) =>
+      get(
+        state.HomePledgesContributionsBarChart,
+        "data.data",
+        []
+      ) as BarChartDataItem[]
+  );
+  const fetchPledgesContributionsBarChart = useStoreActions(
+    (actions) => actions.HomePledgesContributionsBarChart.fetch
   );
 
   const handleChartCycleChange = (cycle: string, index: number) => {
@@ -123,7 +136,24 @@ export const Home: React.FC = () => {
     fetchResultsStats({
       filterString: "cycle=2022",
     });
+    fetchPledgesContributionsBarChart({});
   }, []);
+
+  const totalPledge = React.useMemo(() => {
+    const v = applyResultValueFormula(
+      sumBy(dataPledgesContributionsBarChart, "value"),
+      3
+    );
+    return `${v.number} ${v.text}`;
+  }, [dataPledgesContributionsBarChart]);
+
+  const totalContribution = React.useMemo(() => {
+    const v = applyResultValueFormula(
+      sumBy(dataPledgesContributionsBarChart, "value1"),
+      3
+    );
+    return `${v.number} ${v.text}`;
+  }, [dataPledgesContributionsBarChart]);
 
   return (
     <Box padding="60px 0">
@@ -146,7 +176,7 @@ export const Home: React.FC = () => {
         text="Government, private sector, nongovernment and other donor pledges and contributions"
       >
         <BarChart
-          data={BAR_CHART_DATA}
+          data={dataPledgesContributionsBarChart}
           valueLabels={{
             value: "Pledge",
             value1: "Contribution",
@@ -167,7 +197,7 @@ export const Home: React.FC = () => {
           flexDirection="column"
         >
           <Typography variant="h3" fontWeight="900">
-            23.3 million
+            {totalPledge}
           </Typography>
           <Typography variant="subtitle2">Pledge</Typography>
         </Box>
@@ -178,7 +208,7 @@ export const Home: React.FC = () => {
           flexDirection="column"
         >
           <Typography variant="h3" fontWeight="900">
-            23.3 million
+            {totalContribution}
           </Typography>
           <Typography variant="subtitle2">Contribution</Typography>
         </Box>

@@ -119,6 +119,7 @@ export interface CMSApiCallParams {}
 export interface StoreModel {
   // homepage
   HomeResultsStats: ApiCallModel;
+  HomePledgesContributionsBarChart: ApiCallModel;
   // search
   GlobalSearch: ApiCallModel;
   // filter options api

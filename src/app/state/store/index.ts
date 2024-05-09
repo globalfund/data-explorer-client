@@ -34,23 +34,25 @@ import modulesFundingRequests from "app/state/api/action-reducers/cms/modulesFun
 import componentsChartsBudgets from "app/state/api/action-reducers/cms/componentsChartsBudgets";
 import componentsChartsNetwork from "app/state/api/action-reducers/cms/componentsChartsNetwork";
 import componentsChartsPledges from "app/state/api/action-reducers/cms/componentsChartsPledges";
+import { FundingRequestsTableGeneric } from "app/state/api/action-reducers/viz/fundingRequests";
 import componentsDatasetCarousel from "app/state/api/action-reducers/cms/componentsDatasetCarousel";
 import componentsInformationPanel from "app/state/api/action-reducers/cms/componentsInformationPanel";
 import componentsChartsEligibility from "app/state/api/action-reducers/cms/componentsChartsEligibility";
 import componentsChartsInvestments from "app/state/api/action-reducers/cms/componentsChartsInvestments";
 import ReplenishmentPeriodFilterOptions from "app/state/api/action-reducers/filters/replenishmentPeriods";
 import componentsChartsPerformanceRating from "app/state/api/action-reducers/cms/componentsChartsPerformanceRating";
+import { HomePledgesContributionsBarChart } from "app/state/api/action-reducers/home/pledges-contributions-bar-chart";
 import componentsPerformanceFrameworkComponents from "app/state/api/action-reducers/cms/componentsPerformanceFrameworkComponents";
 import {
-  EligibilityDiseaseBurdenCodelist,
-  EligibilityStatusCodelist,
   EligibilityYears,
-} from "../api/action-reducers/viz/eligibility";
-import { FundingRequestsTableGeneric } from "../api/action-reducers/viz/fundingRequests";
+  EligibilityStatusCodelist,
+  EligibilityDiseaseBurdenCodelist,
+} from "app/state/api/action-reducers/viz/eligibility";
 
 const storeContent: StoreModel = {
   // homepage
   HomeResultsStats: persist(HomeResultsStats),
+  HomePledgesContributionsBarChart: persist(HomePledgesContributionsBarChart),
   // search
   GlobalSearch: persist(GlobalSearch),
   // filter options api
