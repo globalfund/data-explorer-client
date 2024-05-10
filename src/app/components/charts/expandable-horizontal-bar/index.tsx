@@ -29,7 +29,7 @@ export const ExpandableHorizontalBar: React.FC<
   const isMounted = React.useRef(false);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
-  const [data, setData] = React.useState(props.data.reverse());
+  const [data, setData] = React.useState(props.data);
   const [expandedBars, setExpandedBars] = React.useState<string[]>([]);
   const [stateChart, setStateChart] =
     React.useState<echarts.EChartsType | null>(null);
@@ -250,7 +250,6 @@ export const ExpandableHorizontalBar: React.FC<
     if (expandedBars.length > 0) {
       const newData = [];
       const temp = [...props.data];
-      temp.reverse();
       for (const item of temp) {
         newData.push(item);
         if (
