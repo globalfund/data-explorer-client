@@ -139,6 +139,7 @@ export interface StoreModel {
   AccessToFundingEligibilityTable: ApiCallModel;
   AccessToFundingAllocationBarSeries: ApiCallModel;
   AccessToFundingAllocationSunburst: ApiCallModel;
+  AccessToFundingAllocationTreemap: ApiCallModel;
   // search
   GlobalSearch: ApiCallModel;
   // filter options api

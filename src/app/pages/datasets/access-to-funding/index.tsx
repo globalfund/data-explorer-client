@@ -16,7 +16,10 @@ import { BarSeriesChart } from "app/components/charts/bar-series";
 import { getRange } from "app/utils/getFinancialValueWithMetricPrefix";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
-import { STORY_DATA_VARIANT_2 as TREEMAP_DATA } from "app/components/charts/treemap/data";
+import {
+  STORY_DATA_VARIANT_2 as TREEMAP_DATA,
+  TreemapDataItem,
+} from "app/components/charts/treemap/data";
 import { STORY_DATA_VARIANT_2 as SUNBURST_CHART_DATA } from "app/components/charts/sunburst/data";
 import { BarSeriesChartDataItem } from "app/components/charts/bar-series/data";
 import {
@@ -87,6 +90,17 @@ export const AccessToFundingPage: React.FC = () => {
   const fetchAllocationsSunburst = useStoreActions(
     (actions) => actions.AccessToFundingAllocationSunburst.fetch
   );
+  const dataAllocationsTreemap = useStoreState(
+    (state) =>
+      get(
+        state.AccessToFundingAllocationTreemap,
+        "data.data",
+        []
+      ) as TreemapDataItem[]
+  );
+  const fetchAllocationsTreemap = useStoreActions(
+    (actions) => actions.AccessToFundingAllocationTreemap.fetch
+  );
 
   const handleSelectionChange = (value: string) => {
     setDropdownSelected(value);
@@ -114,7 +128,7 @@ export const AccessToFundingPage: React.FC = () => {
           />
         );
       case dropdownItemsAllocations[1].value:
-        return <Treemap data={TREEMAP_DATA.slice(2, 5)} />;
+        return <Treemap data={dataAllocationsTreemap} />;
       case dropdownItemsAllocations[2].value:
         return (
           <Table
@@ -127,7 +141,7 @@ export const AccessToFundingPage: React.FC = () => {
       default:
         return null;
     }
-  }, [dropdownSelected, dataAllocationsSunburst]);
+  }, [dropdownSelected, dataAllocationsSunburst, dataAllocationsTreemap]);
 
   const range = React.useMemo(() => {
     const values: {
@@ -174,6 +188,7 @@ export const AccessToFundingPage: React.FC = () => {
     fetchEligibilityTable({});
     fetchAllocationsBarSeries({});
     fetchAllocationsSunburst({});
+    fetchAllocationsTreemap({});
   }, []);
 
   React.useEffect(() => {
