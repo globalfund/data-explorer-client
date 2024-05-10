@@ -16,12 +16,11 @@ import { BarSeriesChart } from "app/components/charts/bar-series";
 import { getRange } from "app/utils/getFinancialValueWithMetricPrefix";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
+import { BarSeriesChartDataItem } from "app/components/charts/bar-series/data";
 import {
   STORY_DATA_VARIANT_2 as TREEMAP_DATA,
   TreemapDataItem,
 } from "app/components/charts/treemap/data";
-import { STORY_DATA_VARIANT_2 as SUNBURST_CHART_DATA } from "app/components/charts/sunburst/data";
-import { BarSeriesChartDataItem } from "app/components/charts/bar-series/data";
 import {
   BOXES,
   eligibilityYears,

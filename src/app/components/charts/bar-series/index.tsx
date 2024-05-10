@@ -7,6 +7,7 @@ import { SVGRenderer } from "echarts/renderers";
 import { onEchartResize } from "app/utils/onEchartResize";
 import { GridComponent, LegendComponent } from "echarts/components";
 import { BarSeriesOption, BarChart as EChartsBar } from "echarts/charts";
+import { useChartResizeObserver } from "app/hooks/useChartResizeObserver";
 import { BarSeriesChartProps } from "app/components/charts/bar-series/data";
 import {
   getRange,
@@ -25,6 +26,15 @@ export const BarSeriesChart: React.FC<BarSeriesChartProps> = (
   props: BarSeriesChartProps
 ) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
+
+  const [stateChart, setStateChart] =
+    React.useState<echarts.EChartsType | null>(null);
+
+  useChartResizeObserver({
+    chart: stateChart,
+    containerId: "bar-chart",
+    containerRef: containerRef,
+  });
 
   const range = React.useMemo(() => {
     const values: {
@@ -137,20 +147,30 @@ export const BarSeriesChart: React.FC<BarSeriesChartProps> = (
         },
       };
 
-      if (containerRef.current) {
-        new ResizeObserver(() =>
-          onEchartResize(
-            // @ts-ignore
-            chart,
-            "bar-chart",
-            containerRef.current?.clientHeight
-          )
-        ).observe(containerRef?.current);
-      }
-
       chart.setOption(option);
+      setStateChart(chart);
     }
-  }, [range, props.keys, props.data, containerRef.current]);
+  }, [containerRef.current]);
+
+  React.useEffect(() => {
+    if (stateChart) {
+      stateChart.setOption({
+        yAxis: {
+          axisLabel: {
+            formatter: (value: number) => {
+              return getFinancialValueWithMetricPrefix(value, range.index);
+            },
+          },
+        },
+        xAxis: {
+          data: props.keys,
+        },
+        series: props.data.map((serie) => ({
+          data: serie.values,
+        })),
+      });
+    }
+  }, [props.data, props.keys, range]);
 
   return (
     <React.Fragment>

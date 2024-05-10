@@ -125,7 +125,17 @@ export const Treemap: React.FC<TreemapProps> = (props: TreemapProps) => {
       chart.setOption(option);
       setStateChart(chart);
     }
-  }, [containerRef.current, isMultilevel, props.data]);
+  }, [containerRef.current, isMultilevel]);
+
+  React.useEffect(() => {
+    if (stateChart) {
+      stateChart.setOption({
+        series: {
+          data: props.data,
+        },
+      });
+    }
+  }, [props.data]);
 
   return (
     <React.Fragment>

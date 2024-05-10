@@ -244,7 +244,7 @@ export const ExpandableHorizontalBar: React.FC<
       setStateChart(chart);
       isMounted.current = true;
     }
-  }, [containerRef.current, seriesData, range, xAxisKeys]);
+  }, [containerRef.current]);
 
   React.useEffect(() => {
     if (expandedBars.length > 0) {
@@ -266,7 +266,26 @@ export const ExpandableHorizontalBar: React.FC<
     } else {
       setData(props.data);
     }
-  }, [expandedBars]);
+  }, [expandedBars, props.data]);
+
+  React.useEffect(() => {
+    if (stateChart) {
+      stateChart.setOption({
+        xAxis: {
+          name: range.abbr,
+          formattter: (value: number) => {
+            return getFinancialValueWithMetricPrefix(value, range.index);
+          },
+        },
+        yAxis: {
+          data: xAxisKeys,
+        },
+        series: seriesData.map((values, index) => ({
+          data: values,
+        })),
+      });
+    }
+  }, [stateChart, seriesData, xAxisKeys, range]);
 
   return (
     <React.Fragment>

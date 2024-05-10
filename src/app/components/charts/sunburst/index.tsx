@@ -1,4 +1,5 @@
 import React from "react";
+import get from "lodash/get";
 import sumBy from "lodash/sumBy";
 import Box from "@mui/material/Box";
 import { appColors } from "app/theme";
@@ -32,6 +33,8 @@ export const SunburstChart: React.FC<SunburstProps> = (
   const total = React.useMemo(() => {
     return sumBy(props.data, "value");
   }, [props.data]);
+
+  const [centerValue, setCenterValue] = React.useState(total);
 
   React.useEffect(() => {
     if (containerRef.current) {
@@ -73,10 +76,29 @@ export const SunburstChart: React.FC<SunburstProps> = (
         },
       };
 
+      chart.on("click", (params) => {
+        const value = get(params, "data.value", 0);
+        if (value) {
+          setCenterValue(value);
+        }
+      });
+
       chart.setOption(option);
       setStateChart(chart);
     }
   }, [containerRef.current]);
+
+  React.useEffect(() => {
+    if (stateChart) {
+      stateChart.setOption({
+        series: [
+          {
+            data: props.data,
+          },
+        ],
+      });
+    }
+  }, [props.data]);
 
   return (
     <React.Fragment>
@@ -116,7 +138,7 @@ export const SunburstChart: React.FC<SunburstProps> = (
         >
           <Typography variant="h5">{props.centerLabel}</Typography>
           <Typography variant="h5" fontWeight="400">
-            {formatFinancialValue(total)}
+            {formatFinancialValue(centerValue)}
           </Typography>
         </Box>
       </Box>
