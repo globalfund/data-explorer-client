@@ -101,6 +101,12 @@ export const AccessToFundingPage: React.FC = () => {
   const fetchAllocationsTreemap = useStoreActions(
     (actions) => actions.AccessToFundingAllocationTreemap.fetch
   );
+  const dataAllocationsTable = useStoreState((state) =>
+    get(state.AccessToFundingAllocationTable, "data.data", [])
+  );
+  const fetchAllocationsTable = useStoreActions(
+    (actions) => actions.AccessToFundingAllocationTable.fetch
+  );
 
   const handleSelectionChange = (value: string) => {
     setDropdownSelected(value);
@@ -134,14 +140,19 @@ export const AccessToFundingPage: React.FC = () => {
           <Table
             dataTree
             id="allocations-table"
-            data={ALLOCATIONS_TABLE_DATA}
+            data={dataAllocationsTable}
             columns={ALLOCATIONS_TABLE_COLUMNS}
           />
         );
       default:
         return null;
     }
-  }, [dropdownSelected, dataAllocationsSunburst, dataAllocationsTreemap]);
+  }, [
+    dropdownSelected,
+    dataAllocationsSunburst,
+    dataAllocationsTreemap,
+    dataAllocationsTable,
+  ]);
 
   const range = React.useMemo(() => {
     const values: {
@@ -189,6 +200,7 @@ export const AccessToFundingPage: React.FC = () => {
     fetchAllocationsBarSeries({});
     fetchAllocationsSunburst({});
     fetchAllocationsTreemap({});
+    fetchAllocationsTable({});
   }, []);
 
   React.useEffect(() => {
