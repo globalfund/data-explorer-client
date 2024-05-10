@@ -635,6 +635,14 @@ export const appColors = {
     ITEM_BORDER_COLOR: SECONDARY_COLOR_17,
     AXIS_TEXT_COLOR: PRIMARY_COLOR_1,
     AXIS_GRID_COLOR: SECONDARY_COLOR_5,
+    DISEASE_BURDEN_COLORS: [
+      "#FA7355",
+      "#FA9A55",
+      "#FFAA46",
+      "#FFD646",
+      "#DAFF46",
+      "#97FF46",
+    ],
   },
   NETWORK: {
     GRAPH_LINK_COLOR: SECONDARY_COLOR_7,

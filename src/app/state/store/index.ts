@@ -47,6 +47,7 @@ import componentsChartsInvestments from "app/state/api/action-reducers/cms/compo
 import { HomeAllocationsRadialChart } from "app/state/api/action-reducers/home/allocations-radial-chart";
 import { HomeDisbursementsLineChart } from "app/state/api/action-reducers/home/disbursements-line-chart";
 import ReplenishmentPeriodFilterOptions from "app/state/api/action-reducers/filters/replenishmentPeriods";
+import { AccessToFundingEligibilityTable } from "app/state/api/action-reducers/access-to-funding/eligibility-table";
 import componentsChartsPerformanceRating from "app/state/api/action-reducers/cms/componentsChartsPerformanceRating";
 import { HomePledgesContributionsBarChart } from "app/state/api/action-reducers/home/pledges-contributions-bar-chart";
 import { ResourceMobilizationTable } from "app/state/api/action-reducers/resource-mobilization/pledges-contributions-table";
@@ -78,6 +79,7 @@ const storeContent: StoreModel = {
   GeographyList: persist(GeographyList),
   // access to funding
   AccessToFundingStats: persist(AccessToFundingStats),
+  AccessToFundingEligibilityTable: persist(AccessToFundingEligibilityTable),
   // search
   GlobalSearch: persist(GlobalSearch),
   // filter options api

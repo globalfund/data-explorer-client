@@ -136,6 +136,7 @@ export interface StoreModel {
   GeographyList: ApiCallModel;
   // access to funding
   AccessToFundingStats: ApiCallModel;
+  AccessToFundingEligibilityTable: ApiCallModel;
   // search
   GlobalSearch: ApiCallModel;
   // filter options api

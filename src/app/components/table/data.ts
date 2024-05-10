@@ -1,5 +1,5 @@
+import { appColors } from "app/theme";
 import { formatLocale } from "app/utils/formatLocale";
-import _, { random } from "lodash";
 import {
   CellComponent,
   ColumnDefinition,
@@ -35,14 +35,26 @@ const cellBGColorFormatter = (cell: CellComponent) => {
       case "Not Eligible":
         backgroundColor = "#D9D9D9";
         break;
+      case "Extreme":
+        backgroundColor = appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[0];
+        break;
+      case "Severe":
+        backgroundColor = appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[1];
+        break;
       case "High":
-        backgroundColor = "#FA7355";
+        backgroundColor = appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[2];
         break;
       case "Not High":
-        backgroundColor = "#FFD646";
+        backgroundColor = appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[3];
+        break;
+      case "Moderate":
+        backgroundColor = appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[4];
         break;
       case "Low":
-        backgroundColor = "#FFD646";
+        backgroundColor = appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[5];
+        break;
+      case "NA":
+        backgroundColor = "#FFFFFF";
         break;
       default:
         text = cellValue.toString();
@@ -1828,1434 +1840,1434 @@ export const TABLE_VARIATION_9_DATA: {
   [key: string]: string | number | boolean | null | object | Array<object>;
 }[] = [
   {
-  "name": "2022",
-  "_children": [
-  {
-  "name": "Malaria",
-  "_children": [
-  {
-  "name": "Suspected malaria cases that received a parasitological test",
-  "value": 321018609
-  },
-  {
-  "name": "Mosquito nets distributed",
-  "value": 219678398
-  },
-  {
-  "name": "Cases of malaria treated",
-  "value": 165297849
-  },
-  {
-  "name": "Children who received seasonal malaria chemoprophylaxis",
-  "value": 37103714
-  },
-  {
-  "name": "Population covered by Indoor Residual Spraying",
-  "value": 18516771
-  },
-  {
-  "name": "Pregnant women attending antenatal clinics who received intermittent preventive treatment for malaria",
-  "value": 14620922
-  },
-  {
-  "name": "Households covered by Indoor Residual Spraying",
-  "value": 8451212
-  },
-  {
-  "name": "Confirmed malaria cases fully investigated and classified",
-  "value": 78347
-  },
-  {
-  "name": "Malaria foci fully investigated and classified",
-  "value": 38227
-  }
-  ]
-  },
-  {
-  "name": "HIV/AIDS",
-  "_children": [
-  {
-  "name": "Total number of HIV tests",
-  "value": 53074640
-  },
-  {
-  "name": "Pregnant women who know their HIV status",
-  "value": 43943450
-  },
-  {
-  "name": "People on antiretroviral therapy for HIV",
-  "value": 24471293
-  },
-  {
-  "name": "Young people aged 10-24 years reached by comprehensive sexuality education and/or life skills-based HIV education in or out of schools",
-  "value": 4001648
-  },
-  {
-  "name": "Adolescent girls and young women (AGYW) reached with HIV prevention programs services",
-  "value": 3566170
-  },
-  {
-  "name": "Sex workers reached with HIV prevention programs",
-  "value": 2731926
-  },
-  {
-  "name": "Pregnant women tested for syphilis",
-  "value": 2647380
-  },
-  {
-  "name": "Men who have sex with men reached with HIV prevention programs",
-  "value": 2605902
-  },
-  {
-  "name": "Number of HIV tests taken among men who have sex with men",
-  "value": 2408640
-  },
-  {
-  "name": "Number of HIV tests taken among other vulnerable population",
-  "value": 2294467
-  },
-  {
-  "name": "Number of HIV tests taken among sex workers",
-  "value": 2198995
-  },
-  {
-  "name": "Number of HIV tests taken among adolescents and youth",
-  "value": 2127567
-  },
-  {
-  "name": "Number of HIV tests taken among prisoners",
-  "value": 1532177
-  },
-  {
-  "name": "Number of HIV positive tests",
-  "value": 1294853
-  },
-  {
-  "name": "People who use drugs reached with HIV prevention programs",
-  "value": 1083995
-  },
-  {
-  "name": "Number of HIV tests taken among people who use drugs",
-  "value": 1034576
-  },
-  {
-  "name": "Other vulnerable populations reached with HIV prevention programs",
-  "value": 836845
-  },
-  {
-  "name": "Medical male circumcisions",
-  "value": 830749
-  },
-  {
-  "name": "HIV-positive pregnant women who received ART during pregnancy",
-  "value": 710418
-  },
-  {
-  "name": "Care and support services provided to people living with HIV",
-  "value": 512946
-  },
-  {
-  "name": "Infants tested for HIV",
-  "value": 473415
-  },
-  {
-  "name": "People newly diagnosed with HIV initiated on ART",
-  "value": 418533
-  },
-  {
-  "name": "Prisoners reached with HIV prevention programs",
-  "value": 204054
-  },
-  {
-  "name": "Sex workers who initiated oral antiretroviral pre-exposure prophylaxis",
-  "value": 198592
-  },
-  {
-  "name": "Transgender people reached with HIV prevention programs",
-  "value": 159092
-  },
-  {
-  "name": "Number of HIV tests taken among transgender population",
-  "value": 149303
-  },
-  {
-  "name": "Men who have sex with men who initiated oral antiretroviral pre-exposure prophylaxis",
-  "value": 61811
-  },
-  {
-  "name": "People receiving Opioid Substitution Therapy",
-  "value": 60441
-  },
-  {
-  "name": "People aged 10–24 years reached with HIV prevention programs",
-  "value": 45863
-  },
-  {
-  "name": "Adolescent girls and young women who initiated oral antiretroviral pre-exposure prophylaxis",
-  "value": 44273
-  },
-  {
-  "name": "People using pre-exposure prophylaxis",
-  "value": 30167
-  },
-  {
-  "name": "Transgender people who initiated oral antiretroviral pre-exposure prophylaxis",
-  "value": 3134
-  }
-  ]
-  },
-  {
-  "name": "Tuberculosis",
-  "_children": [
-  {
-  "name": "People with TB treated",
-  "value": 6670422
-  },
-  {
-  "name": "People in contact with TB patients received preventive therapy",
-  "value": 1542219
-  },
-  {
-  "name": "TB patients with drug-susceptibility testing result for at least Rifampicin",
-  "value": 961896
-  },
-  {
-  "name": "TB patients tested using WHO recommended rapid tests",
-  "value": 875351
-  },
-  {
-  "name": "Rifampicin- and/or multidrug-resistant TB cases that began second-line treatment",
-  "value": 118075
-  },
-  {
-  "name": "Care and support services provided to TB patients",
-  "value": 93538
-  },
-  {
-  "name": "Rifampicin- and/or multidrug-resistant TB cases notified",
-  "value": 70621
-  },
-  {
-  "name": "People with extensively drug-resistant TB on treatment",
-  "value": 435
-  }
-  ]
-  },
-  {
-  "name": "HIV/TB",
-  "_children": [
-  {
-  "name": "People living with HIV in care screened for TB",
-  "value": 3989358
-  },
-  {
-  "name": "TB patients with documented HIV status",
-  "value": 2230611
-  },
-  {
-  "name": "People living with HIV on ART who initiated TB preventive therapy",
-  "value": 2202957
-  },
-  {
-  "name": "HIV-positive TB patients on antiretroviral therapy during TB treatment",
-  "value": 331349
-  }
-  ]
-  },
-  {
-  "name": "RSSH",
-  "_children": [
-  {
-  "name": "Number of iCCM conditions treated among children under five in target areas",
-  "value": 2239104
-  },
-  {
-  "name": "Number of community based organizations that received a pre-defined package of training",
-  "value": 109
-  }
-  ]
-  }
-  ]
-  },
-  {
-  "name": "2021",
-  "_children": [
-  {
-  "name": "Malaria",
-  "_children": [
-  {
-  "name": "Suspected malaria cases that received a parasitological test",
-  "value": 284147443
-  },
-  {
-  "name": "Cases of malaria treated",
-  "value": 149071542
-  },
-  {
-  "name": "Mosquito nets distributed",
-  "value": 133391767
-  },
-  {
-  "name": "Children who received seasonal malaria chemoprophylaxis",
-  "value": 34450468
-  },
-  {
-  "name": "Population covered by Indoor Residual Spraying",
-  "value": 17493091
-  },
-  {
-  "name": "Pregnant women attending antenatal clinics who received intermittent preventive treatment for malaria",
-  "value": 11343587
-  },
-  {
-  "name": "Households covered by Indoor Residual Spraying",
-  "value": 9122870
-  },
-  {
-  "name": "Confirmed malaria cases fully investigated and classified",
-  "value": 55869
-  },
-  {
-  "name": "Malaria foci fully investigated and classified",
-  "value": 24596
-  }
-  ]
-  },
-  {
-  "name": "HIV/AIDS",
-  "_children": [
-  {
-  "name": "Total number of HIV tests",
-  "value": 70745675
-  },
-  {
-  "name": "Pregnant women who know their HIV status",
-  "value": 41307334
-  },
-  {
-  "name": "People on antiretroviral therapy for HIV",
-  "value": 23079751
-  },
-  {
-  "name": "Number of HIV tests taken among other vulnerable population",
-  "value": 5248864
-  },
-  {
-  "name": "Adolescent girls and young women (AGYW) reached with HIV prevention programs services",
-  "value": 3677364
-  },
-  {
-  "name": "Pregnant women tested for syphilis",
-  "value": 2460258
-  },
-  {
-  "name": "Young people aged 10-24 years reached by comprehensive sexuality education and/or life skills-based HIV education in or out of schools",
-  "value": 2414726
-  },
-  {
-  "name": "Sex workers reached with HIV prevention programs",
-  "value": 2182512
-  },
-  {
-  "name": "Men who have sex with men reached with HIV prevention programs",
-  "value": 2077880
-  },
-  {
-  "name": "Number of HIV tests taken among men who have sex with men",
-  "value": 1901298
-  },
-  {
-  "name": "Number of HIV tests taken among adolescents and youth",
-  "value": 1751798
-  },
-  {
-  "name": "Care and support services provided to people living with HIV",
-  "value": 1721871
-  },
-  {
-  "name": "Number of HIV tests taken among sex workers",
-  "value": 1664975
-  },
-  {
-  "name": "Number of HIV positive tests",
-  "value": 1204828
-  },
-  {
-  "name": "Medical male circumcisions",
-  "value": 1113048
-  },
-  {
-  "name": "People who use drugs reached with HIV prevention programs",
-  "value": 1078713
-  },
-  {
-  "name": "Number of HIV tests taken among people who use drugs",
-  "value": 924477
-  },
-  {
-  "name": "Number of HIV tests taken among prisoners",
-  "value": 675537
-  },
-  {
-  "name": "HIV-positive pregnant women who received ART during pregnancy",
-  "value": 667105
-  },
-  {
-  "name": "Other vulnerable populations reached with HIV prevention programs",
-  "value": 591918
-  },
-  {
-  "name": "People newly diagnosed with HIV initiated on ART",
-  "value": 546787
-  },
-  {
-  "name": "People on ART with suppressed viral load at 12 months (<1000 copies/ml)",
-  "value": 422191
-  },
-  {
-  "name": "Infants tested for HIV",
-  "value": 421907
-  },
-  {
-  "name": "Prisoners reached with HIV prevention programs",
-  "value": 294546
-  },
-  {
-  "name": "Number of HIV tests taken among transgender population",
-  "value": 120956
-  },
-  {
-  "name": "Transgender people reached with HIV prevention programs",
-  "value": 118891
-  },
-  {
-  "name": "People receiving Opioid Substitution Therapy",
-  "value": 65086
-  },
-  {
-  "name": "Men who have sex with men who initiated oral antiretroviral pre-exposure prophylaxis",
-  "value": 40222
-  },
-  {
-  "name": "Adolescent girls and young women who initiated oral antiretroviral pre-exposure prophylaxis",
-  "value": 30110
-  },
-  {
-  "name": "People aged 10–24 years reached with HIV prevention programs",
-  "value": 18466
-  },
-  {
-  "name": "Sex workers who initiated oral antiretroviral pre-exposure prophylaxis",
-  "value": 15944
-  },
-  {
-  "name": "People using pre-exposure prophylaxis",
-  "value": 9322
-  },
-  {
-  "name": "Transgender people who initiated oral antiretroviral pre-exposure prophylaxis",
-  "value": 1739
-  }
-  ]
-  },
-  {
-  "name": "HIV/TB",
-  "_children": [
-  {
-  "name": "People living with HIV in care screened for TB",
-  "value": 5727859
-  },
-  {
-  "name": "People living with HIV on ART who initiated TB preventive therapy",
-  "value": 2935106
-  },
-  {
-  "name": "TB patients with documented HIV status",
-  "value": 2408534
-  },
-  {
-  "name": "HIV-positive TB patients on antiretroviral therapy during TB treatment",
-  "value": 286992
-  }
-  ]
-  },
-  {
-  "name": "Tuberculosis",
-  "_children": [
-  {
-  "name": "People with TB treated",
-  "value": 5288136
-  },
-  {
-  "name": "TB patients with drug-susceptibility testing result for at least Rifampicin",
-  "value": 1277033
-  },
-  {
-  "name": "TB patients tested using WHO recommended rapid tests",
-  "value": 505495
-  },
-  {
-  "name": "People in contact with TB patients received preventive therapy",
-  "value": 399973
-  },
-  {
-  "name": "Rifampicin- and/or multidrug-resistant TB cases that began second-line treatment",
-  "value": 108706
-  },
-  {
-  "name": "Rifampicin- and/or multidrug-resistant TB cases notified",
-  "value": 88145
-  },
-  {
-  "name": "Care and support services provided to TB patients",
-  "value": 2047
-  },
-  {
-  "name": "People with extensively drug-resistant TB on treatment",
-  "value": 1634
-  }
-  ]
-  },
-  {
-  "name": "RSSH",
-  "_children": [
-  {
-  "name": "Number of iCCM conditions treated among children under five in target areas",
-  "value": 1688123
-  }
-  ]
-  }
-  ]
-  },
-  {
-  "name": "2020",
-  "_children": [
-  {
-  "name": "Malaria",
-  "_children": [
-  {
-  "name": "Suspected malaria cases that received a parasitological test",
-  "value": 261406547
-  },
-  {
-  "name": "Mosquito nets distributed",
-  "value": 202005157
-  },
-  {
-  "name": "Cases of malaria treated",
-  "value": 137134813
-  },
-  {
-  "name": "Children who received seasonal malaria chemoprophylaxis",
-  "value": 26683289
-  },
-  {
-  "name": "Population covered by Indoor Residual Spraying",
-  "value": 16926932
-  },
-  {
-  "name": "Pregnant women attending antenatal clinics who received intermittent preventive treatment for malaria",
-  "value": 11534554
-  },
-  {
-  "name": "Households covered by Indoor Residual Spraying",
-  "value": 10133803
-  },
-  {
-  "name": "Confirmed malaria cases fully investigated and classified",
-  "value": 52043
-  },
-  {
-  "name": "Malaria foci fully investigated and classified",
-  "value": 7683
-  }
-  ]
-  },
-  {
-  "name": "HIV/AIDS",
-  "_children": [
-  {
-  "name": "Total number of HIV tests",
-  "value": 102545818
-  },
-  {
-  "name": "Pregnant women who know their HIV status",
-  "value": 43725693
-  },
-  {
-  "name": "People on antiretroviral therapy for HIV",
-  "value": 21877303
-  },
-  {
-  "name": "People on ART with suppressed viral load at 12 months (<1000 copies/ml)",
-  "value": 2464038
-  },
-  {
-  "name": "Sex workers reached with HIV prevention programs",
-  "value": 1923489
-  },
-  {
-  "name": "Adolescent girls and young women (AGYW) reached with HIV prevention programs services",
-  "value": 1707719
-  },
-  {
-  "name": "Men who have sex with men reached with HIV prevention programs",
-  "value": 1542769
-  },
-  {
-  "name": "Care and support services provided to people living with HIV",
-  "value": 1406570
-  },
-  {
-  "name": "Number of HIV tests taken among sex workers",
-  "value": 1288927
-  },
-  {
-  "name": "Number of HIV tests taken among men who have sex with men",
-  "value": 1284819
-  },
-  {
-  "name": "Medical male circumcisions",
-  "value": 1166613
-  },
-  {
-  "name": "Other vulnerable populations reached with HIV prevention programs",
-  "value": 1008861
-  },
-  {
-  "name": "People who use drugs reached with HIV prevention programs",
-  "value": 892215
-  },
-  {
-  "name": "Number of HIV tests taken among people who use drugs",
-  "value": 769221
-  },
-  {
-  "name": "Number of HIV tests taken among other vulnerable population",
-  "value": 717891
-  },
-  {
-  "name": "Number of HIV tests taken among adolescents and youth",
-  "value": 705739
-  },
-  {
-  "name": "HIV-positive pregnant women who received ART during pregnancy",
-  "value": 686292
-  },
-  {
-  "name": "Young people aged 10-24 years reached by comprehensive sexuality education and/or life skills-based HIV education in or out of schools",
-  "value": 658888
-  },
-  {
-  "name": "Pregnant women tested for syphilis",
-  "value": 624184
-  },
-  {
-  "name": "Number of HIV tests taken among prisoners",
-  "value": 572856
-  },
-  {
-  "name": "People aged 10–24 years reached with HIV prevention programs",
-  "value": 541444
-  },
-  {
-  "name": "Infants tested for HIV",
-  "value": 418342
-  },
-  {
-  "name": "Transgender people reached with HIV prevention programs",
-  "value": 101552
-  },
-  {
-  "name": "People receiving Opioid Substitution Therapy",
-  "value": 92227
-  },
-  {
-  "name": "Number of HIV tests taken among transgender population",
-  "value": 78399
-  },
-  {
-  "name": "Prisoners reached with HIV prevention programs",
-  "value": 50729
-  },
-  {
-  "name": "People using pre-exposure prophylaxis",
-  "value": 18907
-  },
-  {
-  "name": "Men who have sex with men who initiated oral antiretroviral pre-exposure prophylaxis",
-  "value": 12209
-  },
-  {
-  "name": "Sex workers who initiated oral antiretroviral pre-exposure prophylaxis",
-  "value": 11358
-  },
-  {
-  "name": "Adolescent girls and young women who initiated oral antiretroviral pre-exposure prophylaxis",
-  "value": 8938
-  },
-  {
-  "name": "People newly diagnosed with HIV initiated on ART",
-  "value": 121
-  }
-  ]
-  },
-  {
-  "name": "HIV/TB",
-  "_children": [
-  {
-  "name": "People living with HIV in care screened for TB",
-  "value": 18047013
-  },
-  {
-  "name": "People living with HIV on ART who initiated TB preventive therapy",
-  "value": 4404205
-  },
-  {
-  "name": "TB patients with documented HIV status",
-  "value": 3004544
-  },
-  {
-  "name": "HIV-positive TB patients on antiretroviral therapy during TB treatment",
-  "value": 272543
-  }
-  ]
-  },
-  {
-  "name": "Tuberculosis",
-  "_children": [
-  {
-  "name": "People with TB treated",
-  "value": 4692587
-  },
-  {
-  "name": "TB patients with drug-susceptibility testing result for at least Rifampicin",
-  "value": 1738576
-  },
-  {
-  "name": "TB patients tested using WHO recommended rapid tests",
-  "value": 239464
-  },
-  {
-  "name": "People in contact with TB patients received preventive therapy",
-  "value": 194166
-  },
-  {
-  "name": "Rifampicin- and/or multidrug-resistant TB cases notified",
-  "value": 110586
-  },
-  {
-  "name": "Rifampicin- and/or multidrug-resistant TB cases that began second-line treatment",
-  "value": 100406
-  },
-  {
-  "name": "Care and support services provided to TB patients",
-  "value": 38802
-  },
-  {
-  "name": "People with extensively drug-resistant TB on treatment",
-  "value": 3821
-  }
-  ]
-  }
-  ]
-  },
-  {
-  "name": "2019",
-  "_children": [
-  {
-  "name": "Malaria",
-  "_children": [
-  {
-  "name": "Suspected malaria cases that received a parasitological test",
-  "value": 258888396
-  },
-  {
-  "name": "Mosquito nets distributed",
-  "value": 161677120
-  },
-  {
-  "name": "Cases of malaria treated",
-  "value": 138070353
-  },
-  {
-  "name": "Population covered by Indoor Residual Spraying",
-  "value": 15251640
-  },
-  {
-  "name": "Children who received seasonal malaria chemoprophylaxis",
-  "value": 14693040
-  },
-  {
-  "name": "Pregnant women attending antenatal clinics who received intermittent preventive treatment for malaria",
-  "value": 11432952
-  },
-  {
-  "name": "Households covered by Indoor Residual Spraying",
-  "value": 9137467
-  },
-  {
-  "name": "Confirmed malaria cases fully investigated and classified",
-  "value": 33765
-  },
-  {
-  "name": "Malaria foci fully investigated and classified",
-  "value": 5972
-  }
-  ]
-  },
-  {
-  "name": "HIV/AIDS",
-  "_children": [
-  {
-  "name": "Total number of HIV tests",
-  "value": 127035654
-  },
-  {
-  "name": "Pregnant women who know their HIV status",
-  "value": 45249969
-  },
-  {
-  "name": "People on antiretroviral therapy for HIV",
-  "value": 20085609
-  },
-  {
-  "name": "People on ART with suppressed viral load at 12 months (<1000 copies/ml)",
-  "value": 2430120
-  },
-  {
-  "name": "Sex workers reached with HIV prevention programs",
-  "value": 1921920
-  },
-  {
-  "name": "Men who have sex with men reached with HIV prevention programs",
-  "value": 1770721
-  },
-  {
-  "name": "Care and support services provided to people living with HIV",
-  "value": 1764761
-  },
-  {
-  "name": "Adolescent girls and young women (AGYW) reached with HIV prevention programs services",
-  "value": 1512424
-  },
-  {
-  "name": "Number of HIV tests taken among men who have sex with men",
-  "value": 1434511
-  },
-  {
-  "name": "Young people aged 10-24 years reached by comprehensive sexuality education and/or life skills-based HIV education in or out of schools",
-  "value": 1425760
-  },
-  {
-  "name": "Other vulnerable populations reached with HIV prevention programs",
-  "value": 1371473
-  },
-  {
-  "name": "Medical male circumcisions",
-  "value": 1277911
-  },
-  {
-  "name": "Number of HIV tests taken among sex workers",
-  "value": 1277099
-  },
-  {
-  "name": "Number of HIV tests taken among other vulnerable population",
-  "value": 923244
-  },
-  {
-  "name": "People who use drugs reached with HIV prevention programs",
-  "value": 852952
-  },
-  {
-  "name": "Number of HIV tests taken among people who use drugs",
-  "value": 774400
-  },
-  {
-  "name": "Number of HIV tests taken among prisoners",
-  "value": 742287
-  },
-  {
-  "name": "HIV-positive pregnant women who received ART during pregnancy",
-  "value": 718501
-  },
-  {
-  "name": "Number of HIV tests taken among adolescents and youth",
-  "value": 715755
-  },
-  {
-  "name": "Pregnant women tested for syphilis",
-  "value": 600614
-  },
-  {
-  "name": "Infants tested for HIV",
-  "value": 435512
-  },
-  {
-  "name": "People aged 10–24 years reached with HIV prevention programs",
-  "value": 388083
-  },
-  {
-  "name": "Transgender people reached with HIV prevention programs",
-  "value": 136810
-  },
-  {
-  "name": "Number of HIV tests taken among transgender population",
-  "value": 106464
-  },
-  {
-  "name": "People receiving Opioid Substitution Therapy",
-  "value": 82919
-  },
-  {
-  "name": "Prisoners reached with HIV prevention programs",
-  "value": 33597
-  },
-  {
-  "name": "Men who have sex with men who initiated oral antiretroviral pre-exposure prophylaxis",
-  "value": 12518
-  },
-  {
-  "name": "People using pre-exposure prophylaxis",
-  "value": 7645
-  },
-  {
-  "name": "Sex workers who initiated oral antiretroviral pre-exposure prophylaxis",
-  "value": 6092
-  },
-  {
-  "name": "People newly diagnosed with HIV initiated on ART",
-  "value": 231
-  }
-  ]
-  },
-  {
-  "name": "HIV/TB",
-  "_children": [
-  {
-  "name": "People living with HIV in care screened for TB",
-  "value": 14289931
-  },
-  {
-  "name": "People living with HIV on ART who initiated TB preventive therapy",
-  "value": 3619367
-  },
-  {
-  "name": "TB patients with documented HIV status",
-  "value": 3412792
-  },
-  {
-  "name": "HIV-positive TB patients on antiretroviral therapy during TB treatment",
-  "value": 321354
-  }
-  ]
-  },
-  {
-  "name": "Tuberculosis",
-  "_children": [
-  {
-  "name": "People with TB treated",
-  "value": 5771298
-  },
-  {
-  "name": "TB patients with drug-susceptibility testing result for at least Rifampicin",
-  "value": 1706570
-  },
-  {
-  "name": "TB patients tested using WHO recommended rapid tests",
-  "value": 244005
-  },
-  {
-  "name": "People in contact with TB patients received preventive therapy",
-  "value": 170621
-  },
-  {
-  "name": "Rifampicin- and/or multidrug-resistant TB cases notified",
-  "value": 131542
-  },
-  {
-  "name": "Rifampicin- and/or multidrug-resistant TB cases that began second-line treatment",
-  "value": 125033
-  },
-  {
-  "name": "Care and support services provided to TB patients",
-  "value": 29889
-  },
-  {
-  "name": "People with extensively drug-resistant TB on treatment",
-  "value": 6071
-  }
-  ]
-  }
-  ]
-  },
-  {
-  "name": "2018",
-  "_children": [
-  {
-  "name": "Malaria",
-  "_children": [
-  {
-  "name": "Suspected malaria cases that received a parasitological test",
-  "value": 226498673
-  },
-  {
-  "name": "Mosquito nets distributed",
-  "value": 152867767
-  },
-  {
-  "name": "Cases of malaria treated",
-  "value": 114435433
-  },
-  {
-  "name": "Population covered by Indoor Residual Spraying",
-  "value": 12451968
-  },
-  {
-  "name": "Children who received seasonal malaria chemoprophylaxis",
-  "value": 10672227
-  },
-  {
-  "name": "Pregnant women attending antenatal clinics who received intermittent preventive treatment for malaria",
-  "value": 9535620
-  },
-  {
-  "name": "Households covered by Indoor Residual Spraying",
-  "value": 7695951
-  },
-  {
-  "name": "People covered by LLINs distributed",
-  "value": 4252756
-  },
-  {
-  "name": "Confirmed malaria cases fully investigated and classified",
-  "value": 78003
-  },
-  {
-  "name": "Malaria foci fully investigated and classified",
-  "value": 7380
-  }
-  ]
-  },
-  {
-  "name": "HIV/AIDS",
-  "_children": [
-  {
-  "name": "Total number of HIV tests",
-  "value": 125429887
-  },
-  {
-  "name": "Pregnant women who know their HIV status",
-  "value": 34997474
-  },
-  {
-  "name": "People on antiretroviral therapy for HIV",
-  "value": 18718588
-  },
-  {
-  "name": "Other vulnerable populations reached with HIV prevention programs",
-  "value": 1802944
-  },
-  {
-  "name": "Care and support services provided to people living with HIV",
-  "value": 1652756
-  },
-  {
-  "name": "Sex workers reached with HIV prevention programs",
-  "value": 1630218
-  },
-  {
-  "name": "Men who have sex with men reached with HIV prevention programs",
-  "value": 1564646
-  },
-  {
-  "name": "Medical male circumcisions",
-  "value": 1487169
-  },
-  {
-  "name": "People on ART with suppressed viral load at 12 months (<1000 copies/ml)",
-  "value": 1454486
-  },
-  {
-  "name": "Number of HIV tests taken among men who have sex with men",
-  "value": 1197140
-  },
-  {
-  "name": "Number of HIV tests taken among sex workers",
-  "value": 1018821
-  },
-  {
-  "name": "Young people aged 10-24 years reached by comprehensive sexuality education and/or life skills-based HIV education in or out of schools",
-  "value": 991049
-  },
-  {
-  "name": "Number of HIV tests taken among other vulnerable population",
-  "value": 876567
-  },
-  {
-  "name": "Number of HIV tests taken among people who use drugs",
-  "value": 772029
-  },
-  {
-  "name": "People who use drugs reached with HIV prevention programs",
-  "value": 751632
-  },
-  {
-  "name": "HIV-positive pregnant women who received ART during pregnancy",
-  "value": 713587
-  },
-  {
-  "name": "Pregnant women tested for syphilis",
-  "value": 636853
-  },
-  {
-  "name": "Number of HIV tests taken among adolescents and youth",
-  "value": 490672
-  },
-  {
-  "name": "Number of HIV tests taken among prisoners",
-  "value": 454625
-  },
-  {
-  "name": "Infants tested for HIV",
-  "value": 431574
-  },
-  {
-  "name": "Adolescent girls and young women (AGYW) reached with HIV prevention programs services",
-  "value": 366532
-  },
-  {
-  "name": "People aged 10–24 years reached with HIV prevention programs",
-  "value": 321279
-  },
-  {
-  "name": "Transgender people reached with HIV prevention programs",
-  "value": 123876
-  },
-  {
-  "name": "Targeted population reached reached with standardized HIV prevention interventions",
-  "value": 92350
-  },
-  {
-  "name": "Number of HIV tests taken among transgender population",
-  "value": 87868
-  },
-  {
-  "name": "Prisoners reached with HIV prevention programs",
-  "value": 43556
-  },
-  {
-  "name": "People receiving Opioid Substitution Therapy",
-  "value": 31700
-  },
-  {
-  "name": "Men who have sex with men who initiated oral antiretroviral pre-exposure prophylaxis",
-  "value": 3693
-  },
-  {
-  "name": "Sex workers who initiated oral antiretroviral pre-exposure prophylaxis",
-  "value": 2887
-  },
-  {
-  "name": "People newly diagnosed with HIV initiated on ART",
-  "value": 261
-  }
-  ]
-  },
-  {
-  "name": "HIV/TB",
-  "_children": [
-  {
-  "name": "People living with HIV in care screened for TB",
-  "value": 14219389
-  },
-  {
-  "name": "People living with HIV on ART who initiated TB preventive therapy",
-  "value": 2262970
-  },
-  {
-  "name": "TB patients with documented HIV status",
-  "value": 2242036
-  },
-  {
-  "name": "HIV-positive TB patients on antiretroviral therapy during TB treatment",
-  "value": 342148
-  },
-  {
-  "name": "HIV-positive TB patients on co-trimoxazole prophylaxis during treatment",
-  "value": 1435
-  }
-  ]
-  },
-  {
-  "name": "Tuberculosis",
-  "_children": [
-  {
-  "name": "People with TB treated",
-  "value": 5240744
-  },
-  {
-  "name": "TB patients with drug-susceptibility testing result for at least Rifampicin",
-  "value": 816166
-  },
-  {
-  "name": "TB patients tested using WHO recommended rapid tests",
-  "value": 220584
-  },
-  {
-  "name": "People in contact with TB patients received preventive therapy",
-  "value": 138694
-  },
-  {
-  "name": "Rifampicin- and/or multidrug-resistant TB cases that began second-line treatment",
-  "value": 111737
-  },
-  {
-  "name": "Rifampicin- and/or multidrug-resistant TB cases notified",
-  "value": 110003
-  },
-  {
-  "name": "Care and support services provided to TB patients",
-  "value": 16854
-  },
-  {
-  "name": "People with extensively drug-resistant TB on treatment",
-  "value": 7446
-  }
-  ]
-  }
-  ]
-  },
-  {
-  "name": "2017",
-  "_children": [
-  {
-  "name": "Malaria",
-  "_children": [
-  {
-  "name": "Suspected malaria cases that received a parasitological test",
-  "value": 215730104
-  },
-  {
-  "name": "People covered by LLINs distributed",
-  "value": 209779093
-  },
-  {
-  "name": "Mosquito nets distributed",
-  "value": 179114637
-  },
-  {
-  "name": "Cases of malaria treated",
-  "value": 114556835
-  },
-  {
-  "name": "Households covered by Indoor Residual Spraying",
-  "value": 9888178
-  },
-  {
-  "name": "Children who received seasonal malaria chemoprophylaxis",
-  "value": 5647038
-  },
-  {
-  "name": "Pregnant women attending antenatal clinics who received intermittent preventive treatment for malaria",
-  "value": 5110485
-  },
-  {
-  "name": "Population covered by Indoor Residual Spraying",
-  "value": 4892853
-  },
-  {
-  "name": "Confirmed malaria cases fully investigated and classified",
-  "value": 70222
-  },
-  {
-  "name": "Malaria foci fully investigated and classified",
-  "value": 700
-  }
-  ]
-  },
-  {
-  "name": "HIV/AIDS",
-  "_children": [
-  {
-  "name": "Total number of HIV tests",
-  "value": 93629023
-  },
-  {
-  "name": "Pregnant women who know their HIV status",
-  "value": 29360695
-  },
-  {
-  "name": "People on antiretroviral therapy for HIV",
-  "value": 17543868
-  },
-  {
-  "name": "Care and support services provided to people living with HIV",
-  "value": 2887555
-  },
-  {
-  "name": "Other vulnerable populations reached with HIV prevention programs",
-  "value": 2226719
-  },
-  {
-  "name": "Sex workers reached with HIV prevention programs",
-  "value": 2036026
-  },
-  {
-  "name": "Men who have sex with men reached with HIV prevention programs",
-  "value": 1854489
-  },
-  {
-  "name": "Number of HIV tests taken among other vulnerable population",
-  "value": 1611442
-  },
-  {
-  "name": "People aged 10–24 years reached with HIV prevention programs",
-  "value": 1424078
-  },
-  {
-  "name": "Number of HIV tests taken among sex workers",
-  "value": 1213334
-  },
-  {
-  "name": "Young people aged 10-24 years reached by comprehensive sexuality education and/or life skills-based HIV education in or out of schools",
-  "value": 1136085
-  },
-  {
-  "name": "Number of HIV tests taken among men who have sex with men",
-  "value": 1056351
-  },
-  {
-  "name": "Medical male circumcisions",
-  "value": 988904
-  },
-  {
-  "name": "People on ART with suppressed viral load at 12 months (<1000 copies/ml)",
-  "value": 882048
-  },
-  {
-  "name": "People who use drugs reached with HIV prevention programs",
-  "value": 799182
-  },
-  {
-  "name": "HIV-positive pregnant women who received ART during pregnancy",
-  "value": 710495
-  },
-  {
-  "name": "Pregnant women tested for syphilis",
-  "value": 606113
-  },
-  {
-  "name": "Targeted population reached reached with standardized HIV prevention interventions",
-  "value": 501627
-  },
-  {
-  "name": "Number of HIV tests taken among people who use drugs",
-  "value": 501527
-  },
-  {
-  "name": "Number of HIV tests taken among adolescents and youth",
-  "value": 466591
-  },
-  {
-  "name": "Infants tested for HIV",
-  "value": 427105
-  },
-  {
-  "name": "Prisoners reached with HIV prevention programs",
-  "value": 190312
-  },
-  {
-  "name": "Transgender people reached with HIV prevention programs",
-  "value": 117277
-  },
-  {
-  "name": "People receiving Opioid Substitution Therapy",
-  "value": 88391
-  },
-  {
-  "name": "Number of HIV tests taken among transgender population",
-  "value": 74653
-  },
-  {
-  "name": "Number of HIV tests taken among prisoners",
-  "value": 64600
-  },
-  {
-  "name": "Adolescent girls and young women (AGYW) reached with HIV prevention programs services",
-  "value": 28354
-  },
-  {
-  "name": "People newly diagnosed with HIV initiated on ART",
-  "value": 23
-  }
-  ]
-  },
-  {
-  "name": "HIV/TB",
-  "_children": [
-  {
-  "name": "People living with HIV in care screened for TB",
-  "value": 14013627
-  },
-  {
-  "name": "TB patients with documented HIV status",
-  "value": 2203724
-  },
-  {
-  "name": "People living with HIV on ART who initiated TB preventive therapy",
-  "value": 1021833
-  },
-  {
-  "name": "HIV-positive TB patients on antiretroviral therapy during TB treatment",
-  "value": 350728
-  },
-  {
-  "name": "HIV-positive TB patients on co-trimoxazole prophylaxis during treatment",
-  "value": 2176
-  }
-  ]
-  },
-  {
-  "name": "Tuberculosis",
-  "_children": [
-  {
-  "name": "People with TB treated",
-  "value": 5040008
-  },
-  {
-  "name": "Rifampicin- and/or multidrug-resistant TB cases that began second-line treatment",
-  "value": 103557
-  },
-  {
-  "name": "People in contact with TB patients received preventive therapy",
-  "value": 98222
-  },
-  {
-  "name": "Rifampicin- and/or multidrug-resistant TB cases notified",
-  "value": 87296
-  },
-  {
-  "name": "TB patients with drug-susceptibility testing result for at least Rifampicin",
-  "value": 58522
-  },
-  {
-  "name": "TB patients tested using WHO recommended rapid tests",
-  "value": 21391
-  },
-  {
-  "name": "Care and support services provided to TB patients",
-  "value": 16945
-  },
-  {
-  "name": "People with extensively drug-resistant TB on treatment",
-  "value": 3312
-  }
-  ]
-  }
-  ]
-  }
-  ];
+    name: "2022",
+    _children: [
+      {
+        name: "Malaria",
+        _children: [
+          {
+            name: "Suspected malaria cases that received a parasitological test",
+            value: 321018609,
+          },
+          {
+            name: "Mosquito nets distributed",
+            value: 219678398,
+          },
+          {
+            name: "Cases of malaria treated",
+            value: 165297849,
+          },
+          {
+            name: "Children who received seasonal malaria chemoprophylaxis",
+            value: 37103714,
+          },
+          {
+            name: "Population covered by Indoor Residual Spraying",
+            value: 18516771,
+          },
+          {
+            name: "Pregnant women attending antenatal clinics who received intermittent preventive treatment for malaria",
+            value: 14620922,
+          },
+          {
+            name: "Households covered by Indoor Residual Spraying",
+            value: 8451212,
+          },
+          {
+            name: "Confirmed malaria cases fully investigated and classified",
+            value: 78347,
+          },
+          {
+            name: "Malaria foci fully investigated and classified",
+            value: 38227,
+          },
+        ],
+      },
+      {
+        name: "HIV/AIDS",
+        _children: [
+          {
+            name: "Total number of HIV tests",
+            value: 53074640,
+          },
+          {
+            name: "Pregnant women who know their HIV status",
+            value: 43943450,
+          },
+          {
+            name: "People on antiretroviral therapy for HIV",
+            value: 24471293,
+          },
+          {
+            name: "Young people aged 10-24 years reached by comprehensive sexuality education and/or life skills-based HIV education in or out of schools",
+            value: 4001648,
+          },
+          {
+            name: "Adolescent girls and young women (AGYW) reached with HIV prevention programs services",
+            value: 3566170,
+          },
+          {
+            name: "Sex workers reached with HIV prevention programs",
+            value: 2731926,
+          },
+          {
+            name: "Pregnant women tested for syphilis",
+            value: 2647380,
+          },
+          {
+            name: "Men who have sex with men reached with HIV prevention programs",
+            value: 2605902,
+          },
+          {
+            name: "Number of HIV tests taken among men who have sex with men",
+            value: 2408640,
+          },
+          {
+            name: "Number of HIV tests taken among other vulnerable population",
+            value: 2294467,
+          },
+          {
+            name: "Number of HIV tests taken among sex workers",
+            value: 2198995,
+          },
+          {
+            name: "Number of HIV tests taken among adolescents and youth",
+            value: 2127567,
+          },
+          {
+            name: "Number of HIV tests taken among prisoners",
+            value: 1532177,
+          },
+          {
+            name: "Number of HIV positive tests",
+            value: 1294853,
+          },
+          {
+            name: "People who use drugs reached with HIV prevention programs",
+            value: 1083995,
+          },
+          {
+            name: "Number of HIV tests taken among people who use drugs",
+            value: 1034576,
+          },
+          {
+            name: "Other vulnerable populations reached with HIV prevention programs",
+            value: 836845,
+          },
+          {
+            name: "Medical male circumcisions",
+            value: 830749,
+          },
+          {
+            name: "HIV-positive pregnant women who received ART during pregnancy",
+            value: 710418,
+          },
+          {
+            name: "Care and support services provided to people living with HIV",
+            value: 512946,
+          },
+          {
+            name: "Infants tested for HIV",
+            value: 473415,
+          },
+          {
+            name: "People newly diagnosed with HIV initiated on ART",
+            value: 418533,
+          },
+          {
+            name: "Prisoners reached with HIV prevention programs",
+            value: 204054,
+          },
+          {
+            name: "Sex workers who initiated oral antiretroviral pre-exposure prophylaxis",
+            value: 198592,
+          },
+          {
+            name: "Transgender people reached with HIV prevention programs",
+            value: 159092,
+          },
+          {
+            name: "Number of HIV tests taken among transgender population",
+            value: 149303,
+          },
+          {
+            name: "Men who have sex with men who initiated oral antiretroviral pre-exposure prophylaxis",
+            value: 61811,
+          },
+          {
+            name: "People receiving Opioid Substitution Therapy",
+            value: 60441,
+          },
+          {
+            name: "People aged 10–24 years reached with HIV prevention programs",
+            value: 45863,
+          },
+          {
+            name: "Adolescent girls and young women who initiated oral antiretroviral pre-exposure prophylaxis",
+            value: 44273,
+          },
+          {
+            name: "People using pre-exposure prophylaxis",
+            value: 30167,
+          },
+          {
+            name: "Transgender people who initiated oral antiretroviral pre-exposure prophylaxis",
+            value: 3134,
+          },
+        ],
+      },
+      {
+        name: "Tuberculosis",
+        _children: [
+          {
+            name: "People with TB treated",
+            value: 6670422,
+          },
+          {
+            name: "People in contact with TB patients received preventive therapy",
+            value: 1542219,
+          },
+          {
+            name: "TB patients with drug-susceptibility testing result for at least Rifampicin",
+            value: 961896,
+          },
+          {
+            name: "TB patients tested using WHO recommended rapid tests",
+            value: 875351,
+          },
+          {
+            name: "Rifampicin- and/or multidrug-resistant TB cases that began second-line treatment",
+            value: 118075,
+          },
+          {
+            name: "Care and support services provided to TB patients",
+            value: 93538,
+          },
+          {
+            name: "Rifampicin- and/or multidrug-resistant TB cases notified",
+            value: 70621,
+          },
+          {
+            name: "People with extensively drug-resistant TB on treatment",
+            value: 435,
+          },
+        ],
+      },
+      {
+        name: "HIV/TB",
+        _children: [
+          {
+            name: "People living with HIV in care screened for TB",
+            value: 3989358,
+          },
+          {
+            name: "TB patients with documented HIV status",
+            value: 2230611,
+          },
+          {
+            name: "People living with HIV on ART who initiated TB preventive therapy",
+            value: 2202957,
+          },
+          {
+            name: "HIV-positive TB patients on antiretroviral therapy during TB treatment",
+            value: 331349,
+          },
+        ],
+      },
+      {
+        name: "RSSH",
+        _children: [
+          {
+            name: "Number of iCCM conditions treated among children under five in target areas",
+            value: 2239104,
+          },
+          {
+            name: "Number of community based organizations that received a pre-defined package of training",
+            value: 109,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    name: "2021",
+    _children: [
+      {
+        name: "Malaria",
+        _children: [
+          {
+            name: "Suspected malaria cases that received a parasitological test",
+            value: 284147443,
+          },
+          {
+            name: "Cases of malaria treated",
+            value: 149071542,
+          },
+          {
+            name: "Mosquito nets distributed",
+            value: 133391767,
+          },
+          {
+            name: "Children who received seasonal malaria chemoprophylaxis",
+            value: 34450468,
+          },
+          {
+            name: "Population covered by Indoor Residual Spraying",
+            value: 17493091,
+          },
+          {
+            name: "Pregnant women attending antenatal clinics who received intermittent preventive treatment for malaria",
+            value: 11343587,
+          },
+          {
+            name: "Households covered by Indoor Residual Spraying",
+            value: 9122870,
+          },
+          {
+            name: "Confirmed malaria cases fully investigated and classified",
+            value: 55869,
+          },
+          {
+            name: "Malaria foci fully investigated and classified",
+            value: 24596,
+          },
+        ],
+      },
+      {
+        name: "HIV/AIDS",
+        _children: [
+          {
+            name: "Total number of HIV tests",
+            value: 70745675,
+          },
+          {
+            name: "Pregnant women who know their HIV status",
+            value: 41307334,
+          },
+          {
+            name: "People on antiretroviral therapy for HIV",
+            value: 23079751,
+          },
+          {
+            name: "Number of HIV tests taken among other vulnerable population",
+            value: 5248864,
+          },
+          {
+            name: "Adolescent girls and young women (AGYW) reached with HIV prevention programs services",
+            value: 3677364,
+          },
+          {
+            name: "Pregnant women tested for syphilis",
+            value: 2460258,
+          },
+          {
+            name: "Young people aged 10-24 years reached by comprehensive sexuality education and/or life skills-based HIV education in or out of schools",
+            value: 2414726,
+          },
+          {
+            name: "Sex workers reached with HIV prevention programs",
+            value: 2182512,
+          },
+          {
+            name: "Men who have sex with men reached with HIV prevention programs",
+            value: 2077880,
+          },
+          {
+            name: "Number of HIV tests taken among men who have sex with men",
+            value: 1901298,
+          },
+          {
+            name: "Number of HIV tests taken among adolescents and youth",
+            value: 1751798,
+          },
+          {
+            name: "Care and support services provided to people living with HIV",
+            value: 1721871,
+          },
+          {
+            name: "Number of HIV tests taken among sex workers",
+            value: 1664975,
+          },
+          {
+            name: "Number of HIV positive tests",
+            value: 1204828,
+          },
+          {
+            name: "Medical male circumcisions",
+            value: 1113048,
+          },
+          {
+            name: "People who use drugs reached with HIV prevention programs",
+            value: 1078713,
+          },
+          {
+            name: "Number of HIV tests taken among people who use drugs",
+            value: 924477,
+          },
+          {
+            name: "Number of HIV tests taken among prisoners",
+            value: 675537,
+          },
+          {
+            name: "HIV-positive pregnant women who received ART during pregnancy",
+            value: 667105,
+          },
+          {
+            name: "Other vulnerable populations reached with HIV prevention programs",
+            value: 591918,
+          },
+          {
+            name: "People newly diagnosed with HIV initiated on ART",
+            value: 546787,
+          },
+          {
+            name: "People on ART with suppressed viral load at 12 months (<1000 copies/ml)",
+            value: 422191,
+          },
+          {
+            name: "Infants tested for HIV",
+            value: 421907,
+          },
+          {
+            name: "Prisoners reached with HIV prevention programs",
+            value: 294546,
+          },
+          {
+            name: "Number of HIV tests taken among transgender population",
+            value: 120956,
+          },
+          {
+            name: "Transgender people reached with HIV prevention programs",
+            value: 118891,
+          },
+          {
+            name: "People receiving Opioid Substitution Therapy",
+            value: 65086,
+          },
+          {
+            name: "Men who have sex with men who initiated oral antiretroviral pre-exposure prophylaxis",
+            value: 40222,
+          },
+          {
+            name: "Adolescent girls and young women who initiated oral antiretroviral pre-exposure prophylaxis",
+            value: 30110,
+          },
+          {
+            name: "People aged 10–24 years reached with HIV prevention programs",
+            value: 18466,
+          },
+          {
+            name: "Sex workers who initiated oral antiretroviral pre-exposure prophylaxis",
+            value: 15944,
+          },
+          {
+            name: "People using pre-exposure prophylaxis",
+            value: 9322,
+          },
+          {
+            name: "Transgender people who initiated oral antiretroviral pre-exposure prophylaxis",
+            value: 1739,
+          },
+        ],
+      },
+      {
+        name: "HIV/TB",
+        _children: [
+          {
+            name: "People living with HIV in care screened for TB",
+            value: 5727859,
+          },
+          {
+            name: "People living with HIV on ART who initiated TB preventive therapy",
+            value: 2935106,
+          },
+          {
+            name: "TB patients with documented HIV status",
+            value: 2408534,
+          },
+          {
+            name: "HIV-positive TB patients on antiretroviral therapy during TB treatment",
+            value: 286992,
+          },
+        ],
+      },
+      {
+        name: "Tuberculosis",
+        _children: [
+          {
+            name: "People with TB treated",
+            value: 5288136,
+          },
+          {
+            name: "TB patients with drug-susceptibility testing result for at least Rifampicin",
+            value: 1277033,
+          },
+          {
+            name: "TB patients tested using WHO recommended rapid tests",
+            value: 505495,
+          },
+          {
+            name: "People in contact with TB patients received preventive therapy",
+            value: 399973,
+          },
+          {
+            name: "Rifampicin- and/or multidrug-resistant TB cases that began second-line treatment",
+            value: 108706,
+          },
+          {
+            name: "Rifampicin- and/or multidrug-resistant TB cases notified",
+            value: 88145,
+          },
+          {
+            name: "Care and support services provided to TB patients",
+            value: 2047,
+          },
+          {
+            name: "People with extensively drug-resistant TB on treatment",
+            value: 1634,
+          },
+        ],
+      },
+      {
+        name: "RSSH",
+        _children: [
+          {
+            name: "Number of iCCM conditions treated among children under five in target areas",
+            value: 1688123,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    name: "2020",
+    _children: [
+      {
+        name: "Malaria",
+        _children: [
+          {
+            name: "Suspected malaria cases that received a parasitological test",
+            value: 261406547,
+          },
+          {
+            name: "Mosquito nets distributed",
+            value: 202005157,
+          },
+          {
+            name: "Cases of malaria treated",
+            value: 137134813,
+          },
+          {
+            name: "Children who received seasonal malaria chemoprophylaxis",
+            value: 26683289,
+          },
+          {
+            name: "Population covered by Indoor Residual Spraying",
+            value: 16926932,
+          },
+          {
+            name: "Pregnant women attending antenatal clinics who received intermittent preventive treatment for malaria",
+            value: 11534554,
+          },
+          {
+            name: "Households covered by Indoor Residual Spraying",
+            value: 10133803,
+          },
+          {
+            name: "Confirmed malaria cases fully investigated and classified",
+            value: 52043,
+          },
+          {
+            name: "Malaria foci fully investigated and classified",
+            value: 7683,
+          },
+        ],
+      },
+      {
+        name: "HIV/AIDS",
+        _children: [
+          {
+            name: "Total number of HIV tests",
+            value: 102545818,
+          },
+          {
+            name: "Pregnant women who know their HIV status",
+            value: 43725693,
+          },
+          {
+            name: "People on antiretroviral therapy for HIV",
+            value: 21877303,
+          },
+          {
+            name: "People on ART with suppressed viral load at 12 months (<1000 copies/ml)",
+            value: 2464038,
+          },
+          {
+            name: "Sex workers reached with HIV prevention programs",
+            value: 1923489,
+          },
+          {
+            name: "Adolescent girls and young women (AGYW) reached with HIV prevention programs services",
+            value: 1707719,
+          },
+          {
+            name: "Men who have sex with men reached with HIV prevention programs",
+            value: 1542769,
+          },
+          {
+            name: "Care and support services provided to people living with HIV",
+            value: 1406570,
+          },
+          {
+            name: "Number of HIV tests taken among sex workers",
+            value: 1288927,
+          },
+          {
+            name: "Number of HIV tests taken among men who have sex with men",
+            value: 1284819,
+          },
+          {
+            name: "Medical male circumcisions",
+            value: 1166613,
+          },
+          {
+            name: "Other vulnerable populations reached with HIV prevention programs",
+            value: 1008861,
+          },
+          {
+            name: "People who use drugs reached with HIV prevention programs",
+            value: 892215,
+          },
+          {
+            name: "Number of HIV tests taken among people who use drugs",
+            value: 769221,
+          },
+          {
+            name: "Number of HIV tests taken among other vulnerable population",
+            value: 717891,
+          },
+          {
+            name: "Number of HIV tests taken among adolescents and youth",
+            value: 705739,
+          },
+          {
+            name: "HIV-positive pregnant women who received ART during pregnancy",
+            value: 686292,
+          },
+          {
+            name: "Young people aged 10-24 years reached by comprehensive sexuality education and/or life skills-based HIV education in or out of schools",
+            value: 658888,
+          },
+          {
+            name: "Pregnant women tested for syphilis",
+            value: 624184,
+          },
+          {
+            name: "Number of HIV tests taken among prisoners",
+            value: 572856,
+          },
+          {
+            name: "People aged 10–24 years reached with HIV prevention programs",
+            value: 541444,
+          },
+          {
+            name: "Infants tested for HIV",
+            value: 418342,
+          },
+          {
+            name: "Transgender people reached with HIV prevention programs",
+            value: 101552,
+          },
+          {
+            name: "People receiving Opioid Substitution Therapy",
+            value: 92227,
+          },
+          {
+            name: "Number of HIV tests taken among transgender population",
+            value: 78399,
+          },
+          {
+            name: "Prisoners reached with HIV prevention programs",
+            value: 50729,
+          },
+          {
+            name: "People using pre-exposure prophylaxis",
+            value: 18907,
+          },
+          {
+            name: "Men who have sex with men who initiated oral antiretroviral pre-exposure prophylaxis",
+            value: 12209,
+          },
+          {
+            name: "Sex workers who initiated oral antiretroviral pre-exposure prophylaxis",
+            value: 11358,
+          },
+          {
+            name: "Adolescent girls and young women who initiated oral antiretroviral pre-exposure prophylaxis",
+            value: 8938,
+          },
+          {
+            name: "People newly diagnosed with HIV initiated on ART",
+            value: 121,
+          },
+        ],
+      },
+      {
+        name: "HIV/TB",
+        _children: [
+          {
+            name: "People living with HIV in care screened for TB",
+            value: 18047013,
+          },
+          {
+            name: "People living with HIV on ART who initiated TB preventive therapy",
+            value: 4404205,
+          },
+          {
+            name: "TB patients with documented HIV status",
+            value: 3004544,
+          },
+          {
+            name: "HIV-positive TB patients on antiretroviral therapy during TB treatment",
+            value: 272543,
+          },
+        ],
+      },
+      {
+        name: "Tuberculosis",
+        _children: [
+          {
+            name: "People with TB treated",
+            value: 4692587,
+          },
+          {
+            name: "TB patients with drug-susceptibility testing result for at least Rifampicin",
+            value: 1738576,
+          },
+          {
+            name: "TB patients tested using WHO recommended rapid tests",
+            value: 239464,
+          },
+          {
+            name: "People in contact with TB patients received preventive therapy",
+            value: 194166,
+          },
+          {
+            name: "Rifampicin- and/or multidrug-resistant TB cases notified",
+            value: 110586,
+          },
+          {
+            name: "Rifampicin- and/or multidrug-resistant TB cases that began second-line treatment",
+            value: 100406,
+          },
+          {
+            name: "Care and support services provided to TB patients",
+            value: 38802,
+          },
+          {
+            name: "People with extensively drug-resistant TB on treatment",
+            value: 3821,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    name: "2019",
+    _children: [
+      {
+        name: "Malaria",
+        _children: [
+          {
+            name: "Suspected malaria cases that received a parasitological test",
+            value: 258888396,
+          },
+          {
+            name: "Mosquito nets distributed",
+            value: 161677120,
+          },
+          {
+            name: "Cases of malaria treated",
+            value: 138070353,
+          },
+          {
+            name: "Population covered by Indoor Residual Spraying",
+            value: 15251640,
+          },
+          {
+            name: "Children who received seasonal malaria chemoprophylaxis",
+            value: 14693040,
+          },
+          {
+            name: "Pregnant women attending antenatal clinics who received intermittent preventive treatment for malaria",
+            value: 11432952,
+          },
+          {
+            name: "Households covered by Indoor Residual Spraying",
+            value: 9137467,
+          },
+          {
+            name: "Confirmed malaria cases fully investigated and classified",
+            value: 33765,
+          },
+          {
+            name: "Malaria foci fully investigated and classified",
+            value: 5972,
+          },
+        ],
+      },
+      {
+        name: "HIV/AIDS",
+        _children: [
+          {
+            name: "Total number of HIV tests",
+            value: 127035654,
+          },
+          {
+            name: "Pregnant women who know their HIV status",
+            value: 45249969,
+          },
+          {
+            name: "People on antiretroviral therapy for HIV",
+            value: 20085609,
+          },
+          {
+            name: "People on ART with suppressed viral load at 12 months (<1000 copies/ml)",
+            value: 2430120,
+          },
+          {
+            name: "Sex workers reached with HIV prevention programs",
+            value: 1921920,
+          },
+          {
+            name: "Men who have sex with men reached with HIV prevention programs",
+            value: 1770721,
+          },
+          {
+            name: "Care and support services provided to people living with HIV",
+            value: 1764761,
+          },
+          {
+            name: "Adolescent girls and young women (AGYW) reached with HIV prevention programs services",
+            value: 1512424,
+          },
+          {
+            name: "Number of HIV tests taken among men who have sex with men",
+            value: 1434511,
+          },
+          {
+            name: "Young people aged 10-24 years reached by comprehensive sexuality education and/or life skills-based HIV education in or out of schools",
+            value: 1425760,
+          },
+          {
+            name: "Other vulnerable populations reached with HIV prevention programs",
+            value: 1371473,
+          },
+          {
+            name: "Medical male circumcisions",
+            value: 1277911,
+          },
+          {
+            name: "Number of HIV tests taken among sex workers",
+            value: 1277099,
+          },
+          {
+            name: "Number of HIV tests taken among other vulnerable population",
+            value: 923244,
+          },
+          {
+            name: "People who use drugs reached with HIV prevention programs",
+            value: 852952,
+          },
+          {
+            name: "Number of HIV tests taken among people who use drugs",
+            value: 774400,
+          },
+          {
+            name: "Number of HIV tests taken among prisoners",
+            value: 742287,
+          },
+          {
+            name: "HIV-positive pregnant women who received ART during pregnancy",
+            value: 718501,
+          },
+          {
+            name: "Number of HIV tests taken among adolescents and youth",
+            value: 715755,
+          },
+          {
+            name: "Pregnant women tested for syphilis",
+            value: 600614,
+          },
+          {
+            name: "Infants tested for HIV",
+            value: 435512,
+          },
+          {
+            name: "People aged 10–24 years reached with HIV prevention programs",
+            value: 388083,
+          },
+          {
+            name: "Transgender people reached with HIV prevention programs",
+            value: 136810,
+          },
+          {
+            name: "Number of HIV tests taken among transgender population",
+            value: 106464,
+          },
+          {
+            name: "People receiving Opioid Substitution Therapy",
+            value: 82919,
+          },
+          {
+            name: "Prisoners reached with HIV prevention programs",
+            value: 33597,
+          },
+          {
+            name: "Men who have sex with men who initiated oral antiretroviral pre-exposure prophylaxis",
+            value: 12518,
+          },
+          {
+            name: "People using pre-exposure prophylaxis",
+            value: 7645,
+          },
+          {
+            name: "Sex workers who initiated oral antiretroviral pre-exposure prophylaxis",
+            value: 6092,
+          },
+          {
+            name: "People newly diagnosed with HIV initiated on ART",
+            value: 231,
+          },
+        ],
+      },
+      {
+        name: "HIV/TB",
+        _children: [
+          {
+            name: "People living with HIV in care screened for TB",
+            value: 14289931,
+          },
+          {
+            name: "People living with HIV on ART who initiated TB preventive therapy",
+            value: 3619367,
+          },
+          {
+            name: "TB patients with documented HIV status",
+            value: 3412792,
+          },
+          {
+            name: "HIV-positive TB patients on antiretroviral therapy during TB treatment",
+            value: 321354,
+          },
+        ],
+      },
+      {
+        name: "Tuberculosis",
+        _children: [
+          {
+            name: "People with TB treated",
+            value: 5771298,
+          },
+          {
+            name: "TB patients with drug-susceptibility testing result for at least Rifampicin",
+            value: 1706570,
+          },
+          {
+            name: "TB patients tested using WHO recommended rapid tests",
+            value: 244005,
+          },
+          {
+            name: "People in contact with TB patients received preventive therapy",
+            value: 170621,
+          },
+          {
+            name: "Rifampicin- and/or multidrug-resistant TB cases notified",
+            value: 131542,
+          },
+          {
+            name: "Rifampicin- and/or multidrug-resistant TB cases that began second-line treatment",
+            value: 125033,
+          },
+          {
+            name: "Care and support services provided to TB patients",
+            value: 29889,
+          },
+          {
+            name: "People with extensively drug-resistant TB on treatment",
+            value: 6071,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    name: "2018",
+    _children: [
+      {
+        name: "Malaria",
+        _children: [
+          {
+            name: "Suspected malaria cases that received a parasitological test",
+            value: 226498673,
+          },
+          {
+            name: "Mosquito nets distributed",
+            value: 152867767,
+          },
+          {
+            name: "Cases of malaria treated",
+            value: 114435433,
+          },
+          {
+            name: "Population covered by Indoor Residual Spraying",
+            value: 12451968,
+          },
+          {
+            name: "Children who received seasonal malaria chemoprophylaxis",
+            value: 10672227,
+          },
+          {
+            name: "Pregnant women attending antenatal clinics who received intermittent preventive treatment for malaria",
+            value: 9535620,
+          },
+          {
+            name: "Households covered by Indoor Residual Spraying",
+            value: 7695951,
+          },
+          {
+            name: "People covered by LLINs distributed",
+            value: 4252756,
+          },
+          {
+            name: "Confirmed malaria cases fully investigated and classified",
+            value: 78003,
+          },
+          {
+            name: "Malaria foci fully investigated and classified",
+            value: 7380,
+          },
+        ],
+      },
+      {
+        name: "HIV/AIDS",
+        _children: [
+          {
+            name: "Total number of HIV tests",
+            value: 125429887,
+          },
+          {
+            name: "Pregnant women who know their HIV status",
+            value: 34997474,
+          },
+          {
+            name: "People on antiretroviral therapy for HIV",
+            value: 18718588,
+          },
+          {
+            name: "Other vulnerable populations reached with HIV prevention programs",
+            value: 1802944,
+          },
+          {
+            name: "Care and support services provided to people living with HIV",
+            value: 1652756,
+          },
+          {
+            name: "Sex workers reached with HIV prevention programs",
+            value: 1630218,
+          },
+          {
+            name: "Men who have sex with men reached with HIV prevention programs",
+            value: 1564646,
+          },
+          {
+            name: "Medical male circumcisions",
+            value: 1487169,
+          },
+          {
+            name: "People on ART with suppressed viral load at 12 months (<1000 copies/ml)",
+            value: 1454486,
+          },
+          {
+            name: "Number of HIV tests taken among men who have sex with men",
+            value: 1197140,
+          },
+          {
+            name: "Number of HIV tests taken among sex workers",
+            value: 1018821,
+          },
+          {
+            name: "Young people aged 10-24 years reached by comprehensive sexuality education and/or life skills-based HIV education in or out of schools",
+            value: 991049,
+          },
+          {
+            name: "Number of HIV tests taken among other vulnerable population",
+            value: 876567,
+          },
+          {
+            name: "Number of HIV tests taken among people who use drugs",
+            value: 772029,
+          },
+          {
+            name: "People who use drugs reached with HIV prevention programs",
+            value: 751632,
+          },
+          {
+            name: "HIV-positive pregnant women who received ART during pregnancy",
+            value: 713587,
+          },
+          {
+            name: "Pregnant women tested for syphilis",
+            value: 636853,
+          },
+          {
+            name: "Number of HIV tests taken among adolescents and youth",
+            value: 490672,
+          },
+          {
+            name: "Number of HIV tests taken among prisoners",
+            value: 454625,
+          },
+          {
+            name: "Infants tested for HIV",
+            value: 431574,
+          },
+          {
+            name: "Adolescent girls and young women (AGYW) reached with HIV prevention programs services",
+            value: 366532,
+          },
+          {
+            name: "People aged 10–24 years reached with HIV prevention programs",
+            value: 321279,
+          },
+          {
+            name: "Transgender people reached with HIV prevention programs",
+            value: 123876,
+          },
+          {
+            name: "Targeted population reached reached with standardized HIV prevention interventions",
+            value: 92350,
+          },
+          {
+            name: "Number of HIV tests taken among transgender population",
+            value: 87868,
+          },
+          {
+            name: "Prisoners reached with HIV prevention programs",
+            value: 43556,
+          },
+          {
+            name: "People receiving Opioid Substitution Therapy",
+            value: 31700,
+          },
+          {
+            name: "Men who have sex with men who initiated oral antiretroviral pre-exposure prophylaxis",
+            value: 3693,
+          },
+          {
+            name: "Sex workers who initiated oral antiretroviral pre-exposure prophylaxis",
+            value: 2887,
+          },
+          {
+            name: "People newly diagnosed with HIV initiated on ART",
+            value: 261,
+          },
+        ],
+      },
+      {
+        name: "HIV/TB",
+        _children: [
+          {
+            name: "People living with HIV in care screened for TB",
+            value: 14219389,
+          },
+          {
+            name: "People living with HIV on ART who initiated TB preventive therapy",
+            value: 2262970,
+          },
+          {
+            name: "TB patients with documented HIV status",
+            value: 2242036,
+          },
+          {
+            name: "HIV-positive TB patients on antiretroviral therapy during TB treatment",
+            value: 342148,
+          },
+          {
+            name: "HIV-positive TB patients on co-trimoxazole prophylaxis during treatment",
+            value: 1435,
+          },
+        ],
+      },
+      {
+        name: "Tuberculosis",
+        _children: [
+          {
+            name: "People with TB treated",
+            value: 5240744,
+          },
+          {
+            name: "TB patients with drug-susceptibility testing result for at least Rifampicin",
+            value: 816166,
+          },
+          {
+            name: "TB patients tested using WHO recommended rapid tests",
+            value: 220584,
+          },
+          {
+            name: "People in contact with TB patients received preventive therapy",
+            value: 138694,
+          },
+          {
+            name: "Rifampicin- and/or multidrug-resistant TB cases that began second-line treatment",
+            value: 111737,
+          },
+          {
+            name: "Rifampicin- and/or multidrug-resistant TB cases notified",
+            value: 110003,
+          },
+          {
+            name: "Care and support services provided to TB patients",
+            value: 16854,
+          },
+          {
+            name: "People with extensively drug-resistant TB on treatment",
+            value: 7446,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    name: "2017",
+    _children: [
+      {
+        name: "Malaria",
+        _children: [
+          {
+            name: "Suspected malaria cases that received a parasitological test",
+            value: 215730104,
+          },
+          {
+            name: "People covered by LLINs distributed",
+            value: 209779093,
+          },
+          {
+            name: "Mosquito nets distributed",
+            value: 179114637,
+          },
+          {
+            name: "Cases of malaria treated",
+            value: 114556835,
+          },
+          {
+            name: "Households covered by Indoor Residual Spraying",
+            value: 9888178,
+          },
+          {
+            name: "Children who received seasonal malaria chemoprophylaxis",
+            value: 5647038,
+          },
+          {
+            name: "Pregnant women attending antenatal clinics who received intermittent preventive treatment for malaria",
+            value: 5110485,
+          },
+          {
+            name: "Population covered by Indoor Residual Spraying",
+            value: 4892853,
+          },
+          {
+            name: "Confirmed malaria cases fully investigated and classified",
+            value: 70222,
+          },
+          {
+            name: "Malaria foci fully investigated and classified",
+            value: 700,
+          },
+        ],
+      },
+      {
+        name: "HIV/AIDS",
+        _children: [
+          {
+            name: "Total number of HIV tests",
+            value: 93629023,
+          },
+          {
+            name: "Pregnant women who know their HIV status",
+            value: 29360695,
+          },
+          {
+            name: "People on antiretroviral therapy for HIV",
+            value: 17543868,
+          },
+          {
+            name: "Care and support services provided to people living with HIV",
+            value: 2887555,
+          },
+          {
+            name: "Other vulnerable populations reached with HIV prevention programs",
+            value: 2226719,
+          },
+          {
+            name: "Sex workers reached with HIV prevention programs",
+            value: 2036026,
+          },
+          {
+            name: "Men who have sex with men reached with HIV prevention programs",
+            value: 1854489,
+          },
+          {
+            name: "Number of HIV tests taken among other vulnerable population",
+            value: 1611442,
+          },
+          {
+            name: "People aged 10–24 years reached with HIV prevention programs",
+            value: 1424078,
+          },
+          {
+            name: "Number of HIV tests taken among sex workers",
+            value: 1213334,
+          },
+          {
+            name: "Young people aged 10-24 years reached by comprehensive sexuality education and/or life skills-based HIV education in or out of schools",
+            value: 1136085,
+          },
+          {
+            name: "Number of HIV tests taken among men who have sex with men",
+            value: 1056351,
+          },
+          {
+            name: "Medical male circumcisions",
+            value: 988904,
+          },
+          {
+            name: "People on ART with suppressed viral load at 12 months (<1000 copies/ml)",
+            value: 882048,
+          },
+          {
+            name: "People who use drugs reached with HIV prevention programs",
+            value: 799182,
+          },
+          {
+            name: "HIV-positive pregnant women who received ART during pregnancy",
+            value: 710495,
+          },
+          {
+            name: "Pregnant women tested for syphilis",
+            value: 606113,
+          },
+          {
+            name: "Targeted population reached reached with standardized HIV prevention interventions",
+            value: 501627,
+          },
+          {
+            name: "Number of HIV tests taken among people who use drugs",
+            value: 501527,
+          },
+          {
+            name: "Number of HIV tests taken among adolescents and youth",
+            value: 466591,
+          },
+          {
+            name: "Infants tested for HIV",
+            value: 427105,
+          },
+          {
+            name: "Prisoners reached with HIV prevention programs",
+            value: 190312,
+          },
+          {
+            name: "Transgender people reached with HIV prevention programs",
+            value: 117277,
+          },
+          {
+            name: "People receiving Opioid Substitution Therapy",
+            value: 88391,
+          },
+          {
+            name: "Number of HIV tests taken among transgender population",
+            value: 74653,
+          },
+          {
+            name: "Number of HIV tests taken among prisoners",
+            value: 64600,
+          },
+          {
+            name: "Adolescent girls and young women (AGYW) reached with HIV prevention programs services",
+            value: 28354,
+          },
+          {
+            name: "People newly diagnosed with HIV initiated on ART",
+            value: 23,
+          },
+        ],
+      },
+      {
+        name: "HIV/TB",
+        _children: [
+          {
+            name: "People living with HIV in care screened for TB",
+            value: 14013627,
+          },
+          {
+            name: "TB patients with documented HIV status",
+            value: 2203724,
+          },
+          {
+            name: "People living with HIV on ART who initiated TB preventive therapy",
+            value: 1021833,
+          },
+          {
+            name: "HIV-positive TB patients on antiretroviral therapy during TB treatment",
+            value: 350728,
+          },
+          {
+            name: "HIV-positive TB patients on co-trimoxazole prophylaxis during treatment",
+            value: 2176,
+          },
+        ],
+      },
+      {
+        name: "Tuberculosis",
+        _children: [
+          {
+            name: "People with TB treated",
+            value: 5040008,
+          },
+          {
+            name: "Rifampicin- and/or multidrug-resistant TB cases that began second-line treatment",
+            value: 103557,
+          },
+          {
+            name: "People in contact with TB patients received preventive therapy",
+            value: 98222,
+          },
+          {
+            name: "Rifampicin- and/or multidrug-resistant TB cases notified",
+            value: 87296,
+          },
+          {
+            name: "TB patients with drug-susceptibility testing result for at least Rifampicin",
+            value: 58522,
+          },
+          {
+            name: "TB patients tested using WHO recommended rapid tests",
+            value: 21391,
+          },
+          {
+            name: "Care and support services provided to TB patients",
+            value: 16945,
+          },
+          {
+            name: "People with extensively drug-resistant TB on treatment",
+            value: 3312,
+          },
+        ],
+      },
+    ],
+  },
+];
 
 export const TABLE_VARIATION_10_COLUMNS: ColumnDefinition[] = [
   {
@@ -3263,6 +3275,7 @@ export const TABLE_VARIATION_10_COLUMNS: ColumnDefinition[] = [
     field: "name",
     formatter: cellBGColorFormatter,
     width: "20%",
+    frozen: true,
   },
   { title: "2023", field: "2023", formatter: cellBGColorFormatter },
   { title: "2022", field: "2022", formatter: cellBGColorFormatter },
@@ -3278,6 +3291,13 @@ export const TABLE_VARIATION_10_COLUMNS: ColumnDefinition[] = [
   { title: "2012", field: "2012", formatter: cellBGColorFormatter },
   { title: "2011", field: "2011", formatter: cellBGColorFormatter },
   { title: "2010", field: "2010", formatter: cellBGColorFormatter },
+  { title: "2009", field: "2009", formatter: cellBGColorFormatter },
+  { title: "2008", field: "2008", formatter: cellBGColorFormatter },
+  { title: "2007", field: "2007", formatter: cellBGColorFormatter },
+  { title: "2006", field: "2006", formatter: cellBGColorFormatter },
+  { title: "2005", field: "2005", formatter: cellBGColorFormatter },
+  { title: "2004", field: "2004", formatter: cellBGColorFormatter },
+  { title: "2003", field: "2003", formatter: cellBGColorFormatter },
 ];
 
 export const TABLE_VARIATION_10_DATA: {

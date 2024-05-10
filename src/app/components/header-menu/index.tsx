@@ -114,6 +114,7 @@ export const HeaderMenu: React.FC = () => {
           {PAGES.find((page) => page.id === selectedPage)?.subPages?.map(
             (subPage) => (
               <Box
+                key={subPage.id}
                 sx={{
                   display: "flex",
                   alignItems: "center",

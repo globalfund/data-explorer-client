@@ -37,6 +37,7 @@ import {
   TABLE_VARIATION_12_DATA as FUNDING_REQUESTS_TABLE_DATA,
   TABLE_VARIATION_12_COLUMNS as FUNDING_REQUESTS_TABLE_COLUMNS,
 } from "app/components/table/data";
+import { appColors } from "app/theme";
 
 export const AccessToFundingPage: React.FC = () => {
   const [geographyGrouping, setGeographyGrouping] = React.useState(
@@ -61,6 +62,12 @@ export const AccessToFundingPage: React.FC = () => {
   );
   const fetchStats = useStoreActions(
     (actions) => actions.AccessToFundingStats.fetch
+  );
+  const dataEligibilityTable = useStoreState((state) =>
+    get(state.AccessToFundingEligibilityTable, "data.data", [])
+  );
+  const fetchEligibilityTable = useStoreActions(
+    (actions) => actions.AccessToFundingEligibilityTable.fetch
   );
 
   const handleSelectionChange = (value: string) => {
@@ -143,6 +150,10 @@ export const AccessToFundingPage: React.FC = () => {
         </Box>
       </Box>
     );
+  }, []);
+
+  React.useEffect(() => {
+    fetchEligibilityTable({});
   }, []);
 
   React.useEffect(() => {
@@ -265,12 +276,54 @@ export const AccessToFundingPage: React.FC = () => {
                 </Typography>
                 <Box>
                   <Box>
-                    <Box id="rectangle" bgcolor="#FA7355" />
+                    <Box
+                      id="rectangle"
+                      bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[0]}
+                    />
+                    <Typography fontSize="12px">Extreme</Typography>
+                  </Box>
+                  <Box>
+                    <Box
+                      id="rectangle"
+                      bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[1]}
+                    />
+                    <Typography fontSize="12px">Severe</Typography>
+                  </Box>
+                  <Box>
+                    <Box
+                      id="rectangle"
+                      bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[2]}
+                    />
                     <Typography fontSize="12px">High</Typography>
                   </Box>
                   <Box>
-                    <Box id="rectangle" bgcolor="#FFD646" />
+                    <Box
+                      id="rectangle"
+                      bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[3]}
+                    />
+                    <Typography fontSize="12px">Moderate</Typography>
+                  </Box>
+                  <Box>
+                    <Box
+                      id="rectangle"
+                      bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[4]}
+                    />
                     <Typography fontSize="12px">Not High</Typography>
+                  </Box>
+                  <Box>
+                    <Box
+                      id="rectangle"
+                      bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[5]}
+                    />
+                    <Typography fontSize="12px">Low</Typography>
+                  </Box>
+                  <Box>
+                    <Box
+                      id="rectangle"
+                      bgcolor="#FFFFFF"
+                      border="1px solid #ccc"
+                    />
+                    <Typography fontSize="12px">NA</Typography>
                   </Box>
                 </Box>
               </Box>
@@ -299,9 +352,8 @@ export const AccessToFundingPage: React.FC = () => {
             </Box>
             <Table
               dataTree
-              dataTreeStartExpanded
               id="eligibility-table"
-              data={ELIGIBILITY_TABLE_DATA}
+              data={dataEligibilityTable}
               columns={ELIGIBILITY_TABLE_COLUMNS}
             />
           </DatasetChartBlock>

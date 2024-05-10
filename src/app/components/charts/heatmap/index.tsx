@@ -243,7 +243,7 @@ export function Heatmap(props: HeatmapProps) {
         }}
       >
         {LEGENDS.map((item) => (
-          <Box>
+          <Box key={item.label}>
             <Box bgcolor={item.color} />
             <Typography fontSize="12px" color="#495057">
               {item.label}
