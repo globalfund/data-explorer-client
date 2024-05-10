@@ -47,7 +47,7 @@ export const AccessToFundingPage: React.FC = () => {
     eligibilityYears[0].value
   );
   const [dropdownSelected, setDropdownSelected] = React.useState(
-    dropdownItemsAllocations[2].value
+    dropdownItemsAllocations[0].value
   );
 
   const dataStats = useStoreState(
@@ -81,6 +81,12 @@ export const AccessToFundingPage: React.FC = () => {
   const fetchAllocationsBarSeries = useStoreActions(
     (actions) => actions.AccessToFundingAllocationBarSeries.fetch
   );
+  const dataAllocationsSunburst = useStoreState((state) =>
+    get(state.AccessToFundingAllocationSunburst, "data.data", [])
+  );
+  const fetchAllocationsSunburst = useStoreActions(
+    (actions) => actions.AccessToFundingAllocationSunburst.fetch
+  );
 
   const handleSelectionChange = (value: string) => {
     setDropdownSelected(value);
@@ -103,7 +109,7 @@ export const AccessToFundingPage: React.FC = () => {
       case dropdownItemsAllocations[0].value:
         return (
           <SunburstChart
-            data={SUNBURST_CHART_DATA}
+            data={dataAllocationsSunburst}
             centerLabel="Total Allocation"
           />
         );
@@ -121,7 +127,7 @@ export const AccessToFundingPage: React.FC = () => {
       default:
         return null;
     }
-  }, [dropdownSelected]);
+  }, [dropdownSelected, dataAllocationsSunburst]);
 
   const range = React.useMemo(() => {
     const values: {
@@ -167,6 +173,7 @@ export const AccessToFundingPage: React.FC = () => {
   React.useEffect(() => {
     fetchEligibilityTable({});
     fetchAllocationsBarSeries({});
+    fetchAllocationsSunburst({});
   }, []);
 
   React.useEffect(() => {

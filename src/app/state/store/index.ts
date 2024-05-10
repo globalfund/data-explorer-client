@@ -50,6 +50,7 @@ import ReplenishmentPeriodFilterOptions from "app/state/api/action-reducers/filt
 import { AccessToFundingEligibilityTable } from "app/state/api/action-reducers/access-to-funding/eligibility-table";
 import componentsChartsPerformanceRating from "app/state/api/action-reducers/cms/componentsChartsPerformanceRating";
 import { HomePledgesContributionsBarChart } from "app/state/api/action-reducers/home/pledges-contributions-bar-chart";
+import { AccessToFundingAllocationSunburst } from "app/state/api/action-reducers/access-to-funding/allocation-sunburst";
 import { AccessToFundingAllocationBarSeries } from "app/state/api/action-reducers/access-to-funding/allocation-bar-series";
 import { ResourceMobilizationTable } from "app/state/api/action-reducers/resource-mobilization/pledges-contributions-table";
 import { ResourceMobilizationSunburst } from "app/state/api/action-reducers/resource-mobilization/pledges-contributions-sunburst";
@@ -84,6 +85,7 @@ const storeContent: StoreModel = {
   AccessToFundingAllocationBarSeries: persist(
     AccessToFundingAllocationBarSeries
   ),
+  AccessToFundingAllocationSunburst: persist(AccessToFundingAllocationSunburst),
   // search
   GlobalSearch: persist(GlobalSearch),
   // filter options api

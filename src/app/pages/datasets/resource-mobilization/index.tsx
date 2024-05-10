@@ -107,7 +107,7 @@ export const ResourceMobilizationPage: React.FC = () => {
       default:
         return null;
     }
-  }, [dropdownSelected, dataBarChart]);
+  }, [dropdownSelected, dataBarChart, dataSunburst, dataTable]);
 
   React.useEffect(() => {
     fetchStats({});
