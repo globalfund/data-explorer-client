@@ -1,4 +1,6 @@
 import React from "react";
+import get from "lodash/get";
+import sumBy from "lodash/sumBy";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
@@ -6,6 +8,8 @@ import { Table } from "app/components/table";
 import Typography from "@mui/material/Typography";
 import { DatasetPage } from "app/pages/datasets/common/page";
 import { SunburstChart } from "app/components/charts/sunburst";
+import { formatFinancialValue } from "app/utils/formatFinancialValue";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { ReactComponent as TableIcon } from "app/assets/vectors/Select_Table.svg";
 import { ReactComponent as BarChartIcon } from "app/assets/vectors/Select_BarChart.svg";
@@ -17,7 +21,6 @@ import {
   TABLE_VARIATION_8_DATA,
   TABLE_VARIATION_8_COLUMNS,
 } from "app/components/table/data";
-import { formatFinancialValue } from "app/utils/formatFinancialValue";
 
 const dropdownItems = [
   { label: "Bar Chart", value: "Bar Chart", icon: <BarChartIcon /> },
@@ -32,6 +35,13 @@ const dropdownItems = [
 export const ResourceMobilizationPage: React.FC = () => {
   const [dropdownSelected, setDropdownSelected] = React.useState(
     dropdownItems[0].value
+  );
+
+  const dataStats = useStoreState(
+    (state) => state.ResourceMobilizationStats.data
+  );
+  const fetchStats = useStoreActions(
+    (actions) => actions.ResourceMobilizationStats.fetch
   );
 
   const handleSelectionChange = (value: string) => {
@@ -73,6 +83,10 @@ export const ResourceMobilizationPage: React.FC = () => {
     }
   }, [dropdownSelected]);
 
+  React.useEffect(() => {
+    fetchStats({});
+  }, [fetchStats]);
+
   return (
     <DatasetPage
       title="Resource Mobilization"
@@ -98,7 +112,9 @@ export const ResourceMobilizationPage: React.FC = () => {
             }}
           >
             <Box>
-              <Typography variant="h5">83%</Typography>
+              <Typography variant="h5">
+                {get(dataStats, "percentage", 0).toFixed(2).replace(".00", "")}%
+              </Typography>
               <Typography fontSize="14px" fontWeight="700">
                 Pledge Conversion based on the announce pledge
               </Typography>
@@ -106,7 +122,7 @@ export const ResourceMobilizationPage: React.FC = () => {
             <Divider />
             <Box>
               <Typography variant="h5">
-                {formatFinancialValue(88959272549.89)}
+                {formatFinancialValue(get(dataStats, "totalPledges", 0))}
               </Typography>
               <Typography fontSize="14px" fontWeight="700">
                 Total Pledged
@@ -115,7 +131,7 @@ export const ResourceMobilizationPage: React.FC = () => {
             <Divider />
             <Box>
               <Typography variant="h5">
-                {formatFinancialValue(73703118028.53)}
+                {formatFinancialValue(get(dataStats, "totalContributions", 0))}
               </Typography>
               <Typography fontSize="14px" fontWeight="700">
                 Total Contributed
@@ -154,7 +170,7 @@ export const ResourceMobilizationPage: React.FC = () => {
                   borderRadius="5px"
                 >
                   <Typography fontSize="40px" fontWeight="700">
-                    154
+                    {sumBy(get(dataStats, "donorTypesCount", []), "value")}
                   </Typography>
                   <Typography variant="body2">
                     Total number of donors
@@ -184,7 +200,9 @@ export const ResourceMobilizationPage: React.FC = () => {
               >
                 <Grid item xs={12} sm={6} md={6} lg={3}>
                   <Box bgcolor="#F1F3F5" padding="5px 10px">
-                    <Typography variant="h5">4</Typography>
+                    <Typography variant="h5">
+                      {get(dataStats, "donorTypesCount[1].value", 0)}
+                    </Typography>
                     <Typography fontSize="12px">
                       from Affordable Medicines Facility - malaria (AMFm).
                     </Typography>
@@ -192,19 +210,25 @@ export const ResourceMobilizationPage: React.FC = () => {
                 </Grid>
                 <Grid item xs={12} sm={6} md={6} lg={3}>
                   <Box bgcolor="#F1F3F5" padding="5px 10px">
-                    <Typography variant="h5">17</Typography>
+                    <Typography variant="h5">
+                      {get(dataStats, "donorTypesCount[6].value", 0)}
+                    </Typography>
                     <Typography fontSize="12px">from corporations.</Typography>
                   </Box>
                 </Grid>
                 <Grid item xs={12} sm={6} md={6} lg={3}>
                   <Box bgcolor="#F1F3F5" padding="5px 10px">
-                    <Typography variant="h5">11</Typography>
+                    <Typography variant="h5">
+                      {get(dataStats, "donorTypesCount[7].value", 0)}
+                    </Typography>
                     <Typography fontSize="12px">from Debt2Health.</Typography>
                   </Box>
                 </Grid>
                 <Grid item xs={12} sm={6} md={6} lg={3}>
                   <Box bgcolor="#F1F3F5" padding="5px 10px">
-                    <Typography variant="h5">2</Typography>
+                    <Typography variant="h5">
+                      {get(dataStats, "donorTypesCount[5].value", 0)}
+                    </Typography>
                     <Typography fontSize="12px">
                       from faith-based organizations.
                     </Typography>
@@ -212,19 +236,25 @@ export const ResourceMobilizationPage: React.FC = () => {
                 </Grid>
                 <Grid item xs={12} sm={6} md={6} lg={3}>
                   <Box bgcolor="#F1F3F5" padding="5px 10px">
-                    <Typography variant="h5">18</Typography>
+                    <Typography variant="h5">
+                      {get(dataStats, "donorTypesCount[2].value", 0)}
+                    </Typography>
                     <Typography fontSize="12px">from foundations.</Typography>
                   </Box>
                 </Grid>
                 <Grid item xs={12} sm={6} md={6} lg={3}>
                   <Box bgcolor="#F1F3F5" padding="5px 10px">
-                    <Typography variant="h5">1</Typography>
+                    <Typography variant="h5">
+                      {get(dataStats, "donorTypesCount[4].value", 0)}
+                    </Typography>
                     <Typography fontSize="12px">from individuals.</Typography>
                   </Box>
                 </Grid>
                 <Grid item xs={12} sm={6} md={6} lg={3}>
                   <Box bgcolor="#F1F3F5" padding="5px 10px">
-                    <Typography variant="h5">11</Typography>
+                    <Typography variant="h5">
+                      {get(dataStats, "donorTypesCount[3].value", 0)}
+                    </Typography>
                     <Typography fontSize="12px">
                       from private sector & non-government.
                     </Typography>
@@ -232,7 +262,9 @@ export const ResourceMobilizationPage: React.FC = () => {
                 </Grid>
                 <Grid item xs={12} sm={6} md={6} lg={3}>
                   <Box bgcolor="#F1F3F5" padding="5px 10px">
-                    <Typography variant="h5">90</Typography>
+                    <Typography variant="h5">
+                      {get(dataStats, "donorTypesCount[0].value", 0)}
+                    </Typography>
                     <Typography fontSize="12px">from public sector.</Typography>
                   </Box>
                 </Grid>

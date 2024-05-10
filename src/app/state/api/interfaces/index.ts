@@ -127,6 +127,8 @@ export interface StoreModel {
   HomeBudgetsTreemap: ApiCallModel;
   HomeDisbursementsLineChart: ApiCallModel;
   HomeExpendituresHeatmap: ApiCallModel;
+  // resource mobilization
+  ResourceMobilizationStats: ApiCallModel;
   // search
   GlobalSearch: ApiCallModel;
   // filter options api
