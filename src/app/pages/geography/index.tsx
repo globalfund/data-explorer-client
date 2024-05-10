@@ -1,4 +1,5 @@
 import React from "react";
+import get from "lodash/get";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
@@ -7,8 +8,8 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import {
-  GEO_CATEGORIES,
   GeoCategoryProps,
   GeoSubCategoryProps,
 } from "app/pages/geography/data";
@@ -93,7 +94,13 @@ const GeoSubCategory: React.FC<GeoSubCategoryProps> = (
 
 export const Geography: React.FC = () => {
   const [search, setSearch] = React.useState("");
-  const [filteredData, setFilteredData] = React.useState(GEO_CATEGORIES);
+
+  const dataList = useStoreState(
+    (state) => get(state.GeographyList, "data.data", []) as GeoCategoryProps[]
+  );
+  const fetchList = useStoreActions((actions) => actions.GeographyList.fetch);
+
+  const [filteredData, setFilteredData] = React.useState(dataList);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
@@ -104,7 +111,7 @@ export const Geography: React.FC = () => {
   };
 
   React.useEffect(() => {
-    const updatedData = [...GEO_CATEGORIES];
+    const updatedData = [...dataList];
     if (search.length > 0) {
       for (let i = 0; i < updatedData.length; i++) {
         for (let j = 0; j < updatedData[i].items.length; j++) {
@@ -125,7 +132,11 @@ export const Geography: React.FC = () => {
     }
     console.log(updatedData);
     setFilteredData(updatedData);
-  }, [search]);
+  }, [search, dataList]);
+
+  React.useEffect(() => {
+    fetchList({});
+  }, []);
 
   return (
     <Box padding="60px 0">
