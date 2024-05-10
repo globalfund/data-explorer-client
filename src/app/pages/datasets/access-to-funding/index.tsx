@@ -1,6 +1,7 @@
 import React from "react";
 import get from "lodash/get";
 import Box from "@mui/material/Box";
+import { appColors } from "app/theme";
 import Grid from "@mui/material/Grid";
 import Tooltip from "@mui/material/Tooltip";
 import Divider from "@mui/material/Divider";
@@ -17,10 +18,7 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { STORY_DATA_VARIANT_2 as TREEMAP_DATA } from "app/components/charts/treemap/data";
 import { STORY_DATA_VARIANT_2 as SUNBURST_CHART_DATA } from "app/components/charts/sunburst/data";
-import {
-  KEYS,
-  STORY_DATA_VARIANT_1 as BAR_SERIES_DATA,
-} from "app/components/charts/bar-series/data";
+import { BarSeriesChartDataItem } from "app/components/charts/bar-series/data";
 import {
   BOXES,
   eligibilityYears,
@@ -37,7 +35,6 @@ import {
   TABLE_VARIATION_12_DATA as FUNDING_REQUESTS_TABLE_DATA,
   TABLE_VARIATION_12_COLUMNS as FUNDING_REQUESTS_TABLE_COLUMNS,
 } from "app/components/table/data";
-import { appColors } from "app/theme";
 
 export const AccessToFundingPage: React.FC = () => {
   const [geographyGrouping, setGeographyGrouping] = React.useState(
@@ -68,6 +65,21 @@ export const AccessToFundingPage: React.FC = () => {
   );
   const fetchEligibilityTable = useStoreActions(
     (actions) => actions.AccessToFundingEligibilityTable.fetch
+  );
+  const keysAllocationsBarSeries = useStoreState(
+    (state) =>
+      get(state.AccessToFundingAllocationBarSeries, "data.keys", []) as string[]
+  );
+  const dataAllocationsBarSeries = useStoreState(
+    (state) =>
+      get(
+        state.AccessToFundingAllocationBarSeries,
+        "data.data",
+        []
+      ) as BarSeriesChartDataItem[]
+  );
+  const fetchAllocationsBarSeries = useStoreActions(
+    (actions) => actions.AccessToFundingAllocationBarSeries.fetch
   );
 
   const handleSelectionChange = (value: string) => {
@@ -115,13 +127,13 @@ export const AccessToFundingPage: React.FC = () => {
     const values: {
       value: number;
     }[] = [];
-    BAR_SERIES_DATA.forEach((item) => {
+    dataAllocationsBarSeries.forEach((item) => {
       item.values.forEach((value) => {
         values.push({ value });
       });
     });
     return getRange(values, ["value"]);
-  }, [BAR_SERIES_DATA]);
+  }, [dataAllocationsBarSeries]);
 
   const toolbarRightContent = React.useMemo(() => {
     return (
@@ -154,6 +166,7 @@ export const AccessToFundingPage: React.FC = () => {
 
   React.useEffect(() => {
     fetchEligibilityTable({});
+    fetchAllocationsBarSeries({});
   }, []);
 
   React.useEffect(() => {
@@ -379,7 +392,10 @@ export const AccessToFundingPage: React.FC = () => {
             >
               Allocated Amount (USD {range.abbr})
             </Typography>
-            <BarSeriesChart data={BAR_SERIES_DATA} keys={KEYS} />
+            <BarSeriesChart
+              data={dataAllocationsBarSeries}
+              keys={keysAllocationsBarSeries}
+            />
             <Info
               htmlColor="#373D43"
               sx={{
