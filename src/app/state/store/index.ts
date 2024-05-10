@@ -27,6 +27,7 @@ import componentsDialogBox from "app/state/api/action-reducers/cms/componentsDia
 import componentsPageHeader from "app/state/api/action-reducers/cms/componentsPageHeader";
 import modulesCountryDetail from "app/state/api/action-reducers/cms/modulesCountryDetail";
 import PartnerTypeFilterOptions from "app/state/api/action-reducers/filters/partnerTypes";
+import { AccessToFundingStats } from "app/state/api/action-reducers/access-to-funding/stats";
 import componentsChartsCommon from "app/state/api/action-reducers/cms/componentsChartsCommon";
 import componentsChartsGeomap from "app/state/api/action-reducers/cms/componentsChartsGeomap";
 import componentsChartsGrants from "app/state/api/action-reducers/cms/componentsChartsGrants";
@@ -75,6 +76,8 @@ const storeContent: StoreModel = {
   ResourceMobilizationTable: persist(ResourceMobilizationTable),
   // geographies
   GeographyList: persist(GeographyList),
+  // access to funding
+  AccessToFundingStats: persist(AccessToFundingStats),
   // search
   GlobalSearch: persist(GlobalSearch),
   // filter options api

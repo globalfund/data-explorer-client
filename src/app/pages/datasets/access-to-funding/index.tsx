@@ -1,4 +1,5 @@
 import React from "react";
+import get from "lodash/get";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Tooltip from "@mui/material/Tooltip";
@@ -12,6 +13,7 @@ import { DatasetPage } from "app/pages/datasets/common/page";
 import { SunburstChart } from "app/components/charts/sunburst";
 import { BarSeriesChart } from "app/components/charts/bar-series";
 import { getRange } from "app/utils/getFinancialValueWithMetricPrefix";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { STORY_DATA_VARIANT_2 as TREEMAP_DATA } from "app/components/charts/treemap/data";
 import { STORY_DATA_VARIANT_2 as SUNBURST_CHART_DATA } from "app/components/charts/sunburst/data";
@@ -48,6 +50,17 @@ export const AccessToFundingPage: React.FC = () => {
   );
   const [dropdownSelected, setDropdownSelected] = React.useState(
     dropdownItemsAllocations[2].value
+  );
+
+  const dataStats = useStoreState(
+    (state) =>
+      get(state.AccessToFundingStats, "data.data", []) as {
+        name: string;
+        value: string;
+      }[]
+  );
+  const fetchStats = useStoreActions(
+    (actions) => actions.AccessToFundingStats.fetch
   );
 
   const handleSelectionChange = (value: string) => {
@@ -132,6 +145,14 @@ export const AccessToFundingPage: React.FC = () => {
     );
   }, []);
 
+  React.useEffect(() => {
+    fetchStats({
+      routeParams: {
+        year: eligibilityYear,
+      },
+    });
+  }, [eligibilityYear]);
+
   return (
     <DatasetPage
       title="Access to Funding"
@@ -174,39 +195,24 @@ export const AccessToFundingPage: React.FC = () => {
               />
             </Box>
           </Box>
-          <Grid container spacing={2} margin="4px 0 50px 0">
-            <Grid item sm={6} md={3} style={{ paddingLeft: 0 }}>
-              <Box padding="15px" bgcolor="#F1F3F5">
-                <Typography variant="h5">67</Typography>
-                <Typography fontSize="12px">
-                  Countries Eligible for HIV.
-                </Typography>
-              </Box>
-            </Grid>
-            <Grid item sm={6} md={3}>
-              <Box padding="15px" bgcolor="#F1F3F5">
-                <Typography variant="h5">58</Typography>
-                <Typography fontSize="12px">
-                  Countries Eligible for Malaria.
-                </Typography>
-              </Box>
-            </Grid>
-            <Grid item sm={6} md={3}>
-              <Box padding="15px" bgcolor="#F1F3F5">
-                <Typography variant="h5">78</Typography>
-                <Typography fontSize="12px">
-                  Countries Eligible for Tuberculosis.
-                </Typography>
-              </Box>
-            </Grid>
-            <Grid item sm={6} md={3}>
-              <Box padding="15px" bgcolor="#F1F3F5">
-                <Typography variant="h5">59</Typography>
-                <Typography fontSize="12px">
-                  Countries Eligible for RSSH.
-                </Typography>
-              </Box>
-            </Grid>
+          <Grid
+            container
+            spacing={2}
+            margin="4px 0 50px 0"
+            sx={{
+              marginLeft: "-16px",
+            }}
+          >
+            {dataStats.map((item) => (
+              <Grid item key={item.name} sm={6} md={3}>
+                <Box padding="15px" bgcolor="#F1F3F5">
+                  <Typography variant="h5">{item.value}</Typography>
+                  <Typography fontSize="12px">
+                    Countries Eligible for {item.name}
+                  </Typography>
+                </Box>
+              </Grid>
+            ))}
           </Grid>
         </Box>
         <FullWidthDivider />

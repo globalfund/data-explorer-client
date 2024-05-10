@@ -49,23 +49,24 @@ export const APIModel = <QueryModel, ResponseModel>(
   }),
   fetch: thunk(async (actions, query: RequestValues<QueryModel>) => {
     actions.onRequest();
+    let localUrl = url;
     const headers: any = {
       "Content-Type": "application/json",
       ...(process.env.REACT_APP_CMS_API &&
-      url.includes(process.env.REACT_APP_CMS_API)
+      localUrl.includes(process.env.REACT_APP_CMS_API)
         ? { "api-key": process.env.REACT_APP_CMS_TOKEN }
         : {}),
     };
     if (query.routeParams) {
       forEach(query.routeParams, (value, key) => {
-        url = url.replace(`{${key}}`, value);
+        localUrl = localUrl.replace(`{${key}}`, value);
       });
     }
-    if (url.includes("content/items"))
-      console.log("debuggy - querying url", url);
+    if (localUrl.includes("content/items"))
+      console.log("debuggy - querying url", localUrl);
     axios
       .get(
-        `${url}${query.filterString ? "?" : ""}${query.filterString ?? ""}`,
+        `${localUrl}${query.filterString ? "?" : ""}${query.filterString ?? ""}`,
         { headers }
       )
       .then(

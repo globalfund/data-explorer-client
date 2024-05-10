@@ -134,6 +134,8 @@ export interface StoreModel {
   ResourceMobilizationTable: ApiCallModel;
   // geographies
   GeographyList: ApiCallModel;
+  // access to funding
+  AccessToFundingStats: ApiCallModel;
   // search
   GlobalSearch: ApiCallModel;
   // filter options api
