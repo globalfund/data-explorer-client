@@ -68,6 +68,12 @@ export const ResourceMobilizationPage: React.FC = () => {
   const fetchSunburst = useStoreActions(
     (actions) => actions.ResourceMobilizationSunburst.fetch
   );
+  const dataTable = useStoreState((state) =>
+    get(state.ResourceMobilizationTable, "data.data", [])
+  );
+  const fetchTable = useStoreActions(
+    (actions) => actions.ResourceMobilizationTable.fetch
+  );
 
   const handleSelectionChange = (value: string) => {
     setDropdownSelected(value);
@@ -93,8 +99,8 @@ export const ResourceMobilizationPage: React.FC = () => {
         return (
           <Table
             dataTree
+            data={dataTable}
             id="pledges-contributions-table"
-            data={TABLE_VARIATION_8_DATA}
             columns={TABLE_VARIATION_8_COLUMNS}
           />
         );
@@ -111,6 +117,7 @@ export const ResourceMobilizationPage: React.FC = () => {
         type: "pledge",
       },
     });
+    fetchTable({});
   }, []);
 
   return (

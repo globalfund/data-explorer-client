@@ -131,6 +131,7 @@ export interface StoreModel {
   ResourceMobilizationStats: ApiCallModel;
   ResourceMobilizationExpandableBarChart: ApiCallModel;
   ResourceMobilizationSunburst: ApiCallModel;
+  ResourceMobilizationTable: ApiCallModel;
   // search
   GlobalSearch: ApiCallModel;
   // filter options api
