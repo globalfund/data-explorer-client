@@ -48,6 +48,7 @@ import ReplenishmentPeriodFilterOptions from "app/state/api/action-reducers/filt
 import componentsChartsPerformanceRating from "app/state/api/action-reducers/cms/componentsChartsPerformanceRating";
 import { HomePledgesContributionsBarChart } from "app/state/api/action-reducers/home/pledges-contributions-bar-chart";
 import componentsPerformanceFrameworkComponents from "app/state/api/action-reducers/cms/componentsPerformanceFrameworkComponents";
+import { ResourceMobilizationExpandableBarChart } from "app/state/api/action-reducers/resource-mobilization/pledges-contributions-expandable-bar-chart";
 import {
   EligibilityYears,
   EligibilityStatusCodelist,
@@ -64,6 +65,9 @@ const storeContent: StoreModel = {
   HomeExpendituresHeatmap: persist(HomeExpendituresHeatmap),
   // resource mobilization
   ResourceMobilizationStats: persist(ResourceMobilizationStats),
+  ResourceMobilizationExpandableBarChart: persist(
+    ResourceMobilizationExpandableBarChart
+  ),
   // search
   GlobalSearch: persist(GlobalSearch),
   // filter options api

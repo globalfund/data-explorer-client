@@ -16,7 +16,7 @@ import { ReactComponent as BarChartIcon } from "app/assets/vectors/Select_BarCha
 import { ExpandableHorizontalBar } from "app/components/charts/expandable-horizontal-bar";
 import { ReactComponent as SunburstChartIcon } from "app/assets/vectors/Select_SunburstChart.svg";
 import { STORY_DATA_VARIANT_1 as SUNBURST_CHART_DATA } from "app/components/charts/sunburst/data";
-import { STORY_DATA_VARIANT_1 as HORIZONTAL_BAR_CHART_DATA } from "app/components/charts/expandable-horizontal-bar/data";
+import { ExpandableHorizontalBarChartDataItem } from "app/components/charts/expandable-horizontal-bar/data";
 import {
   TABLE_VARIATION_8_DATA,
   TABLE_VARIATION_8_COLUMNS,
@@ -43,6 +43,17 @@ export const ResourceMobilizationPage: React.FC = () => {
   const fetchStats = useStoreActions(
     (actions) => actions.ResourceMobilizationStats.fetch
   );
+  const dataBarChart = useStoreState(
+    (state) =>
+      get(
+        state.ResourceMobilizationExpandableBarChart,
+        "data.data",
+        []
+      ) as ExpandableHorizontalBarChartDataItem[]
+  );
+  const fetchBarChart = useStoreActions(
+    (actions) => actions.ResourceMobilizationExpandableBarChart.fetch
+  );
 
   const handleSelectionChange = (value: string) => {
     setDropdownSelected(value);
@@ -53,7 +64,7 @@ export const ResourceMobilizationPage: React.FC = () => {
       case dropdownItems[0].value:
         return (
           <ExpandableHorizontalBar
-            data={HORIZONTAL_BAR_CHART_DATA}
+            data={dataBarChart}
             yAxisLabel="Donor Types & Donors"
             xAxisLabel="Amount"
             valueLabels={{
@@ -81,11 +92,12 @@ export const ResourceMobilizationPage: React.FC = () => {
       default:
         return null;
     }
-  }, [dropdownSelected]);
+  }, [dropdownSelected, dataBarChart]);
 
   React.useEffect(() => {
     fetchStats({});
-  }, [fetchStats]);
+    fetchBarChart({});
+  }, []);
 
   return (
     <DatasetPage
