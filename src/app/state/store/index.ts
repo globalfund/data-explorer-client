@@ -47,6 +47,7 @@ import { HomeDisbursementsLineChart } from "app/state/api/action-reducers/home/d
 import ReplenishmentPeriodFilterOptions from "app/state/api/action-reducers/filters/replenishmentPeriods";
 import componentsChartsPerformanceRating from "app/state/api/action-reducers/cms/componentsChartsPerformanceRating";
 import { HomePledgesContributionsBarChart } from "app/state/api/action-reducers/home/pledges-contributions-bar-chart";
+import { ResourceMobilizationSunburst } from "app/state/api/action-reducers/resource-mobilization/pledges-contributions-sunburst";
 import componentsPerformanceFrameworkComponents from "app/state/api/action-reducers/cms/componentsPerformanceFrameworkComponents";
 import { ResourceMobilizationExpandableBarChart } from "app/state/api/action-reducers/resource-mobilization/pledges-contributions-expandable-bar-chart";
 import {
@@ -68,6 +69,7 @@ const storeContent: StoreModel = {
   ResourceMobilizationExpandableBarChart: persist(
     ResourceMobilizationExpandableBarChart
   ),
+  ResourceMobilizationSunburst: persist(ResourceMobilizationSunburst),
   // search
   GlobalSearch: persist(GlobalSearch),
   // filter options api
