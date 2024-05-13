@@ -1,4 +1,5 @@
 import React from "react";
+import get from "lodash/get";
 import maxBy from "lodash/maxBy";
 import Box from "@mui/material/Box";
 import { appColors } from "app/theme";
@@ -48,6 +49,8 @@ import {
   dropdownItemsBudgetBreakdown,
   BUDGET_BREAKDOWN_DATA,
 } from "app/pages/datasets/grant-implementation/data";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { formatFinancialValue } from "app/utils/formatFinancialValue";
 
 export const GrantImplementationPage: React.FC = () => {
   const [geographyGrouping, setGeographyGrouping] = React.useState(
@@ -65,6 +68,17 @@ export const GrantImplementationPage: React.FC = () => {
   );
   const [expendituresDropdownSelected, setExpendituresDropdownSelected] =
     React.useState(dropdownItemsExpenditures[0].value);
+
+  const dataFinancialInsightsStats = useStoreState((state) =>
+    get(state.FinancialInsightsStats, "data.data[0]", {
+      signed: 0,
+      committed: 0,
+      disbursed: 0,
+    })
+  );
+  const fetchFinancialInsightsStats = useStoreActions(
+    (actions) => actions.FinancialInsightsStats.fetch
+  );
 
   const handleDisbursementsSelectionChange = (value: string) => {
     setDisbursementsDropdownSelected(value);
@@ -314,6 +328,10 @@ export const GrantImplementationPage: React.FC = () => {
     );
   }, []);
 
+  React.useEffect(() => {
+    fetchFinancialInsightsStats({});
+  }, []);
+
   return (
     <DatasetPage
       title="Financial Insights"
@@ -341,19 +359,25 @@ export const GrantImplementationPage: React.FC = () => {
           }}
         >
           <Box>
-            <Typography variant="h5">64,115,766,558 USD</Typography>
+            <Typography variant="h5">
+              {formatFinancialValue(dataFinancialInsightsStats.signed)}
+            </Typography>
             <Typography fontSize="14px" fontWeight="700">
               Total Signed Amount
             </Typography>
           </Box>
           <Box>
-            <Typography variant="h5">67,807,043,574 USD</Typography>
+            <Typography variant="h5">
+              {formatFinancialValue(dataFinancialInsightsStats.committed)}
+            </Typography>
             <Typography fontSize="14px" fontWeight="700">
               Total Committed Amount
             </Typography>
           </Box>
           <Box>
-            <Typography variant="h5">75,719,225,185 USD</Typography>
+            <Typography variant="h5">
+              {formatFinancialValue(dataFinancialInsightsStats.disbursed)}
+            </Typography>
             <Typography fontSize="14px" fontWeight="700">
               Total Disbursed Amount
             </Typography>

@@ -38,6 +38,7 @@ import componentsChartsBudgets from "app/state/api/action-reducers/cms/component
 import componentsChartsNetwork from "app/state/api/action-reducers/cms/componentsChartsNetwork";
 import componentsChartsPledges from "app/state/api/action-reducers/cms/componentsChartsPledges";
 import { FundingRequestsTableGeneric } from "app/state/api/action-reducers/viz/fundingRequests";
+import { FinancialInsightsStats } from "app/state/api/action-reducers/financial-insights/stats";
 import { HomeExpendituresHeatmap } from "app/state/api/action-reducers/home/expenditures-heatmap";
 import componentsDatasetCarousel from "app/state/api/action-reducers/cms/componentsDatasetCarousel";
 import componentsInformationPanel from "app/state/api/action-reducers/cms/componentsInformationPanel";
@@ -94,6 +95,8 @@ const storeContent: StoreModel = {
   AccessToFundingFundingRequestsTable: persist(
     AccessToFundingFundingRequestsTable
   ),
+  // financial insights
+  FinancialInsightsStats: persist(FinancialInsightsStats),
   // search
   GlobalSearch: persist(GlobalSearch),
   // filter options api

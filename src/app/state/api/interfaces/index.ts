@@ -142,6 +142,8 @@ export interface StoreModel {
   AccessToFundingAllocationTreemap: ApiCallModel;
   AccessToFundingAllocationTable: ApiCallModel;
   AccessToFundingFundingRequestsTable: ApiCallModel;
+  // financial insights
+  FinancialInsightsStats: ApiCallModel;
   // search
   GlobalSearch: ApiCallModel;
   // filter options api
