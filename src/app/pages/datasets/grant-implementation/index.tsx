@@ -14,6 +14,7 @@ import { Heatmap } from "app/components/charts/heatmap";
 import { SankeyChart } from "app/components/charts/sankey";
 import { DatasetPage } from "app/pages/datasets/common/page";
 import { BarChartDataItem } from "app/components/charts/bar/data";
+import { LineChartDataItem } from "app/components/charts/line/data";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { getRange } from "app/utils/getFinancialValueWithMetricPrefix";
@@ -22,7 +23,6 @@ import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { ExpandableHorizontalBar } from "app/components/charts/expandable-horizontal-bar";
 import { STORY_DATA_VARIANT_2 as BUDGET_SANKEY_DATA } from "app/components/charts/sankey/data";
 import { STORY_DATA_VARIANT_2 as BUDGET_TREEMAP_DATA } from "app/components/charts/treemap/data";
-import { STORY_DATA_VARIANT_2 as DISBURSEMENTS_LINE_DATA } from "app/components/charts/line/data";
 import { STORY_DATA_VARIANT_2 as EXPENDITURES_BAR_CHART } from "app/components/charts/expandable-horizontal-bar/data";
 import {
   getPercentageColor,
@@ -89,6 +89,25 @@ export const GrantImplementationPage: React.FC = () => {
   );
   const fetchFinancialInsightsDisbursementsBarChart = useStoreActions(
     (actions) => actions.FinancialInsightsDisbursementsBarChart.fetch
+  );
+  const dataFinancialInsightsDisbursementsLineChart = useStoreState(
+    (state) =>
+      get(
+        state.FinancialInsightsDisbursementsLineChart,
+        "data.data",
+        []
+      ) as LineChartDataItem[]
+  );
+  const keysFinancialInsightsDisbursementsLineChart = useStoreState(
+    (state) =>
+      get(
+        state.FinancialInsightsDisbursementsLineChart,
+        "data.keys",
+        []
+      ) as string[]
+  );
+  const fetchFinancialInsightsDisbursementsLineChart = useStoreActions(
+    (actions) => actions.FinancialInsightsDisbursementsLineChart.fetch
   );
 
   const handleDisbursementsSelectionChange = (value: string) => {
@@ -161,7 +180,7 @@ export const GrantImplementationPage: React.FC = () => {
         );
       case dropdownItemsDisbursements[1].value:
         const values: { value: number }[] = [];
-        DISBURSEMENTS_LINE_DATA.forEach((item) => {
+        dataFinancialInsightsDisbursementsLineChart.forEach((item) => {
           item.data.forEach((value) => {
             values.push({ value });
           });
@@ -186,30 +205,8 @@ export const GrantImplementationPage: React.FC = () => {
               Y Axis/<b>Disbursed Amount (USD {range.abbr})</b>
             </Typography>
             <LineChart
-              data={DISBURSEMENTS_LINE_DATA}
-              xAxisKeys={[
-                "2002",
-                "2003",
-                "2004",
-                "2005",
-                "2006",
-                "2007",
-                "2008",
-                "2009",
-                "2010",
-                "2011",
-                "2012",
-                "2013",
-                "2014",
-                "2015",
-                "2016",
-                "2017",
-                "2018",
-                "2019",
-                "2020",
-                "2021",
-                "2022",
-              ]}
+              data={dataFinancialInsightsDisbursementsLineChart}
+              xAxisKeys={keysFinancialInsightsDisbursementsLineChart}
             />
             <Typography
               left="40px"
@@ -239,6 +236,8 @@ export const GrantImplementationPage: React.FC = () => {
   }, [
     disbursementsDropdownSelected,
     dataFinancialInsightsDisbursementsBarChart,
+    dataFinancialInsightsDisbursementsLineChart,
+    keysFinancialInsightsDisbursementsLineChart,
   ]);
 
   const financialMetricsContent = React.useMemo(() => {
@@ -347,6 +346,7 @@ export const GrantImplementationPage: React.FC = () => {
   React.useEffect(() => {
     fetchFinancialInsightsStats({});
     fetchFinancialInsightsDisbursementsBarChart({});
+    fetchFinancialInsightsDisbursementsLineChart({});
   }, []);
 
   return (

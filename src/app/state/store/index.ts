@@ -60,6 +60,7 @@ import { AccessToFundingFundingRequestsTable } from "app/state/api/action-reduce
 import { ResourceMobilizationSunburst } from "app/state/api/action-reducers/resource-mobilization/pledges-contributions-sunburst";
 import { FinancialInsightsDisbursementsBarChart } from "app/state/api/action-reducers/financial-insights/disbursements-bar-chart";
 import componentsPerformanceFrameworkComponents from "app/state/api/action-reducers/cms/componentsPerformanceFrameworkComponents";
+import { FinancialInsightsDisbursementsLineChart } from "app/state/api/action-reducers/financial-insights/disbursements-line-chart";
 import { ResourceMobilizationExpandableBarChart } from "app/state/api/action-reducers/resource-mobilization/pledges-contributions-expandable-bar-chart";
 import {
   EligibilityYears,
@@ -100,6 +101,9 @@ const storeContent: StoreModel = {
   FinancialInsightsStats: persist(FinancialInsightsStats),
   FinancialInsightsDisbursementsBarChart: persist(
     FinancialInsightsDisbursementsBarChart
+  ),
+  FinancialInsightsDisbursementsLineChart: persist(
+    FinancialInsightsDisbursementsLineChart
   ),
   // search
   GlobalSearch: persist(GlobalSearch),
