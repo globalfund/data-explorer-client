@@ -51,6 +51,7 @@ import ReplenishmentPeriodFilterOptions from "app/state/api/action-reducers/filt
 import { AccessToFundingAllocationTable } from "app/state/api/action-reducers/access-to-funding/allocation-table";
 import { AccessToFundingEligibilityTable } from "app/state/api/action-reducers/access-to-funding/eligibility-table";
 import componentsChartsPerformanceRating from "app/state/api/action-reducers/cms/componentsChartsPerformanceRating";
+import { FinancialInsightsBudgetBreakdown } from "app/state/api/action-reducers/financial-insights/budget-breakdown";
 import { HomePledgesContributionsBarChart } from "app/state/api/action-reducers/home/pledges-contributions-bar-chart";
 import { AccessToFundingAllocationTreemap } from "app/state/api/action-reducers/access-to-funding/allocation-treemap";
 import { AccessToFundingAllocationSunburst } from "app/state/api/action-reducers/access-to-funding/allocation-sunburst";
@@ -109,6 +110,7 @@ const storeContent: StoreModel = {
   FinancialInsightsDisbursementsTable: persist(
     FinancialInsightsDisbursementsTable
   ),
+  FinancialInsightsBudgetBreakdown: persist(FinancialInsightsBudgetBreakdown),
   // search
   GlobalSearch: persist(GlobalSearch),
   // filter options api

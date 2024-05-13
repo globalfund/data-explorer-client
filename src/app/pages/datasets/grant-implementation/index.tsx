@@ -123,6 +123,17 @@ export const GrantImplementationPage: React.FC = () => {
   const fetchFinancialInsightsDisbursementsTable = useStoreActions(
     (actions) => actions.FinancialInsightsDisbursementsTable.fetch
   );
+  const dataBudgetBreakdown = useStoreState(
+    (state) =>
+      get(state.FinancialInsightsBudgetBreakdown, "data.data", []) as {
+        name: string;
+        value: number;
+        color: string;
+      }[]
+  );
+  const fetchBudgetBreakdown = useStoreActions(
+    (actions) => actions.FinancialInsightsBudgetBreakdown.fetch
+  );
 
   const handleDisbursementsSelectionChange = (value: string) => {
     setDisbursementsDropdownSelected(value);
@@ -365,6 +376,14 @@ export const GrantImplementationPage: React.FC = () => {
     fetchFinancialInsightsDisbursementsTable({});
   }, []);
 
+  React.useEffect(() => {
+    fetchBudgetBreakdown({
+      routeParams: {
+        year: budgetBreakdownDropdownSelected,
+      },
+    });
+  }, [budgetBreakdownDropdownSelected]);
+
   return (
     <DatasetPage
       title="Financial Insights"
@@ -496,7 +515,7 @@ export const GrantImplementationPage: React.FC = () => {
             marginTop="40px"
             flexDirection="row"
           >
-            {BUDGET_BREAKDOWN_DATA.map((i) => (
+            {dataBudgetBreakdown.map((i) => (
               <Box
                 key={i.name}
                 display="flex"
