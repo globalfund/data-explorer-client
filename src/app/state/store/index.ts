@@ -48,6 +48,7 @@ import componentsChartsInvestments from "app/state/api/action-reducers/cms/compo
 import { HomeAllocationsRadialChart } from "app/state/api/action-reducers/home/allocations-radial-chart";
 import { HomeDisbursementsLineChart } from "app/state/api/action-reducers/home/disbursements-line-chart";
 import ReplenishmentPeriodFilterOptions from "app/state/api/action-reducers/filters/replenishmentPeriods";
+import { FinancialInsightsBudgetTable } from "app/state/api/action-reducers/financial-insights/budget-table";
 import { FinancialInsightsBudgetTreemap } from "app/state/api/action-reducers/financial-insights/budget-treemap";
 import { AccessToFundingAllocationTable } from "app/state/api/action-reducers/access-to-funding/allocation-table";
 import { AccessToFundingEligibilityTable } from "app/state/api/action-reducers/access-to-funding/eligibility-table";
@@ -125,6 +126,7 @@ const storeContent: StoreModel = {
     FinancialInsightsDisbursementUtilisation
   ),
   FinancialInsightsBudgetTreemap: persist(FinancialInsightsBudgetTreemap),
+  FinancialInsightsBudgetTable: persist(FinancialInsightsBudgetTable),
   // search
   GlobalSearch: persist(GlobalSearch),
   // filter options api

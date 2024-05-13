@@ -35,7 +35,6 @@ import {
   FinancialMetricExpandableItemProps,
 } from "app/components/charts/financial-metric/data";
 import {
-  TABLE_VARIATION_14_DATA as BUDGET_TABLE_DATA,
   TABLE_VARIATION_15_DATA as EXPENDITURES_TABLE_DATA,
   TABLE_VARIATION_14_COLUMNS as BUDGET_TABLE_COLUMNS,
   TABLE_VARIATION_15_COLUMNS as EXPENDITURES_TABLE_COLUMNS,
@@ -183,6 +182,21 @@ export const GrantImplementationPage: React.FC = () => {
   );
   const fetchBudgetTreemap = useStoreActions(
     (actions) => actions.FinancialInsightsBudgetTreemap.fetch
+  );
+  const dataBudgetTable = useStoreState(
+    (state) =>
+      get(state.FinancialInsightsBudgetTable, "data.data", []) as {
+        [key: string]:
+          | string
+          | number
+          | boolean
+          | null
+          | object
+          | Array<object>;
+      }[]
+  );
+  const fetchBudgetTable = useStoreActions(
+    (actions) => actions.FinancialInsightsBudgetTable.fetch
   );
 
   const handleDisbursementsSelectionChange = (value: string) => {
@@ -362,14 +376,14 @@ export const GrantImplementationPage: React.FC = () => {
           <Table
             dataTree
             id="budgets-table"
-            data={BUDGET_TABLE_DATA}
+            data={dataBudgetTable}
             columns={BUDGET_TABLE_COLUMNS}
           />
         );
       default:
         return null;
     }
-  }, [budgetsDropdownSelected, dataBudgetTreemap]);
+  }, [budgetsDropdownSelected, dataBudgetTreemap, dataBudgetTable]);
 
   const expendituresChartContent = React.useMemo(() => {
     switch (expendituresDropdownSelected) {
@@ -453,6 +467,7 @@ export const GrantImplementationPage: React.FC = () => {
     fetchInCountryAbsorption({});
     fetchDisbursementUtilisation({});
     fetchBudgetTreemap({});
+    fetchBudgetTable({});
   }, []);
 
   React.useEffect(() => {

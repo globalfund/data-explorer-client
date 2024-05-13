@@ -152,6 +152,7 @@ export interface StoreModel {
   FinancialInsightsCountryAbsorption: ApiCallModel;
   FinancialInsightsDisbursementUtilisation: ApiCallModel;
   FinancialInsightsBudgetTreemap: ApiCallModel;
+  FinancialInsightsBudgetTable: ApiCallModel;
   // search
   GlobalSearch: ApiCallModel;
   // filter options api
