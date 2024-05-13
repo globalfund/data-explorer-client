@@ -48,6 +48,7 @@ import componentsChartsInvestments from "app/state/api/action-reducers/cms/compo
 import { HomeAllocationsRadialChart } from "app/state/api/action-reducers/home/allocations-radial-chart";
 import { HomeDisbursementsLineChart } from "app/state/api/action-reducers/home/disbursements-line-chart";
 import ReplenishmentPeriodFilterOptions from "app/state/api/action-reducers/filters/replenishmentPeriods";
+import { FinancialInsightsBudgetTreemap } from "app/state/api/action-reducers/financial-insights/budget-treemap";
 import { AccessToFundingAllocationTable } from "app/state/api/action-reducers/access-to-funding/allocation-table";
 import { AccessToFundingEligibilityTable } from "app/state/api/action-reducers/access-to-funding/eligibility-table";
 import componentsChartsPerformanceRating from "app/state/api/action-reducers/cms/componentsChartsPerformanceRating";
@@ -55,6 +56,7 @@ import { FinancialInsightsBudgetBreakdown } from "app/state/api/action-reducers/
 import { HomePledgesContributionsBarChart } from "app/state/api/action-reducers/home/pledges-contributions-bar-chart";
 import { AccessToFundingAllocationTreemap } from "app/state/api/action-reducers/access-to-funding/allocation-treemap";
 import { AccessToFundingAllocationSunburst } from "app/state/api/action-reducers/access-to-funding/allocation-sunburst";
+import { FinancialInsightsCountryAbsorption } from "app/state/api/action-reducers/financial-insights/country-absorption";
 import { FinancialInsightsBudgetUtilisation } from "app/state/api/action-reducers/financial-insights/budget-utilisation";
 import { FinancialInsightsDisbursementsTable } from "app/state/api/action-reducers/financial-insights/disbursements-table";
 import { AccessToFundingAllocationBarSeries } from "app/state/api/action-reducers/access-to-funding/allocation-bar-series";
@@ -64,14 +66,13 @@ import { ResourceMobilizationSunburst } from "app/state/api/action-reducers/reso
 import { FinancialInsightsDisbursementsBarChart } from "app/state/api/action-reducers/financial-insights/disbursements-bar-chart";
 import componentsPerformanceFrameworkComponents from "app/state/api/action-reducers/cms/componentsPerformanceFrameworkComponents";
 import { FinancialInsightsDisbursementsLineChart } from "app/state/api/action-reducers/financial-insights/disbursements-line-chart";
+import { FinancialInsightsDisbursementUtilisation } from "app/state/api/action-reducers/financial-insights/disbursement-utilisation";
 import { ResourceMobilizationExpandableBarChart } from "app/state/api/action-reducers/resource-mobilization/pledges-contributions-expandable-bar-chart";
 import {
   EligibilityYears,
   EligibilityStatusCodelist,
   EligibilityDiseaseBurdenCodelist,
 } from "app/state/api/action-reducers/viz/eligibility";
-import { FinancialInsightsCountryAbsorption } from "../api/action-reducers/financial-insights/country-absorption";
-import { FinancialInsightsDisbursementUtilisation } from "../api/action-reducers/financial-insights/disbursement-utilisation";
 
 const storeContent: StoreModel = {
   // homepage
@@ -123,6 +124,7 @@ const storeContent: StoreModel = {
   FinancialInsightsDisbursementUtilisation: persist(
     FinancialInsightsDisbursementUtilisation
   ),
+  FinancialInsightsBudgetTreemap: persist(FinancialInsightsBudgetTreemap),
   // search
   GlobalSearch: persist(GlobalSearch),
   // filter options api

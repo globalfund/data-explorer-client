@@ -15,6 +15,7 @@ import { SankeyChart } from "app/components/charts/sankey";
 import { DatasetPage } from "app/pages/datasets/common/page";
 import { BarChartDataItem } from "app/components/charts/bar/data";
 import { LineChartDataItem } from "app/components/charts/line/data";
+import { TreemapDataItem } from "app/components/charts/treemap/data";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { getRange } from "app/utils/getFinancialValueWithMetricPrefix";
@@ -22,7 +23,6 @@ import { FinancialMetric } from "app/components/charts/financial-metric";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { ExpandableHorizontalBar } from "app/components/charts/expandable-horizontal-bar";
 import { STORY_DATA_VARIANT_2 as BUDGET_SANKEY_DATA } from "app/components/charts/sankey/data";
-import { STORY_DATA_VARIANT_2 as BUDGET_TREEMAP_DATA } from "app/components/charts/treemap/data";
 import { STORY_DATA_VARIANT_2 as EXPENDITURES_BAR_CHART } from "app/components/charts/expandable-horizontal-bar/data";
 import {
   getPercentageColor,
@@ -49,7 +49,6 @@ import {
   dropdownItemsDisbursements,
   dropdownItemsExpenditures,
   dropdownItemsBudgetBreakdown,
-  BUDGET_BREAKDOWN_DATA,
 } from "app/pages/datasets/grant-implementation/data";
 
 export const GrantImplementationPage: React.FC = () => {
@@ -173,6 +172,17 @@ export const GrantImplementationPage: React.FC = () => {
   );
   const fetchDisbursementUtilisation = useStoreActions(
     (actions) => actions.FinancialInsightsDisbursementUtilisation.fetch
+  );
+  const dataBudgetTreemap = useStoreState(
+    (state) =>
+      get(
+        state.FinancialInsightsBudgetTreemap,
+        "data.data",
+        []
+      ) as TreemapDataItem[]
+  );
+  const fetchBudgetTreemap = useStoreActions(
+    (actions) => actions.FinancialInsightsBudgetTreemap.fetch
   );
 
   const handleDisbursementsSelectionChange = (value: string) => {
@@ -346,7 +356,7 @@ export const GrantImplementationPage: React.FC = () => {
       case dropdownItemsBudgets[0].value:
         return <SankeyChart data={BUDGET_SANKEY_DATA} />;
       case dropdownItemsBudgets[1].value:
-        return <Treemap data={BUDGET_TREEMAP_DATA} />;
+        return <Treemap data={dataBudgetTreemap} />;
       case dropdownItemsBudgets[2].value:
         return (
           <Table
@@ -359,7 +369,7 @@ export const GrantImplementationPage: React.FC = () => {
       default:
         return null;
     }
-  }, [budgetsDropdownSelected]);
+  }, [budgetsDropdownSelected, dataBudgetTreemap]);
 
   const expendituresChartContent = React.useMemo(() => {
     switch (expendituresDropdownSelected) {
@@ -442,6 +452,7 @@ export const GrantImplementationPage: React.FC = () => {
     fetchBudgetUtilisation({});
     fetchInCountryAbsorption({});
     fetchDisbursementUtilisation({});
+    fetchBudgetTreemap({});
   }, []);
 
   React.useEffect(() => {
