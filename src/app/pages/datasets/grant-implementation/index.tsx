@@ -32,6 +32,7 @@ import {
   STORY_DATA_VARIANT_1 as FINANCIAL_METRICS_DATA_1,
   STORY_DATA_VARIANT_2 as FINANCIAL_METRICS_DATA_2,
   STORY_DATA_VARIANT_3 as FINANCIAL_METRICS_DATA_3,
+  FinancialMetricExpandableItemProps,
 } from "app/components/charts/financial-metric/data";
 import {
   TABLE_VARIATION_14_DATA as BUDGET_TABLE_DATA,
@@ -133,6 +134,45 @@ export const GrantImplementationPage: React.FC = () => {
   );
   const fetchBudgetBreakdown = useStoreActions(
     (actions) => actions.FinancialInsightsBudgetBreakdown.fetch
+  );
+  const dataBudgetUtilisation = useStoreState(
+    (state) =>
+      get(state.FinancialInsightsBudgetUtilisation, "data.data[0]", {
+        value: 0,
+        items: [],
+      }) as {
+        value: number;
+        items: FinancialMetricExpandableItemProps[];
+      }
+  );
+  const fetchBudgetUtilisation = useStoreActions(
+    (actions) => actions.FinancialInsightsBudgetUtilisation.fetch
+  );
+  const dataInCountryAbsorption = useStoreState(
+    (state) =>
+      get(state.FinancialInsightsCountryAbsorption, "data.data[0]", {
+        value: 0,
+        items: [],
+      }) as {
+        value: number;
+        items: FinancialMetricExpandableItemProps[];
+      }
+  );
+  const fetchInCountryAbsorption = useStoreActions(
+    (actions) => actions.FinancialInsightsCountryAbsorption.fetch
+  );
+  const dataDisbursementUtilisation = useStoreState(
+    (state) =>
+      get(state.FinancialInsightsDisbursementUtilisation, "data.data[0]", {
+        value: 0,
+        items: [],
+      }) as {
+        value: number;
+        items: FinancialMetricExpandableItemProps[];
+      }
+  );
+  const fetchDisbursementUtilisation = useStoreActions(
+    (actions) => actions.FinancialInsightsDisbursementUtilisation.fetch
   );
 
   const handleDisbursementsSelectionChange = (value: string) => {
@@ -269,12 +309,37 @@ export const GrantImplementationPage: React.FC = () => {
   const financialMetricsContent = React.useMemo(() => {
     return (
       <Box gap="40px" width="100%" display="flex" flexDirection="column">
-        <FinancialMetric {...FINANCIAL_METRICS_DATA_1} />
-        <FinancialMetric {...FINANCIAL_METRICS_DATA_2} />
-        <FinancialMetric {...FINANCIAL_METRICS_DATA_3} />
+        <FinancialMetric
+          {...FINANCIAL_METRICS_DATA_1}
+          donutChart={{
+            ...FINANCIAL_METRICS_DATA_1.donutChart,
+            value: dataBudgetUtilisation.value,
+          }}
+          items={dataBudgetUtilisation.items}
+        />
+        <FinancialMetric
+          {...FINANCIAL_METRICS_DATA_2}
+          donutChart={{
+            ...FINANCIAL_METRICS_DATA_2.donutChart,
+            value: dataInCountryAbsorption.value,
+          }}
+          items={dataInCountryAbsorption.items}
+        />
+        <FinancialMetric
+          {...FINANCIAL_METRICS_DATA_3}
+          donutChart={{
+            ...FINANCIAL_METRICS_DATA_3.donutChart,
+            value: dataDisbursementUtilisation.value,
+          }}
+          items={dataDisbursementUtilisation.items}
+        />
       </Box>
     );
-  }, []);
+  }, [
+    dataBudgetUtilisation,
+    dataInCountryAbsorption,
+    dataDisbursementUtilisation,
+  ]);
 
   const budgetsChartContent = React.useMemo(() => {
     switch (budgetsDropdownSelected) {
@@ -374,6 +439,9 @@ export const GrantImplementationPage: React.FC = () => {
     fetchFinancialInsightsDisbursementsBarChart({});
     fetchFinancialInsightsDisbursementsLineChart({});
     fetchFinancialInsightsDisbursementsTable({});
+    fetchBudgetUtilisation({});
+    fetchInCountryAbsorption({});
+    fetchDisbursementUtilisation({});
   }, []);
 
   React.useEffect(() => {

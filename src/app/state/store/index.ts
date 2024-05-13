@@ -55,6 +55,7 @@ import { FinancialInsightsBudgetBreakdown } from "app/state/api/action-reducers/
 import { HomePledgesContributionsBarChart } from "app/state/api/action-reducers/home/pledges-contributions-bar-chart";
 import { AccessToFundingAllocationTreemap } from "app/state/api/action-reducers/access-to-funding/allocation-treemap";
 import { AccessToFundingAllocationSunburst } from "app/state/api/action-reducers/access-to-funding/allocation-sunburst";
+import { FinancialInsightsBudgetUtilisation } from "app/state/api/action-reducers/financial-insights/budget-utilisation";
 import { FinancialInsightsDisbursementsTable } from "app/state/api/action-reducers/financial-insights/disbursements-table";
 import { AccessToFundingAllocationBarSeries } from "app/state/api/action-reducers/access-to-funding/allocation-bar-series";
 import { ResourceMobilizationTable } from "app/state/api/action-reducers/resource-mobilization/pledges-contributions-table";
@@ -69,6 +70,8 @@ import {
   EligibilityStatusCodelist,
   EligibilityDiseaseBurdenCodelist,
 } from "app/state/api/action-reducers/viz/eligibility";
+import { FinancialInsightsCountryAbsorption } from "../api/action-reducers/financial-insights/country-absorption";
+import { FinancialInsightsDisbursementUtilisation } from "../api/action-reducers/financial-insights/disbursement-utilisation";
 
 const storeContent: StoreModel = {
   // homepage
@@ -111,6 +114,15 @@ const storeContent: StoreModel = {
     FinancialInsightsDisbursementsTable
   ),
   FinancialInsightsBudgetBreakdown: persist(FinancialInsightsBudgetBreakdown),
+  FinancialInsightsBudgetUtilisation: persist(
+    FinancialInsightsBudgetUtilisation
+  ),
+  FinancialInsightsCountryAbsorption: persist(
+    FinancialInsightsCountryAbsorption
+  ),
+  FinancialInsightsDisbursementUtilisation: persist(
+    FinancialInsightsDisbursementUtilisation
+  ),
   // search
   GlobalSearch: persist(GlobalSearch),
   // filter options api
