@@ -37,7 +37,6 @@ import {
   TABLE_VARIATION_14_DATA as BUDGET_TABLE_DATA,
   TABLE_VARIATION_15_DATA as EXPENDITURES_TABLE_DATA,
   TABLE_VARIATION_14_COLUMNS as BUDGET_TABLE_COLUMNS,
-  TABLE_VARIATION_13_DATA as DISBURSEMENTS_TABLE_DATA,
   TABLE_VARIATION_15_COLUMNS as EXPENDITURES_TABLE_COLUMNS,
   TABLE_VARIATION_13_COLUMNS as DISBURSEMENTS_TABLE_COLUMNS,
 } from "app/components/table/data";
@@ -108,6 +107,21 @@ export const GrantImplementationPage: React.FC = () => {
   );
   const fetchFinancialInsightsDisbursementsLineChart = useStoreActions(
     (actions) => actions.FinancialInsightsDisbursementsLineChart.fetch
+  );
+  const dataFinancialInsightsDisbursementsTable = useStoreState(
+    (state) =>
+      get(state.FinancialInsightsDisbursementsTable, "data.data", []) as {
+        [key: string]:
+          | string
+          | number
+          | boolean
+          | null
+          | object
+          | Array<object>;
+      }[]
+  );
+  const fetchFinancialInsightsDisbursementsTable = useStoreActions(
+    (actions) => actions.FinancialInsightsDisbursementsTable.fetch
   );
 
   const handleDisbursementsSelectionChange = (value: string) => {
@@ -226,8 +240,8 @@ export const GrantImplementationPage: React.FC = () => {
           <Table
             dataTree
             id="disbursements-table"
-            data={DISBURSEMENTS_TABLE_DATA}
             columns={DISBURSEMENTS_TABLE_COLUMNS}
+            data={dataFinancialInsightsDisbursementsTable}
           />
         );
       default:
@@ -238,6 +252,7 @@ export const GrantImplementationPage: React.FC = () => {
     dataFinancialInsightsDisbursementsBarChart,
     dataFinancialInsightsDisbursementsLineChart,
     keysFinancialInsightsDisbursementsLineChart,
+    dataFinancialInsightsDisbursementsTable,
   ]);
 
   const financialMetricsContent = React.useMemo(() => {
@@ -347,6 +362,7 @@ export const GrantImplementationPage: React.FC = () => {
     fetchFinancialInsightsStats({});
     fetchFinancialInsightsDisbursementsBarChart({});
     fetchFinancialInsightsDisbursementsLineChart({});
+    fetchFinancialInsightsDisbursementsTable({});
   }, []);
 
   return (

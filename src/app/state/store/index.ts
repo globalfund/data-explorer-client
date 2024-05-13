@@ -54,6 +54,7 @@ import componentsChartsPerformanceRating from "app/state/api/action-reducers/cms
 import { HomePledgesContributionsBarChart } from "app/state/api/action-reducers/home/pledges-contributions-bar-chart";
 import { AccessToFundingAllocationTreemap } from "app/state/api/action-reducers/access-to-funding/allocation-treemap";
 import { AccessToFundingAllocationSunburst } from "app/state/api/action-reducers/access-to-funding/allocation-sunburst";
+import { FinancialInsightsDisbursementsTable } from "app/state/api/action-reducers/financial-insights/disbursements-table";
 import { AccessToFundingAllocationBarSeries } from "app/state/api/action-reducers/access-to-funding/allocation-bar-series";
 import { ResourceMobilizationTable } from "app/state/api/action-reducers/resource-mobilization/pledges-contributions-table";
 import { AccessToFundingFundingRequestsTable } from "app/state/api/action-reducers/access-to-funding/funding-requests-table";
@@ -104,6 +105,9 @@ const storeContent: StoreModel = {
   ),
   FinancialInsightsDisbursementsLineChart: persist(
     FinancialInsightsDisbursementsLineChart
+  ),
+  FinancialInsightsDisbursementsTable: persist(
+    FinancialInsightsDisbursementsTable
   ),
   // search
   GlobalSearch: persist(GlobalSearch),
