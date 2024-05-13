@@ -30,11 +30,8 @@ import {
   componentsGroupingOptions,
 } from "app/pages/datasets/access-to-funding/data";
 import {
-  TABLE_VARIATION_10_DATA as ELIGIBILITY_TABLE_DATA,
   TABLE_VARIATION_10_COLUMNS as ELIGIBILITY_TABLE_COLUMNS,
-  TABLE_VARIATION_11_DATA as ALLOCATIONS_TABLE_DATA,
   TABLE_VARIATION_11_COLUMNS as ALLOCATIONS_TABLE_COLUMNS,
-  TABLE_VARIATION_12_DATA as FUNDING_REQUESTS_TABLE_DATA,
   TABLE_VARIATION_12_COLUMNS as FUNDING_REQUESTS_TABLE_COLUMNS,
 } from "app/components/table/data";
 
@@ -105,6 +102,12 @@ export const AccessToFundingPage: React.FC = () => {
   );
   const fetchAllocationsTable = useStoreActions(
     (actions) => actions.AccessToFundingAllocationTable.fetch
+  );
+  const dataFundingRequestsTable = useStoreState((state) =>
+    get(state.AccessToFundingFundingRequestsTable, "data.data", [])
+  );
+  const fetchFundingRequestsTable = useStoreActions(
+    (actions) => actions.AccessToFundingFundingRequestsTable.fetch
   );
 
   const handleSelectionChange = (value: string) => {
@@ -200,6 +203,7 @@ export const AccessToFundingPage: React.FC = () => {
     fetchAllocationsSunburst({});
     fetchAllocationsTreemap({});
     fetchAllocationsTable({});
+    fetchFundingRequestsTable({});
   }, []);
 
   React.useEffect(() => {
@@ -516,11 +520,11 @@ export const AccessToFundingPage: React.FC = () => {
             <Table
               dataTree
               id="funding-requests-table"
-              data={FUNDING_REQUESTS_TABLE_DATA}
-              columns={FUNDING_REQUESTS_TABLE_COLUMNS.slice(0, 7)}
+              data={dataFundingRequestsTable}
+              columns={FUNDING_REQUESTS_TABLE_COLUMNS.slice(0, 6)}
               extraColumns={FUNDING_REQUESTS_TABLE_COLUMNS.slice(
-                7,
-                FUNDING_REQUESTS_TABLE_COLUMNS.length - 1
+                6,
+                FUNDING_REQUESTS_TABLE_COLUMNS.length
               )}
             />
           </DatasetChartBlock>

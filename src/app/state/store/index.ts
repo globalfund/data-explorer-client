@@ -55,6 +55,7 @@ import { AccessToFundingAllocationTreemap } from "app/state/api/action-reducers/
 import { AccessToFundingAllocationSunburst } from "app/state/api/action-reducers/access-to-funding/allocation-sunburst";
 import { AccessToFundingAllocationBarSeries } from "app/state/api/action-reducers/access-to-funding/allocation-bar-series";
 import { ResourceMobilizationTable } from "app/state/api/action-reducers/resource-mobilization/pledges-contributions-table";
+import { AccessToFundingFundingRequestsTable } from "app/state/api/action-reducers/access-to-funding/funding-requests-table";
 import { ResourceMobilizationSunburst } from "app/state/api/action-reducers/resource-mobilization/pledges-contributions-sunburst";
 import componentsPerformanceFrameworkComponents from "app/state/api/action-reducers/cms/componentsPerformanceFrameworkComponents";
 import { ResourceMobilizationExpandableBarChart } from "app/state/api/action-reducers/resource-mobilization/pledges-contributions-expandable-bar-chart";
@@ -90,6 +91,9 @@ const storeContent: StoreModel = {
   AccessToFundingAllocationSunburst: persist(AccessToFundingAllocationSunburst),
   AccessToFundingAllocationTreemap: persist(AccessToFundingAllocationTreemap),
   AccessToFundingAllocationTable: persist(AccessToFundingAllocationTable),
+  AccessToFundingFundingRequestsTable: persist(
+    AccessToFundingFundingRequestsTable
+  ),
   // search
   GlobalSearch: persist(GlobalSearch),
   // filter options api

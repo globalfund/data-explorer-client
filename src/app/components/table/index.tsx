@@ -47,7 +47,7 @@ export const Table: React.FC<TableProps> = (props: TableProps) => {
         // table.destroy();
       };
     }
-  }, []);
+  }, [props.data]);
 
   React.useEffect(() => {
     if (ref.current) {
