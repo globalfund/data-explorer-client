@@ -170,7 +170,7 @@ export const BarSeriesChart: React.FC<BarSeriesChartProps> = (
         })),
       });
     }
-  }, [props.data, props.keys, range]);
+  }, [props.data, props.keys, range, stateChart]);
 
   return (
     <React.Fragment>

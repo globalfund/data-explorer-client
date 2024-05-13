@@ -144,6 +144,7 @@ export interface StoreModel {
   AccessToFundingFundingRequestsTable: ApiCallModel;
   // financial insights
   FinancialInsightsStats: ApiCallModel;
+  FinancialInsightsDisbursementsBarChart: ApiCallModel;
   // search
   GlobalSearch: ApiCallModel;
   // filter options api

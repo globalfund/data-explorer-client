@@ -180,7 +180,38 @@ export const BarChart: React.FC<BarChartProps> = (props: BarChartProps) => {
       chart.setOption(option);
       setStateChart(chart);
     }
-  }, [range, xAxisKeys, seriesData, props.valueLabels, containerRef.current]);
+  }, [containerRef.current]);
+
+  React.useEffect(() => {
+    if (stateChart) {
+      stateChart.setOption({
+        yAxis: {
+          axisLabel: {
+            formatter: (value: number) => {
+              return getFinancialValueWithMetricPrefix(value, range.index);
+            },
+          },
+        },
+        xAxis: {
+          data: xAxisKeys,
+        },
+        series: seriesData.map((values, index) => ({
+          data: values,
+          name:
+            index === 0 ? props.valueLabels.value : props.valueLabels.value1,
+          itemStyle:
+            seriesData.length > 1
+              ? {
+                  color: [
+                    appColors.TIME_CYCLE.BAR_COLOR_2,
+                    appColors.TIME_CYCLE.BAR_COLOR_3,
+                  ][index],
+                }
+              : props.itemStyle,
+        })),
+      });
+    }
+  }, [range, xAxisKeys, seriesData, props.valueLabels, stateChart]);
 
   return (
     <React.Fragment>

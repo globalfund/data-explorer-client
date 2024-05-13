@@ -13,12 +13,14 @@ import { Treemap } from "app/components/charts/treemap";
 import { Heatmap } from "app/components/charts/heatmap";
 import { SankeyChart } from "app/components/charts/sankey";
 import { DatasetPage } from "app/pages/datasets/common/page";
+import { BarChartDataItem } from "app/components/charts/bar/data";
+import { formatFinancialValue } from "app/utils/formatFinancialValue";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { getRange } from "app/utils/getFinancialValueWithMetricPrefix";
 import { FinancialMetric } from "app/components/charts/financial-metric";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { ExpandableHorizontalBar } from "app/components/charts/expandable-horizontal-bar";
 import { STORY_DATA_VARIANT_2 as BUDGET_SANKEY_DATA } from "app/components/charts/sankey/data";
-import { STORY_DATA_VARIANT_3 as DISBURSEMENTS_BAR_DATA } from "app/components/charts/bar/data";
 import { STORY_DATA_VARIANT_2 as BUDGET_TREEMAP_DATA } from "app/components/charts/treemap/data";
 import { STORY_DATA_VARIANT_2 as DISBURSEMENTS_LINE_DATA } from "app/components/charts/line/data";
 import { STORY_DATA_VARIANT_2 as EXPENDITURES_BAR_CHART } from "app/components/charts/expandable-horizontal-bar/data";
@@ -49,8 +51,6 @@ import {
   dropdownItemsBudgetBreakdown,
   BUDGET_BREAKDOWN_DATA,
 } from "app/pages/datasets/grant-implementation/data";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { formatFinancialValue } from "app/utils/formatFinancialValue";
 
 export const GrantImplementationPage: React.FC = () => {
   const [geographyGrouping, setGeographyGrouping] = React.useState(
@@ -79,6 +79,17 @@ export const GrantImplementationPage: React.FC = () => {
   const fetchFinancialInsightsStats = useStoreActions(
     (actions) => actions.FinancialInsightsStats.fetch
   );
+  const dataFinancialInsightsDisbursementsBarChart = useStoreState(
+    (state) =>
+      get(
+        state.FinancialInsightsDisbursementsBarChart,
+        "data.data",
+        []
+      ) as BarChartDataItem[]
+  );
+  const fetchFinancialInsightsDisbursementsBarChart = useStoreActions(
+    (actions) => actions.FinancialInsightsDisbursementsBarChart.fetch
+  );
 
   const handleDisbursementsSelectionChange = (value: string) => {
     setDisbursementsDropdownSelected(value);
@@ -101,8 +112,10 @@ export const GrantImplementationPage: React.FC = () => {
     let maxValue = 0;
     switch (disbursementsDropdownSelected) {
       case dropdownItemsDisbursements[0].value:
-        range = getRange(DISBURSEMENTS_BAR_DATA, ["value"]);
-        maxValue = maxBy(DISBURSEMENTS_BAR_DATA, "value")?.value || 0;
+        range = getRange(dataFinancialInsightsDisbursementsBarChart, ["value"]);
+        maxValue =
+          maxBy(dataFinancialInsightsDisbursementsBarChart, "value")?.value ||
+          0;
         return (
           <Box position="relative">
             <Typography
@@ -121,7 +134,7 @@ export const GrantImplementationPage: React.FC = () => {
               Y Axis/<b>Disbursed Amount (USD {range.abbr})</b>
             </Typography>
             <BarChart
-              data={DISBURSEMENTS_BAR_DATA}
+              data={dataFinancialInsightsDisbursementsBarChart}
               valueLabels={{
                 value: "disbursement",
               }}
@@ -223,7 +236,10 @@ export const GrantImplementationPage: React.FC = () => {
       default:
         return null;
     }
-  }, [disbursementsDropdownSelected]);
+  }, [
+    disbursementsDropdownSelected,
+    dataFinancialInsightsDisbursementsBarChart,
+  ]);
 
   const financialMetricsContent = React.useMemo(() => {
     return (
@@ -330,6 +346,7 @@ export const GrantImplementationPage: React.FC = () => {
 
   React.useEffect(() => {
     fetchFinancialInsightsStats({});
+    fetchFinancialInsightsDisbursementsBarChart({});
   }, []);
 
   return (
