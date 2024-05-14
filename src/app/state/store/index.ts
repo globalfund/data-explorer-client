@@ -22,6 +22,7 @@ import componentsSidebar from "app/state/api/action-reducers/cms/componentsSideb
 import ComponentFilterOptions from "app/state/api/action-reducers/filters/components";
 import modulesGrantDetail from "app/state/api/action-reducers/cms/modulesGrantDetail";
 import { AnnualResultsStats } from "app/state/api/action-reducers/annual-results/stats";
+import { AnnualResultsTable } from "app/state/api/action-reducers/annual-results/table";
 import { HomeBudgetsTreemap } from "app/state/api/action-reducers/home/budgets-treemap";
 import notesAndDisclaimers from "app/state/api/action-reducers/cms/notesAndDisclaimers";
 import componentsDialogBox from "app/state/api/action-reducers/cms/componentsDialogBox";
@@ -41,6 +42,7 @@ import componentsChartsPledges from "app/state/api/action-reducers/cms/component
 import { FundingRequestsTableGeneric } from "app/state/api/action-reducers/viz/fundingRequests";
 import { FinancialInsightsStats } from "app/state/api/action-reducers/financial-insights/stats";
 import { HomeExpendituresHeatmap } from "app/state/api/action-reducers/home/expenditures-heatmap";
+import { AnnualResultsPolyline } from "app/state/api/action-reducers/annual-results/polyline-tree";
 import componentsDatasetCarousel from "app/state/api/action-reducers/cms/componentsDatasetCarousel";
 import componentsInformationPanel from "app/state/api/action-reducers/cms/componentsInformationPanel";
 import { ResourceMobilizationStats } from "app/state/api/action-reducers/resource-mobilization/stats";
@@ -76,7 +78,6 @@ import {
   EligibilityStatusCodelist,
   EligibilityDiseaseBurdenCodelist,
 } from "app/state/api/action-reducers/viz/eligibility";
-import { AnnualResultsPolyline } from "../api/action-reducers/annual-results/polyline-tree";
 
 const storeContent: StoreModel = {
   // homepage
@@ -136,6 +137,7 @@ const storeContent: StoreModel = {
   // annual results
   AnnualResultsStats: persist(AnnualResultsStats),
   AnnualResultsPolyline: persist(AnnualResultsPolyline),
+  AnnualResultsTable: persist(AnnualResultsTable),
   // search
   GlobalSearch: persist(GlobalSearch),
   // filter options api

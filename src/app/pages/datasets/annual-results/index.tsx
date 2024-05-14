@@ -7,19 +7,13 @@ import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
 import { DatasetPage } from "app/pages/datasets/common/page";
 import { PolylineTree } from "app/components/charts/polyline-tree";
+import { TABLE_VARIATION_9_COLUMNS } from "app/components/table/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { applyResultValueFormula } from "app/utils/applyResultValueFormula";
+import { PolylineTreeDataItem } from "app/components/charts/polyline-tree/data";
 import { ReactComponent as TableIcon } from "app/assets/vectors/Select_Table.svg";
 import { ReactComponent as BarChartIcon } from "app/assets/vectors/Select_BarChart.svg";
-import {
-  STORY_DATA_VARIANT_1 as POLYLINE_TREE_DATA,
-  PolylineTreeDataItem,
-} from "app/components/charts/polyline-tree/data";
-import {
-  TABLE_VARIATION_9_DATA,
-  TABLE_VARIATION_9_COLUMNS,
-} from "app/components/table/data";
 import {
   statsOrder,
   geographyGroupingOptions,
@@ -85,12 +79,27 @@ export const AnnualResultsPage: React.FC = () => {
   const fetchPolyline = useStoreActions(
     (actions) => actions.AnnualResultsPolyline.fetch
   );
+  const dataTable = useStoreState(
+    (state) =>
+      get(state.AnnualResultsTable, "data.data", []) as {
+        [key: string]:
+          | string
+          | number
+          | boolean
+          | null
+          | object
+          | Array<object>;
+      }[]
+  );
+  const fetchTable = useStoreActions(
+    (actions) => actions.AnnualResultsTable.fetch
+  );
   const loadingResults = useStoreState((state) => {
     switch (dropdownSelected) {
       case dropdownItems[0].value:
         return state.AnnualResultsPolyline.loading;
       case dropdownItems[1].value:
-      // return state.AnnualResultsTable.loading;
+        return state.AnnualResultsTable.loading;
       default:
         return false;
     }
@@ -145,16 +154,16 @@ export const AnnualResultsPage: React.FC = () => {
         return (
           <Table
             dataTree
+            data={dataTable}
             dataTreeStartExpanded
             id="annual-results-table"
-            data={TABLE_VARIATION_9_DATA}
             columns={TABLE_VARIATION_9_COLUMNS}
           />
         );
       default:
         return null;
     }
-  }, [dropdownSelected, dataPolyline]);
+  }, [dropdownSelected, dataPolyline, dataTable]);
 
   React.useEffect(() => {
     fetchStats({
@@ -165,6 +174,7 @@ export const AnnualResultsPage: React.FC = () => {
         cycle: "2022",
       },
     });
+    fetchTable({});
   }, []);
 
   return (
