@@ -2,6 +2,7 @@ import { createStore, persist } from "easy-peasy";
 import { StoreModel } from "app/state/api/interfaces";
 import { CMSData } from "app/state/api/action-reducers/sync";
 import GlobalSearch from "app/state/api/action-reducers/search";
+import { GrantList } from "app/state/api/action-reducers/grants/list";
 import modulesAbout from "app/state/api/action-reducers/cms/modulesAbout";
 import modulesCommon from "app/state/api/action-reducers/cms/modulesCommon";
 import { HomeResultsStats } from "app/state/api/action-reducers/home/stats";
@@ -138,6 +139,8 @@ const storeContent: StoreModel = {
   AnnualResultsStats: persist(AnnualResultsStats),
   AnnualResultsPolyline: persist(AnnualResultsPolyline),
   AnnualResultsTable: persist(AnnualResultsTable),
+  // grants
+  GrantList: persist(GrantList),
   // search
   GlobalSearch: persist(GlobalSearch),
   // filter options api

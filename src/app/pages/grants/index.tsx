@@ -1,4 +1,5 @@
 import React from "react";
+import get from "lodash/get";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { Link } from "react-router-dom";
@@ -13,21 +14,30 @@ import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
 import { GrantCard } from "app/components/grant-card";
 import ArrowBack from "@mui/icons-material/ArrowBackIos";
-import { GRANTS_STORY_DATA } from "app/pages/grants/data";
 import { FilterPanel } from "app/components/filters/panel";
 import TableChartIcon from "@mui/icons-material/TableChart";
 import ArrowForward from "@mui/icons-material/ArrowForwardIos";
+import { GrantCardProps } from "app/components/grant-card/data";
 import { TableContainer } from "app/components/table-container";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import {
-  TABLE_VARIATION_5_COLUMNS,
   TABLE_VARIATION_5_DATA,
+  TABLE_VARIATION_5_COLUMNS,
 } from "app/components/table/data";
 
 export const Grants: React.FC = () => {
+  const [page, setPage] = React.useState(1);
   const [search, setSearch] = React.useState("");
   const [showSearch, setShowSearch] = React.useState(false);
   const [view, setView] = React.useState<"list" | "table">("list");
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  const data = useStoreState(
+    (state) => get(state.GrantList, "data.data", []) as GrantCardProps[]
+  );
+  const count = useStoreState((state) => get(state.GrantList, "data.count", 0));
+  const loading = useStoreState((state) => state.GrantList.loading);
+  const fetch = useStoreActions((actions) => actions.GrantList.fetch);
 
   const handleFilterButtonClick = (
     event: React.MouseEvent<HTMLButtonElement>
@@ -55,7 +65,7 @@ export const Grants: React.FC = () => {
       return (
         <React.Fragment>
           <Grid container spacing={2}>
-            {GRANTS_STORY_DATA.map((grant) => (
+            {data.map((grant) => (
               <Grid
                 xs={12}
                 sm={6}
@@ -81,11 +91,33 @@ export const Grants: React.FC = () => {
             ))}
           </Grid>
           <Box gap="8px" padding="0 32px" display="flex" alignItems="center">
-            <Typography fontSize="12px">1-9 of 180</Typography>
-            <IconButton sx={{ padding: 0 }}>
+            <Typography fontSize="12px">
+              {(page - 1) * 9 + 1}-{page * 9} of {count}
+            </Typography>
+            <IconButton
+              sx={{ padding: 0 }}
+              onClick={() =>
+                setPage((p) => {
+                  if (p > 1) {
+                    return p - 1;
+                  }
+                  return p;
+                })
+              }
+            >
               <ArrowBack htmlColor="#000" sx={{ fontSize: "16px" }} />
             </IconButton>
-            <IconButton sx={{ padding: 0 }}>
+            <IconButton
+              sx={{ padding: 0 }}
+              onClick={() =>
+                setPage((p) => {
+                  if (p < count / 9) {
+                    return p + 1;
+                  }
+                  return p;
+                })
+              }
+            >
               <ArrowForward htmlColor="#000" sx={{ fontSize: "16px" }} />
             </IconButton>
           </Box>
@@ -101,7 +133,16 @@ export const Grants: React.FC = () => {
         />
       </Box>
     );
-  }, [view]);
+  }, [view, data, count, page]);
+
+  React.useEffect(() => {
+    fetch({
+      routeParams: {
+        page: `${page}`,
+        pageSize: "9",
+      },
+    });
+  }, [page]);
 
   return (
     <Box padding="60px 0">

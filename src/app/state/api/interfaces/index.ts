@@ -158,6 +158,8 @@ export interface StoreModel {
   AnnualResultsStats: ApiCallModel;
   AnnualResultsPolyline: ApiCallModel;
   AnnualResultsTable: ApiCallModel;
+  // grants
+  GrantList: ApiCallModel;
   // search
   GlobalSearch: ApiCallModel;
   // filter options api
