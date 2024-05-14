@@ -19,11 +19,9 @@ import TableChartIcon from "@mui/icons-material/TableChart";
 import ArrowForward from "@mui/icons-material/ArrowForwardIos";
 import { GrantCardProps } from "app/components/grant-card/data";
 import { TableContainer } from "app/components/table-container";
+import { getMonthFromNumber } from "app/utils/getMonthFromNumber";
+import { TABLE_VARIATION_5_COLUMNS } from "app/components/table/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import {
-  TABLE_VARIATION_5_DATA,
-  TABLE_VARIATION_5_COLUMNS,
-} from "app/components/table/data";
 
 export const Grants: React.FC = () => {
   const [page, setPage] = React.useState(1);
@@ -60,6 +58,30 @@ export const Grants: React.FC = () => {
     }
   };
 
+  const dataTable = React.useMemo(() => {
+    return data.map((item) => {
+      let datesStr = "";
+      const startDate = new Date(item.startDate);
+      const endDate = new Date(item.endDate);
+      if (startDate) {
+        datesStr = `${getMonthFromNumber(startDate.getMonth() + 1)} ${startDate.getFullYear()} - `;
+      }
+      if (endDate) {
+        datesStr += `${getMonthFromNumber(endDate.getMonth() + 1)} ${endDate.getFullYear()}`;
+      }
+      return {
+        grantId: item.number,
+        startEndDate: datesStr,
+        geography: item.location,
+        component: item.component,
+        principalRecipient: item.principalRecipient,
+        status: item.status,
+        signed: item.signed,
+        disbursed: item.disbursed,
+      };
+    });
+  }, [data]);
+
   const viewResult = React.useMemo(() => {
     if (view === "list") {
       return (
@@ -90,37 +112,6 @@ export const Grants: React.FC = () => {
               </Grid>
             ))}
           </Grid>
-          <Box gap="8px" padding="0 32px" display="flex" alignItems="center">
-            <Typography fontSize="12px">
-              {(page - 1) * 9 + 1}-{page * 9} of {count}
-            </Typography>
-            <IconButton
-              sx={{ padding: 0 }}
-              onClick={() =>
-                setPage((p) => {
-                  if (p > 1) {
-                    return p - 1;
-                  }
-                  return p;
-                })
-              }
-            >
-              <ArrowBack htmlColor="#000" sx={{ fontSize: "16px" }} />
-            </IconButton>
-            <IconButton
-              sx={{ padding: 0 }}
-              onClick={() =>
-                setPage((p) => {
-                  if (p < count / 9) {
-                    return p + 1;
-                  }
-                  return p;
-                })
-              }
-            >
-              <ArrowForward htmlColor="#000" sx={{ fontSize: "16px" }} />
-            </IconButton>
-          </Box>
         </React.Fragment>
       );
     }
@@ -128,12 +119,49 @@ export const Grants: React.FC = () => {
       <Box padding="32px">
         <TableContainer
           id="grants-table"
-          data={TABLE_VARIATION_5_DATA}
+          data={dataTable}
           columns={TABLE_VARIATION_5_COLUMNS}
         />
       </Box>
     );
-  }, [view, data, count, page]);
+  }, [view, data, count, page, dataTable]);
+
+  const pagination = React.useMemo(
+    () => (
+      <Box gap="8px" padding="0 32px" display="flex" alignItems="center">
+        <Typography fontSize="12px">
+          {(page - 1) * 9 + 1}-{page * 9} of {count}
+        </Typography>
+        <IconButton
+          sx={{ padding: 0 }}
+          onClick={() =>
+            setPage((p) => {
+              if (p > 1) {
+                return p - 1;
+              }
+              return p;
+            })
+          }
+        >
+          <ArrowBack htmlColor="#000" sx={{ fontSize: "16px" }} />
+        </IconButton>
+        <IconButton
+          sx={{ padding: 0 }}
+          onClick={() =>
+            setPage((p) => {
+              if (p < count / 9) {
+                return p + 1;
+              }
+              return p;
+            })
+          }
+        >
+          <ArrowForward htmlColor="#000" sx={{ fontSize: "16px" }} />
+        </IconButton>
+      </Box>
+    ),
+    [count, page]
+  );
 
   React.useEffect(() => {
     fetch({
@@ -305,6 +333,7 @@ export const Grants: React.FC = () => {
           </Box>
         </Box>
         {viewResult}
+        {pagination}
       </Box>
     </Box>
   );
