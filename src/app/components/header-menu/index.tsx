@@ -4,14 +4,18 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Popover from "@mui/material/Popover";
 import { styled } from "@mui/material/styles";
-import { useNavigate } from "react-router-dom";
-import { PAGES, HeaderMenuPage } from "app/components/header-menu/data";
+import { useLocation, useNavigate } from "react-router-dom";
+import {
+  PAGES,
+  HeaderMenuPage,
+  isNavButtonActive,
+} from "app/components/header-menu/data";
 
 const HeaderMenuButton = styled(Button)({
   width: "160px",
   borderRadius: 0,
-  fontWeight: 400,
   fontSize: "12px",
+  fontWeight: "400",
   textAlign: "center",
   textTransform: "none",
   "&:hover": {
@@ -22,6 +26,7 @@ const HeaderMenuButton = styled(Button)({
 
 export const HeaderMenu: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [selectedPage, setSelectedPage] = React.useState<string | null>(null);
@@ -68,7 +73,7 @@ export const HeaderMenu: React.FC = () => {
           disableRipple
           onClick={handleClick(false, page)}
           sx={
-            selectedPage === page.id
+            isNavButtonActive(page.id, location.pathname)
               ? {
                   fontWeight: "700",
                   borderBottom: `2px solid ${colors.primary.black}`,
