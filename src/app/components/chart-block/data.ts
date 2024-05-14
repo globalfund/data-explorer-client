@@ -3,6 +3,7 @@ export interface ChartBlockProps {
   title: string;
   subtitle: string;
   cycles?: string[];
+  loading?: boolean;
   noSplitText?: boolean;
   selectedCycle?: string;
   children: React.ReactNode;

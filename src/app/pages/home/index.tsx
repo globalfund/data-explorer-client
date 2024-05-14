@@ -64,6 +64,9 @@ export const Home: React.FC = () => {
         []
       ) as BarChartDataItem[]
   );
+  const loadingPledgesContributionsBarChart = useStoreState((state) =>
+    Boolean(state.HomePledgesContributionsBarChart.loading)
+  );
   const fetchPledgesContributionsBarChart = useStoreActions(
     (actions) => actions.HomePledgesContributionsBarChart.fetch
   );
@@ -75,12 +78,18 @@ export const Home: React.FC = () => {
         []
       ) as RadialChartDataItem[]
   );
+  const loadingAllocationsRadialChart = useStoreState((state) =>
+    Boolean(state.HomeAllocationsRadialChart.loading)
+  );
   const fetchAllocationsRadialChart = useStoreActions(
     (actions) => actions.HomeAllocationsRadialChart.fetch
   );
   const dataBudgetsTreemap = useStoreState(
     (state) =>
       get(state.HomeBudgetsTreemap, "data.data", []) as TreemapDataItem[]
+  );
+  const loadingBudgetsTreemap = useStoreState((state) =>
+    Boolean(state.HomeBudgetsTreemap.loading)
   );
   const fetchBudgetsTreemap = useStoreActions(
     (actions) => actions.HomeBudgetsTreemap.fetch
@@ -92,12 +101,18 @@ export const Home: React.FC = () => {
         xAxisKeys: [],
       }) as LineChartProps
   );
+  const loadingDisbursementsLineChart = useStoreState((state) =>
+    Boolean(state.HomeDisbursementsLineChart.loading)
+  );
   const fetchDisbursementsLineChart = useStoreActions(
     (actions) => actions.HomeDisbursementsLineChart.fetch
   );
   const dataExpendituresHeatmap = useStoreState(
     (state) =>
       get(state.HomeExpendituresHeatmap, "data.data", []) as HeatmapDataItem[]
+  );
+  const loadingExpendituresHeatmap = useStoreState((state) =>
+    Boolean(state.HomeExpendituresHeatmap.loading)
   );
   const fetchExpendituresHeatmap = useStoreActions(
     (actions) => actions.HomeExpendituresHeatmap.fetch
@@ -217,6 +232,7 @@ export const Home: React.FC = () => {
         title={`$${totalContribution}`}
         selectedCycle={chart1Cycle}
         subtitle="Funds raised to date"
+        loading={loadingPledgesContributionsBarChart}
         handleCycleChange={(value) => handleChartCycleChange(value, 1)}
         text="Government, private sector, nongovernment and other donor pledges and contributions"
       >
@@ -263,6 +279,7 @@ export const Home: React.FC = () => {
         cycles={CYCLES}
         title="$84 Million"
         selectedCycle={chart2Cycle}
+        loading={loadingAllocationsRadialChart}
         subtitle="125 countries with approved Grants in Cycle 4"
         handleCycleChange={(value) => handleChartCycleChange(value, 2)}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
@@ -277,6 +294,7 @@ export const Home: React.FC = () => {
         cycles={CYCLES}
         title="557k Budgeted"
         selectedCycle={chart3Cycle}
+        loading={loadingBudgetsTreemap}
         subtitle="With transparent budget data"
         handleCycleChange={(value) => handleChartCycleChange(value, 3)}
         text="Our Grant Implementation programs are developed meticulously, each Grant follows a well executed plan, always supervised by TGF Implementation team."
@@ -291,6 +309,7 @@ export const Home: React.FC = () => {
         dropdownSelected={chart4Dropdown}
         dropdownItems={CHART_4_DROPDOWN_ITEMS}
         subtitle="Disbursed within 5431 Grants"
+        loading={loadingDisbursementsLineChart}
         handleDropdownChange={setChart4Dropdown}
         handleCycleChange={(value) => handleChartCycleChange(value, 4)}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
@@ -304,6 +323,7 @@ export const Home: React.FC = () => {
         title="Expenditures"
         selectedCycle={chart5Cycle}
         dropdownSelected={chart5Dropdown}
+        loading={loadingExpendituresHeatmap}
         dropdownItems={CHART_5_DROPDOWN_ITEMS}
         handleDropdownChange={setChart5Dropdown}
         handleCycleChange={(value) => handleChartCycleChange(value, 5)}

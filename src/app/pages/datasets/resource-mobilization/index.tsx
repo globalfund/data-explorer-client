@@ -7,18 +7,16 @@ import Divider from "@mui/material/Divider";
 import { Table } from "app/components/table";
 import Typography from "@mui/material/Typography";
 import { DatasetPage } from "app/pages/datasets/common/page";
+import CircularProgress from "@mui/material/CircularProgress";
 import { SunburstChart } from "app/components/charts/sunburst";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
+import { SunburstDataItem } from "app/components/charts/sunburst/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { ReactComponent as TableIcon } from "app/assets/vectors/Select_Table.svg";
 import { ReactComponent as BarChartIcon } from "app/assets/vectors/Select_BarChart.svg";
 import { ExpandableHorizontalBar } from "app/components/charts/expandable-horizontal-bar";
 import { ReactComponent as SunburstChartIcon } from "app/assets/vectors/Select_SunburstChart.svg";
-import {
-  STORY_DATA_VARIANT_1 as SUNBURST_CHART_DATA,
-  SunburstDataItem,
-} from "app/components/charts/sunburst/data";
 import { ExpandableHorizontalBarChartDataItem } from "app/components/charts/expandable-horizontal-bar/data";
 import {
   TABLE_VARIATION_8_DATA,
@@ -42,6 +40,9 @@ export const ResourceMobilizationPage: React.FC = () => {
 
   const dataStats = useStoreState(
     (state) => state.ResourceMobilizationStats.data
+  );
+  const loadingStats = useStoreState(
+    (state) => state.ResourceMobilizationStats.loading
   );
   const fetchStats = useStoreActions(
     (actions) => actions.ResourceMobilizationStats.fetch
@@ -74,6 +75,18 @@ export const ResourceMobilizationPage: React.FC = () => {
   const fetchTable = useStoreActions(
     (actions) => actions.ResourceMobilizationTable.fetch
   );
+  const dataChartLoading = useStoreState((state) => {
+    switch (dropdownSelected) {
+      case dropdownItems[0].value:
+        return state.ResourceMobilizationExpandableBarChart.loading;
+      case dropdownItems[1].value:
+        return state.ResourceMobilizationSunburst.loading;
+      case dropdownItems[2].value:
+        return state.ResourceMobilizationTable.loading;
+      default:
+        return false;
+    }
+  });
 
   const handleSelectionChange = (value: string) => {
     setDropdownSelected(value);
@@ -127,7 +140,20 @@ export const ResourceMobilizationPage: React.FC = () => {
       breadcrumbs={[{ label: "Datasets" }, { label: "Resource Mobilization" }]}
     >
       <Box width="100%" marginTop="50px">
-        <Grid container marginBottom="50px">
+        <Grid container marginBottom="50px" position="relative">
+          {loadingStats && (
+            <Box
+              width="100%"
+              height="100%"
+              display="flex"
+              position="absolute"
+              alignItems="center"
+              justifyContent="center"
+              bgcolor="rgba(255, 255, 255, 0.8)"
+            >
+              <CircularProgress />
+            </Box>
+          )}
           <Grid
             item
             sm={12}
@@ -332,6 +358,7 @@ export const ResourceMobilizationPage: React.FC = () => {
             dropdownSelected={dropdownSelected}
             handleDropdownChange={handleSelectionChange}
             disableCollapse={dropdownSelected === dropdownItems[2].value}
+            loading={dataChartLoading}
           >
             {chartContent}
           </DatasetChartBlock>

@@ -1,6 +1,7 @@
 export interface DatasetChartBlockProps {
   title: string;
   subtitle: string;
+  loading?: boolean;
   children: React.ReactNode;
   dropdownSelected?: string;
   disableCollapse?: boolean;

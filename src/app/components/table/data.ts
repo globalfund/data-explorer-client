@@ -7290,15 +7290,15 @@ export const TABLE_VARIATION_14_COLUMNS: ColumnDefinition[] = [
   {
     title: "Investment Landscapes & Cost Category",
     field: "name",
-    width: "40%",
+    width: "70%",
     formatter: cellBGColorFormatter,
   },
-  {
-    title: "Grants",
-    field: "grants",
-    width: "30%",
-    formatter: financialFormatter,
-  },
+  // {
+  //   title: "Grants",
+  //   field: "grants",
+  //   width: "30%",
+  //   formatter: financialFormatter,
+  // },
   {
     title: "Budget Amount (USD)",
     field: "amount",

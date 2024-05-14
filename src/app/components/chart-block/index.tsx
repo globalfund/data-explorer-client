@@ -2,6 +2,7 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
+import CircularProgress from "@mui/material/CircularProgress";
 import { ChartBlockProps } from "app/components/chart-block/data";
 import { splitStringInMiddle } from "app/utils/splitStringInMiddle";
 import { ChartBlockCycles } from "app/components/chart-block/components/cycles";
@@ -57,6 +58,23 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
     );
   }, [props.text, props.noSplitText]);
 
+  const content = React.useMemo(() => {
+    if (props.loading) {
+      return (
+        <Box
+          width="100%"
+          height="100%"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <CircularProgress />
+        </Box>
+      );
+    }
+    return props.children;
+  }, [props.children, props.loading]);
+
   return (
     <Box>
       <Typography variant="h2" lineHeight={1}>
@@ -105,8 +123,22 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
           )}
         </Box>
       )}
-      <Box width="100%" minHeight="400px" padding="0 32px" position="relative">
-        {props.children}
+      <Box
+        width="100%"
+        minHeight="400px"
+        padding="0 32px"
+        position="relative"
+        sx={
+          props.loading
+            ? {
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }
+            : {}
+        }
+      >
+        {content}
       </Box>
       {!props.noBottomToolbar && (
         <Box width="100%" paddingRight="32px">

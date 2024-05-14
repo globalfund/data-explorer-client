@@ -13,6 +13,7 @@ import { Treemap } from "app/components/charts/treemap";
 import { Heatmap } from "app/components/charts/heatmap";
 import { SankeyChart } from "app/components/charts/sankey";
 import { DatasetPage } from "app/pages/datasets/common/page";
+import CircularProgress from "@mui/material/CircularProgress";
 import { BarChartDataItem } from "app/components/charts/bar/data";
 import { LineChartDataItem } from "app/components/charts/line/data";
 import { TreemapDataItem } from "app/components/charts/treemap/data";
@@ -74,6 +75,9 @@ export const GrantImplementationPage: React.FC = () => {
       disbursed: 0,
     })
   );
+  const loadingStats = useStoreState(
+    (state) => state.FinancialInsightsStats.loading
+  );
   const fetchFinancialInsightsStats = useStoreActions(
     (actions) => actions.FinancialInsightsStats.fetch
   );
@@ -122,6 +126,18 @@ export const GrantImplementationPage: React.FC = () => {
   const fetchFinancialInsightsDisbursementsTable = useStoreActions(
     (actions) => actions.FinancialInsightsDisbursementsTable.fetch
   );
+  const loadingFinancialInsightsDisbursements = useStoreState((state) => {
+    switch (disbursementsDropdownSelected) {
+      case dropdownItemsDisbursements[0].value:
+        return state.FinancialInsightsDisbursementsBarChart.loading;
+      case dropdownItemsDisbursements[1].value:
+        return state.FinancialInsightsDisbursementsLineChart.loading;
+      case dropdownItemsDisbursements[2].value:
+        return state.FinancialInsightsDisbursementsTable.loading;
+      default:
+        return false;
+    }
+  });
   const dataBudgetBreakdown = useStoreState(
     (state) =>
       get(state.FinancialInsightsBudgetBreakdown, "data.data", []) as {
@@ -172,6 +188,13 @@ export const GrantImplementationPage: React.FC = () => {
   const fetchDisbursementUtilisation = useStoreActions(
     (actions) => actions.FinancialInsightsDisbursementUtilisation.fetch
   );
+  const loadingFinancialMetrics = useStoreState((state) => {
+    return (
+      state.FinancialInsightsBudgetUtilisation.loading ||
+      state.FinancialInsightsCountryAbsorption.loading ||
+      state.FinancialInsightsDisbursementUtilisation.loading
+    );
+  });
   const dataBudgetTreemap = useStoreState(
     (state) =>
       get(
@@ -198,6 +221,19 @@ export const GrantImplementationPage: React.FC = () => {
   const fetchBudgetTable = useStoreActions(
     (actions) => actions.FinancialInsightsBudgetTable.fetch
   );
+  const loadingBudget = useStoreState((state) => {
+    switch (budgetsDropdownSelected) {
+      case dropdownItemsBudgets[0].value:
+        // return state.FinancialInsightsBudgetSankey.loading;
+        return false;
+      case dropdownItemsBudgets[1].value:
+        return state.FinancialInsightsBudgetTreemap.loading;
+      case dropdownItemsBudgets[2].value:
+        return state.FinancialInsightsBudgetTable.loading;
+      default:
+        return false;
+    }
+  });
 
   const handleDisbursementsSelectionChange = (value: string) => {
     setDisbursementsDropdownSelected(value);
@@ -491,6 +527,7 @@ export const GrantImplementationPage: React.FC = () => {
           display="flex"
           flexDirection="row"
           marginBottom="50px"
+          position="relative"
           sx={{
             "> div": {
               width: "calc(100% / 3)",
@@ -504,6 +541,19 @@ export const GrantImplementationPage: React.FC = () => {
             },
           }}
         >
+          {loadingStats && (
+            <Box
+              width="100%"
+              height="100%"
+              display="flex"
+              position="absolute"
+              alignItems="center"
+              justifyContent="center"
+              bgcolor="rgba(255, 255, 255, 0.8)"
+            >
+              <CircularProgress />
+            </Box>
+          )}
           <Box>
             <Typography variant="h5">
               {formatFinancialValue(dataFinancialInsightsStats.signed)}
@@ -544,6 +594,7 @@ export const GrantImplementationPage: React.FC = () => {
             dropdownItems={dropdownItemsDisbursements}
             dropdownSelected={disbursementsDropdownSelected}
             handleDropdownChange={handleDisbursementsSelectionChange}
+            loading={loadingFinancialInsightsDisbursements}
             disableCollapse={
               disbursementsDropdownSelected ===
               dropdownItemsDisbursements[2].value
@@ -567,6 +618,7 @@ export const GrantImplementationPage: React.FC = () => {
             dropdownItems={dropdownItemsBudgets}
             dropdownSelected={budgetsDropdownSelected}
             handleDropdownChange={(value) => setBudgetsDropdownSelected(value)}
+            loading={loadingBudget}
             disableCollapse={
               budgetsDropdownSelected === dropdownItemsBudgets[2].value
             }
@@ -580,8 +632,22 @@ export const GrantImplementationPage: React.FC = () => {
           width="100%"
           display="flex"
           padding="50px 0"
+          position="relative"
           flexDirection="column"
         >
+          {loadingStats && (
+            <Box
+              width="100%"
+              height="100%"
+              display="flex"
+              position="absolute"
+              alignItems="center"
+              justifyContent="center"
+              bgcolor="rgba(255, 255, 255, 0.8)"
+            >
+              <CircularProgress />
+            </Box>
+          )}
           <Box
             width="100%"
             display="flex"
@@ -651,6 +717,7 @@ export const GrantImplementationPage: React.FC = () => {
             title="Financial Metrics"
             subtitle=""
             dropdownItems={[]}
+            loading={loadingFinancialMetrics}
           >
             {financialMetricsContent}
           </DatasetChartBlock>

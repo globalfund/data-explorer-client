@@ -34,6 +34,7 @@ import {
   TABLE_VARIATION_11_COLUMNS as ALLOCATIONS_TABLE_COLUMNS,
   TABLE_VARIATION_12_COLUMNS as FUNDING_REQUESTS_TABLE_COLUMNS,
 } from "app/components/table/data";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export const AccessToFundingPage: React.FC = () => {
   const [geographyGrouping, setGeographyGrouping] = React.useState(
@@ -56,11 +57,17 @@ export const AccessToFundingPage: React.FC = () => {
         value: string;
       }[]
   );
+  const loadingStats = useStoreState(
+    (state) => state.AccessToFundingStats.loading
+  );
   const fetchStats = useStoreActions(
     (actions) => actions.AccessToFundingStats.fetch
   );
   const dataEligibilityTable = useStoreState((state) =>
     get(state.AccessToFundingEligibilityTable, "data.data", [])
+  );
+  const loadingEligibilityTable = useStoreState(
+    (state) => state.AccessToFundingEligibilityTable.loading
   );
   const fetchEligibilityTable = useStoreActions(
     (actions) => actions.AccessToFundingEligibilityTable.fetch
@@ -103,8 +110,23 @@ export const AccessToFundingPage: React.FC = () => {
   const fetchAllocationsTable = useStoreActions(
     (actions) => actions.AccessToFundingAllocationTable.fetch
   );
+  const loadingAllocations = useStoreState((state) => {
+    switch (dropdownSelected) {
+      case dropdownItemsAllocations[0].value:
+        return state.AccessToFundingAllocationSunburst.loading;
+      case dropdownItemsAllocations[1].value:
+        return state.AccessToFundingAllocationTreemap.loading;
+      case dropdownItemsAllocations[2].value:
+        return state.AccessToFundingAllocationTable.loading;
+      default:
+        return false;
+    }
+  });
   const dataFundingRequestsTable = useStoreState((state) =>
     get(state.AccessToFundingFundingRequestsTable, "data.data", [])
+  );
+  const loadingFundingRequestsTable = useStoreState(
+    (state) => state.AccessToFundingFundingRequestsTable.loading
   );
   const fetchFundingRequestsTable = useStoreActions(
     (actions) => actions.AccessToFundingFundingRequestsTable.fetch
@@ -259,11 +281,25 @@ export const AccessToFundingPage: React.FC = () => {
           <Grid
             container
             spacing={2}
+            position="relative"
             margin="4px 0 50px 0"
             sx={{
               marginLeft: "-16px",
             }}
           >
+            {loadingStats && (
+              <Box
+                width="100%"
+                height="100%"
+                display="flex"
+                position="absolute"
+                alignItems="center"
+                justifyContent="center"
+                bgcolor="rgba(255, 255, 255, 0.8)"
+              >
+                <CircularProgress />
+              </Box>
+            )}
             {dataStats.map((item) => (
               <Grid item key={item.name} sm={6} md={3}>
                 <Box padding="15px" bgcolor="#F1F3F5">
@@ -290,6 +326,7 @@ export const AccessToFundingPage: React.FC = () => {
             subtitle="Country eligibility for funding over time."
             dropdownItems={[]}
             disableCollapse
+            loading={loadingEligibilityTable}
           >
             <Box
               gap="20px"
@@ -460,6 +497,7 @@ export const AccessToFundingPage: React.FC = () => {
             dropdownItems={dropdownItemsAllocations}
             dropdownSelected={dropdownSelected}
             handleDropdownChange={handleSelectionChange}
+            loading={loadingAllocations}
             disableCollapse={
               dropdownSelected === dropdownItemsAllocations[2].value
             }
@@ -516,6 +554,7 @@ export const AccessToFundingPage: React.FC = () => {
             subtitle="Funding request applications by countries."
             disableCollapse
             dropdownItems={[]}
+            loading={loadingFundingRequestsTable}
           >
             <Table
               dataTree

@@ -150,27 +150,7 @@ export const BarSeriesChart: React.FC<BarSeriesChartProps> = (
       chart.setOption(option);
       setStateChart(chart);
     }
-  }, [containerRef.current]);
-
-  React.useEffect(() => {
-    if (stateChart) {
-      stateChart.setOption({
-        yAxis: {
-          axisLabel: {
-            formatter: (value: number) => {
-              return getFinancialValueWithMetricPrefix(value, range.index);
-            },
-          },
-        },
-        xAxis: {
-          data: props.keys,
-        },
-        series: props.data.map((serie) => ({
-          data: serie.values,
-        })),
-      });
-    }
-  }, [props.data, props.keys, range, stateChart]);
+  }, [containerRef.current, props.data, props.keys, range]);
 
   return (
     <React.Fragment>

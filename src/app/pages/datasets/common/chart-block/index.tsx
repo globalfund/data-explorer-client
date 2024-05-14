@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
+import CircularProgress from "@mui/material/CircularProgress";
 import { DatasetChartBlockProps } from "app/pages/datasets/common/chart-block/data";
 import { ReactComponent as CollpaseIcon } from "app/assets/vectors/Collpase_ButtonIcon.svg";
 import { ReactComponent as SettingsIcon } from "app/assets/vectors/Settings_ButtonIcon.svg";
@@ -13,6 +14,23 @@ import { ChartBlockButtonToolbar } from "app/components/chart-block/components/b
 export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
   props: DatasetChartBlockProps
 ) => {
+  const content = React.useMemo(() => {
+    if (props.loading) {
+      return (
+        <Box
+          width="100%"
+          height="100%"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <CircularProgress />
+        </Box>
+      );
+    }
+    return props.children;
+  }, [props.children, props.loading]);
+
   return (
     <Box>
       <Typography variant="h3" lineHeight={1}>
@@ -65,8 +83,17 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
         minHeight="400px"
         padding="0 32px"
         position="relative"
+        sx={
+          props.loading
+            ? {
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }
+            : {}
+        }
       >
-        {props.children}
+        {content}
       </Box>
       <Box width="100%" paddingRight="32px" marginTop="40px">
         <ChartBlockButtonToolbar />
