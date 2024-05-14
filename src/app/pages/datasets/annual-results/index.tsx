@@ -12,7 +12,10 @@ import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { applyResultValueFormula } from "app/utils/applyResultValueFormula";
 import { ReactComponent as TableIcon } from "app/assets/vectors/Select_Table.svg";
 import { ReactComponent as BarChartIcon } from "app/assets/vectors/Select_BarChart.svg";
-import { STORY_DATA_VARIANT_1 as POLYLINE_TREE_DATA } from "app/components/charts/polyline-tree/data";
+import {
+  STORY_DATA_VARIANT_1 as POLYLINE_TREE_DATA,
+  PolylineTreeDataItem,
+} from "app/components/charts/polyline-tree/data";
 import {
   TABLE_VARIATION_9_DATA,
   TABLE_VARIATION_9_COLUMNS,
@@ -73,6 +76,25 @@ export const AnnualResultsPage: React.FC = () => {
   const fetchStats = useStoreActions(
     (actions) => actions.AnnualResultsStats.fetch
   );
+  const dataPolyline = useStoreState(
+    (state) =>
+      get(state.AnnualResultsPolyline, "data.data", {
+        name: "",
+      }) as PolylineTreeDataItem
+  );
+  const fetchPolyline = useStoreActions(
+    (actions) => actions.AnnualResultsPolyline.fetch
+  );
+  const loadingResults = useStoreState((state) => {
+    switch (dropdownSelected) {
+      case dropdownItems[0].value:
+        return state.AnnualResultsPolyline.loading;
+      case dropdownItems[1].value:
+      // return state.AnnualResultsTable.loading;
+      default:
+        return false;
+    }
+  });
 
   const handleSelectionChange = (value: string) => {
     setDropdownSelected(value);
@@ -118,7 +140,7 @@ export const AnnualResultsPage: React.FC = () => {
   const chartContent = React.useMemo(() => {
     switch (dropdownSelected) {
       case dropdownItems[0].value:
-        return <PolylineTree data={POLYLINE_TREE_DATA} />;
+        return <PolylineTree data={dataPolyline} />;
       case dropdownItems[1].value:
         return (
           <Table
@@ -132,11 +154,16 @@ export const AnnualResultsPage: React.FC = () => {
       default:
         return null;
     }
-  }, [dropdownSelected]);
+  }, [dropdownSelected, dataPolyline]);
 
   React.useEffect(() => {
     fetchStats({
       filterString: "cycle=2022",
+    });
+    fetchPolyline({
+      routeParams: {
+        cycle: "2022",
+      },
     });
   }, []);
 
@@ -185,6 +212,7 @@ export const AnnualResultsPage: React.FC = () => {
           <DatasetChartBlock
             title="Annual Results"
             subtitle="Lorem Ipsum."
+            loading={loadingResults}
             dropdownItems={dropdownItems}
             dropdownSelected={dropdownSelected}
             handleDropdownChange={handleSelectionChange}

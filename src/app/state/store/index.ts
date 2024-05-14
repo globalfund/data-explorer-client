@@ -76,6 +76,7 @@ import {
   EligibilityStatusCodelist,
   EligibilityDiseaseBurdenCodelist,
 } from "app/state/api/action-reducers/viz/eligibility";
+import { AnnualResultsPolyline } from "../api/action-reducers/annual-results/polyline-tree";
 
 const storeContent: StoreModel = {
   // homepage
@@ -134,6 +135,7 @@ const storeContent: StoreModel = {
   ),
   // annual results
   AnnualResultsStats: persist(AnnualResultsStats),
+  AnnualResultsPolyline: persist(AnnualResultsPolyline),
   // search
   GlobalSearch: persist(GlobalSearch),
   // filter options api

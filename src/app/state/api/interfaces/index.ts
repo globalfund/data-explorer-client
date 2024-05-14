@@ -156,6 +156,7 @@ export interface StoreModel {
   FinancialInsightsExpendituresHeatmap: ApiCallModel;
   // annual results
   AnnualResultsStats: ApiCallModel;
+  AnnualResultsPolyline: ApiCallModel;
   // search
   GlobalSearch: ApiCallModel;
   // filter options api
