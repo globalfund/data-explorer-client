@@ -8,6 +8,7 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
+import CircularProgress from "@mui/material/CircularProgress";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import {
   GeoCategoryProps,
@@ -98,6 +99,7 @@ export const Geography: React.FC = () => {
   const dataList = useStoreState(
     (state) => get(state.GeographyList, "data.data", []) as GeoCategoryProps[]
   );
+  const loading = useStoreState((state) => state.GeographyList.loading);
   const fetchList = useStoreActions((actions) => actions.GeographyList.fetch);
 
   const [filteredData, setFilteredData] = React.useState(dataList);
@@ -203,6 +205,18 @@ export const Geography: React.FC = () => {
         </Box>
         <Box height="48px" />
         <Box>
+          {loading && (
+            <Box
+              width="100%"
+              height="100%"
+              display="flex"
+              position="absolute"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <CircularProgress />
+            </Box>
+          )}
           {filteredData.map((item) => (
             <GeoCategory key={item.name} search={search.length > 0} {...item} />
           ))}

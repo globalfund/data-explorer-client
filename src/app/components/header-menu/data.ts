@@ -30,11 +30,11 @@ export const PAGES: HeaderMenuPage[] = [
         label: "Annual Results",
         link: "/annual-results",
       },
-      {
-        id: "documents",
-        label: "Documents",
-        link: "/documents",
-      },
+      // {
+      //   id: "documents",
+      //   label: "Documents",
+      //   link: "/documents",
+      // },
     ],
   },
   { id: "geography", label: "Geography", link: "/geography" },

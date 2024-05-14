@@ -120,6 +120,11 @@ export const HeaderMenu: React.FC = () => {
                   alignItems: "center",
                   flexDirection: "column",
                   justifyContent: "center",
+                  "&:last-of-type": {
+                    "> button": {
+                      borderRightStyle: "none",
+                    },
+                  },
                 }}
               >
                 <HeaderMenuButton
@@ -130,9 +135,7 @@ export const HeaderMenu: React.FC = () => {
                     padding: "0 60px",
                     width: "fit-content",
                     marginBottom: "20px",
-                    "&:not(last-of-type)": {
-                      borderRight: `1px solid ${colors.primary.black}`,
-                    },
+                    borderRight: `1px solid ${colors.primary.black}`,
                   }}
                 >
                   {subPage.label}
