@@ -28,6 +28,7 @@ import { STORY_DATA_VARIANT_2 as EXPENDITURES_BAR_CHART } from "app/components/c
 import {
   getPercentageColor,
   STORY_DATA_VARIANT_1 as EXPENDITURES_HEATMAP_DATA,
+  HeatmapDataItem,
 } from "app/components/charts/heatmap/data";
 import {
   STORY_DATA_VARIANT_1 as FINANCIAL_METRICS_DATA_1,
@@ -234,6 +235,20 @@ export const GrantImplementationPage: React.FC = () => {
         return false;
     }
   });
+  const dataExpendituresHeatmap = useStoreState(
+    (state) =>
+      get(
+        state.FinancialInsightsExpendituresHeatmap,
+        "data.data",
+        []
+      ) as HeatmapDataItem[]
+  );
+  const fetchExpendituresHeatmap = useStoreActions(
+    (actions) => actions.FinancialInsightsExpendituresHeatmap.fetch
+  );
+  const loadingExpendituresHeatmap = useStoreState(
+    (state) => state.FinancialInsightsExpendituresHeatmap.loading
+  );
 
   const handleDisbursementsSelectionChange = (value: string) => {
     setDisbursementsDropdownSelected(value);
@@ -431,7 +446,7 @@ export const GrantImplementationPage: React.FC = () => {
             hoveredLegend={null}
             columnCategory="cycle"
             rowCategory="component"
-            data={EXPENDITURES_HEATMAP_DATA}
+            data={dataExpendituresHeatmap}
             getItemColor={getPercentageColor}
             columnHeader="Principal Recipients"
             rowHeader="Components"
@@ -463,7 +478,7 @@ export const GrantImplementationPage: React.FC = () => {
       default:
         return null;
     }
-  }, [expendituresDropdownSelected]);
+  }, [expendituresDropdownSelected, dataExpendituresHeatmap]);
 
   const toolbarRightContent = React.useMemo(() => {
     return (
@@ -504,6 +519,12 @@ export const GrantImplementationPage: React.FC = () => {
     fetchDisbursementUtilisation({});
     fetchBudgetTreemap({});
     fetchBudgetTable({});
+    fetchExpendituresHeatmap({
+      routeParams: {
+        row: "principalRecipientType,principalRecipient",
+        column: "component",
+      },
+    });
   }, []);
 
   React.useEffect(() => {
@@ -543,13 +564,15 @@ export const GrantImplementationPage: React.FC = () => {
         >
           {loadingStats && (
             <Box
-              width="100%"
               height="100%"
               display="flex"
               position="absolute"
               alignItems="center"
               justifyContent="center"
               bgcolor="rgba(255, 255, 255, 0.8)"
+              sx={{
+                width: "100% !important",
+              }}
             >
               <CircularProgress />
             </Box>
@@ -736,6 +759,7 @@ export const GrantImplementationPage: React.FC = () => {
             subtitle="Lorem Ipsum"
             dropdownItems={dropdownItemsExpenditures}
             dropdownSelected={expendituresDropdownSelected}
+            loading={loadingExpendituresHeatmap}
             handleDropdownChange={(value) =>
               setExpendituresDropdownSelected(value)
             }

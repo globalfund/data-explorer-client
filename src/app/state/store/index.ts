@@ -63,6 +63,7 @@ import { FinancialInsightsDisbursementsTable } from "app/state/api/action-reduce
 import { AccessToFundingAllocationBarSeries } from "app/state/api/action-reducers/access-to-funding/allocation-bar-series";
 import { ResourceMobilizationTable } from "app/state/api/action-reducers/resource-mobilization/pledges-contributions-table";
 import { AccessToFundingFundingRequestsTable } from "app/state/api/action-reducers/access-to-funding/funding-requests-table";
+import { FinancialInsightsExpendituresHeatmap } from "app/state/api/action-reducers/financial-insights/expenditures-heatmap";
 import { ResourceMobilizationSunburst } from "app/state/api/action-reducers/resource-mobilization/pledges-contributions-sunburst";
 import { FinancialInsightsDisbursementsBarChart } from "app/state/api/action-reducers/financial-insights/disbursements-bar-chart";
 import componentsPerformanceFrameworkComponents from "app/state/api/action-reducers/cms/componentsPerformanceFrameworkComponents";
@@ -127,6 +128,9 @@ const storeContent: StoreModel = {
   ),
   FinancialInsightsBudgetTreemap: persist(FinancialInsightsBudgetTreemap),
   FinancialInsightsBudgetTable: persist(FinancialInsightsBudgetTable),
+  FinancialInsightsExpendituresHeatmap: persist(
+    FinancialInsightsExpendituresHeatmap
+  ),
   // search
   GlobalSearch: persist(GlobalSearch),
   // filter options api
