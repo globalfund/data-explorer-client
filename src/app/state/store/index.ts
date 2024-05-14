@@ -21,6 +21,7 @@ import LocationFilterOptions from "app/state/api/action-reducers/filters/locatio
 import componentsSidebar from "app/state/api/action-reducers/cms/componentsSidebar";
 import ComponentFilterOptions from "app/state/api/action-reducers/filters/components";
 import modulesGrantDetail from "app/state/api/action-reducers/cms/modulesGrantDetail";
+import { AnnualResultsStats } from "app/state/api/action-reducers/annual-results/stats";
 import { HomeBudgetsTreemap } from "app/state/api/action-reducers/home/budgets-treemap";
 import notesAndDisclaimers from "app/state/api/action-reducers/cms/notesAndDisclaimers";
 import componentsDialogBox from "app/state/api/action-reducers/cms/componentsDialogBox";
@@ -131,6 +132,8 @@ const storeContent: StoreModel = {
   FinancialInsightsExpendituresHeatmap: persist(
     FinancialInsightsExpendituresHeatmap
   ),
+  // annual results
+  AnnualResultsStats: persist(AnnualResultsStats),
   // search
   GlobalSearch: persist(GlobalSearch),
   // filter options api

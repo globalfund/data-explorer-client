@@ -1,4 +1,5 @@
 import React from "react";
+import get from "lodash/get";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import { Table } from "app/components/table";
@@ -6,7 +7,9 @@ import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
 import { DatasetPage } from "app/pages/datasets/common/page";
 import { PolylineTree } from "app/components/charts/polyline-tree";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
+import { applyResultValueFormula } from "app/utils/applyResultValueFormula";
 import { ReactComponent as TableIcon } from "app/assets/vectors/Select_Table.svg";
 import { ReactComponent as BarChartIcon } from "app/assets/vectors/Select_BarChart.svg";
 import { STORY_DATA_VARIANT_1 as POLYLINE_TREE_DATA } from "app/components/charts/polyline-tree/data";
@@ -15,7 +18,7 @@ import {
   TABLE_VARIATION_9_COLUMNS,
 } from "app/components/table/data";
 import {
-  stats,
+  statsOrder,
   geographyGroupingOptions,
   componentsGroupingOptions,
 } from "app/pages/datasets/annual-results/data";
@@ -27,8 +30,10 @@ const dropdownItems = [
 
 const StatComp: React.FC<{
   label: string;
-  value: number | string;
-}> = (props: { label: string; value: number | string }) => {
+  value: number;
+}> = (props: { label: string; value: number }) => {
+  const value = applyResultValueFormula(props.value, 3);
+
   return (
     <Box
       display="flex"
@@ -38,7 +43,7 @@ const StatComp: React.FC<{
     >
       <Typography fontSize="10px">Annual Results</Typography>
       <Typography variant="h5" fontWeight="700">
-        {props.value}
+        {value.number} {value.text}
       </Typography>
       <Typography variant="body2" fontWeight="700">
         {props.label}
@@ -56,6 +61,17 @@ export const AnnualResultsPage: React.FC = () => {
   );
   const [componentsGrouping, setComponentsGrouping] = React.useState(
     componentsGroupingOptions[0].value
+  );
+
+  const dataStats = useStoreState(
+    (state) =>
+      get(state.AnnualResultsStats, "data.stats", []) as {
+        label: string;
+        value: number;
+      }[]
+  );
+  const fetchStats = useStoreActions(
+    (actions) => actions.AnnualResultsStats.fetch
   );
 
   const handleSelectionChange = (value: string) => {
@@ -118,6 +134,12 @@ export const AnnualResultsPage: React.FC = () => {
     }
   }, [dropdownSelected]);
 
+  React.useEffect(() => {
+    fetchStats({
+      filterString: "cycle=2022",
+    });
+  }, []);
+
   return (
     <DatasetPage
       title="Annual Results"
@@ -133,9 +155,16 @@ export const AnnualResultsPage: React.FC = () => {
           flexDirection="row"
           justifyContent="space-between"
         >
-          {stats.map((stat) => (
-            <StatComp key={stat.label} label={stat.label} value={stat.value} />
-          ))}
+          {statsOrder.map((o) => {
+            const stat = dataStats.find((s) => s.label.includes(o));
+            return stat ? (
+              <StatComp
+                key={stat.label}
+                label={stat.label}
+                value={stat.value}
+              />
+            ) : null;
+          })}
         </Box>
         <Divider
           sx={{

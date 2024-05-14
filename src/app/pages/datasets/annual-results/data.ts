@@ -24,3 +24,5 @@ export const stats: {
     label: "Mosquito nets distributed in 2022.",
   },
 ];
+
+export const statsOrder = ["HIV", "TB", "Mosquito nets"];
