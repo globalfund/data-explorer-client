@@ -167,6 +167,7 @@ export interface StoreModel {
   GeographyOverviewCoordinatingMechanismsContacts: ApiCallModel;
   GeographyResourceMobilizationBarChart: ApiCallModel;
   GeographyAllocationsRadialChart: ApiCallModel;
+  GeographyFundingRequestsTable: ApiCallModel;
   // search
   GlobalSearch: ApiCallModel;
   // filter options api

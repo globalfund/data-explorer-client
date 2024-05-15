@@ -38,13 +38,17 @@ export const Location: React.FC = () => {
       state.GeographyOverview.loading ||
       state.GeographyOverviewCoordinatingMechanismsContacts.loading ||
       state.GeographyResourceMobilizationBarChart.loading ||
-      state.GeographyAllocationsRadialChart.loading
+      state.GeographyAllocationsRadialChart.loading ||
+      state.AccessToFundingFundingRequestsTable.loading
   );
   const fetchRMBarChart = useStoreActions(
     (actions) => actions.GeographyResourceMobilizationBarChart.fetch
   );
   const fetchAllocationsRadialChart = useStoreActions(
     (actions) => actions.GeographyAllocationsRadialChart.fetch
+  );
+  const fetchFundingRequestsTable = useStoreActions(
+    (actions) => actions.GeographyFundingRequestsTable.fetch
   );
 
   const view = React.useMemo(() => {
@@ -81,6 +85,11 @@ export const Location: React.FC = () => {
       });
       fetchAllocationsRadialChart({
         filterString: `geographies=${params.id}`,
+      });
+      fetchFundingRequestsTable({
+        routeParams: {
+          code: params.id,
+        },
       });
     }
   }, [params.id]);

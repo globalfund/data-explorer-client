@@ -53,6 +53,7 @@ import { HomeAllocationsRadialChart } from "app/state/api/action-reducers/home/a
 import { HomeDisbursementsLineChart } from "app/state/api/action-reducers/home/disbursements-line-chart";
 import ReplenishmentPeriodFilterOptions from "app/state/api/action-reducers/filters/replenishmentPeriods";
 import { FinancialInsightsBudgetTable } from "app/state/api/action-reducers/financial-insights/budget-table";
+import { GeographyFundingRequestsTable } from "app/state/api/action-reducers/geography/funding-requests-table";
 import { FinancialInsightsBudgetTreemap } from "app/state/api/action-reducers/financial-insights/budget-treemap";
 import { AccessToFundingAllocationTable } from "app/state/api/action-reducers/access-to-funding/allocation-table";
 import { GeographyAllocationsRadialChart } from "app/state/api/action-reducers/geography/allocations-radial-chart";
@@ -82,7 +83,6 @@ import {
   GeographyOverview,
   GeographyOverviewCoordinatingMechanismsContacts,
 } from "app/state/api/action-reducers/geography/overview";
-
 import {
   EligibilityYears,
   EligibilityStatusCodelist,
@@ -165,6 +165,7 @@ const storeContent: StoreModel = {
     GeographyResourceMobilizationBarChart
   ),
   GeographyAllocationsRadialChart: persist(GeographyAllocationsRadialChart),
+  GeographyFundingRequestsTable: persist(GeographyFundingRequestsTable),
   // search
   GlobalSearch: persist(GlobalSearch),
   // filter options api

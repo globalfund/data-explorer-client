@@ -24,7 +24,6 @@ import {
 } from "app/utils/getFinancialValueWithMetricPrefix";
 import {
   TABLE_VARIATION_2_COLUMNS,
-  TABLE_VARIATION_2_DATA,
   TABLE_VARIATION_6_COLUMNS,
   TABLE_VARIATION_6_DATA,
 } from "app/components/table/data";
@@ -41,6 +40,13 @@ export const AccessToFunding: React.FC = () => {
         []
       ) as RadialChartDataItem[]
   );
+  const dataFundingRequestsTable = useStoreState((state) =>
+    get(state.AccessToFundingFundingRequestsTable, "data.data[0]", {
+      _children: [],
+    })
+  );
+
+  console.log(dataFundingRequestsTable);
 
   const handleChartCycleChange = (cycle: string, index: number) => {
     switch (index) {
@@ -100,7 +106,7 @@ export const AccessToFunding: React.FC = () => {
         cycles={CYCLES}
         noBottomToolbar
         selectedCycle={chart2Cycle}
-        title="1,846 Funding Requests"
+        title={`${dataFundingRequestsTable._children.length} Funding Requests`}
         subtitle="Submitted to date"
         handleCycleChange={(value) => handleChartCycleChange(value, 2)}
         text="The Funding Request explains how the applicant would use Global Fund allocated funds, if approved. Funding Requests are reviewed by the Global Fund’s Technical Review Panel (TRP). Once approved by the TRP, the Funding Request is turned into one or more grants through the grant-making negotiation. The Grant Approvals Committee (GAC) reviews the final version of each grant and recommends implementation-ready grants to the Global Fund Board for approval. Funding Requests are submitted for internal Global Fund review, but the final grant is the legally-binding agreement.<br/><br/>Documents for a specific funding request can be downloaded by clicking the cloud icon. Documents from the 2017-2019 Allocation Period and earlier can be found by clicking on the “Documents’ tab above. If a Funding Request is not visible for the 2023-2025 Allocation Period and the country received an Allocation, it likely means that the applicant has not yet registered for a TRP Window."
@@ -109,7 +115,7 @@ export const AccessToFunding: React.FC = () => {
           dataTree
           withCycles
           id="funding-requests-table"
-          data={TABLE_VARIATION_2_DATA}
+          data={dataFundingRequestsTable._children}
           columns={TABLE_VARIATION_2_COLUMNS.slice(0, 7)}
           extraColumns={TABLE_VARIATION_2_COLUMNS.slice(7)}
         />
