@@ -88,6 +88,7 @@ import {
   EligibilityStatusCodelist,
   EligibilityDiseaseBurdenCodelist,
 } from "app/state/api/action-reducers/viz/eligibility";
+import { GeographyEligibilityHeatmap } from "../api/action-reducers/geography/eligibility-heatmap";
 
 const storeContent: StoreModel = {
   // homepage
@@ -166,6 +167,7 @@ const storeContent: StoreModel = {
   ),
   GeographyAllocationsRadialChart: persist(GeographyAllocationsRadialChart),
   GeographyFundingRequestsTable: persist(GeographyFundingRequestsTable),
+  GeographyEligibilityHeatmap: persist(GeographyEligibilityHeatmap),
   // search
   GlobalSearch: persist(GlobalSearch),
   // filter options api

@@ -15,8 +15,8 @@ import { TableContainer } from "app/components/table-container";
 import { RadialChartDataItem } from "app/components/charts/radial/data";
 import { STORY_DATA_VARIANT_2 as RACE_BAR_DATA } from "app/components/charts/race-bar/data";
 import {
+  HeatmapDataItem,
   getEligibilityColor,
-  STORY_DATA_VARIANT_2 as HEATMAP_DATA,
 } from "app/components/charts/heatmap/data";
 import {
   getRange,
@@ -45,8 +45,14 @@ export const AccessToFunding: React.FC = () => {
       _children: [],
     })
   );
-
-  console.log(dataFundingRequestsTable);
+  const dataEligibilityHeatmap = useStoreState(
+    (state) =>
+      get(
+        state.GeographyEligibilityHeatmap,
+        "data.data",
+        []
+      ) as HeatmapDataItem[]
+  );
 
   const handleChartCycleChange = (cycle: string, index: number) => {
     switch (index) {
@@ -251,7 +257,7 @@ export const AccessToFunding: React.FC = () => {
           noItemOrdering
           itemWidth={42}
           valueType="amount"
-          data={HEATMAP_DATA}
+          data={dataEligibilityHeatmap}
           hoveredLegend={null}
           columnCategory="year"
           rowCategory="component"

@@ -39,7 +39,8 @@ export const Location: React.FC = () => {
       state.GeographyOverviewCoordinatingMechanismsContacts.loading ||
       state.GeographyResourceMobilizationBarChart.loading ||
       state.GeographyAllocationsRadialChart.loading ||
-      state.AccessToFundingFundingRequestsTable.loading
+      state.AccessToFundingFundingRequestsTable.loading ||
+      state.GeographyEligibilityHeatmap.loading
   );
   const fetchRMBarChart = useStoreActions(
     (actions) => actions.GeographyResourceMobilizationBarChart.fetch
@@ -49,6 +50,9 @@ export const Location: React.FC = () => {
   );
   const fetchFundingRequestsTable = useStoreActions(
     (actions) => actions.GeographyFundingRequestsTable.fetch
+  );
+  const fetchEligibilityHeatmap = useStoreActions(
+    (actions) => actions.GeographyEligibilityHeatmap.fetch
   );
 
   const view = React.useMemo(() => {
@@ -87,6 +91,11 @@ export const Location: React.FC = () => {
         filterString: `geographies=${params.id}`,
       });
       fetchFundingRequestsTable({
+        routeParams: {
+          code: params.id,
+        },
+      });
+      fetchEligibilityHeatmap({
         routeParams: {
           code: params.id,
         },
