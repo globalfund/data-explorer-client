@@ -16,6 +16,7 @@ import { GrantCard } from "app/components/grant-card";
 import ArrowBack from "@mui/icons-material/ArrowBackIos";
 import { FilterPanel } from "app/components/filters/panel";
 import TableChartIcon from "@mui/icons-material/TableChart";
+import CircularProgress from "@mui/material/CircularProgress";
 import ArrowForward from "@mui/icons-material/ArrowForwardIos";
 import { GrantCardProps } from "app/components/grant-card/data";
 import { TableContainer } from "app/components/table-container";
@@ -176,7 +177,13 @@ export const Grants: React.FC = () => {
     <Box padding="60px 0">
       <Typography variant="h1">Grants</Typography>
       <Box height="56px" />
-      <Box gap="16px" padding="32px" display="flex" flexDirection="column">
+      <Box
+        gap="16px"
+        padding="32px"
+        display="flex"
+        position="relative"
+        flexDirection="column"
+      >
         <Box display="flex" alignItems="center" justifyContent="space-between">
           <Button
             variant="outlined"
@@ -332,6 +339,19 @@ export const Grants: React.FC = () => {
             </IconButton>
           </Box>
         </Box>
+        {loading && (
+          <Box
+            top="80px"
+            width="100%"
+            height="100%"
+            display="flex"
+            position="absolute"
+            alignItems="flex-start"
+            justifyContent="center"
+          >
+            <CircularProgress />
+          </Box>
+        )}
         {viewResult}
         {pagination}
       </Box>

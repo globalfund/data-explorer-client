@@ -204,14 +204,16 @@ export const Geography: React.FC = () => {
           </Box>
         </Box>
         <Box height="48px" />
-        <Box>
+        <Box position="relative">
           {loading && (
             <Box
+              top="0"
+              left="0"
               width="100%"
               height="100%"
               display="flex"
               position="absolute"
-              alignItems="center"
+              alignItems="flex-start"
               justifyContent="center"
             >
               <CircularProgress />
