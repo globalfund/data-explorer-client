@@ -21,8 +21,8 @@ import {
   CHART_2_DROPDOWN_ITEMS,
 } from "app/pages/location/views/grant-implementation/data";
 import {
+  HeatmapDataItem,
   getPercentageColor,
-  STORY_DATA_VARIANT_1 as HEATMAP_DATA,
 } from "app/components/charts/heatmap/data";
 import {
   STORY_DATA_VARIANT_1 as PIE_CHART_DATA_1,
@@ -79,6 +79,14 @@ export const GrantImplementation: React.FC = () => {
       []
     ) as SankeyChartData["links"],
   }));
+  const dataExpendituresHeatmap = useStoreState(
+    (state) =>
+      get(
+        state.GeographyExpendituresHeatmap,
+        "data.data",
+        []
+      ) as HeatmapDataItem[]
+  );
 
   const handleChartCycleChange = (cycle: string, index: number) => {
     switch (index) {
@@ -215,9 +223,9 @@ export const GrantImplementation: React.FC = () => {
         unitButtons={chart2UnitButtons}
       >
         <Heatmap
-          valueType="amount"
-          data={HEATMAP_DATA}
-          contentProp="value"
+          valueType={chart2Unit}
+          data={dataExpendituresHeatmap}
+          contentProp={chart2Unit === "percentage" ? "percentage" : "value"}
           hoveredLegend={null}
           columnCategory="cycle"
           rowCategory="component"

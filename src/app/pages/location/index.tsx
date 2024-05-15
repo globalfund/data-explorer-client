@@ -42,7 +42,8 @@ export const Location: React.FC = () => {
       state.AccessToFundingFundingRequestsTable.loading ||
       state.GeographyEligibilityHeatmap.loading ||
       state.GeographyDisbursementsLineChart.loading ||
-      state.GeographyBudgetSankeyChart.loading
+      state.GeographyBudgetSankeyChart.loading ||
+      state.GeographyExpendituresHeatmap.loading
   );
   const fetchRMBarChart = useStoreActions(
     (actions) => actions.GeographyResourceMobilizationBarChart.fetch
@@ -61,6 +62,9 @@ export const Location: React.FC = () => {
   );
   const fetchBudgetSanketChart = useStoreActions(
     (actions) => actions.GeographyBudgetSankeyChart.fetch
+  );
+  const fetchExpendituresHeatmap = useStoreActions(
+    (actions) => actions.GeographyExpendituresHeatmap.fetch
   );
 
   const view = React.useMemo(() => {
@@ -113,6 +117,13 @@ export const Location: React.FC = () => {
       });
       fetchBudgetSanketChart({
         filterString: `geographies=${params.id}`,
+      });
+      fetchExpendituresHeatmap({
+        filterString: `geographies=${params.id}`,
+        routeParams: {
+          row: "principalRecipientType,principalRecipient",
+          column: "component",
+        },
       });
     }
   }, [params.id]);
