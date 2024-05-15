@@ -4,7 +4,6 @@ import { appColors } from "app/theme";
 import * as echarts from "echarts/core";
 import ReactDOMServer from "react-dom/server";
 import { SVGRenderer } from "echarts/renderers";
-import { onEchartResize } from "app/utils/onEchartResize";
 import { SankeyChartProps } from "app/components/charts/sankey/data";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { useChartResizeObserver } from "app/hooks/useChartResizeObserver";

@@ -51,6 +51,7 @@ import componentsChartsEligibility from "app/state/api/action-reducers/cms/compo
 import componentsChartsInvestments from "app/state/api/action-reducers/cms/componentsChartsInvestments";
 import { HomeAllocationsRadialChart } from "app/state/api/action-reducers/home/allocations-radial-chart";
 import { HomeDisbursementsLineChart } from "app/state/api/action-reducers/home/disbursements-line-chart";
+import { GeographyBudgetSankeyChart } from "app/state/api/action-reducers/geography/budgets-sankey-chart";
 import ReplenishmentPeriodFilterOptions from "app/state/api/action-reducers/filters/replenishmentPeriods";
 import { GeographyEligibilityHeatmap } from "app/state/api/action-reducers/geography/eligibility-heatmap";
 import { FinancialInsightsBudgetTable } from "app/state/api/action-reducers/financial-insights/budget-table";
@@ -170,6 +171,7 @@ const storeContent: StoreModel = {
   GeographyFundingRequestsTable: persist(GeographyFundingRequestsTable),
   GeographyEligibilityHeatmap: persist(GeographyEligibilityHeatmap),
   GeographyDisbursementsLineChart: persist(GeographyDisbursementsLineChart),
+  GeographyBudgetSankeyChart: persist(GeographyBudgetSankeyChart),
   // search
   GlobalSearch: persist(GlobalSearch),
   // filter options api

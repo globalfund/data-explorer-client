@@ -14,8 +14,8 @@ import { Heatmap } from "app/components/charts/heatmap";
 import { SankeyChart } from "app/components/charts/sankey";
 import { TableContainer } from "app/components/table-container";
 import { LineChartDataItem } from "app/components/charts/line/data";
+import { SankeyChartData } from "app/components/charts/sankey/data";
 import { ChartBlockCycles } from "app/components/chart-block/components/cycles";
-import { STORY_DATA_VARIANT_1 as SANKEY_CHART_DATA } from "app/components/charts/sankey/data";
 import {
   CHART_1_DROPDOWN_ITEMS,
   CHART_2_DROPDOWN_ITEMS,
@@ -67,6 +67,18 @@ export const GrantImplementation: React.FC = () => {
         []
       ) as string[]
   );
+  const dataBudgetSankeyChart = useStoreState((state) => ({
+    nodes: get(
+      state.GeographyBudgetSankeyChart,
+      "data.data.nodes",
+      []
+    ) as SankeyChartData["nodes"],
+    links: get(
+      state.GeographyBudgetSankeyChart,
+      "data.data.links",
+      []
+    ) as SankeyChartData["links"],
+  }));
 
   const handleChartCycleChange = (cycle: string, index: number) => {
     switch (index) {
@@ -154,9 +166,9 @@ export const GrantImplementation: React.FC = () => {
         cycles={CYCLES}
         selectedCycle={chart2Cycle}
         dropdownSelected={chart2Dropdown}
-        subtitle="Investments and Modules"
         dropdownItems={CHART_2_DROPDOWN_ITEMS}
         handleDropdownChange={setChart2Dropdown}
+        subtitle="to date with transparent budgets"
         handleCycleChange={(value) => handleChartCycleChange(value, 2)}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
@@ -170,16 +182,16 @@ export const GrantImplementation: React.FC = () => {
           }}
         >
           <Grid item xs={3}>
-            Total budget
+            Total Budgets
           </Grid>
           <Grid item xs={3}>
-            Component
+            Landscape 1
           </Grid>
           <Grid item xs={3}>
-            Modules
+            Landscape 2
           </Grid>
           <Grid item xs={3}>
-            Interventions
+            Cost Category
           </Grid>
         </Grid>
         <Box
@@ -189,7 +201,7 @@ export const GrantImplementation: React.FC = () => {
             },
           }}
         >
-          <SankeyChart data={SANKEY_CHART_DATA} />
+          <SankeyChart data={dataBudgetSankeyChart} />
         </Box>
       </ChartBlock>
       <Box height="64px" />
