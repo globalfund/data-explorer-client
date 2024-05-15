@@ -1,6 +1,6 @@
 import { appColors } from "app/theme";
 
-interface PieChartDataItem {
+export interface PieChartDataItem {
   name: string;
   value: number;
   itemStyle?: {

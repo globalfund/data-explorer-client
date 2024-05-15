@@ -1,3 +1,8 @@
+export interface GrantImplementationProps {
+  page: number;
+  setPage: (page: number) => void;
+}
+
 export const CHART_1_DROPDOWN_ITEMS = [
   {
     value: "Grouped Component",

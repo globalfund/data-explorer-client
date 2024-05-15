@@ -15,10 +15,12 @@ import { SankeyChart } from "app/components/charts/sankey";
 import { TableContainer } from "app/components/table-container";
 import { LineChartDataItem } from "app/components/charts/line/data";
 import { SankeyChartData } from "app/components/charts/sankey/data";
+import { TABLE_VARIATION_5_COLUMNS } from "app/components/table/data";
 import { ChartBlockCycles } from "app/components/chart-block/components/cycles";
 import {
   CHART_1_DROPDOWN_ITEMS,
   CHART_2_DROPDOWN_ITEMS,
+  GrantImplementationProps,
 } from "app/pages/location/views/grant-implementation/data";
 import {
   HeatmapDataItem,
@@ -28,13 +30,16 @@ import {
   STORY_DATA_VARIANT_1 as PIE_CHART_DATA_1,
   STORY_DATA_VARIANT_2 as PIE_CHART_DATA_2,
   STORY_DATA_VARIANT_3 as PIE_CHART_DATA_3,
+  PieChartDataItem,
 } from "app/components/charts/pie/data";
-import {
-  TABLE_VARIATION_5_DATA,
-  TABLE_VARIATION_5_COLUMNS,
-} from "app/components/table/data";
+import { GrantCardProps } from "app/components/grant-card/data";
+import { getMonthFromNumber } from "app/utils/getMonthFromNumber";
+import ArrowBack from "@mui/icons-material/ArrowBack";
+import { ArrowForward } from "@mui/icons-material";
 
-export const GrantImplementation: React.FC = () => {
+export const GrantImplementation: React.FC<GrantImplementationProps> = (
+  props: GrantImplementationProps
+) => {
   const [chart1Cycle, setChart1Cycle] = React.useState(CYCLES[0]);
   const [chart2Cycle, setChart2Cycle] = React.useState(CYCLES[0]);
   const [chart3Cycle, setChart3Cycle] = React.useState(CYCLES[0]);
@@ -86,6 +91,25 @@ export const GrantImplementation: React.FC = () => {
         "data.data",
         []
       ) as HeatmapDataItem[]
+  );
+  const dataGrantsPieCharts = useStoreState(
+    (state) =>
+      get(state.GeographyGrantsPieCharts, "data.data", {
+        pie1: [],
+        pie2: [],
+        pie3: [],
+      }) as {
+        pie1: PieChartDataItem[];
+        pie2: PieChartDataItem[];
+        pie3: PieChartDataItem[];
+      }
+  );
+  const dataGrantsTable = useStoreState(
+    (state) =>
+      get(state.GeographyGrantsTable, "data.data", []) as GrantCardProps[]
+  );
+  const countGrantsTable = useStoreState((state) =>
+    get(state.GeographyGrantsTable, "data.count", 0)
   );
 
   const handleChartCycleChange = (cycle: string, index: number) => {
@@ -148,6 +172,58 @@ export const GrantImplementation: React.FC = () => {
       </Box>
     ),
     [chart2Unit]
+  );
+
+  const dataGrantsTableFormatted = React.useMemo(() => {
+    return dataGrantsTable.map((item) => {
+      let datesStr = "";
+      const startDate = new Date(item.startDate);
+      const endDate = new Date(item.endDate);
+      if (startDate) {
+        datesStr = `${getMonthFromNumber(startDate.getMonth() + 1)} ${startDate.getFullYear()} - `;
+      }
+      if (endDate) {
+        datesStr += `${getMonthFromNumber(endDate.getMonth() + 1)} ${endDate.getFullYear()}`;
+      }
+      return {
+        grantId: item.number,
+        startEndDate: datesStr,
+        geography: item.location,
+        component: item.component,
+        principalRecipient: item.principalRecipient,
+        status: item.status,
+        signed: item.signed,
+        disbursed: item.disbursed,
+      };
+    });
+  }, [dataGrantsTable]);
+
+  const pagination = React.useMemo(
+    () => (
+      <Box gap="8px" padding="0 32px" display="flex" alignItems="center">
+        <Typography fontSize="12px">
+          {(props.page - 1) * 9 + 1}-{props.page * 9} of {countGrantsTable}
+        </Typography>
+        <IconButton
+          sx={{ padding: 0 }}
+          onClick={() => {
+            if (props.page > 1) props.setPage(props.page - 1);
+          }}
+        >
+          <ArrowBack htmlColor="#000" sx={{ fontSize: "16px" }} />
+        </IconButton>
+        <IconButton
+          sx={{ padding: 0 }}
+          onClick={() => {
+            if (props.page < countGrantsTable / 9)
+              props.setPage(props.page + 1);
+          }}
+        >
+          <ArrowForward htmlColor="#000" sx={{ fontSize: "16px" }} />
+        </IconButton>
+      </Box>
+    ),
+    [countGrantsTable, props.page]
   );
 
   return (
@@ -257,7 +333,7 @@ export const GrantImplementation: React.FC = () => {
             <Typography color="#000" fontSize="18px" fontWeight="700">
               Components
             </Typography>
-            <PieChart data={PIE_CHART_DATA_1} />
+            <PieChart data={dataGrantsPieCharts.pie1} />
           </Box>
           <Box
             gap="16px"
@@ -269,7 +345,7 @@ export const GrantImplementation: React.FC = () => {
             <Typography color="#000" fontSize="18px" fontWeight="700">
               Principal Recipients
             </Typography>
-            <PieChart data={PIE_CHART_DATA_2} />
+            <PieChart data={dataGrantsPieCharts.pie2} />
           </Box>
           <Box
             gap="16px"
@@ -281,7 +357,7 @@ export const GrantImplementation: React.FC = () => {
             <Typography color="#000" fontSize="18px" fontWeight="700">
               Investments
             </Typography>
-            <PieChart data={PIE_CHART_DATA_3} />
+            <PieChart data={dataGrantsPieCharts.pie3} />
           </Box>
         </Box>
       </ChartBlock>
@@ -294,9 +370,10 @@ export const GrantImplementation: React.FC = () => {
       <TableContainer
         withCycles
         id="financial-insights-table"
-        data={TABLE_VARIATION_5_DATA}
+        data={dataGrantsTableFormatted}
         columns={TABLE_VARIATION_5_COLUMNS}
       />
+      {pagination}
     </Box>
   );
 };

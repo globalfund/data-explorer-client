@@ -57,6 +57,10 @@ import { GeographyEligibilityHeatmap } from "app/state/api/action-reducers/geogr
 import { GeographyExpendituresHeatmap } from "app/state/api/action-reducers/geography/expenditures-heatmap";
 import { FinancialInsightsBudgetTable } from "app/state/api/action-reducers/financial-insights/budget-table";
 import { GeographyFundingRequestsTable } from "app/state/api/action-reducers/geography/funding-requests-table";
+import {
+  GeographyGrantsPieCharts,
+  GeographyGrantsTable,
+} from "app/state/api/action-reducers/geography/grants";
 import { FinancialInsightsBudgetTreemap } from "app/state/api/action-reducers/financial-insights/budget-treemap";
 import { AccessToFundingAllocationTable } from "app/state/api/action-reducers/access-to-funding/allocation-table";
 import { GeographyAllocationsRadialChart } from "app/state/api/action-reducers/geography/allocations-radial-chart";
@@ -174,6 +178,8 @@ const storeContent: StoreModel = {
   GeographyDisbursementsLineChart: persist(GeographyDisbursementsLineChart),
   GeographyBudgetSankeyChart: persist(GeographyBudgetSankeyChart),
   GeographyExpendituresHeatmap: persist(GeographyExpendituresHeatmap),
+  GeographyGrantsPieCharts: persist(GeographyGrantsPieCharts),
+  GeographyGrantsTable: persist(GeographyGrantsTable),
   // search
   GlobalSearch: persist(GlobalSearch),
   // filter options api

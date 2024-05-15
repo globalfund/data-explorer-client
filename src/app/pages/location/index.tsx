@@ -16,6 +16,8 @@ import { ResourceMobilization } from "app/pages/location/views/resource-mobiliza
 export const Location: React.FC = () => {
   const params = useParams<{ id: string; tab: string }>();
 
+  const [grantsTablePage, setGrantsTablePage] = React.useState(1);
+
   const dataOverview = useStoreState((state) =>
     get(state.GeographyOverview, "data.data[0]", {
       name: "",
@@ -43,7 +45,9 @@ export const Location: React.FC = () => {
       state.GeographyEligibilityHeatmap.loading ||
       state.GeographyDisbursementsLineChart.loading ||
       state.GeographyBudgetSankeyChart.loading ||
-      state.GeographyExpendituresHeatmap.loading
+      state.GeographyExpendituresHeatmap.loading ||
+      state.GeographyGrantsPieCharts.loading ||
+      state.GeographyGrantsTable.loading
   );
   const fetchRMBarChart = useStoreActions(
     (actions) => actions.GeographyResourceMobilizationBarChart.fetch
@@ -66,13 +70,24 @@ export const Location: React.FC = () => {
   const fetchExpendituresHeatmap = useStoreActions(
     (actions) => actions.GeographyExpendituresHeatmap.fetch
   );
+  const fetchGrantsPieCharts = useStoreActions(
+    (actions) => actions.GeographyGrantsPieCharts.fetch
+  );
+  const fetchGrantsTable = useStoreActions(
+    (actions) => actions.GeographyGrantsTable.fetch
+  );
 
   const view = React.useMemo(() => {
     switch (params.tab) {
       case "overview":
         return <LocationOverview />;
       case "financial-insights":
-        return <GrantImplementation />;
+        return (
+          <GrantImplementation
+            page={grantsTablePage}
+            setPage={setGrantsTablePage}
+          />
+        );
       case "resource-mobilization":
         return <ResourceMobilization />;
       case "access-to-funding":
@@ -82,7 +97,7 @@ export const Location: React.FC = () => {
       default:
         return <div />;
     }
-  }, [params.tab]);
+  }, [params.tab, grantsTablePage]);
 
   React.useEffect(() => {
     if (params.id) {
@@ -125,8 +140,25 @@ export const Location: React.FC = () => {
           column: "component",
         },
       });
+      fetchGrantsPieCharts({
+        routeParams: {
+          code: params.id,
+        },
+      });
     }
   }, [params.id]);
+
+  React.useEffect(() => {
+    if (params.id) {
+      fetchGrantsTable({
+        filterString: `geographies=${params.id}`,
+        routeParams: {
+          page: grantsTablePage.toString(),
+          pageSize: "10",
+        },
+      });
+    }
+  }, [params.id, grantsTablePage]);
 
   return (
     <Box padding="60px 0">

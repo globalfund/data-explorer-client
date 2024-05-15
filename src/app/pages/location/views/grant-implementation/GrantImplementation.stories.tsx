@@ -18,4 +18,9 @@ const meta = {
 export default meta;
 type StoryType = StoryObj<typeof meta>;
 
-export const Primary: StoryType = {};
+export const Primary: StoryType = {
+  args: {
+    page: 1,
+    setPage: () => {},
+  },
+};
