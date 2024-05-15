@@ -162,6 +162,9 @@ export interface StoreModel {
   AnnualResultsTable: ApiCallModel;
   // grants
   GrantList: ApiCallModel;
+  // location
+  GeographyOverview: ApiCallModel;
+  GeographyOverviewCoordinatingMechanismsContacts: ApiCallModel;
   // search
   GlobalSearch: ApiCallModel;
   // filter options api

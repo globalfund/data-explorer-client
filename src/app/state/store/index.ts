@@ -77,6 +77,11 @@ import { FinancialInsightsDisbursementsLineChart } from "app/state/api/action-re
 import { FinancialInsightsDisbursementUtilisation } from "app/state/api/action-reducers/financial-insights/disbursement-utilisation";
 import { ResourceMobilizationExpandableBarChart } from "app/state/api/action-reducers/resource-mobilization/pledges-contributions-expandable-bar-chart";
 import {
+  GeographyOverview,
+  GeographyOverviewCoordinatingMechanismsContacts,
+} from "app/state/api/action-reducers/geography/overview";
+
+import {
   EligibilityYears,
   EligibilityStatusCodelist,
   EligibilityDiseaseBurdenCodelist,
@@ -149,6 +154,11 @@ const storeContent: StoreModel = {
   AnnualResultsTable: persist(AnnualResultsTable),
   // grants
   GrantList: persist(GrantList),
+  // location
+  GeographyOverview: persist(GeographyOverview),
+  GeographyOverviewCoordinatingMechanismsContacts: persist(
+    GeographyOverviewCoordinatingMechanismsContacts
+  ),
   // search
   GlobalSearch: persist(GlobalSearch),
   // filter options api

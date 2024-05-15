@@ -1,17 +1,43 @@
 import React from "react";
+import get from "lodash/get";
 import Box from "@mui/material/Box";
 import { useParams } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import { Results } from "app/pages/location/views/results";
+import CircularProgress from "@mui/material/CircularProgress";
 import { DetailPageTabs } from "app/components/detail-page-tabs";
 import { LocationOverview } from "app/pages/location/views/overview";
 import { LOCATION_TABS } from "app/components/detail-page-tabs/data";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { AccessToFunding } from "app/pages/location/views/access-to-funding";
 import { GrantImplementation } from "app/pages/location/views/grant-implementation";
 import { ResourceMobilization } from "app/pages/location/views/resource-mobilization";
 
 export const Location: React.FC = () => {
   const params = useParams<{ id: string; tab: string }>();
+
+  const dataOverview = useStoreState((state) =>
+    get(state.GeographyOverview, "data.data[0]", {
+      name: "",
+      region: "",
+      description: "",
+      FPMName: "",
+      FPMEmail: "",
+      currentPrincipalRecipients: [],
+      formerPrincipalRecipients: [],
+    })
+  );
+  const fetchOverview = useStoreActions(
+    (actions) => actions.GeographyOverview.fetch
+  );
+  const fetchCCMContacts = useStoreActions(
+    (actions) => actions.GeographyOverviewCoordinatingMechanismsContacts.fetch
+  );
+  const loading = useStoreState(
+    (state) =>
+      state.GeographyOverview.loading ||
+      state.GeographyOverviewCoordinatingMechanismsContacts.loading
+  );
 
   const view = React.useMemo(() => {
     switch (params.tab) {
@@ -30,10 +56,26 @@ export const Location: React.FC = () => {
     }
   }, [params.tab]);
 
+  React.useEffect(() => {
+    if (params.id) {
+      fetchOverview({
+        routeParams: {
+          code: params.id,
+        },
+      });
+      fetchCCMContacts({
+        routeParams: {
+          code: params.id,
+        },
+      });
+    }
+  }, [params.id]);
+
   return (
     <Box padding="60px 0">
       <Typography variant="h1" lineHeight={1}>
-        Kenya
+        {dataOverview.name}
+        {loading && <CircularProgress sx={{ marginLeft: "16px" }} />}
       </Typography>
       <Typography
         variant="h6"
@@ -41,7 +83,7 @@ export const Location: React.FC = () => {
         lineHeight={1.2}
         marginBottom="24px"
       >
-        Eastern Africa
+        {dataOverview.region}
       </Typography>
       <DetailPageTabs
         tabs={LOCATION_TABS}
