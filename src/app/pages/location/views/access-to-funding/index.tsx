@@ -45,6 +45,18 @@ export const AccessToFunding: React.FC = () => {
       _children: [],
     })
   );
+  const dataFundingRequestStats = useStoreState((state) => ({
+    submitted: get(
+      state.GeographyFundingRequestsTable,
+      "data.submittedCount[0].count",
+      0
+    ),
+    signed: get(
+      state.GeographyFundingRequestsTable,
+      "data.signedCount[0].count",
+      0
+    ),
+  }));
   const dataEligibilityHeatmap = useStoreState(
     (state) =>
       get(
@@ -72,6 +84,30 @@ export const AccessToFunding: React.FC = () => {
     const range = getRange([{ value }], ["value"]);
     return `${getFinancialValueWithMetricPrefix(value, range.index, 2)} ${range.full}`;
   }, [dataAllocationsRadialChart]);
+
+  const raceBarData = React.useMemo(() => {
+    const res = [
+      {
+        name: "Signed",
+        value: dataFundingRequestStats.signed,
+        color: "#0A2840",
+        percentage: parseFloat(
+          (
+            (dataFundingRequestStats.signed /
+              dataFundingRequestStats.submitted) *
+            100
+          ).toFixed(2)
+        ),
+      },
+      {
+        name: "Submitted",
+        value: dataFundingRequestStats.submitted,
+        color: "#00B5AE",
+        percentage: 100,
+      },
+    ];
+    return res;
+  }, [dataFundingRequestStats]);
 
   return (
     <Box paddingTop="64px" gap="24px" display="flex" flexDirection="column">
@@ -126,7 +162,7 @@ export const AccessToFunding: React.FC = () => {
           extraColumns={TABLE_VARIATION_2_COLUMNS.slice(7)}
         />
         <Box height="64px" />
-        <RaceBarChart noValuesFormat data={RACE_BAR_DATA} />
+        <RaceBarChart noValuesFormat data={raceBarData} />
       </ChartBlock>
       <Box height="64px" />
       <Grid
@@ -146,7 +182,7 @@ export const AccessToFunding: React.FC = () => {
           },
         }}
       >
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={12} sm={6}>
           <Box>
             <Box
               width="40px"
@@ -156,29 +192,13 @@ export const AccessToFunding: React.FC = () => {
             />
             <Box>
               <Typography variant="h3" fontWeight="900">
-                233 Submitted
+                {dataFundingRequestStats.submitted} Submitted
               </Typography>
               <Typography variant="subtitle2">Funding Requests</Typography>
             </Box>
           </Box>
         </Grid>
-        <Grid item xs={12} sm={4}>
-          <Box>
-            <Box
-              width="40px"
-              height="40px"
-              borderRadius="50%"
-              bgcolor={appColors.RADIAL_CHART.ITEM_COLORS[1]}
-            />
-            <Box>
-              <Typography variant="h3" fontWeight="900">
-                215 Grants
-              </Typography>
-              <Typography variant="subtitle2">79% Making process</Typography>
-            </Box>
-          </Box>
-        </Grid>
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={12} sm={6}>
           <Box>
             <Box
               width="40px"
@@ -188,9 +208,16 @@ export const AccessToFunding: React.FC = () => {
             />
             <Box>
               <Typography variant="h3" fontWeight="900">
-                212 Signed
+                {dataFundingRequestStats.signed} Signed
               </Typography>
-              <Typography variant="subtitle2">98% Grants</Typography>
+              <Typography variant="subtitle2">
+                {(
+                  (dataFundingRequestStats.signed /
+                    dataFundingRequestStats.submitted) *
+                  100
+                ).toFixed(2)}
+                % Grants
+              </Typography>
             </Box>
           </Box>
         </Grid>

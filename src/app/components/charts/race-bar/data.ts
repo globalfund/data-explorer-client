@@ -39,12 +39,6 @@ export const STORY_DATA_VARIANT_2: RaceBarChartDataItem[] = [
     percentage: 73,
   },
   {
-    name: "M. Process",
-    value: 215,
-    color: "#013E77",
-    percentage: 78,
-  },
-  {
     name: "Submitted",
     value: 233,
     color: "#00B5AE",
