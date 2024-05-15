@@ -233,9 +233,9 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
         title="$84 Billion"
         selectedCycle={chart1Cycle}
         dropdownSelected={chart1Dropdown}
-        subtitle="Disbursed with 18 Grants"
         dropdownItems={CHART_1_DROPDOWN_ITEMS}
         handleDropdownChange={setChart1Dropdown}
+        subtitle={`Disbursed with ${countGrantsTable} Grants`}
         handleCycleChange={(value) => handleChartCycleChange(value, 1)}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
@@ -311,7 +311,7 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
       </ChartBlock>
       <Box height="64px" />
       <ChartBlock
-        title="18 Grants"
+        title={`${countGrantsTable} Grants`}
         subtitle="to date"
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
