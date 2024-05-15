@@ -1,20 +1,27 @@
 import React from "react";
+import get from "lodash/get";
+import sumBy from "lodash/sumBy";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { appColors } from "app/theme";
 import { CYCLES } from "app/pages/home/data";
 import Typography from "@mui/material/Typography";
+import { useStoreState } from "app/state/store/hooks";
 import { Heatmap } from "app/components/charts/heatmap";
 import { ChartBlock } from "app/components/chart-block";
 import { RadialChart } from "app/components/charts/radial";
 import { RaceBarChart } from "app/components/charts/race-bar";
-import { STORY_DATA_VARIANT_3 } from "app/components/charts/radial/data";
+import { TableContainer } from "app/components/table-container";
+import { RadialChartDataItem } from "app/components/charts/radial/data";
 import { STORY_DATA_VARIANT_2 as RACE_BAR_DATA } from "app/components/charts/race-bar/data";
 import {
   getEligibilityColor,
   STORY_DATA_VARIANT_2 as HEATMAP_DATA,
 } from "app/components/charts/heatmap/data";
-import { TableContainer } from "app/components/table-container";
+import {
+  getRange,
+  getFinancialValueWithMetricPrefix,
+} from "app/utils/getFinancialValueWithMetricPrefix";
 import {
   TABLE_VARIATION_2_COLUMNS,
   TABLE_VARIATION_2_DATA,
@@ -25,6 +32,15 @@ import {
 export const AccessToFunding: React.FC = () => {
   const [chart1Cycle, setChart1Cycle] = React.useState(CYCLES[0]);
   const [chart2Cycle, setChart2Cycle] = React.useState(CYCLES[0]);
+
+  const dataAllocationsRadialChart = useStoreState(
+    (state) =>
+      get(
+        state.GeographyAllocationsRadialChart,
+        "data.data",
+        []
+      ) as RadialChartDataItem[]
+  );
 
   const handleChartCycleChange = (cycle: string, index: number) => {
     switch (index) {
@@ -39,11 +55,17 @@ export const AccessToFunding: React.FC = () => {
     }
   };
 
+  const totalAllocationAmount = React.useMemo(() => {
+    const value = sumBy(dataAllocationsRadialChart, "value");
+    const range = getRange([{ value }], ["value"]);
+    return `${getFinancialValueWithMetricPrefix(value, range.index, 2)} ${range.full}`;
+  }, [dataAllocationsRadialChart]);
+
   return (
     <Box paddingTop="64px" gap="24px" display="flex" flexDirection="column">
       <ChartBlock
         cycles={CYCLES}
-        title="$184.65 Billion"
+        title={`$${totalAllocationAmount}`}
         selectedCycle={chart1Cycle}
         handleCycleChange={(value) => handleChartCycleChange(value, 1)}
         subtitle={`Funds Allocated ${
@@ -52,7 +74,7 @@ export const AccessToFunding: React.FC = () => {
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
         <RadialChart
-          data={STORY_DATA_VARIANT_3}
+          data={dataAllocationsRadialChart}
           itemLabelFormatterType="name"
         />
       </ChartBlock>
@@ -64,7 +86,7 @@ export const AccessToFunding: React.FC = () => {
       >
         <Box display="flex" alignItems="center" flexDirection="column">
           <Typography variant="h3" fontWeight="900">
-            89.97 million
+            ${totalAllocationAmount}
           </Typography>
           <Typography variant="subtitle2">
             Total Allocation

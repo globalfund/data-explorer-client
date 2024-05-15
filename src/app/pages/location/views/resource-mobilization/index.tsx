@@ -28,13 +28,13 @@ export const ResourceMobilization: React.FC = () => {
 
   const totalPledge = React.useMemo(() => {
     const value = sumBy(dataRMBarChart, "value");
-    const range = getRange(dataRMBarChart, ["value"]);
+    const range = getRange([{ value }], ["value"]);
     return `${getFinancialValueWithMetricPrefix(value, range.index, 2)} ${range.full}`;
   }, [dataRMBarChart]);
 
   const totalContribution = React.useMemo(() => {
     const value = sumBy(dataRMBarChart, "value1");
-    const range = getRange(dataRMBarChart, ["value1"]);
+    const range = getRange([{ value }], ["value"]);
     return `${getFinancialValueWithMetricPrefix(value, range.index, 2)} ${range.full}`;
   }, [dataRMBarChart]);
 

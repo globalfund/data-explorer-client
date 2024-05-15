@@ -55,6 +55,7 @@ import ReplenishmentPeriodFilterOptions from "app/state/api/action-reducers/filt
 import { FinancialInsightsBudgetTable } from "app/state/api/action-reducers/financial-insights/budget-table";
 import { FinancialInsightsBudgetTreemap } from "app/state/api/action-reducers/financial-insights/budget-treemap";
 import { AccessToFundingAllocationTable } from "app/state/api/action-reducers/access-to-funding/allocation-table";
+import { GeographyAllocationsRadialChart } from "app/state/api/action-reducers/geography/allocations-radial-chart";
 import { AccessToFundingEligibilityTable } from "app/state/api/action-reducers/access-to-funding/eligibility-table";
 import componentsChartsPerformanceRating from "app/state/api/action-reducers/cms/componentsChartsPerformanceRating";
 import { FinancialInsightsBudgetBreakdown } from "app/state/api/action-reducers/financial-insights/budget-breakdown";
@@ -69,6 +70,7 @@ import { AccessToFundingAllocationBarSeries } from "app/state/api/action-reducer
 import { ResourceMobilizationTable } from "app/state/api/action-reducers/resource-mobilization/pledges-contributions-table";
 import { AccessToFundingFundingRequestsTable } from "app/state/api/action-reducers/access-to-funding/funding-requests-table";
 import { FinancialInsightsExpendituresHeatmap } from "app/state/api/action-reducers/financial-insights/expenditures-heatmap";
+import { GeographyResourceMobilizationBarChart } from "app/state/api/action-reducers/geography/resource-mobilization-bar-chart";
 import { FinancialInsightsExpendituresBarChart } from "app/state/api/action-reducers/financial-insights/expenditures-bar-chart";
 import { ResourceMobilizationSunburst } from "app/state/api/action-reducers/resource-mobilization/pledges-contributions-sunburst";
 import { FinancialInsightsDisbursementsBarChart } from "app/state/api/action-reducers/financial-insights/disbursements-bar-chart";
@@ -86,7 +88,6 @@ import {
   EligibilityStatusCodelist,
   EligibilityDiseaseBurdenCodelist,
 } from "app/state/api/action-reducers/viz/eligibility";
-import { GeographyResourceMobilizationBarChart } from "../api/action-reducers/geography/resource-mobilization-bar-chart";
 
 const storeContent: StoreModel = {
   // homepage
@@ -163,6 +164,7 @@ const storeContent: StoreModel = {
   GeographyResourceMobilizationBarChart: persist(
     GeographyResourceMobilizationBarChart
   ),
+  GeographyAllocationsRadialChart: persist(GeographyAllocationsRadialChart),
   // search
   GlobalSearch: persist(GlobalSearch),
   // filter options api

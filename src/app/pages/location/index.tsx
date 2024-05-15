@@ -36,10 +36,15 @@ export const Location: React.FC = () => {
   const loading = useStoreState(
     (state) =>
       state.GeographyOverview.loading ||
-      state.GeographyOverviewCoordinatingMechanismsContacts.loading
+      state.GeographyOverviewCoordinatingMechanismsContacts.loading ||
+      state.GeographyResourceMobilizationBarChart.loading ||
+      state.GeographyAllocationsRadialChart.loading
   );
   const fetchRMBarChart = useStoreActions(
     (actions) => actions.GeographyResourceMobilizationBarChart.fetch
+  );
+  const fetchAllocationsRadialChart = useStoreActions(
+    (actions) => actions.GeographyAllocationsRadialChart.fetch
   );
 
   const view = React.useMemo(() => {
@@ -72,6 +77,9 @@ export const Location: React.FC = () => {
         },
       });
       fetchRMBarChart({
+        filterString: `donorGeography=${params.id}`,
+      });
+      fetchAllocationsRadialChart({
         filterString: `geographies=${params.id}`,
       });
     }
