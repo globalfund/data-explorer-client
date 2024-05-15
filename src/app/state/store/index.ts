@@ -52,11 +52,13 @@ import componentsChartsInvestments from "app/state/api/action-reducers/cms/compo
 import { HomeAllocationsRadialChart } from "app/state/api/action-reducers/home/allocations-radial-chart";
 import { HomeDisbursementsLineChart } from "app/state/api/action-reducers/home/disbursements-line-chart";
 import ReplenishmentPeriodFilterOptions from "app/state/api/action-reducers/filters/replenishmentPeriods";
+import { GeographyEligibilityHeatmap } from "app/state/api/action-reducers/geography/eligibility-heatmap";
 import { FinancialInsightsBudgetTable } from "app/state/api/action-reducers/financial-insights/budget-table";
 import { GeographyFundingRequestsTable } from "app/state/api/action-reducers/geography/funding-requests-table";
 import { FinancialInsightsBudgetTreemap } from "app/state/api/action-reducers/financial-insights/budget-treemap";
 import { AccessToFundingAllocationTable } from "app/state/api/action-reducers/access-to-funding/allocation-table";
 import { GeographyAllocationsRadialChart } from "app/state/api/action-reducers/geography/allocations-radial-chart";
+import { GeographyDisbursementsLineChart } from "app/state/api/action-reducers/geography/disbursements-line-chart";
 import { AccessToFundingEligibilityTable } from "app/state/api/action-reducers/access-to-funding/eligibility-table";
 import componentsChartsPerformanceRating from "app/state/api/action-reducers/cms/componentsChartsPerformanceRating";
 import { FinancialInsightsBudgetBreakdown } from "app/state/api/action-reducers/financial-insights/budget-breakdown";
@@ -88,7 +90,6 @@ import {
   EligibilityStatusCodelist,
   EligibilityDiseaseBurdenCodelist,
 } from "app/state/api/action-reducers/viz/eligibility";
-import { GeographyEligibilityHeatmap } from "../api/action-reducers/geography/eligibility-heatmap";
 
 const storeContent: StoreModel = {
   // homepage
@@ -168,6 +169,7 @@ const storeContent: StoreModel = {
   GeographyAllocationsRadialChart: persist(GeographyAllocationsRadialChart),
   GeographyFundingRequestsTable: persist(GeographyFundingRequestsTable),
   GeographyEligibilityHeatmap: persist(GeographyEligibilityHeatmap),
+  GeographyDisbursementsLineChart: persist(GeographyDisbursementsLineChart),
   // search
   GlobalSearch: persist(GlobalSearch),
   // filter options api

@@ -1,4 +1,5 @@
 import React from "react";
+import get from "lodash/get";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { appColors } from "app/theme";
@@ -6,13 +7,14 @@ import { CYCLES } from "app/pages/home/data";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import { PieChart } from "app/components/charts/pie";
+import { useStoreState } from "app/state/store/hooks";
 import { LineChart } from "app/components/charts/line";
 import { ChartBlock } from "app/components/chart-block";
 import { Heatmap } from "app/components/charts/heatmap";
 import { SankeyChart } from "app/components/charts/sankey";
 import { TableContainer } from "app/components/table-container";
+import { LineChartDataItem } from "app/components/charts/line/data";
 import { ChartBlockCycles } from "app/components/chart-block/components/cycles";
-import { STORY_DATA_VARIANT_1 as LINE_CHART_DATA } from "app/components/charts/line/data";
 import { STORY_DATA_VARIANT_1 as SANKEY_CHART_DATA } from "app/components/charts/sankey/data";
 import {
   CHART_1_DROPDOWN_ITEMS,
@@ -47,6 +49,23 @@ export const GrantImplementation: React.FC = () => {
 
   const [chart2Unit, setChart2Unit] = React.useState<"amount" | "percentage">(
     "percentage"
+  );
+
+  const dataDisbursementsLineChart = useStoreState(
+    (state) =>
+      get(
+        state.GeographyDisbursementsLineChart,
+        "data.data",
+        []
+      ) as LineChartDataItem[]
+  );
+  const keysDisbursementsLineChart = useStoreState(
+    (state) =>
+      get(
+        state.GeographyDisbursementsLineChart,
+        "data.xAxisKeys",
+        []
+      ) as string[]
   );
 
   const handleChartCycleChange = (cycle: string, index: number) => {
@@ -125,30 +144,8 @@ export const GrantImplementation: React.FC = () => {
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
         <LineChart
-          data={LINE_CHART_DATA}
-          xAxisKeys={[
-            "2002",
-            "2003",
-            "2004",
-            "2005",
-            "2006",
-            "2007",
-            "2008",
-            "2009",
-            "2010",
-            "2011",
-            "2012",
-            "2013",
-            "2014",
-            "2015",
-            "2016",
-            "2017",
-            "2018",
-            "2019",
-            "2020",
-            "2021",
-            "2022",
-          ]}
+          data={dataDisbursementsLineChart}
+          xAxisKeys={keysDisbursementsLineChart}
         />
       </ChartBlock>
       <Box height="64px" />

@@ -169,6 +169,7 @@ export interface StoreModel {
   GeographyAllocationsRadialChart: ApiCallModel;
   GeographyFundingRequestsTable: ApiCallModel;
   GeographyEligibilityHeatmap: ApiCallModel;
+  GeographyDisbursementsLineChart: ApiCallModel;
   // search
   GlobalSearch: ApiCallModel;
   // filter options api

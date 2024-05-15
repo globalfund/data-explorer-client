@@ -265,7 +265,7 @@ export const AccessToFunding: React.FC = () => {
           getItemColor={getEligibilityColor}
         />
       </ChartBlock>
-      <Box height="64px" />
+      {/* <Box height="64px" />
       <ChartBlock
         noBottomToolbar
         title="Documents"
@@ -280,7 +280,7 @@ export const AccessToFunding: React.FC = () => {
           data={TABLE_VARIATION_6_DATA}
           columns={TABLE_VARIATION_6_COLUMNS}
         />
-      </ChartBlock>
+      </ChartBlock> */}
     </Box>
   );
 };
