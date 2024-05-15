@@ -5,22 +5,19 @@ const ranges = [
     divider: 1e9,
     suffix: "Bn",
     abbr_en: " bln",
-    abbr_fi: " mrd.",
-    abbr_se: " miljarder",
+    full: "billion",
   },
   {
     divider: 1e6,
     suffix: "MM",
     abbr_en: " mln",
-    abbr_fi: " milj.",
-    abbr_se: " miljoner",
+    full: "million",
   },
   {
     divider: 1e3,
     suffix: "k",
     abbr_en: " K",
-    abbr_fi: " tuhatta",
-    abbr_se: " tusen",
+    full: "thousand",
   },
 ];
 
@@ -50,15 +47,18 @@ export function getRange(
     return {
       index: 0,
       abbr: get(ranges[0], `abbr_${lang}`, ranges[0].abbr_en),
+      full: get(ranges[0], `full_${lang}`, ranges[0].full),
     };
   if (rangesCount[1] > rangesCount[2])
     return {
       index: 1,
       abbr: get(ranges[1], `abbr_${lang}`, ranges[1].abbr_en),
+      full: get(ranges[1], `full_${lang}`, ranges[1].full),
     };
   return {
     index: 2,
     abbr: get(ranges[2], `abbr_${lang}`, ranges[2].abbr_en),
+    full: get(ranges[2], `full_${lang}`, ranges[2].full),
   };
 }
 

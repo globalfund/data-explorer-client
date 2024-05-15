@@ -26,9 +26,11 @@ export const ChartBlockCycles: React.FC<ChartBlockCyclesProps> = (
           padding: "7px 24px",
           borderRadius: "8px",
           textTransform: "none",
+          border: "1px solid #DFE3E5",
           color: appColors.CHART_BLOCK_CYCLES.BUTTON_TEXT_COLOR,
-          background: appColors.CHART_BLOCK_CYCLES.BUTTON_BACKGROUND_COLOR,
           "&:hover": {
+            borderColor:
+              appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_BACKGROUND_COLOR,
             color: appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_TEXT_COLOR,
             background:
               appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_BACKGROUND_COLOR,
@@ -44,6 +46,8 @@ export const ChartBlockCycles: React.FC<ChartBlockCyclesProps> = (
             cycle === props.selectedCycle
               ? {
                   fontWeight: "700",
+                  borderColor:
+                    appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_BACKGROUND_COLOR,
                   color: appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_TEXT_COLOR,
                   background:
                     appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_BACKGROUND_COLOR,

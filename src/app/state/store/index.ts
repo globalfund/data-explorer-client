@@ -86,6 +86,7 @@ import {
   EligibilityStatusCodelist,
   EligibilityDiseaseBurdenCodelist,
 } from "app/state/api/action-reducers/viz/eligibility";
+import { GeographyResourceMobilizationBarChart } from "../api/action-reducers/geography/resource-mobilization-bar-chart";
 
 const storeContent: StoreModel = {
   // homepage
@@ -158,6 +159,9 @@ const storeContent: StoreModel = {
   GeographyOverview: persist(GeographyOverview),
   GeographyOverviewCoordinatingMechanismsContacts: persist(
     GeographyOverviewCoordinatingMechanismsContacts
+  ),
+  GeographyResourceMobilizationBarChart: persist(
+    GeographyResourceMobilizationBarChart
   ),
   // search
   GlobalSearch: persist(GlobalSearch),

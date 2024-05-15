@@ -38,6 +38,9 @@ export const Location: React.FC = () => {
       state.GeographyOverview.loading ||
       state.GeographyOverviewCoordinatingMechanismsContacts.loading
   );
+  const fetchRMBarChart = useStoreActions(
+    (actions) => actions.GeographyResourceMobilizationBarChart.fetch
+  );
 
   const view = React.useMemo(() => {
     switch (params.tab) {
@@ -67,6 +70,9 @@ export const Location: React.FC = () => {
         routeParams: {
           code: params.id,
         },
+      });
+      fetchRMBarChart({
+        filterString: `geographies=${params.id}`,
       });
     }
   }, [params.id]);
