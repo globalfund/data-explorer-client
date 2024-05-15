@@ -847,15 +847,199 @@ export const STORY_DATA_VARIANT_1: ExpandableHorizontalBarChartDataItem[] = [
 
 export const STORY_DATA_VARIANT_2: ExpandableHorizontalBarChartDataItem[] = [
   {
-    name: "Health Commodities/Equipments and Supply Chain Costs",
-    value: 1000000,
+    name: "HIV/AIDS",
+    value: 6507650968.13,
+    items: [
+      {
+        name: "Comprehensive prevention programs for MSM",
+        value: 104951271.79,
+      },
+      {
+        name: "Comprehensive prevention programs for people who inject drugs (PWID) and their partners",
+        value: 124653010.87,
+      },
+      {
+        name: "Comprehensive prevention programs for sex workers and their clients",
+        value: 129591746.86,
+      },
+      {
+        name: "Comprehensive prevention programs for TGs",
+        value: 11422198.65,
+      },
+      {
+        name: "Comprehensive programs for people in prisons and other closed settings",
+        value: 9761187.64,
+      },
+      {
+        name: "Differentiated HIV Testing Services",
+        value: 468169158.73,
+      },
+      {
+        name: "PMTCT",
+        value: 163804046.97,
+      },
+      {
+        name: "Prevention",
+        value: 390694260.87,
+      },
+      {
+        name: "Prevention package for adolescent girls and young women (AGYW) and male sexual partners in high HIV incidence settings",
+        value: 4175173.75,
+      },
+      {
+        name: "Prevention package for men who have sex with men (MSM) and their sexual partners",
+        value: 7904916.84,
+      },
+      {
+        name: "Prevention package for sex workers, their clients and other sexual partners",
+        value: 8453813.99,
+      },
+      {
+        name: "Prevention package for transgender people and their sexual partners",
+        value: 868195.7,
+      },
+      {
+        name: "Prevention programs for adolescents and youth, in and out of school",
+        value: 162657316.14,
+      },
+      {
+        name: "Prevention programs for general population",
+        value: 124795311.63,
+      },
+      {
+        name: "Prevention programs for other vulnerable populations",
+        value: 51397820.99,
+      },
+      {
+        name: "Reducing human rights-related barriers to HIV/TB services",
+        value: 110293032.98,
+      },
+      {
+        name: "Treatment, care and support",
+        value: 4634058503.73,
+      },
+    ],
   },
   {
-    name: "Program Management Related Costs",
-    value: 500000,
+    name: "Malaria",
+    value: 4691504230.91,
+    items: [
+      {
+        name: "Case management",
+        value: 1446824819.11,
+      },
+      {
+        name: "Specific prevention interventions (SPI)",
+        value: 353183640.88,
+      },
+      {
+        name: "Vector control",
+        value: 2891495770.92,
+      },
+    ],
   },
   {
-    name: "Program Related Activity Costs",
-    value: 2000000,
+    name: "Multi-Component",
+    value: 4929393204.469999,
+    items: [
+      {
+        name: "COVID-19",
+        value: 2057307680.09,
+      },
+      {
+        name: "Payment for results",
+        value: 228306691.42,
+      },
+      {
+        name: "Program management",
+        value: 2643778832.96,
+      },
+    ],
+  },
+  {
+    name: "RSSH",
+    value: 1724136777.71,
+    items: [
+      {
+        name: "RSSH: Community systems strengthening",
+        value: 135267519.12,
+      },
+      {
+        name: "RSSH: Financial management systems",
+        value: 57462392.76,
+      },
+      {
+        name: "RSSH: Health management information systems and M&E",
+        value: 287142221.18,
+      },
+      {
+        name: "RSSH: Health products management systems",
+        value: 301525332.77,
+      },
+      {
+        name: "RSSH: Health sector governance and planning",
+        value: 53602859.18,
+      },
+      {
+        name: "RSSH: Human resources for health, including community health workers",
+        value: 316340982.58,
+      },
+      {
+        name: "RSSH: Integrated service delivery and quality improvement",
+        value: 183240141.16,
+      },
+      {
+        name: "RSSH: Laboratory systems",
+        value: 38541776.18,
+      },
+      {
+        name: "RSSH: Monitoring and evaluation systems",
+        value: 351013552.78,
+      },
+    ],
+  },
+  {
+    name: "Tuberculosis",
+    value: 2635910621.08,
+    items: [
+      {
+        name: "MDR-TB",
+        value: 951422631.83,
+      },
+      {
+        name: "Removing human rights and gender related barriers to TB services",
+        value: 5603168.07,
+      },
+      {
+        name: "TB care and prevention",
+        value: 1549500562.04,
+      },
+      {
+        name: "TB/HIV",
+        value: 129384259.14,
+      },
+    ],
+  },
+  {
+    name: "Ungrouped Components",
+    value: 220719.97,
+    items: [
+      {
+        name: "Malaria",
+        value: 0,
+      },
+      {
+        name: "Multi-Component",
+        value: 193997.94,
+      },
+      {
+        name: "RSSH",
+        value: 26722.03,
+      },
+      {
+        name: "Tuberculosis",
+        value: 0,
+      },
+    ],
   },
 ];

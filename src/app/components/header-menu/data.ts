@@ -45,10 +45,12 @@ export function isNavButtonActive(id: string, path: string): boolean {
   switch (id) {
     case "datasets":
       return (
-        path.includes("/resource-mobilization") ||
-        path.includes("/access-to-funding") ||
-        path.includes("/financial-insights") ||
-        path.includes("/annual-results")
+        (path.includes("/resource-mobilization") ||
+          path.includes("/access-to-funding") ||
+          path.includes("/financial-insights") ||
+          path.includes("/annual-results")) &&
+        !path.includes("/location") &&
+        !path.includes("/grant")
       );
     case "geography":
       return path.includes("/geography") || path.includes("/location");

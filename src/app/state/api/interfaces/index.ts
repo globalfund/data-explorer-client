@@ -154,6 +154,8 @@ export interface StoreModel {
   FinancialInsightsBudgetTreemap: ApiCallModel;
   FinancialInsightsBudgetTable: ApiCallModel;
   FinancialInsightsExpendituresHeatmap: ApiCallModel;
+  FinancialInsightsExpendituresBarChart: ApiCallModel;
+  FinancialInsightsExpendituresTable: ApiCallModel;
   // annual results
   AnnualResultsStats: ApiCallModel;
   AnnualResultsPolyline: ApiCallModel;

@@ -62,12 +62,14 @@ import { HomePledgesContributionsBarChart } from "app/state/api/action-reducers/
 import { AccessToFundingAllocationTreemap } from "app/state/api/action-reducers/access-to-funding/allocation-treemap";
 import { AccessToFundingAllocationSunburst } from "app/state/api/action-reducers/access-to-funding/allocation-sunburst";
 import { FinancialInsightsCountryAbsorption } from "app/state/api/action-reducers/financial-insights/country-absorption";
+import { FinancialInsightsExpendituresTable } from "app/state/api/action-reducers/financial-insights/expenditures-table";
 import { FinancialInsightsBudgetUtilisation } from "app/state/api/action-reducers/financial-insights/budget-utilisation";
 import { FinancialInsightsDisbursementsTable } from "app/state/api/action-reducers/financial-insights/disbursements-table";
 import { AccessToFundingAllocationBarSeries } from "app/state/api/action-reducers/access-to-funding/allocation-bar-series";
 import { ResourceMobilizationTable } from "app/state/api/action-reducers/resource-mobilization/pledges-contributions-table";
 import { AccessToFundingFundingRequestsTable } from "app/state/api/action-reducers/access-to-funding/funding-requests-table";
 import { FinancialInsightsExpendituresHeatmap } from "app/state/api/action-reducers/financial-insights/expenditures-heatmap";
+import { FinancialInsightsExpendituresBarChart } from "app/state/api/action-reducers/financial-insights/expenditures-bar-chart";
 import { ResourceMobilizationSunburst } from "app/state/api/action-reducers/resource-mobilization/pledges-contributions-sunburst";
 import { FinancialInsightsDisbursementsBarChart } from "app/state/api/action-reducers/financial-insights/disbursements-bar-chart";
 import componentsPerformanceFrameworkComponents from "app/state/api/action-reducers/cms/componentsPerformanceFrameworkComponents";
@@ -134,6 +136,12 @@ const storeContent: StoreModel = {
   FinancialInsightsBudgetTable: persist(FinancialInsightsBudgetTable),
   FinancialInsightsExpendituresHeatmap: persist(
     FinancialInsightsExpendituresHeatmap
+  ),
+  FinancialInsightsExpendituresBarChart: persist(
+    FinancialInsightsExpendituresBarChart
+  ),
+  FinancialInsightsExpendituresTable: persist(
+    FinancialInsightsExpendituresTable
   ),
   // annual results
   AnnualResultsStats: persist(AnnualResultsStats),

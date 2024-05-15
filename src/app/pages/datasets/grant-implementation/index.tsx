@@ -24,11 +24,10 @@ import { FinancialMetric } from "app/components/charts/financial-metric";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { ExpandableHorizontalBar } from "app/components/charts/expandable-horizontal-bar";
 import { STORY_DATA_VARIANT_2 as BUDGET_SANKEY_DATA } from "app/components/charts/sankey/data";
-import { STORY_DATA_VARIANT_2 as EXPENDITURES_BAR_CHART } from "app/components/charts/expandable-horizontal-bar/data";
+import { ExpandableHorizontalBarChartDataItem } from "app/components/charts/expandable-horizontal-bar/data";
 import {
-  getPercentageColor,
-  STORY_DATA_VARIANT_1 as EXPENDITURES_HEATMAP_DATA,
   HeatmapDataItem,
+  getPercentageColor,
 } from "app/components/charts/heatmap/data";
 import {
   STORY_DATA_VARIANT_1 as FINANCIAL_METRICS_DATA_1,
@@ -37,7 +36,6 @@ import {
   FinancialMetricExpandableItemProps,
 } from "app/components/charts/financial-metric/data";
 import {
-  TABLE_VARIATION_15_DATA as EXPENDITURES_TABLE_DATA,
   TABLE_VARIATION_14_COLUMNS as BUDGET_TABLE_COLUMNS,
   TABLE_VARIATION_15_COLUMNS as EXPENDITURES_TABLE_COLUMNS,
   TABLE_VARIATION_13_COLUMNS as DISBURSEMENTS_TABLE_COLUMNS,
@@ -246,8 +244,43 @@ export const GrantImplementationPage: React.FC = () => {
   const fetchExpendituresHeatmap = useStoreActions(
     (actions) => actions.FinancialInsightsExpendituresHeatmap.fetch
   );
-  const loadingExpendituresHeatmap = useStoreState(
-    (state) => state.FinancialInsightsExpendituresHeatmap.loading
+  const loadingExpenditures = useStoreState((state) => {
+    switch (expendituresDropdownSelected) {
+      case dropdownItemsExpenditures[0].value:
+        return state.FinancialInsightsExpendituresHeatmap.loading;
+      case dropdownItemsExpenditures[1].value:
+        return state.FinancialInsightsExpendituresBarChart.loading;
+      case dropdownItemsExpenditures[2].value:
+        return state.FinancialInsightsExpendituresTable.loading;
+      default:
+        return false;
+    }
+  });
+  const dataExpendituresBarChart = useStoreState(
+    (state) =>
+      get(
+        state.FinancialInsightsExpendituresBarChart,
+        "data.data",
+        []
+      ) as ExpandableHorizontalBarChartDataItem[]
+  );
+  const fetchExpendituresBarChart = useStoreActions(
+    (actions) => actions.FinancialInsightsExpendituresBarChart.fetch
+  );
+  const dataExpendituresTable = useStoreState(
+    (state) =>
+      get(state.FinancialInsightsExpendituresTable, "data.data", []) as {
+        [key: string]:
+          | string
+          | number
+          | boolean
+          | null
+          | object
+          | Array<object>;
+      }[]
+  );
+  const fetchExpendituresTable = useStoreActions(
+    (actions) => actions.FinancialInsightsExpendituresTable.fetch
   );
 
   const handleDisbursementsSelectionChange = (value: string) => {
@@ -455,7 +488,7 @@ export const GrantImplementationPage: React.FC = () => {
       case dropdownItemsExpenditures[1].value:
         return (
           <ExpandableHorizontalBar
-            data={EXPENDITURES_BAR_CHART}
+            data={dataExpendituresBarChart}
             yAxisLabel="Investment Landscapes & Analytical Group Name"
             xAxisLabel="Cumulative Expenditure"
             valueLabels={{
@@ -471,14 +504,19 @@ export const GrantImplementationPage: React.FC = () => {
           <Table
             dataTree
             id="expenditures-table"
-            data={EXPENDITURES_TABLE_DATA}
+            data={dataExpendituresTable}
             columns={EXPENDITURES_TABLE_COLUMNS}
           />
         );
       default:
         return null;
     }
-  }, [expendituresDropdownSelected, dataExpendituresHeatmap]);
+  }, [
+    expendituresDropdownSelected,
+    dataExpendituresHeatmap,
+    dataExpendituresBarChart,
+    dataExpendituresTable,
+  ]);
 
   const toolbarRightContent = React.useMemo(() => {
     return (
@@ -525,6 +563,8 @@ export const GrantImplementationPage: React.FC = () => {
         column: "component",
       },
     });
+    fetchExpendituresBarChart({});
+    fetchExpendituresTable({});
   }, []);
 
   React.useEffect(() => {
@@ -759,7 +799,7 @@ export const GrantImplementationPage: React.FC = () => {
             subtitle="Lorem Ipsum"
             dropdownItems={dropdownItemsExpenditures}
             dropdownSelected={expendituresDropdownSelected}
-            loading={loadingExpendituresHeatmap}
+            loading={loadingExpenditures}
             handleDropdownChange={(value) =>
               setExpendituresDropdownSelected(value)
             }

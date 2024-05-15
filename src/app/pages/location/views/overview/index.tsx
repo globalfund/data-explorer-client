@@ -321,7 +321,7 @@ export const LocationOverview: React.FC = () => {
                 </Grid>
               </Grid>
             </Box>
-            <Divider sx={{ borderColor: "#000" }} />
+            {/* <Divider sx={{ borderColor: "#000" }} />
             <Box>
               <Typography variant="body2" fontWeight="700" marginBottom="10px">
                 Multicountries with Kenya
@@ -360,7 +360,7 @@ export const LocationOverview: React.FC = () => {
                   </Link>
                 </Grid>
               </Grid>
-            </Box>
+            </Box> */}
           </Box>
         </Grid>
       </Grid>
