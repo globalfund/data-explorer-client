@@ -13,8 +13,8 @@ function fnum(x: number) {
   }
   if (x < 1000000) {
     return {
-      number: evenRound(x, 2),
-      text: "thousand",
+      number: evenRound(x / 1000000, 2),
+      text: "million",
     };
   }
   // if (x < 10000000) {

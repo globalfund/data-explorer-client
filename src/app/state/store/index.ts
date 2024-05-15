@@ -30,11 +30,13 @@ import componentsDialogBox from "app/state/api/action-reducers/cms/componentsDia
 import componentsPageHeader from "app/state/api/action-reducers/cms/componentsPageHeader";
 import modulesCountryDetail from "app/state/api/action-reducers/cms/modulesCountryDetail";
 import PartnerTypeFilterOptions from "app/state/api/action-reducers/filters/partnerTypes";
+import { GeographyResultStats } from "app/state/api/action-reducers/geography/results-stats";
 import { AccessToFundingStats } from "app/state/api/action-reducers/access-to-funding/stats";
 import componentsChartsCommon from "app/state/api/action-reducers/cms/componentsChartsCommon";
 import componentsChartsGeomap from "app/state/api/action-reducers/cms/componentsChartsGeomap";
 import componentsChartsGrants from "app/state/api/action-reducers/cms/componentsChartsGrants";
 import componentsCookieDialog from "app/state/api/action-reducers/cms/componentsCookieDialog";
+import { GeographyResultsTable } from "app/state/api/action-reducers/geography/results-table";
 import componentsSlideInPanel from "app/state/api/action-reducers/cms/componentsSlideInPanel";
 import modulesFundingRequests from "app/state/api/action-reducers/cms/modulesFundingRequests";
 import componentsChartsBudgets from "app/state/api/action-reducers/cms/componentsChartsBudgets";
@@ -57,10 +59,6 @@ import { GeographyEligibilityHeatmap } from "app/state/api/action-reducers/geogr
 import { GeographyExpendituresHeatmap } from "app/state/api/action-reducers/geography/expenditures-heatmap";
 import { FinancialInsightsBudgetTable } from "app/state/api/action-reducers/financial-insights/budget-table";
 import { GeographyFundingRequestsTable } from "app/state/api/action-reducers/geography/funding-requests-table";
-import {
-  GeographyGrantsPieCharts,
-  GeographyGrantsTable,
-} from "app/state/api/action-reducers/geography/grants";
 import { FinancialInsightsBudgetTreemap } from "app/state/api/action-reducers/financial-insights/budget-treemap";
 import { AccessToFundingAllocationTable } from "app/state/api/action-reducers/access-to-funding/allocation-table";
 import { GeographyAllocationsRadialChart } from "app/state/api/action-reducers/geography/allocations-radial-chart";
@@ -87,6 +85,10 @@ import componentsPerformanceFrameworkComponents from "app/state/api/action-reduc
 import { FinancialInsightsDisbursementsLineChart } from "app/state/api/action-reducers/financial-insights/disbursements-line-chart";
 import { FinancialInsightsDisbursementUtilisation } from "app/state/api/action-reducers/financial-insights/disbursement-utilisation";
 import { ResourceMobilizationExpandableBarChart } from "app/state/api/action-reducers/resource-mobilization/pledges-contributions-expandable-bar-chart";
+import {
+  GeographyGrantsTable,
+  GeographyGrantsPieCharts,
+} from "app/state/api/action-reducers/geography/grants";
 import {
   GeographyOverview,
   GeographyOverviewCoordinatingMechanismsContacts,
@@ -180,6 +182,8 @@ const storeContent: StoreModel = {
   GeographyExpendituresHeatmap: persist(GeographyExpendituresHeatmap),
   GeographyGrantsPieCharts: persist(GeographyGrantsPieCharts),
   GeographyGrantsTable: persist(GeographyGrantsTable),
+  GeographyResultStats: persist(GeographyResultStats),
+  GeographyResultsTable: persist(GeographyResultsTable),
   // search
   GlobalSearch: persist(GlobalSearch),
   // filter options api

@@ -7,6 +7,7 @@ import { Results } from "app/pages/location/views/results";
 import CircularProgress from "@mui/material/CircularProgress";
 import { DetailPageTabs } from "app/components/detail-page-tabs";
 import { LocationOverview } from "app/pages/location/views/overview";
+import { RESULT_YEARS } from "app/pages/location/views/results/data";
 import { LOCATION_TABS } from "app/components/detail-page-tabs/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { AccessToFunding } from "app/pages/location/views/access-to-funding";
@@ -17,6 +18,9 @@ export const Location: React.FC = () => {
   const params = useParams<{ id: string; tab: string }>();
 
   const [grantsTablePage, setGrantsTablePage] = React.useState(1);
+  const [resultsYear, setResultsYear] = React.useState(
+    RESULT_YEARS[RESULT_YEARS.length - 1]
+  );
 
   const dataOverview = useStoreState((state) =>
     get(state.GeographyOverview, "data.data[0]", {
@@ -47,7 +51,9 @@ export const Location: React.FC = () => {
       state.GeographyBudgetSankeyChart.loading ||
       state.GeographyExpendituresHeatmap.loading ||
       state.GeographyGrantsPieCharts.loading ||
-      state.GeographyGrantsTable.loading
+      state.GeographyGrantsTable.loading ||
+      state.GeographyResultStats.loading ||
+      state.GeographyResultsTable.loading
   );
   const fetchRMBarChart = useStoreActions(
     (actions) => actions.GeographyResourceMobilizationBarChart.fetch
@@ -76,6 +82,12 @@ export const Location: React.FC = () => {
   const fetchGrantsTable = useStoreActions(
     (actions) => actions.GeographyGrantsTable.fetch
   );
+  const fetchResultStats = useStoreActions(
+    (actions) => actions.GeographyResultStats.fetch
+  );
+  const fetchResultsTable = useStoreActions(
+    (actions) => actions.GeographyResultsTable.fetch
+  );
 
   const view = React.useMemo(() => {
     switch (params.tab) {
@@ -93,11 +105,13 @@ export const Location: React.FC = () => {
       case "access-to-funding":
         return <AccessToFunding />;
       case "results":
-        return <Results />;
+        return (
+          <Results resultsYear={resultsYear} setResultsYear={setResultsYear} />
+        );
       default:
         return <div />;
     }
-  }, [params.tab, grantsTablePage]);
+  }, [params.tab, grantsTablePage, resultsYear]);
 
   React.useEffect(() => {
     if (params.id) {
@@ -145,6 +159,9 @@ export const Location: React.FC = () => {
           code: params.id,
         },
       });
+      fetchResultStats({
+        filterString: `geographies=${params.id}&cycle=${RESULT_YEARS[RESULT_YEARS.length - 1]}`,
+      });
     }
   }, [params.id]);
 
@@ -159,6 +176,17 @@ export const Location: React.FC = () => {
       });
     }
   }, [params.id, grantsTablePage]);
+
+  React.useEffect(() => {
+    if (params.id) {
+      fetchResultsTable({
+        routeParams: {
+          code: params.id,
+          cycle: resultsYear,
+        },
+      });
+    }
+  }, [params.id, resultsYear]);
 
   return (
     <Box padding="60px 0">
