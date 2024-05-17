@@ -57,6 +57,9 @@ export const Grant: React.FC = () => {
   const fetchDisbursementsBarChart = useStoreActions(
     (actions) => actions.GrantDisbursementsBarChart.fetch
   );
+  const fetchBudgetSankeyChart = useStoreActions(
+    (actions) => actions.GrantBudgetSankeyChart.fetch
+  );
 
   const [dropdownSelected, setDropdownSelected] = React.useState<{
     code: string | number;
@@ -120,6 +123,13 @@ export const Grant: React.FC = () => {
         routeParams: {
           code: params.id,
           ip: dropdownSelected.code.toString(),
+        },
+      });
+      fetchBudgetSankeyChart({
+        routeParams: {
+          code: params.id,
+          ip: dropdownSelected.code.toString(),
+          variant: "1",
         },
       });
     }

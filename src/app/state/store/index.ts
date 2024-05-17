@@ -46,15 +46,16 @@ import componentsChartsNetwork from "app/state/api/action-reducers/cms/component
 import componentsChartsPledges from "app/state/api/action-reducers/cms/componentsChartsPledges";
 import { FundingRequestsTableGeneric } from "app/state/api/action-reducers/viz/fundingRequests";
 import { FinancialInsightsStats } from "app/state/api/action-reducers/financial-insights/stats";
+import { GrantBudgetSankeyChart } from "app/state/api/action-reducers/grant/budget-sankey-chart";
 import { HomeExpendituresHeatmap } from "app/state/api/action-reducers/home/expenditures-heatmap";
 import { GeographyDocumentsTable } from "app/state/api/action-reducers/geography/documents-table";
 import { AnnualResultsPolyline } from "app/state/api/action-reducers/annual-results/polyline-tree";
 import componentsDatasetCarousel from "app/state/api/action-reducers/cms/componentsDatasetCarousel";
 import componentsInformationPanel from "app/state/api/action-reducers/cms/componentsInformationPanel";
 import { ResourceMobilizationStats } from "app/state/api/action-reducers/resource-mobilization/stats";
-import { GrantDisbursementsBarChart } from "app/state/api/action-reducers/grant/disbursementsBarChart";
 import componentsChartsEligibility from "app/state/api/action-reducers/cms/componentsChartsEligibility";
 import componentsChartsInvestments from "app/state/api/action-reducers/cms/componentsChartsInvestments";
+import { GrantDisbursementsBarChart } from "app/state/api/action-reducers/grant/disbursements-bar-chart";
 import { HomeAllocationsRadialChart } from "app/state/api/action-reducers/home/allocations-radial-chart";
 import { HomeDisbursementsLineChart } from "app/state/api/action-reducers/home/disbursements-line-chart";
 import { GeographyBudgetSankeyChart } from "app/state/api/action-reducers/geography/budgets-sankey-chart";
@@ -195,6 +196,7 @@ const storeContent: StoreModel = {
   GrantInfo: persist(GrantInfo),
   GrantOverview: persist(GrantOverview),
   GrantDisbursementsBarChart: persist(GrantDisbursementsBarChart),
+  GrantBudgetSankeyChart: persist(GrantBudgetSankeyChart),
   // search
   GlobalSearch: persist(GlobalSearch),
   // filter options api

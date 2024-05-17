@@ -1,5 +1,6 @@
 import React from "react";
 import get from "lodash/get";
+import sumBy from "lodash/sumBy";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { appColors } from "app/theme";
@@ -36,6 +37,10 @@ import { GrantCardProps } from "app/components/grant-card/data";
 import { getMonthFromNumber } from "app/utils/getMonthFromNumber";
 import ArrowBack from "@mui/icons-material/ArrowBack";
 import { ArrowForward } from "@mui/icons-material";
+import {
+  getFinancialValueWithMetricPrefix,
+  getRange,
+} from "app/utils/getFinancialValueWithMetricPrefix";
 
 export const GrantImplementation: React.FC<GrantImplementationProps> = (
   props: GrantImplementationProps
@@ -198,6 +203,12 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
     });
   }, [dataGrantsTable]);
 
+  const disbursementsTotal = React.useMemo(() => {
+    const total = sumBy(dataDisbursementsLineChart, "value");
+    const range = getRange([{ range: dataDisbursementsLineChart }], ["value"]);
+    return `$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${range.abbr}`;
+  }, [dataDisbursementsLineChart]);
+
   const pagination = React.useMemo(
     () => (
       <Box gap="8px" padding="0 32px" display="flex" alignItems="center">
@@ -230,7 +241,7 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
     <Box gap="24px" display="flex" flexDirection="column">
       <ChartBlock
         cycles={CYCLES}
-        title="$84 Billion"
+        title={disbursementsTotal}
         selectedCycle={chart1Cycle}
         dropdownSelected={chart1Dropdown}
         dropdownItems={CHART_1_DROPDOWN_ITEMS}

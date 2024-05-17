@@ -182,6 +182,7 @@ export interface StoreModel {
   GrantInfo: ApiCallModel;
   GrantOverview: ApiCallModel;
   GrantDisbursementsBarChart: ApiCallModel;
+  GrantBudgetSankeyChart: ApiCallModel;
   // search
   GlobalSearch: ApiCallModel;
   // filter options api

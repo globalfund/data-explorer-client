@@ -5,17 +5,18 @@ import { appColors } from "app/theme";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import { CYCLES } from "app/pages/home/data";
+import { useParams } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import { BarChart } from "app/components/charts/bar";
-import { useStoreState } from "app/state/store/hooks";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { ChartBlock } from "app/components/chart-block";
 import { Heatmap } from "app/components/charts/heatmap";
 import { RadialChart } from "app/components/charts/radial";
 import { SankeyChart } from "app/components/charts/sankey";
 import { RaceBarChart } from "app/components/charts/race-bar";
 import { BarChartDataItem } from "app/components/charts/bar/data";
-import { STORY_DATA_VARIANT_1 as SANKEY_CHART_DATA } from "app/components/charts/sankey/data";
+import { SankeyChartData } from "app/components/charts/sankey/data";
 import { ChartBlockButtonToolbar } from "app/components/chart-block/components/button-toolbar";
 import {
   CHART_1_DROPDOWN_ITEMS,
@@ -31,9 +32,11 @@ import {
 } from "app/utils/getFinancialValueWithMetricPrefix";
 
 export const GrantImplementation: React.FC = () => {
+  const params = useParams<{ id: string; ip: string; tab: string }>();
+
   const [chart2Cycle, setChart2Cycle] = React.useState(CYCLES[0]);
   const [chart1Dropdown, setChart1Dropdown] = React.useState(
-    CHART_1_DROPDOWN_ITEMS[0].value
+    CHART_1_DROPDOWN_ITEMS[0].label
   );
   const [chart2Dropdown, setChart2Dropdown] = React.useState(
     CHART_2_DROPDOWN_ITEMS[0].value
@@ -64,6 +67,16 @@ export const GrantImplementation: React.FC = () => {
         "data.data",
         []
       ) as BarChartDataItem[]
+  );
+  const fetchBudgetSankeyChart = useStoreActions(
+    (actions) => actions.GrantBudgetSankeyChart.fetch
+  );
+  const dataBudgetSankeyChart = useStoreState(
+    (state) =>
+      get(state.GrantBudgetSankeyChart, "data.data[0]", {
+        nodes: [],
+        links: [],
+      }) as SankeyChartData
   );
 
   const handleChartCycleChange = (cycle: string, index: number) => {
@@ -170,10 +183,33 @@ export const GrantImplementation: React.FC = () => {
     ];
   }, [dataFinancialValues]);
 
+  const disbursementsTotal = React.useMemo(() => {
+    const range = getRange(
+      [{ value: dataFinancialValues.disbursement }],
+      ["value"]
+    );
+    return `$${getFinancialValueWithMetricPrefix(dataFinancialValues.disbursement, range.index, 2)} ${range.full}`;
+  }, [dataFinancialValues.disbursement]);
+
+  React.useEffect(() => {
+    if (params.id && params.ip && chart1Dropdown) {
+      const value = CHART_1_DROPDOWN_ITEMS.find(
+        (item) => item.label === chart1Dropdown
+      );
+      fetchBudgetSankeyChart({
+        routeParams: {
+          code: params.id,
+          ip: params.ip,
+          variant: value?.value ?? "1",
+        },
+      });
+    }
+  }, [chart1Dropdown]);
+
   return (
     <Box gap="24px" display="flex" flexDirection="column">
       <ChartBlock
-        title="$59.26 Million"
+        title={disbursementsTotal}
         subtitle="Disbursed"
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
@@ -312,16 +348,13 @@ export const GrantImplementation: React.FC = () => {
             fontWeight: "700",
           }}
         >
-          <Grid item xs={3}>
+          <Grid item xs={4}>
             Total budget
           </Grid>
-          <Grid item xs={3}>
-            Component
-          </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={4}>
             Modules
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={4}>
             Interventions
           </Grid>
         </Grid>
@@ -332,7 +365,7 @@ export const GrantImplementation: React.FC = () => {
             },
           }}
         >
-          <SankeyChart data={SANKEY_CHART_DATA} />
+          <SankeyChart data={dataBudgetSankeyChart} />
         </Box>
       </ChartBlock>
       <Box height="64px" />

@@ -31,6 +31,10 @@ import {
   STORY_DATA_VARIANT_1 as HEATMAP_DATA,
   HeatmapDataItem,
 } from "app/components/charts/heatmap/data";
+import {
+  getFinancialValueWithMetricPrefix,
+  getRange,
+} from "app/utils/getFinancialValueWithMetricPrefix";
 
 export const Home: React.FC = () => {
   const [chart1Cycle, setChart1Cycle] = React.useState(CYCLES[0]);
@@ -199,6 +203,21 @@ export const Home: React.FC = () => {
     });
   }, []);
 
+  const allocationsTotal = React.useMemo(() => {
+    const total = sumBy(dataAllocationsRadialChart, "value");
+    const range = getRange([{ value: total }], ["value"]);
+    return `$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${range.abbr}`;
+  }, [dataAllocationsRadialChart]);
+
+  const disbursementsTotal = React.useMemo(() => {
+    let total = 0;
+    dataDisbursementsLineChart.data.forEach((item) => {
+      total += sumBy(item.data);
+    });
+    const range = getRange([{ value: total }], ["value"]);
+    return `$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${range.abbr}`;
+  }, [dataDisbursementsLineChart]);
+
   const totalPledge = React.useMemo(() => {
     const v = applyResultValueFormula(
       sumBy(dataPledgesContributionsBarChart, "value"),
@@ -277,7 +296,7 @@ export const Home: React.FC = () => {
       <Box height="64px" />
       <ChartBlock
         cycles={CYCLES}
-        title="$84 Million"
+        title={allocationsTotal}
         selectedCycle={chart2Cycle}
         loading={loadingAllocationsRadialChart}
         subtitle="125 countries with approved Grants in Cycle 4"
@@ -304,7 +323,7 @@ export const Home: React.FC = () => {
       <Box height="64px" />
       <ChartBlock
         cycles={CYCLES}
-        title="$84 Billion"
+        title={disbursementsTotal}
         selectedCycle={chart4Cycle}
         dropdownSelected={chart4Dropdown}
         dropdownItems={CHART_4_DROPDOWN_ITEMS}
