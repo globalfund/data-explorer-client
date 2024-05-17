@@ -51,7 +51,7 @@ export const RaceBarChart: React.FC<RaceBarChartProps> = (
                     2
                   )} ${range.abbr}`
                 : item.value}{" "}
-              - {item.percentage}%
+              - {item.percentage.toFixed(0)}%
             </Typography>
           </Box>
         );

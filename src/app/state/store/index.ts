@@ -9,6 +9,7 @@ import modulesCommon from "app/state/api/action-reducers/cms/modulesCommon";
 import { HomeResultsStats } from "app/state/api/action-reducers/home/stats";
 import modulesGrants from "app/state/api/action-reducers/cms/modulesGrants";
 import { GeographyList } from "app/state/api/action-reducers/geography/list";
+import { GrantOverview } from "app/state/api/action-reducers/grant/overview";
 import countrySummary from "app/state/api/action-reducers/cms/countrySummary";
 import DonorFilterOptions from "app/state/api/action-reducers/filters/donors";
 import modulesLanding from "app/state/api/action-reducers/cms/modulesLanding";
@@ -191,6 +192,7 @@ const storeContent: StoreModel = {
   GeographyResultsDocumentsTable: persist(GeographyResultsDocumentsTable),
   // grant
   GrantInfo: persist(GrantInfo),
+  GrantOverview: persist(GrantOverview),
   // search
   GlobalSearch: persist(GlobalSearch),
   // filter options api

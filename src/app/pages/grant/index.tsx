@@ -17,6 +17,7 @@ import {
 } from "app/components/detail-page-tabs/data";
 
 export const Grant: React.FC = () => {
+  const navigate = useNavigate();
   const params = useParams<{ id: string; ip: string; tab: string }>();
 
   const dataGrant = useStoreState(
@@ -31,12 +32,15 @@ export const Grant: React.FC = () => {
         principalRecipientName: "",
         principalRecipientShortrName: "",
         component: "",
+        FPMName: "",
+        FPMEmail: "",
       }) as {
         code: string;
         title: string;
         periods: {
           code: string | number;
           name: string;
+          title: string;
         }[];
         countryName: string;
         countryCode: string;
@@ -44,12 +48,17 @@ export const Grant: React.FC = () => {
         principalRecipientName: string;
         principalRecipientShortrName: string;
         component: string;
+        FPMName: string;
       }
+  );
+  const fetchOverview = useStoreActions(
+    (actions) => actions.GrantOverview.fetch
   );
 
   const [dropdownSelected, setDropdownSelected] = React.useState<{
     code: string | number;
     name: string;
+    title: string;
   } | null>(
     get(
       dataGrant.periods,
@@ -58,14 +67,18 @@ export const Grant: React.FC = () => {
     )
   );
 
-  const titleSplits = splitStringInMiddle(
-    "Accelerated HIV Response Through Active Prevention, Linking To Care And Retention Interventions For PWID And Their Partners In Pakistan"
-  );
-
   const handleDropdownChange = (value: string) => {
-    const selected = dataGrant.periods.find((p) => p.code.toString() === value);
-    if (selected) setDropdownSelected(selected);
+    const selected = dataGrant.periods.find((p) => p.name === value);
+    if (selected) {
+      navigate(`/grant/${params.id}/${selected.code}/${params.tab}`, {
+        replace: true,
+      });
+    }
   };
+
+  const titleSplits = React.useMemo(() => {
+    return splitStringInMiddle(dropdownSelected?.title || "");
+  }, [dropdownSelected?.title]);
 
   const view = React.useMemo(() => {
     switch (params.tab) {
@@ -92,6 +105,17 @@ export const Grant: React.FC = () => {
     );
   }, [params.ip]);
 
+  React.useEffect(() => {
+    if (params.id && dropdownSelected) {
+      fetchOverview({
+        routeParams: {
+          code: params.id,
+          ip: dropdownSelected.code.toString(),
+        },
+      });
+    }
+  }, [params.id, dropdownSelected]);
+
   return (
     <Box padding="60px 0">
       <Typography variant="h1" lineHeight={1}>
@@ -111,9 +135,12 @@ export const Grant: React.FC = () => {
         ))}
       </Typography>
       <DetailPageTabs
-        tabs={GRANT_TABS}
         baseRoute={`/grant`}
-        activeTab={params.tab}
+        activeTab={`${params.ip}/${params.tab}`}
+        tabs={GRANT_TABS.map((t) => ({
+          ...t,
+          link: `/${params.ip}${t.link}`,
+        }))}
         dropdown={{
           handleDropdownChange,
           dropdownSelected: dropdownSelected?.name || "",
@@ -144,6 +171,8 @@ export const PreGrant: React.FC = () => {
         principalRecipientName: "",
         principalRecipientShortrName: "",
         component: "",
+        FPMName: "",
+        FPMEmail: "",
       }) as {
         code: string;
         title: string;
@@ -157,6 +186,8 @@ export const PreGrant: React.FC = () => {
         principalRecipientName: string;
         principalRecipientShortrName: string;
         component: string;
+        FPMName: string;
+        FPMEmail: string;
       }
   );
   const fetchGrant = useStoreActions((actions) => actions.GrantInfo.fetch);

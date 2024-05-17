@@ -1,25 +1,91 @@
 import React from "react";
+import get from "lodash/get";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
+import { useStoreState } from "app/state/store/hooks";
 import { RaceBarChart } from "app/components/charts/race-bar";
-import { STORY_DATA_VARIANT_1 } from "app/components/charts/race-bar/data";
 import { ChartBlockButtonToolbar } from "app/components/chart-block/components/button-toolbar";
 
 export const GrantOverview: React.FC = () => {
-  //   const statusColor = React.useMemo(() => {
-  //     switch (status) {
-  //       case "Active":
-  //         return "#00A343";
-  //       case "Closed":
-  //         return "#FF0000";
-  //       case "Financially Closed":
-  //         return "#FFA500";
-  //       default:
-  //         return "#000";
-  //     }
-  //   }, []);
+  const dataGrant = useStoreState(
+    (state) =>
+      get(state.GrantInfo, "data.data[0]", {
+        code: "",
+        title: "",
+        periods: [],
+        countryName: "",
+        countryCode: "",
+        principalRecipientId: "",
+        principalRecipientName: "",
+        principalRecipientShortrName: "",
+        component: "",
+        FPMName: "",
+        FPMEmail: "",
+      }) as {
+        code: string;
+        title: string;
+        periods: {
+          code: string | number;
+          name: string;
+        }[];
+        countryName: string;
+        countryCode: string;
+        principalRecipientId: string;
+        principalRecipientName: string;
+        principalRecipientShortrName: string;
+        component: string;
+        FPMName: string;
+        FPMEmail: string;
+      }
+  );
+  const dataOverview = useStoreState((state) =>
+    get(state.GrantOverview, "data.data[0]", {
+      goals: [],
+      status: "",
+      objectives: [],
+      disbursement: 0,
+      commitment: 0,
+      signed: 0,
+    })
+  );
+
+  const statusColor = React.useMemo(() => {
+    switch (dataOverview.status) {
+      case "Active":
+        return "#00A343";
+      case "Closed":
+        return "#FF0000";
+      case "Financially Closed":
+        return "#FFA500";
+      default:
+        return "#000";
+    }
+  }, [dataOverview.status]);
+
+  const raceBarChartData = React.useMemo(() => {
+    return [
+      {
+        name: "Disbursed",
+        value: dataOverview.disbursement,
+        color: "#0A2840",
+        percentage: (dataOverview.disbursement / dataOverview.commitment) * 100,
+      },
+      {
+        name: "Committed",
+        value: dataOverview.commitment,
+        color: "#013E77",
+        percentage: (dataOverview.commitment / dataOverview.signed) * 100,
+      },
+      {
+        name: "Signed",
+        value: dataOverview.signed,
+        color: "#00B5AE",
+        percentage: 100,
+      },
+    ];
+  }, [dataOverview.disbursement, dataOverview.commitment, dataOverview.signed]);
 
   return (
     <Box gap="24px" display="flex" flexDirection="column">
@@ -28,11 +94,13 @@ export const GrantOverview: React.FC = () => {
           Goals
         </Typography>
         <Typography variant="body2">
-          This page provides an overview of the IATI ('open') data currently
-          published by individual Grand Bargain signatories and/or their
-          affiliated organisations. Its primary purpose is to enable signatories
-          to monitor their own progress in relation to meeting the data
-          publication commitment of the Grand Bargain.
+          {dataOverview.goals.map((goal: string, index: number) => (
+            <React.Fragment key={index}>
+              {goal}
+              <br />
+              <br />
+            </React.Fragment>
+          ))}
         </Typography>
       </Box>
       <Box marginBottom="32px">
@@ -40,11 +108,13 @@ export const GrantOverview: React.FC = () => {
           Objectives
         </Typography>
         <Typography variant="body2">
-          This page provides an overview of the IATI ('open') data currently
-          published by individual Grand Bargain signatories and/or their
-          affiliated organisations. Its primary purpose is to enable signatories
-          to monitor their own progress in relation to meeting the data
-          publication commitment of the Grand Bargain.
+          {dataOverview.objectives.map((objective: string, index: number) => (
+            <React.Fragment key={index}>
+              {objective}
+              <br />
+              <br />
+            </React.Fragment>
+          ))}
         </Typography>
       </Box>
       <Divider sx={{ borderColor: "#000" }} />
@@ -80,17 +150,15 @@ export const GrantOverview: React.FC = () => {
           },
         }}
       >
-        <Grid item xs={6} md={4} lg={2}>
+        <Grid item xs={6} md={4} lg={3}>
           <Box gap="10px" display="flex" flexDirection="column">
             <Typography variant="body2" fontWeight="700">
               Fund Portfolio Manager
             </Typography>
             <Typography variant="overline">
-              Paul MCCARRICK
+              {dataGrant.FPMName}
               <br />
-              <a href="mailto:paul.mccarrick@theglobalfund.org">
-                paul.mccarrick@theglobalfund.org
-              </a>
+              <a href={`mailto:${dataGrant.FPMEmail}`}>{dataGrant.FPMEmail}</a>
             </Typography>
           </Box>
         </Grid>
@@ -108,10 +176,10 @@ export const GrantOverview: React.FC = () => {
               <Box
                 width="8px"
                 height="8px"
-                bgcolor="#11AD6B"
                 borderRadius="50%"
+                bgcolor={statusColor}
               />
-              Active
+              {dataOverview.status}
             </Typography>
           </Box>
         </Grid>
@@ -120,7 +188,7 @@ export const GrantOverview: React.FC = () => {
             <Typography variant="body2" fontWeight="700">
               Country
             </Typography>
-            <Typography variant="overline">Pakistan</Typography>
+            <Typography variant="overline">{dataGrant.countryName}</Typography>
           </Box>
         </Grid>
         <Grid item xs={6} md={4} lg={2}>
@@ -128,28 +196,31 @@ export const GrantOverview: React.FC = () => {
             <Typography variant="body2" fontWeight="700">
               Component
             </Typography>
-            <Typography variant="overline">HIV</Typography>
+            <Typography variant="overline">{dataGrant.component}</Typography>
           </Box>
         </Grid>
-        <Grid item xs={6} md={4} lg={2}>
+        {/* <Grid item xs={6} md={4} lg={2}>
           <Box gap="10px" display="flex" flexDirection="column">
             <Typography variant="body2" fontWeight="700">
               Rating
             </Typography>
-            <Typography variant="overline">A2</Typography>
+            <Typography variant="overline">-</Typography>
           </Box>
-        </Grid>
-        <Grid item xs={6} md={4} lg={2}>
+        </Grid> */}
+        <Grid item xs={6} md={4} lg={3}>
           <Box gap="10px" display="flex" flexDirection="column">
             <Typography variant="body2" fontWeight="700">
               Principal Recipient
             </Typography>
-            <Typography variant="overline">Nai Zindagi (NZ)</Typography>
+            <Typography variant="overline">
+              {dataGrant.principalRecipientName}{" "}
+              {dataGrant.principalRecipientShortrName}
+            </Typography>
           </Box>
         </Grid>
       </Grid>
       <Divider sx={{ borderColor: "#000" }} />
-      <RaceBarChart data={STORY_DATA_VARIANT_1} />
+      <RaceBarChart data={raceBarChartData} />
       <ChartBlockButtonToolbar />
     </Box>
   );

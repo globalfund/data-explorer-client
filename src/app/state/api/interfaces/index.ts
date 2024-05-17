@@ -180,6 +180,7 @@ export interface StoreModel {
   GeographyResultsDocumentsTable: ApiCallModel;
   // grant
   GrantInfo: ApiCallModel;
+  GrantOverview: ApiCallModel;
   // search
   GlobalSearch: ApiCallModel;
   // filter options api
