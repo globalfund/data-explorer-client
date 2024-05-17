@@ -4,15 +4,14 @@ import Box from "@mui/material/Box";
 import { useStoreState } from "app/state/store/hooks";
 import { ChartBlock } from "app/components/chart-block";
 import { TableContainer } from "app/components/table-container";
+import { HomeResultsStats } from "app/pages/home/components/results-stats";
+import { StatCompProps } from "app/pages/home/components/results-stats/data";
 import {
   RESULT_YEARS,
   ResultsProps,
 } from "app/pages/location/views/results/data";
-import { HomeResultsStats } from "app/pages/home/components/results-stats";
-import { StatCompProps } from "app/pages/home/components/results-stats/data";
 import {
-  // TABLE_VARIATION_6_DATA,
-  // TABLE_VARIATION_6_COLUMNS,
+  TABLE_VARIATION_6_COLUMNS,
   TABLE_VARIATION_7_COLUMNS,
 } from "app/components/table/data";
 
@@ -23,6 +22,9 @@ export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
   );
   const dataResultsTable = useStoreState((state) =>
     get(state.GeographyResultsTable, "data.data", [])
+  );
+  const dataDocumentsTable = useStoreState((state) =>
+    get(state.GeographyResultsDocumentsTable, "data.data", [])
   );
 
   return (
@@ -45,7 +47,7 @@ export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
           columns={TABLE_VARIATION_7_COLUMNS}
         />
       </ChartBlock>
-      {/* <ChartBlock
+      <ChartBlock
         noBottomToolbar
         title="Documents"
         subtitle="Applications & others"
@@ -55,10 +57,10 @@ export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
           dataTree
           dataTreeStartExpanded
           id="documnents-table"
-          data={TABLE_VARIATION_6_DATA}
+          data={dataDocumentsTable}
           columns={TABLE_VARIATION_6_COLUMNS}
         />
-      </ChartBlock> */}
+      </ChartBlock>
     </Box>
   );
 };

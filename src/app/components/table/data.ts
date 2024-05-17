@@ -852,58 +852,127 @@ export const TABLE_VARIATION_6_DATA: {
   [key: string]: string | number | boolean | null | object | Array<object>;
 }[] = [
   {
-    name: "Algeria",
-    documents: 19,
+    name: "Kenya",
+    documents: 23,
     _children: [
       {
         name: "Application",
-        documents: 4,
+        documents: 23,
         _children: [
           {
-            name: "Combined Grant To Support HIV/AIDS, Tuberculosis & Malaria Programs And Healthcare",
+            name: "Proposal - Round 04 - Malaria - Kenya",
             documents:
-              "https://gfdatastore.blob.core.windows.net/files/Applications/Fast-track%20Covid%20Funding%20Requests/QPA/2021/NA/en/QPA-X_FastCovidFundingRequest_1_en.zip",
+              "https://gfdatastore.blob.core.windows.net/files/Applications/Proposals/KEN/Round 04/Malaria/en/KEN-R04-ML_Proposal_0_en.pdf",
           },
           {
-            name: "Combined Grant To Support HIV/AIDS, Tuberculosis & Malaria Programs And Healthcare",
+            name: "Proposal - Round 04 - Malaria - Kenya",
             documents:
-              "https://gfdatastore.blob.core.windows.net/files/Applications/Fast-track%20Covid%20Funding%20Requests/QPA/2021/NA/en/QPA-X_FastCovidFundingRequest_1_en.zip",
+              "https://gfdatastore.blob.core.windows.net/files/Applications/Proposals/KEN/Round 04/Malaria/en/KEN-R04-ML_AMFmApplication_0_en.pdf",
           },
           {
-            name: "Combined Grant To Support HIV/AIDS, Tuberculosis & Malaria Programs And Healthcare",
+            name: "2022 - Additional Covid Funding Request - Kenya",
             documents:
-              "https://gfdatastore.blob.core.windows.net/files/Applications/Fast-track%20Covid%20Funding%20Requests/QPA/2021/NA/en/QPA-X_FastCovidFundingRequest_1_en.zip",
+              "https://gfdatastore.blob.core.windows.net/files/Applications/Additional Covid Funding Requests/KEN/2022/NA/en/KEN-X_AddnlCovidFundingRequest_1_EN.zip",
           },
           {
-            name: "Combined Grant To Support HIV/AIDS, Tuberculosis & Malaria Programs And Healthcare",
+            name: "2023 - Funding Request - Window 3 - Malaria - Kenya",
             documents:
-              "https://gfdatastore.blob.core.windows.net/files/Applications/Fast-track%20Covid%20Funding%20Requests/QPA/2021/NA/en/QPA-X_FastCovidFundingRequest_1_en.zip",
-          },
-        ],
-      },
-      {
-        name: "Other documents",
-        documents: 15,
-        _children: [
-          {
-            name: "Combined Grant To Support HIV/AIDS, Tuberculosis & Malaria Programs And Healthcare",
-            documents:
-              "https://gfdatastore.blob.core.windows.net/files/Applications/Fast-track%20Covid%20Funding%20Requests/QPA/2021/NA/en/QPA-X_FastCovidFundingRequest_1_en.zip",
+              "https://gfdatastore.blob.core.windows.net/files/Applications/Funding Requests/KEN/2023/Malaria/en/KEN-M_FundingRequest_1_en.zip",
           },
           {
-            name: "Combined Grant To Support HIV/AIDS, Tuberculosis & Malaria Programs And Healthcare",
+            name: "Proposal - Round 10 - HIV/AIDS - Kenya",
             documents:
-              "https://gfdatastore.blob.core.windows.net/files/Applications/Fast-track%20Covid%20Funding%20Requests/QPA/2021/NA/en/QPA-X_FastCovidFundingRequest_1_en.zip",
+              "https://gfdatastore.blob.core.windows.net/files/Applications/Proposals/KEN/Round 10/HIV/en/KEN-R10-HA_Proposal_0_en.pdf",
           },
           {
-            name: "Combined Grant To Support HIV/AIDS, Tuberculosis & Malaria Programs And Healthcare",
+            name: "Proposal - Round 09 - Tuberculosis - Kenya",
             documents:
-              "https://gfdatastore.blob.core.windows.net/files/Applications/Fast-track%20Covid%20Funding%20Requests/QPA/2021/NA/en/QPA-X_FastCovidFundingRequest_1_en.zip",
+              "https://gfdatastore.blob.core.windows.net/files/Applications/Proposals/KEN/Round 09/Tuberculosis/en/KEN-R09-TB_Proposal_0_en.pdf",
           },
           {
-            name: "Combined Grant To Support HIV/AIDS, Tuberculosis & Malaria Programs And Healthcare",
+            name: "2021 - Full Covid Funding Request - Kenya",
             documents:
-              "https://gfdatastore.blob.core.windows.net/files/Applications/Fast-track%20Covid%20Funding%20Requests/QPA/2021/NA/en/QPA-X_FastCovidFundingRequest_1_en.zip",
+              "https://gfdatastore.blob.core.windows.net/files/Applications/Full Covid Funding Requests/KEN/2021/NA/en/KEN-X_FullCovidFundingRequest_1_en.zip",
+          },
+          {
+            name: "2015 - Concept Note - Malaria - Kenya",
+            documents:
+              "https://gfdatastore.blob.core.windows.net/files/Applications/Concept Notes/KEN/2015/Malaria/en/KEN-M_ConceptNote_0_en.zip",
+          },
+          {
+            name: "Proposal - Round 02 - Malaria - Kenya",
+            documents:
+              "https://gfdatastore.blob.core.windows.net/files/Applications/Proposals/KEN/Round 02/Malaria/en/KEN-R02-ML_Proposal_0_en.pdf",
+          },
+          {
+            name: "Proposal - Round 05 - Tuberculosis - Kenya",
+            documents:
+              "https://gfdatastore.blob.core.windows.net/files/Applications/Proposals/KEN/Round 05/Tuberculosis/en/KEN-R05-TB_Proposal_0_en.pdf",
+          },
+          {
+            name: "2020 - Funding Request - Window 3 - HIV/TB - Kenya",
+            documents:
+              "https://gfdatastore.blob.core.windows.net/files/Applications/Funding Requests/KEN/2020/TB_HIV/en/KEN-C_FundingRequest_1_en.zip",
+          },
+          {
+            name: "Proposal - Round 07 - HIV/AIDS - Kenya",
+            documents:
+              "https://gfdatastore.blob.core.windows.net/files/Applications/Proposals/KEN/Round 07/HIV/en/KEN-R07-HA_Proposal_0_en.pdf",
+          },
+          {
+            name: "2015 - Concept Note - HIV/TB - Kenya",
+            documents:
+              "https://gfdatastore.blob.core.windows.net/files/Applications/Concept Notes/KEN/2015/TB_HIV/en/KEN-TH_ConceptNote_0_en.zip",
+          },
+          {
+            name: "2020 - Funding Request - Window 3 - Malaria - Kenya",
+            documents:
+              "https://gfdatastore.blob.core.windows.net/files/Applications/Funding Requests/KEN/2020/Malaria/en/KEN-M_FundingRequest_1_en.zip",
+          },
+          {
+            name: "Proposal - Round 02 - HIV/AIDS - Kenya",
+            documents:
+              "https://gfdatastore.blob.core.windows.net/files/Applications/Proposals/KEN/Round 02/HIV/en/KEN-R02-HA_Proposal_0_en.pdf",
+          },
+          {
+            name: "2023 - Funding Request - Window 3 - HIV/TB - Kenya",
+            documents:
+              "https://gfdatastore.blob.core.windows.net/files/Applications/Funding Requests/KEN/2023/TB_HIV/en/KEN-C_FundingRequest_1_en.zip",
+          },
+          {
+            name: "Proposal - Round 02 - Tuberculosis - Kenya",
+            documents:
+              "https://gfdatastore.blob.core.windows.net/files/Applications/Proposals/KEN/Round 02/Tuberculosis/en/KEN-R02-TB_Proposal_0_en.pdf",
+          },
+          {
+            name: "2017 - Funding Request - HIV/TB - Kenya",
+            documents:
+              "https://gfdatastore.blob.core.windows.net/files/Applications/Funding Requests/KEN/2017/TB_HIV/en/KEN-C_FundingRequest_0_en.zip",
+          },
+          {
+            name: "2021 - Fast-track Covid Funding Request - Kenya",
+            documents:
+              "https://gfdatastore.blob.core.windows.net/files/Applications/Fast-track Covid Funding Requests/KEN/2021/NA/en/KEN-X_FastCovidFundingRequest_1_en.zip",
+          },
+          {
+            name: "Proposal - Round 10 - Malaria - Kenya",
+            documents:
+              "https://gfdatastore.blob.core.windows.net/files/Applications/Proposals/KEN/Round 10/Malaria/en/KEN-R10-ML_Proposal_0_en.pdf",
+          },
+          {
+            name: "2017 - Funding Request - Malaria - Kenya",
+            documents:
+              "https://gfdatastore.blob.core.windows.net/files/Applications/Funding Requests/KEN/2017/Malaria/en/KEN-M_FundingRequest_0_en.zip",
+          },
+          {
+            name: "Proposal - Round 06 - Tuberculosis - Kenya",
+            documents:
+              "https://gfdatastore.blob.core.windows.net/files/Applications/Proposals/KEN/Round 06/Tuberculosis/en/KEN-R06-TB_Proposal_0_en.pdf",
+          },
+          {
+            name: "Proposal - Round 01 - HIV/AIDS - Kenya",
+            documents:
+              "https://gfdatastore.blob.core.windows.net/files/Applications/Proposals/KEN/Round 01/HIV/en/KEN-R01-HA_Proposal_0_en.pdf",
           },
         ],
       },

@@ -13,7 +13,6 @@ import { RadialChart } from "app/components/charts/radial";
 import { RaceBarChart } from "app/components/charts/race-bar";
 import { TableContainer } from "app/components/table-container";
 import { RadialChartDataItem } from "app/components/charts/radial/data";
-import { STORY_DATA_VARIANT_2 as RACE_BAR_DATA } from "app/components/charts/race-bar/data";
 import {
   HeatmapDataItem,
   getEligibilityColor,
@@ -25,7 +24,6 @@ import {
 import {
   TABLE_VARIATION_2_COLUMNS,
   TABLE_VARIATION_6_COLUMNS,
-  TABLE_VARIATION_6_DATA,
 } from "app/components/table/data";
 
 export const AccessToFunding: React.FC = () => {
@@ -64,6 +62,9 @@ export const AccessToFunding: React.FC = () => {
         "data.data",
         []
       ) as HeatmapDataItem[]
+  );
+  const dataDocumentsTable = useStoreState((state) =>
+    get(state.GeographyDocumentsTable, "data.data", [])
   );
 
   const handleChartCycleChange = (cycle: string, index: number) => {
@@ -292,7 +293,7 @@ export const AccessToFunding: React.FC = () => {
           getItemColor={getEligibilityColor}
         />
       </ChartBlock>
-      {/* <Box height="64px" />
+      <Box height="64px" />
       <ChartBlock
         noBottomToolbar
         title="Documents"
@@ -304,10 +305,10 @@ export const AccessToFunding: React.FC = () => {
           dataTree
           id="documents-table"
           dataTreeStartExpanded
-          data={TABLE_VARIATION_6_DATA}
+          data={dataDocumentsTable}
           columns={TABLE_VARIATION_6_COLUMNS}
         />
-      </ChartBlock> */}
+      </ChartBlock>
     </Box>
   );
 };

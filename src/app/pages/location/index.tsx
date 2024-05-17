@@ -47,6 +47,7 @@ export const Location: React.FC = () => {
       state.GeographyAllocationsRadialChart.loading ||
       state.AccessToFundingFundingRequestsTable.loading ||
       state.GeographyEligibilityHeatmap.loading ||
+      state.GeographyDocumentsTable.loading ||
       state.GeographyDisbursementsLineChart.loading ||
       state.GeographyBudgetSankeyChart.loading ||
       state.GeographyExpendituresHeatmap.loading ||
@@ -66,6 +67,9 @@ export const Location: React.FC = () => {
   );
   const fetchEligibilityHeatmap = useStoreActions(
     (actions) => actions.GeographyEligibilityHeatmap.fetch
+  );
+  const fetchDocumentsTable = useStoreActions(
+    (actions) => actions.GeographyDocumentsTable.fetch
   );
   const fetchDisbursementsLineChart = useStoreActions(
     (actions) => actions.GeographyDisbursementsLineChart.fetch
@@ -87,6 +91,9 @@ export const Location: React.FC = () => {
   );
   const fetchResultsTable = useStoreActions(
     (actions) => actions.GeographyResultsTable.fetch
+  );
+  const fetchResultsDocumentsTable = useStoreActions(
+    (actions) => actions.GeographyResultsDocumentsTable.fetch
   );
 
   const view = React.useMemo(() => {
@@ -161,6 +168,12 @@ export const Location: React.FC = () => {
       });
       fetchResultStats({
         filterString: `geographies=${params.id}&cycle=${RESULT_YEARS[RESULT_YEARS.length - 1]}`,
+      });
+      fetchDocumentsTable({
+        filterString: `types=Application&geographies=${params.id}`,
+      });
+      fetchResultsDocumentsTable({
+        filterString: `types=Profile&geographies=${params.id}`,
       });
     }
   }, [params.id]);

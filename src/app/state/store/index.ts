@@ -45,6 +45,7 @@ import componentsChartsPledges from "app/state/api/action-reducers/cms/component
 import { FundingRequestsTableGeneric } from "app/state/api/action-reducers/viz/fundingRequests";
 import { FinancialInsightsStats } from "app/state/api/action-reducers/financial-insights/stats";
 import { HomeExpendituresHeatmap } from "app/state/api/action-reducers/home/expenditures-heatmap";
+import { GeographyDocumentsTable } from "app/state/api/action-reducers/geography/documents-table";
 import { AnnualResultsPolyline } from "app/state/api/action-reducers/annual-results/polyline-tree";
 import componentsDatasetCarousel from "app/state/api/action-reducers/cms/componentsDatasetCarousel";
 import componentsInformationPanel from "app/state/api/action-reducers/cms/componentsInformationPanel";
@@ -59,6 +60,7 @@ import { GeographyEligibilityHeatmap } from "app/state/api/action-reducers/geogr
 import { GeographyExpendituresHeatmap } from "app/state/api/action-reducers/geography/expenditures-heatmap";
 import { FinancialInsightsBudgetTable } from "app/state/api/action-reducers/financial-insights/budget-table";
 import { GeographyFundingRequestsTable } from "app/state/api/action-reducers/geography/funding-requests-table";
+import { GeographyResultsDocumentsTable } from "app/state/api/action-reducers/geography/results-documents-table";
 import { FinancialInsightsBudgetTreemap } from "app/state/api/action-reducers/financial-insights/budget-treemap";
 import { AccessToFundingAllocationTable } from "app/state/api/action-reducers/access-to-funding/allocation-table";
 import { GeographyAllocationsRadialChart } from "app/state/api/action-reducers/geography/allocations-radial-chart";
@@ -177,6 +179,7 @@ const storeContent: StoreModel = {
   GeographyAllocationsRadialChart: persist(GeographyAllocationsRadialChart),
   GeographyFundingRequestsTable: persist(GeographyFundingRequestsTable),
   GeographyEligibilityHeatmap: persist(GeographyEligibilityHeatmap),
+  GeographyDocumentsTable: persist(GeographyDocumentsTable),
   GeographyDisbursementsLineChart: persist(GeographyDisbursementsLineChart),
   GeographyBudgetSankeyChart: persist(GeographyBudgetSankeyChart),
   GeographyExpendituresHeatmap: persist(GeographyExpendituresHeatmap),
@@ -184,6 +187,7 @@ const storeContent: StoreModel = {
   GeographyGrantsTable: persist(GeographyGrantsTable),
   GeographyResultStats: persist(GeographyResultStats),
   GeographyResultsTable: persist(GeographyResultsTable),
+  GeographyResultsDocumentsTable: persist(GeographyResultsDocumentsTable),
   // search
   GlobalSearch: persist(GlobalSearch),
   // filter options api
