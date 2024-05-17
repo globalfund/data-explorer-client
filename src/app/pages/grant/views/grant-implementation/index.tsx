@@ -1,19 +1,20 @@
 import React from "react";
+import get from "lodash/get";
 import Box from "@mui/material/Box";
+import { appColors } from "app/theme";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import { CYCLES } from "app/pages/home/data";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import { BarChart } from "app/components/charts/bar";
+import { useStoreState } from "app/state/store/hooks";
 import { ChartBlock } from "app/components/chart-block";
 import { Heatmap } from "app/components/charts/heatmap";
 import { RadialChart } from "app/components/charts/radial";
 import { SankeyChart } from "app/components/charts/sankey";
 import { RaceBarChart } from "app/components/charts/race-bar";
 import { STORY_DATA_VARIANT_1 as BAR_CHART_DATA } from "app/components/charts/bar/data";
-import { STORY_DATA_VARIANT_1 as RACE_BAR_DATA } from "app/components/charts/race-bar/data";
-import { STORY_DATA_VARIANT_4 as RADIAL_CHART_DATA } from "app/components/charts/radial/data";
 import { STORY_DATA_VARIANT_1 as SANKEY_CHART_DATA } from "app/components/charts/sankey/data";
 import { ChartBlockButtonToolbar } from "app/components/chart-block/components/button-toolbar";
 import {
@@ -24,21 +25,39 @@ import {
   getPercentageColor,
   STORY_DATA_VARIANT_1 as HEATMAP_DATA,
 } from "app/components/charts/heatmap/data";
+import {
+  getRange,
+  getFinancialValueWithMetricPrefix,
+} from "app/utils/getFinancialValueWithMetricPrefix";
 
 export const GrantImplementation: React.FC = () => {
   const [chart1Cycle, setChart1Cycle] = React.useState(CYCLES[0]);
   const [chart2Cycle, setChart2Cycle] = React.useState(CYCLES[0]);
-
   const [chart1Dropdown, setChart1Dropdown] = React.useState(
     CHART_1_DROPDOWN_ITEMS[0].value
   );
   const [chart2Dropdown, setChart2Dropdown] = React.useState(
     CHART_2_DROPDOWN_ITEMS[0].value
   );
-
   const [chart2Unit, setChart2Unit] = React.useState<"amount" | "percentage">(
     "percentage"
   );
+
+  const dataFinancialValues = useStoreState((state) =>
+    get(state.GrantOverview, "data.data[0]", {
+      disbursement: 0,
+      commitment: 0,
+      signed: 0,
+    })
+  );
+  const dataProgrameDates = useStoreState((state) => ({
+    boardApprovedDate: get(
+      state.GrantOverview,
+      "data.data[0].boardApprovedDate"
+    ),
+    programStartDate: get(state.GrantOverview, "data.data[0].dates[0]"),
+    programEndDate: get(state.GrantOverview, "data.data[0].dates[1]"),
+  }));
 
   const handleChartCycleChange = (cycle: string, index: number) => {
     switch (index) {
@@ -52,6 +71,7 @@ export const GrantImplementation: React.FC = () => {
         break;
     }
   };
+
   const chart2UnitButtons = React.useMemo(
     () => (
       <Box
@@ -95,6 +115,57 @@ export const GrantImplementation: React.FC = () => {
     [chart2Unit]
   );
 
+  const radialChartData = React.useMemo(
+    () => [
+      {
+        name: "Disbursed",
+        value: dataFinancialValues.disbursement,
+        itemStyle: {
+          color: appColors.RADIAL_CHART.ITEM_COLORS[0],
+        },
+      },
+      {
+        name: "Committed",
+        value: dataFinancialValues.commitment,
+        itemStyle: {
+          color: appColors.RADIAL_CHART.ITEM_COLORS[1],
+        },
+      },
+    ],
+    [dataFinancialValues]
+  );
+
+  const signedFormatted = React.useMemo(() => {
+    const range = getRange([dataFinancialValues], ["signed"]);
+    return `${getFinancialValueWithMetricPrefix(dataFinancialValues.signed, range.index, 2)} ${range.abbr}`;
+  }, [dataFinancialValues]);
+
+  const raceBarChartData = React.useMemo(() => {
+    return [
+      {
+        name: "Disbursed",
+        value: dataFinancialValues.disbursement,
+        color: "#0A2840",
+        percentage:
+          (dataFinancialValues.disbursement / dataFinancialValues.commitment) *
+          100,
+      },
+      {
+        name: "Committed",
+        value: dataFinancialValues.commitment,
+        color: "#013E77",
+        percentage:
+          (dataFinancialValues.commitment / dataFinancialValues.signed) * 100,
+      },
+      {
+        name: "Signed",
+        value: dataFinancialValues.signed,
+        color: "#00B5AE",
+        percentage: 100,
+      },
+    ];
+  }, [dataFinancialValues]);
+
   return (
     <Box gap="24px" display="flex" flexDirection="column">
       <ChartBlock
@@ -103,7 +174,7 @@ export const GrantImplementation: React.FC = () => {
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
         <RadialChart
-          data={RADIAL_CHART_DATA}
+          data={radialChartData}
           itemLabelFormatterType="name-value-percent"
         />
         <Box
@@ -118,17 +189,17 @@ export const GrantImplementation: React.FC = () => {
           <Box
             width="17px"
             height="17px"
-            bgcolor="#00B5AE"
             borderRadius="50%"
+            bgcolor={appColors.RADIAL_CHART.ITEM_COLORS[2]}
           />
           <Typography variant="body2" fontWeight="700">
             Signed
           </Typography>
-          <Typography variant="body2">$10.6 mln</Typography>
+          <Typography variant="body2">{signedFormatted}</Typography>
         </Box>
       </ChartBlock>
       <Divider sx={{ borderColor: "#000" }} />
-      <RaceBarChart data={RACE_BAR_DATA} />
+      <RaceBarChart data={raceBarChartData} />
       <ChartBlockButtonToolbar />
       <Divider sx={{ borderColor: "#000" }} />
       <Grid
@@ -166,7 +237,9 @@ export const GrantImplementation: React.FC = () => {
             <Typography variant="body2" fontWeight="700">
               Board Approved Date
             </Typography>
-            <Typography variant="overline">1/05/2010 - 12:00am</Typography>
+            <Typography variant="overline">
+              {dataProgrameDates.boardApprovedDate}
+            </Typography>
           </Box>
         </Grid>
         <Grid item xs={6} md={4}>
@@ -185,7 +258,7 @@ export const GrantImplementation: React.FC = () => {
               variant="overline"
               alignItems="center"
             >
-              1/07/2010 - 12:00am
+              {dataProgrameDates.programStartDate}
             </Typography>
           </Box>
         </Grid>
@@ -199,7 +272,9 @@ export const GrantImplementation: React.FC = () => {
             <Typography variant="body2" fontWeight="700">
               Program End Date
             </Typography>
-            <Typography variant="overline">30/06/2015 - 12:00am</Typography>
+            <Typography variant="overline">
+              {dataProgrameDates.programEndDate}
+            </Typography>
           </Box>
         </Grid>
       </Grid>
