@@ -52,6 +52,7 @@ import { AnnualResultsPolyline } from "app/state/api/action-reducers/annual-resu
 import componentsDatasetCarousel from "app/state/api/action-reducers/cms/componentsDatasetCarousel";
 import componentsInformationPanel from "app/state/api/action-reducers/cms/componentsInformationPanel";
 import { ResourceMobilizationStats } from "app/state/api/action-reducers/resource-mobilization/stats";
+import { GrantDisbursementsBarChart } from "app/state/api/action-reducers/grant/disbursementsBarChart";
 import componentsChartsEligibility from "app/state/api/action-reducers/cms/componentsChartsEligibility";
 import componentsChartsInvestments from "app/state/api/action-reducers/cms/componentsChartsInvestments";
 import { HomeAllocationsRadialChart } from "app/state/api/action-reducers/home/allocations-radial-chart";
@@ -193,6 +194,7 @@ const storeContent: StoreModel = {
   // grant
   GrantInfo: persist(GrantInfo),
   GrantOverview: persist(GrantOverview),
+  GrantDisbursementsBarChart: persist(GrantDisbursementsBarChart),
   // search
   GlobalSearch: persist(GlobalSearch),
   // filter options api

@@ -14,7 +14,7 @@ import { Heatmap } from "app/components/charts/heatmap";
 import { RadialChart } from "app/components/charts/radial";
 import { SankeyChart } from "app/components/charts/sankey";
 import { RaceBarChart } from "app/components/charts/race-bar";
-import { STORY_DATA_VARIANT_1 as BAR_CHART_DATA } from "app/components/charts/bar/data";
+import { BarChartDataItem } from "app/components/charts/bar/data";
 import { STORY_DATA_VARIANT_1 as SANKEY_CHART_DATA } from "app/components/charts/sankey/data";
 import { ChartBlockButtonToolbar } from "app/components/chart-block/components/button-toolbar";
 import {
@@ -31,7 +31,6 @@ import {
 } from "app/utils/getFinancialValueWithMetricPrefix";
 
 export const GrantImplementation: React.FC = () => {
-  const [chart1Cycle, setChart1Cycle] = React.useState(CYCLES[0]);
   const [chart2Cycle, setChart2Cycle] = React.useState(CYCLES[0]);
   const [chart1Dropdown, setChart1Dropdown] = React.useState(
     CHART_1_DROPDOWN_ITEMS[0].value
@@ -58,12 +57,17 @@ export const GrantImplementation: React.FC = () => {
     programStartDate: get(state.GrantOverview, "data.data[0].dates[0]"),
     programEndDate: get(state.GrantOverview, "data.data[0].dates[1]"),
   }));
+  const dataDisbursementsBarChart = useStoreState(
+    (state) =>
+      get(
+        state.GrantDisbursementsBarChart,
+        "data.data",
+        []
+      ) as BarChartDataItem[]
+  );
 
   const handleChartCycleChange = (cycle: string, index: number) => {
     switch (index) {
-      case 1:
-        setChart1Cycle(cycle);
-        break;
       case 2:
         setChart2Cycle(cycle);
         break;
@@ -285,18 +289,18 @@ export const GrantImplementation: React.FC = () => {
         subtitle="Overtime"
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
-        <BarChart data={BAR_CHART_DATA} valueLabels={{ value: "" }} />
+        <BarChart
+          data={dataDisbursementsBarChart}
+          valueLabels={{ value: "" }}
+        />
       </ChartBlock>
       <Box height="64px" />
       <ChartBlock
         title="Budget"
-        cycles={CYCLES}
-        selectedCycle={chart1Cycle}
         dropdownSelected={chart1Dropdown}
         subtitle="Investments and Modules"
         dropdownItems={CHART_1_DROPDOWN_ITEMS}
         handleDropdownChange={setChart1Dropdown}
-        handleCycleChange={(value) => handleChartCycleChange(value, 1)}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
         <Grid

@@ -92,7 +92,7 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
           display="flex"
           flexDirection="row"
           padding="56px 32px 32px 32px"
-          justifyContent="space-between"
+          justifyContent={showCycles ? "space-between" : "flex-end"}
         >
           {props.cycles && props.selectedCycle && props.handleCycleChange && (
             <ChartBlockCycles

@@ -54,6 +54,9 @@ export const Grant: React.FC = () => {
   const fetchOverview = useStoreActions(
     (actions) => actions.GrantOverview.fetch
   );
+  const fetchDisbursementsBarChart = useStoreActions(
+    (actions) => actions.GrantDisbursementsBarChart.fetch
+  );
 
   const [dropdownSelected, setDropdownSelected] = React.useState<{
     code: string | number;
@@ -108,6 +111,12 @@ export const Grant: React.FC = () => {
   React.useEffect(() => {
     if (params.id && dropdownSelected) {
       fetchOverview({
+        routeParams: {
+          code: params.id,
+          ip: dropdownSelected.code.toString(),
+        },
+      });
+      fetchDisbursementsBarChart({
         routeParams: {
           code: params.id,
           ip: dropdownSelected.code.toString(),
