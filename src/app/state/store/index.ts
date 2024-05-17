@@ -2,6 +2,7 @@ import { createStore, persist } from "easy-peasy";
 import { StoreModel } from "app/state/api/interfaces";
 import { CMSData } from "app/state/api/action-reducers/sync";
 import GlobalSearch from "app/state/api/action-reducers/search";
+import { GrantInfo } from "app/state/api/action-reducers/grant/info";
 import { GrantList } from "app/state/api/action-reducers/grants/list";
 import modulesAbout from "app/state/api/action-reducers/cms/modulesAbout";
 import modulesCommon from "app/state/api/action-reducers/cms/modulesCommon";
@@ -188,6 +189,8 @@ const storeContent: StoreModel = {
   GeographyResultStats: persist(GeographyResultStats),
   GeographyResultsTable: persist(GeographyResultsTable),
   GeographyResultsDocumentsTable: persist(GeographyResultsDocumentsTable),
+  // grant
+  GrantInfo: persist(GrantInfo),
   // search
   GlobalSearch: persist(GlobalSearch),
   // filter options api

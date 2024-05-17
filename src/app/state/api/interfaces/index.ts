@@ -178,6 +178,8 @@ export interface StoreModel {
   GeographyResultStats: ApiCallModel;
   GeographyResultsTable: ApiCallModel;
   GeographyResultsDocumentsTable: ApiCallModel;
+  // grant
+  GrantInfo: ApiCallModel;
   // search
   GlobalSearch: ApiCallModel;
   // filter options api
