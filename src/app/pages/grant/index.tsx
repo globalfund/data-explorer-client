@@ -76,6 +76,9 @@ export const Grant: React.FC = () => {
   const fetchExpendituresHeatmap = useStoreActions(
     (actions) => actions.GrantExpendituresHeatmap.fetch
   );
+  const fetchTargetsResults = useStoreActions(
+    (actions) => actions.GrantTargetsResultsTable.fetch
+  );
 
   const [dropdownSelected, setDropdownSelected] = React.useState<{
     code: string | number;
@@ -154,6 +157,12 @@ export const Grant: React.FC = () => {
           column: "component",
         },
         filterString: `grantIP=${params.id}P0${dropdownSelected.code}`,
+      });
+      fetchTargetsResults({
+        routeParams: {
+          code: params.id,
+          ip: dropdownSelected.code.toString(),
+        },
       });
     }
   }, [params.id, dropdownSelected]);

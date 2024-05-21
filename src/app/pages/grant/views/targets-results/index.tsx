@@ -1,10 +1,15 @@
 import React from "react";
+import get from "lodash/get";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
+import { useParams } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import { ChartBlock } from "app/components/chart-block";
+import useUpdateEffect from "react-use/lib/useUpdateEffect";
+import { CellComponent, Tabulator } from "tabulator-tables";
 import { TableContainer } from "app/components/table-container";
 import { TABS } from "app/pages/grant/views/targets-results/data";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { ChartBlockButtonToolbar } from "app/components/chart-block/components/button-toolbar";
 import {
   TABLE_VARIATION_4_DATA,
@@ -12,7 +17,74 @@ import {
 } from "app/components/table/data";
 
 export const GrantTargetsResults: React.FC = () => {
+  const params = useParams<{ id: string; ip: string }>();
+
   const [tab, setTab] = React.useState(TABS[0]);
+
+  const dataTable = useStoreState((state) =>
+    get(state.GrantTargetsResultsTable, "data.data", [])
+  );
+  const years = useStoreState((state) =>
+    get(state.GrantTargetsResultsTable, "data.years", [])
+  );
+  const loading = useStoreState(
+    (state) => state.GrantTargetsResultsTable.loading
+  );
+  const fetchTable = useStoreActions(
+    (actions) => actions.GrantTargetsResultsTable.fetch
+  );
+
+  const handleTabChange = (tab: string) => {
+    setTab(TABS.find((t) => t.name === tab) || TABS[0]);
+  };
+
+  useUpdateEffect(() => {
+    if (params.id && params.ip) {
+      fetchTable({
+        routeParams: {
+          code: params.id,
+          ip: params.ip.toString(),
+        },
+        filterString: `type=${tab.value}`,
+      });
+    }
+  }, [params.id, params.ip, tab]);
+
+  const columns = React.useMemo(() => {
+    let res = TABLE_VARIATION_4_COLUMNS.slice(0, 5);
+    years.forEach((year) => {
+      res.push({
+        title: year,
+        field: year,
+        formatter: (cell: CellComponent) => {
+          var tableEl = document.createElement("div");
+          cell.getElement().appendChild(tableEl);
+          const data = cell.getValue();
+
+          if (!cell.getValue()) {
+            return "";
+          }
+
+          new Tabulator(tableEl, {
+            data,
+            layout: "fitDataTable",
+            height: "fit-content",
+            columns: [
+              { title: "Target", field: "target" },
+              { title: "Result", field: "result" },
+              { title: "Achievement", field: "achievement" },
+            ],
+          });
+
+          // cell.getElement().style.height = "max-content";
+          cell.getElement().style.padding = "0";
+
+          return tableEl;
+        },
+      });
+    });
+    return res;
+  }, [years]);
 
   const fullWidthDivider = (
     <Divider
@@ -51,22 +123,22 @@ export const GrantTargetsResults: React.FC = () => {
       <Box height="50px" />
       <ChartBlock
         noBottomToolbar
+        loading={loading}
         title="Indicators"
         subtitle="Targets & Results"
         text="Description of Impact indicators: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
-        empty={TABLE_VARIATION_4_DATA.length === 0}
       >
         <Box width="100%" height="32px" />
         <TableContainer
           dataTree
+          data={dataTable}
+          columns={columns}
           dataTreeStartExpanded
-          data={TABLE_VARIATION_4_DATA}
           id="grant-targets-results-table"
-          columns={TABLE_VARIATION_4_COLUMNS}
           tabsView={{
-            tabs: TABS,
-            selectedTab: tab,
-            onTabChange: setTab,
+            tabs: TABS.map((t) => t.name),
+            selectedTab: tab.name,
+            onTabChange: handleTabChange,
           }}
         />
       </ChartBlock>

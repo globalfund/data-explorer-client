@@ -1,6 +1,18 @@
 export const TABS = [
-  "Impact Indicators",
-  "Outcome Indicators",
-  "Modules & Coverage Indicators",
-  "Modules and Workplan Tracking Measures",
+  {
+    name: "Impact Indicators",
+    value: "Impact indicator",
+  },
+  {
+    name: "Outcome Indicators",
+    value: "Outcome indicator",
+  },
+  {
+    name: "Modules & Coverage Indicators",
+    value: "Coverage / Output indicator",
+  },
+  {
+    name: "Modules and Workplan Tracking Measures",
+    value: "Process indicator / WPMT",
+  },
 ];
