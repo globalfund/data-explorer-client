@@ -1,10 +1,10 @@
 import React from "react";
 import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
 import CircularProgress from "@mui/material/CircularProgress";
 import { ChartBlockProps } from "app/components/chart-block/data";
-import { splitStringInMiddle } from "app/utils/splitStringInMiddle";
 import { ChartBlockCycles } from "app/components/chart-block/components/cycles";
 import { ChartBlockButtonToolbar } from "app/components/chart-block/components/button-toolbar";
 
@@ -35,29 +35,6 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
     );
   }, [props.cycles, props.selectedCycle, props.handleCycleChange]);
 
-  const text = React.useMemo(() => {
-    if (props.noSplitText) {
-      return (
-        <Box
-          sx={{
-            a: { textDecoration: "none", fontWeight: "700", color: "#000" },
-          }}
-          dangerouslySetInnerHTML={{
-            __html: props.text,
-          }}
-        />
-      );
-    }
-    const splits = splitStringInMiddle(props.text);
-    return (
-      <React.Fragment>
-        {splits[0]}
-        <br />
-        {splits[1]}
-      </React.Fragment>
-    );
-  }, [props.text, props.noSplitText]);
-
   const content = React.useMemo(() => {
     if (props.loading) {
       return (
@@ -72,8 +49,22 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
         </Box>
       );
     }
+    if (props.empty) {
+      return (
+        <Box
+          width="100%"
+          height="100%"
+          display="flex"
+          minHeight="400px"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Typography>No data available</Typography>
+        </Box>
+      );
+    }
     return props.children;
-  }, [props.children, props.loading]);
+  }, [props.children, props.loading, props.empty]);
 
   return (
     <Box>
@@ -83,15 +74,27 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
       <Typography variant="h5" marginBottom="5px">
         {props.subtitle}
       </Typography>
-      <Typography variant="subtitle2" lineHeight="normal">
-        {text}
+      <Typography variant="subtitle2" lineHeight="normal" marginBottom="20px">
+        <Box
+          sx={{
+            a: { textDecoration: "none", fontWeight: "700", color: "#000" },
+          }}
+          dangerouslySetInnerHTML={{
+            __html: props.text,
+          }}
+        />
       </Typography>
+      <Divider
+        sx={{
+          borderTopColor: "#868E96",
+        }}
+      />
       {(showCycles || showRightComponents) && (
         <Box
           width="100%"
           display="flex"
           flexDirection="row"
-          padding="56px 32px 32px 32px"
+          padding="20px 0 40px 0"
           justifyContent={showCycles ? "space-between" : "flex-end"}
         >
           {props.cycles && props.selectedCycle && props.handleCycleChange && (
@@ -126,7 +129,6 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
       <Box
         width="100%"
         minHeight="400px"
-        padding="0 32px"
         position="relative"
         sx={
           props.loading

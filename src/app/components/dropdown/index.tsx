@@ -10,11 +10,6 @@ import { CategoryButton } from "app/components/search/styles";
 const StyledMenu = styled((props: MenuProps) => (
   <Menu
     elevation={0}
-    // getContentAnchorEl={null}
-    anchorOrigin={{
-      vertical: 40,
-      horizontal: "left",
-    }}
     transformOrigin={{
       vertical: "top",
       horizontal: "left",
@@ -91,7 +86,11 @@ export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
         disableTouchRipple
         onClick={handleClick}
         theme={{ anchorEl: Boolean(anchorEl) }}
-        style={{ maxHeight: "32px", marginRight: 0, width: props.width || 200 }}
+        style={{
+          marginRight: 0,
+          width: props.width ?? 200,
+          maxHeight: props.height ?? 32,
+        }}
       >
         {dropdownSelectedIcon}
         <span style={{ letterSpacing: "0" }}>{props.dropdownSelected}</span>
@@ -103,6 +102,10 @@ export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
         anchorEl={anchorEl}
         onClose={handleClose}
         open={Boolean(anchorEl)}
+        anchorOrigin={{
+          vertical: (props.height ?? 32) + 8,
+          horizontal: "left",
+        }}
         sx={{
           "& .MuiPaper-root": {
             width: props.width,

@@ -1,6 +1,7 @@
 import React from "react";
 import get from "lodash/get";
 import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
 import { useStoreState } from "app/state/store/hooks";
 import { ChartBlock } from "app/components/chart-block";
 import { TableContainer } from "app/components/table-container";
@@ -27,16 +28,32 @@ export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
     get(state.GeographyResultsDocumentsTable, "data.data", [])
   );
 
+  const fullWidthDivider = (
+    <React.Fragment>
+      <Box height="2px" />
+      <Divider
+        sx={{
+          left: "-50vw",
+          width: "200vw",
+          position: "relative",
+          borderTopColor: "#868E96",
+        }}
+      />
+      <Box height="2px" />
+    </React.Fragment>
+  );
+
   return (
     <Box gap="24px" display="flex" flexDirection="column">
       <HomeResultsStats stats={dataResultStats} />
-      <Box height="62px" />
+      {fullWidthDivider}
       <ChartBlock
         title="Results"
         noBottomToolbar
         cycles={RESULT_YEARS}
         subtitle="Based on achievements"
         selectedCycle={props.resultsYear}
+        empty={dataResultsTable.length === 0}
         handleCycleChange={(value) => props.setResultsYear(value)}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
@@ -47,10 +64,12 @@ export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
           columns={TABLE_VARIATION_7_COLUMNS}
         />
       </ChartBlock>
+      {fullWidthDivider}
       <ChartBlock
         noBottomToolbar
         title="Documents"
-        subtitle="Applications & others"
+        subtitle="Country Profiles & others"
+        empty={dataDocumentsTable.length === 0}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
         <TableContainer

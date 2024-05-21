@@ -7,28 +7,30 @@ import Button from "@mui/material/Button";
 import Add from "@mui/icons-material/Add";
 import Popover from "@mui/material/Popover";
 import Divider from "@mui/material/Divider";
-import AppsIcon from "@mui/icons-material/Apps";
+import { Table } from "app/components/table";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import { Dropdown } from "app/components/dropdown";
+import useDebounce from "react-use/lib/useDebounce";
 import SearchIcon from "@mui/icons-material/Search";
 import { GrantCard } from "app/components/grant-card";
+import { DROPDOWN_ITEMS } from "app/pages/grants/data";
 import ArrowBack from "@mui/icons-material/ArrowBackIos";
 import { FilterPanel } from "app/components/filters/panel";
-import TableChartIcon from "@mui/icons-material/TableChart";
 import CircularProgress from "@mui/material/CircularProgress";
 import ArrowForward from "@mui/icons-material/ArrowForwardIos";
 import { GrantCardProps } from "app/components/grant-card/data";
-import { TableContainer } from "app/components/table-container";
 import { getMonthFromNumber } from "app/utils/getMonthFromNumber";
 import { TABLE_VARIATION_5_COLUMNS } from "app/components/table/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import useUpdateEffect from "react-use/lib/useUpdateEffect";
 
 export const Grants: React.FC = () => {
   const [page, setPage] = React.useState(1);
   const [search, setSearch] = React.useState("");
   const [showSearch, setShowSearch] = React.useState(false);
-  const [view, setView] = React.useState<"list" | "table">("list");
+  const [view, setView] = React.useState(DROPDOWN_ITEMS[0].value);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const data = useStoreState(
@@ -52,11 +54,13 @@ export const Grants: React.FC = () => {
     setSearch(event.target.value);
   };
 
-  const handleSearchIconClick = () => {
-    setShowSearch(!showSearch);
-    if (!showSearch) {
-      setSearch("");
-    }
+  const handleSearchIconClick = (value: boolean) => () => {
+    if (!value) setSearch("");
+    setShowSearch(value);
+  };
+
+  const handleViewChange = (value: string) => {
+    setView(value);
   };
 
   const dataTable = React.useMemo(() => {
@@ -84,7 +88,7 @@ export const Grants: React.FC = () => {
   }, [data]);
 
   const viewResult = React.useMemo(() => {
-    if (view === "list") {
+    if (view === "Card View") {
       return (
         <React.Fragment>
           <Grid container spacing={2}>
@@ -117,13 +121,11 @@ export const Grants: React.FC = () => {
       );
     }
     return (
-      <Box padding="32px">
-        <TableContainer
-          id="grants-table"
-          data={dataTable}
-          columns={TABLE_VARIATION_5_COLUMNS}
-        />
-      </Box>
+      <Table
+        id="grants-table"
+        data={dataTable}
+        columns={TABLE_VARIATION_5_COLUMNS}
+      />
     );
   }, [view, data, count, page, dataTable]);
 
@@ -164,27 +166,81 @@ export const Grants: React.FC = () => {
     [count, page]
   );
 
+  const [,] = useDebounce(
+    () => {
+      if (search.length > 0) {
+        fetch({
+          routeParams: {
+            page: `${page}`,
+            pageSize: "9",
+          },
+          filterString: `q=${search}`,
+        });
+      }
+    },
+    500,
+    [search]
+  );
+
+  const searchInputRef = React.useRef<HTMLInputElement>(null);
+
+  React.useEffect(() => {
+    if (showSearch) {
+      searchInputRef.current?.focus();
+    }
+  }, [searchInputRef, showSearch]);
+
   React.useEffect(() => {
     fetch({
       routeParams: {
         page: `${page}`,
         pageSize: "9",
       },
+      filterString: `q=${search}`,
     });
   }, [page]);
 
+  useUpdateEffect(() => {
+    if (search.length === 0) {
+      fetch({
+        routeParams: {
+          page: `${page}`,
+          pageSize: "9",
+        },
+        filterString: `q=${search}`,
+      });
+    }
+  }, [search]);
+
+  const fullWidthDivider = (
+    <Divider
+      sx={{
+        left: "-50vw",
+        width: "200vw",
+        position: "relative",
+        borderTopColor: "#868E96",
+      }}
+    />
+  );
+
   return (
-    <Box padding="60px 0">
+    <Box padding="50px 0">
       <Typography variant="h1">Grants</Typography>
-      <Box height="56px" />
+      <Box height="50px" />
+      {fullWidthDivider}
       <Box
         gap="16px"
-        padding="32px"
         display="flex"
+        padding="20px 0"
         position="relative"
         flexDirection="column"
       >
-        <Box display="flex" alignItems="center" justifyContent="space-between">
+        <Box
+          display="flex"
+          paddingBottom="4px"
+          alignItems="center"
+          justifyContent="space-between"
+        >
           <Button
             variant="outlined"
             startIcon={<Add />}
@@ -236,118 +292,76 @@ export const Grants: React.FC = () => {
               },
             }}
           >
-            {view === "list" && (
-              <React.Fragment>
-                {showSearch && (
-                  <input
-                    type="text"
-                    value={search}
-                    onChange={handleSearch}
-                    placeholder="e.g. Kenya"
-                  />
-                )}
-                <IconButton
-                  sx={{
-                    width: "32px",
-                    height: "32px",
-                    display: "flex",
-                    borderRadius: "8px",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    border: `1px solid ${showSearch ? "#000" : "#868E96"}`,
-                    background: showSearch ? "#000" : "transparent",
-                    svg: {
-                      color: showSearch ? "#fff" : "#000",
-                    },
-                    ":hover": {
-                      background: "#000",
-                      borderColor: "#000",
-                      svg: {
-                        color: "#fff",
-                      },
-                    },
-                  }}
-                  onClick={handleSearchIconClick}
-                >
-                  {showSearch ? (
-                    <CloseIcon htmlColor="#000" fontSize="small" />
-                  ) : (
-                    <SearchIcon htmlColor="#000" fontSize="small" />
-                  )}
-                </IconButton>
-                <Divider
-                  orientation="vertical"
-                  flexItem
-                  sx={{
-                    height: "10px",
-                    margin: "0 8px",
-                    alignSelf: "center",
-                    borderColor: "#000",
-                  }}
+            <React.Fragment>
+              {showSearch && (
+                <input
+                  type="text"
+                  value={search}
+                  ref={searchInputRef}
+                  onChange={handleSearch}
+                  placeholder="e.g. Kenya"
                 />
-              </React.Fragment>
-            )}
-            <IconButton
-              sx={{
-                width: "32px",
-                height: "32px",
-                display: "flex",
-                borderRadius: "8px",
-                alignItems: "center",
-                justifyContent: "center",
-                border: `1px solid ${view === "table" ? "#000" : "#868E96"}`,
-                background: view === "table" ? "#000" : "transparent",
-                svg: {
-                  color: view === "table" ? "#fff" : "#000",
-                },
-                ":hover": {
-                  background: "#000",
-                  borderColor: "#000",
+              )}
+              <IconButton
+                sx={{
+                  width: "32px",
+                  height: "32px",
+                  display: "flex",
+                  borderRadius: "8px",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  background: showSearch ? "#000" : "transparent",
+                  border: `1px solid ${showSearch ? "#000" : "#DFE3E5"}`,
                   svg: {
-                    color: "#fff",
+                    color: showSearch ? "#fff" : "#000",
                   },
-                },
-              }}
-              onClick={() => setView("table")}
-            >
-              <TableChartIcon htmlColor="#000" fontSize="small" />
-            </IconButton>
-            <IconButton
-              sx={{
-                width: "32px",
-                height: "32px",
-                display: "flex",
-                borderRadius: "8px",
-                alignItems: "center",
-                justifyContent: "center",
-                border: `1px solid ${view === "list" ? "#000" : "#868E96"}`,
-                background: view === "list" ? "#000" : "transparent",
-                svg: {
-                  color: view === "list" ? "#fff" : "#000",
-                },
-                ":hover": {
-                  background: "#000",
+                  ":hover": {
+                    background: "#000",
+                    borderColor: "#000",
+                    svg: {
+                      color: "#fff",
+                    },
+                  },
+                }}
+                onClick={handleSearchIconClick(!showSearch)}
+              >
+                {showSearch ? (
+                  <CloseIcon htmlColor="#000" fontSize="small" />
+                ) : (
+                  <SearchIcon htmlColor="#000" fontSize="small" />
+                )}
+              </IconButton>
+              <Divider
+                orientation="vertical"
+                flexItem
+                sx={{
+                  height: "10px",
+                  margin: "0 8px",
+                  alignSelf: "center",
                   borderColor: "#000",
-                  svg: {
-                    color: "#fff",
-                  },
-                },
-              }}
-              onClick={() => setView("list")}
-            >
-              <AppsIcon htmlColor="#000" fontSize="small" />
-            </IconButton>
+                }}
+              />
+            </React.Fragment>
+            <Dropdown
+              dropdownSelected={view}
+              dropdownItems={DROPDOWN_ITEMS}
+              handleDropdownChange={handleViewChange}
+            />
           </Box>
         </Box>
+        {fullWidthDivider}
+        <Box height="18px" />
         {loading && (
           <Box
-            top="80px"
+            top="0"
+            zIndex="1"
             width="100%"
             height="100%"
             display="flex"
             position="absolute"
-            alignItems="flex-start"
+            alignItems="center"
             justifyContent="center"
+            bgcolor="rgba(255, 255, 255, 0.5)"
           >
             <CircularProgress />
           </Box>

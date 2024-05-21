@@ -9,7 +9,6 @@ import { useParams } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import { BarChart } from "app/components/charts/bar";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { ChartBlock } from "app/components/chart-block";
 import { Heatmap } from "app/components/charts/heatmap";
 import { RadialChart } from "app/components/charts/radial";
@@ -17,15 +16,15 @@ import { SankeyChart } from "app/components/charts/sankey";
 import { RaceBarChart } from "app/components/charts/race-bar";
 import { BarChartDataItem } from "app/components/charts/bar/data";
 import { SankeyChartData } from "app/components/charts/sankey/data";
-import { ChartBlockButtonToolbar } from "app/components/chart-block/components/button-toolbar";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import {
+  HeatmapDataItem,
+  getPercentageColor,
+} from "app/components/charts/heatmap/data";
 import {
   CHART_1_DROPDOWN_ITEMS,
   CHART_2_DROPDOWN_ITEMS,
 } from "app/pages/grant/views/grant-implementation/data";
-import {
-  getPercentageColor,
-  STORY_DATA_VARIANT_1 as HEATMAP_DATA,
-} from "app/components/charts/heatmap/data";
 import {
   getRange,
   getFinancialValueWithMetricPrefix,
@@ -34,7 +33,6 @@ import {
 export const GrantImplementation: React.FC = () => {
   const params = useParams<{ id: string; ip: string; tab: string }>();
 
-  const [chart2Cycle, setChart2Cycle] = React.useState(CYCLES[0]);
   const [chart1Dropdown, setChart1Dropdown] = React.useState(
     CHART_1_DROPDOWN_ITEMS[0].label
   );
@@ -78,16 +76,10 @@ export const GrantImplementation: React.FC = () => {
         links: [],
       }) as SankeyChartData
   );
-
-  const handleChartCycleChange = (cycle: string, index: number) => {
-    switch (index) {
-      case 2:
-        setChart2Cycle(cycle);
-        break;
-      default:
-        break;
-    }
-  };
+  const dataExpendituresHeatmap = useStoreState(
+    (state) =>
+      get(state.GrantExpendituresHeatmap, "data.data", []) as HeatmapDataItem[]
+  );
 
   const chart2UnitButtons = React.useMemo(
     () => (
@@ -206,11 +198,27 @@ export const GrantImplementation: React.FC = () => {
     }
   }, [chart1Dropdown]);
 
+  const fullWidthDivider = (
+    <React.Fragment>
+      <Box height="2px" />
+      <Divider
+        sx={{
+          left: "-50vw",
+          width: "200vw",
+          position: "relative",
+          borderTopColor: "#868E96",
+        }}
+      />
+      <Box height="2px" />
+    </React.Fragment>
+  );
+
   return (
     <Box gap="24px" display="flex" flexDirection="column">
       <ChartBlock
         title={disbursementsTotal}
         subtitle="Disbursed"
+        empty={radialChartData.length === 0}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
         <RadialChart
@@ -237,10 +245,9 @@ export const GrantImplementation: React.FC = () => {
           </Typography>
           <Typography variant="body2">{signedFormatted}</Typography>
         </Box>
+        <RaceBarChart data={raceBarChartData} />
       </ChartBlock>
-      <Divider sx={{ borderColor: "#000" }} />
-      <RaceBarChart data={raceBarChartData} />
-      <ChartBlockButtonToolbar />
+      {fullWidthDivider}
       <Divider sx={{ borderColor: "#000" }} />
       <Grid
         container
@@ -319,10 +326,11 @@ export const GrantImplementation: React.FC = () => {
         </Grid>
       </Grid>
       <Divider sx={{ borderColor: "#000" }} />
-      <Box height="64px" />
+      {fullWidthDivider}
       <ChartBlock
         title="Disbursements"
         subtitle="Overtime"
+        empty={dataDisbursementsBarChart.length === 0}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
         <BarChart
@@ -330,13 +338,14 @@ export const GrantImplementation: React.FC = () => {
           valueLabels={{ value: "" }}
         />
       </ChartBlock>
-      <Box height="64px" />
+      {fullWidthDivider}
       <ChartBlock
         title="Budget"
         dropdownSelected={chart1Dropdown}
         subtitle="Investments and Modules"
         dropdownItems={CHART_1_DROPDOWN_ITEMS}
         handleDropdownChange={setChart1Dropdown}
+        empty={dataBudgetSankeyChart.links.length === 0}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
         <Grid
@@ -368,26 +377,25 @@ export const GrantImplementation: React.FC = () => {
           <SankeyChart data={dataBudgetSankeyChart} />
         </Box>
       </ChartBlock>
-      <Box height="64px" />
+      {fullWidthDivider}
       <ChartBlock
         cycles={CYCLES}
         subtitle="To date"
         title="Expenditures"
-        selectedCycle={chart2Cycle}
         dropdownSelected={chart2Dropdown}
         dropdownItems={CHART_2_DROPDOWN_ITEMS}
         handleDropdownChange={setChart2Dropdown}
-        handleCycleChange={(value) => handleChartCycleChange(value, 2)}
+        empty={dataExpendituresHeatmap.length === 0}
         text="Our Grant Implementation programs are developed meticulously, each Grant follows a well executed plan, always supervised by TGF Implementation team."
         unitButtons={chart2UnitButtons}
       >
         <Heatmap
           valueType="amount"
-          data={HEATMAP_DATA}
           contentProp="value"
           hoveredLegend={null}
           columnCategory="cycle"
           rowCategory="component"
+          data={dataExpendituresHeatmap}
           getItemColor={getPercentageColor}
         />
       </ChartBlock>

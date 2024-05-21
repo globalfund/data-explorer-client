@@ -73,7 +73,7 @@ const financialFormatter = (cell: CellComponent) => {
   if (!cell.getValue()) {
     return cellBGColorFormatter(cell);
   }
-  return formatLocale(cell.getValue()).replace(" USD", "");
+  return formatLocale(cell.getValue()).replace(" US$", "");
 };
 
 export const TABLE_VARIATION_1_COLUMNS: ColumnDefinition[] = [
@@ -788,12 +788,12 @@ export const TABLE_VARIATION_5_COLUMNS: ColumnDefinition[] = [
     formatter: cellBGColorFormatter,
   },
   {
-    title: "Signed (USD)",
+    title: "Signed (US$)",
     field: "signed",
     formatter: financialFormatter,
   },
   {
-    title: "Disbursed (USD)",
+    title: "Disbursed (US$)",
     field: "disbursed",
     formatter: financialFormatter,
   },
@@ -1046,13 +1046,13 @@ export const TABLE_VARIATION_8_COLUMNS: ColumnDefinition[] = [
     width: "50%",
   },
   {
-    title: "Pledge (USD)",
+    title: "Pledge (US$)",
     field: "pledge",
     formatter: financialFormatter,
     width: "25%",
   },
   {
-    title: "Contribution (USD)",
+    title: "Contribution (US$)",
     field: "contribution",
     formatter: financialFormatter,
   },
@@ -3654,19 +3654,19 @@ export const TABLE_VARIATION_11_COLUMNS: ColumnDefinition[] = [
     width: "25%",
   },
   {
-    title: "2017 - 2019 (USD)",
+    title: "2017 - 2019 (US$)",
     field: "2017-2019",
     formatter: financialFormatter,
     width: "20%",
   },
   {
-    title: "2020 - 2022 (USD)",
+    title: "2020 - 2022 (US$)",
     field: "2020-2022",
     formatter: financialFormatter,
     width: "20%",
   },
   {
-    title: "2023 - 2025 (USD)",
+    title: "2023 - 2025 (US$)",
     field: "2023-2025",
     formatter: financialFormatter,
     width: "20%",
@@ -7289,19 +7289,19 @@ export const TABLE_VARIATION_13_COLUMNS: ColumnDefinition[] = [
     formatter: cellBGColorFormatter,
   },
   {
-    title: "Signed (USD)",
+    title: "Signed (US$)",
     field: "signed",
     width: "20%",
     formatter: financialFormatter,
   },
   {
-    title: "Committed (USD)",
+    title: "Committed (US$)",
     field: "committed",
     width: "20%",
     formatter: financialFormatter,
   },
   {
-    title: "Disbursed (USD)",
+    title: "Disbursed (US$)",
     field: "disbursed",
     width: "20%",
     formatter: financialFormatter,
@@ -7369,7 +7369,7 @@ export const TABLE_VARIATION_14_COLUMNS: ColumnDefinition[] = [
   //   formatter: financialFormatter,
   // },
   {
-    title: "Budget Amount (USD)",
+    title: "Budget Amount (US$)",
     field: "amount",
     width: "30%",
     formatter: financialFormatter,

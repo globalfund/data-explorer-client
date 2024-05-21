@@ -119,9 +119,10 @@ export const TableContainer: React.FC<TableContainerProps> = (
                 height: "32px",
                 fontSize: "14px",
                 fontWeight: "400",
-                padding: "0px 8px",
-                borderRadius: "8px",
+                padding: "0px 12px",
+                borderRadius: "4px",
                 textTransform: "none",
+                border: "1px solid #DFE3E5",
                 "&:hover": {
                   color: "#fff",
                   background: "#000",
@@ -136,7 +137,7 @@ export const TableContainer: React.FC<TableContainerProps> = (
                 sx={{
                   color: props.tabsView?.selectedTab === tab ? "#fff" : "#000",
                   background:
-                    props.tabsView?.selectedTab === tab ? "#000" : "#F1F3F4",
+                    props.tabsView?.selectedTab === tab ? "#000" : "#fff",
                 }}
               >
                 {tab}

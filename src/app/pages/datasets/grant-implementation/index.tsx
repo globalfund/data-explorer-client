@@ -1,6 +1,7 @@
 import React from "react";
 import get from "lodash/get";
 import maxBy from "lodash/maxBy";
+import sumBy from "lodash/sumBy";
 import Box from "@mui/material/Box";
 import { appColors } from "app/theme";
 import Divider from "@mui/material/Divider";
@@ -323,7 +324,7 @@ export const GrantImplementationPage: React.FC = () => {
                 transform: "rotate(-90deg)",
               }}
             >
-              Y Axis/<b>Disbursed Amount (USD {range.abbr})</b>
+              Y Axis/<b>Disbursed Amount (US$ {range.abbr})</b>
             </Typography>
             <BarChart
               data={dataFinancialInsightsDisbursementsBarChart}
@@ -375,7 +376,7 @@ export const GrantImplementationPage: React.FC = () => {
                 transform: "rotate(-90deg)",
               }}
             >
-              Y Axis/<b>Disbursed Amount (USD {range.abbr})</b>
+              Y Axis/<b>Disbursed Amount (US$ {range.abbr})</b>
             </Typography>
             <LineChart
               data={dataFinancialInsightsDisbursementsLineChart}
@@ -414,6 +415,24 @@ export const GrantImplementationPage: React.FC = () => {
     dataFinancialInsightsDisbursementsTable,
   ]);
 
+  const disbursementsChartEmpty = React.useMemo(() => {
+    switch (disbursementsDropdownSelected) {
+      case dropdownItemsDisbursements[0].value:
+        return !dataFinancialInsightsDisbursementsBarChart.length;
+      case dropdownItemsDisbursements[1].value:
+        return !dataFinancialInsightsDisbursementsLineChart.length;
+      case dropdownItemsDisbursements[2].value:
+        return !dataFinancialInsightsDisbursementsTable.length;
+      default:
+        return false;
+    }
+  }, [
+    disbursementsDropdownSelected,
+    dataFinancialInsightsDisbursementsBarChart,
+    dataFinancialInsightsDisbursementsLineChart,
+    dataFinancialInsightsDisbursementsTable,
+  ]);
+
   const financialMetricsContent = React.useMemo(() => {
     return (
       <Box gap="40px" width="100%" display="flex" flexDirection="column">
@@ -449,6 +468,18 @@ export const GrantImplementationPage: React.FC = () => {
     dataDisbursementUtilisation,
   ]);
 
+  const financialMetricsEmpty = React.useMemo(() => {
+    return (
+      !dataBudgetUtilisation.items.length ||
+      !dataInCountryAbsorption.items.length ||
+      !dataDisbursementUtilisation.items.length
+    );
+  }, [
+    dataBudgetUtilisation,
+    dataInCountryAbsorption,
+    dataDisbursementUtilisation,
+  ]);
+
   const budgetsChartContent = React.useMemo(() => {
     switch (budgetsDropdownSelected) {
       case dropdownItemsBudgets[0].value:
@@ -466,6 +497,19 @@ export const GrantImplementationPage: React.FC = () => {
         );
       default:
         return null;
+    }
+  }, [budgetsDropdownSelected, dataBudgetTreemap, dataBudgetTable]);
+
+  const budgetsChartEmpty = React.useMemo(() => {
+    switch (budgetsDropdownSelected) {
+      case dropdownItemsBudgets[0].value:
+        return !BUDGET_SANKEY_DATA.nodes.length;
+      case dropdownItemsBudgets[1].value:
+        return !dataBudgetTreemap.length;
+      case dropdownItemsBudgets[2].value:
+        return !dataBudgetTable.length;
+      default:
+        return false;
     }
   }, [budgetsDropdownSelected, dataBudgetTreemap, dataBudgetTable]);
 
@@ -518,6 +562,24 @@ export const GrantImplementationPage: React.FC = () => {
     dataExpendituresTable,
   ]);
 
+  const expendituresChartEmpty = React.useMemo(() => {
+    switch (expendituresDropdownSelected) {
+      case dropdownItemsExpenditures[0].value:
+        return !dataExpendituresHeatmap.length;
+      case dropdownItemsExpenditures[1].value:
+        return !dataExpendituresBarChart.length;
+      case dropdownItemsExpenditures[2].value:
+        return !dataExpendituresTable.length;
+      default:
+        return false;
+    }
+  }, [
+    expendituresDropdownSelected,
+    dataExpendituresHeatmap,
+    dataExpendituresBarChart,
+    dataExpendituresTable,
+  ]);
+
   const toolbarRightContent = React.useMemo(() => {
     return (
       <Box gap="20px" display="flex" flexDirection="row" alignItems="center">
@@ -546,6 +608,14 @@ export const GrantImplementationPage: React.FC = () => {
       </Box>
     );
   }, []);
+
+  const totalBudget = React.useMemo(() => {
+    return formatFinancialValue(sumBy(dataBudgetTreemap, "value"));
+  }, [dataBudgetTreemap]);
+
+  const totalExpenditure = React.useMemo(() => {
+    return formatFinancialValue(sumBy(dataExpendituresHeatmap, "value"));
+  }, [dataExpendituresHeatmap]);
 
   React.useEffect(() => {
     fetchFinancialInsightsStats({});
@@ -596,7 +666,7 @@ export const GrantImplementationPage: React.FC = () => {
               "&:not(:last-child)": {
                 borderRight: "1px solid #DFE3E5",
               },
-              "&:first-child": {
+              "&:first-of-type": {
                 paddingLeft: 0,
               },
             },
@@ -662,31 +732,9 @@ export const GrantImplementationPage: React.FC = () => {
               disbursementsDropdownSelected ===
               dropdownItemsDisbursements[2].value
             }
+            empty={disbursementsChartEmpty}
           >
             {disbursementsChartContent}
-          </DatasetChartBlock>
-        </Box>
-        <FullWidthDivider />
-        <Box
-          padding="50px 0"
-          sx={{
-            "#content": {
-              padding: 0,
-            },
-          }}
-        >
-          <DatasetChartBlock
-            title="Budgets"
-            subtitle="Detailed budgets for each implementation period from the 2017-2019 Allocation Period and onwards."
-            dropdownItems={dropdownItemsBudgets}
-            dropdownSelected={budgetsDropdownSelected}
-            handleDropdownChange={(value) => setBudgetsDropdownSelected(value)}
-            loading={loadingBudget}
-            disableCollapse={
-              budgetsDropdownSelected === dropdownItemsBudgets[2].value
-            }
-          >
-            {budgetsChartContent}
           </DatasetChartBlock>
         </Box>
         <FullWidthDivider />
@@ -780,6 +828,7 @@ export const GrantImplementationPage: React.FC = () => {
             title="Financial Metrics"
             subtitle=""
             dropdownItems={[]}
+            empty={financialMetricsEmpty}
             loading={loadingFinancialMetrics}
           >
             {financialMetricsContent}
@@ -795,8 +844,32 @@ export const GrantImplementationPage: React.FC = () => {
           }}
         >
           <DatasetChartBlock
+            title="Budgets"
+            subtitle={`${totalBudget} total budget.`}
+            dropdownItems={dropdownItemsBudgets}
+            dropdownSelected={budgetsDropdownSelected}
+            handleDropdownChange={(value) => setBudgetsDropdownSelected(value)}
+            loading={loadingBudget}
+            disableCollapse={
+              budgetsDropdownSelected === dropdownItemsBudgets[2].value
+            }
+            empty={budgetsChartEmpty}
+          >
+            {budgetsChartContent}
+          </DatasetChartBlock>
+        </Box>
+        <FullWidthDivider />
+        <Box
+          padding="50px 0"
+          sx={{
+            "#content": {
+              padding: 0,
+            },
+          }}
+        >
+          <DatasetChartBlock
             title="Expenditures"
-            subtitle="Lorem Ipsum"
+            subtitle={`${totalExpenditure} reported expenditure.`}
             dropdownItems={dropdownItemsExpenditures}
             dropdownSelected={expendituresDropdownSelected}
             loading={loadingExpenditures}
@@ -807,6 +880,7 @@ export const GrantImplementationPage: React.FC = () => {
               expendituresDropdownSelected ===
               dropdownItemsExpenditures[2].value
             }
+            empty={expendituresChartEmpty}
           >
             {expendituresChartContent}
           </DatasetChartBlock>

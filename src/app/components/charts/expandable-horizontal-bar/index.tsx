@@ -308,7 +308,7 @@ export const ExpandableHorizontalBar: React.FC<
       >
         X Axis /{" "}
         <b>
-          {props.xAxisLabel} (USD in {range.abbr})
+          {props.xAxisLabel} (US$ in {range.abbr})
         </b>
       </Typography>
       <Box

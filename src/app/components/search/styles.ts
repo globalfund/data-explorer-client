@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 
 export const Container = styled(Box)`
   display: flex;
-  padding: 4px 20px;
+  padding: 8px 20px;
   position: relative;
   border-radius: 8px;
   background: ${appColors.SEARCH.CONTAINER_BACKGROUND};

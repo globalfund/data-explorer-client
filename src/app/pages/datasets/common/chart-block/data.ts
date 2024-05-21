@@ -1,5 +1,6 @@
 export interface DatasetChartBlockProps {
   title: string;
+  empty?: boolean;
   subtitle: string;
   loading?: boolean;
   children: React.ReactNode;

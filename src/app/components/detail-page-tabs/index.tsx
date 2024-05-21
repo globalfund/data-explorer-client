@@ -8,13 +8,14 @@ import { DetailPageTabsProps } from "app/components/detail-page-tabs/data";
 
 const ButtonTab = styled(NavLink)`
   font-size: 14px;
-  padding: 7px 24px;
-  border-radius: 8px;
+  font-weight: 400;
+  padding: 5px 24px;
+  border-radius: 4px;
   letter-spacing: 0.5px;
   text-decoration: none;
   color: ${({ theme }) => (theme.active ? "#fff" : "#000")};
-  font-weight: ${({ theme }) => (theme.active ? "700" : "400")};
-  background: ${({ theme }) => (theme.active ? "#000" : "#F1F3F4")};
+  background: ${({ theme }) => (theme.active ? "#000" : "#fff")};
+  border: 1px solid ${({ theme }) => (theme.active ? "#000" : "#DFE3E5")};
 
   &:hover {
     color: #fff;

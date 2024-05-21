@@ -1,9 +1,10 @@
 import React from "react";
 import get from "lodash/get";
 import Box from "@mui/material/Box";
-import { useNavigate, useParams } from "react-router-dom";
+import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import { PageLoader } from "app/components/page-loader";
+import { useNavigate, useParams } from "react-router-dom";
 import { GrantTargetsResults } from "./views/targets-results";
 import { GrantOverview } from "app/pages/grant/views/overview";
 import { DetailPageTabs } from "app/components/detail-page-tabs";
@@ -54,11 +55,26 @@ export const Grant: React.FC = () => {
   const fetchOverview = useStoreActions(
     (actions) => actions.GrantOverview.fetch
   );
+  const clearOverview = useStoreActions(
+    (actions) => actions.GrantOverview.clear
+  );
   const fetchDisbursementsBarChart = useStoreActions(
     (actions) => actions.GrantDisbursementsBarChart.fetch
   );
+  const clearDisbursementsBarChart = useStoreActions(
+    (actions) => actions.GrantDisbursementsBarChart.clear
+  );
   const fetchBudgetSankeyChart = useStoreActions(
     (actions) => actions.GrantBudgetSankeyChart.fetch
+  );
+  const clearBudgetSankeyChart = useStoreActions(
+    (actions) => actions.GrantBudgetSankeyChart.clear
+  );
+  const clearExpendituresHeatmap = useStoreActions(
+    (actions) => actions.FinancialInsightsExpendituresHeatmap.clear
+  );
+  const fetchExpendituresHeatmap = useStoreActions(
+    (actions) => actions.GrantExpendituresHeatmap.fetch
   );
 
   const [dropdownSelected, setDropdownSelected] = React.useState<{
@@ -132,20 +148,42 @@ export const Grant: React.FC = () => {
           variant: "1",
         },
       });
+      fetchExpendituresHeatmap({
+        routeParams: {
+          row: "principalRecipientType,principalRecipient",
+          column: "component",
+        },
+        filterString: `grantIP=${params.id}P0${dropdownSelected.code}`,
+      });
     }
   }, [params.id, dropdownSelected]);
 
+  React.useEffect(() => {
+    return () => {
+      clearOverview();
+      clearDisbursementsBarChart();
+      clearBudgetSankeyChart();
+      clearExpendituresHeatmap();
+    };
+  }, []);
+
+  const fullWidthDivider = (
+    <Divider
+      sx={{
+        left: "-50vw",
+        width: "200vw",
+        position: "relative",
+        borderTopColor: "#868E96",
+      }}
+    />
+  );
+
   return (
-    <Box padding="60px 0">
-      <Typography variant="h1" lineHeight={1}>
+    <Box padding="50px 0">
+      <Typography variant="h1" lineHeight={1.2}>
         {params.id}
       </Typography>
-      <Typography
-        variant="h6"
-        color="#CFD4DA"
-        lineHeight={1.2}
-        marginBottom="24px"
-      >
+      <Typography variant="h5" lineHeight={1} marginBottom="50px">
         {titleSplits.map((s) => (
           <React.Fragment key={s}>
             {s}
@@ -153,6 +191,8 @@ export const Grant: React.FC = () => {
           </React.Fragment>
         ))}
       </Typography>
+      {fullWidthDivider}
+      <Box height="20px" />
       <DetailPageTabs
         baseRoute={`/grant`}
         activeTab={`${params.ip}/${params.tab}`}
@@ -169,7 +209,9 @@ export const Grant: React.FC = () => {
           })),
         }}
       />
-      <Box marginTop="24px">{view}</Box>
+      <Box height="20px" />
+      {fullWidthDivider}
+      <Box marginTop="40px">{view}</Box>
     </Box>
   );
 };

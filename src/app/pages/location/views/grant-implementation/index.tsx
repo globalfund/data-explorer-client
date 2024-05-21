@@ -4,17 +4,22 @@ import sumBy from "lodash/sumBy";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { appColors } from "app/theme";
+import Divider from "@mui/material/Divider";
 import { CYCLES } from "app/pages/home/data";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import { PieChart } from "app/components/charts/pie";
 import { useStoreState } from "app/state/store/hooks";
+import ArrowBack from "@mui/icons-material/ArrowBack";
 import { LineChart } from "app/components/charts/line";
 import { ChartBlock } from "app/components/chart-block";
 import { Heatmap } from "app/components/charts/heatmap";
 import { SankeyChart } from "app/components/charts/sankey";
+import ArrowForward from "@mui/icons-material/ArrowForward";
 import { TableContainer } from "app/components/table-container";
-import { LineChartDataItem } from "app/components/charts/line/data";
+import { GrantCardProps } from "app/components/grant-card/data";
+import { LineChartProps } from "app/components/charts/line/data";
+import { getMonthFromNumber } from "app/utils/getMonthFromNumber";
 import { SankeyChartData } from "app/components/charts/sankey/data";
 import { TABLE_VARIATION_5_COLUMNS } from "app/components/table/data";
 import { ChartBlockCycles } from "app/components/chart-block/components/cycles";
@@ -33,13 +38,9 @@ import {
   STORY_DATA_VARIANT_3 as PIE_CHART_DATA_3,
   PieChartDataItem,
 } from "app/components/charts/pie/data";
-import { GrantCardProps } from "app/components/grant-card/data";
-import { getMonthFromNumber } from "app/utils/getMonthFromNumber";
-import ArrowBack from "@mui/icons-material/ArrowBack";
-import { ArrowForward } from "@mui/icons-material";
 import {
-  getFinancialValueWithMetricPrefix,
   getRange,
+  getFinancialValueWithMetricPrefix,
 } from "app/utils/getFinancialValueWithMetricPrefix";
 
 export const GrantImplementation: React.FC<GrantImplementationProps> = (
@@ -48,7 +49,6 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
   const [chart1Cycle, setChart1Cycle] = React.useState(CYCLES[0]);
   const [chart2Cycle, setChart2Cycle] = React.useState(CYCLES[0]);
   const [chart3Cycle, setChart3Cycle] = React.useState(CYCLES[0]);
-  const [chart4Cycle, setChart4Cycle] = React.useState(CYCLES[0]);
 
   const [chart1Dropdown, setChart1Dropdown] = React.useState(
     CHART_1_DROPDOWN_ITEMS[0].value
@@ -63,19 +63,10 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
 
   const dataDisbursementsLineChart = useStoreState(
     (state) =>
-      get(
-        state.GeographyDisbursementsLineChart,
-        "data.data",
-        []
-      ) as LineChartDataItem[]
-  );
-  const keysDisbursementsLineChart = useStoreState(
-    (state) =>
-      get(
-        state.GeographyDisbursementsLineChart,
-        "data.xAxisKeys",
-        []
-      ) as string[]
+      get(state.GeographyDisbursementsLineChart, "data", {
+        data: [],
+        xAxisKeys: [],
+      }) as LineChartProps
   );
   const dataBudgetSankeyChart = useStoreState((state) => ({
     nodes: get(
@@ -127,9 +118,6 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
         break;
       case 3:
         setChart3Cycle(cycle);
-        break;
-      case 4:
-        setChart4Cycle(cycle);
         break;
       default:
         break;
@@ -204,9 +192,12 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
   }, [dataGrantsTable]);
 
   const disbursementsTotal = React.useMemo(() => {
-    const total = sumBy(dataDisbursementsLineChart, "value");
-    const range = getRange([{ range: dataDisbursementsLineChart }], ["value"]);
-    return `$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${range.abbr}`;
+    let total = 0;
+    dataDisbursementsLineChart.data.forEach((item) => {
+      total += sumBy(item.data);
+    });
+    const range = getRange([{ value: total }], ["value"]);
+    return `$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${range.full}`;
   }, [dataDisbursementsLineChart]);
 
   const pagination = React.useMemo(
@@ -237,6 +228,21 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
     [countGrantsTable, props.page]
   );
 
+  const fullWidthDivider = (
+    <React.Fragment>
+      <Box height="2px" />
+      <Divider
+        sx={{
+          left: "-50vw",
+          width: "200vw",
+          position: "relative",
+          borderTopColor: "#868E96",
+        }}
+      />
+      <Box height="2px" />
+    </React.Fragment>
+  );
+
   return (
     <Box gap="24px" display="flex" flexDirection="column">
       <ChartBlock
@@ -246,16 +252,14 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
         dropdownSelected={chart1Dropdown}
         dropdownItems={CHART_1_DROPDOWN_ITEMS}
         handleDropdownChange={setChart1Dropdown}
-        subtitle={`Disbursed with ${countGrantsTable} Grants`}
+        empty={dataDisbursementsLineChart.data.length === 0}
+        subtitle={`Disbursed within ${countGrantsTable} Grants`}
         handleCycleChange={(value) => handleChartCycleChange(value, 1)}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
-        <LineChart
-          data={dataDisbursementsLineChart}
-          xAxisKeys={keysDisbursementsLineChart}
-        />
+        <LineChart {...dataDisbursementsLineChart} />
       </ChartBlock>
-      <Box height="64px" />
+      {fullWidthDivider}
       <ChartBlock
         title="Budget"
         cycles={CYCLES}
@@ -264,6 +268,7 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
         dropdownItems={CHART_2_DROPDOWN_ITEMS}
         handleDropdownChange={setChart2Dropdown}
         subtitle="to date with transparent budgets"
+        empty={dataBudgetSankeyChart.links.length === 0}
         handleCycleChange={(value) => handleChartCycleChange(value, 2)}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
@@ -299,12 +304,13 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
           <SankeyChart data={dataBudgetSankeyChart} />
         </Box>
       </ChartBlock>
-      <Box height="64px" />
+      {fullWidthDivider}
       <ChartBlock
         cycles={CYCLES}
         subtitle="To date"
         title="Expenditures"
         selectedCycle={chart3Cycle}
+        empty={dataExpendituresHeatmap.length === 0}
         handleCycleChange={(value) => handleChartCycleChange(value, 3)}
         text="Our Grant Implementation programs are developed meticulously, each Grant follows a well executed plan, always supervised by TGF Implementation team."
         unitButtons={chart2UnitButtons}
@@ -320,13 +326,23 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
           bgColor={appColors.HEATMAP.CHART_BG_COLOR}
         />
       </ChartBlock>
-      <Box height="64px" />
+      {fullWidthDivider}
       <ChartBlock
         title={`${countGrantsTable} Grants`}
         subtitle="to date"
+        empty={dataGrantsTable.length === 0}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
         <Box height="16px" />
+        <TableContainer
+          withCycles
+          id="financial-insights-table"
+          data={dataGrantsTableFormatted}
+          columns={TABLE_VARIATION_5_COLUMNS}
+        />
+        <Box height="16px" />
+        {pagination}
+        <Box height="64px" />
         <Box
           width="100%"
           padding="32px"
@@ -372,19 +388,6 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
           </Box>
         </Box>
       </ChartBlock>
-      <Box height="64px" />
-      <ChartBlockCycles
-        cycles={CYCLES}
-        selectedCycle={chart4Cycle}
-        handleCycleChange={(value: string) => handleChartCycleChange(value, 4)}
-      />
-      <TableContainer
-        withCycles
-        id="financial-insights-table"
-        data={dataGrantsTableFormatted}
-        columns={TABLE_VARIATION_5_COLUMNS}
-      />
-      {pagination}
     </Box>
   );
 };

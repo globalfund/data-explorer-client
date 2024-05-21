@@ -30,7 +30,7 @@ export const DatasetPage: React.FC<DatasetPageProps> = (
   };
 
   return (
-    <Box padding="60px 0">
+    <Box padding="50px 0">
       <Breadcrumbs items={props.breadcrumbs} />
       <Typography variant="h1">{props.title}</Typography>
       <Typography variant="h6">{props.subtitle}</Typography>

@@ -132,7 +132,6 @@ export const Geography: React.FC = () => {
         );
       }
     }
-    console.log(updatedData);
     setFilteredData(updatedData);
   }, [search, dataList]);
 
@@ -141,7 +140,7 @@ export const Geography: React.FC = () => {
   }, []);
 
   return (
-    <Box padding="60px 0">
+    <Box padding="50px 0">
       <Typography variant="h1">Geography</Typography>
       <Box height="56px" />
       <Box padding="32px">
@@ -215,6 +214,7 @@ export const Geography: React.FC = () => {
               position="absolute"
               alignItems="flex-start"
               justifyContent="center"
+              bgcolor="rgba(255, 255, 255, 0.5)"
             >
               <CircularProgress />
             </Box>

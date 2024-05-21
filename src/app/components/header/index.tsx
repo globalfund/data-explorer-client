@@ -62,7 +62,13 @@ export const Header: React.FC = () => {
                       width: "500px",
                       "#search-container": {
                         width: "100%",
-                        padding: "0 10px",
+                        padding: "4px 10px",
+                        input: {
+                          fontSize: "12px",
+                        },
+                        svg: {
+                          display: "none",
+                        },
                       },
                       "#search-category-dropdown": {
                         display: "none",

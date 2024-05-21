@@ -4,6 +4,7 @@ import sumBy from "lodash/sumBy";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { appColors } from "app/theme";
+import Divider from "@mui/material/Divider";
 import { CYCLES } from "app/pages/home/data";
 import Typography from "@mui/material/Typography";
 import { useStoreState } from "app/state/store/hooks";
@@ -39,7 +40,7 @@ export const AccessToFunding: React.FC = () => {
       ) as RadialChartDataItem[]
   );
   const dataFundingRequestsTable = useStoreState((state) =>
-    get(state.AccessToFundingFundingRequestsTable, "data.data[0]", {
+    get(state.GeographyFundingRequestsTable, "data.data[0]", {
       _children: [],
     })
   );
@@ -110,8 +111,23 @@ export const AccessToFunding: React.FC = () => {
     return res;
   }, [dataFundingRequestStats]);
 
+  const fullWidthDivider = (
+    <React.Fragment>
+      <Box height="2px" />
+      <Divider
+        sx={{
+          left: "-50vw",
+          width: "200vw",
+          position: "relative",
+          borderTopColor: "#868E96",
+        }}
+      />
+      <Box height="2px" />
+    </React.Fragment>
+  );
+
   return (
-    <Box paddingTop="64px" gap="24px" display="flex" flexDirection="column">
+    <Box gap="24px" display="flex" flexDirection="column">
       <ChartBlock
         cycles={CYCLES}
         title={`$${totalAllocationAmount}`}
@@ -120,6 +136,7 @@ export const AccessToFunding: React.FC = () => {
         subtitle={`Funds Allocated ${
           chart1Cycle !== CYCLES[0] ? ` ${chart1Cycle}` : ""
         }`}
+        empty={dataAllocationsRadialChart.length === 0}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
         <RadialChart
@@ -143,7 +160,7 @@ export const AccessToFunding: React.FC = () => {
           </Typography>
         </Box>
       </Box>
-      <Box height="64px" />
+      {fullWidthDivider}
       <ChartBlock
         noSplitText
         cycles={CYCLES}
@@ -151,6 +168,7 @@ export const AccessToFunding: React.FC = () => {
         selectedCycle={chart2Cycle}
         title={`${dataFundingRequestsTable._children.length} Funding Requests`}
         subtitle="Submitted to date"
+        empty={dataFundingRequestsTable._children.length === 0}
         handleCycleChange={(value) => handleChartCycleChange(value, 2)}
         text="The Funding Request explains how the applicant would use Global Fund allocated funds, if approved. Funding Requests are reviewed by the Global Fund’s Technical Review Panel (TRP). Once approved by the TRP, the Funding Request is turned into one or more grants through the grant-making negotiation. The Grant Approvals Committee (GAC) reviews the final version of each grant and recommends implementation-ready grants to the Global Fund Board for approval. Funding Requests are submitted for internal Global Fund review, but the final grant is the legally-binding agreement.<br/><br/>Documents for a specific funding request can be downloaded by clicking the cloud icon. Documents from the 2017-2019 Allocation Period and earlier can be found by clicking on the “Documents’ tab above. If a Funding Request is not visible for the 2023-2025 Allocation Period and the country received an Allocation, it likely means that the applicant has not yet registered for a TRP Window."
       >
@@ -165,7 +183,7 @@ export const AccessToFunding: React.FC = () => {
         <Box height="64px" />
         <RaceBarChart noValuesFormat data={raceBarData} />
       </ChartBlock>
-      <Box height="64px" />
+      <Box height="50px" />
       <Grid
         container
         spacing={2}
@@ -223,11 +241,12 @@ export const AccessToFunding: React.FC = () => {
           </Box>
         </Grid>
       </Grid>
-      <Box height="64px" />
+      {fullWidthDivider}
       <ChartBlock
         noSplitText
         title="Eligibility"
         subtitle="To date"
+        empty={dataEligibilityHeatmap.length === 0}
         text="Eligibility for funding from the Global Fund is determined by country income classification and disease burden for HIV, tuberculosis and malaria. Below are the components which are eligible for an allocation for the selected allocation period, according to the Global Fund Eligibility Policy.<br/><br/>Eligibility for the 2023-2025 Allocation Period was determined in 2022 and documented in the 2023 Eligibility List. Eligibility does not guarantee a funding allocation. Learn more about Eligibility <a target='_blank' href='https://www.theglobalfund.org/en/applying-for-funding/understand-and-prepare/eligibility/'>here</a> or <a>see the full history of eligibility for this country</a>."
       >
         <Box height="32px" />
@@ -293,11 +312,12 @@ export const AccessToFunding: React.FC = () => {
           getItemColor={getEligibilityColor}
         />
       </ChartBlock>
-      <Box height="64px" />
+      {fullWidthDivider}
       <ChartBlock
         noBottomToolbar
         title="Documents"
         subtitle="Applications"
+        empty={dataDocumentsTable.length === 0}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
         <Box height="64px" />

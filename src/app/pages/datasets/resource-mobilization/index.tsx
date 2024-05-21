@@ -122,6 +122,19 @@ export const ResourceMobilizationPage: React.FC = () => {
     }
   }, [dropdownSelected, dataBarChart, dataSunburst, dataTable]);
 
+  const chartEmpty = React.useMemo(() => {
+    switch (dropdownSelected) {
+      case dropdownItems[0].value:
+        return !dataBarChart || !dataBarChart.length;
+      case dropdownItems[1].value:
+        return !dataSunburst || !dataSunburst.length;
+      case dropdownItems[2].value:
+        return !dataTable || !dataTable.length;
+      default:
+        return false;
+    }
+  }, [dropdownSelected, dataBarChart, dataSunburst, dataTable]);
+
   React.useEffect(() => {
     fetchStats({});
     fetchBarChart({});
@@ -359,6 +372,7 @@ export const ResourceMobilizationPage: React.FC = () => {
             handleDropdownChange={handleSelectionChange}
             disableCollapse={dropdownSelected === dropdownItems[2].value}
             loading={dataChartLoading}
+            empty={chartEmpty}
           >
             {chartContent}
           </DatasetChartBlock>

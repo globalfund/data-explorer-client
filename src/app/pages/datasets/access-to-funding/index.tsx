@@ -11,6 +11,7 @@ import { Dropdown } from "app/components/dropdown";
 import Info from "@mui/icons-material/InfoOutlined";
 import { Treemap } from "app/components/charts/treemap";
 import { DatasetPage } from "app/pages/datasets/common/page";
+import CircularProgress from "@mui/material/CircularProgress";
 import { SunburstChart } from "app/components/charts/sunburst";
 import { BarSeriesChart } from "app/components/charts/bar-series";
 import { getRange } from "app/utils/getFinancialValueWithMetricPrefix";
@@ -34,15 +35,8 @@ import {
   TABLE_VARIATION_11_COLUMNS as ALLOCATIONS_TABLE_COLUMNS,
   TABLE_VARIATION_12_COLUMNS as FUNDING_REQUESTS_TABLE_COLUMNS,
 } from "app/components/table/data";
-import CircularProgress from "@mui/material/CircularProgress";
 
 export const AccessToFundingPage: React.FC = () => {
-  const [geographyGrouping, setGeographyGrouping] = React.useState(
-    geographyGroupingOptions[0].value
-  );
-  const [componentsGrouping, setComponentsGrouping] = React.useState(
-    componentsGroupingOptions[0].value
-  );
   const [eligibilityYear, setEligibilityYear] = React.useState(
     eligibilityYears[0].value
   );
@@ -136,14 +130,6 @@ export const AccessToFundingPage: React.FC = () => {
     setDropdownSelected(value);
   };
 
-  const handleGeographyGroupingChange = (value: string) => {
-    setGeographyGrouping(value);
-  };
-
-  const handleComponentsGroupingChange = (value: string) => {
-    setComponentsGrouping(value);
-  };
-
   const handleEligibilityYearChange = (value: string) => {
     setEligibilityYear(value);
   };
@@ -178,6 +164,24 @@ export const AccessToFundingPage: React.FC = () => {
     dataAllocationsTable,
   ]);
 
+  const chartEmpty = React.useMemo(() => {
+    switch (dropdownSelected) {
+      case dropdownItemsAllocations[0].value:
+        return dataAllocationsSunburst.length === 0;
+      case dropdownItemsAllocations[1].value:
+        return dataAllocationsTreemap.length === 0;
+      case dropdownItemsAllocations[2].value:
+        return dataAllocationsTable.length === 0;
+      default:
+        return false;
+    }
+  }, [
+    dropdownSelected,
+    dataAllocationsSunburst,
+    dataAllocationsTreemap,
+    dataAllocationsTable,
+  ]);
+
   const range = React.useMemo(() => {
     const values: {
       value: number;
@@ -189,35 +193,6 @@ export const AccessToFundingPage: React.FC = () => {
     });
     return getRange(values, ["value"]);
   }, [dataAllocationsBarSeries]);
-
-  const toolbarRightContent = React.useMemo(() => {
-    return (
-      <Box gap="20px" display="flex" flexDirection="row" alignItems="center">
-        <Box gap="10px" display="flex" flexDirection="row" alignItems="center">
-          <Typography variant="body2" fontWeight="700">
-            Geography grouping
-          </Typography>
-          <Dropdown
-            width={150}
-            dropdownSelected={geographyGrouping}
-            dropdownItems={geographyGroupingOptions}
-            handleDropdownChange={handleGeographyGroupingChange}
-          />
-        </Box>
-        <Box gap="10px" display="flex" flexDirection="row" alignItems="center">
-          <Typography variant="body2" fontWeight="700">
-            Components grouping
-          </Typography>
-          <Dropdown
-            width={120}
-            dropdownSelected={componentsGrouping}
-            dropdownItems={componentsGroupingOptions}
-            handleDropdownChange={handleComponentsGroupingChange}
-          />
-        </Box>
-      </Box>
-    );
-  }, []);
 
   React.useEffect(() => {
     fetchEligibilityTable({});
@@ -241,7 +216,6 @@ export const AccessToFundingPage: React.FC = () => {
       title="Access to Funding"
       subtitle="Lorem ipsum."
       breadcrumbs={[{ label: "Datasets" }, { label: "Access to Funding" }]}
-      toolbarRightContent={toolbarRightContent}
     >
       <Box width="100%" marginTop="50px">
         <Box>
@@ -253,7 +227,6 @@ export const AccessToFundingPage: React.FC = () => {
             justifyContent="space-between"
           >
             <Box>
-              <Typography fontSize="10px">Eligibility</Typography>
               <Typography variant="h5">
                 Eligible Countries by Numbers
               </Typography>
@@ -327,6 +300,7 @@ export const AccessToFundingPage: React.FC = () => {
             dropdownItems={[]}
             disableCollapse
             loading={loadingEligibilityTable}
+            empty={dataEligibilityTable.length === 0}
           >
             <Box
               gap="20px"
@@ -447,10 +421,9 @@ export const AccessToFundingPage: React.FC = () => {
         </Box>
         <FullWidthDivider />
         <Box padding="50px 0">
-          <Typography fontSize="10px">Allocations</Typography>
           <Typography variant="h5">Cumulative Allocation by Cycles</Typography>
           <Typography fontSize="14px" fontWeight="700">
-            Cumulative Allocation by Cycles
+            Accompanied by the Component Breakdown.
           </Typography>
           <Box marginTop="25px" position="relative">
             <Typography
@@ -498,6 +471,7 @@ export const AccessToFundingPage: React.FC = () => {
             dropdownSelected={dropdownSelected}
             handleDropdownChange={handleSelectionChange}
             loading={loadingAllocations}
+            empty={chartEmpty}
             disableCollapse={
               dropdownSelected === dropdownItemsAllocations[2].value
             }
@@ -521,10 +495,8 @@ export const AccessToFundingPage: React.FC = () => {
         >
           {BOXES.map((b, i) => (
             <React.Fragment key={i}>
-              <Box key={b.datasetName}>
-                <Typography fontSize="10px" marginBottom="5px">
-                  {b.datasetName}
-                </Typography>
+              <Box key={b.title}>
+                <Typography fontSize="10px" marginBottom="5px"></Typography>
                 <Typography
                   fontSize="14px"
                   marginBottom="2px"
@@ -532,7 +504,7 @@ export const AccessToFundingPage: React.FC = () => {
                 >
                   {b.title}
                 </Typography>
-                <img src={b.image} alt={`${b.datasetName} img`} height={250} />
+                <img src={b.image} alt={`${b.title} img`} height={250} />
               </Box>
               {i !== BOXES.length - 1 && (
                 <Divider orientation="vertical" sx={{ height: "323px" }} />
@@ -567,6 +539,39 @@ export const AccessToFundingPage: React.FC = () => {
               )}
             />
           </DatasetChartBlock>
+        </Box>
+        <FullWidthDivider />
+        <Box
+          gap="20px"
+          display="flex"
+          padding="50px 0"
+          flexDirection="row"
+          justifyContent="space-between"
+          sx={{
+            "> div": {
+              display: "flex",
+              flexDirection: "column",
+            },
+          }}
+        >
+          {BOXES.map((b, i) => (
+            <React.Fragment key={i}>
+              <Box key={b.title}>
+                <Typography fontSize="10px" marginBottom="5px"></Typography>
+                <Typography
+                  fontSize="14px"
+                  marginBottom="2px"
+                  lineHeight="normal"
+                >
+                  {b.title}
+                </Typography>
+                <img src={b.image} alt={`${b.title} img`} height={250} />
+              </Box>
+              {i !== BOXES.length - 1 && (
+                <Divider orientation="vertical" sx={{ height: "323px" }} />
+              )}
+            </React.Fragment>
+          ))}
         </Box>
       </Box>
     </DatasetPage>

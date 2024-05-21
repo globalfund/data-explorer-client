@@ -61,25 +61,21 @@ export const FullWidthDivider = () => (
 
 export const BOXES = [
   {
-    datasetName: "Relating Dataset Name",
     title:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.",
     image: "/static/images/ImagePlaceholder.png",
   },
   {
-    datasetName: "Relating Dataset Name",
     title:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.",
     image: "/static/images/ImagePlaceholder.png",
   },
   {
-    datasetName: "Relating Dataset Name",
     title:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.",
     image: "/static/images/ImagePlaceholder.png",
   },
   {
-    datasetName: "Relating Dataset Name",
     title:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.",
     image: "/static/images/ImagePlaceholder.png",

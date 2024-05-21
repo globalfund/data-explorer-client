@@ -47,6 +47,38 @@ export const ROUTES: RouteObject[] = [
         path: "/annual-results",
         element: <AnnualResultsPage />,
       },
+      {
+        path: "/about",
+        element: (
+          <div
+            style={{
+              width: "100%",
+              height: "200px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            Coming soon
+          </div>
+        ),
+      },
+      {
+        path: "*",
+        element: (
+          <div
+            style={{
+              width: "100%",
+              height: "200px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            Page not found
+          </div>
+        ),
+      },
     ],
   },
 ];

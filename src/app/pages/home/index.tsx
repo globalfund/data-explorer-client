@@ -2,6 +2,7 @@ import React from "react";
 import get from "lodash/get";
 import sumBy from "lodash/sumBy";
 import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
 import { Search } from "app/components/search";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
@@ -57,6 +58,9 @@ export const Home: React.FC = () => {
   const dataResultsStats = useStoreState(
     (state) => get(state.HomeResultsStats, "data.stats", []) as StatCompProps[]
   );
+  const loadingResultsStats = useStoreState((state) =>
+    Boolean(state.HomeResultsStats.loading)
+  );
   const fetchResultsStats = useStoreActions(
     (actions) => actions.HomeResultsStats.fetch
   );
@@ -78,9 +82,13 @@ export const Home: React.FC = () => {
     (state) =>
       get(
         state.HomeAllocationsRadialChart,
-        "data.data",
+        "data.data.chart",
         []
       ) as RadialChartDataItem[]
+  );
+  const dataAllocationsCountriesCount = useStoreState(
+    (state) =>
+      get(state.HomeAllocationsRadialChart, "data.data.countries", 0) as number
   );
   const loadingAllocationsRadialChart = useStoreState((state) =>
     Boolean(state.HomeAllocationsRadialChart.loading)
@@ -206,7 +214,7 @@ export const Home: React.FC = () => {
   const allocationsTotal = React.useMemo(() => {
     const total = sumBy(dataAllocationsRadialChart, "value");
     const range = getRange([{ value: total }], ["value"]);
-    return `$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${range.abbr}`;
+    return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${range.full}`;
   }, [dataAllocationsRadialChart]);
 
   const disbursementsTotal = React.useMemo(() => {
@@ -215,7 +223,7 @@ export const Home: React.FC = () => {
       total += sumBy(item.data);
     });
     const range = getRange([{ value: total }], ["value"]);
-    return `$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${range.abbr}`;
+    return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${range.full}`;
   }, [dataDisbursementsLineChart]);
 
   const totalPledge = React.useMemo(() => {
@@ -223,7 +231,7 @@ export const Home: React.FC = () => {
       sumBy(dataPledgesContributionsBarChart, "value"),
       3
     );
-    return `${v.number} ${v.text}`;
+    return `US$${v.number} ${v.text}`;
   }, [dataPledgesContributionsBarChart]);
 
   const totalContribution = React.useMemo(() => {
@@ -231,14 +239,35 @@ export const Home: React.FC = () => {
       sumBy(dataPledgesContributionsBarChart, "value1"),
       3
     );
-    return `${v.number} ${v.text}`;
+    return `US$${v.number} ${v.text}`;
   }, [dataPledgesContributionsBarChart]);
 
+  const totalBudget = React.useMemo(() => {
+    const total = sumBy(dataBudgetsTreemap, "value");
+    const range = getRange([{ value: total }], ["value"]);
+    return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${range.full}`;
+  }, [dataBudgetsTreemap]);
+
+  const fullWidthDivider = (
+    <Divider
+      sx={{
+        left: "-50vw",
+        width: "200vw",
+        position: "relative",
+        borderTopColor: "#868E96",
+      }}
+    />
+  );
+
   return (
-    <Box padding="60px 0">
+    <Box padding="50px 0">
       <HomeHero />
-      <Box height="64px" />
-      <HomeResultsStats stats={dataResultsStats} />
+      {fullWidthDivider}
+      <Box height="50px" />
+      <HomeResultsStats
+        stats={dataResultsStats}
+        loading={loadingResultsStats}
+      />
       <Box height="64px" />
       <Box display="flex" flexDirection="row" justifyContent="center">
         <Box width="800px">
@@ -248,10 +277,11 @@ export const Home: React.FC = () => {
       <Box height="64px" />
       <ChartBlock
         cycles={CYCLES}
-        title={`$${totalContribution}`}
+        title={`${totalContribution}`}
         selectedCycle={chart1Cycle}
         subtitle="Funds raised to date"
         loading={loadingPledgesContributionsBarChart}
+        empty={dataPledgesContributionsBarChart.length === 0}
         handleCycleChange={(value) => handleChartCycleChange(value, 1)}
         text="Government, private sector, nongovernment and other donor pledges and contributions"
       >
@@ -293,14 +323,17 @@ export const Home: React.FC = () => {
           <Typography variant="subtitle2">Contribution</Typography>
         </Box>
       </Box>
-      <Box height="64px" />
+      <Box height="50px" />
+      {fullWidthDivider}
+      <Box height="50px" />
       <ChartBlock
         cycles={CYCLES}
         title={allocationsTotal}
         selectedCycle={chart2Cycle}
         loading={loadingAllocationsRadialChart}
-        subtitle="125 countries with approved Grants in Cycle 4"
+        empty={dataAllocationsRadialChart.length === 0}
         handleCycleChange={(value) => handleChartCycleChange(value, 2)}
+        subtitle={`${dataAllocationsCountriesCount} countries with approved Grants`}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
         <RadialChart
@@ -308,19 +341,24 @@ export const Home: React.FC = () => {
           itemLabelFormatterType="name"
         />
       </ChartBlock>
-      <Box height="64px" />
+      <Box height="50px" />
+      {fullWidthDivider}
+      <Box height="50px" />
       <ChartBlock
         cycles={CYCLES}
-        title="557k Budgeted"
+        title={`${totalBudget} budgeted`}
         selectedCycle={chart3Cycle}
         loading={loadingBudgetsTreemap}
         subtitle="With transparent budget data"
+        empty={dataBudgetsTreemap.length === 0}
         handleCycleChange={(value) => handleChartCycleChange(value, 3)}
         text="Our Grant Implementation programs are developed meticulously, each Grant follows a well executed plan, always supervised by TGF Implementation team."
       >
         <Treemap data={dataBudgetsTreemap} />
       </ChartBlock>
-      <Box height="64px" />
+      <Box height="50px" />
+      {fullWidthDivider}
+      <Box height="50px" />
       <ChartBlock
         cycles={CYCLES}
         title={disbursementsTotal}
@@ -330,12 +368,15 @@ export const Home: React.FC = () => {
         subtitle="Disbursed within 5431 Grants"
         loading={loadingDisbursementsLineChart}
         handleDropdownChange={setChart4Dropdown}
+        empty={dataDisbursementsLineChart.data.length === 0}
         handleCycleChange={(value) => handleChartCycleChange(value, 4)}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
         <LineChart {...dataDisbursementsLineChart} />
       </ChartBlock>
-      <Box height="64px" />
+      <Box height="50px" />
+      {fullWidthDivider}
+      <Box height="50px" />
       <ChartBlock
         cycles={CYCLES}
         subtitle="To date"
@@ -345,6 +386,7 @@ export const Home: React.FC = () => {
         loading={loadingExpendituresHeatmap}
         dropdownItems={CHART_5_DROPDOWN_ITEMS}
         handleDropdownChange={setChart5Dropdown}
+        empty={dataExpendituresHeatmap.length === 0}
         handleCycleChange={(value) => handleChartCycleChange(value, 5)}
         text="Our Grant Implementation programs are developed meticulously, each Grant follows a well executed plan, always supervised by TGF Implementation team."
         unitButtons={chart5UnitButtons}

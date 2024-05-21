@@ -28,12 +28,26 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
         </Box>
       );
     }
+    if (props.empty) {
+      return (
+        <Box
+          width="100%"
+          height="100%"
+          display="flex"
+          minHeight="400px"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Typography>No data available</Typography>
+        </Box>
+      );
+    }
     return props.children;
-  }, [props.children, props.loading]);
+  }, [props.children, props.loading, props.empty]);
 
   return (
     <Box>
-      <Typography variant="h3" lineHeight={1}>
+      <Typography variant="h3" lineHeight={1.2}>
         {props.title}
       </Typography>
       <Typography variant="body2">{props.subtitle}</Typography>

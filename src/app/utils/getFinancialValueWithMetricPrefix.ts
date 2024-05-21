@@ -19,6 +19,12 @@ const ranges = [
     abbr_en: " K",
     full: "thousand",
   },
+  {
+    divider: 1,
+    suffix: "",
+    abbr_en: "",
+    full: "",
+  },
 ];
 
 export function getRange(
@@ -55,10 +61,17 @@ export function getRange(
       abbr: get(ranges[1], `abbr_${lang}`, ranges[1].abbr_en),
       full: get(ranges[1], `full_${lang}`, ranges[1].full),
     };
+  if (rangesCount[2] > 0) {
+    return {
+      index: 2,
+      abbr: get(ranges[2], `abbr_${lang}`, ranges[2].abbr_en),
+      full: get(ranges[2], `full_${lang}`, ranges[2].full),
+    };
+  }
   return {
-    index: 2,
-    abbr: get(ranges[2], `abbr_${lang}`, ranges[2].abbr_en),
-    full: get(ranges[2], `full_${lang}`, ranges[2].full),
+    index: 3,
+    abbr: get(ranges[3], `abbr_${lang}`, ranges[3].abbr_en),
+    full: get(ranges[3], `full_${lang}`, ranges[3].full),
   };
 }
 

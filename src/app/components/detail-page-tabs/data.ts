@@ -24,7 +24,7 @@ export const GRANT_TABS: DetailPageTabItem[] = [
     link: "/financial-insights",
   },
   {
-    label: "Targets & Results",
+    label: "Target & Results",
     link: "/targets-results",
   },
   {

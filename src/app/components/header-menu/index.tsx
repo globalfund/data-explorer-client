@@ -141,6 +141,8 @@ export const HeaderMenu: React.FC = () => {
                     width: "fit-content",
                     marginBottom: "20px",
                     borderRight: `1px solid ${colors.primary.black}`,
+                    fontWeight:
+                      subPage.link === location.pathname ? "700" : "400",
                   }}
                 >
                   {subPage.label}

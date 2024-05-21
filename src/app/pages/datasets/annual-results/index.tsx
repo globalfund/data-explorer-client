@@ -38,7 +38,6 @@ const StatComp: React.FC<{
       alignItems="flex-start"
       justifyContent="center"
     >
-      <Typography fontSize="10px">Annual Results</Typography>
       <Typography variant="h5" fontWeight="700">
         {value.number} {value.text}
       </Typography>
@@ -52,12 +51,6 @@ const StatComp: React.FC<{
 export const AnnualResultsPage: React.FC = () => {
   const [dropdownSelected, setDropdownSelected] = React.useState(
     dropdownItems[0].value
-  );
-  const [geographyGrouping, setGeographyGrouping] = React.useState(
-    geographyGroupingOptions[0].value
-  );
-  const [componentsGrouping, setComponentsGrouping] = React.useState(
-    componentsGroupingOptions[0].value
   );
 
   const dataStats = useStoreState(
@@ -109,43 +102,6 @@ export const AnnualResultsPage: React.FC = () => {
     setDropdownSelected(value);
   };
 
-  const handleGeographyGroupingChange = (value: string) => {
-    setGeographyGrouping(value);
-  };
-
-  const handleComponentsGroupingChange = (value: string) => {
-    setComponentsGrouping(value);
-  };
-
-  const toolbarRightContent = React.useMemo(() => {
-    return (
-      <Box gap="20px" display="flex" flexDirection="row" alignItems="center">
-        <Box gap="10px" display="flex" flexDirection="row" alignItems="center">
-          <Typography variant="body2" fontWeight="700">
-            Geography grouping
-          </Typography>
-          <Dropdown
-            width={150}
-            dropdownSelected={geographyGrouping}
-            dropdownItems={geographyGroupingOptions}
-            handleDropdownChange={handleGeographyGroupingChange}
-          />
-        </Box>
-        <Box gap="10px" display="flex" flexDirection="row" alignItems="center">
-          <Typography variant="body2" fontWeight="700">
-            Components grouping
-          </Typography>
-          <Dropdown
-            width={120}
-            dropdownSelected={componentsGrouping}
-            dropdownItems={componentsGroupingOptions}
-            handleDropdownChange={handleComponentsGroupingChange}
-          />
-        </Box>
-      </Box>
-    );
-  }, []);
-
   const chartContent = React.useMemo(() => {
     switch (dropdownSelected) {
       case dropdownItems[0].value:
@@ -162,6 +118,21 @@ export const AnnualResultsPage: React.FC = () => {
         );
       default:
         return null;
+    }
+  }, [dropdownSelected, dataPolyline, dataTable]);
+
+  const chartEmpty = React.useMemo(() => {
+    switch (dropdownSelected) {
+      case dropdownItems[0].value:
+        return (
+          !dataPolyline ||
+          !dataPolyline.children ||
+          !dataPolyline.children.length
+        );
+      case dropdownItems[1].value:
+        return !dataTable || !dataTable.length;
+      default:
+        return false;
     }
   }, [dropdownSelected, dataPolyline, dataTable]);
 
@@ -182,7 +153,6 @@ export const AnnualResultsPage: React.FC = () => {
       title="Annual Results"
       subtitle="Indicator results reported as part of annual Results Report."
       breadcrumbs={[{ label: "Datasets" }, { label: "Annual Results" }]}
-      toolbarRightContent={toolbarRightContent}
     >
       <Box width="100%" marginTop="50px">
         <Box
@@ -227,6 +197,7 @@ export const AnnualResultsPage: React.FC = () => {
             dropdownSelected={dropdownSelected}
             handleDropdownChange={handleSelectionChange}
             disableCollapse={dropdownSelected === dropdownItems[1].value}
+            empty={chartEmpty}
           >
             {chartContent}
           </DatasetChartBlock>

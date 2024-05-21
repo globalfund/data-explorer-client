@@ -109,6 +109,7 @@ export function SearchLayout(props: SearchLayoutProps) {
       {!isMobile && props.category && props.setCategory && (
         <Box id="search-category-dropdown" marginRight="16px">
           <Dropdown
+            height={40}
             dropdownItems={categories}
             dropdownSelected={props.category}
             handleDropdownChange={props.setCategory}
@@ -143,7 +144,7 @@ export function SearchLayout(props: SearchLayoutProps) {
           placeholder={get(
             cmsData,
             "componentsSearch.placeholder",
-            "What are you looking for?"
+            "e.g. Kenya"
           )}
           autoFocus={props.forceFocus}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>

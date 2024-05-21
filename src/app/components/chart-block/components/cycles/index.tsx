@@ -24,7 +24,7 @@ export const ChartBlockCycles: React.FC<ChartBlockCyclesProps> = (
           fontSize: "14px",
           fontWeight: "400",
           padding: "7px 24px",
-          borderRadius: "8px",
+          borderRadius: "4px",
           textTransform: "none",
           border: "1px solid #DFE3E5",
           color: appColors.CHART_BLOCK_CYCLES.BUTTON_TEXT_COLOR,

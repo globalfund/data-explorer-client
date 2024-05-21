@@ -1,3 +1,6 @@
+import AppsIcon from "@mui/icons-material/Apps";
+import TableChartIcon from "@mui/icons-material/TableChart";
+
 export const GRANTS_STORY_DATA = [
   {
     status: "Active",
@@ -133,5 +136,22 @@ export const GRANTS_STORY_DATA = [
     signed: 1000000,
     disbursed: 1000000,
     percentage: 80.5,
+  },
+];
+
+export const DROPDOWN_ITEMS: {
+  value: string;
+  label: string;
+  icon: JSX.Element;
+}[] = [
+  {
+    value: "Card View",
+    label: "Card View",
+    icon: <AppsIcon />,
+  },
+  {
+    value: "Table View",
+    label: "Table View",
+    icon: <TableChartIcon />,
   },
 ];

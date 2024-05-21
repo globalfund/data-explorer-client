@@ -10,6 +10,7 @@ export interface StatCompProps {
 
 export interface HomeResultsStatsProps {
   stats: StatCompProps[];
+  loading?: boolean;
 }
 
 export const stats: StatCompProps[] = [

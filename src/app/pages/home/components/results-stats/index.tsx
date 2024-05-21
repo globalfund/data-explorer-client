@@ -1,6 +1,7 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import CircularProgress from "@mui/material/CircularProgress";
 import { ReactComponent as TBIcon } from "app/assets/vectors/TB.svg";
 import { ReactComponent as HIVIcon } from "app/assets/vectors/HIV.svg";
 import { applyResultValueFormula } from "app/utils/applyResultValueFormula";
@@ -71,10 +72,24 @@ export const HomeResultsStats: React.FC<HomeResultsStatsProps> = (
         },
       }}
     >
-      {statsOrder.map((o) => {
-        const stat = props.stats.find((s) => s.label.includes(o));
-        return stat ? <StatComp key={stat.label} {...stat} /> : null;
-      })}
+      {props.loading && props.stats.length === 0 && (
+        <Box
+          height="75px"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          sx={{
+            width: "100% !important",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      )}
+      {props.stats.length > 0 &&
+        statsOrder.map((o) => {
+          const stat = props.stats.find((s) => s.label.includes(o));
+          return stat ? <StatComp key={stat.label} {...stat} /> : null;
+        })}
     </Box>
   );
 };
