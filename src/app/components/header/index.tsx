@@ -24,6 +24,7 @@ export const Header: React.FC = () => {
   React.useEffect(() => {
     setTimeout(() => {
       window.scrollTo({ top: 0, behavior: "smooth" });
+      if (searchOpen) setSearchOpen(false);
     }, 100);
   }, [pathname]);
 

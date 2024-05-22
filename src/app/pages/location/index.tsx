@@ -318,7 +318,7 @@ export const Location: React.FC = () => {
       fetchResultsTable({
         routeParams: {
           code: params.id,
-          cycle: resultsYear,
+          cycle: resultsYear.value,
         },
       });
     }

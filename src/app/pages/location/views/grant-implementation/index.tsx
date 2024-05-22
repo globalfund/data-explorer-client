@@ -108,7 +108,10 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
     get(state.GeographyGrantsTable, "data.count", 0)
   );
 
-  const handleChartCycleChange = (cycle: string, index: number) => {
+  const handleChartCycleChange = (
+    cycle: { name: string; value: string },
+    index: number
+  ) => {
     switch (index) {
       case 1:
         setChart1Cycle(cycle);

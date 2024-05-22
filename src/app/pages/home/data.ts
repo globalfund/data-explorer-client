@@ -1,11 +1,11 @@
 export const CYCLES = [
-  "All",
-  "Cycle 1",
-  "Cycle 2",
-  "Cycle 3",
-  "Cycle 4",
-  "Cycle 5",
-  "Cycle 6",
+  { name: "All", value: "All" },
+  { name: "Cycle 1", value: "Cycle 1" },
+  { name: "Cycle 2", value: "Cycle 2" },
+  { name: "Cycle 3", value: "Cycle 3" },
+  { name: "Cycle 4", value: "Cycle 4" },
+  { name: "Cycle 5", value: "Cycle 5" },
+  { name: "Cycle 6", value: "Cycle 6" },
 ];
 
 export const CHART_4_DROPDOWN_ITEMS = [

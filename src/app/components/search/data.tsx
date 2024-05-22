@@ -15,9 +15,9 @@ export const categories = [
     icon: <AllCategoriesIcon />,
   },
   { value: "Locations", label: "Locations", icon: <LocationsIcon /> },
+  { value: "Grants", label: "Grants", icon: <GrantsIcon /> },
   { value: "Partners", label: "Partners", icon: <PartnersIcon /> },
   { value: "Donors", label: "Donors", icon: <DonorsIcon /> },
-  { value: "Grants", label: "Grants", icon: <GrantsIcon /> },
   { value: "Results", label: "Results", icon: <ResultsIcon /> },
   { value: "Documents", label: "Documents", icon: <DocumentsIcon /> },
 ];

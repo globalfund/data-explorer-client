@@ -35,7 +35,7 @@ export const AccessToFunding: React.FC = () => {
     (state) =>
       get(
         state.GeographyAllocationsRadialChart,
-        "data.data",
+        "data.data.chart",
         []
       ) as RadialChartDataItem[]
   );
@@ -68,7 +68,10 @@ export const AccessToFunding: React.FC = () => {
     get(state.GeographyDocumentsTable, "data.data", [])
   );
 
-  const handleChartCycleChange = (cycle: string, index: number) => {
+  const handleChartCycleChange = (
+    cycle: { name: string; value: string },
+    index: number
+  ) => {
     switch (index) {
       case 1:
         setChart1Cycle(cycle);

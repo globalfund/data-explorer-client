@@ -113,6 +113,9 @@ export const Home: React.FC = () => {
         xAxisKeys: [],
       }) as LineChartProps
   );
+  const activitiesCountDisbursements = useStoreState((state) =>
+    get(state.HomeDisbursementsLineChart, "data.activitiesCount", 0)
+  );
   const loadingDisbursementsLineChart = useStoreState((state) =>
     Boolean(state.HomeDisbursementsLineChart.loading)
   );
@@ -129,8 +132,46 @@ export const Home: React.FC = () => {
   const fetchExpendituresHeatmap = useStoreActions(
     (actions) => actions.HomeExpendituresHeatmap.fetch
   );
+  const pledgesContributionsCycles = useStoreState(
+    (state) =>
+      get(state.PledgesContributionsCycles, "data.data", []) as {
+        name: string;
+        value: string;
+      }[]
+  );
+  const allocationsCycles = useStoreState(
+    (state) =>
+      get(state.AllocationsCycles, "data.data", []) as {
+        name: string;
+        value: string;
+      }[]
+  );
+  const budgetsCycles = useStoreState(
+    (state) =>
+      get(state.BudgetsCycles, "data.data", []) as {
+        name: string;
+        value: string;
+      }[]
+  );
+  const disbursementsCycles = useStoreState(
+    (state) =>
+      get(state.DisbursementsCycles, "data.data", []) as {
+        name: string;
+        value: string;
+      }[]
+  );
+  const expendituresCycles = useStoreState(
+    (state) =>
+      get(state.ExpendituresCycles, "data.data", []) as {
+        name: string;
+        value: string;
+      }[]
+  );
 
-  const handleChartCycleChange = (cycle: string, index: number) => {
+  const handleChartCycleChange = (
+    cycle: { name: string; value: string },
+    index: number
+  ) => {
     switch (index) {
       case 1:
         setChart1Cycle(cycle);
@@ -195,21 +236,98 @@ export const Home: React.FC = () => {
     [chart5Unit]
   );
 
-  React.useEffect(() => {
-    fetchResultsStats({
-      filterString: "cycle=2022",
-    });
-    fetchPledgesContributionsBarChart({});
-    fetchAllocationsRadialChart({});
-    fetchBudgetsTreemap({});
-    fetchDisbursementsLineChart({});
+  const reloadPledgesContributionsBarChart = (cycle: {
+    name: string;
+    value: string;
+  }) => {
+    let filterString = "";
+    if (cycle.value !== "All") {
+      filterString = `periods=${cycle.value}`;
+    }
+    fetchPledgesContributionsBarChart({ filterString });
+  };
+
+  const reloadAllocationsRadialChart = (cycle: {
+    name: string;
+    value: string;
+  }) => {
+    let filterString = "";
+    if (cycle.value !== "All") {
+      filterString = `periods=${cycle.value}`;
+    }
+    fetchAllocationsRadialChart({ filterString });
+  };
+
+  const reloadBudgetsTreemap = (cycle: { name: string; value: string }) => {
+    let filterString = "";
+    if (cycle.value !== "All") {
+      const years = cycle.value.split(" - ");
+      if (years.length === 1) filterString = `years=${years[0]}`;
+      if (years.length === 2)
+        filterString = `years=${years[0]}&yearsTo=${years[1]}`;
+    }
+    fetchBudgetsTreemap({ filterString });
+  };
+
+  const reloadDisbursementsLineChart = (cycle: {
+    name: string;
+    value: string;
+  }) => {
+    let filterString = "";
+    if (cycle.value !== "All") {
+      const years = cycle.value.split(" - ");
+      if (years.length === 1) filterString = `years=${years[0]}`;
+      if (years.length === 2)
+        filterString = `years=${years[0]}&yearsTo=${years[1]}`;
+    }
+    fetchDisbursementsLineChart({ filterString });
+  };
+
+  const reloadExpendituresHeatmap = (cycle: {
+    name: string;
+    value: string;
+  }) => {
+    let filterString = "";
+    if (cycle.value !== "All") {
+      const years = cycle.value.split(" - ");
+      if (years.length === 1) filterString = `years=${years[0]}`;
+      if (years.length === 2)
+        filterString = `years=${years[0]}&yearsTo=${years[1]}`;
+    }
     fetchExpendituresHeatmap({
+      filterString,
       routeParams: {
         row: "principalRecipientType,principalRecipient",
         column: "component",
       },
     });
+  };
+
+  React.useEffect(() => {
+    fetchResultsStats({
+      filterString: "cycle=2022",
+    });
   }, []);
+
+  React.useEffect(() => {
+    reloadPledgesContributionsBarChart(chart1Cycle);
+  }, [chart1Cycle]);
+
+  React.useEffect(() => {
+    reloadAllocationsRadialChart(chart2Cycle);
+  }, [chart2Cycle]);
+
+  React.useEffect(() => {
+    reloadBudgetsTreemap(chart3Cycle);
+  }, [chart3Cycle]);
+
+  React.useEffect(() => {
+    reloadDisbursementsLineChart(chart4Cycle);
+  }, [chart4Cycle]);
+
+  React.useEffect(() => {
+    reloadExpendituresHeatmap(chart5Cycle);
+  }, [chart5Cycle]);
 
   const allocationsTotal = React.useMemo(() => {
     const total = sumBy(dataAllocationsRadialChart, "value");
@@ -276,10 +394,10 @@ export const Home: React.FC = () => {
       </Box>
       <Box height="64px" />
       <ChartBlock
-        cycles={CYCLES}
         title={`${totalContribution}`}
         selectedCycle={chart1Cycle}
         subtitle="Funds raised to date"
+        cycles={pledgesContributionsCycles}
         loading={loadingPledgesContributionsBarChart}
         empty={dataPledgesContributionsBarChart.length === 0}
         handleCycleChange={(value) => handleChartCycleChange(value, 1)}
@@ -327,8 +445,8 @@ export const Home: React.FC = () => {
       {fullWidthDivider}
       <Box height="50px" />
       <ChartBlock
-        cycles={CYCLES}
         title={allocationsTotal}
+        cycles={allocationsCycles}
         selectedCycle={chart2Cycle}
         loading={loadingAllocationsRadialChart}
         empty={dataAllocationsRadialChart.length === 0}
@@ -345,7 +463,7 @@ export const Home: React.FC = () => {
       {fullWidthDivider}
       <Box height="50px" />
       <ChartBlock
-        cycles={CYCLES}
+        cycles={budgetsCycles}
         title={`${totalBudget} budgeted`}
         selectedCycle={chart3Cycle}
         loading={loadingBudgetsTreemap}
@@ -360,16 +478,16 @@ export const Home: React.FC = () => {
       {fullWidthDivider}
       <Box height="50px" />
       <ChartBlock
-        cycles={CYCLES}
         title={disbursementsTotal}
         selectedCycle={chart4Cycle}
+        cycles={disbursementsCycles}
         dropdownSelected={chart4Dropdown}
         dropdownItems={CHART_4_DROPDOWN_ITEMS}
-        subtitle="Disbursed within 5431 Grants"
         loading={loadingDisbursementsLineChart}
         handleDropdownChange={setChart4Dropdown}
         empty={dataDisbursementsLineChart.data.length === 0}
         handleCycleChange={(value) => handleChartCycleChange(value, 4)}
+        subtitle={`Disbursed within ${activitiesCountDisbursements} Grants`}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
         <LineChart {...dataDisbursementsLineChart} />
@@ -378,10 +496,10 @@ export const Home: React.FC = () => {
       {fullWidthDivider}
       <Box height="50px" />
       <ChartBlock
-        cycles={CYCLES}
         subtitle="To date"
         title="Expenditures"
         selectedCycle={chart5Cycle}
+        cycles={expendituresCycles}
         dropdownSelected={chart5Dropdown}
         loading={loadingExpendituresHeatmap}
         dropdownItems={CHART_5_DROPDOWN_ITEMS}

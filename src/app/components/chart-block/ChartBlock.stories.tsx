@@ -1,35 +1,22 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 
+import { CYCLES } from "app/pages/home/data";
 import { BarChart } from "app/components/charts/bar";
 import { ChartBlock } from "app/components/chart-block";
 import { withRouter } from "storybook-addon-remix-react-router";
 import { STORY_DATA_VARIANT_2 } from "app/components/charts/bar/data";
 
-const cycles = [
-  "All",
-  "Cycle 1",
-  "Cycle 2",
-  "Cycle 3",
-  "Cycle 4",
-  "Cycle 5",
-  "Cycle 6",
-];
-
 const Wrapper: React.FC = () => {
-  const [selectedCycle, setSelectedCycle] = React.useState("All");
-
-  const handleCycleChange = (cycle: string) => {
-    setSelectedCycle(cycle);
-  };
+  const [selectedCycle, setSelectedCycle] = React.useState(CYCLES[0]);
 
   return (
     <ChartBlock
-      cycles={cycles}
+      cycles={CYCLES}
       title="$84 Billion"
       selectedCycle={selectedCycle}
       subtitle="Funds raised to date"
-      handleCycleChange={handleCycleChange}
+      handleCycleChange={setSelectedCycle}
       text="Government, private sector, nongovernment and other donor pledges and contributions"
     >
       <BarChart

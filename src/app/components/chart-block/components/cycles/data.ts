@@ -1,5 +1,5 @@
 export interface ChartBlockCyclesProps {
-  cycles: string[];
-  selectedCycle: string;
-  handleCycleChange: (cycle: string) => void;
+  cycles: { name: string; value: string }[];
+  selectedCycle: { name: string; value: string };
+  handleCycleChange: (cycle: { name: string; value: string }) => void;
 }

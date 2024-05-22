@@ -42,6 +42,17 @@ export function SearchResults(props: SearchResultsProps) {
       )}
       <Results>
         {props.results.map((result: SearchResultModel) => {
+          if (!result.link) {
+            return (
+              <ResultA
+                key={result.value}
+                style={{ cursor: "not-allowed", pointerEvents: "none" }}
+              >
+                {result.type && result.type.length > 0 && getIcon(result.type)}
+                <div>{result.label}</div>
+              </ResultA>
+            );
+          }
           if (result.link.indexOf("http") > -1) {
             return (
               <ResultA

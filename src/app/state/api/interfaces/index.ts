@@ -203,6 +203,13 @@ export interface StoreModel {
   LocationAccessToFunding: {
     GrantCycles: ApiCallModel;
   };
+  AllocationsCycles: ApiCallModel;
+  FundingRequestsCycles: ApiCallModel;
+  AnnualResultsCycles: ApiCallModel;
+  BudgetsCycles: ApiCallModel;
+  PledgesContributionsCycles: ApiCallModel;
+  DisbursementsCycles: ApiCallModel;
+  ExpendituresCycles: ApiCallModel;
   // sync state variables
   AppliedFiltersState: AppliedFiltersStateModel;
   // CMS

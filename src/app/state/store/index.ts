@@ -106,6 +106,15 @@ import {
   EligibilityStatusCodelist,
   EligibilityDiseaseBurdenCodelist,
 } from "app/state/api/action-reducers/viz/eligibility";
+import {
+  AllocationsCycles,
+  AnnualResultsCycles,
+  BudgetsCycles,
+  DisbursementsCycles,
+  ExpendituresCycles,
+  FundingRequestsCycles,
+  PledgesContributionsCycles,
+} from "app/state/api/action-reducers/filters/cycles";
 
 const storeContent: StoreModel = {
   // homepage
@@ -221,6 +230,13 @@ const storeContent: StoreModel = {
   LocationAccessToFunding: {
     GrantCycles: persist(FundingRequestsTableGeneric),
   },
+  AllocationsCycles: persist(AllocationsCycles),
+  FundingRequestsCycles: persist(FundingRequestsCycles),
+  AnnualResultsCycles: persist(AnnualResultsCycles),
+  BudgetsCycles: persist(BudgetsCycles),
+  PledgesContributionsCycles: persist(PledgesContributionsCycles),
+  DisbursementsCycles: persist(DisbursementsCycles),
+  ExpendituresCycles: persist(ExpendituresCycles),
   // sync state variables
   AppliedFiltersState: persist(AppliedFiltersState),
   // CMS API
