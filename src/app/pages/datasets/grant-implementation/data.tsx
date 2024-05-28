@@ -7,7 +7,9 @@ import { ReactComponent as LineChartIcon } from "app/assets/vectors/Select_LineC
 import { ReactComponent as SankeyChartIcon } from "app/assets/vectors/Select_SankeyChart.svg";
 
 export const geographyGroupingOptions = [
+  { value: "Standard View", label: "Standard View" },
   { value: "Portfolio View", label: "Portfolio View" },
+  { value: "Board Constituency View", label: "Board Constituency View" },
 ];
 
 export const componentsGroupingOptions = [

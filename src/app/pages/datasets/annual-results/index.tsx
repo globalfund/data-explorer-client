@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
 import { DatasetPage } from "app/pages/datasets/common/page";
 import { PolylineTree } from "app/components/charts/polyline-tree";
+import { FilterGroupModel } from "app/components/filters/list/data";
 import { TABLE_VARIATION_9_COLUMNS } from "app/components/table/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
@@ -53,6 +54,13 @@ export const AnnualResultsPage: React.FC = () => {
     dropdownItems[0].value
   );
 
+  const annualResultsCycles = useStoreState(
+    (state) => get(state.AnnualResultsCycles, "data.data", []) as number[]
+  );
+  const [yearSelected, setYearSelected] = React.useState(
+    annualResultsCycles[0].toString()
+  );
+
   const dataStats = useStoreState(
     (state) =>
       get(state.AnnualResultsStats, "data.stats", []) as {
@@ -97,9 +105,43 @@ export const AnnualResultsPage: React.FC = () => {
         return false;
     }
   });
+  const dataLocationFilterOptions = useStoreState(
+    (state) =>
+      get(state.LocationFilterOptions, "data.data", {
+        id: "",
+        name: "",
+        options: [],
+      }) as FilterGroupModel
+  );
+  const dataComponentFilterOptions = useStoreState(
+    (state) =>
+      get(state.ComponentFilterOptions, "data.data", {
+        id: "",
+        name: "",
+        options: [],
+      }) as FilterGroupModel
+  );
+  const pageAppliedFilters = useStoreState((state) => [
+    ...state.AppliedFiltersState.components,
+    ...state.AppliedFiltersState.locations,
+  ]);
+  const appliedFiltersData = useStoreState(
+    (state) => state.AppliedFiltersState
+  );
+  const appliedFiltersActions = useStoreActions(
+    (actions) => actions.AppliedFiltersState
+  );
 
   const handleSelectionChange = (value: string) => {
     setDropdownSelected(value);
+  };
+
+  const handleResetFilters = () => {
+    appliedFiltersActions.setAll({
+      ...appliedFiltersData,
+      locations: [],
+      components: [],
+    });
   };
 
   const chartContent = React.useMemo(() => {
@@ -136,21 +178,64 @@ export const AnnualResultsPage: React.FC = () => {
     }
   }, [dropdownSelected, dataPolyline, dataTable]);
 
+  const filterGroups = React.useMemo(() => {
+    return [dataLocationFilterOptions, dataComponentFilterOptions];
+  }, [dataLocationFilterOptions, dataComponentFilterOptions]);
+
+  const filterString = React.useMemo(() => {
+    let filterString = "";
+    if (appliedFiltersData.locations.length > 0) {
+      filterString += `geographies=${encodeURIComponent(appliedFiltersData.locations.join(","))}`;
+    }
+    if (appliedFiltersData.components.length > 0) {
+      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(appliedFiltersData.components.join(","))}`;
+    }
+    return filterString;
+  }, [appliedFiltersData]);
+
+  const toolbarRightContent = React.useMemo(() => {
+    return (
+      <Box gap="20px" display="flex" flexDirection="row" alignItems="center">
+        <Box gap="10px" display="flex" flexDirection="row" alignItems="center">
+          <Typography variant="body2" fontWeight="700">
+            Reporting Result Year
+          </Typography>
+          <Dropdown
+            width={100}
+            dropdownSelected={yearSelected}
+            dropdownItems={annualResultsCycles.map((c) => ({
+              label: c.toString(),
+              value: c.toString(),
+            }))}
+            handleDropdownChange={(value) => {
+              setYearSelected(value);
+            }}
+          />
+        </Box>
+      </Box>
+    );
+  }, [yearSelected]);
+
   React.useEffect(() => {
     fetchStats({
-      filterString: "cycle=2022",
+      filterString: `${filterString}${filterString.length ? "&" : ""}cycle=${yearSelected}`,
     });
     fetchPolyline({
+      filterString,
       routeParams: {
-        cycle: "2022",
+        cycle: yearSelected,
       },
     });
-    fetchTable({});
-  }, []);
+    fetchTable({ filterString });
+  }, [filterString, yearSelected]);
 
   return (
     <DatasetPage
       title="Annual Results"
+      filterGroups={filterGroups}
+      appliedFilters={pageAppliedFilters}
+      handleResetFilters={handleResetFilters}
+      toolbarRightContent={toolbarRightContent}
       subtitle="Indicator results reported as part of annual Results Report."
       breadcrumbs={[{ label: "Datasets" }, { label: "Annual Results" }]}
     >

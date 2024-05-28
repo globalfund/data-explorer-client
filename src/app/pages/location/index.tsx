@@ -273,15 +273,22 @@ export const Location: React.FC = () => {
       });
       fetchDisbursementsLineChart({
         filterString: `geographies=${params.id}`,
+        routeParams: {
+          componentField: "activityAreaGroup",
+        },
       });
       fetchBudgetSankeyChart({
         filterString: `geographies=${params.id}`,
+        routeParams: {
+          componentField: "activityAreaGroup",
+        },
       });
       fetchExpendituresHeatmap({
         filterString: `geographies=${params.id}`,
         routeParams: {
           row: "principalRecipientType,principalRecipient",
           column: "component",
+          componentField: "activityAreaGroup",
         },
       });
       fetchGrantsPieCharts({
@@ -290,7 +297,7 @@ export const Location: React.FC = () => {
         },
       });
       fetchResultStats({
-        filterString: `geographies=${params.id}&cycle=${RESULT_YEARS[RESULT_YEARS.length - 1]}`,
+        filterString: `geographies=${params.id}&cycle=${RESULT_YEARS[RESULT_YEARS.length - 1].value}`,
       });
       fetchDocumentsTable({
         filterString: `types=Application&geographies=${params.id}`,

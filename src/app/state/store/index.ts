@@ -22,7 +22,6 @@ import componentsSearch from "app/state/api/action-reducers/cms/componentsSearch
 import componentsMobile from "app/state/api/action-reducers/cms/componentsMobile";
 import LocationFilterOptions from "app/state/api/action-reducers/filters/locations";
 import componentsSidebar from "app/state/api/action-reducers/cms/componentsSidebar";
-import ComponentFilterOptions from "app/state/api/action-reducers/filters/components";
 import modulesGrantDetail from "app/state/api/action-reducers/cms/modulesGrantDetail";
 import { AnnualResultsStats } from "app/state/api/action-reducers/annual-results/stats";
 import { AnnualResultsTable } from "app/state/api/action-reducers/annual-results/table";
@@ -61,8 +60,8 @@ import { GrantDisbursementsBarChart } from "app/state/api/action-reducers/grant/
 import { HomeAllocationsRadialChart } from "app/state/api/action-reducers/home/allocations-radial-chart";
 import { HomeDisbursementsLineChart } from "app/state/api/action-reducers/home/disbursements-line-chart";
 import { GeographyBudgetSankeyChart } from "app/state/api/action-reducers/geography/budgets-sankey-chart";
-import ReplenishmentPeriodFilterOptions from "app/state/api/action-reducers/filters/replenishmentPeriods";
 import { GeographyEligibilityHeatmap } from "app/state/api/action-reducers/geography/eligibility-heatmap";
+import ReplenishmentPeriodFilterOptions from "app/state/api/action-reducers/filters/replenishment-periods";
 import { GeographyExpendituresHeatmap } from "app/state/api/action-reducers/geography/expenditures-heatmap";
 import { FinancialInsightsBudgetTable } from "app/state/api/action-reducers/financial-insights/budget-table";
 import { GeographyFundingRequestsTable } from "app/state/api/action-reducers/geography/funding-requests-table";
@@ -93,6 +92,9 @@ import componentsPerformanceFrameworkComponents from "app/state/api/action-reduc
 import { FinancialInsightsDisbursementsLineChart } from "app/state/api/action-reducers/financial-insights/disbursements-line-chart";
 import { FinancialInsightsDisbursementUtilisation } from "app/state/api/action-reducers/financial-insights/disbursement-utilisation";
 import { ResourceMobilizationExpandableBarChart } from "app/state/api/action-reducers/resource-mobilization/pledges-contributions-expandable-bar-chart";
+import ComponentFilterOptions, {
+  ResultsComponentFilterOptions,
+} from "app/state/api/action-reducers/filters/components";
 import {
   GeographyGrantsTable,
   GeographyGrantsPieCharts,
@@ -237,6 +239,7 @@ const storeContent: StoreModel = {
   PledgesContributionsCycles: persist(PledgesContributionsCycles),
   DisbursementsCycles: persist(DisbursementsCycles),
   ExpendituresCycles: persist(ExpendituresCycles),
+  ResultsComponentFilterOptions: persist(ResultsComponentFilterOptions),
   // sync state variables
   AppliedFiltersState: persist(AppliedFiltersState),
   // CMS API

@@ -18,13 +18,14 @@ import { GrantCard } from "app/components/grant-card";
 import { DROPDOWN_ITEMS } from "app/pages/grants/data";
 import ArrowBack from "@mui/icons-material/ArrowBackIos";
 import { FilterPanel } from "app/components/filters/panel";
+import useUpdateEffect from "react-use/lib/useUpdateEffect";
 import CircularProgress from "@mui/material/CircularProgress";
 import ArrowForward from "@mui/icons-material/ArrowForwardIos";
 import { GrantCardProps } from "app/components/grant-card/data";
 import { getMonthFromNumber } from "app/utils/getMonthFromNumber";
+import { FilterGroupModel } from "app/components/filters/list/data";
 import { TABLE_VARIATION_5_COLUMNS } from "app/components/table/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import useUpdateEffect from "react-use/lib/useUpdateEffect";
 
 export const Grants: React.FC = () => {
   const [page, setPage] = React.useState(1);
@@ -39,6 +40,52 @@ export const Grants: React.FC = () => {
   const count = useStoreState((state) => get(state.GrantList, "data.count", 0));
   const loading = useStoreState((state) => state.GrantList.loading);
   const fetch = useStoreActions((actions) => actions.GrantList.fetch);
+
+  const dataLocationFilterOptions = useStoreState(
+    (state) =>
+      get(state.LocationFilterOptions, "data.data", {
+        id: "",
+        name: "",
+        options: [],
+      }) as FilterGroupModel
+  );
+  const dataComponentFilterOptions = useStoreState(
+    (state) =>
+      get(state.ComponentFilterOptions, "data.data", {
+        id: "",
+        name: "",
+        options: [],
+      }) as FilterGroupModel
+  );
+  const dataPartnerTypeFilterOptions = useStoreState(
+    (state) =>
+      get(state.PartnerTypeFilterOptions, "data.data", {
+        id: "",
+        name: "",
+        options: [],
+      }) as FilterGroupModel
+  );
+  const dataStatusFilterOptions = useStoreState(
+    (state) =>
+      get(state.StatusFilterOptions, "data.data", {
+        id: "",
+        name: "",
+        options: [],
+      }) as FilterGroupModel
+  );
+  const pageAppliedFilters = useStoreState((state) => [
+    ...state.AppliedFiltersState.components,
+    ...state.AppliedFiltersState.locations,
+    ...state.AppliedFiltersState.principalRecipientTypes,
+    ...state.AppliedFiltersState.principalRecipients,
+    ...state.AppliedFiltersState.status,
+  ]);
+  const appliedFiltersData = useStoreState(
+    (state) => state.AppliedFiltersState
+  );
+  const appliedFiltersActions = useStoreActions(
+    (actions) => actions.AppliedFiltersState
+  );
 
   const handleFilterButtonClick = (
     event: React.MouseEvent<HTMLButtonElement>
@@ -61,6 +108,17 @@ export const Grants: React.FC = () => {
 
   const handleViewChange = (value: string) => {
     setView(value);
+  };
+
+  const handleResetFilters = () => {
+    appliedFiltersActions.setAll({
+      ...appliedFiltersData,
+      locations: [],
+      components: [],
+      principalRecipients: [],
+      principalRecipientTypes: [],
+      status: [],
+    });
   };
 
   const dataTable = React.useMemo(() => {
@@ -184,6 +242,40 @@ export const Grants: React.FC = () => {
 
   const searchInputRef = React.useRef<HTMLInputElement>(null);
 
+  const filterGroups = React.useMemo(() => {
+    return [
+      dataLocationFilterOptions,
+      dataComponentFilterOptions,
+      dataPartnerTypeFilterOptions,
+      dataStatusFilterOptions,
+    ];
+  }, [
+    dataLocationFilterOptions,
+    dataComponentFilterOptions,
+    dataPartnerTypeFilterOptions,
+    dataStatusFilterOptions,
+  ]);
+
+  const filterString = React.useMemo(() => {
+    let filterString = "";
+    if (appliedFiltersData.locations.length > 0) {
+      filterString += `geographies=${encodeURIComponent(appliedFiltersData.locations.join(","))}`;
+    }
+    if (appliedFiltersData.components.length > 0) {
+      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(appliedFiltersData.components.join(","))}`;
+    }
+    if (appliedFiltersData.principalRecipientTypes.length > 0) {
+      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientTypes=${encodeURIComponent(appliedFiltersData.principalRecipientTypes.join(","))}`;
+    }
+    if (appliedFiltersData.principalRecipients.length > 0) {
+      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipients=${encodeURIComponent(appliedFiltersData.principalRecipients.join(","))}`;
+    }
+    if (appliedFiltersData.status.length > 0) {
+      filterString += `${filterString.length > 0 ? "&" : ""}status=${encodeURIComponent(appliedFiltersData.status.join(","))}`;
+    }
+    return filterString;
+  }, [appliedFiltersData]);
+
   React.useEffect(() => {
     if (showSearch) {
       searchInputRef.current?.focus();
@@ -196,9 +288,9 @@ export const Grants: React.FC = () => {
         page: `${page}`,
         pageSize: "9",
       },
-      filterString: `q=${search}`,
+      filterString: `q=${search}${filterString.length ? `&${filterString}` : ""}`,
     });
-  }, [page]);
+  }, [page, filterString]);
 
   useUpdateEffect(() => {
     if (search.length === 0) {
@@ -207,7 +299,7 @@ export const Grants: React.FC = () => {
           page: `${page}`,
           pageSize: "9",
         },
-        filterString: `q=${search}`,
+        filterString: `q=${search}${filterString.length ? `&${filterString}` : ""}`,
       });
     }
   }, [search]);
@@ -245,6 +337,22 @@ export const Grants: React.FC = () => {
             variant="outlined"
             startIcon={<Add />}
             onClick={handleFilterButtonClick}
+            sx={
+              pageAppliedFilters.length > 0
+                ? {
+                    "&:after": {
+                      top: "-3px",
+                      right: "8px",
+                      width: "6px",
+                      height: "6px",
+                      content: "''",
+                      borderRadius: "50%",
+                      position: "absolute",
+                      background: "#FF9800",
+                    },
+                  }
+                : {}
+            }
           >
             Filters
           </Button>
@@ -258,14 +366,10 @@ export const Grants: React.FC = () => {
             }}
           >
             <FilterPanel
+              filterGroups={filterGroups}
               onClose={handleFilterPanelClose}
-              appliedFilters={[
-                "Africa",
-                "Asia",
-                "Americas",
-                "Europe",
-                "Oceania",
-              ]}
+              appliedFilters={pageAppliedFilters}
+              handleResetFilters={handleResetFilters}
               appliedFilterBgColors={{
                 hover: "#FF9800",
                 normal: "rgba(255, 152, 0, 0.2)",

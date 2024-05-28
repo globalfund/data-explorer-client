@@ -180,7 +180,7 @@ export const GrantImplementation: React.FC = () => {
       [{ value: dataFinancialValues.disbursement }],
       ["value"]
     );
-    return `$${getFinancialValueWithMetricPrefix(dataFinancialValues.disbursement, range.index, 2)} ${range.full}`;
+    return `US$${getFinancialValueWithMetricPrefix(dataFinancialValues.disbursement, range.index, 2)} ${range.full}`;
   }, [dataFinancialValues.disbursement]);
 
   React.useEffect(() => {

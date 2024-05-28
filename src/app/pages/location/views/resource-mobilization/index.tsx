@@ -2,19 +2,22 @@ import React from "react";
 import get from "lodash/get";
 import sumBy from "lodash/sumBy";
 import Box from "@mui/material/Box";
+import { useParams } from "react-router-dom";
 import { CYCLES } from "app/pages/home/data";
 import Typography from "@mui/material/Typography";
 import { BarChart } from "app/components/charts/bar";
-import { useStoreState } from "app/state/store/hooks";
 import { ChartBlock } from "app/components/chart-block";
+import useUpdateEffect from "react-use/lib/useUpdateEffect";
 import { BarChartDataItem } from "app/components/charts/bar/data";
-import { formatFinancialValue } from "app/utils/formatFinancialValue";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import {
   getFinancialValueWithMetricPrefix,
   getRange,
 } from "app/utils/getFinancialValueWithMetricPrefix";
 
 export const ResourceMobilization: React.FC = () => {
+  const params = useParams<{ id: string; tab: string }>();
+
   const [chart1Cycle, setChart1Cycle] = React.useState(CYCLES[0]);
 
   const dataRMBarChart = useStoreState(
@@ -25,6 +28,27 @@ export const ResourceMobilization: React.FC = () => {
         []
       ) as BarChartDataItem[]
   );
+  const loadingRMBarChart = useStoreState(
+    (state) => state.GeographyResourceMobilizationBarChart.loading
+  );
+  const fetchRMBarChart = useStoreActions(
+    (actions) => actions.GeographyResourceMobilizationBarChart.fetch
+  );
+  const cycles = useStoreState(
+    (state) =>
+      get(state.PledgesContributionsCycles, "data.data", []) as {
+        name: string;
+        value: string;
+      }[]
+  );
+
+  useUpdateEffect(() => {
+    let filterString = `donorGeographies=${params.id}`;
+    if (chart1Cycle.value !== CYCLES[0].value) {
+      filterString += `&periods=${chart1Cycle.value}`;
+    }
+    fetchRMBarChart({ filterString });
+  }, [chart1Cycle]);
 
   const totalPledge = React.useMemo(() => {
     const value = sumBy(dataRMBarChart, "value");
@@ -39,11 +63,12 @@ export const ResourceMobilization: React.FC = () => {
   }, [dataRMBarChart]);
 
   return (
-    <Box paddingTop="64px">
+    <Box>
       <ChartBlock
-        cycles={CYCLES}
-        title={`$${totalContribution}`}
+        cycles={cycles}
+        title={`US$${totalContribution}`}
         selectedCycle={chart1Cycle}
+        loading={loadingRMBarChart}
         empty={dataRMBarChart.length === 0}
         subtitle="Funds Contributed to date"
         handleCycleChange={(value) => setChart1Cycle(value)}
@@ -71,10 +96,11 @@ export const ResourceMobilization: React.FC = () => {
           flexDirection="column"
         >
           <Typography variant="h3" fontWeight="900">
-            ${totalPledge}
+            US${totalPledge}
           </Typography>
           <Typography variant="subtitle2">
-            Total Pledge{chart1Cycle !== CYCLES[0] ? ` ${chart1Cycle}` : ""}
+            Total Pledge
+            {chart1Cycle !== CYCLES[0] ? ` ${chart1Cycle.name}` : ""}
           </Typography>
         </Box>
         <Box
@@ -84,11 +110,11 @@ export const ResourceMobilization: React.FC = () => {
           flexDirection="column"
         >
           <Typography variant="h3" fontWeight="900">
-            ${totalContribution}
+            US${totalContribution}
           </Typography>
           <Typography variant="subtitle2">
             Total Contribution
-            {chart1Cycle !== CYCLES[0] ? ` ${chart1Cycle}` : ""}
+            {chart1Cycle !== CYCLES[0] ? ` ${chart1Cycle.name}` : ""}
           </Typography>
         </Box>
       </Box>

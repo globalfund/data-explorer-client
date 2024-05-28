@@ -24,6 +24,9 @@ export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
   const dataResultsTable = useStoreState((state) =>
     get(state.GeographyResultsTable, "data.data", [])
   );
+  const loadingResultsTable = useStoreState(
+    (state) => state.GeographyResultsTable.loading
+  );
   const dataDocumentsTable = useStoreState((state) =>
     get(state.GeographyResultsDocumentsTable, "data.data", [])
   );
@@ -51,6 +54,7 @@ export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
         title="Results"
         noBottomToolbar
         cycles={RESULT_YEARS}
+        loading={loadingResultsTable}
         subtitle="Based on achievements"
         selectedCycle={props.resultsYear}
         empty={dataResultsTable.length === 0}

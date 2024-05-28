@@ -23,6 +23,24 @@ export const useInitialLoad = () => {
   const fetchBudgetsCycles = useStoreActions(
     (actions) => actions.BudgetsCycles.fetch
   );
+  const fetchDonorFilterOptions = useStoreActions(
+    (actions) => actions.DonorFilterOptions.fetch
+  );
+  const fetchReplenishmentPeriodFilterOptions = useStoreActions(
+    (actions) => actions.ReplenishmentPeriodFilterOptions.fetch
+  );
+  const fetchLocationFilterOptions = useStoreActions(
+    (actions) => actions.LocationFilterOptions.fetch
+  );
+  const fetchComponentFilterOptions = useStoreActions(
+    (actions) => actions.ComponentFilterOptions.fetch
+  );
+  const fetchPartnerTypeFilterOptions = useStoreActions(
+    (actions) => actions.PartnerTypeFilterOptions.fetch
+  );
+  const fetchStatusFilterOptions = useStoreActions(
+    (actions) => actions.StatusFilterOptions.fetch
+  );
 
   React.useEffect(() => {
     fetchAllocationsCycles({});
@@ -32,6 +50,12 @@ export const useInitialLoad = () => {
     fetchPledgesContributionsCycles({});
     fetchFundingRequestsCycles({});
     fetchBudgetsCycles({});
+    fetchDonorFilterOptions({});
+    fetchReplenishmentPeriodFilterOptions({});
+    fetchLocationFilterOptions({});
+    fetchComponentFilterOptions({});
+    fetchPartnerTypeFilterOptions({});
+    fetchStatusFilterOptions({});
   }, []);
 
   return null;

@@ -76,7 +76,7 @@ export const PolylineTree: React.FC<PolylineTreeProps> = (
               }
               if (params.value) {
                 return [
-                  `{value|${formatLocale(params.value as number)}}`,
+                  `{value|${formatLocale(params.value as number).replace("US$", "")}}`,
                   `{smallName|${params.name}}`,
                 ].join(" ");
               }

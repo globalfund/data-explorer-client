@@ -1,3 +1,4 @@
+import { AppliedFiltersModel } from "app/state/api/action-reducers/sync/filters";
 import { appColors } from "app/theme";
 import styled from "styled-components";
 
@@ -8,23 +9,31 @@ export interface FilterModel {
 }
 
 export interface FilterGroupModel {
+  id: string;
   name: string;
   options: FilterModel[];
 }
 
 export interface FilterListItemContentProps {
+  id: string;
   name: string;
   level: number;
+  collapseAll: boolean;
   withSearch?: boolean;
+  forceExpand?: boolean;
   options?: FilterModel[];
+  setCollapseAll: (collapseAll: boolean) => void;
 }
 
 export interface FilterListProps {
+  collapseAll: boolean;
   groups: FilterGroupModel[];
+  setCollapseAll: (collapseAll: boolean) => void;
 }
 
 export const STORY_DATA_VARIANT_1: FilterGroupModel[] = [
   {
+    id: "geography",
     name: "Geography",
     options: [
       {
@@ -50,14 +59,17 @@ export const STORY_DATA_VARIANT_1: FilterGroupModel[] = [
     ],
   },
   {
+    id: "principalRecipient",
     name: "Principal Recipient",
     options: [],
   },
   {
+    id: "component",
     name: "Component",
     options: [],
   },
   {
+    id: "grantStatus",
     name: "Grant Status",
     options: [],
   },
@@ -82,3 +94,28 @@ export const SearchInput = styled.input`
     opacity: 0.3;
   }
 `;
+
+export function getAppliedFilters(
+  appliedFilters: AppliedFiltersModel,
+  type: string,
+  level: number
+) {
+  switch (type) {
+    case "geography":
+      return appliedFilters.locations;
+    case "principalRecipient":
+      if (level === 0) return appliedFilters.principalRecipientTypes;
+      return appliedFilters.principalRecipients;
+    case "component":
+      return appliedFilters.components;
+    case "grantStatus":
+      return appliedFilters.status;
+    case "donor":
+      if (level === 0) return appliedFilters.donorTypes;
+      return appliedFilters.donors;
+    case "replenishmentPeriod":
+      return appliedFilters.replenishmentPeriods;
+    default:
+      return [];
+  }
+}

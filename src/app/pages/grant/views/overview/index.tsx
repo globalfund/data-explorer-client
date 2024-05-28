@@ -5,6 +5,7 @@ import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import { useStoreState } from "app/state/store/hooks";
+import { PageLoader } from "app/components/page-loader";
 import { RaceBarChart } from "app/components/charts/race-bar";
 import { ChartBlockButtonToolbar } from "app/components/chart-block/components/button-toolbar";
 
@@ -50,6 +51,9 @@ export const GrantOverview: React.FC = () => {
       signed: 0,
     })
   );
+  const loadingOverview = useStoreState(
+    (state) => state.GrantInfo.loading || state.GrantOverview.loading
+  );
 
   const statusColor = React.useMemo(() => {
     switch (dataOverview.status) {
@@ -89,6 +93,7 @@ export const GrantOverview: React.FC = () => {
 
   return (
     <Box gap="24px" display="flex" flexDirection="column">
+      {loadingOverview && <PageLoader />}
       <Box>
         <Typography variant="body2" fontWeight="700">
           Goals

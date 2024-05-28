@@ -9,6 +9,7 @@ import Typography from "@mui/material/Typography";
 import { DatasetPage } from "app/pages/datasets/common/page";
 import CircularProgress from "@mui/material/CircularProgress";
 import { SunburstChart } from "app/components/charts/sunburst";
+import { FilterGroupModel } from "app/components/filters/list/data";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { SunburstDataItem } from "app/components/charts/sunburst/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -39,7 +40,18 @@ export const ResourceMobilizationPage: React.FC = () => {
   );
 
   const dataStats = useStoreState(
-    (state) => state.ResourceMobilizationStats.data
+    (state) =>
+      get(state.ResourceMobilizationStats, "data.data", {
+        totalPledges: 0,
+        totalContributions: 0,
+        percentage: 0,
+        donorTypesCount: [],
+      }) as {
+        totalPledges: number;
+        totalContributions: number;
+        percentage: number;
+        donorTypesCount: { name: string; value: number }[];
+      }
   );
   const loadingStats = useStoreState(
     (state) => state.ResourceMobilizationStats.loading
@@ -87,9 +99,45 @@ export const ResourceMobilizationPage: React.FC = () => {
         return false;
     }
   });
+  const dataDonorFilterOptions = useStoreState(
+    (state) =>
+      get(state.DonorFilterOptions, "data.data", {
+        id: "",
+        name: "",
+        options: [],
+      }) as FilterGroupModel
+  );
+  const dataReplenishmentPeriodFilterOptions = useStoreState(
+    (state) =>
+      get(state.ReplenishmentPeriodFilterOptions, "data.data", {
+        id: "",
+        name: "",
+        options: [],
+      }) as FilterGroupModel
+  );
+  const pageAppliedFilters = useStoreState((state) => [
+    ...state.AppliedFiltersState.donorTypes,
+    ...state.AppliedFiltersState.donors,
+    ...state.AppliedFiltersState.replenishmentPeriods,
+  ]);
+  const appliedFiltersData = useStoreState(
+    (state) => state.AppliedFiltersState
+  );
+  const appliedFiltersActions = useStoreActions(
+    (actions) => actions.AppliedFiltersState
+  );
 
   const handleSelectionChange = (value: string) => {
     setDropdownSelected(value);
+  };
+
+  const handleResetFilters = () => {
+    appliedFiltersActions.setAll({
+      ...appliedFiltersData,
+      donorTypes: [],
+      donors: [],
+      replenishmentPeriods: [],
+    });
   };
 
   const chartContent = React.useMemo(() => {
@@ -135,22 +183,44 @@ export const ResourceMobilizationPage: React.FC = () => {
     }
   }, [dropdownSelected, dataBarChart, dataSunburst, dataTable]);
 
+  const filterGroups = React.useMemo(() => {
+    return [dataDonorFilterOptions, dataReplenishmentPeriodFilterOptions];
+  }, [dataDonorFilterOptions, dataReplenishmentPeriodFilterOptions]);
+
+  const filterString = React.useMemo(() => {
+    let filterString = "";
+    if (appliedFiltersData.donorTypes.length > 0) {
+      filterString += `donorTypes=${encodeURIComponent(appliedFiltersData.donorTypes.join(","))}`;
+    }
+    if (appliedFiltersData.donors.length > 0) {
+      filterString += `${filterString.length > 0 ? "&" : ""}donors=${encodeURIComponent(appliedFiltersData.donors.join(","))}`;
+    }
+    if (appliedFiltersData.replenishmentPeriods.length > 0) {
+      filterString += `${filterString.length > 0 ? "&" : ""}periods=${encodeURIComponent(appliedFiltersData.replenishmentPeriods.join(","))}`;
+    }
+    return filterString;
+  }, [appliedFiltersData]);
+
   React.useEffect(() => {
-    fetchStats({});
-    fetchBarChart({});
+    fetchStats({ filterString });
+    fetchBarChart({ filterString });
     fetchSunburst({
+      filterString,
       routeParams: {
         type: "pledge",
       },
     });
-    fetchTable({});
-  }, []);
+    fetchTable({ filterString });
+  }, [filterString]);
 
   return (
     <DatasetPage
       title="Resource Mobilization"
-      subtitle="Government, private sector, non-government and other donor pledges and contributions"
+      filterGroups={filterGroups}
+      appliedFilters={pageAppliedFilters}
+      handleResetFilters={handleResetFilters}
       breadcrumbs={[{ label: "Datasets" }, { label: "Resource Mobilization" }]}
+      subtitle="Government, private sector, non-government and other donor pledges and contributions"
     >
       <Box width="100%" marginTop="50px">
         <Grid container marginBottom="50px" position="relative">
@@ -270,76 +340,14 @@ export const ResourceMobilizationPage: React.FC = () => {
                   },
                 }}
               >
-                <Grid item xs={12} sm={6} md={6} lg={3}>
-                  <Box bgcolor="#F1F3F5" padding="5px 10px">
-                    <Typography variant="h5">
-                      {get(dataStats, "donorTypesCount[1].value", 0)}
-                    </Typography>
-                    <Typography fontSize="12px">
-                      from Affordable Medicines Facility - malaria (AMFm).
-                    </Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={12} sm={6} md={6} lg={3}>
-                  <Box bgcolor="#F1F3F5" padding="5px 10px">
-                    <Typography variant="h5">
-                      {get(dataStats, "donorTypesCount[6].value", 0)}
-                    </Typography>
-                    <Typography fontSize="12px">from corporations.</Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={12} sm={6} md={6} lg={3}>
-                  <Box bgcolor="#F1F3F5" padding="5px 10px">
-                    <Typography variant="h5">
-                      {get(dataStats, "donorTypesCount[7].value", 0)}
-                    </Typography>
-                    <Typography fontSize="12px">from Debt2Health.</Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={12} sm={6} md={6} lg={3}>
-                  <Box bgcolor="#F1F3F5" padding="5px 10px">
-                    <Typography variant="h5">
-                      {get(dataStats, "donorTypesCount[5].value", 0)}
-                    </Typography>
-                    <Typography fontSize="12px">
-                      from faith-based organizations.
-                    </Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={12} sm={6} md={6} lg={3}>
-                  <Box bgcolor="#F1F3F5" padding="5px 10px">
-                    <Typography variant="h5">
-                      {get(dataStats, "donorTypesCount[2].value", 0)}
-                    </Typography>
-                    <Typography fontSize="12px">from foundations.</Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={12} sm={6} md={6} lg={3}>
-                  <Box bgcolor="#F1F3F5" padding="5px 10px">
-                    <Typography variant="h5">
-                      {get(dataStats, "donorTypesCount[4].value", 0)}
-                    </Typography>
-                    <Typography fontSize="12px">from individuals.</Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={12} sm={6} md={6} lg={3}>
-                  <Box bgcolor="#F1F3F5" padding="5px 10px">
-                    <Typography variant="h5">
-                      {get(dataStats, "donorTypesCount[3].value", 0)}
-                    </Typography>
-                    <Typography fontSize="12px">
-                      from private sector & non-government.
-                    </Typography>
-                  </Box>
-                </Grid>
-                <Grid item xs={12} sm={6} md={6} lg={3}>
-                  <Box bgcolor="#F1F3F5" padding="5px 10px">
-                    <Typography variant="h5">
-                      {get(dataStats, "donorTypesCount[0].value", 0)}
-                    </Typography>
-                    <Typography fontSize="12px">from public sector.</Typography>
-                  </Box>
-                </Grid>
+                {get(dataStats, "donorTypesCount", []).map((item) => (
+                  <Grid item xs={12} sm={6} md={6} lg={3} key={item.name}>
+                    <Box bgcolor="#F1F3F5" padding="5px 10px">
+                      <Typography variant="h5">{item.value}</Typography>
+                      <Typography fontSize="12px">from {item.name}</Typography>
+                    </Box>
+                  </Grid>
+                ))}
               </Grid>
             </Grid>
           </Grid>

@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
 import CircularProgress from "@mui/material/CircularProgress";
 import { DatasetChartBlockProps } from "app/pages/datasets/common/chart-block/data";
-import { ReactComponent as CollpaseIcon } from "app/assets/vectors/Collpase_ButtonIcon.svg";
+import { ReactComponent as CollapseIcon } from "app/assets/vectors/Collapse_ButtonIcon.svg";
 import { ReactComponent as SettingsIcon } from "app/assets/vectors/Settings_ButtonIcon.svg";
 import { ChartBlockButtonToolbar } from "app/components/chart-block/components/button-toolbar";
 
@@ -71,7 +71,7 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
           </Button>
           <Button
             variant="outlined"
-            startIcon={<CollpaseIcon />}
+            startIcon={<CollapseIcon />}
             sx={
               props.disableCollapse
                 ? { pointerEvents: "none", opacity: 0.4 }

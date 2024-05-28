@@ -1,6 +1,7 @@
 import React from "react";
 import get from "lodash/get";
 import Box from "@mui/material/Box";
+import findIndex from "lodash/findIndex";
 import Checkbox from "@mui/material/Checkbox";
 import Accordion from "@mui/material/Accordion";
 import Typography from "@mui/material/Typography";
@@ -9,23 +10,159 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { ReactComponent as CheckboxIcon } from "app/assets/vectors/Checkbox_notchecked.svg";
 import { ReactComponent as CheckboxCheckedIcon } from "app/assets/vectors/Checkbox_checked.svg";
 import {
   SearchInput,
+  FilterModel,
   FilterListProps,
   FilterListItemContentProps,
+  getAppliedFilters,
 } from "app/components/filters/list/data";
 
 const FilterListItemContent: React.FC<FilterListItemContentProps> = (
   props: FilterListItemContentProps
 ) => {
-  const [expanded, setExpanded] = React.useState<string | false>(false);
+  const [value, setValue] = React.useState("");
+  const [shownOptions, setShownOptions] = React.useState<FilterModel[]>([]);
+  const [expanded, setExpanded] = React.useState<string | false>(
+    Boolean(props.forceExpand) ? props.name : false
+  );
+
+  const appliedFiltersData = useStoreState(
+    (state) => state.AppliedFiltersState
+  );
+  const appliedFiltersActions = useStoreActions(
+    (actions) => actions.AppliedFiltersState
+  );
+
+  const id = React.useMemo(() => {
+    switch (props.level) {
+      case 0:
+        if (props.options && props.options.length > 0) {
+          if (props.options[0].options && props.options[0].options.length > 0) {
+            return `${props.id}Type`;
+          }
+        }
+        return props.id;
+      case 1:
+        if (props.options && props.options.length > 0) {
+          if (props.options[0].options && props.options[0].options.length > 0) {
+            return `${props.id}SubType`;
+          }
+        }
+        return props.id;
+      case 2:
+        return props.id;
+      default:
+        return "";
+    }
+  }, [props.id, props.level, props.options]);
+
+  const appliedFilters = React.useMemo(() => {
+    return getAppliedFilters(appliedFiltersData, props.id, props.level);
+  }, [appliedFiltersData, props.id, props.level]);
+
+  const onCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    appliedFiltersActions.toggleFilter({
+      checked: e.target.checked,
+      value: e.target.name,
+      type: id,
+    });
+  };
 
   const handleChange =
-    (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
-      setExpanded(isExpanded ? panel : false);
+    (panel: string) => (e: React.SyntheticEvent, isExpanded: boolean) => {
+      const targetType = get(e, "target.type", "");
+      // @ts-ignore
+      if (targetType !== "checkbox") {
+        setExpanded(isExpanded ? panel : false);
+        props.setCollapseAll(false);
+      }
     };
+
+  React.useEffect(() => {
+    if (props.forceExpand) {
+      setExpanded(props.name);
+    }
+  }, [props.forceExpand]);
+
+  React.useEffect(() => {
+    if (value.length === 0) {
+      setShownOptions(props.options ?? []);
+    } else {
+      const options: FilterModel[] = [];
+      (props.options ?? []).forEach((option: FilterModel) => {
+        if (option.name.toLowerCase().indexOf(value.toLowerCase()) > -1) {
+          options.push(option);
+        } else if (option.options) {
+          option.options.forEach((subOption: FilterModel) => {
+            if (
+              subOption.name.toLowerCase().indexOf(value.toLowerCase()) > -1
+            ) {
+              const fParentIndex = findIndex(options, { name: option.name });
+              if (fParentIndex > -1) {
+                options[fParentIndex].options?.push(subOption);
+              } else {
+                options.push({
+                  ...option,
+                  options: [subOption],
+                });
+              }
+            } else if (subOption.options) {
+              subOption.options.forEach((subSubOption: FilterModel) => {
+                if (
+                  (subSubOption.name || "")
+                    .toLowerCase()
+                    .indexOf(value.toLowerCase()) > -1
+                ) {
+                  const fGrandParentIndex = findIndex(options, {
+                    name: option.name,
+                  });
+                  if (fGrandParentIndex > -1) {
+                    const fParentIndex = findIndex(
+                      options[fGrandParentIndex]?.options,
+                      { name: subOption.name }
+                    );
+                    if (fParentIndex > -1) {
+                      // @ts-ignore
+                      options[fGrandParentIndex]?.options[
+                        fParentIndex
+                      ]?.options.push(subSubOption);
+                    } else {
+                      // @ts-ignore
+                      options[fGrandParentIndex]?.options.push({
+                        ...subOption,
+                        options: [subSubOption],
+                      });
+                    }
+                  } else {
+                    options.push({
+                      ...option,
+                      options: [
+                        {
+                          ...subOption,
+                          options: [subSubOption],
+                        },
+                      ],
+                    });
+                  }
+                }
+              });
+            }
+          });
+        }
+      });
+      setShownOptions(options);
+    }
+  }, [value, props.options]);
+
+  React.useEffect(() => {
+    if (props.collapseAll) {
+      setExpanded(false);
+    }
+  }, [props.collapseAll]);
 
   return (
     <Box width="100%" position="relative">
@@ -42,13 +179,15 @@ const FilterListItemContent: React.FC<FilterListItemContentProps> = (
           />
           <SearchInput
             type="text"
+            value={value}
             placeholder="Search"
             style={{ marginBottom: "10px" }}
+            onChange={(e) => setValue(e.target.value)}
           />
         </React.Fragment>
       )}
       <Box paddingLeft="20px">
-        {props.options?.map((option) => (
+        {shownOptions.map((option) => (
           <Accordion
             key={option.name}
             expanded={expanded === option.name}
@@ -66,11 +205,10 @@ const FilterListItemContent: React.FC<FilterListItemContentProps> = (
               }
               sx={{
                 minHeight: "20px",
-                maxHeight: "20px",
+                position: "relative",
                 justifyContent: "flex-start",
                 "&.Mui-expanded": {
                   minHeight: "20px",
-                  maxHeight: "20px",
                 },
                 "> .MuiAccordionSummary-content": {
                   flexGrow: 0,
@@ -83,23 +221,45 @@ const FilterListItemContent: React.FC<FilterListItemContentProps> = (
                     size="small"
                     name={option.name}
                     icon={<CheckboxIcon />}
+                    onChange={onCheckboxChange}
                     checkedIcon={<CheckboxCheckedIcon />}
+                    checked={appliedFilters.indexOf(option.name) > -1}
                   />
                 }
                 label={option.name}
+                checked={appliedFilters.indexOf(option.name) > -1}
                 sx={{
                   marginLeft: "0px",
                   marginRight: "0px",
                   alignItems: "center",
                   "& .MuiFormControlLabel-label": {
+                    zIndex: option.options ? -1 : 0,
                     fontSize: "12px",
                     marginLeft: "5px",
                   },
                 }}
               />
+              {option.options && (
+                <Typography
+                  top="5px"
+                  left="23px"
+                  fontSize="12px"
+                  fontWeight="400"
+                  position="absolute"
+                >
+                  {option.name}
+                </Typography>
+              )}
             </AccordionSummary>
             <AccordionDetails>
-              <FilterListItemContent {...option} level={props.level + 1} />
+              <FilterListItemContent
+                {...option}
+                id={props.id}
+                level={props.level + 1}
+                forceExpand={value.length > 0}
+                collapseAll={props.collapseAll}
+                setCollapseAll={props.setCollapseAll}
+              />
             </AccordionDetails>
           </Accordion>
         ))}
@@ -114,9 +274,16 @@ export const FilterList: React.FC<FilterListProps> = (
   const [expanded, setExpanded] = React.useState<string | false>(false);
 
   const handleChange =
-    (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+    (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
+      props.setCollapseAll(false);
     };
+
+  React.useEffect(() => {
+    if (props.collapseAll) {
+      setExpanded(false);
+    }
+  }, [props.collapseAll]);
 
   return (
     <Box>
@@ -132,7 +299,13 @@ export const FilterList: React.FC<FilterListProps> = (
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <FilterListItemContent {...group} withSearch level={0} />
+            <FilterListItemContent
+              {...group}
+              level={0}
+              withSearch
+              collapseAll={props.collapseAll}
+              setCollapseAll={props.setCollapseAll}
+            />
           </AccordionDetails>
         </Accordion>
       ))}

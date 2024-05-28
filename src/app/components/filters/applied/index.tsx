@@ -3,10 +3,22 @@ import Box from "@mui/material/Box";
 import Close from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import { FiltersAppliedProps } from "app/components/filters/applied/data";
+import { useStoreActions } from "app/state/store/hooks";
 
 export const FiltersApplied: React.FC<FiltersAppliedProps> = (
   props: FiltersAppliedProps
 ) => {
+  const appliedFiltersActions = useStoreActions(
+    (actions) => actions.AppliedFiltersState
+  );
+
+  const handleRemoveFilter = (filter: string) => () => {
+    appliedFiltersActions.removeFilter({
+      value: filter,
+      types: props.filterGroups.map((group) => group.id),
+    });
+  };
+
   return (
     <Box gap="5px" display="flex" flexDirection="row" flexWrap="wrap">
       {props.items.map((item) => (
@@ -37,6 +49,7 @@ export const FiltersApplied: React.FC<FiltersAppliedProps> = (
         >
           {item}
           <IconButton
+            onClick={handleRemoveFilter(item)}
             sx={{ padding: 0, borderRadius: "50%", background: "#373D43" }}
           >
             <Close

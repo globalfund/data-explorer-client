@@ -3,6 +3,6 @@ import { ApiCallModel } from "app/state/api/interfaces";
 
 export const HomeExpendituresHeatmap: ApiCallModel = {
   ...APIModel(
-    `${process.env.REACT_APP_API}/expenditures/heatmap/{row}/{column}`
+    `${process.env.REACT_APP_API}/expenditures/heatmap/{row}/{column}/{componentField}`
   ),
 };

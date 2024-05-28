@@ -73,7 +73,7 @@ const financialFormatter = (cell: CellComponent) => {
   if (!cell.getValue()) {
     return cellBGColorFormatter(cell);
   }
-  return formatLocale(cell.getValue()).replace(" US$", "");
+  return formatLocale(cell.getValue()).replace("US$", "");
 };
 
 export const TABLE_VARIATION_1_COLUMNS: ColumnDefinition[] = [

@@ -45,7 +45,7 @@ export const RaceBarChart: React.FC<RaceBarChartProps> = (
             />
             <Typography fontSize="14px" color="#333" whiteSpace="nowrap">
               {!props.noValuesFormat
-                ? `$${getFinancialValueWithMetricPrefix(
+                ? `US$${getFinancialValueWithMetricPrefix(
                     item.value,
                     range.index,
                     2

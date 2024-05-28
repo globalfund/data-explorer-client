@@ -14,6 +14,7 @@ import { DatasetPage } from "app/pages/datasets/common/page";
 import CircularProgress from "@mui/material/CircularProgress";
 import { SunburstChart } from "app/components/charts/sunburst";
 import { BarSeriesChart } from "app/components/charts/bar-series";
+import { FilterGroupModel } from "app/components/filters/list/data";
 import { getRange } from "app/utils/getFinancialValueWithMetricPrefix";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
@@ -125,6 +126,32 @@ export const AccessToFundingPage: React.FC = () => {
   const fetchFundingRequestsTable = useStoreActions(
     (actions) => actions.AccessToFundingFundingRequestsTable.fetch
   );
+  const dataLocationFilterOptions = useStoreState(
+    (state) =>
+      get(state.LocationFilterOptions, "data.data", {
+        id: "",
+        name: "",
+        options: [],
+      }) as FilterGroupModel
+  );
+  const dataComponentFilterOptions = useStoreState(
+    (state) =>
+      get(state.ComponentFilterOptions, "data.data", {
+        id: "",
+        name: "",
+        options: [],
+      }) as FilterGroupModel
+  );
+  const pageAppliedFilters = useStoreState((state) => [
+    ...state.AppliedFiltersState.components,
+    ...state.AppliedFiltersState.locations,
+  ]);
+  const appliedFiltersData = useStoreState(
+    (state) => state.AppliedFiltersState
+  );
+  const appliedFiltersActions = useStoreActions(
+    (actions) => actions.AppliedFiltersState
+  );
 
   const handleSelectionChange = (value: string) => {
     setDropdownSelected(value);
@@ -132,6 +159,14 @@ export const AccessToFundingPage: React.FC = () => {
 
   const handleEligibilityYearChange = (value: string) => {
     setEligibilityYear(value);
+  };
+
+  const handleResetFilters = () => {
+    appliedFiltersActions.setAll({
+      ...appliedFiltersData,
+      locations: [],
+      components: [],
+    });
   };
 
   const chartContent = React.useMemo(() => {
@@ -182,6 +217,21 @@ export const AccessToFundingPage: React.FC = () => {
     dataAllocationsTable,
   ]);
 
+  const filterGroups = React.useMemo(() => {
+    return [dataLocationFilterOptions, dataComponentFilterOptions];
+  }, [dataLocationFilterOptions, dataComponentFilterOptions]);
+
+  const filterString = React.useMemo(() => {
+    let filterString = "";
+    if (appliedFiltersData.locations.length > 0) {
+      filterString += `geographies=${encodeURIComponent(appliedFiltersData.locations.join(","))}`;
+    }
+    if (appliedFiltersData.components.length > 0) {
+      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(appliedFiltersData.components.join(","))}`;
+    }
+    return filterString;
+  }, [appliedFiltersData]);
+
   const range = React.useMemo(() => {
     const values: {
       value: number;
@@ -195,26 +245,30 @@ export const AccessToFundingPage: React.FC = () => {
   }, [dataAllocationsBarSeries]);
 
   React.useEffect(() => {
-    fetchEligibilityTable({});
-    fetchAllocationsBarSeries({});
-    fetchAllocationsSunburst({});
-    fetchAllocationsTreemap({});
-    fetchAllocationsTable({});
-    fetchFundingRequestsTable({});
-  }, []);
+    fetchEligibilityTable({ filterString });
+    fetchAllocationsBarSeries({ filterString });
+    fetchAllocationsSunburst({ filterString });
+    fetchAllocationsTreemap({ filterString });
+    fetchAllocationsTable({ filterString });
+    fetchFundingRequestsTable({ filterString });
+  }, [filterString]);
 
   React.useEffect(() => {
     fetchStats({
+      filterString,
       routeParams: {
         year: eligibilityYear,
       },
     });
-  }, [eligibilityYear]);
+  }, [eligibilityYear, filterString]);
 
   return (
     <DatasetPage
       title="Access to Funding"
       subtitle="Lorem ipsum."
+      filterGroups={filterGroups}
+      appliedFilters={pageAppliedFilters}
+      handleResetFilters={handleResetFilters}
       breadcrumbs={[{ label: "Datasets" }, { label: "Access to Funding" }]}
     >
       <Box width="100%" marginTop="50px">

@@ -99,7 +99,6 @@ export const GrantTargetsResults: React.FC = () => {
 
   return (
     <Box marginTop="24px">
-      <Typography variant="h4">* MOCK DATA PAGE *</Typography>
       <Typography variant="body2">
         This page provides an overview of the IATI ('open') data currently
         published by individual Grand Bargain signatories and/or their

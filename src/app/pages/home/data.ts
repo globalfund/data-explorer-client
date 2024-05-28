@@ -8,11 +8,14 @@ export const CYCLES = [
   { name: "Cycle 6", value: "Cycle 6" },
 ];
 
+export const CHART_3_DROPDOWN_ITEMS = [
+  { label: "Grouped Component", value: "Grouped Component" },
+  { label: "Un-Grouped Component", value: "Un-Grouped Component" },
+];
+
 export const CHART_4_DROPDOWN_ITEMS = [
-  {
-    value: "Grouped Component",
-    label: "Grouped Component",
-  },
+  { label: "Grouped Component", value: "Grouped Component" },
+  { label: "Un-Grouped Component", value: "Un-Grouped Component" },
 ];
 
 export const CHART_5_DROPDOWN_ITEMS = [

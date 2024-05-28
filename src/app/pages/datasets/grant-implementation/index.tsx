@@ -17,6 +17,7 @@ import { DatasetPage } from "app/pages/datasets/common/page";
 import CircularProgress from "@mui/material/CircularProgress";
 import { BarChartDataItem } from "app/components/charts/bar/data";
 import { LineChartDataItem } from "app/components/charts/line/data";
+import { FilterGroupModel } from "app/components/filters/list/data";
 import { TreemapDataItem } from "app/components/charts/treemap/data";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -283,6 +284,51 @@ export const GrantImplementationPage: React.FC = () => {
   const fetchExpendituresTable = useStoreActions(
     (actions) => actions.FinancialInsightsExpendituresTable.fetch
   );
+  const dataLocationFilterOptions = useStoreState(
+    (state) =>
+      get(state.LocationFilterOptions, "data.data", {
+        id: "",
+        name: "",
+        options: [],
+      }) as FilterGroupModel
+  );
+  const dataComponentFilterOptions = useStoreState(
+    (state) =>
+      get(state.ComponentFilterOptions, "data.data", {
+        id: "",
+        name: "",
+        options: [],
+      }) as FilterGroupModel
+  );
+  const dataPartnerTypeFilterOptions = useStoreState(
+    (state) =>
+      get(state.PartnerTypeFilterOptions, "data.data", {
+        id: "",
+        name: "",
+        options: [],
+      }) as FilterGroupModel
+  );
+  const dataStatusFilterOptions = useStoreState(
+    (state) =>
+      get(state.StatusFilterOptions, "data.data", {
+        id: "",
+        name: "",
+        options: [],
+      }) as FilterGroupModel
+  );
+  const pageAppliedFilters = useStoreState((state) => [
+    ...state.AppliedFiltersState.components,
+    ...state.AppliedFiltersState.locations,
+    ...state.AppliedFiltersState.principalRecipientTypes,
+    ...state.AppliedFiltersState.principalRecipients,
+    ...state.AppliedFiltersState.status,
+  ]);
+  const appliedFiltersData = useStoreState(
+    (state) => state.AppliedFiltersState
+  );
+  const appliedFiltersActions = useStoreActions(
+    (actions) => actions.AppliedFiltersState
+  );
 
   const handleDisbursementsSelectionChange = (value: string) => {
     setDisbursementsDropdownSelected(value);
@@ -298,6 +344,17 @@ export const GrantImplementationPage: React.FC = () => {
 
   const handleComponentsGroupingChange = (value: string) => {
     setComponentsGrouping(value);
+  };
+
+  const handleResetFilters = () => {
+    appliedFiltersActions.setAll({
+      ...appliedFiltersData,
+      components: [],
+      locations: [],
+      principalRecipients: [],
+      principalRecipientTypes: [],
+      status: [],
+    });
   };
 
   const disbursementsChartContent = React.useMemo(() => {
@@ -607,7 +664,7 @@ export const GrantImplementationPage: React.FC = () => {
         </Box>
       </Box>
     );
-  }, []);
+  }, [componentsGrouping, geographyGrouping]);
 
   const totalBudget = React.useMemo(() => {
     return formatFinancialValue(sumBy(dataBudgetTreemap, "value"));
@@ -617,37 +674,143 @@ export const GrantImplementationPage: React.FC = () => {
     return formatFinancialValue(sumBy(dataExpendituresHeatmap, "value"));
   }, [dataExpendituresHeatmap]);
 
+  const filterGroups = React.useMemo(() => {
+    return [
+      dataLocationFilterOptions,
+      dataComponentFilterOptions,
+      dataPartnerTypeFilterOptions,
+      dataStatusFilterOptions,
+    ];
+  }, [
+    dataLocationFilterOptions,
+    dataComponentFilterOptions,
+    dataPartnerTypeFilterOptions,
+    dataStatusFilterOptions,
+  ]);
+
+  const filterString = React.useMemo(() => {
+    let filterString = "";
+    if (appliedFiltersData.locations.length > 0) {
+      filterString += `geographies=${encodeURIComponent(appliedFiltersData.locations.join(","))}`;
+    }
+    if (appliedFiltersData.components.length > 0) {
+      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(appliedFiltersData.components.join(","))}`;
+    }
+    if (appliedFiltersData.principalRecipientTypes.length > 0) {
+      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientTypes=${encodeURIComponent(appliedFiltersData.principalRecipientTypes.join(","))}`;
+    }
+    if (appliedFiltersData.principalRecipients.length > 0) {
+      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipients=${encodeURIComponent(appliedFiltersData.principalRecipients.join(","))}`;
+    }
+    if (appliedFiltersData.status.length > 0) {
+      filterString += `${filterString.length > 0 ? "&" : ""}status=${encodeURIComponent(appliedFiltersData.status.join(","))}`;
+    }
+    return filterString;
+  }, [appliedFiltersData]);
+
   React.useEffect(() => {
-    fetchFinancialInsightsStats({});
-    fetchFinancialInsightsDisbursementsBarChart({});
-    fetchFinancialInsightsDisbursementsLineChart({});
-    fetchFinancialInsightsDisbursementsTable({});
-    fetchBudgetUtilisation({});
-    fetchInCountryAbsorption({});
-    fetchDisbursementUtilisation({});
-    fetchBudgetTreemap({});
-    fetchBudgetTable({});
+    fetchFinancialInsightsStats({ filterString });
+    fetchBudgetUtilisation({ filterString });
+    fetchInCountryAbsorption({ filterString });
+    fetchDisbursementUtilisation({ filterString });
+  }, [filterString]);
+
+  React.useEffect(() => {
+    fetchFinancialInsightsDisbursementsBarChart({
+      filterString,
+      routeParams: {
+        componentField:
+          componentsGrouping === componentsGroupingOptions[0].value
+            ? "activityAreaGroup"
+            : "activityArea",
+      },
+    });
+    fetchFinancialInsightsDisbursementsLineChart({
+      filterString,
+      routeParams: {
+        componentField:
+          componentsGrouping === componentsGroupingOptions[0].value
+            ? "activityAreaGroup"
+            : "activityArea",
+      },
+    });
+    fetchFinancialInsightsDisbursementsTable({
+      filterString,
+      routeParams: {
+        componentField:
+          componentsGrouping === componentsGroupingOptions[0].value
+            ? "activityAreaGroup"
+            : "activityArea",
+      },
+    });
+    fetchBudgetTreemap({
+      filterString,
+      routeParams: {
+        componentField:
+          componentsGrouping === componentsGroupingOptions[0].value
+            ? "activityAreaGroup"
+            : "activityArea",
+      },
+    });
+    fetchBudgetTable({
+      filterString,
+      routeParams: {
+        componentField:
+          componentsGrouping === componentsGroupingOptions[0].value
+            ? "activityAreaGroup"
+            : "activityArea",
+      },
+    });
     fetchExpendituresHeatmap({
+      filterString,
       routeParams: {
         row: "principalRecipientType,principalRecipient",
         column: "component",
+        componentField:
+          componentsGrouping === componentsGroupingOptions[0].value
+            ? "activityAreaGroup"
+            : "activityArea",
       },
     });
-    fetchExpendituresBarChart({});
-    fetchExpendituresTable({});
-  }, []);
+    fetchExpendituresBarChart({
+      filterString,
+      routeParams: {
+        componentField:
+          componentsGrouping === componentsGroupingOptions[0].value
+            ? "activityAreaGroup"
+            : "activityArea",
+      },
+    });
+    fetchExpendituresTable({
+      filterString,
+      routeParams: {
+        componentField:
+          componentsGrouping === componentsGroupingOptions[0].value
+            ? "activityAreaGroup"
+            : "activityArea",
+      },
+    });
+  }, [filterString, componentsGrouping]);
 
   React.useEffect(() => {
     fetchBudgetBreakdown({
+      filterString,
       routeParams: {
         year: budgetBreakdownDropdownSelected,
+        componentField:
+          componentsGrouping === componentsGroupingOptions[0].value
+            ? "activityAreaGroup"
+            : "activityArea",
       },
     });
-  }, [budgetBreakdownDropdownSelected]);
+  }, [budgetBreakdownDropdownSelected, filterString, componentsGrouping]);
 
   return (
     <DatasetPage
       title="Financial Insights"
+      filterGroups={filterGroups}
+      appliedFilters={pageAppliedFilters}
+      handleResetFilters={handleResetFilters}
       subtitle="See the disbursements, budgets and expenditures datasets and relating insights."
       breadcrumbs={[{ label: "Datasets" }, { label: "Financial Insights" }]}
       toolbarRightContent={toolbarRightContent}

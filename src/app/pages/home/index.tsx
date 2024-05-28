@@ -25,16 +25,15 @@ import {
   CYCLES,
   CHART_4_DROPDOWN_ITEMS,
   CHART_5_DROPDOWN_ITEMS,
-  LINE_CHART_X_AXIS_KEYS,
+  CHART_3_DROPDOWN_ITEMS,
 } from "app/pages/home/data";
 import {
-  getPercentageColor,
-  STORY_DATA_VARIANT_1 as HEATMAP_DATA,
   HeatmapDataItem,
+  getPercentageColor,
 } from "app/components/charts/heatmap/data";
 import {
-  getFinancialValueWithMetricPrefix,
   getRange,
+  getFinancialValueWithMetricPrefix,
 } from "app/utils/getFinancialValueWithMetricPrefix";
 
 export const Home: React.FC = () => {
@@ -44,6 +43,9 @@ export const Home: React.FC = () => {
   const [chart4Cycle, setChart4Cycle] = React.useState(CYCLES[0]);
   const [chart5Cycle, setChart5Cycle] = React.useState(CYCLES[0]);
 
+  const [chart3Dropdown, setChart3Dropdown] = React.useState(
+    CHART_3_DROPDOWN_ITEMS[0].value
+  );
   const [chart4Dropdown, setChart4Dropdown] = React.useState(
     CHART_4_DROPDOWN_ITEMS[0].value
   );
@@ -167,6 +169,9 @@ export const Home: React.FC = () => {
         value: string;
       }[]
   );
+  const annualResultsCycles = useStoreState(
+    (state) => get(state.AnnualResultsCycles, "data.data", []) as number[]
+  );
 
   const handleChartCycleChange = (
     cycle: { name: string; value: string },
@@ -258,7 +263,10 @@ export const Home: React.FC = () => {
     fetchAllocationsRadialChart({ filterString });
   };
 
-  const reloadBudgetsTreemap = (cycle: { name: string; value: string }) => {
+  const reloadBudgetsTreemap = (
+    cycle: { name: string; value: string },
+    componentField: string
+  ) => {
     let filterString = "";
     if (cycle.value !== "All") {
       const years = cycle.value.split(" - ");
@@ -266,13 +274,24 @@ export const Home: React.FC = () => {
       if (years.length === 2)
         filterString = `years=${years[0]}&yearsTo=${years[1]}`;
     }
-    fetchBudgetsTreemap({ filterString });
+    fetchBudgetsTreemap({
+      filterString,
+      routeParams: {
+        componentField:
+          componentField === CHART_3_DROPDOWN_ITEMS[0].value
+            ? "activityAreaGroup"
+            : "activityArea",
+      },
+    });
   };
 
-  const reloadDisbursementsLineChart = (cycle: {
-    name: string;
-    value: string;
-  }) => {
+  const reloadDisbursementsLineChart = (
+    cycle: {
+      name: string;
+      value: string;
+    },
+    componentField: string
+  ) => {
     let filterString = "";
     if (cycle.value !== "All") {
       const years = cycle.value.split(" - ");
@@ -280,13 +299,24 @@ export const Home: React.FC = () => {
       if (years.length === 2)
         filterString = `years=${years[0]}&yearsTo=${years[1]}`;
     }
-    fetchDisbursementsLineChart({ filterString });
+    fetchDisbursementsLineChart({
+      filterString,
+      routeParams: {
+        componentField:
+          componentField === CHART_4_DROPDOWN_ITEMS[0].value
+            ? "activityAreaGroup"
+            : "activityArea",
+      },
+    });
   };
 
-  const reloadExpendituresHeatmap = (cycle: {
-    name: string;
-    value: string;
-  }) => {
+  const reloadExpendituresHeatmap = (
+    cycle: {
+      name: string;
+      value: string;
+    },
+    componentField: string
+  ) => {
     let filterString = "";
     if (cycle.value !== "All") {
       const years = cycle.value.split(" - ");
@@ -299,15 +329,21 @@ export const Home: React.FC = () => {
       routeParams: {
         row: "principalRecipientType,principalRecipient",
         column: "component",
+        componentField:
+          componentField === CHART_5_DROPDOWN_ITEMS[0].value
+            ? "activityAreaGroup"
+            : "activityArea",
       },
     });
   };
 
   React.useEffect(() => {
-    fetchResultsStats({
-      filterString: "cycle=2022",
-    });
-  }, []);
+    if (annualResultsCycles.length > 0) {
+      fetchResultsStats({
+        filterString: `cycle=${annualResultsCycles[0]}`,
+      });
+    }
+  }, [annualResultsCycles]);
 
   React.useEffect(() => {
     reloadPledgesContributionsBarChart(chart1Cycle);
@@ -318,16 +354,16 @@ export const Home: React.FC = () => {
   }, [chart2Cycle]);
 
   React.useEffect(() => {
-    reloadBudgetsTreemap(chart3Cycle);
-  }, [chart3Cycle]);
+    reloadBudgetsTreemap(chart3Cycle, chart3Dropdown);
+  }, [chart3Cycle, chart3Dropdown]);
 
   React.useEffect(() => {
-    reloadDisbursementsLineChart(chart4Cycle);
-  }, [chart4Cycle]);
+    reloadDisbursementsLineChart(chart4Cycle, chart4Dropdown);
+  }, [chart4Cycle, chart4Dropdown]);
 
   React.useEffect(() => {
-    reloadExpendituresHeatmap(chart5Cycle);
-  }, [chart5Cycle]);
+    reloadExpendituresHeatmap(chart5Cycle, chart5Dropdown);
+  }, [chart5Cycle, chart5Dropdown]);
 
   const allocationsTotal = React.useMemo(() => {
     const total = sumBy(dataAllocationsRadialChart, "value");
@@ -467,8 +503,11 @@ export const Home: React.FC = () => {
         title={`${totalBudget} budgeted`}
         selectedCycle={chart3Cycle}
         loading={loadingBudgetsTreemap}
+        dropdownSelected={chart3Dropdown}
+        dropdownItems={CHART_3_DROPDOWN_ITEMS}
         subtitle="With transparent budget data"
         empty={dataBudgetsTreemap.length === 0}
+        handleDropdownChange={setChart3Dropdown}
         handleCycleChange={(value) => handleChartCycleChange(value, 3)}
         text="Our Grant Implementation programs are developed meticulously, each Grant follows a well executed plan, always supervised by TGF Implementation team."
       >

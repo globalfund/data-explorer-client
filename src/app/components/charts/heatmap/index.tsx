@@ -211,13 +211,13 @@ export function Heatmap(props: HeatmapProps) {
     if (props.rowCategory === "period") {
       return "50px";
     }
-    if (
-      props.rowCategory === "modules" ||
-      props.rowCategory === "investmentLandscape" ||
-      props.rowCategory === "principalRecipient"
-    ) {
-      return "450px";
-    }
+    // if (
+    //   props.rowCategory === "modules" ||
+    //   props.rowCategory === "investmentLandscape" ||
+    //   props.rowCategory === "principalRecipient"
+    // ) {
+    //   return "450px";
+    // }
     return "400px";
   }, [props.rowCategory]);
 

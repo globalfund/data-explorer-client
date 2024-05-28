@@ -5,14 +5,16 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { appColors } from "app/theme";
 import Divider from "@mui/material/Divider";
+import { useParams } from "react-router-dom";
 import { CYCLES } from "app/pages/home/data";
 import Typography from "@mui/material/Typography";
-import { useStoreState } from "app/state/store/hooks";
 import { Heatmap } from "app/components/charts/heatmap";
 import { ChartBlock } from "app/components/chart-block";
 import { RadialChart } from "app/components/charts/radial";
+import useUpdateEffect from "react-use/lib/useUpdateEffect";
 import { RaceBarChart } from "app/components/charts/race-bar";
 import { TableContainer } from "app/components/table-container";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { RadialChartDataItem } from "app/components/charts/radial/data";
 import {
   HeatmapDataItem,
@@ -28,6 +30,8 @@ import {
 } from "app/components/table/data";
 
 export const AccessToFunding: React.FC = () => {
+  const params = useParams<{ id: string; tab: string }>();
+
   const [chart1Cycle, setChart1Cycle] = React.useState(CYCLES[0]);
   const [chart2Cycle, setChart2Cycle] = React.useState(CYCLES[0]);
 
@@ -39,10 +43,22 @@ export const AccessToFunding: React.FC = () => {
         []
       ) as RadialChartDataItem[]
   );
+  const fetchAllocationsRadialChart = useStoreActions(
+    (actions) => actions.GeographyAllocationsRadialChart.fetch
+  );
+  const loadingAllocationsRadialChart = useStoreState(
+    (state) => state.GeographyAllocationsRadialChart.loading
+  );
   const dataFundingRequestsTable = useStoreState((state) =>
     get(state.GeographyFundingRequestsTable, "data.data[0]", {
       _children: [],
     })
+  );
+  const fetchFundingRequestsTable = useStoreActions(
+    (actions) => actions.GeographyFundingRequestsTable.fetch
+  );
+  const loadingFundingRequestsTable = useStoreState(
+    (state) => state.GeographyFundingRequestsTable.loading
   );
   const dataFundingRequestStats = useStoreState((state) => ({
     submitted: get(
@@ -67,6 +83,20 @@ export const AccessToFunding: React.FC = () => {
   const dataDocumentsTable = useStoreState((state) =>
     get(state.GeographyDocumentsTable, "data.data", [])
   );
+  const allocationsCycles = useStoreState(
+    (state) =>
+      get(state.AllocationsCycles, "data.data", []) as {
+        name: string;
+        value: string;
+      }[]
+  );
+  const fundingRequestsCycles = useStoreState(
+    (state) =>
+      get(state.FundingRequestsCycles, "data.data", []) as {
+        name: string;
+        value: string;
+      }[]
+  );
 
   const handleChartCycleChange = (
     cycle: { name: string; value: string },
@@ -83,6 +113,29 @@ export const AccessToFunding: React.FC = () => {
         break;
     }
   };
+
+  useUpdateEffect(() => {
+    let filterString = `geographies=${params.id}`;
+    if (chart1Cycle.value !== CYCLES[0].value) {
+      filterString += `&periods=${chart1Cycle.value}`;
+    }
+    fetchAllocationsRadialChart({ filterString });
+  }, [chart1Cycle]);
+
+  useUpdateEffect(() => {
+    if (params.id) {
+      let filterString = "";
+      if (chart1Cycle.value !== CYCLES[0].value) {
+        filterString += `&periods=${chart2Cycle.value}`;
+      }
+      fetchFundingRequestsTable({
+        filterString,
+        routeParams: {
+          code: params.id,
+        },
+      });
+    }
+  }, [chart2Cycle]);
 
   const totalAllocationAmount = React.useMemo(() => {
     const value = sumBy(dataAllocationsRadialChart, "value");
@@ -132,9 +185,10 @@ export const AccessToFunding: React.FC = () => {
   return (
     <Box gap="24px" display="flex" flexDirection="column">
       <ChartBlock
-        cycles={CYCLES}
-        title={`$${totalAllocationAmount}`}
+        cycles={allocationsCycles}
+        title={`US$${totalAllocationAmount}`}
         selectedCycle={chart1Cycle}
+        loading={loadingAllocationsRadialChart}
         handleCycleChange={(value) => handleChartCycleChange(value, 1)}
         subtitle={`Funds Allocated ${
           chart1Cycle !== CYCLES[0] ? ` ${chart1Cycle}` : ""
@@ -155,7 +209,7 @@ export const AccessToFunding: React.FC = () => {
       >
         <Box display="flex" alignItems="center" flexDirection="column">
           <Typography variant="h3" fontWeight="900">
-            ${totalAllocationAmount}
+            US${totalAllocationAmount}
           </Typography>
           <Typography variant="subtitle2">
             Total Allocation
@@ -166,9 +220,10 @@ export const AccessToFunding: React.FC = () => {
       {fullWidthDivider}
       <ChartBlock
         noSplitText
-        cycles={CYCLES}
         noBottomToolbar
         selectedCycle={chart2Cycle}
+        cycles={fundingRequestsCycles}
+        loading={loadingFundingRequestsTable}
         title={`${dataFundingRequestsTable._children.length} Funding Requests`}
         subtitle="Submitted to date"
         empty={dataFundingRequestsTable._children.length === 0}

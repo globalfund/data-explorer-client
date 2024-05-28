@@ -10,12 +10,17 @@ import IconButton from "@mui/material/IconButton";
 import { FilterList } from "app/components/filters/list";
 import { FiltersApplied } from "app/components/filters/applied";
 import { FilterPanelProps } from "app/components/filters/panel/data";
-import { STORY_DATA_VARIANT_1 as FILTER_GROUPS } from "app/components/filters/list/data";
-import { ReactComponent as CollpaseIcon } from "app/assets/vectors/Collpase_ButtonIcon.svg";
+import { ReactComponent as CollapseIcon } from "app/assets/vectors/Collapse_ButtonIcon.svg";
 
 export const FilterPanel: React.FC<FilterPanelProps> = (
   props: FilterPanelProps
 ) => {
+  const [collapseAll, setCollapseAll] = React.useState(false);
+
+  const handleCollapseAll = () => {
+    setCollapseAll(!collapseAll);
+  };
+
   const appliedFiltersContent = React.useMemo(() => {
     if (props.appliedFilters.length === 0) {
       return <Typography fontSize="12px">No filters applied.</Typography>;
@@ -23,6 +28,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
     return (
       <FiltersApplied
         items={props.appliedFilters}
+        filterGroups={props.filterGroups}
         appliedFilterBgColors={props.appliedFilterBgColors}
       />
     );
@@ -87,12 +93,14 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
         >
           <Button
             variant="outlined"
-            startIcon={<CollpaseIcon fontSize="small" />}
+            onClick={handleCollapseAll}
+            startIcon={<CollapseIcon fontSize="small" />}
           >
-            Collpase All
+            Collapse All
           </Button>
           <Button
             variant="outlined"
+            onClick={props.handleResetFilters}
             startIcon={
               <Refresh
                 fontSize="small"
@@ -124,7 +132,11 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
         }}
       >
         <Typography fontSize="12px">Filter the data page-wide.</Typography>
-        <FilterList groups={FILTER_GROUPS} />
+        <FilterList
+          collapseAll={collapseAll}
+          groups={props.filterGroups}
+          setCollapseAll={setCollapseAll}
+        />
       </Box>
     </Box>
   );

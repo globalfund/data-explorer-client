@@ -52,19 +52,32 @@ export const DatasetPage: React.FC<DatasetPageProps> = (
         justifyContent="space-between"
       >
         <Box gap="20px" display="flex" flexDirection="row" alignItems="center">
-          <Typography variant="h6" gap="5px" display="flex" alignItems="center">
-            {props.title} Filters{" "}
-            <Tooltip title={TooltipTitle} arrow>
-              <InfoOutlined fontSize="small" />
-            </Tooltip>
-          </Typography>
           <Button
             variant="outlined"
             startIcon={<Add />}
             onClick={handleFilterButtonClick}
+            sx={
+              props.appliedFilters.length > 0
+                ? {
+                    "&:after": {
+                      top: "-3px",
+                      right: "8px",
+                      width: "6px",
+                      height: "6px",
+                      content: "''",
+                      borderRadius: "50%",
+                      position: "absolute",
+                      background: "#FF9800",
+                    },
+                  }
+                : {}
+            }
           >
             Filters
           </Button>
+          <Tooltip title={TooltipTitle} arrow>
+            <InfoOutlined fontSize="small" />
+          </Tooltip>
           <Popover
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
@@ -76,13 +89,9 @@ export const DatasetPage: React.FC<DatasetPageProps> = (
           >
             <FilterPanel
               onClose={handleFilterPanelClose}
-              appliedFilters={[
-                "Africa",
-                "Asia",
-                "Americas",
-                "Europe",
-                "Oceania",
-              ]}
+              filterGroups={props.filterGroups}
+              appliedFilters={props.appliedFilters}
+              handleResetFilters={props.handleResetFilters}
               appliedFilterBgColors={{
                 hover: "#FF9800",
                 normal: "rgba(255, 152, 0, 0.2)",
