@@ -49,7 +49,6 @@ import {
   componentsGroupingOptions,
   dropdownItemsDisbursements,
   dropdownItemsExpenditures,
-  dropdownItemsBudgetBreakdown,
 } from "app/pages/datasets/grant-implementation/data";
 
 export const GrantImplementationPage: React.FC = () => {
@@ -61,8 +60,6 @@ export const GrantImplementationPage: React.FC = () => {
   );
   const [disbursementsDropdownSelected, setDisbursementsDropdownSelected] =
     React.useState(dropdownItemsDisbursements[0].value);
-  const [budgetBreakdownDropdownSelected, setBudgetBreakdownDropdownSelected] =
-    React.useState(dropdownItemsBudgetBreakdown[0].value);
   const [budgetsDropdownSelected, setBudgetsDropdownSelected] = React.useState(
     dropdownItemsBudgets[0].value
   );
@@ -316,6 +313,12 @@ export const GrantImplementationPage: React.FC = () => {
         options: [],
       }) as FilterGroupModel
   );
+  const cycles = useStoreState((state) =>
+    get(state.BudgetsCycles, "data.data", []).map((cycle: any) => ({
+      label: cycle.value,
+      value: cycle.value,
+    }))
+  );
   const pageAppliedFilters = useStoreState((state) => [
     ...state.AppliedFiltersState.components,
     ...state.AppliedFiltersState.locations,
@@ -329,6 +332,9 @@ export const GrantImplementationPage: React.FC = () => {
   const appliedFiltersActions = useStoreActions(
     (actions) => actions.AppliedFiltersState
   );
+
+  const [budgetBreakdownDropdownSelected, setBudgetBreakdownDropdownSelected] =
+    React.useState(cycles[0].value);
 
   const handleDisbursementsSelectionChange = (value: string) => {
     setDisbursementsDropdownSelected(value);
@@ -936,7 +942,7 @@ export const GrantImplementationPage: React.FC = () => {
             </Box>
             <Box>
               <Dropdown
-                dropdownItems={dropdownItemsBudgetBreakdown}
+                dropdownItems={cycles}
                 dropdownSelected={budgetBreakdownDropdownSelected}
                 handleDropdownChange={handleBudgetBreakdownSelectionChange}
               />

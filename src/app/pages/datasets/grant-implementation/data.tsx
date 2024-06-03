@@ -45,25 +45,6 @@ export const dropdownItemsDisbursements = [
   { label: "Table View", value: "Table View", icon: <TableIcon /> },
 ];
 
-export const dropdownItemsBudgetBreakdown = [
-  {
-    label: "2017-2019",
-    value: "2017-2019",
-  },
-  {
-    label: "2020-2022",
-    value: "2020-2022",
-  },
-  {
-    label: "2023-2025",
-    value: "2023-2025",
-  },
-  {
-    label: "2026-2028",
-    value: "2026-2028",
-  },
-];
-
 export const dropdownItemsBudgets = [
   {
     label: "Sankey Chart",
