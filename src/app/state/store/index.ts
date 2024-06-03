@@ -113,6 +113,7 @@ import {
   AnnualResultsCycles,
   BudgetsCycles,
   DisbursementsCycles,
+  EligibilityCycles,
   ExpendituresCycles,
   FundingRequestsCycles,
   PledgesContributionsCycles,
@@ -239,6 +240,7 @@ const storeContent: StoreModel = {
   PledgesContributionsCycles: persist(PledgesContributionsCycles),
   DisbursementsCycles: persist(DisbursementsCycles),
   ExpendituresCycles: persist(ExpendituresCycles),
+  EligibilityCycles: persist(EligibilityCycles),
   ResultsComponentFilterOptions: persist(ResultsComponentFilterOptions),
   // sync state variables
   AppliedFiltersState: persist(AppliedFiltersState),

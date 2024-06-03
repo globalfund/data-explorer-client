@@ -28,3 +28,7 @@ export const DisbursementsCycles: ApiCallModel = {
 export const ExpendituresCycles: ApiCallModel = {
   ...APIModel(`${process.env.REACT_APP_API}/expenditures/cycles`),
 };
+
+export const EligibilityCycles: ApiCallModel = {
+  ...APIModel(`${process.env.REACT_APP_API}/eligibility/years`),
+};

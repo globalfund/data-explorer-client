@@ -15,21 +15,15 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { SunburstChart } from "app/components/charts/sunburst";
 import { BarSeriesChart } from "app/components/charts/bar-series";
 import { FilterGroupModel } from "app/components/filters/list/data";
+import { TreemapDataItem } from "app/components/charts/treemap/data";
 import { getRange } from "app/utils/getFinancialValueWithMetricPrefix";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { BarSeriesChartDataItem } from "app/components/charts/bar-series/data";
 import {
-  STORY_DATA_VARIANT_2 as TREEMAP_DATA,
-  TreemapDataItem,
-} from "app/components/charts/treemap/data";
-import {
   BOXES,
-  eligibilityYears,
   FullWidthDivider,
-  geographyGroupingOptions,
   dropdownItemsAllocations,
-  componentsGroupingOptions,
 } from "app/pages/datasets/access-to-funding/data";
 import {
   TABLE_VARIATION_10_COLUMNS as ELIGIBILITY_TABLE_COLUMNS,
@@ -38,9 +32,6 @@ import {
 } from "app/components/table/data";
 
 export const AccessToFundingPage: React.FC = () => {
-  const [eligibilityYear, setEligibilityYear] = React.useState(
-    eligibilityYears[0].value
-  );
   const [dropdownSelected, setDropdownSelected] = React.useState(
     dropdownItemsAllocations[0].value
   );
@@ -151,6 +142,17 @@ export const AccessToFundingPage: React.FC = () => {
   );
   const appliedFiltersActions = useStoreActions(
     (actions) => actions.AppliedFiltersState
+  );
+  const eligibilityYears = useStoreState(
+    (state) =>
+      get(state.EligibilityCycles, "data.data", []).map((item) => ({
+        label: item,
+        value: item,
+      })) as { label: string; value: string }[]
+  );
+
+  const [eligibilityYear, setEligibilityYear] = React.useState(
+    eligibilityYears[0].value
   );
 
   const handleSelectionChange = (value: string) => {

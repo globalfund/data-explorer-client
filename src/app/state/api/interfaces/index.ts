@@ -210,6 +210,7 @@ export interface StoreModel {
   PledgesContributionsCycles: ApiCallModel;
   DisbursementsCycles: ApiCallModel;
   ExpendituresCycles: ApiCallModel;
+  EligibilityCycles: ApiCallModel;
   ResultsComponentFilterOptions: ApiCallModel;
   // sync state variables
   AppliedFiltersState: AppliedFiltersStateModel;

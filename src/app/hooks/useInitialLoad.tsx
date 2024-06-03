@@ -14,6 +14,9 @@ export const useInitialLoad = () => {
   const fetchExpendituresCycles = useStoreActions(
     (actions) => actions.ExpendituresCycles.fetch
   );
+  const fetchEligibilityCycles = useStoreActions(
+    (actions) => actions.EligibilityCycles.fetch
+  );
   const fetchPledgesContributionsCycles = useStoreActions(
     (actions) => actions.PledgesContributionsCycles.fetch
   );
@@ -47,6 +50,7 @@ export const useInitialLoad = () => {
     fetchAnnualResultsCycles({});
     fetchDisbursementsCycles({});
     fetchExpendituresCycles({});
+    fetchEligibilityCycles({});
     fetchPledgesContributionsCycles({});
     fetchFundingRequestsCycles({});
     fetchBudgetsCycles({});
