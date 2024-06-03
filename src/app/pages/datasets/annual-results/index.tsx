@@ -20,6 +20,7 @@ import {
   geographyGroupingOptions,
   componentsGroupingOptions,
 } from "app/pages/datasets/annual-results/data";
+import { RowComponent } from "tabulator-tables";
 
 const dropdownItems = [
   { label: "Polyline Tree", value: "Polyline Tree", icon: <BarChartIcon /> },
@@ -51,7 +52,7 @@ const StatComp: React.FC<{
 
 export const AnnualResultsPage: React.FC = () => {
   const [dropdownSelected, setDropdownSelected] = React.useState(
-    dropdownItems[0].value
+    dropdownItems[1].value
   );
 
   const annualResultsCycles = useStoreState(
@@ -153,15 +154,24 @@ export const AnnualResultsPage: React.FC = () => {
           <Table
             dataTree
             data={dataTable}
-            dataTreeStartExpanded
             id="annual-results-table"
             columns={TABLE_VARIATION_9_COLUMNS}
+            dataTreeStartExpandedFn={(row: RowComponent, level: number) => {
+              if (level === 0) return row.getData().name === yearSelected;
+              if (level === 1) {
+                const parent = row.getTreeParent();
+                if (parent) {
+                  return parent.getData().name === yearSelected;
+                }
+              }
+              return false;
+            }}
           />
         );
       default:
         return null;
     }
-  }, [dropdownSelected, dataPolyline, dataTable]);
+  }, [dropdownSelected, dataPolyline, dataTable, yearSelected]);
 
   const chartEmpty = React.useMemo(() => {
     switch (dropdownSelected) {

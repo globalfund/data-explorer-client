@@ -1,6 +1,7 @@
 import { appColors } from "app/theme";
 import { formatLocale } from "app/utils/formatLocale";
 import {
+  RowComponent,
   CellComponent,
   ColumnDefinition,
   TabulatorFull as Tabulator,
@@ -16,6 +17,7 @@ export interface TableProps {
   dataTreeBranchElement?: boolean;
   dataTreeStartExpanded?: boolean;
   extraColumns?: ColumnDefinition[];
+  dataTreeStartExpandedFn?: (row: RowComponent, level: number) => boolean;
 }
 
 const cellBGColorFormatter = (cell: CellComponent) => {

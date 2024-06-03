@@ -23,7 +23,11 @@ export const Table: React.FC<TableProps> = (props: TableProps) => {
         dataTreeExpandElement: ExpandElement,
         dataTreeCollapseElement: CollapseElement,
         dataTreeBranchElement: props.dataTreeBranchElement,
-        dataTreeStartExpanded: Boolean(props.dataTreeStartExpanded),
+        dataTreeStartExpanded: props.dataTreeStartExpanded
+          ? Boolean(props.dataTreeStartExpanded)
+          : props.dataTreeStartExpandedFn
+            ? props.dataTreeStartExpandedFn
+            : false,
       });
 
       table.on("dataTreeRowExpanded", (_, level) => {
@@ -37,9 +41,9 @@ export const Table: React.FC<TableProps> = (props: TableProps) => {
         }
       });
 
-      if (props.dataTreeStartExpanded) {
+      if (props.dataTreeStartExpanded || props.dataTreeStartExpandedFn) {
         setTimeout(() => {
-          table.redraw();
+          // table.redraw();
         }, 100);
       }
 
