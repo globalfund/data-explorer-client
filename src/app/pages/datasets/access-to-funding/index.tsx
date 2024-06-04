@@ -537,39 +537,6 @@ export const AccessToFundingPage: React.FC = () => {
         </Box>
         <FullWidthDivider />
         <Box
-          gap="20px"
-          display="flex"
-          padding="50px 0"
-          flexDirection="row"
-          justifyContent="space-between"
-          sx={{
-            "> div": {
-              display: "flex",
-              flexDirection: "column",
-            },
-          }}
-        >
-          {BOXES.map((b, i) => (
-            <React.Fragment key={i}>
-              <Box key={b.title}>
-                <Typography fontSize="10px" marginBottom="5px"></Typography>
-                <Typography
-                  fontSize="14px"
-                  marginBottom="2px"
-                  lineHeight="normal"
-                >
-                  {b.title}
-                </Typography>
-                <img src={b.image} alt={`${b.title} img`} height={250} />
-              </Box>
-              {i !== BOXES.length - 1 && (
-                <Divider orientation="vertical" sx={{ height: "323px" }} />
-              )}
-            </React.Fragment>
-          ))}
-        </Box>
-        <FullWidthDivider />
-        <Box
           padding="50px 0"
           sx={{
             "#content": {
@@ -588,46 +555,9 @@ export const AccessToFundingPage: React.FC = () => {
               dataTree
               id="funding-requests-table"
               data={dataFundingRequestsTable}
-              columns={FUNDING_REQUESTS_TABLE_COLUMNS.slice(0, 6)}
-              extraColumns={FUNDING_REQUESTS_TABLE_COLUMNS.slice(
-                6,
-                FUNDING_REQUESTS_TABLE_COLUMNS.length
-              )}
+              columns={FUNDING_REQUESTS_TABLE_COLUMNS}
             />
           </DatasetChartBlock>
-        </Box>
-        <FullWidthDivider />
-        <Box
-          gap="20px"
-          display="flex"
-          padding="50px 0"
-          flexDirection="row"
-          justifyContent="space-between"
-          sx={{
-            "> div": {
-              display: "flex",
-              flexDirection: "column",
-            },
-          }}
-        >
-          {BOXES.map((b, i) => (
-            <React.Fragment key={i}>
-              <Box key={b.title}>
-                <Typography fontSize="10px" marginBottom="5px"></Typography>
-                <Typography
-                  fontSize="14px"
-                  marginBottom="2px"
-                  lineHeight="normal"
-                >
-                  {b.title}
-                </Typography>
-                <img src={b.image} alt={`${b.title} img`} height={250} />
-              </Box>
-              {i !== BOXES.length - 1 && (
-                <Divider orientation="vertical" sx={{ height: "323px" }} />
-              )}
-            </React.Fragment>
-          ))}
         </Box>
       </Box>
     </DatasetPage>
