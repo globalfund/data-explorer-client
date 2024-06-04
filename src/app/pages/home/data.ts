@@ -1,3 +1,8 @@
+export interface CycleProps {
+  name: string;
+  value: string;
+}
+
 export const CYCLES = [
   { name: "All", value: "All" },
   { name: "Cycle 1", value: "Cycle 1" },

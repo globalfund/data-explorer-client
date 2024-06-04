@@ -61,7 +61,7 @@ export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
         cycles={RESULT_YEARS}
         loading={loadingResultsTable}
         subtitle="Based on achievements"
-        selectedCycle={props.resultsYear}
+        selectedCycles={[props.resultsYear]}
         handleCycleChange={props.setResultsYear}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >

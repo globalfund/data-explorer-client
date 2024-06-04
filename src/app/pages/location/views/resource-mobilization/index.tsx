@@ -3,7 +3,7 @@ import get from "lodash/get";
 import sumBy from "lodash/sumBy";
 import Box from "@mui/material/Box";
 import { useParams } from "react-router-dom";
-import { CYCLES } from "app/pages/home/data";
+import { CYCLES, CycleProps } from "app/pages/home/data";
 import Typography from "@mui/material/Typography";
 import { BarChart } from "app/components/charts/bar";
 import { ChartBlock } from "app/components/chart-block";
@@ -18,7 +18,7 @@ import {
 export const ResourceMobilization: React.FC = () => {
   const params = useParams<{ id: string; tab: string }>();
 
-  const [chart1Cycle, setChart1Cycle] = React.useState(CYCLES[0]);
+  const [chart1Cycles, setChart1Cycles] = React.useState<CycleProps[]>([]);
 
   const dataRMBarChart = useStoreState(
     (state) =>
@@ -42,13 +42,23 @@ export const ResourceMobilization: React.FC = () => {
       }[]
   );
 
+  const handleChartCycleChange = (cycle: CycleProps) => {
+    const cycleIndex = cycles.findIndex((c) => c.value === cycle.value);
+
+    if (cycleIndex === -1) {
+      setChart1Cycles((prev) => [...prev, cycle]);
+    } else {
+      setChart1Cycles((prev) => prev.filter((c) => c.value !== cycle.value));
+    }
+  };
+
   useUpdateEffect(() => {
     let filterString = `donors=${params.id}`;
-    if (chart1Cycle.value !== CYCLES[0].value) {
-      filterString += `&periods=${chart1Cycle.value}`;
+    if (chart1Cycles.length > 0) {
+      filterString += `&periods=${chart1Cycles.map((c) => c.value).join(",")}`;
     }
     fetchRMBarChart({ filterString });
-  }, [chart1Cycle]);
+  }, [chart1Cycles]);
 
   const totalPledge = React.useMemo(() => {
     const value = sumBy(dataRMBarChart, "value");
@@ -66,12 +76,12 @@ export const ResourceMobilization: React.FC = () => {
     <Box>
       <ChartBlock
         cycles={cycles}
-        title={`US$${totalContribution}`}
-        selectedCycle={chart1Cycle}
         loading={loadingRMBarChart}
+        selectedCycles={chart1Cycles}
+        title={`US$${totalContribution}`}
         empty={dataRMBarChart.length === 0}
         subtitle="Funds Contributed to date"
-        handleCycleChange={(value) => setChart1Cycle(value)}
+        handleCycleChange={handleChartCycleChange}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
         <BarChart
@@ -100,7 +110,9 @@ export const ResourceMobilization: React.FC = () => {
           </Typography>
           <Typography variant="subtitle2">
             Total Pledge
-            {chart1Cycle !== CYCLES[0] ? ` ${chart1Cycle.name}` : ""}
+            {chart1Cycles.length > 0
+              ? ` ${chart1Cycles.map((c) => c.name).join(",")}`
+              : ""}
           </Typography>
         </Box>
         <Box
@@ -114,7 +126,9 @@ export const ResourceMobilization: React.FC = () => {
           </Typography>
           <Typography variant="subtitle2">
             Total Contribution
-            {chart1Cycle !== CYCLES[0] ? ` ${chart1Cycle.name}` : ""}
+            {chart1Cycles.length > 0
+              ? ` ${chart1Cycles.map((c) => c.name).join(",")}`
+              : ""}
           </Typography>
         </Box>
       </Box>

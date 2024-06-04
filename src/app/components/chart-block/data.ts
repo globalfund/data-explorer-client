@@ -5,13 +5,14 @@ export interface ChartBlockProps {
   subtitle: string;
   loading?: boolean;
   noSplitText?: boolean;
+  showCycleAll?: boolean;
   children: React.ReactNode;
   noBottomToolbar?: boolean;
   dropdownSelected?: string;
   unitButtons?: React.ReactNode;
   cycles?: { name: string; value: string }[];
   handleDropdownChange?: (value: string) => void;
-  selectedCycle?: { name: string; value: string };
+  selectedCycles?: { name: string; value: string }[];
   dropdownItems?: { value: string; label: string }[];
   handleCycleChange?: (cycle: { name: string; value: string }) => void;
 }

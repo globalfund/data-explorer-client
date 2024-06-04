@@ -8,15 +8,24 @@ import { withRouter } from "storybook-addon-remix-react-router";
 import { STORY_DATA_VARIANT_2 } from "app/components/charts/bar/data";
 
 const Wrapper: React.FC = () => {
-  const [selectedCycle, setSelectedCycle] = React.useState(CYCLES[0]);
+  const [selectedCycles, setSelectedCycles] = React.useState([CYCLES[0]]);
+
+  const handleCycleChange = (cycle: { name: string; value: string }) => {
+    const index = selectedCycles.findIndex((c) => c.value === cycle.value);
+    if (index === -1) {
+      setSelectedCycles([...selectedCycles, cycle]);
+    } else {
+      setSelectedCycles(selectedCycles.filter((c) => c.value !== cycle.value));
+    }
+  };
 
   return (
     <ChartBlock
       cycles={CYCLES}
       title="$84 Billion"
-      selectedCycle={selectedCycle}
+      selectedCycles={selectedCycles}
       subtitle="Funds raised to date"
-      handleCycleChange={setSelectedCycle}
+      handleCycleChange={handleCycleChange}
       text="Government, private sector, nongovernment and other donor pledges and contributions"
     >
       <BarChart

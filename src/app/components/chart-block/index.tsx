@@ -30,10 +30,10 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
     return (
       props.cycles &&
       props.cycles.length > 0 &&
-      props.selectedCycle &&
+      props.selectedCycles &&
       props.handleCycleChange
     );
-  }, [props.cycles, props.selectedCycle, props.handleCycleChange]);
+  }, [props.cycles, props.selectedCycles, props.handleCycleChange]);
 
   const content = React.useMemo(() => {
     if (props.loading) {
@@ -87,10 +87,11 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
           padding="20px 0 40px 0"
           justifyContent={showCycles ? "space-between" : "flex-end"}
         >
-          {props.cycles && props.selectedCycle && props.handleCycleChange && (
+          {props.cycles && props.selectedCycles && props.handleCycleChange && (
             <ChartBlockCycles
               cycles={props.cycles}
-              selectedCycle={props.selectedCycle}
+              showCycleAll={props.showCycleAll}
+              selectedCycles={props.selectedCycles}
               handleCycleChange={props.handleCycleChange}
             />
           )}

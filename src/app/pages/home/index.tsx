@@ -23,6 +23,7 @@ import { applyResultValueFormula } from "app/utils/applyResultValueFormula";
 import { StatCompProps } from "app/pages/home/components/results-stats/data";
 import {
   CYCLES,
+  CycleProps,
   CHART_4_DROPDOWN_ITEMS,
   CHART_5_DROPDOWN_ITEMS,
   CHART_3_DROPDOWN_ITEMS,
@@ -37,11 +38,11 @@ import {
 } from "app/utils/getFinancialValueWithMetricPrefix";
 
 export const Home: React.FC = () => {
-  const [chart1Cycle, setChart1Cycle] = React.useState(CYCLES[0]);
-  const [chart2Cycle, setChart2Cycle] = React.useState(CYCLES[0]);
-  const [chart3Cycle, setChart3Cycle] = React.useState(CYCLES[0]);
-  const [chart4Cycle, setChart4Cycle] = React.useState(CYCLES[0]);
-  const [chart5Cycle, setChart5Cycle] = React.useState(CYCLES[0]);
+  const [chart1Cycles, setChart1Cycles] = React.useState<CycleProps[]>([]);
+  const [chart2Cycles, setChart2Cycles] = React.useState<CycleProps[]>([]);
+  const [chart3Cycles, setChart3Cycles] = React.useState<CycleProps[]>([]);
+  const [chart4Cycles, setChart4Cycles] = React.useState<CycleProps[]>([]);
+  const [chart5Cycles, setChart5Cycles] = React.useState<CycleProps[]>([]);
 
   const [chart3Dropdown, setChart3Dropdown] = React.useState(
     CHART_3_DROPDOWN_ITEMS[0].value
@@ -166,28 +167,53 @@ export const Home: React.FC = () => {
     (state) => get(state.AnnualResultsCycles, "data.data", []) as number[]
   );
 
-  const handleChartCycleChange = (
-    cycle: { name: string; value: string },
-    index: number
-  ) => {
+  const handleChartCycleChange = (cycle: CycleProps, index: number) => {
+    let cycles: {
+      name: string;
+      value: string;
+    }[] = [];
+    let setCycle;
+    let multi = true;
     switch (index) {
       case 1:
-        setChart1Cycle(cycle);
+        cycles = chart1Cycles;
+        setCycle = setChart1Cycles;
         break;
       case 2:
-        setChart2Cycle(cycle);
+        cycles = chart2Cycles;
+        setCycle = setChart2Cycles;
+        multi = false;
         break;
       case 3:
-        setChart3Cycle(cycle);
+        cycles = chart3Cycles;
+        setCycle = setChart3Cycles;
         break;
       case 4:
-        setChart4Cycle(cycle);
+        cycles = chart4Cycles;
+        setCycle = setChart4Cycles;
         break;
       case 5:
-        setChart5Cycle(cycle);
+        cycles = chart5Cycles;
+        setCycle = setChart5Cycles;
+        multi = false;
         break;
       default:
         break;
+    }
+    if (setCycle) {
+      const cycleIndex = cycles.findIndex((c) => c.value === cycle.value);
+      if (cycleIndex > -1) {
+        cycles.splice(cycleIndex, 1);
+      } else {
+        cycles.push(cycle);
+      }
+      if (cycle.value === CYCLES[0].value) {
+        cycles = [];
+      }
+      if (!multi) {
+        cycles = [cycle];
+      }
+      setCycle([...cycles]);
     }
   };
 
@@ -234,38 +260,51 @@ export const Home: React.FC = () => {
     [chart5Unit]
   );
 
-  const reloadPledgesContributionsBarChart = (cycle: {
-    name: string;
-    value: string;
-  }) => {
+  const reloadPledgesContributionsBarChart = (
+    cycles: {
+      name: string;
+      value: string;
+    }[]
+  ) => {
     let filterString = "";
-    if (cycle.value !== "All") {
-      filterString = `periods=${cycle.value}`;
+    if (cycles.length > 0) {
+      filterString = `periods=${cycles.map((c) => c.value).join(",")}`;
     }
     fetchPledgesContributionsBarChart({ filterString });
   };
 
-  const reloadAllocationsRadialChart = (cycle: {
-    name: string;
-    value: string;
-  }) => {
+  const reloadAllocationsRadialChart = (
+    cycles: {
+      name: string;
+      value: string;
+    }[]
+  ) => {
     let filterString = "";
-    if (cycle.value !== "All") {
-      filterString = `periods=${cycle.value}`;
+    if (cycles.length > 0) {
+      filterString = `periods=${cycles.map((c) => c.value).join(",")}`;
     }
     fetchAllocationsRadialChart({ filterString });
   };
 
   const reloadBudgetsTreemap = (
-    cycle: { name: string; value: string },
+    cycles: CycleProps[],
     componentField: string
   ) => {
     let filterString = "";
-    if (cycle.value !== "All") {
-      const years = cycle.value.split(" - ");
-      if (years.length === 1) filterString = `years=${years[0]}`;
-      if (years.length === 2)
-        filterString = `years=${years[0]}&yearsTo=${years[1]}`;
+    if (cycles.length > 0) {
+      const yearFrom: string[] = [];
+      const yearTo: string[] = [];
+      cycles.forEach((cycle) => {
+        const years = cycle.value.split(" - ");
+        yearFrom.push(years[0]);
+        yearTo.push(years[1]);
+      });
+      if (yearFrom.length > 0) {
+        filterString = `years=${yearFrom.join(",")}`;
+      }
+      if (yearTo.length > 0) {
+        filterString += `${filterString.length > 0 ? "&" : ""}yearsTo=${yearTo.join(",")}`;
+      }
     }
     fetchBudgetsTreemap({
       filterString,
@@ -279,18 +318,27 @@ export const Home: React.FC = () => {
   };
 
   const reloadDisbursementsLineChart = (
-    cycle: {
+    cycles: {
       name: string;
       value: string;
-    },
+    }[],
     componentField: string
   ) => {
     let filterString = "";
-    if (cycle.value !== "All") {
-      const years = cycle.value.split(" - ");
-      if (years.length === 1) filterString = `years=${years[0]}`;
-      if (years.length === 2)
-        filterString = `years=${years[0]}&yearsTo=${years[1]}`;
+    if (cycles.length > 0) {
+      const yearFrom: string[] = [];
+      const yearTo: string[] = [];
+      cycles.forEach((cycle) => {
+        const years = cycle.value.split(" - ");
+        yearFrom.push(years[0]);
+        yearTo.push(years[1]);
+      });
+      if (yearFrom.length > 0) {
+        filterString = `years=${yearFrom.join(",")}`;
+      }
+      if (yearTo.length > 0) {
+        filterString += `${filterString.length > 0 ? "&" : ""}yearsTo=${yearTo.join(",")}`;
+      }
     }
     fetchDisbursementsLineChart({
       filterString,
@@ -304,18 +352,27 @@ export const Home: React.FC = () => {
   };
 
   const reloadExpendituresHeatmap = (
-    cycle: {
+    cycles: {
       name: string;
       value: string;
-    },
+    }[],
     componentField: string
   ) => {
     let filterString = "";
-    if (cycle.value !== "All") {
-      const years = cycle.value.split(" - ");
-      if (years.length === 1) filterString = `years=${years[0]}`;
-      if (years.length === 2)
-        filterString = `years=${years[0]}&yearsTo=${years[1]}`;
+    if (cycles.length > 0) {
+      const yearFrom: string[] = [];
+      const yearTo: string[] = [];
+      cycles.forEach((cycle) => {
+        const years = cycle.value.split(" - ");
+        yearFrom.push(years[0]);
+        yearTo.push(years[1]);
+      });
+      if (yearFrom.length > 0) {
+        filterString = `years=${yearFrom.join(",")}`;
+      }
+      if (yearTo.length > 0) {
+        filterString += `${filterString.length > 0 ? "&" : ""}yearsTo=${yearTo.join(",")}`;
+      }
     }
     fetchExpendituresHeatmap({
       filterString,
@@ -339,24 +396,40 @@ export const Home: React.FC = () => {
   }, [annualResultsCycles]);
 
   React.useEffect(() => {
-    reloadPledgesContributionsBarChart(chart1Cycle);
-  }, [chart1Cycle]);
+    reloadPledgesContributionsBarChart(chart1Cycles);
+  }, [chart1Cycles]);
 
   React.useEffect(() => {
-    reloadAllocationsRadialChart(chart2Cycle);
-  }, [chart2Cycle]);
+    if (chart2Cycles.length > 0) {
+      reloadAllocationsRadialChart(chart2Cycles);
+    }
+  }, [chart2Cycles]);
 
   React.useEffect(() => {
-    reloadBudgetsTreemap(chart3Cycle, chart3Dropdown);
-  }, [chart3Cycle, chart3Dropdown]);
+    reloadBudgetsTreemap(chart3Cycles, chart3Dropdown);
+  }, [chart3Cycles, chart3Dropdown]);
 
   React.useEffect(() => {
-    reloadDisbursementsLineChart(chart4Cycle, chart4Dropdown);
-  }, [chart4Cycle, chart4Dropdown]);
+    reloadDisbursementsLineChart(chart4Cycles, chart4Dropdown);
+  }, [chart4Cycles, chart4Dropdown]);
 
   React.useEffect(() => {
-    reloadExpendituresHeatmap(chart5Cycle, chart5Dropdown);
-  }, [chart5Cycle, chart5Dropdown]);
+    if (chart5Cycles.length > 0) {
+      reloadExpendituresHeatmap(chart5Cycles, chart5Dropdown);
+    }
+  }, [chart5Cycles, chart5Dropdown]);
+
+  React.useEffect(() => {
+    if (allocationsCycles.length > 0) {
+      setChart2Cycles([allocationsCycles[allocationsCycles.length - 1]]);
+    }
+  }, [allocationsCycles]);
+
+  React.useEffect(() => {
+    if (expendituresCycles.length > 0) {
+      setChart5Cycles([expendituresCycles[expendituresCycles.length - 1]]);
+    }
+  }, [expendituresCycles]);
 
   const allocationsTotal = React.useMemo(() => {
     const total = sumBy(dataAllocationsRadialChart, "value");
@@ -429,13 +502,17 @@ export const Home: React.FC = () => {
       </Box>
       <Box height="64px" />
       <ChartBlock
+        showCycleAll
+        selectedCycles={chart1Cycles}
         title={`${totalContribution}`}
-        selectedCycle={chart1Cycle}
         subtitle="Pledges & Contributions"
-        cycles={pledgesContributionsCycles}
         loading={loadingPledgesContributionsBarChart}
         empty={dataPledgesContributionsBarChart.length === 0}
         handleCycleChange={(value) => handleChartCycleChange(value, 1)}
+        cycles={pledgesContributionsCycles.map((c) => ({
+          name: c.value,
+          value: c.value,
+        }))}
       >
         <BarChart
           data={dataPledgesContributionsBarChart}
@@ -481,11 +558,14 @@ export const Home: React.FC = () => {
       <ChartBlock
         subtitle="Allocation"
         title={allocationsTotal}
-        cycles={allocationsCycles}
-        selectedCycle={chart2Cycle}
+        selectedCycles={chart2Cycles}
         loading={loadingAllocationsRadialChart}
         empty={dataAllocationsRadialChart.length === 0}
         handleCycleChange={(value) => handleChartCycleChange(value, 2)}
+        cycles={allocationsCycles.map((c) => ({
+          name: c.value,
+          value: c.value,
+        }))}
         text="The Global Fund is distinct from other organizations in that it gives countries (or groups of countries) an allocation and asks countries to describe how they will use those funds rather than asking for applications and then determining an amount per-country based on the merits of the various proposals received.<br/><br/>This provides greater predictability for countries and helps ensure that the programs being funded are not just the ones with the most capacity to write good applications."
       >
         <RadialChart
@@ -497,16 +577,20 @@ export const Home: React.FC = () => {
       {fullWidthDivider}
       <Box height="50px" />
       <ChartBlock
+        showCycleAll
         title={totalBudget}
-        cycles={budgetsCycles}
         subtitle="Grant Budgets"
-        selectedCycle={chart3Cycle}
+        selectedCycles={chart3Cycles}
         loading={loadingBudgetsTreemap}
         dropdownSelected={chart3Dropdown}
         dropdownItems={CHART_3_DROPDOWN_ITEMS}
         empty={dataBudgetsTreemap.length === 0}
         handleDropdownChange={setChart3Dropdown}
         handleCycleChange={(value) => handleChartCycleChange(value, 3)}
+        cycles={budgetsCycles.map((c) => ({
+          name: c.value,
+          value: c.value,
+        }))}
       >
         <Treemap data={dataBudgetsTreemap} />
       </ChartBlock>
@@ -514,16 +598,20 @@ export const Home: React.FC = () => {
       {fullWidthDivider}
       <Box height="50px" />
       <ChartBlock
+        showCycleAll
         subtitle="Disbursements"
         title={disbursementsTotal}
-        selectedCycle={chart4Cycle}
-        cycles={disbursementsCycles}
+        selectedCycles={chart4Cycles}
         dropdownSelected={chart4Dropdown}
         dropdownItems={CHART_4_DROPDOWN_ITEMS}
         loading={loadingDisbursementsLineChart}
         handleDropdownChange={setChart4Dropdown}
         empty={dataDisbursementsLineChart.data.length === 0}
         handleCycleChange={(value) => handleChartCycleChange(value, 4)}
+        cycles={disbursementsCycles.map((c) => ({
+          name: c.value,
+          value: c.value,
+        }))}
       >
         <LineChart {...dataDisbursementsLineChart} />
       </ChartBlock>
@@ -533,15 +621,18 @@ export const Home: React.FC = () => {
       <ChartBlock
         subtitle="Expenditures"
         title={expendituresTotal}
-        selectedCycle={chart5Cycle}
-        cycles={expendituresCycles}
+        selectedCycles={chart5Cycles}
+        unitButtons={chart5UnitButtons}
         dropdownSelected={chart5Dropdown}
         loading={loadingExpendituresHeatmap}
         dropdownItems={CHART_5_DROPDOWN_ITEMS}
         handleDropdownChange={setChart5Dropdown}
         empty={dataExpendituresHeatmap.length === 0}
         handleCycleChange={(value) => handleChartCycleChange(value, 5)}
-        unitButtons={chart5UnitButtons}
+        cycles={expendituresCycles.map((c) => ({
+          name: c.value,
+          value: c.value,
+        }))}
       >
         <Heatmap
           data={dataExpendituresHeatmap}

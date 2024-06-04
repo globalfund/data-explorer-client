@@ -6,7 +6,7 @@ import Grid from "@mui/material/Grid";
 import { appColors } from "app/theme";
 import Divider from "@mui/material/Divider";
 import { useParams } from "react-router-dom";
-import { CYCLES } from "app/pages/home/data";
+import { CYCLES, CycleProps } from "app/pages/home/data";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import { PieChart } from "app/components/charts/pie";
@@ -49,9 +49,9 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
 ) => {
   const params = useParams<{ id: string; tab: string }>();
 
-  const [chart1Cycle, setChart1Cycle] = React.useState(CYCLES[0]);
-  const [chart2Cycle, setChart2Cycle] = React.useState(CYCLES[0]);
-  const [chart3Cycle, setChart3Cycle] = React.useState(CYCLES[0]);
+  const [chart1Cycles, setChart1Cycles] = React.useState<CycleProps[]>([]);
+  const [chart2Cycles, setChart2Cycles] = React.useState<CycleProps[]>([]);
+  const [chart3Cycles, setChart3Cycles] = React.useState<CycleProps[]>([]);
 
   const [chart1Dropdown, setChart1Dropdown] = React.useState(
     CHART_1_DROPDOWN_ITEMS[0].value
@@ -150,29 +150,48 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
       }[]
   );
 
-  const handleChartCycleChange = (
-    cycle: { name: string; value: string },
-    index: number
-  ) => {
+  const handleChartCycleChange = (cycle: CycleProps, index: number) => {
+    let cycles: CycleProps[] = [];
+    let setCycle;
+    let multi = true;
     switch (index) {
       case 1:
-        setChart1Cycle(cycle);
+        cycles = chart1Cycles;
+        setCycle = setChart1Cycles;
         break;
       case 2:
-        setChart2Cycle(cycle);
+        cycles = chart2Cycles;
+        setCycle = setChart2Cycles;
+        multi = false;
         break;
       case 3:
-        setChart3Cycle(cycle);
+        cycles = chart3Cycles;
+        setCycle = setChart3Cycles;
         break;
       default:
         break;
+    }
+    if (setCycle) {
+      const cycleIndex = cycles.findIndex((c) => c.value === cycle.value);
+      if (cycleIndex > -1) {
+        cycles.splice(cycleIndex, 1);
+      } else {
+        cycles.push(cycle);
+      }
+      if (cycle.value === CYCLES[0].value) {
+        cycles = [];
+      }
+      if (!multi) {
+        cycles = [cycle];
+      }
+      setCycle([...cycles]);
     }
   };
 
   useUpdateEffect(() => {
     let filterString = `geographies=${params.id}`;
-    if (chart1Cycle.value !== CYCLES[0].value) {
-      filterString += `&periods=${chart1Cycle.value}`;
+    if (chart1Cycles.length > 0) {
+      filterString += `&periods=${chart1Cycles.map((c) => c.value).join(",")}`;
     }
     fetchDisbursementsLineChart({
       filterString,
@@ -183,12 +202,12 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
             : "activityArea",
       },
     });
-  }, [chart1Cycle, chart1Dropdown]);
+  }, [chart1Cycles, chart1Dropdown]);
 
   useUpdateEffect(() => {
     let filterString = `geographies=${params.id}`;
-    if (chart2Cycle.value !== CYCLES[0].value) {
-      filterString += `&periods=${chart2Cycle.value}`;
+    if (chart2Cycles.length > 0) {
+      filterString += `&periods=${chart2Cycles.map((c) => c.value).join(",")}`;
     }
     fetchBudgetSankeyChart({
       filterString,
@@ -199,12 +218,12 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
             : "activityArea",
       },
     });
-  }, [chart2Cycle, chart2Dropdown]);
+  }, [chart2Cycles, chart2Dropdown]);
 
   useUpdateEffect(() => {
     let filterString = `geographies=${params.id}`;
-    if (chart3Cycle.value !== CYCLES[0].value) {
-      filterString += `&periods=${chart3Cycle.value}`;
+    if (chart3Cycles.length > 0) {
+      filterString += `&periods=${chart3Cycles.map((c) => c.value).join(",")}`;
     }
     fetchExpendituresHeatmap({
       filterString,
@@ -214,7 +233,7 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
         componentField: "activityAreaGroup",
       },
     });
-  }, [chart3Cycle]);
+  }, [chart3Cycles]);
 
   const chart2UnitButtons = React.useMemo(
     () => (
@@ -344,8 +363,8 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
     <Box gap="24px" display="flex" flexDirection="column">
       <ChartBlock
         title={disbursementsTotal}
-        selectedCycle={chart1Cycle}
         cycles={disbursementsCycles}
+        selectedCycles={chart1Cycles}
         dropdownSelected={chart1Dropdown}
         empty={!showDisbursementsLineChart}
         dropdownItems={CHART_1_DROPDOWN_ITEMS}
@@ -361,7 +380,7 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
       <ChartBlock
         title="Budget"
         cycles={budgetsCycles}
-        selectedCycle={chart2Cycle}
+        selectedCycles={chart2Cycles}
         empty={!showBudgetSankeyChart}
         dropdownSelected={chart2Dropdown}
         loading={loadingBudgetSankeyChart}
@@ -408,7 +427,7 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
         subtitle="To date"
         title="Expenditures"
         cycles={expendituresCycles}
-        selectedCycle={chart3Cycle}
+        selectedCycles={chart3Cycles}
         empty={!showExpendituresHeatmap}
         loading={loadingExpendituresHeatmap}
         handleCycleChange={(value) => handleChartCycleChange(value, 3)}

@@ -1,4 +1,5 @@
 import React from "react";
+import find from "lodash/find";
 import Box from "@mui/material/Box";
 import { appColors } from "app/theme";
 import Button from "@mui/material/Button";
@@ -38,11 +39,11 @@ export const ChartBlockCycles: React.FC<ChartBlockCyclesProps> = (
         },
       }}
     >
-      {props.cycles.length > 0 && (
+      {props.cycles.length > 0 && props.showCycleAll && (
         <Button
           onClick={handleCycleClick({ name: "All", value: "All" })}
           style={
-            props.selectedCycle === null || props.selectedCycle.name === "All"
+            props.selectedCycles.length === 0
               ? {
                   fontWeight: "700",
                   borderColor:
@@ -62,7 +63,7 @@ export const ChartBlockCycles: React.FC<ChartBlockCyclesProps> = (
           key={cycle.name}
           onClick={handleCycleClick(cycle)}
           style={
-            cycle === props.selectedCycle
+            find(props.selectedCycles, { value: cycle.value })
               ? {
                   fontWeight: "700",
                   borderColor:
@@ -74,7 +75,7 @@ export const ChartBlockCycles: React.FC<ChartBlockCyclesProps> = (
               : {}
           }
         >
-          {cycle.name}
+          {cycle.name.replace(/ /g, "")}
         </Button>
       ))}
     </Box>

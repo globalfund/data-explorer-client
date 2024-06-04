@@ -193,7 +193,7 @@ export const AccessToFunding: React.FC = () => {
       <ChartBlock
         cycles={allocationsCycles}
         title={`US$${totalAllocationAmount}`}
-        selectedCycle={chart1Cycle}
+        selectedCycles={[chart1Cycle]}
         loading={loadingAllocationsRadialChart}
         handleCycleChange={(value) => handleChartCycleChange(value, 1)}
         subtitle={`Funds Allocated ${
@@ -229,7 +229,7 @@ export const AccessToFunding: React.FC = () => {
       <ChartBlock
         noSplitText
         noBottomToolbar
-        selectedCycle={chart2Cycle}
+        selectedCycles={[chart2Cycle]}
         cycles={fundingRequestsCycles}
         loading={loadingFundingRequestsTable}
         title={`${dataFundingRequestsTable._children.length} Funding Requests`}
