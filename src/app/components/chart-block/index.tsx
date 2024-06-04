@@ -70,7 +70,7 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
             a: { textDecoration: "none", fontWeight: "700", color: "#000" },
           }}
           dangerouslySetInnerHTML={{
-            __html: props.text,
+            __html: props.text ?? "",
           }}
         />
       </Typography>

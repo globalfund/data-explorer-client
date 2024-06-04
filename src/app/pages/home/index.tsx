@@ -88,10 +88,6 @@ export const Home: React.FC = () => {
         []
       ) as RadialChartDataItem[]
   );
-  const dataAllocationsCountriesCount = useStoreState(
-    (state) =>
-      get(state.HomeAllocationsRadialChart, "data.data.countries", 0) as number
-  );
   const loadingAllocationsRadialChart = useStoreState((state) =>
     Boolean(state.HomeAllocationsRadialChart.loading)
   );
@@ -114,9 +110,6 @@ export const Home: React.FC = () => {
         data: [],
         xAxisKeys: [],
       }) as LineChartProps
-  );
-  const activitiesCountDisbursements = useStoreState((state) =>
-    get(state.HomeDisbursementsLineChart, "data.activitiesCount", 0)
   );
   const loadingDisbursementsLineChart = useStoreState((state) =>
     Boolean(state.HomeDisbursementsLineChart.loading)
@@ -402,6 +395,12 @@ export const Home: React.FC = () => {
     return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${range.full}`;
   }, [dataBudgetsTreemap]);
 
+  const expendituresTotal = React.useMemo(() => {
+    const total = sumBy(dataExpendituresHeatmap, "value");
+    const range = getRange([{ value: total }], ["value"]);
+    return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${range.full}`;
+  }, [dataExpendituresHeatmap]);
+
   const fullWidthDivider = (
     <Divider
       sx={{
@@ -432,12 +431,11 @@ export const Home: React.FC = () => {
       <ChartBlock
         title={`${totalContribution}`}
         selectedCycle={chart1Cycle}
-        subtitle="Funds raised to date"
+        subtitle="Pledges & Contributions"
         cycles={pledgesContributionsCycles}
         loading={loadingPledgesContributionsBarChart}
         empty={dataPledgesContributionsBarChart.length === 0}
         handleCycleChange={(value) => handleChartCycleChange(value, 1)}
-        text="Government, private sector, nongovernment and other donor pledges and contributions"
       >
         <BarChart
           data={dataPledgesContributionsBarChart}
@@ -481,14 +479,14 @@ export const Home: React.FC = () => {
       {fullWidthDivider}
       <Box height="50px" />
       <ChartBlock
+        subtitle="Allocation"
         title={allocationsTotal}
         cycles={allocationsCycles}
         selectedCycle={chart2Cycle}
         loading={loadingAllocationsRadialChart}
         empty={dataAllocationsRadialChart.length === 0}
         handleCycleChange={(value) => handleChartCycleChange(value, 2)}
-        subtitle={`${dataAllocationsCountriesCount} countries with approved Grants`}
-        text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
+        text="The Global Fund is distinct from other organizations in that it gives countries (or groups of countries) an allocation and asks countries to describe how they will use those funds rather than asking for applications and then determining an amount per-country based on the merits of the various proposals received.<br/><br/>This provides greater predictability for countries and helps ensure that the programs being funded are not just the ones with the most capacity to write good applications."
       >
         <RadialChart
           data={dataAllocationsRadialChart}
@@ -499,17 +497,16 @@ export const Home: React.FC = () => {
       {fullWidthDivider}
       <Box height="50px" />
       <ChartBlock
+        title={totalBudget}
         cycles={budgetsCycles}
-        title={`${totalBudget} budgeted`}
+        subtitle="Grant Budgets"
         selectedCycle={chart3Cycle}
         loading={loadingBudgetsTreemap}
         dropdownSelected={chart3Dropdown}
         dropdownItems={CHART_3_DROPDOWN_ITEMS}
-        subtitle="With transparent budget data"
         empty={dataBudgetsTreemap.length === 0}
         handleDropdownChange={setChart3Dropdown}
         handleCycleChange={(value) => handleChartCycleChange(value, 3)}
-        text="Our Grant Implementation programs are developed meticulously, each Grant follows a well executed plan, always supervised by TGF Implementation team."
       >
         <Treemap data={dataBudgetsTreemap} />
       </ChartBlock>
@@ -517,6 +514,7 @@ export const Home: React.FC = () => {
       {fullWidthDivider}
       <Box height="50px" />
       <ChartBlock
+        subtitle="Disbursements"
         title={disbursementsTotal}
         selectedCycle={chart4Cycle}
         cycles={disbursementsCycles}
@@ -526,8 +524,6 @@ export const Home: React.FC = () => {
         handleDropdownChange={setChart4Dropdown}
         empty={dataDisbursementsLineChart.data.length === 0}
         handleCycleChange={(value) => handleChartCycleChange(value, 4)}
-        subtitle={`Disbursed within ${activitiesCountDisbursements} Grants`}
-        text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
         <LineChart {...dataDisbursementsLineChart} />
       </ChartBlock>
@@ -535,8 +531,8 @@ export const Home: React.FC = () => {
       {fullWidthDivider}
       <Box height="50px" />
       <ChartBlock
-        subtitle="To date"
-        title="Expenditures"
+        subtitle="Expenditures"
+        title={expendituresTotal}
         selectedCycle={chart5Cycle}
         cycles={expendituresCycles}
         dropdownSelected={chart5Dropdown}
@@ -545,7 +541,6 @@ export const Home: React.FC = () => {
         handleDropdownChange={setChart5Dropdown}
         empty={dataExpendituresHeatmap.length === 0}
         handleCycleChange={(value) => handleChartCycleChange(value, 5)}
-        text="Our Grant Implementation programs are developed meticulously, each Grant follows a well executed plan, always supervised by TGF Implementation team."
         unitButtons={chart5UnitButtons}
       >
         <Heatmap

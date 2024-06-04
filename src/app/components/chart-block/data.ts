@@ -1,6 +1,6 @@
 export interface ChartBlockProps {
-  text: string;
   title: string;
+  text?: string;
   empty?: boolean;
   subtitle: string;
   loading?: boolean;

@@ -15,11 +15,6 @@ import {
 const StatComp: React.FC<StatCompProps> = (props: StatCompProps) => {
   const value = applyResultValueFormula(props.value, 3);
 
-  const labelHtml = props.label
-    .replace("HIV", "<b>HIV</b>")
-    .replace("TB", "<b>TB</b>")
-    .replace("Mosquito nets", "<b>Mosquito nets</b>");
-
   const icon = React.useMemo(() => {
     if (props.icon) return props.icon;
     if (props.label.includes("HIV")) return <HIVIcon />;
@@ -50,8 +45,9 @@ const StatComp: React.FC<StatCompProps> = (props: StatCompProps) => {
           maxWidth="190px"
           variant="overline"
           lineHeight="normal"
-          dangerouslySetInnerHTML={{ __html: labelHtml }}
-        />
+        >
+          {props.label}
+        </Typography>
       </Box>
     </Box>
   );
