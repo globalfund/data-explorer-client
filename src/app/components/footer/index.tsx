@@ -122,7 +122,7 @@ export const Footer: React.FC = () => {
               </FooterExternalLink>
               <FooterExternalLink
                 target="_blank"
-                href="https://www.theglobalfund.org/en/oig/report-fraud-and-abus/"
+                href="https://www.theglobalfund.org/en/oig/report-fraud-and-abuse/"
               >
                 Report Fraud & Abuse
               </FooterExternalLink>
