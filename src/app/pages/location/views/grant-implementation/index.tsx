@@ -335,6 +335,11 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
     </React.Fragment>
   );
 
+  const showDisbursementsLineChart = dataDisbursementsLineChart.data.length > 0;
+  const showBudgetSankeyChart = dataBudgetSankeyChart.links.length > 0;
+  const showExpendituresHeatmap = dataExpendituresHeatmap.length > 0;
+  const showGrantsTable = dataGrantsTable.length > 0;
+
   return (
     <Box gap="24px" display="flex" flexDirection="column">
       <ChartBlock
@@ -342,27 +347,27 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
         selectedCycle={chart1Cycle}
         cycles={disbursementsCycles}
         dropdownSelected={chart1Dropdown}
+        empty={!showDisbursementsLineChart}
         dropdownItems={CHART_1_DROPDOWN_ITEMS}
         loading={loadingDisbursementsLineChart}
         handleDropdownChange={setChart1Dropdown}
-        empty={dataDisbursementsLineChart.data.length === 0}
         subtitle={`Disbursed within ${countGrantsTable} Grants`}
         handleCycleChange={(value) => handleChartCycleChange(value, 1)}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
         <LineChart {...dataDisbursementsLineChart} />
       </ChartBlock>
-      {fullWidthDivider}
+      {showDisbursementsLineChart && fullWidthDivider}
       <ChartBlock
         title="Budget"
         cycles={budgetsCycles}
         selectedCycle={chart2Cycle}
+        empty={!showBudgetSankeyChart}
         dropdownSelected={chart2Dropdown}
         loading={loadingBudgetSankeyChart}
         dropdownItems={CHART_2_DROPDOWN_ITEMS}
         handleDropdownChange={setChart2Dropdown}
         subtitle="to date with transparent budgets"
-        empty={dataBudgetSankeyChart.links.length === 0}
         handleCycleChange={(value) => handleChartCycleChange(value, 2)}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
@@ -398,14 +403,14 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
           <SankeyChart data={dataBudgetSankeyChart} />
         </Box>
       </ChartBlock>
-      {fullWidthDivider}
+      {showBudgetSankeyChart && fullWidthDivider}
       <ChartBlock
         subtitle="To date"
         title="Expenditures"
         cycles={expendituresCycles}
         selectedCycle={chart3Cycle}
+        empty={!showExpendituresHeatmap}
         loading={loadingExpendituresHeatmap}
-        empty={dataExpendituresHeatmap.length === 0}
         handleCycleChange={(value) => handleChartCycleChange(value, 3)}
         text="Our Grant Implementation programs are developed meticulously, each Grant follows a well executed plan, always supervised by TGF Implementation team."
         unitButtons={chart2UnitButtons}
@@ -421,11 +426,11 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
           bgColor={appColors.HEATMAP.CHART_BG_COLOR}
         />
       </ChartBlock>
-      {fullWidthDivider}
+      {showExpendituresHeatmap && fullWidthDivider}
       <ChartBlock
         title={`${countGrantsTable} Grants`}
         subtitle="to date"
-        empty={dataGrantsTable.length === 0}
+        empty={!showGrantsTable}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
         <Box height="16px" />

@@ -213,12 +213,19 @@ export const GrantImplementation: React.FC = () => {
     </React.Fragment>
   );
 
+  const showRadialChart = radialChartData.length > 0;
+  const showDisbursementsBarChart = dataDisbursementsBarChart.length > 0;
+  const showBudgetSankeyChart =
+    dataBudgetSankeyChart.nodes.length > 0 &&
+    dataBudgetSankeyChart.links.length > 0;
+  const showExpendituresHeatmap = dataExpendituresHeatmap.length > 0;
+
   return (
     <Box gap="24px" display="flex" flexDirection="column">
       <ChartBlock
         title={disbursementsTotal}
         subtitle="Disbursed"
-        empty={radialChartData.length === 0}
+        empty={!showRadialChart}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
         <RadialChart
@@ -247,7 +254,7 @@ export const GrantImplementation: React.FC = () => {
         </Box>
         <RaceBarChart data={raceBarChartData} />
       </ChartBlock>
-      {fullWidthDivider}
+      {showRadialChart && fullWidthDivider}
       <Divider sx={{ borderColor: "#000" }} />
       <Grid
         container
@@ -330,7 +337,7 @@ export const GrantImplementation: React.FC = () => {
       <ChartBlock
         title="Disbursements"
         subtitle="Overtime"
-        empty={dataDisbursementsBarChart.length === 0}
+        empty={!showDisbursementsBarChart}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
         <BarChart
@@ -338,14 +345,14 @@ export const GrantImplementation: React.FC = () => {
           valueLabels={{ value: "" }}
         />
       </ChartBlock>
-      {fullWidthDivider}
+      {showDisbursementsBarChart && fullWidthDivider}
       <ChartBlock
         title="Budget"
+        empty={!showBudgetSankeyChart}
         dropdownSelected={chart1Dropdown}
         subtitle="Investments and Modules"
         dropdownItems={CHART_1_DROPDOWN_ITEMS}
         handleDropdownChange={setChart1Dropdown}
-        empty={dataBudgetSankeyChart.links.length === 0}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
         <Grid
@@ -377,15 +384,15 @@ export const GrantImplementation: React.FC = () => {
           <SankeyChart data={dataBudgetSankeyChart} />
         </Box>
       </ChartBlock>
-      {fullWidthDivider}
+      {showBudgetSankeyChart && showExpendituresHeatmap && fullWidthDivider}
       <ChartBlock
         cycles={CYCLES}
         subtitle="To date"
         title="Expenditures"
+        empty={!showExpendituresHeatmap}
         dropdownSelected={chart2Dropdown}
         dropdownItems={CHART_2_DROPDOWN_ITEMS}
         handleDropdownChange={setChart2Dropdown}
-        empty={dataExpendituresHeatmap.length === 0}
         text="Our Grant Implementation programs are developed meticulously, each Grant follows a well executed plan, always supervised by TGF Implementation team."
         unitButtons={chart2UnitButtons}
       >

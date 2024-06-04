@@ -49,22 +49,12 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
         </Box>
       );
     }
-    if (props.empty) {
-      return (
-        <Box
-          width="100%"
-          height="100%"
-          display="flex"
-          minHeight="400px"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Typography>No data available</Typography>
-        </Box>
-      );
-    }
     return props.children;
-  }, [props.children, props.loading, props.empty]);
+  }, [props.children, props.loading]);
+
+  if (props.empty) {
+    return <React.Fragment />;
+  }
 
   return (
     <Box>

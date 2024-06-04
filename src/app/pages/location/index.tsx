@@ -1,16 +1,24 @@
 import React from "react";
 import get from "lodash/get";
+import remove from "lodash/remove";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import { useParams } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import { Results } from "app/pages/location/views/results";
 import CircularProgress from "@mui/material/CircularProgress";
+import { GrantCardProps } from "app/components/grant-card/data";
 import { DetailPageTabs } from "app/components/detail-page-tabs";
+import { LineChartProps } from "app/components/charts/line/data";
+import { PieChartDataItem } from "app/components/charts/pie/data";
+import { BarChartDataItem } from "app/components/charts/bar/data";
+import { SankeyChartData } from "app/components/charts/sankey/data";
 import { LocationOverview } from "app/pages/location/views/overview";
 import { RESULT_YEARS } from "app/pages/location/views/results/data";
 import { LOCATION_TABS } from "app/components/detail-page-tabs/data";
+import { HeatmapDataItem } from "app/components/charts/heatmap/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { RadialChartDataItem } from "app/components/charts/radial/data";
 import { AccessToFunding } from "app/pages/location/views/access-to-funding";
 import { GrantImplementation } from "app/pages/location/views/grant-implementation";
 import { ResourceMobilization } from "app/pages/location/views/resource-mobilization";
@@ -18,6 +26,7 @@ import { ResourceMobilization } from "app/pages/location/views/resource-mobiliza
 export const Location: React.FC = () => {
   const params = useParams<{ id: string; tab: string }>();
 
+  const [tabs, setTabs] = React.useState(LOCATION_TABS);
   const [grantsTablePage, setGrantsTablePage] = React.useState(1);
   const [resultsYear, setResultsYear] = React.useState(
     RESULT_YEARS[RESULT_YEARS.length - 1]
@@ -52,6 +61,14 @@ export const Location: React.FC = () => {
   const clearCCMContacts = useStoreActions(
     (actions) => actions.GeographyOverviewCoordinatingMechanismsContacts.clear
   );
+  const dataRMBarChart = useStoreState(
+    (state) =>
+      get(
+        state.GeographyResourceMobilizationBarChart,
+        "data.data",
+        []
+      ) as BarChartDataItem[]
+  );
   const fetchRMBarChart = useStoreActions(
     (actions) => actions.GeographyResourceMobilizationBarChart.fetch
   );
@@ -60,6 +77,14 @@ export const Location: React.FC = () => {
   );
   const clearRMBarChart = useStoreActions(
     (actions) => actions.GeographyResourceMobilizationBarChart.clear
+  );
+  const dataAllocationsRadialChart = useStoreState(
+    (state) =>
+      get(
+        state.GeographyAllocationsRadialChart,
+        "data.data.chart",
+        []
+      ) as RadialChartDataItem[]
   );
   const fetchAllocationsRadialChart = useStoreActions(
     (actions) => actions.GeographyAllocationsRadialChart.fetch
@@ -70,6 +95,11 @@ export const Location: React.FC = () => {
   const clearAllocationsRadialChart = useStoreActions(
     (actions) => actions.GeographyAllocationsRadialChart.clear
   );
+  const dataFundingRequestsTable = useStoreState((state) =>
+    get(state.GeographyFundingRequestsTable, "data.data[0]", {
+      _children: [],
+    })
+  );
   const fetchFundingRequestsTable = useStoreActions(
     (actions) => actions.GeographyFundingRequestsTable.fetch
   );
@@ -78,6 +108,14 @@ export const Location: React.FC = () => {
   );
   const clearFundingRequestsTable = useStoreActions(
     (actions) => actions.GeographyFundingRequestsTable.clear
+  );
+  const dataEligibilityHeatmap = useStoreState(
+    (state) =>
+      get(
+        state.GeographyEligibilityHeatmap,
+        "data.data",
+        []
+      ) as HeatmapDataItem[]
   );
   const fetchEligibilityHeatmap = useStoreActions(
     (actions) => actions.GeographyEligibilityHeatmap.fetch
@@ -88,6 +126,9 @@ export const Location: React.FC = () => {
   const clearEligibilityHeatmap = useStoreActions(
     (actions) => actions.GeographyEligibilityHeatmap.clear
   );
+  const dataDocumentsTable = useStoreState((state) =>
+    get(state.GeographyDocumentsTable, "data.data", [])
+  );
   const fetchDocumentsTable = useStoreActions(
     (actions) => actions.GeographyDocumentsTable.fetch
   );
@@ -96,6 +137,13 @@ export const Location: React.FC = () => {
   );
   const clearDocumentsTable = useStoreActions(
     (actions) => actions.GeographyDocumentsTable.clear
+  );
+  const dataDisbursementsLineChart = useStoreState(
+    (state) =>
+      get(state.GeographyDisbursementsLineChart, "data", {
+        data: [],
+        xAxisKeys: [],
+      }) as LineChartProps
   );
   const fetchDisbursementsLineChart = useStoreActions(
     (actions) => actions.GeographyDisbursementsLineChart.fetch
@@ -106,6 +154,18 @@ export const Location: React.FC = () => {
   const clearDisbursementsLineChart = useStoreActions(
     (actions) => actions.GeographyDisbursementsLineChart.clear
   );
+  const dataBudgetSankeyChart = useStoreState((state) => ({
+    nodes: get(
+      state.GeographyBudgetSankeyChart,
+      "data.data.nodes",
+      []
+    ) as SankeyChartData["nodes"],
+    links: get(
+      state.GeographyBudgetSankeyChart,
+      "data.data.links",
+      []
+    ) as SankeyChartData["links"],
+  }));
   const fetchBudgetSankeyChart = useStoreActions(
     (actions) => actions.GeographyBudgetSankeyChart.fetch
   );
@@ -114,6 +174,14 @@ export const Location: React.FC = () => {
   );
   const clearBudgetSanketChart = useStoreActions(
     (actions) => actions.GeographyBudgetSankeyChart.clear
+  );
+  const dataExpendituresHeatmap = useStoreState(
+    (state) =>
+      get(
+        state.GeographyExpendituresHeatmap,
+        "data.data",
+        []
+      ) as HeatmapDataItem[]
   );
   const fetchExpendituresHeatmap = useStoreActions(
     (actions) => actions.GeographyExpendituresHeatmap.fetch
@@ -133,6 +201,10 @@ export const Location: React.FC = () => {
   const clearGrantsPieCharts = useStoreActions(
     (actions) => actions.GeographyGrantsPieCharts.clear
   );
+  const dataGrantsTable = useStoreState(
+    (state) =>
+      get(state.GeographyGrantsTable, "data.data", []) as GrantCardProps[]
+  );
   const fetchGrantsTable = useStoreActions(
     (actions) => actions.GeographyGrantsTable.fetch
   );
@@ -141,6 +213,9 @@ export const Location: React.FC = () => {
   );
   const clearGrantsTable = useStoreActions(
     (actions) => actions.GeographyGrantsTable.clear
+  );
+  const dataResultsTable = useStoreState((state) =>
+    get(state.GeographyResultsTable, "data.data", [])
   );
   const fetchResultStats = useStoreActions(
     (actions) => actions.GeographyResultStats.fetch
@@ -159,6 +234,9 @@ export const Location: React.FC = () => {
   );
   const clearResultsTable = useStoreActions(
     (actions) => actions.GeographyResultsTable.clear
+  );
+  const dataResultsDocumentsTable = useStoreState((state) =>
+    get(state.GeographyResultsDocumentsTable, "data.data", [])
   );
   const fetchResultsDocumentsTable = useStoreActions(
     (actions) => actions.GeographyResultsDocumentsTable.fetch
@@ -256,7 +334,7 @@ export const Location: React.FC = () => {
         },
       });
       fetchRMBarChart({
-        filterString: `donorGeographies=${params.id}`,
+        filterString: `donors=${params.id}`,
       });
       fetchAllocationsRadialChart({
         filterString: `geographies=${params.id}`,
@@ -332,6 +410,49 @@ export const Location: React.FC = () => {
   }, [params.id, resultsYear]);
 
   React.useEffect(() => {
+    const newTabs = [...LOCATION_TABS];
+    if (dataRMBarChart.length === 0) {
+      remove(newTabs, (tab) => tab.label === LOCATION_TABS[1].label);
+    }
+    if (
+      dataAllocationsRadialChart.length === 0 &&
+      dataFundingRequestsTable._children.length === 0 &&
+      dataEligibilityHeatmap.length === 0 &&
+      dataDocumentsTable.length === 0
+    ) {
+      remove(newTabs, (tab) => tab.label === LOCATION_TABS[2].label);
+    }
+    if (
+      dataDisbursementsLineChart.data.length === 0 &&
+      dataBudgetSankeyChart.nodes.length === 0 &&
+      dataBudgetSankeyChart.links.length === 0 &&
+      dataExpendituresHeatmap.length === 0 &&
+      dataGrantsTable.length === 0
+    ) {
+      remove(newTabs, (tab) => tab.label === LOCATION_TABS[3].label);
+    }
+    if (
+      dataResultsTable.length === 0 &&
+      dataResultsDocumentsTable.length === 0
+    ) {
+      remove(newTabs, (tab) => tab.label === LOCATION_TABS[4].label);
+    }
+    setTabs(newTabs);
+  }, [
+    dataRMBarChart,
+    dataGrantsTable,
+    dataResultsTable,
+    dataDocumentsTable,
+    dataBudgetSankeyChart,
+    dataEligibilityHeatmap,
+    dataExpendituresHeatmap,
+    dataFundingRequestsTable,
+    dataResultsDocumentsTable,
+    dataAllocationsRadialChart,
+    dataDisbursementsLineChart,
+  ]);
+
+  React.useEffect(() => {
     return () => {
       clearOverview();
       clearCCMContacts();
@@ -374,7 +495,7 @@ export const Location: React.FC = () => {
       {fullWidthDivider}
       <Box height="20px" />
       <DetailPageTabs
-        tabs={LOCATION_TABS}
+        tabs={tabs}
         activeTab={params.tab}
         baseRoute={`/location`}
       />

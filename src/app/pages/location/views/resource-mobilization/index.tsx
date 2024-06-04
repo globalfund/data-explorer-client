@@ -43,7 +43,7 @@ export const ResourceMobilization: React.FC = () => {
   );
 
   useUpdateEffect(() => {
-    let filterString = `donorGeographies=${params.id}`;
+    let filterString = `donors=${params.id}`;
     if (chart1Cycle.value !== CYCLES[0].value) {
       filterString += `&periods=${chart1Cycle.value}`;
     }

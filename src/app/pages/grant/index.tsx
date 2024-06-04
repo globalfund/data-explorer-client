@@ -1,5 +1,6 @@
 import React from "react";
 import get from "lodash/get";
+import remove from "lodash/remove";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
@@ -9,7 +10,10 @@ import { GrantTargetsResults } from "./views/targets-results";
 import { GrantOverview } from "app/pages/grant/views/overview";
 import { DetailPageTabs } from "app/components/detail-page-tabs";
 import { GrantDocuments } from "app/pages/grant/views/documents";
+import { BarChartDataItem } from "app/components/charts/bar/data";
 import { splitStringInMiddle } from "app/utils/splitStringInMiddle";
+import { SankeyChartData } from "app/components/charts/sankey/data";
+import { HeatmapDataItem } from "app/components/charts/heatmap/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { GrantImplementation } from "app/pages/grant/views/grant-implementation";
 import {
@@ -20,6 +24,8 @@ import {
 export const Grant: React.FC = () => {
   const navigate = useNavigate();
   const params = useParams<{ id: string; ip: string; tab: string }>();
+
+  const [tabs, setTabs] = React.useState(GRANT_TABS);
 
   const dataGrant = useStoreState(
     (state) =>
@@ -58,11 +64,26 @@ export const Grant: React.FC = () => {
   const clearOverview = useStoreActions(
     (actions) => actions.GrantOverview.clear
   );
+  const dataDisbursementsBarChart = useStoreState(
+    (state) =>
+      get(
+        state.GrantDisbursementsBarChart,
+        "data.data",
+        []
+      ) as BarChartDataItem[]
+  );
   const fetchDisbursementsBarChart = useStoreActions(
     (actions) => actions.GrantDisbursementsBarChart.fetch
   );
   const clearDisbursementsBarChart = useStoreActions(
     (actions) => actions.GrantDisbursementsBarChart.clear
+  );
+  const dataBudgetSankeyChart = useStoreState(
+    (state) =>
+      get(state.GrantBudgetSankeyChart, "data.data[0]", {
+        nodes: [],
+        links: [],
+      }) as SankeyChartData
   );
   const fetchBudgetSankeyChart = useStoreActions(
     (actions) => actions.GrantBudgetSankeyChart.fetch
@@ -73,8 +94,15 @@ export const Grant: React.FC = () => {
   const clearExpendituresHeatmap = useStoreActions(
     (actions) => actions.FinancialInsightsExpendituresHeatmap.clear
   );
+  const dataExpendituresHeatmap = useStoreState(
+    (state) =>
+      get(state.GrantExpendituresHeatmap, "data.data", []) as HeatmapDataItem[]
+  );
   const fetchExpendituresHeatmap = useStoreActions(
     (actions) => actions.GrantExpendituresHeatmap.fetch
+  );
+  const dataTargetsResultsTable = useStoreState((state) =>
+    get(state.GrantTargetsResultsTable, "data.data", [])
   );
   const fetchTargetsResults = useStoreActions(
     (actions) => actions.GrantTargetsResultsTable.fetch
@@ -168,6 +196,27 @@ export const Grant: React.FC = () => {
   }, [params.id, dropdownSelected]);
 
   React.useEffect(() => {
+    const newTabs = [...GRANT_TABS];
+    if (
+      dataDisbursementsBarChart.length === 0 &&
+      dataBudgetSankeyChart.nodes.length === 0 &&
+      dataBudgetSankeyChart.links.length === 0 &&
+      dataExpendituresHeatmap.length === 0
+    ) {
+      remove(newTabs, (t) => t.label === GRANT_TABS[1].label);
+    }
+    if (dataTargetsResultsTable.length === 0) {
+      remove(newTabs, (t) => t.label === GRANT_TABS[2].label);
+    }
+    setTabs(newTabs);
+  }, [
+    dataBudgetSankeyChart,
+    dataExpendituresHeatmap,
+    dataTargetsResultsTable,
+    dataDisbursementsBarChart,
+  ]);
+
+  React.useEffect(() => {
     return () => {
       clearOverview();
       clearDisbursementsBarChart();
@@ -205,7 +254,7 @@ export const Grant: React.FC = () => {
       <DetailPageTabs
         baseRoute={`/grant`}
         activeTab={`${params.ip}/${params.tab}`}
-        tabs={GRANT_TABS.map((t) => ({
+        tabs={tabs.map((t) => ({
           ...t,
           link: `/${params.ip}${t.link}`,
         }))}

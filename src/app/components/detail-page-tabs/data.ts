@@ -27,10 +27,10 @@ export const GRANT_TABS: DetailPageTabItem[] = [
     label: "Target & Results",
     link: "/targets-results",
   },
-  {
-    label: "Documents",
-    link: "/documents",
-  },
+  // {
+  //   label: "Documents",
+  //   link: "/documents",
+  // },
 ];
 
 export const GRANT_DROPDOWN_ITEMS = [

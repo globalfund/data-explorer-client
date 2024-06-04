@@ -182,6 +182,12 @@ export const AccessToFunding: React.FC = () => {
     </React.Fragment>
   );
 
+  const showAllocationRadialChart = dataAllocationsRadialChart.length > 0;
+  const showFundingRequestsTable =
+    dataFundingRequestsTable._children.length > 0;
+  const showEligibilityHeatmap = dataEligibilityHeatmap.length > 0;
+  const showDocumentsTable = dataDocumentsTable.length > 0;
+
   return (
     <Box gap="24px" display="flex" flexDirection="column">
       <ChartBlock
@@ -193,7 +199,7 @@ export const AccessToFunding: React.FC = () => {
         subtitle={`Funds Allocated ${
           chart1Cycle !== CYCLES[0] ? ` ${chart1Cycle}` : ""
         }`}
-        empty={dataAllocationsRadialChart.length === 0}
+        empty={!showAllocationRadialChart}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
         <RadialChart
@@ -201,23 +207,25 @@ export const AccessToFunding: React.FC = () => {
           itemLabelFormatterType="name"
         />
       </ChartBlock>
-      <Box
-        width="100%"
-        display="flex"
-        flexDirection="row"
-        justifyContent="center"
-      >
-        <Box display="flex" alignItems="center" flexDirection="column">
-          <Typography variant="h3" fontWeight="900">
-            US${totalAllocationAmount}
-          </Typography>
-          <Typography variant="subtitle2">
-            Total Allocation
-            {chart1Cycle !== CYCLES[0] ? ` ${chart1Cycle}` : ""}
-          </Typography>
+      {showAllocationRadialChart && (
+        <Box
+          width="100%"
+          display="flex"
+          flexDirection="row"
+          justifyContent="center"
+        >
+          <Box display="flex" alignItems="center" flexDirection="column">
+            <Typography variant="h3" fontWeight="900">
+              US${totalAllocationAmount}
+            </Typography>
+            <Typography variant="subtitle2">
+              Total Allocation
+              {chart1Cycle !== CYCLES[0] ? ` ${chart1Cycle}` : ""}
+            </Typography>
+          </Box>
         </Box>
-      </Box>
-      {fullWidthDivider}
+      )}
+      {showAllocationRadialChart && fullWidthDivider}
       <ChartBlock
         noSplitText
         noBottomToolbar
@@ -226,7 +234,7 @@ export const AccessToFunding: React.FC = () => {
         loading={loadingFundingRequestsTable}
         title={`${dataFundingRequestsTable._children.length} Funding Requests`}
         subtitle="Submitted to date"
-        empty={dataFundingRequestsTable._children.length === 0}
+        empty={!showFundingRequestsTable}
         handleCycleChange={(value) => handleChartCycleChange(value, 2)}
         text="The Funding Request explains how the applicant would use Global Fund allocated funds, if approved. Funding Requests are reviewed by the Global Fund’s Technical Review Panel (TRP). Once approved by the TRP, the Funding Request is turned into one or more grants through the grant-making negotiation. The Grant Approvals Committee (GAC) reviews the final version of each grant and recommends implementation-ready grants to the Global Fund Board for approval. Funding Requests are submitted for internal Global Fund review, but the final grant is the legally-binding agreement.<br/><br/>Documents for a specific funding request can be downloaded by clicking the cloud icon. Documents from the 2017-2019 Allocation Period and earlier can be found by clicking on the “Documents’ tab above. If a Funding Request is not visible for the 2023-2025 Allocation Period and the country received an Allocation, it likely means that the applicant has not yet registered for a TRP Window."
       >
@@ -242,69 +250,71 @@ export const AccessToFunding: React.FC = () => {
         <RaceBarChart noValuesFormat data={raceBarData} />
       </ChartBlock>
       <Box height="50px" />
-      <Grid
-        container
-        spacing={2}
-        sx={{
-          "> div": {
+      {showFundingRequestsTable && (
+        <Grid
+          container
+          spacing={2}
+          sx={{
             "> div": {
-              gap: "10px",
-              width: "100%",
-              display: "flex",
-              textAlign: "center",
-              alignItems: "center",
-              flexDirection: "column",
-              justifyContent: "center",
+              "> div": {
+                gap: "10px",
+                width: "100%",
+                display: "flex",
+                textAlign: "center",
+                alignItems: "center",
+                flexDirection: "column",
+                justifyContent: "center",
+              },
             },
-          },
-        }}
-      >
-        <Grid item xs={12} sm={6}>
-          <Box>
-            <Box
-              width="40px"
-              height="40px"
-              borderRadius="50%"
-              bgcolor={appColors.RADIAL_CHART.ITEM_COLORS[2]}
-            />
+          }}
+        >
+          <Grid item xs={12} sm={6}>
             <Box>
-              <Typography variant="h3" fontWeight="900">
-                {dataFundingRequestStats.submitted} Submitted
-              </Typography>
-              <Typography variant="subtitle2">Funding Requests</Typography>
+              <Box
+                width="40px"
+                height="40px"
+                borderRadius="50%"
+                bgcolor={appColors.RADIAL_CHART.ITEM_COLORS[2]}
+              />
+              <Box>
+                <Typography variant="h3" fontWeight="900">
+                  {dataFundingRequestStats.submitted} Submitted
+                </Typography>
+                <Typography variant="subtitle2">Funding Requests</Typography>
+              </Box>
             </Box>
-          </Box>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <Box>
-            <Box
-              width="40px"
-              height="40px"
-              borderRadius="50%"
-              bgcolor={appColors.RADIAL_CHART.ITEM_COLORS[0]}
-            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
             <Box>
-              <Typography variant="h3" fontWeight="900">
-                {dataFundingRequestStats.signed} Signed
-              </Typography>
-              <Typography variant="subtitle2">
-                {(
-                  (dataFundingRequestStats.signed /
-                    dataFundingRequestStats.submitted) *
-                  100
-                ).toFixed(2)}
-                % Grants
-              </Typography>
+              <Box
+                width="40px"
+                height="40px"
+                borderRadius="50%"
+                bgcolor={appColors.RADIAL_CHART.ITEM_COLORS[0]}
+              />
+              <Box>
+                <Typography variant="h3" fontWeight="900">
+                  {dataFundingRequestStats.signed} Signed
+                </Typography>
+                <Typography variant="subtitle2">
+                  {(
+                    (dataFundingRequestStats.signed /
+                      dataFundingRequestStats.submitted) *
+                    100
+                  ).toFixed(2)}
+                  % Grants
+                </Typography>
+              </Box>
             </Box>
-          </Box>
+          </Grid>
         </Grid>
-      </Grid>
-      {fullWidthDivider}
+      )}
+      {showFundingRequestsTable && fullWidthDivider}
       <ChartBlock
         noSplitText
         title="Eligibility"
         subtitle="To date"
-        empty={dataEligibilityHeatmap.length === 0}
+        empty={!showEligibilityHeatmap}
         text="Eligibility for funding from the Global Fund is determined by country income classification and disease burden for HIV, tuberculosis and malaria. Below are the components which are eligible for an allocation for the selected allocation period, according to the Global Fund Eligibility Policy.<br/><br/>Eligibility for the 2023-2025 Allocation Period was determined in 2022 and documented in the 2023 Eligibility List. Eligibility does not guarantee a funding allocation. Learn more about Eligibility <a target='_blank' href='https://www.theglobalfund.org/en/applying-for-funding/understand-and-prepare/eligibility/'>here</a> or <a>see the full history of eligibility for this country</a>."
       >
         <Box height="32px" />
@@ -370,12 +380,12 @@ export const AccessToFunding: React.FC = () => {
           getItemColor={getEligibilityColor}
         />
       </ChartBlock>
-      {fullWidthDivider}
+      {showEligibilityHeatmap && fullWidthDivider}
       <ChartBlock
         noBottomToolbar
         title="Documents"
         subtitle="Applications"
-        empty={dataDocumentsTable.length === 0}
+        empty={!showDocumentsTable}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
         <Box height="64px" />
