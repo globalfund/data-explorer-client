@@ -1043,3 +1043,21 @@ export const STORY_DATA_VARIANT_2: ExpandableHorizontalBarChartDataItem[] = [
     ],
   },
 ];
+
+export function findDeep(
+  data: ExpandableHorizontalBarChartDataItem[],
+  name: string
+): ExpandableHorizontalBarChartDataItem | undefined {
+  for (const item of data) {
+    if (item.name === name) {
+      return item;
+    }
+    if (item.items) {
+      const found = findDeep(item.items, name);
+      if (found) {
+        return found;
+      }
+    }
+  }
+  return undefined;
+}

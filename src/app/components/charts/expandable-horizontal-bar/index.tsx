@@ -1,15 +1,18 @@
 import React from "react";
-import find from "lodash/find";
 import filter from "lodash/filter";
 import Box from "@mui/material/Box";
 import { appColors } from "app/theme";
 import * as echarts from "echarts/core";
 import { SVGRenderer } from "echarts/renderers";
 import Typography from "@mui/material/Typography";
+import { splitStringInMiddle } from "app/utils/splitStringInMiddle";
 import { GridComponent, LegendComponent } from "echarts/components";
 import { BarSeriesOption, BarChart as EChartsBar } from "echarts/charts";
 import { useChartResizeObserver } from "app/hooks/useChartResizeObserver";
-import { ExpandableHorizontalBarChartProps } from "app/components/charts/expandable-horizontal-bar/data";
+import {
+  findDeep,
+  ExpandableHorizontalBarChartProps,
+} from "app/components/charts/expandable-horizontal-bar/data";
 import {
   getRange,
   getFinancialValueWithMetricPrefix,
@@ -64,8 +67,8 @@ export const ExpandableHorizontalBar: React.FC<
   }, [data]);
 
   const onBarClick = (value: string) => {
-    const item = find(props.data, { name: value });
-    if (item) {
+    const item = findDeep(props.data, value);
+    if (item && item.items && item.items.length > 0) {
       setExpandedBars((prev) => {
         if (prev.includes(value)) {
           return prev.filter((v) => v !== value);
@@ -158,12 +161,17 @@ export const ExpandableHorizontalBar: React.FC<
             color: appColors.TIME_CYCLE.Y_AXIS_TEXT_COLOR,
             // margin: chart.getWidth() / 6,
             formatter: (value: string) => {
-              const item = find(props.data, { name: value });
-              if (!item) {
-                return value;
+              const item = findDeep(props.data, value);
+              let label = value;
+              if (label.length > 40) {
+                const [string1, string2] = splitStringInMiddle(value);
+                label = `${string1}\n${string2}`;
+              }
+              if (!item?.items || item.items.length === 0) {
+                return label;
               }
               const isExpanded = expandedBars.includes(value);
-              return `${value} ${isExpanded ? "▲" : "▼"} `;
+              return `${label} ${isExpanded ? "▲" : "▼"} `;
             },
           },
           axisLine: {
@@ -259,6 +267,11 @@ export const ExpandableHorizontalBar: React.FC<
         ) {
           item.items.forEach((item) => {
             newData.push(item);
+            if (expandedBars.includes(item.name) && item.items) {
+              item.items.forEach((item) => {
+                newData.push(item);
+              });
+            }
           });
         }
       }
@@ -267,6 +280,30 @@ export const ExpandableHorizontalBar: React.FC<
       setData(props.data);
     }
   }, [expandedBars, props.data]);
+
+  React.useEffect(() => {
+    if (stateChart) {
+      stateChart.setOption({
+        yAxis: {
+          axisLabel: {
+            formatter: (value: string) => {
+              const item = findDeep(props.data, value);
+              let label = value;
+              if (label.length > 40) {
+                const [string1, string2] = splitStringInMiddle(value);
+                label = `${string1}\n${string2}`;
+              }
+              if (!item?.items || item.items.length === 0) {
+                return label;
+              }
+              const isExpanded = expandedBars.includes(value);
+              return `${label} ${isExpanded ? "▲" : "▼"} `;
+            },
+          },
+        },
+      });
+    }
+  }, [stateChart, expandedBars]);
 
   React.useEffect(() => {
     if (stateChart) {
