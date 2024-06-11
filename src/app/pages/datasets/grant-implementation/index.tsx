@@ -25,7 +25,6 @@ import { getRange } from "app/utils/getFinancialValueWithMetricPrefix";
 import { FinancialMetric } from "app/components/charts/financial-metric";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { ExpandableHorizontalBar } from "app/components/charts/expandable-horizontal-bar";
-import { STORY_DATA_VARIANT_2 as BUDGET_SANKEY_DATA } from "app/components/charts/sankey/data";
 import { ExpandableHorizontalBarChartDataItem } from "app/components/charts/expandable-horizontal-bar/data";
 import {
   HeatmapDataItem,
@@ -50,6 +49,7 @@ import {
   dropdownItemsDisbursements,
   dropdownItemsExpenditures,
 } from "app/pages/datasets/grant-implementation/data";
+import Grid from "@mui/material/Grid";
 
 export const GrantImplementationPage: React.FC = () => {
   const [geographyGrouping, setGeographyGrouping] = React.useState(
@@ -193,6 +193,25 @@ export const GrantImplementationPage: React.FC = () => {
       state.FinancialInsightsDisbursementUtilisation.loading
     );
   });
+  const dataBudgetSankey = useStoreState((state) => {
+    const nodes = get(
+      state.FinancialInsightsBudgetSankey,
+      "data.data.nodes",
+      []
+    );
+    const links = get(
+      state.FinancialInsightsBudgetSankey,
+      "data.data.links",
+      []
+    );
+    return {
+      nodes,
+      links,
+    };
+  });
+  const fetchBudgetSankey = useStoreActions(
+    (actions) => actions.FinancialInsightsBudgetSankey.fetch
+  );
   const dataBudgetTreemap = useStoreState(
     (state) =>
       get(
@@ -222,8 +241,7 @@ export const GrantImplementationPage: React.FC = () => {
   const loadingBudget = useStoreState((state) => {
     switch (budgetsDropdownSelected) {
       case dropdownItemsBudgets[0].value:
-        // return state.FinancialInsightsBudgetSankey.loading;
-        return false;
+        return state.FinancialInsightsBudgetSankey.loading;
       case dropdownItemsBudgets[1].value:
         return state.FinancialInsightsBudgetTreemap.loading;
       case dropdownItemsBudgets[2].value:
@@ -546,7 +564,33 @@ export const GrantImplementationPage: React.FC = () => {
   const budgetsChartContent = React.useMemo(() => {
     switch (budgetsDropdownSelected) {
       case dropdownItemsBudgets[0].value:
-        return <SankeyChart data={BUDGET_SANKEY_DATA} />;
+        return (
+          <React.Fragment>
+            <Grid
+              container
+              spacing={4}
+              sx={{
+                color: "#464646",
+                fontSize: "10px",
+                fontWeight: "700",
+              }}
+            >
+              <Grid item xs={3}>
+                Total budget
+              </Grid>
+              <Grid item xs={3}>
+                Investement Landscape 1
+              </Grid>
+              <Grid item xs={3}>
+                Investement Landscape 2
+              </Grid>
+              <Grid item xs={3}>
+                Cost Category
+              </Grid>
+            </Grid>
+            <SankeyChart data={dataBudgetSankey} />
+          </React.Fragment>
+        );
       case dropdownItemsBudgets[1].value:
         return <Treemap data={dataBudgetTreemap} />;
       case dropdownItemsBudgets[2].value:
@@ -561,12 +605,17 @@ export const GrantImplementationPage: React.FC = () => {
       default:
         return null;
     }
-  }, [budgetsDropdownSelected, dataBudgetTreemap, dataBudgetTable]);
+  }, [
+    budgetsDropdownSelected,
+    dataBudgetSankey,
+    dataBudgetTreemap,
+    dataBudgetTable,
+  ]);
 
   const budgetsChartEmpty = React.useMemo(() => {
     switch (budgetsDropdownSelected) {
       case dropdownItemsBudgets[0].value:
-        return !BUDGET_SANKEY_DATA.nodes.length;
+        return !dataBudgetSankey.nodes.length;
       case dropdownItemsBudgets[1].value:
         return !dataBudgetTreemap.length;
       case dropdownItemsBudgets[2].value:
@@ -574,7 +623,12 @@ export const GrantImplementationPage: React.FC = () => {
       default:
         return false;
     }
-  }, [budgetsDropdownSelected, dataBudgetTreemap, dataBudgetTable]);
+  }, [
+    budgetsDropdownSelected,
+    dataBudgetSankey,
+    dataBudgetTreemap,
+    dataBudgetTable,
+  ]);
 
   const expendituresChartContent = React.useMemo(() => {
     switch (expendituresDropdownSelected) {
@@ -716,6 +770,8 @@ export const GrantImplementationPage: React.FC = () => {
 
   React.useEffect(() => {
     fetchFinancialInsightsStats({ filterString });
+    fetchBudgetSankey({ filterString });
+    fetchBudgetTable({ filterString });
     fetchBudgetUtilisation({ filterString });
     fetchInCountryAbsorption({ filterString });
     fetchDisbursementUtilisation({ filterString });
@@ -750,15 +806,6 @@ export const GrantImplementationPage: React.FC = () => {
       },
     });
     fetchBudgetTreemap({
-      filterString,
-      routeParams: {
-        componentField:
-          componentsGrouping === componentsGroupingOptions[0].value
-            ? "activityAreaGroup"
-            : "activityArea",
-      },
-    });
-    fetchBudgetTable({
       filterString,
       routeParams: {
         componentField:
@@ -802,7 +849,7 @@ export const GrantImplementationPage: React.FC = () => {
     fetchBudgetBreakdown({
       filterString,
       routeParams: {
-        year: budgetBreakdownDropdownSelected,
+        year: budgetBreakdownDropdownSelected.replace(/ /g, ""),
         componentField:
           componentsGrouping === componentsGroupingOptions[0].value
             ? "activityAreaGroup"

@@ -5,10 +5,10 @@ import { appColors } from "app/theme";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import { CYCLES } from "app/pages/home/data";
-import { useParams } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import { BarChart } from "app/components/charts/bar";
+import { useStoreState } from "app/state/store/hooks";
 import { ChartBlock } from "app/components/chart-block";
 import { Heatmap } from "app/components/charts/heatmap";
 import { RadialChart } from "app/components/charts/radial";
@@ -16,26 +16,17 @@ import { SankeyChart } from "app/components/charts/sankey";
 import { RaceBarChart } from "app/components/charts/race-bar";
 import { BarChartDataItem } from "app/components/charts/bar/data";
 import { SankeyChartData } from "app/components/charts/sankey/data";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { CHART_2_DROPDOWN_ITEMS } from "app/pages/grant/views/grant-implementation/data";
 import {
   HeatmapDataItem,
   getPercentageColor,
 } from "app/components/charts/heatmap/data";
-import {
-  CHART_1_DROPDOWN_ITEMS,
-  CHART_2_DROPDOWN_ITEMS,
-} from "app/pages/grant/views/grant-implementation/data";
 import {
   getRange,
   getFinancialValueWithMetricPrefix,
 } from "app/utils/getFinancialValueWithMetricPrefix";
 
 export const GrantImplementation: React.FC = () => {
-  const params = useParams<{ id: string; ip: string; tab: string }>();
-
-  const [chart1Dropdown, setChart1Dropdown] = React.useState(
-    CHART_1_DROPDOWN_ITEMS[0].label
-  );
   const [chart2Dropdown, setChart2Dropdown] = React.useState(
     CHART_2_DROPDOWN_ITEMS[0].value
   );
@@ -65,9 +56,6 @@ export const GrantImplementation: React.FC = () => {
         "data.data",
         []
       ) as BarChartDataItem[]
-  );
-  const fetchBudgetSankeyChart = useStoreActions(
-    (actions) => actions.GrantBudgetSankeyChart.fetch
   );
   const dataBudgetSankeyChart = useStoreState(
     (state) =>
@@ -182,21 +170,6 @@ export const GrantImplementation: React.FC = () => {
     );
     return `US$${getFinancialValueWithMetricPrefix(dataFinancialValues.disbursement, range.index, 2)} ${range.full}`;
   }, [dataFinancialValues.disbursement]);
-
-  React.useEffect(() => {
-    if (params.id && params.ip && chart1Dropdown) {
-      const value = CHART_1_DROPDOWN_ITEMS.find(
-        (item) => item.label === chart1Dropdown
-      );
-      fetchBudgetSankeyChart({
-        routeParams: {
-          code: params.id,
-          ip: params.ip,
-          variant: value?.value ?? "1",
-        },
-      });
-    }
-  }, [chart1Dropdown]);
 
   const fullWidthDivider = (
     <React.Fragment>
@@ -349,10 +322,7 @@ export const GrantImplementation: React.FC = () => {
       <ChartBlock
         title="Budget"
         empty={!showBudgetSankeyChart}
-        dropdownSelected={chart1Dropdown}
         subtitle="Investments and Modules"
-        dropdownItems={CHART_1_DROPDOWN_ITEMS}
-        handleDropdownChange={setChart1Dropdown}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
         <Grid
@@ -361,28 +331,24 @@ export const GrantImplementation: React.FC = () => {
           sx={{
             color: "#464646",
             fontSize: "10px",
+            marginTop: "8px",
             fontWeight: "700",
           }}
         >
-          <Grid item xs={4}>
-            Total budget
+          <Grid item xs={3}>
+            Total Budgets
           </Grid>
-          <Grid item xs={4}>
-            Modules
+          <Grid item xs={3}>
+            Landscape 1
           </Grid>
-          <Grid item xs={4}>
-            Interventions
+          <Grid item xs={3}>
+            Landscape 2
+          </Grid>
+          <Grid item xs={3}>
+            Cost Category
           </Grid>
         </Grid>
-        <Box
-          sx={{
-            "#sankey-chart": {
-              height: "1000px",
-            },
-          }}
-        >
-          <SankeyChart data={dataBudgetSankeyChart} />
-        </Box>
+        <SankeyChart data={dataBudgetSankeyChart} />
       </ChartBlock>
       {showBudgetSankeyChart && showExpendituresHeatmap && fullWidthDivider}
       <ChartBlock

@@ -1,5 +1,6 @@
 import React from "react";
 import get from "lodash/get";
+import uniqBy from "lodash/uniqBy";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
@@ -91,7 +92,7 @@ export const LocationOverview: React.FC = () => {
                       {ccm.name}
                     </Typography>
                     <Grid container spacing={2}>
-                      {ccm.items.map((item: any) => (
+                      {uniqBy(ccm.items, "fullname").map((item: any) => (
                         <Grid key={item.fullname} item xs={6}>
                           <Typography
                             fontSize="12px"

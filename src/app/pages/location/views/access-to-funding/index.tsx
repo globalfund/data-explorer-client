@@ -1,6 +1,7 @@
 import React from "react";
 import get from "lodash/get";
 import sumBy from "lodash/sumBy";
+import filter from "lodash/filter";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { appColors } from "app/theme";
@@ -39,7 +40,7 @@ export const AccessToFunding: React.FC = () => {
     (state) =>
       get(
         state.GeographyAllocationsRadialChart,
-        "data.data.chart",
+        "data.data",
         []
       ) as RadialChartDataItem[]
   );
@@ -85,14 +86,23 @@ export const AccessToFunding: React.FC = () => {
   );
   const allocationsCycles = useStoreState(
     (state) =>
-      get(state.AllocationsCycles, "data.data", []) as {
+      get(state.AllocationsCycles, "data.data", []).map((c: any) => ({
+        name: c.value,
+        value: c.value,
+      })) as {
         name: string;
         value: string;
       }[]
   );
   const fundingRequestsCycles = useStoreState(
     (state) =>
-      get(state.FundingRequestsCycles, "data.data", []) as {
+      filter(
+        get(state.FundingRequestsCycles, "data.data", []).map((c: any) => ({
+          name: c.value,
+          value: c.value,
+        })),
+        (c: any) => c.value
+      ) as {
         name: string;
         value: string;
       }[]
@@ -115,11 +125,16 @@ export const AccessToFunding: React.FC = () => {
   };
 
   useUpdateEffect(() => {
-    let filterString = `geographies=${params.id}`;
-    if (chart1Cycle.value !== CYCLES[0].value) {
-      filterString += `&periods=${chart1Cycle.value}`;
+    if (params.id) {
+      let filterString = "";
+      if (chart1Cycle.value !== CYCLES[0].value) {
+        filterString = `periods=${chart1Cycle.value}`;
+      }
+      fetchAllocationsRadialChart({
+        filterString,
+        routeParams: { code: params.id },
+      });
     }
-    fetchAllocationsRadialChart({ filterString });
   }, [chart1Cycle]);
 
   useUpdateEffect(() => {
@@ -136,6 +151,26 @@ export const AccessToFunding: React.FC = () => {
       });
     }
   }, [chart2Cycle]);
+
+  React.useEffect(() => {
+    if (
+      allocationsCycles.length > 0 &&
+      chart1Cycle.value !==
+        allocationsCycles[allocationsCycles.length - 1].value
+    ) {
+      setChart1Cycle(allocationsCycles[allocationsCycles.length - 1]);
+    }
+  }, [allocationsCycles]);
+
+  React.useEffect(() => {
+    if (
+      fundingRequestsCycles.length > 0 &&
+      chart2Cycle.value !==
+        fundingRequestsCycles[fundingRequestsCycles.length - 1].value
+    ) {
+      setChart2Cycle(fundingRequestsCycles[fundingRequestsCycles.length - 1]);
+    }
+  }, [fundingRequestsCycles]);
 
   const totalAllocationAmount = React.useMemo(() => {
     const value = sumBy(dataAllocationsRadialChart, "value");
@@ -197,7 +232,7 @@ export const AccessToFunding: React.FC = () => {
         loading={loadingAllocationsRadialChart}
         handleCycleChange={(value) => handleChartCycleChange(value, 1)}
         subtitle={`Funds Allocated ${
-          chart1Cycle !== CYCLES[0] ? ` ${chart1Cycle}` : ""
+          chart1Cycle !== CYCLES[0] ? ` ${chart1Cycle.value}` : ""
         }`}
         empty={!showAllocationRadialChart}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
@@ -220,7 +255,7 @@ export const AccessToFunding: React.FC = () => {
             </Typography>
             <Typography variant="subtitle2">
               Total Allocation
-              {chart1Cycle !== CYCLES[0] ? ` ${chart1Cycle}` : ""}
+              {chart1Cycle !== CYCLES[0] ? ` ${chart1Cycle.value}` : ""}
             </Typography>
           </Box>
         </Box>

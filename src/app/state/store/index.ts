@@ -65,6 +65,7 @@ import ReplenishmentPeriodFilterOptions from "app/state/api/action-reducers/filt
 import { GeographyExpendituresHeatmap } from "app/state/api/action-reducers/geography/expenditures-heatmap";
 import { FinancialInsightsBudgetTable } from "app/state/api/action-reducers/financial-insights/budget-table";
 import { GeographyFundingRequestsTable } from "app/state/api/action-reducers/geography/funding-requests-table";
+import { FinancialInsightsBudgetSankey } from "app/state/api/action-reducers/financial-insights/budget-sankey";
 import { GeographyResultsDocumentsTable } from "app/state/api/action-reducers/geography/results-documents-table";
 import { FinancialInsightsBudgetTreemap } from "app/state/api/action-reducers/financial-insights/budget-treemap";
 import { AccessToFundingAllocationTable } from "app/state/api/action-reducers/access-to-funding/allocation-table";
@@ -169,6 +170,7 @@ const storeContent: StoreModel = {
   FinancialInsightsDisbursementUtilisation: persist(
     FinancialInsightsDisbursementUtilisation
   ),
+  FinancialInsightsBudgetSankey: persist(FinancialInsightsBudgetSankey),
   FinancialInsightsBudgetTreemap: persist(FinancialInsightsBudgetTreemap),
   FinancialInsightsBudgetTable: persist(FinancialInsightsBudgetTable),
   FinancialInsightsExpendituresHeatmap: persist(

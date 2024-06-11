@@ -10,7 +10,6 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { GrantCardProps } from "app/components/grant-card/data";
 import { DetailPageTabs } from "app/components/detail-page-tabs";
 import { LineChartProps } from "app/components/charts/line/data";
-import { PieChartDataItem } from "app/components/charts/pie/data";
 import { BarChartDataItem } from "app/components/charts/bar/data";
 import { SankeyChartData } from "app/components/charts/sankey/data";
 import { LocationOverview } from "app/pages/location/views/overview";
@@ -26,7 +25,6 @@ import { ResourceMobilization } from "app/pages/location/views/resource-mobiliza
 export const Location: React.FC = () => {
   const params = useParams<{ id: string; tab: string }>();
 
-  const [tabs, setTabs] = React.useState(LOCATION_TABS);
   const [grantsTablePage, setGrantsTablePage] = React.useState(1);
   const [resultsYear, setResultsYear] = React.useState(
     RESULT_YEARS[RESULT_YEARS.length - 1]
@@ -321,6 +319,49 @@ export const Location: React.FC = () => {
     }
   }, [params.tab, grantsTablePage, resultsYear]);
 
+  const tabs = React.useMemo(() => {
+    const newTabs = [...LOCATION_TABS];
+    if (dataRMBarChart.length === 0) {
+      remove(newTabs, (tab) => tab.label === LOCATION_TABS[1].label);
+    }
+    if (
+      dataAllocationsRadialChart.length === 0 &&
+      dataFundingRequestsTable._children.length === 0 &&
+      dataEligibilityHeatmap.length === 0 &&
+      dataDocumentsTable.length === 0
+    ) {
+      remove(newTabs, (tab) => tab.label === LOCATION_TABS[2].label);
+    }
+    if (
+      dataDisbursementsLineChart.data.length === 0 &&
+      dataBudgetSankeyChart.nodes.length === 0 &&
+      dataBudgetSankeyChart.links.length === 0 &&
+      dataExpendituresHeatmap.length === 0 &&
+      dataGrantsTable.length === 0
+    ) {
+      remove(newTabs, (tab) => tab.label === LOCATION_TABS[3].label);
+    }
+    if (
+      dataResultsTable.length === 0 &&
+      dataResultsDocumentsTable.length === 0
+    ) {
+      remove(newTabs, (tab) => tab.label === LOCATION_TABS[4].label);
+    }
+    return newTabs;
+  }, [
+    dataRMBarChart,
+    dataGrantsTable,
+    dataResultsTable,
+    dataDocumentsTable,
+    dataBudgetSankeyChart,
+    dataEligibilityHeatmap,
+    dataExpendituresHeatmap,
+    dataFundingRequestsTable,
+    dataResultsDocumentsTable,
+    dataAllocationsRadialChart,
+    dataDisbursementsLineChart,
+  ]);
+
   React.useEffect(() => {
     if (params.id) {
       fetchOverview({
@@ -337,7 +378,9 @@ export const Location: React.FC = () => {
         filterString: `donors=${params.id}`,
       });
       fetchAllocationsRadialChart({
-        filterString: `geographies=${params.id}`,
+        routeParams: {
+          code: params.id,
+        },
       });
       fetchFundingRequestsTable({
         routeParams: {
@@ -408,49 +451,6 @@ export const Location: React.FC = () => {
       });
     }
   }, [params.id, resultsYear]);
-
-  React.useEffect(() => {
-    const newTabs = [...LOCATION_TABS];
-    if (dataRMBarChart.length === 0) {
-      remove(newTabs, (tab) => tab.label === LOCATION_TABS[1].label);
-    }
-    if (
-      dataAllocationsRadialChart.length === 0 &&
-      dataFundingRequestsTable._children.length === 0 &&
-      dataEligibilityHeatmap.length === 0 &&
-      dataDocumentsTable.length === 0
-    ) {
-      remove(newTabs, (tab) => tab.label === LOCATION_TABS[2].label);
-    }
-    if (
-      dataDisbursementsLineChart.data.length === 0 &&
-      dataBudgetSankeyChart.nodes.length === 0 &&
-      dataBudgetSankeyChart.links.length === 0 &&
-      dataExpendituresHeatmap.length === 0 &&
-      dataGrantsTable.length === 0
-    ) {
-      remove(newTabs, (tab) => tab.label === LOCATION_TABS[3].label);
-    }
-    if (
-      dataResultsTable.length === 0 &&
-      dataResultsDocumentsTable.length === 0
-    ) {
-      remove(newTabs, (tab) => tab.label === LOCATION_TABS[4].label);
-    }
-    setTabs(newTabs);
-  }, [
-    dataRMBarChart,
-    dataGrantsTable,
-    dataResultsTable,
-    dataDocumentsTable,
-    dataBudgetSankeyChart,
-    dataEligibilityHeatmap,
-    dataExpendituresHeatmap,
-    dataFundingRequestsTable,
-    dataResultsDocumentsTable,
-    dataAllocationsRadialChart,
-    dataDisbursementsLineChart,
-  ]);
 
   React.useEffect(() => {
     return () => {

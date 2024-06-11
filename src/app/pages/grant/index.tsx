@@ -25,8 +25,6 @@ export const Grant: React.FC = () => {
   const navigate = useNavigate();
   const params = useParams<{ id: string; ip: string; tab: string }>();
 
-  const [tabs, setTabs] = React.useState(GRANT_TABS);
-
   const dataGrant = useStoreState(
     (state) =>
       get(state.GrantInfo, "data.data[0]", {
@@ -176,13 +174,14 @@ export const Grant: React.FC = () => {
         routeParams: {
           code: params.id,
           ip: dropdownSelected.code.toString(),
-          variant: "1",
+          variant: "2",
         },
       });
       fetchExpendituresHeatmap({
         routeParams: {
           row: "principalRecipientType,principalRecipient",
           column: "component",
+          componentField: "activityAreaGroup",
         },
         filterString: `grantIP=${params.id}P0${dropdownSelected.code}`,
       });
@@ -195,7 +194,7 @@ export const Grant: React.FC = () => {
     }
   }, [params.id, dropdownSelected]);
 
-  React.useEffect(() => {
+  const tabs = React.useMemo(() => {
     const newTabs = [...GRANT_TABS];
     if (
       dataDisbursementsBarChart.length === 0 &&
@@ -208,7 +207,7 @@ export const Grant: React.FC = () => {
     if (dataTargetsResultsTable.length === 0) {
       remove(newTabs, (t) => t.label === GRANT_TABS[2].label);
     }
-    setTabs(newTabs);
+    return newTabs;
   }, [
     dataBudgetSankeyChart,
     dataExpendituresHeatmap,

@@ -209,15 +209,7 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
     if (chart2Cycles.length > 0) {
       filterString += `&periods=${chart2Cycles.map((c) => c.value).join(",")}`;
     }
-    fetchBudgetSankeyChart({
-      filterString,
-      routeParams: {
-        componentField:
-          chart2Dropdown === CHART_2_DROPDOWN_ITEMS[0].value
-            ? "activityAreaGroup"
-            : "activityArea",
-      },
-    });
+    fetchBudgetSankeyChart({ filterString });
   }, [chart2Cycles, chart2Dropdown]);
 
   useUpdateEffect(() => {
@@ -412,15 +404,7 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
             Cost Category
           </Grid>
         </Grid>
-        <Box
-          sx={{
-            "#sankey-chart": {
-              height: "1000px",
-            },
-          }}
-        >
-          <SankeyChart data={dataBudgetSankeyChart} />
-        </Box>
+        <SankeyChart data={dataBudgetSankeyChart} />
       </ChartBlock>
       {showBudgetSankeyChart && fullWidthDivider}
       <ChartBlock

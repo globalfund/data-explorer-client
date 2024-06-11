@@ -1,9 +1,8 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import { NavLink, useParams } from "react-router-dom";
 import { styled } from "styled-components";
 import { Dropdown } from "app/components/dropdown";
+import { NavLink, useParams } from "react-router-dom";
 import { DetailPageTabsProps } from "app/components/detail-page-tabs/data";
 
 const ButtonTab = styled(NavLink)`
