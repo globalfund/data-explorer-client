@@ -1,19 +1,52 @@
 import React from "react";
+import sumBy from "lodash/sumBy";
 import Box from "@mui/material/Box";
 import { appColors } from "app/theme";
 import * as echarts from "echarts/core";
+import Divider from "@mui/material/Divider";
+import ReactDOMServer from "react-dom/server";
 import { SVGRenderer } from "echarts/renderers";
+import { TooltipComponentOption } from "echarts";
+import { TooltipComponent } from "echarts/components";
 import { formatLocale } from "app/utils/formatLocale";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { TreemapProps } from "app/components/charts/treemap/data";
+import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { useChartResizeObserver } from "app/hooks/useChartResizeObserver";
+import { chartTooltipCommonConfig } from "app/components/charts/common/tooltip/config";
 import {
   TreemapSeriesOption,
   TreemapChart as EchartsTreemap,
 } from "echarts/charts";
 
-echarts.use([EchartsTreemap, SVGRenderer]);
+echarts.use([EchartsTreemap, TooltipComponent, SVGRenderer]);
+
+const Tooltip = (props: any) => {
+  return (
+    <div
+      style={{
+        gap: "10px",
+        width: "250px",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <div className="chart-tooltip-title">
+        {formatFinancialValue(props.value)}
+      </div>
+      <Divider
+        style={{ width: "100%", borderColor: "#DFE3E5", margin: "5px 0" }}
+      />
+      <div className="chart-tooltip-text">
+        {props.name} -{" "}
+        {((props.value / props.total) * 100).toFixed(2).replace(".00", "")}%
+      </div>
+    </div>
+  );
+};
 
 export const Treemap: React.FC<TreemapProps> = (props: TreemapProps) => {
+  const isTouch = useMediaQuery("(hover: none)");
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   const [stateChart, setStateChart] =
@@ -29,13 +62,17 @@ export const Treemap: React.FC<TreemapProps> = (props: TreemapProps) => {
     return props.data.some((item) => item.children);
   }, [props.data]);
 
+  const total = React.useMemo(() => sumBy(props.data, "value"), [props.data]);
+
   React.useEffect(() => {
     if (containerRef.current) {
       const chart = echarts.init(containerRef.current, undefined, {
         renderer: "svg",
       });
 
-      const option: echarts.ComposeOption<TreemapSeriesOption> = {
+      const option: echarts.ComposeOption<
+        TreemapSeriesOption | TooltipComponentOption
+      > = {
         // @ts-ignore
         series: {
           top: 0,
@@ -120,6 +157,16 @@ export const Treemap: React.FC<TreemapProps> = (props: TreemapProps) => {
             show: false,
           },
         },
+        tooltip: {
+          show: true,
+          ...chartTooltipCommonConfig(isTouch),
+          formatter: (params: any) => {
+            const html = ReactDOMServer.renderToString(
+              <Tooltip {...params} total={total} />
+            );
+            return html;
+          },
+        },
       };
 
       chart.setOption(option);
@@ -133,9 +180,17 @@ export const Treemap: React.FC<TreemapProps> = (props: TreemapProps) => {
         series: {
           data: props.data,
         },
+        tooltip: {
+          formatter: (params: any) => {
+            const html = ReactDOMServer.renderToString(
+              <Tooltip {...params} total={total} />
+            );
+            return html;
+          },
+        },
       });
     }
-  }, [props.data]);
+  }, [props.data, total]);
 
   return (
     <React.Fragment>

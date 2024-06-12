@@ -41,3 +41,15 @@ input[type="text"] {
   appearance: none;
   -webkit-appearance: none;
 }
+
+.chart-tooltip-title {
+  font-size: 18px;
+  color: #262C34;
+  font-weight: 700;
+}
+
+.chart-tooltip-text {
+  font-size: 12px;
+  color: #262C34;
+  line-height: 1;
+}

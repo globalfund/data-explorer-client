@@ -1,25 +1,83 @@
 import React from "react";
+import find from "lodash/find";
 import Box from "@mui/material/Box";
 import { appColors } from "app/theme";
 import * as echarts from "echarts/core";
+import Divider from "@mui/material/Divider";
+import ReactDOMServer from "react-dom/server";
 import { SVGRenderer } from "echarts/renderers";
-import { GridComponent } from "echarts/components";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { LineChartProps } from "app/components/charts/line/data";
+import { GridComponent, TooltipComponent } from "echarts/components";
+import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { useChartResizeObserver } from "app/hooks/useChartResizeObserver";
 import { LineSeriesOption, LineChart as EChartsLine } from "echarts/charts";
+import { chartTooltipCommonConfig } from "app/components/charts/common/tooltip/config";
 import {
   GridComponentOption,
   XAXisComponentOption,
   YAXisComponentOption,
+  TooltipComponentOption,
 } from "echarts";
 import {
   getRange,
   getFinancialValueWithMetricPrefix,
 } from "app/utils/getFinancialValueWithMetricPrefix";
 
-echarts.use([EChartsLine, GridComponent, SVGRenderer]);
+echarts.use([EChartsLine, GridComponent, TooltipComponent, SVGRenderer]);
+
+const Tooltip = (props: any) => {
+  return (
+    <div
+      style={{
+        gap: "10px",
+        width: "400px",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <div className="chart-tooltip-title">
+        {props.name} {props.seriesName}
+      </div>
+      <Divider
+        style={{ width: "100%", borderColor: "#DFE3E5", margin: "5px 0" }}
+      />
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
+        <div className="chart-tooltip-text">
+          <b>Disbursed in</b>
+        </div>
+        <div className="chart-tooltip-text">
+          {formatFinancialValue(props.value)}
+        </div>
+      </div>
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
+        <div className="chart-tooltip-text">
+          <b>Cumulative to</b>
+        </div>
+        <div className="chart-tooltip-text">
+          {formatFinancialValue(props.cumulative)}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export const LineChart: React.FC<LineChartProps> = (props: LineChartProps) => {
+  const isTouch = useMediaQuery("(hover: none)");
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   const [stateChart, setStateChart] =
@@ -52,6 +110,7 @@ export const LineChart: React.FC<LineChartProps> = (props: LineChartProps) => {
         | GridComponentOption
         | YAXisComponentOption
         | XAXisComponentOption
+        | TooltipComponentOption
       > = {
         grid: {
           top: 40,
@@ -70,7 +129,7 @@ export const LineChart: React.FC<LineChartProps> = (props: LineChartProps) => {
             color: appColors.LINE_CHART.CHART_TEXT_COLOR,
           },
           axisLabel: {
-            fontSize: "12px",
+            fontSize: "10px",
             fontFamily: "Inter, sans-serif",
             color: appColors.LINE_CHART.CHART_TEXT_COLOR,
             formatter: (value: number) => {
@@ -97,7 +156,7 @@ export const LineChart: React.FC<LineChartProps> = (props: LineChartProps) => {
           },
           axisLabel: {
             interval: 1,
-            fontSize: "12px",
+            fontSize: "10px",
             fontFamily: "Inter, sans-serif",
             color: appColors.LINE_CHART.CHART_TEXT_COLOR,
           },
@@ -112,7 +171,7 @@ export const LineChart: React.FC<LineChartProps> = (props: LineChartProps) => {
           type: "line",
           name: line.name,
           data: line.data,
-          showSymbol: false,
+          showSymbol: true,
           color: line.itemStyle?.color,
           endLabel: {
             show: true,
@@ -124,11 +183,30 @@ export const LineChart: React.FC<LineChartProps> = (props: LineChartProps) => {
             width: 2,
             color: line.itemStyle?.color,
           },
+          symbolSize: 2,
           emphasis: {
             disabled: true,
           },
           itemStyle: line.itemStyle,
         })),
+        tooltip: {
+          show: true,
+          ...chartTooltipCommonConfig(isTouch),
+          trigger: "item",
+          formatter: (params: any) => {
+            const seriesData = find(props.data, { name: params.seriesName });
+            let cumulative = 0;
+            seriesData?.data
+              .slice(0, params.dataIndex)
+              .forEach((value: number) => {
+                cumulative += value;
+              });
+            const html = ReactDOMServer.renderToString(
+              <Tooltip {...params} cumulative={cumulative} />
+            );
+            return html;
+          },
+        },
       };
 
       chart.setOption(option);

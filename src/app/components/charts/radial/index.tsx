@@ -1,19 +1,106 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import * as echarts from "echarts/core";
+import Divider from "@mui/material/Divider";
+import ReactDOMServer from "react-dom/server";
 import { SVGRenderer } from "echarts/renderers";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { PieSeriesOption, PieChart as EChartsPie } from "echarts/charts";
 import { useChartResizeObserver } from "app/hooks/useChartResizeObserver";
+import { TooltipComponent, TooltipComponentOption } from "echarts/components";
+import { chartTooltipCommonConfig } from "app/components/charts/common/tooltip/config";
 import {
   RadialChartProps,
   itemLabelFormatter,
 } from "app/components/charts/radial/data";
 
-echarts.use([EChartsPie, SVGRenderer]);
+echarts.use([EChartsPie, TooltipComponent, SVGRenderer]);
+
+const Tooltip = (props: any) => {
+  return (
+    <div
+      style={{
+        gap: "10px",
+        width: "400px",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <div className="chart-tooltip-title">{props.name}</div>
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
+        <div className="chart-tooltip-text">
+          <b>Total allocation amount</b>
+        </div>
+        <div className="chart-tooltip-text">
+          {formatFinancialValue(props.value)}
+        </div>
+      </div>
+      {props.data.tooltip && props.data.tooltip.items.length > 0 && (
+        <React.Fragment>
+          <Divider
+            style={{ width: "100%", borderColor: "#DFE3E5", margin: "5px 0" }}
+          />
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              marginBottom: "12px",
+            }}
+          >
+            <div className="chart-tooltip-text">
+              <b>Location</b>
+            </div>
+            <div className="chart-tooltip-text">
+              <b>Amount</b>
+            </div>
+          </div>
+          {props.data.tooltip.items.map((item: any) => (
+            <div
+              key={item.name}
+              style={{
+                width: "100%",
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <div className="chart-tooltip-text">
+                <b>{item.name}</b>
+              </div>
+              <div
+                className="chart-tooltip-text"
+                style={{
+                  width: "50%",
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "flex-end",
+                }}
+              >
+                {item.percentage.toFixed(2).replace(".00", "")}% -{" "}
+                {formatFinancialValue(item.value)}
+              </div>
+            </div>
+          ))}
+        </React.Fragment>
+      )}
+    </div>
+  );
+};
 
 export const RadialChart: React.FC<RadialChartProps> = (
   props: RadialChartProps
 ) => {
+  const isTouch = useMediaQuery("(hover: none)");
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   const [stateChart, setStateChart] =
@@ -31,7 +118,9 @@ export const RadialChart: React.FC<RadialChartProps> = (
         renderer: "svg",
       });
 
-      const option: echarts.ComposeOption<PieSeriesOption> = {
+      const option: echarts.ComposeOption<
+        PieSeriesOption | TooltipComponentOption
+      > = {
         series: {
           type: "pie",
           endAngle: 360,
@@ -57,6 +146,14 @@ export const RadialChart: React.FC<RadialChartProps> = (
           labelLine: {
             length: 5,
             length2: 5,
+          },
+        },
+        tooltip: {
+          show: true,
+          ...chartTooltipCommonConfig(isTouch),
+          formatter: (params: any) => {
+            const html = ReactDOMServer.renderToString(<Tooltip {...params} />);
+            return html;
           },
         },
       };
