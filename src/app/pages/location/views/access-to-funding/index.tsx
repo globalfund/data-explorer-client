@@ -404,6 +404,7 @@ export const AccessToFunding: React.FC = () => {
           </Box>
         </Box>
         <Heatmap
+          noLegend
           noItemOrdering
           itemWidth={42}
           valueType="amount"

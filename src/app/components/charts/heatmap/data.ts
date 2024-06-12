@@ -2,6 +2,7 @@ import { appColors } from "app/theme";
 
 export interface ItemModel {
   name: string;
+  level: number;
   expanded: boolean;
   children?: ItemModel[];
 }
@@ -29,6 +30,7 @@ export interface HeatmapProps {
   noItemOrdering?: boolean;
   columnHeader?: string;
   rowHeader?: string;
+  noLegend?: boolean;
 }
 
 export function getPercentageColor(item?: HeatmapDataItem) {

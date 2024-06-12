@@ -377,7 +377,7 @@ export const Home: React.FC = () => {
     fetchExpendituresHeatmap({
       filterString,
       routeParams: {
-        row: "principalRecipientType,principalRecipient",
+        row: "principalRecipientType,principalRecipientSubType,principalRecipient",
         column: "component",
         componentField:
           componentField === CHART_5_DROPDOWN_ITEMS[0].value

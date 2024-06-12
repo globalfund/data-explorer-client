@@ -72,6 +72,7 @@ export function Heatmap(props: HeatmapProps) {
                     .map((subitem) => ({
                       name: subitem.row,
                       expanded: false,
+                      level: 2,
                     })),
                   "name"
                 );
@@ -79,6 +80,7 @@ export function Heatmap(props: HeatmapProps) {
                   name,
                   expanded: expandedRows.includes(name),
                   children: children.length > 0 ? children : undefined,
+                  level: 1,
                 };
               }),
             "name"
@@ -87,6 +89,7 @@ export function Heatmap(props: HeatmapProps) {
             name,
             expanded: expandedRows.includes(name),
             children: children.length > 0 ? children : undefined,
+            level: 0,
           };
         }),
         "name"
@@ -116,11 +119,13 @@ export function Heatmap(props: HeatmapProps) {
                     .map((subitem) => ({
                       name: subitem.column,
                       expanded: false,
+                      level: 2,
                     })),
                   "name"
                 );
                 return {
                   name,
+                  level: 1,
                   expanded: expandedColumns.includes(name),
                   children: children.length > 0 ? children : undefined,
                 };
@@ -129,6 +134,7 @@ export function Heatmap(props: HeatmapProps) {
           );
           return {
             name,
+            level: 0,
             expanded: expandedColumns.includes(name),
             children: children.length > 0 ? children : undefined,
           };
@@ -160,10 +166,16 @@ export function Heatmap(props: HeatmapProps) {
     sortedVisibleRows.forEach((row) => {
       result.push(row);
       if (row.children && row.expanded) {
-        row.children.forEach((child) => {
+        (!props.noItemOrdering
+          ? orderBy(row.children, "name", "asc")
+          : row.children
+        ).forEach((child) => {
           result.push(child);
           if (child.children && child.expanded) {
-            child.children.forEach((subchild) => result.push(subchild));
+            (!props.noItemOrdering
+              ? orderBy(child.children, "name", "asc")
+              : child.children
+            ).forEach((subchild) => result.push(subchild));
           }
         });
       }
@@ -223,37 +235,39 @@ export function Heatmap(props: HeatmapProps) {
 
   return (
     <React.Fragment>
-      <Box
-        gap="20px"
-        width="100%"
-        display="flex"
-        flexDirection="row"
-        justifyContent="flex-end"
-        sx={{
-          "> div": {
-            gap: "5px",
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
+      {!props.noLegend && (
+        <Box
+          gap="20px"
+          width="100%"
+          display="flex"
+          flexDirection="row"
+          justifyContent="flex-end"
+          sx={{
             "> div": {
-              width: "11px",
-              height: "11px",
+              gap: "5px",
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              "> div": {
+                width: "11px",
+                height: "11px",
+              },
             },
-          },
-        }}
-      >
-        {LEGENDS.map((item) => (
-          <Box key={item.label}>
-            <Box bgcolor={item.color} />
-            <Typography fontSize="12px" color="#495057">
-              {item.label}
-            </Typography>
-          </Box>
-        ))}
-      </Box>
+          }}
+        >
+          {LEGENDS.map((item) => (
+            <Box key={item.label}>
+              <Box bgcolor={item.color} />
+              <Typography fontSize="12px" color="#495057">
+                {item.label}
+              </Typography>
+            </Box>
+          ))}
+        </Box>
+      )}
       <Box
-        padding="10px"
         maxWidth="100%"
+        padding="10px 0"
         maxHeight="60vh"
         position="relative"
         borderRadius="16px"
@@ -289,39 +303,51 @@ export function Heatmap(props: HeatmapProps) {
               >
                 {props.columnHeader}
               </RowName>
-              {flatVisibleColumns.map((column) => (
-                <ColName
-                  key={column.name}
-                  style={{
-                    fontWeight: column.expanded ? 700 : 400,
-                    // background: appColors.HEATMAP.CHART_BG_COLOR,
-                    width: props.itemWidth
-                      ? `${props.itemWidth}px`
-                      : `calc((100% - 112px) / ${flatVisibleColumns.length})`,
-                    minWidth: props.itemWidth
-                      ? `${props.itemWidth}px`
-                      : "105px",
-                  }}
-                >
-                  {column.name}
-                  {column.children && (
-                    <IconButton
-                      onClick={onColumnExpandClick(column.name)}
-                      sx={{
-                        padding: "4px",
-                        transform: `rotate(${column.expanded ? 180 : 0}deg)`,
-                      }}
-                    >
-                      <ChevronRight fontSize="small" />
-                    </IconButton>
-                  )}
-                </ColName>
-              ))}
+              <Box
+                sx={{
+                  gap: "4px",
+                  display: "flex",
+                  flexDirection: "row",
+                }}
+              >
+                {flatVisibleColumns.map((column) => (
+                  <ColName
+                    key={column.name}
+                    style={{
+                      fontWeight: column.expanded ? 700 : 400,
+                      // background: appColors.HEATMAP.CHART_BG_COLOR,
+                      width: props.itemWidth
+                        ? `${props.itemWidth}px`
+                        : `calc((100% - 112px) / ${flatVisibleColumns.length})`,
+                      minWidth: props.itemWidth
+                        ? `${props.itemWidth}px`
+                        : "105px",
+                    }}
+                  >
+                    {column.name}
+                    {column.children && (
+                      <IconButton
+                        onClick={onColumnExpandClick(column.name)}
+                        sx={{
+                          padding: "4px",
+                          transform: `rotate(${column.expanded ? 180 : 0}deg)`,
+                        }}
+                      >
+                        <ChevronRight fontSize="small" />
+                      </IconButton>
+                    )}
+                  </ColName>
+                ))}
+              </Box>
             </Row>
             {flatVisibleRows.map((row) => (
               <Row key={row.name}>
                 <RowName
-                  theme={{ width: rowNameWidth }}
+                  theme={{
+                    width: rowNameWidth,
+                    background:
+                      row.level % 2 === 0 ? appColors.COMMON.WHITE : "#F1F3F5",
+                  }}
                   style={row.expanded ? { fontWeight: 700 } : {}}
                 >
                   {row.children ? (
@@ -343,54 +369,66 @@ export function Heatmap(props: HeatmapProps) {
                   )}
                   {row.name}
                 </RowName>
-                {flatVisibleColumns.map((column) => {
-                  const data = props.data.find(
-                    (d) => d.row === row.name && d.column === column.name
-                  );
-                  const color = props.getItemColor(data);
-                  let value: number | string = get(data, props.contentProp, 0);
-                  if (isNumber(value)) {
-                    if ((value as number) > 0) {
-                      value = (value as number).toFixed(2).replace(".00", "");
-                    } else {
-                      value = "N/A";
-                    }
-                    if (value !== "N/A") {
-                      if (props.valueType === "percentage") {
-                        value = value + "%";
+                <Box
+                  sx={{
+                    gap: "4px",
+                    display: "flex",
+                    flexDirection: "row",
+                  }}
+                >
+                  {flatVisibleColumns.map((column) => {
+                    const data = props.data.find(
+                      (d) => d.row === row.name && d.column === column.name
+                    );
+                    const color = props.getItemColor(data);
+                    let value: number | string = get(
+                      data,
+                      props.contentProp,
+                      0
+                    );
+                    if (isNumber(value)) {
+                      if ((value as number) > 0) {
+                        value = (value as number).toFixed(2).replace(".00", "");
                       } else {
-                        value = formatFinancialValue(
-                          parseInt(value.toString(), 10)
-                        );
+                        value = "N/A";
+                      }
+                      if (value !== "N/A") {
+                        if (props.valueType === "percentage") {
+                          value = value + "%";
+                        } else {
+                          value = formatFinancialValue(
+                            parseInt(value.toString(), 10)
+                          );
+                        }
                       }
                     }
-                  }
-                  let opacity = props.hoveredLegend === color ? 1 : 0.5;
-                  if (!props.hoveredLegend) opacity = 1;
-                  return (
-                    <RowCol
-                      key={column.name}
-                      style={{
-                        opacity,
-                        // color: pickTextColorBasedOnBgColorAdvanced(
-                        //   color,
-                        //   "#fff",
-                        //   "#000"
-                        // ),
-                        color: "#000",
-                        background: color,
-                        width: props.itemWidth
-                          ? `${props.itemWidth}px`
-                          : `calc((100% - 112px) / ${flatVisibleColumns.length})`,
-                        minWidth: props.itemWidth
-                          ? `${props.itemWidth}px`
-                          : "105px",
-                      }}
-                    >
-                      {value}
-                    </RowCol>
-                  );
-                })}
+                    let opacity = props.hoveredLegend === color ? 1 : 0.5;
+                    if (!props.hoveredLegend) opacity = 1;
+                    return (
+                      <RowCol
+                        key={column.name}
+                        style={{
+                          opacity,
+                          // color: pickTextColorBasedOnBgColorAdvanced(
+                          //   color,
+                          //   "#fff",
+                          //   "#000"
+                          // ),
+                          color: "#000",
+                          background: color,
+                          width: props.itemWidth
+                            ? `${props.itemWidth}px`
+                            : `calc((100% - 112px) / ${flatVisibleColumns.length})`,
+                          minWidth: props.itemWidth
+                            ? `${props.itemWidth}px`
+                            : "105px",
+                        }}
+                      >
+                        {value}
+                      </RowCol>
+                    );
+                  })}
+                </Box>
               </Row>
             ))}
           </Container>

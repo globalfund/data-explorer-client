@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 export const Scrollable = styled.div`
   display: flex;
-  padding: 10px;
+  min-width: 100%;
   max-width: 100%;
   overflow-x: auto;
   overflow-y: auto;
@@ -25,6 +25,7 @@ export const Scrollable = styled.div`
 export const Container = styled.div`
   height: 100%;
   display: flex;
+  min-width: 100%;
   flex-direction: column;
 `;
 
@@ -33,6 +34,7 @@ export const Row = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
   border-bottom: 1px solid ${appColors.HEATMAP.CHART_ROW_BORDER_COLOR};
 `;
 
@@ -50,10 +52,10 @@ export const RowName = styled.div`
   align-items: center;
   word-wrap: break-word;
   justify-content: flex-start;
-  background: ${appColors.COMMON.WHITE};
   min-width: ${(props) => props.theme.width};
   max-width: ${(props) => props.theme.width};
   color: ${appColors.HEATMAP.CHART_TEXT_COLOR};
+  background: ${(props) => props.theme.background ?? appColors.COMMON.WHITE};
 `;
 
 export const ColName = styled.div`
