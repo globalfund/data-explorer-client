@@ -37,7 +37,7 @@ const Tooltip = (props: any) => {
         }}
       >
         <div className="chart-tooltip-text">
-          <b>Total allocation amount</b>
+          <b>{props.label}</b>
         </div>
         <div className="chart-tooltip-text">
           {formatFinancialValue(props.value)}
@@ -152,7 +152,9 @@ export const RadialChart: React.FC<RadialChartProps> = (
           show: true,
           ...chartTooltipCommonConfig(isTouch),
           formatter: (params: any) => {
-            const html = ReactDOMServer.renderToString(<Tooltip {...params} />);
+            const html = ReactDOMServer.renderToString(
+              <Tooltip {...params} label={props.tooltipLabel} />
+            );
             return html;
           },
         },

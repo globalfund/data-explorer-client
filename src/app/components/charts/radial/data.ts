@@ -14,9 +14,10 @@ export interface RadialChartDataItem {
 }
 
 export interface RadialChartProps {
+  height?: string;
+  tooltipLabel: string;
   data: RadialChartDataItem[];
   itemLabelFormatterType: "name" | "name-percent" | "name-value-percent";
-  height?: string;
 }
 
 export function itemLabelFormatter(

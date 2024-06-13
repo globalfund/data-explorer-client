@@ -74,7 +74,14 @@ const Tooltip = (props: any) => {
           justifyContent: "space-between",
         }}
       >
-        <div className="chart-tooltip-text">{props.seriesName}</div>
+        <div
+          className="chart-tooltip-text"
+          style={{
+            textTransform: "capitalize",
+          }}
+        >
+          {props.seriesName}
+        </div>
         <div className="chart-tooltip-text">
           {formatFinancialValue(props.value)}
         </div>

@@ -32,7 +32,7 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
 
   const totalValue = React.useMemo(() => {
     return props.data.links
-      .filter((link) => link.source === "Total")
+      .filter((link) => link.source === "Total budget")
       .reduce((acc, item) => acc + item.value, 0);
   }, [props.data.links]);
 

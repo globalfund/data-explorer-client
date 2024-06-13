@@ -20,6 +20,7 @@ type StoryType = StoryObj<typeof meta>;
 
 export const SunburstChartVariant1: StoryType = {
   args: {
+    tooltipLabel: "Pledge",
     data: STORY_DATA_VARIANT_1,
     centerLabel: "Total Pledge",
   },
@@ -27,6 +28,7 @@ export const SunburstChartVariant1: StoryType = {
 
 export const SunburstChartVariant2: StoryType = {
   args: {
+    tooltipLabel: "Allocation",
     data: STORY_DATA_VARIANT_1,
     centerLabel: "Total Allocation",
   },

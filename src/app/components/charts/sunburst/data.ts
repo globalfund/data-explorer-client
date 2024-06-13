@@ -7,6 +7,7 @@ export interface SunburstDataItem {
 
 export interface SunburstProps {
   centerLabel: string;
+  tooltipLabel: string;
   data: SunburstDataItem[];
 }
 

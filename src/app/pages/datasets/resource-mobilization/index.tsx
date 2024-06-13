@@ -240,7 +240,13 @@ export const ResourceMobilizationPage: React.FC = () => {
           />
         );
       case dropdownItems[1].value:
-        return <SunburstChart data={dataSunburst} centerLabel="Total Pledge" />;
+        return (
+          <SunburstChart
+            data={dataSunburst}
+            tooltipLabel="Pledge"
+            centerLabel="Total Pledge"
+          />
+        );
       case dropdownItems[2].value:
         return (
           <Table

@@ -793,11 +793,13 @@ export const TABLE_VARIATION_5_COLUMNS: ColumnDefinition[] = [
     title: "Signed (US$)",
     field: "signed",
     formatter: financialFormatter,
+    minWidth: 90,
   },
   {
     title: "Disbursed (US$)",
     field: "disbursed",
     formatter: financialFormatter,
+    minWidth: 90,
   },
 ];
 

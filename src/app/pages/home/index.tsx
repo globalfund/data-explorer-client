@@ -569,6 +569,7 @@ export const Home: React.FC = () => {
         text="The Global Fund is distinct from other organizations in that it gives countries (or groups of countries) an allocation and asks countries to describe how they will use those funds rather than asking for applications and then determining an amount per-country based on the merits of the various proposals received.<br/><br/>This provides greater predictability for countries and helps ensure that the programs being funded are not just the ones with the most capacity to write good applications."
       >
         <RadialChart
+          tooltipLabel="Total allocation amount"
           data={dataAllocationsRadialChart}
           itemLabelFormatterType="name"
         />

@@ -1,14 +1,75 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import * as echarts from "echarts/core";
+import Divider from "@mui/material/Divider";
+import ReactDOMServer from "react-dom/server";
 import { SVGRenderer } from "echarts/renderers";
+import { TooltipComponentOption } from "echarts";
+import { TooltipComponent } from "echarts/components";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { PieChartProps } from "app/components/charts/pie/data";
+import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { PieSeriesOption, PieChart as EChartsPie } from "echarts/charts";
 import { useChartResizeObserver } from "app/hooks/useChartResizeObserver";
+import { chartTooltipCommonConfig } from "app/components/charts/common/tooltip/config";
 
-echarts.use([EChartsPie, SVGRenderer]);
+echarts.use([EChartsPie, TooltipComponent, SVGRenderer]);
+
+const Tooltip = (props: any) => {
+  return (
+    <div
+      style={{
+        gap: "10px",
+        width: "400px",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <div className="chart-tooltip-title">{props.name}</div>
+      <Divider
+        style={{ width: "100%", borderColor: "#DFE3E5", margin: "5px 0" }}
+      />
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
+        <div className="chart-tooltip-text">
+          <b>Component</b>
+        </div>
+        <div className="chart-tooltip-text">
+          <b>Amount</b>
+        </div>
+      </div>
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
+        <div
+          className="chart-tooltip-text"
+          style={{
+            textTransform: "capitalize",
+          }}
+        >
+          Disbursement
+        </div>
+        <div className="chart-tooltip-text">
+          {formatFinancialValue(props.data.amount)}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export const PieChart: React.FC<PieChartProps> = (props: PieChartProps) => {
+  const isTouch = useMediaQuery("(hover: none)");
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   const [stateChart, setStateChart] =
@@ -26,7 +87,9 @@ export const PieChart: React.FC<PieChartProps> = (props: PieChartProps) => {
         renderer: "svg",
       });
 
-      const option: echarts.ComposeOption<PieSeriesOption> = {
+      const option: echarts.ComposeOption<
+        PieSeriesOption | TooltipComponentOption
+      > = {
         series: {
           type: "pie",
           data: props.data,
@@ -47,6 +110,14 @@ export const PieChart: React.FC<PieChartProps> = (props: PieChartProps) => {
           },
           emphasis: {
             disabled: true,
+          },
+        },
+        tooltip: {
+          show: true,
+          ...chartTooltipCommonConfig(isTouch),
+          formatter: (params: any) => {
+            const html = ReactDOMServer.renderToString(<Tooltip {...params} />);
+            return html;
           },
         },
       };

@@ -43,9 +43,12 @@ input[type="text"] {
 }
 
 .chart-tooltip-title {
+  max-width: 100%;
   font-size: 18px;
   color: #262C34;
   font-weight: 700;
+  word-wrap: break-word;
+  white-space: wrap;
 }
 
 .chart-tooltip-text {

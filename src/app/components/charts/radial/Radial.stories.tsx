@@ -26,6 +26,7 @@ type StoryType = StoryObj<typeof meta>;
 
 export const RadialChartVariant1: StoryType = {
   args: {
+    tooltipLabel: "Amount",
     data: STORY_DATA_VARIANT_1,
     itemLabelFormatterType: "name-percent",
   },
@@ -33,6 +34,7 @@ export const RadialChartVariant1: StoryType = {
 
 export const RadialChartVariant2: StoryType = {
   args: {
+    tooltipLabel: "Amount",
     data: STORY_DATA_VARIANT_2,
     itemLabelFormatterType: "name",
   },
@@ -40,6 +42,7 @@ export const RadialChartVariant2: StoryType = {
 
 export const RadialChartVariant3: StoryType = {
   args: {
+    tooltipLabel: "Amount",
     data: STORY_DATA_VARIANT_3,
     itemLabelFormatterType: "name",
   },
@@ -47,6 +50,7 @@ export const RadialChartVariant3: StoryType = {
 
 export const RadialChartVariant4: StoryType = {
   args: {
+    tooltipLabel: "Amount",
     data: STORY_DATA_VARIANT_4,
     itemLabelFormatterType: "name-value-percent",
   },
@@ -54,6 +58,7 @@ export const RadialChartVariant4: StoryType = {
 
 export const RadialChartVariant5: StoryType = {
   args: {
+    tooltipLabel: "Amount",
     data: STORY_DATA_VARIANT_5,
     itemLabelFormatterType: "name",
   },

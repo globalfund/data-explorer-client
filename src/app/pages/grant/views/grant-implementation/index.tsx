@@ -202,6 +202,7 @@ export const GrantImplementation: React.FC = () => {
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
         <RadialChart
+          tooltipLabel="Amount"
           data={radialChartData}
           itemLabelFormatterType="name-value-percent"
         />

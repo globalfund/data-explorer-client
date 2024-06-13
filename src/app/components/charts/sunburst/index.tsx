@@ -4,21 +4,73 @@ import sumBy from "lodash/sumBy";
 import Box from "@mui/material/Box";
 import { appColors } from "app/theme";
 import * as echarts from "echarts/core";
+import Divider from "@mui/material/Divider";
+import ReactDOMServer from "react-dom/server";
 import { SVGRenderer } from "echarts/renderers";
 import Typography from "@mui/material/Typography";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { SunburstProps } from "app/components/charts/sunburst/data";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { useChartResizeObserver } from "app/hooks/useChartResizeObserver";
+import { TooltipComponent, ToolboxComponentOption } from "echarts/components";
+import { chartTooltipCommonConfig } from "app/components/charts/common/tooltip/config";
 import {
   SunburstSeriesOption,
   SunburstChart as EChartsSunburst,
 } from "echarts/charts";
 
-echarts.use([EChartsSunburst, SVGRenderer]);
+echarts.use([EChartsSunburst, TooltipComponent, SVGRenderer]);
+
+const Tooltip = (props: any) => {
+  return (
+    <div
+      style={{
+        gap: "10px",
+        width: "400px",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <div className="chart-tooltip-title">{props.name}</div>
+      <Divider
+        style={{ width: "100%", borderColor: "#DFE3E5", margin: "5px 0" }}
+      />
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
+        <div className="chart-tooltip-text">
+          <b>Component</b>
+        </div>
+        <div className="chart-tooltip-text">
+          <b>Amount</b>
+        </div>
+      </div>
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
+        <div className="chart-tooltip-text">{props.label}</div>
+        <div className="chart-tooltip-text">
+          {formatFinancialValue(props.value)}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export const SunburstChart: React.FC<SunburstProps> = (
   props: SunburstProps
 ) => {
+  const isTouch = useMediaQuery("(hover: none)");
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   const [stateChart, setStateChart] =
@@ -42,7 +94,9 @@ export const SunburstChart: React.FC<SunburstProps> = (
         renderer: "svg",
       });
 
-      const option: echarts.ComposeOption<SunburstSeriesOption> = {
+      const option: echarts.ComposeOption<
+        SunburstSeriesOption | ToolboxComponentOption
+      > = {
         series: {
           id: "sunburst-chart",
           type: "sunburst",
@@ -72,6 +126,16 @@ export const SunburstChart: React.FC<SunburstProps> = (
           },
           label: {
             show: false,
+          },
+        },
+        tooltip: {
+          show: true,
+          ...chartTooltipCommonConfig(isTouch),
+          formatter: (params: any) => {
+            const html = ReactDOMServer.renderToString(
+              <Tooltip {...params} label={props.tooltipLabel} />
+            );
+            return html;
           },
         },
       };

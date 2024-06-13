@@ -3,12 +3,16 @@ import filter from "lodash/filter";
 import Box from "@mui/material/Box";
 import { appColors } from "app/theme";
 import * as echarts from "echarts/core";
+import Divider from "@mui/material/Divider";
+import ReactDOMServer from "react-dom/server";
 import { SVGRenderer } from "echarts/renderers";
 import Typography from "@mui/material/Typography";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { splitStringInMiddle } from "app/utils/splitStringInMiddle";
-import { GridComponent, LegendComponent } from "echarts/components";
+import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { BarSeriesOption, BarChart as EChartsBar } from "echarts/charts";
 import { useChartResizeObserver } from "app/hooks/useChartResizeObserver";
+import { chartTooltipCommonConfig } from "app/components/charts/common/tooltip/config";
 import {
   findDeep,
   ExpandableHorizontalBarChartProps,
@@ -18,18 +22,77 @@ import {
   getFinancialValueWithMetricPrefix,
 } from "app/utils/getFinancialValueWithMetricPrefix";
 import {
+  GridComponent,
+  LegendComponent,
+  TooltipComponent,
+} from "echarts/components";
+import {
   GridComponentOption,
   XAXisComponentOption,
   YAXisComponentOption,
   LegendComponentOption,
+  TooltipComponentOption,
 } from "echarts";
 
-echarts.use([EChartsBar, GridComponent, LegendComponent, SVGRenderer]);
+echarts.use([
+  EChartsBar,
+  SVGRenderer,
+  GridComponent,
+  LegendComponent,
+  TooltipComponent,
+]);
+
+const Tooltip = (props: any) => {
+  return (
+    <div
+      style={{
+        gap: "10px",
+        width: "400px",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <div className="chart-tooltip-title">{props.name}</div>
+      <Divider
+        style={{ width: "100%", borderColor: "#DFE3E5", margin: "5px 0" }}
+      />
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
+        <div className="chart-tooltip-text">
+          <b>Component</b>
+        </div>
+        <div className="chart-tooltip-text">
+          <b>Amount</b>
+        </div>
+      </div>
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
+        <div className="chart-tooltip-text">{props.seriesName}</div>
+        <div className="chart-tooltip-text">
+          {formatFinancialValue(props.value)}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export const ExpandableHorizontalBar: React.FC<
   ExpandableHorizontalBarChartProps
 > = (props: ExpandableHorizontalBarChartProps) => {
   const isMounted = React.useRef(false);
+  const isTouch = useMediaQuery("(hover: none)");
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   const [data, setData] = React.useState(props.data);
@@ -90,6 +153,7 @@ export const ExpandableHorizontalBar: React.FC<
         | YAXisComponentOption
         | XAXisComponentOption
         | LegendComponentOption
+        | TooltipComponentOption
       > = {
         grid: {
           top: 40,
@@ -238,6 +302,14 @@ export const ExpandableHorizontalBar: React.FC<
               ? props.valueLabels.value1
               : props.valueLabels.value,
           ],
+        },
+        tooltip: {
+          show: true,
+          ...chartTooltipCommonConfig(isTouch),
+          formatter: (params: any) => {
+            const html = ReactDOMServer.renderToString(<Tooltip {...params} />);
+            return html;
+          },
         },
       };
 

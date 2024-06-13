@@ -307,6 +307,7 @@ export const AccessToFundingPage: React.FC = () => {
       case dropdownItemsAllocations[0].value:
         return (
           <SunburstChart
+            tooltipLabel="Allocation"
             data={dataAllocationsSunburst}
             centerLabel="Total Allocation"
           />
