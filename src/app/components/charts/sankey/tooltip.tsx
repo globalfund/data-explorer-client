@@ -17,69 +17,33 @@ export const SankeyChartTooltip: React.FC<SankeyChartTooltipProps> = (
     return items.reduce((acc, item) => acc + item.value, 0);
   }, [props.data, props.name]);
 
-  const level1Items = React.useMemo(() => {
-    if (props.level < 2) return [];
-    const items = props.data.links.filter((link) => link.target === props.name);
-    if (props.level === 2) {
-      return items.map((item) => {
-        const node = props.data.nodes.find((node) => node.name === item.source);
-        const itemValue = props.data.links
-          .filter((link) => link.source === item.source)
-          .reduce((acc, item) => acc + item.value, 0);
-        return {
-          value,
-          name: item.source,
-          color: node?.itemStyle?.color,
-          percentage: ((value / itemValue) * 100).toFixed(0),
-        };
-      });
-    }
+  const children = React.useMemo(() => {
     const returnItems: {
       value: number;
       name: string;
       color: string | undefined;
       percentage: string;
     }[] = [];
+    const items = props.data.links.filter((link) => link.source === props.name);
     items.forEach((item) => {
-      const node = props.data.nodes.find((node) => node.name === item.source);
-      if (node && node.level === 1) {
-        const itemValue = props.data.links
-          .filter((link) => link.source === item.source)
-          .reduce((acc, item) => acc + item.value, 0);
-        returnItems.push({
-          value,
-          name: item.source,
-          color: node.itemStyle?.color,
-          percentage: ((value / itemValue) * 100).toFixed(0),
-        });
-      } else {
-        const items2 = props.data.links.filter(
-          (link) => link.target === item.source
-        );
-        items2.forEach((item2) => {
-          const alreadyIn = returnItems.find((i) => i.name === item2.source);
-          const node2 = props.data.nodes.find(
-            (node) => node.name === item2.source
-          );
-          const itemValue = props.data.links
-            .filter((link) => link.source === item2.source)
-            .reduce((acc, item) => acc + item.value, 0);
-          if (!alreadyIn) {
-            returnItems.push({
-              value,
-              name: item2.source,
-              color: node2?.itemStyle?.color,
-              percentage: ((value / itemValue) * 100).toFixed(0),
-            });
-          }
-        });
-      }
+      const node = props.data.nodes.find((node) => node.name === item.target);
+      const itemValue = props.data.links
+        .filter(
+          (link) => link.target === item.target && link.source === props.name
+        )
+        .reduce((acc, item) => acc + item.value, 0);
+      returnItems.push({
+        value: itemValue,
+        name: item.target,
+        color: node?.itemStyle?.color,
+        percentage: ((itemValue / value) * 100).toFixed(2).replace(".00", ""),
+      });
     });
     return returnItems;
   }, [props.data, props.name, props.level]);
 
   const content = React.useMemo(() => {
-    if (level1Items.length === 0) {
+    if (children.length === 0) {
       return (
         <React.Fragment>
           <Divider
@@ -99,8 +63,9 @@ export const SankeyChartTooltip: React.FC<SankeyChartTooltipProps> = (
               whiteSpace: "wrap",
             }}
           >
-            {props.name} - {((value / props.totalValue) * 100).toFixed(0)}% of
-            total budget
+            {props.name}
+            {((value / props.totalValue) * 100).toFixed(2).replace(".00", "")}%
+            of total budget
           </Typography>
         </React.Fragment>
       );
@@ -137,8 +102,8 @@ export const SankeyChartTooltip: React.FC<SankeyChartTooltipProps> = (
               fontSize: "12px",
             }}
           >
-            {((value / props.totalValue) * 100).toFixed(0)}% of total budget -{" "}
-            {formatFinancialValue(props.totalValue)}
+            {((value / props.totalValue) * 100).toFixed(2).replace(".00", "")}%
+            of total budget - {formatFinancialValue(value)}
           </Typography>
         </Box>
         <Divider
@@ -184,7 +149,7 @@ export const SankeyChartTooltip: React.FC<SankeyChartTooltipProps> = (
             justifyContent: "space-between",
           }}
         >
-          {level1Items.map((item) => (
+          {children.map((item) => (
             <Box
               key={item.name}
               style={{
@@ -236,16 +201,16 @@ export const SankeyChartTooltip: React.FC<SankeyChartTooltipProps> = (
         </Box>
       </React.Fragment>
     );
-  }, [level1Items, props.name, value, props.totalValue]);
+  }, [children, props.name, value, props.totalValue]);
 
   return (
     <Box
       style={{
+        width: "390px",
         display: "flex",
         flexDirection: "column",
         fontFamily: "'Inter', sans-serif",
-        gap: level1Items.length > 0 ? "16px" : "10px",
-        width: level1Items.length > 0 ? "390px" : "210px",
+        gap: children.length > 0 ? "16px" : "10px",
       }}
     >
       <Typography

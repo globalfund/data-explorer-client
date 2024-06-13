@@ -13,6 +13,7 @@ import {
   SankeySeriesOption,
   SankeyChart as EChartsSankey,
 } from "echarts/charts";
+import Typography from "@mui/material/Typography";
 
 echarts.use([TooltipComponent, EChartsSankey, SVGRenderer]);
 
@@ -138,9 +139,39 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
           formatter: (params: any) => {
             const data = params.data;
             if (data.source && data.target) {
-              return `<div>${data.source} -> ${
-                data.target
-              }:<br/>${formatFinancialValue(data.value)}</div>`;
+              return ReactDOMServer.renderToString(
+                <Box
+                  style={{
+                    gap: "10px",
+                    display: "flex",
+                    minWidth: "390px",
+                    flexDirection: "column",
+                    fontFamily: "'Inter', sans-serif",
+                  }}
+                >
+                  <Typography
+                    component="div"
+                    style={{
+                      fontSize: "18px",
+                      maxWidth: "100%",
+                      fontWeight: "700",
+                      overflow: "hidden",
+                      whiteSpace: "nowrap",
+                      textOverflow: "ellipsis",
+                    }}
+                  >
+                    {formatFinancialValue(data.value)}
+                  </Typography>
+                  <Box>
+                    {data.source} -{">"} {data.target}
+                    <br />
+                    {((data.value / totalValue) * 100)
+                      .toFixed(2)
+                      .replace(".00", "")}
+                    % of total budget
+                  </Box>
+                </Box>
+              );
             }
             const html = ReactDOMServer.renderToString(
               <SankeyChartTooltip
