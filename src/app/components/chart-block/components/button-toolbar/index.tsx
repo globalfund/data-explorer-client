@@ -6,19 +6,32 @@ import Divider from "@mui/material/Divider";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
+import { exportChart } from "app/utils/exportChart";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import { ReactComponent as InfoIcon } from "app/assets/vectors/Info_GreyBG.svg";
 import { ReactComponent as ShareIcon } from "app/assets/vectors/Share_GreyBG.svg";
 import { ReactComponent as DownloadIcon } from "app/assets/vectors/Download_GreyBG.svg";
 import { ReactComponent as FavoriteIcon } from "app/assets/vectors/Favorite_GreyBG.svg";
 
-const DownloadPanel: React.FC = () => {
+interface ChartBlockButtonToolbarProps {
+  blockId: string;
+}
+
+const DownloadPanel: React.FC<ChartBlockButtonToolbarProps> = (
+  props: ChartBlockButtonToolbarProps
+) => {
   const [feedbackMessage, setFeedbackMessage] = React.useState<string | null>(
     null
   );
 
   const handleButtonClick = (type: "pdf" | "png") => () => {
-    setFeedbackMessage(`Chart downloaded as ${type.toUpperCase()}!`);
+    exportChart(props.blockId || "", type)
+      .then(() => {
+        setFeedbackMessage(`Chart downloaded as ${type.toUpperCase()}!`);
+      })
+      .catch(() => {
+        setFeedbackMessage("Oops, something went wrong!");
+      });
   };
 
   React.useEffect(() => {
@@ -125,7 +138,9 @@ const InfoPanel: React.FC = () => {
   );
 };
 
-export const ChartBlockButtonToolbar: React.FC = () => {
+export const ChartBlockButtonToolbar: React.FC<ChartBlockButtonToolbarProps> = (
+  props: ChartBlockButtonToolbarProps
+) => {
   const [active, setActive] = React.useState<
     "download" | "share" | "favorite" | "info" | null
   >(null);
@@ -147,7 +162,7 @@ export const ChartBlockButtonToolbar: React.FC = () => {
   const activePanel = React.useMemo(() => {
     switch (active) {
       case "download":
-        return <DownloadPanel />;
+        return <DownloadPanel blockId={props.blockId} />;
       case "share":
         return <SharePanel />;
       case "favorite":

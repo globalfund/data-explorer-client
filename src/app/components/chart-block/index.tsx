@@ -1,5 +1,6 @@
 import React from "react";
 import Box from "@mui/material/Box";
+import uniqueId from "lodash/uniqueId";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
@@ -11,6 +12,8 @@ import { ChartBlockButtonToolbar } from "app/components/chart-block/components/b
 export const ChartBlock: React.FC<ChartBlockProps> = (
   props: ChartBlockProps
 ) => {
+  const id = React.useMemo(() => uniqueId("chart-block-"), []);
+
   const showRightComponents = React.useMemo(() => {
     return (
       (props.dropdownItems &&
@@ -118,6 +121,7 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
         </Box>
       )}
       <Box
+        id={id}
         width="100%"
         minHeight="400px"
         position="relative"
@@ -135,7 +139,7 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
       </Box>
       {!props.noBottomToolbar && (
         <Box width="100%" paddingRight="32px">
-          <ChartBlockButtonToolbar />
+          <ChartBlockButtonToolbar blockId={id} />
         </Box>
       )}
     </Box>

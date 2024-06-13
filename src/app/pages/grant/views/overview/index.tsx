@@ -225,8 +225,10 @@ export const GrantOverview: React.FC = () => {
         </Grid>
       </Grid>
       <Divider sx={{ borderColor: "#000" }} />
-      <RaceBarChart data={raceBarChartData} />
-      <ChartBlockButtonToolbar />
+      <Box id="grant-overview-race-bar-chart">
+        <RaceBarChart data={raceBarChartData} />
+      </Box>
+      <ChartBlockButtonToolbar blockId="grant-overview-race-bar-chart" />
     </Box>
   );
 };

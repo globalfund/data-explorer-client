@@ -9,12 +9,8 @@ import useUpdateEffect from "react-use/lib/useUpdateEffect";
 import { CellComponent, Tabulator } from "tabulator-tables";
 import { TableContainer } from "app/components/table-container";
 import { TABS } from "app/pages/grant/views/targets-results/data";
+import { TABLE_VARIATION_4_COLUMNS } from "app/components/table/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { ChartBlockButtonToolbar } from "app/components/chart-block/components/button-toolbar";
-import {
-  TABLE_VARIATION_4_DATA,
-  TABLE_VARIATION_4_COLUMNS,
-} from "app/components/table/data";
 
 export const GrantTargetsResults: React.FC = () => {
   const params = useParams<{ id: string; ip: string }>();
@@ -121,7 +117,6 @@ export const GrantTargetsResults: React.FC = () => {
       {fullWidthDivider}
       <Box height="50px" />
       <ChartBlock
-        noBottomToolbar
         loading={loading}
         title="Indicators"
         subtitle="Targets & Results"
@@ -142,7 +137,6 @@ export const GrantTargetsResults: React.FC = () => {
         />
       </ChartBlock>
       <Box height="40px" />
-      <ChartBlockButtonToolbar />
     </Box>
   );
 };

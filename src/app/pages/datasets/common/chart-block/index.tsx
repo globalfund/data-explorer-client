@@ -1,5 +1,6 @@
 import React from "react";
 import Box from "@mui/material/Box";
+import uniqueId from "lodash/uniqueId";
 import Add from "@mui/icons-material/Add";
 import Button from "@mui/material/Button";
 import Popover from "@mui/material/Popover";
@@ -64,6 +65,8 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
     }
     return props.children;
   }, [props.children, props.loading, props.empty]);
+
+  const id = React.useMemo(() => uniqueId("chart-block-"), []);
 
   return (
     <Box>
@@ -179,7 +182,7 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
           {content}
         </Box>
         <Box width="100%" paddingRight="32px" marginTop="40px">
-          <ChartBlockButtonToolbar />
+          <ChartBlockButtonToolbar blockId={id} />
         </Box>
       </Box>
     </Box>
