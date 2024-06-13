@@ -9,12 +9,10 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import ChevronRight from "@mui/icons-material/ChevronRight";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
-import { pickTextColorBasedOnBgColorAdvanced } from "app/utils/pickTextColorBasedOnBgColorAdvanced";
 import {
+  LEGENDS,
   ItemModel,
   HeatmapProps,
-  getPercentageColor,
-  LEGENDS,
 } from "app/components/charts/heatmap/data";
 import {
   Row,
@@ -257,7 +255,10 @@ export function Heatmap(props: HeatmapProps) {
         >
           {LEGENDS.map((item) => (
             <Box key={item.label}>
-              <Box bgcolor={item.color} />
+              <Box
+                bgcolor={item.color}
+                border={item.label === "N/A" ? "1px solid #DADADA" : ""}
+              />
               <Typography fontSize="12px" color="#495057">
                 {item.label}
               </Typography>

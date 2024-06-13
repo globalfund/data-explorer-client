@@ -75,6 +75,7 @@ const financialFormatter = (cell: CellComponent) => {
   if (!cell.getValue()) {
     return cellBGColorFormatter(cell);
   }
+  cell.getElement().style.backgroundColor = "#FFFFFF";
   return formatLocale(cell.getValue()).replace("US$", "");
 };
 
@@ -763,43 +764,49 @@ export const TABLE_VARIATION_5_COLUMNS: ColumnDefinition[] = [
     field: "grantId",
     formatter: (cell: CellComponent) =>
       `<a href="/grant/${cell.getValue()}">${cell.getValue()}</a>`,
+    width: "10%",
   },
   {
     title: "Start/End date",
     field: "startEndDate",
     formatter: cellBGColorFormatter,
+    width: "15%",
   },
   {
     title: "Geography",
     field: "geography",
     formatter: cellBGColorFormatter,
+    width: "10%",
   },
   {
     title: "Component",
     field: "component",
     formatter: cellBGColorFormatter,
+    width: "10%",
   },
   {
     title: "Principal Recipient",
     field: "principalRecipient",
     formatter: cellBGColorFormatter,
+    width: "25%",
   },
   {
     title: "Status",
     field: "status",
     formatter: cellBGColorFormatter,
+    width: "10%",
   },
   {
     title: "Signed (US$)",
     field: "signed",
     formatter: financialFormatter,
-    minWidth: 90,
+    width: "10%",
   },
   {
     title: "Disbursed (US$)",
     field: "disbursed",
     formatter: financialFormatter,
-    minWidth: 90,
+    width: "10%",
   },
 ];
 

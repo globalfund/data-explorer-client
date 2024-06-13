@@ -112,6 +112,7 @@ export function getAppliedFilters(
       return appliedFilters.principalRecipients;
     case "component":
       return appliedFilters.components;
+    case "status":
     case "grantStatus":
       return appliedFilters.status;
     case "donor":

@@ -676,6 +676,37 @@ export const AccessToFundingPage: React.FC = () => {
           </DatasetChartBlock>
         </Box>
         <FullWidthDivider />
+        <Box
+          padding="50px 0"
+          sx={{
+            "#content": {
+              padding: 0,
+            },
+          }}
+        >
+          <DatasetChartBlock
+            id="allocation"
+            title="Allocation"
+            subtitle="Allocations amounts for countries."
+            dropdownItems={dropdownItemsAllocations}
+            dropdownSelected={dropdownSelected}
+            handleDropdownChange={handleSelectionChange}
+            loading={loadingAllocations}
+            empty={chartEmpty}
+            disableCollapse={
+              dropdownSelected === dropdownItemsAllocations[2].value
+            }
+            filterGroups={filterGroups}
+            appliedFilters={chart2AppliedFilters}
+            toggleFilter={handleToggleChartFilter(2)}
+            removeFilter={handleRemoveChartFilter(2)}
+            handleResetFilters={handleResetChartFilters(2)}
+            appliedFiltersData={chart2AppliedFiltersData}
+          >
+            {chartContent}
+          </DatasetChartBlock>
+        </Box>
+        <FullWidthDivider />
         <Box padding="50px 0">
           <Typography variant="h5">Cumulative Allocation by Cycles</Typography>
           <Typography fontSize="14px" fontWeight="700">
@@ -726,37 +757,6 @@ export const AccessToFundingPage: React.FC = () => {
               </Box>
             )}
           </Box>
-        </Box>
-        <FullWidthDivider />
-        <Box
-          padding="50px 0"
-          sx={{
-            "#content": {
-              padding: 0,
-            },
-          }}
-        >
-          <DatasetChartBlock
-            id="allocations"
-            title="Allocations"
-            subtitle="Allocations amounts for countries."
-            dropdownItems={dropdownItemsAllocations}
-            dropdownSelected={dropdownSelected}
-            handleDropdownChange={handleSelectionChange}
-            loading={loadingAllocations}
-            empty={chartEmpty}
-            disableCollapse={
-              dropdownSelected === dropdownItemsAllocations[2].value
-            }
-            filterGroups={filterGroups}
-            appliedFilters={chart2AppliedFilters}
-            toggleFilter={handleToggleChartFilter(2)}
-            removeFilter={handleRemoveChartFilter(2)}
-            handleResetFilters={handleResetChartFilters(2)}
-            appliedFiltersData={chart2AppliedFiltersData}
-          >
-            {chartContent}
-          </DatasetChartBlock>
         </Box>
         <FullWidthDivider />
         <Box
