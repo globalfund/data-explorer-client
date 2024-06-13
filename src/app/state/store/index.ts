@@ -52,6 +52,7 @@ import { AnnualResultsPolyline } from "app/state/api/action-reducers/annual-resu
 import componentsDatasetCarousel from "app/state/api/action-reducers/cms/componentsDatasetCarousel";
 import { GrantExpendituresHeatmap } from "app/state/api/action-reducers/grant/expenditures-heatmap";
 import { GrantTargetsResultsTable } from "app/state/api/action-reducers/grant/targets-results-table";
+import { GeographyEligibilityTable } from "app/state/api/action-reducers/geography/eligibility-table";
 import componentsInformationPanel from "app/state/api/action-reducers/cms/componentsInformationPanel";
 import { ResourceMobilizationStats } from "app/state/api/action-reducers/resource-mobilization/stats";
 import componentsChartsEligibility from "app/state/api/action-reducers/cms/componentsChartsEligibility";
@@ -199,6 +200,7 @@ const storeContent: StoreModel = {
   GeographyAllocationsRadialChart: persist(GeographyAllocationsRadialChart),
   GeographyFundingRequestsTable: persist(GeographyFundingRequestsTable),
   GeographyEligibilityHeatmap: persist(GeographyEligibilityHeatmap),
+  GeographyEligibilityTable: persist(GeographyEligibilityTable),
   GeographyDocumentsTable: persist(GeographyDocumentsTable),
   GeographyDisbursementsLineChart: persist(GeographyDisbursementsLineChart),
   GeographyBudgetSankeyChart: persist(GeographyBudgetSankeyChart),

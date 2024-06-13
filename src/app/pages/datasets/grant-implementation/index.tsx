@@ -1,8 +1,10 @@
 import React from "react";
 import get from "lodash/get";
+import uniq from "lodash/uniq";
 import maxBy from "lodash/maxBy";
 import sumBy from "lodash/sumBy";
 import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
 import { appColors } from "app/theme";
 import Divider from "@mui/material/Divider";
 import { Table } from "app/components/table";
@@ -24,6 +26,7 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { getRange } from "app/utils/getFinancialValueWithMetricPrefix";
 import { FinancialMetric } from "app/components/charts/financial-metric";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
+import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 import { ExpandableHorizontalBar } from "app/components/charts/expandable-horizontal-bar";
 import { ExpandableHorizontalBarChartDataItem } from "app/components/charts/expandable-horizontal-bar/data";
 import {
@@ -49,7 +52,6 @@ import {
   dropdownItemsDisbursements,
   dropdownItemsExpenditures,
 } from "app/pages/datasets/grant-implementation/data";
-import Grid from "@mui/material/Grid";
 
 export const GrantImplementationPage: React.FC = () => {
   const [geographyGrouping, setGeographyGrouping] = React.useState(
@@ -65,6 +67,34 @@ export const GrantImplementationPage: React.FC = () => {
   );
   const [expendituresDropdownSelected, setExpendituresDropdownSelected] =
     React.useState(dropdownItemsExpenditures[0].value);
+  const [chart1AppliedFilters, setChart1AppliedFilters] = React.useState<
+    string[]
+  >([]);
+  const [chart1AppliedFiltersData, setChart1AppliedFiltersData] =
+    React.useState({
+      ...defaultAppliedFilters,
+    });
+  const [chart2AppliedFilters, setChart2AppliedFilters] = React.useState<
+    string[]
+  >([]);
+  const [chart2AppliedFiltersData, setChart2AppliedFiltersData] =
+    React.useState({
+      ...defaultAppliedFilters,
+    });
+  const [chart3AppliedFilters, setChart3AppliedFilters] = React.useState<
+    string[]
+  >([]);
+  const [chart3AppliedFiltersData, setChart3AppliedFiltersData] =
+    React.useState({
+      ...defaultAppliedFilters,
+    });
+  const [chart4AppliedFiltersData, setChart4AppliedFiltersData] =
+    React.useState({
+      ...defaultAppliedFilters,
+    });
+  const [chart4AppliedFilters, setChart4AppliedFilters] = React.useState<
+    string[]
+  >([]);
 
   const dataFinancialInsightsStats = useStoreState((state) =>
     get(state.FinancialInsightsStats, "data.data[0]", {
@@ -380,6 +410,191 @@ export const GrantImplementationPage: React.FC = () => {
       status: [],
     });
   };
+
+  const handleResetChartFilters = (index: number) => () => {
+    switch (index) {
+      case 1:
+        setChart1AppliedFiltersData({
+          ...chart1AppliedFiltersData,
+          locations: [],
+          components: [],
+          principalRecipients: [],
+          principalRecipientTypes: [],
+          status: [],
+        });
+        setChart1AppliedFilters([]);
+        break;
+      case 2:
+        setChart2AppliedFiltersData({
+          ...chart2AppliedFiltersData,
+          locations: [],
+          components: [],
+          principalRecipients: [],
+          principalRecipientTypes: [],
+          status: [],
+        });
+        setChart2AppliedFilters([]);
+        break;
+      case 3:
+        setChart3AppliedFiltersData({
+          ...chart3AppliedFiltersData,
+          locations: [],
+          components: [],
+          principalRecipients: [],
+          principalRecipientTypes: [],
+          status: [],
+        });
+        setChart3AppliedFilters([]);
+        break;
+      case 4:
+        setChart4AppliedFiltersData({
+          ...chart4AppliedFiltersData,
+          locations: [],
+          components: [],
+          principalRecipients: [],
+          principalRecipientTypes: [],
+          status: [],
+        });
+        setChart4AppliedFilters([]);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleToggleChartFilter =
+    (index: number) => (checked: boolean, value: string, type: string) => {
+      let state = { ...chart1AppliedFiltersData };
+      let action1 = setChart1AppliedFiltersData;
+      let action2 = setChart1AppliedFilters;
+      if (index === 2) {
+        state = { ...chart2AppliedFiltersData };
+        action1 = setChart2AppliedFiltersData;
+        action2 = setChart2AppliedFilters;
+      }
+      if (index === 3) {
+        state = { ...chart3AppliedFiltersData };
+        action1 = setChart3AppliedFiltersData;
+        action2 = setChart3AppliedFilters;
+      }
+      if (index === 4) {
+        state = { ...chart4AppliedFiltersData };
+        action1 = setChart4AppliedFiltersData;
+        action2 = setChart4AppliedFilters;
+      }
+      switch (type) {
+        case "geography":
+        case "geographyType":
+        case "geographySubType":
+          if (checked) {
+            state.locations.push(value);
+          } else {
+            state.locations = state.locations.filter((item) => item !== value);
+          }
+          break;
+        case "component":
+          if (checked) {
+            state.components.push(value);
+          } else {
+            state.components = state.components.filter(
+              (item) => item !== value
+            );
+          }
+          break;
+        case "principalRecipient":
+          if (checked) {
+            state.principalRecipients.push(value);
+          } else {
+            state.principalRecipients = state.principalRecipients.filter(
+              (item) => item !== value
+            );
+          }
+          break;
+        case "principalRecipientType":
+          if (checked) {
+            state.principalRecipientTypes.push(value);
+          } else {
+            state.principalRecipientTypes =
+              state.principalRecipientTypes.filter((item) => item !== value);
+          }
+          break;
+        case "status":
+          if (checked) {
+            state.status.push(value);
+          } else {
+            state.status = state.status.filter((item) => item !== value);
+          }
+          break;
+        default:
+          break;
+      }
+      action1(state);
+      action2([
+        ...state.locations,
+        ...state.components,
+        ...state.principalRecipients,
+        ...state.principalRecipientTypes,
+        ...state.status,
+      ]);
+    };
+
+  const handleRemoveChartFilter =
+    (index: number) => (value: string, types: string[]) => {
+      let state = { ...chart1AppliedFiltersData };
+      let action1 = setChart1AppliedFiltersData;
+      let action2 = setChart1AppliedFilters;
+      if (index === 2) {
+        state = { ...chart2AppliedFiltersData };
+        action1 = setChart2AppliedFiltersData;
+        action2 = setChart2AppliedFilters;
+      }
+      if (index === 3) {
+        state = { ...chart3AppliedFiltersData };
+        action1 = setChart3AppliedFiltersData;
+        action2 = setChart3AppliedFilters;
+      }
+      if (index === 4) {
+        state = { ...chart4AppliedFiltersData };
+        action1 = setChart4AppliedFiltersData;
+        action2 = setChart4AppliedFilters;
+      }
+      types.forEach((type) => {
+        switch (type) {
+          case "geography":
+          case "geographyType":
+          case "geographySubType":
+            state.locations = state.locations.filter((item) => item !== value);
+            break;
+          case "component":
+            state.components = state.components.filter(
+              (item) => item !== value
+            );
+            break;
+          case "principalRecipient":
+            state.principalRecipients = state.principalRecipients.filter(
+              (item) => item !== value
+            );
+            break;
+          case "principalRecipientType":
+            state.principalRecipientTypes =
+              state.principalRecipientTypes.filter((item) => item !== value);
+            break;
+          case "status":
+            state.status = state.status.filter((item) => item !== value);
+            break;
+          default:
+            break;
+        }
+      });
+      action1(state);
+      action2([
+        ...state.locations,
+        ...state.components,
+        ...state.principalRecipients,
+        ...state.principalRecipientTypes,
+        ...state.status,
+      ]);
+    };
 
   const disbursementsChartContent = React.useMemo(() => {
     let range;
@@ -768,18 +983,169 @@ export const GrantImplementationPage: React.FC = () => {
     return filterString;
   }, [appliedFiltersData]);
 
+  const chart1FilterString = React.useMemo(() => {
+    let filterString = "";
+    if (
+      [...appliedFiltersData.locations, ...chart1AppliedFiltersData.locations]
+        .length > 0
+    ) {
+      filterString += `geographies=${encodeURIComponent(uniq([...appliedFiltersData.locations, ...chart1AppliedFiltersData.locations]).join(","))}`;
+    }
+    if (
+      [...appliedFiltersData.components, ...chart1AppliedFiltersData.components]
+        .length > 0
+    ) {
+      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(uniq([...appliedFiltersData.components, ...chart1AppliedFiltersData.components]).join(","))}`;
+    }
+    if (
+      [
+        ...appliedFiltersData.principalRecipients,
+        ...chart1AppliedFiltersData.principalRecipients,
+      ].length > 0
+    ) {
+      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipients=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipients, ...chart1AppliedFiltersData.principalRecipients]).join(","))}`;
+    }
+    if (
+      [
+        ...appliedFiltersData.principalRecipientTypes,
+        ...chart1AppliedFiltersData.principalRecipientTypes,
+      ].length > 0
+    ) {
+      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientTypes=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipientTypes, ...chart1AppliedFiltersData.principalRecipientTypes]).join(","))}`;
+    }
+    if (
+      [...appliedFiltersData.status, ...chart1AppliedFiltersData.status]
+        .length > 0
+    ) {
+      filterString += `${filterString.length > 0 ? "&" : ""}status=${encodeURIComponent(uniq([...appliedFiltersData.status, ...chart1AppliedFiltersData.status]).join(","))}`;
+    }
+    return filterString;
+  }, [appliedFiltersData, chart1AppliedFiltersData]);
+
+  const chart2FilterString = React.useMemo(() => {
+    let filterString = "";
+    if (
+      [...appliedFiltersData.locations, ...chart2AppliedFiltersData.locations]
+        .length > 0
+    ) {
+      filterString += `geographies=${encodeURIComponent(uniq([...appliedFiltersData.locations, ...chart2AppliedFiltersData.locations]).join(","))}`;
+    }
+    if (
+      [...appliedFiltersData.components, ...chart2AppliedFiltersData.components]
+        .length > 0
+    ) {
+      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(uniq([...appliedFiltersData.components, ...chart2AppliedFiltersData.components]).join(","))}`;
+    }
+    if (
+      [
+        ...appliedFiltersData.principalRecipients,
+        ...chart2AppliedFiltersData.principalRecipients,
+      ].length > 0
+    ) {
+      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipients=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipients, ...chart2AppliedFiltersData.principalRecipients]).join(","))}`;
+    }
+    if (
+      [
+        ...appliedFiltersData.principalRecipientTypes,
+        ...chart2AppliedFiltersData.principalRecipientTypes,
+      ].length > 0
+    ) {
+      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientTypes=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipientTypes, ...chart2AppliedFiltersData.principalRecipientTypes]).join(","))}`;
+    }
+    if (
+      [...appliedFiltersData.status, ...chart2AppliedFiltersData.status]
+        .length > 0
+    ) {
+      filterString += `${filterString.length > 0 ? "&" : ""}status=${encodeURIComponent(uniq([...appliedFiltersData.status, ...chart2AppliedFiltersData.status]).join(","))}`;
+    }
+    return filterString;
+  }, [appliedFiltersData, chart2AppliedFiltersData]);
+
+  const chart3FilterString = React.useMemo(() => {
+    let filterString = "";
+    if (
+      [...appliedFiltersData.locations, ...chart3AppliedFiltersData.locations]
+        .length > 0
+    ) {
+      filterString += `geographies=${encodeURIComponent(uniq([...appliedFiltersData.locations, ...chart3AppliedFiltersData.locations]).join(","))}`;
+    }
+    if (
+      [...appliedFiltersData.components, ...chart3AppliedFiltersData.components]
+        .length > 0
+    ) {
+      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(uniq([...appliedFiltersData.components, ...chart3AppliedFiltersData.components]).join(","))}`;
+    }
+    if (
+      [
+        ...appliedFiltersData.principalRecipients,
+        ...chart3AppliedFiltersData.principalRecipients,
+      ].length > 0
+    ) {
+      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipients=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipients, ...chart3AppliedFiltersData.principalRecipients]).join(","))}`;
+    }
+    if (
+      [
+        ...appliedFiltersData.principalRecipientTypes,
+        ...chart3AppliedFiltersData.principalRecipientTypes,
+      ].length > 0
+    ) {
+      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientTypes=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipientTypes, ...chart3AppliedFiltersData.principalRecipientTypes]).join(","))}`;
+    }
+    if (
+      [...appliedFiltersData.status, ...chart3AppliedFiltersData.status]
+        .length > 0
+    ) {
+      filterString += `${filterString.length > 0 ? "&" : ""}status=${encodeURIComponent(uniq([...appliedFiltersData.status, ...chart3AppliedFiltersData.status]).join(","))}`;
+    }
+    return filterString;
+  }, [appliedFiltersData, chart3AppliedFiltersData]);
+
+  const chart4FilterString = React.useMemo(() => {
+    let filterString = "";
+    if (
+      [...appliedFiltersData.locations, ...chart4AppliedFiltersData.locations]
+        .length > 0
+    ) {
+      filterString += `geographies=${encodeURIComponent(uniq([...appliedFiltersData.locations, ...chart4AppliedFiltersData.locations]).join(","))}`;
+    }
+    if (
+      [...appliedFiltersData.components, ...chart4AppliedFiltersData.components]
+        .length > 0
+    ) {
+      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(uniq([...appliedFiltersData.components, ...chart4AppliedFiltersData.components]).join(","))}`;
+    }
+    if (
+      [
+        ...appliedFiltersData.principalRecipients,
+        ...chart4AppliedFiltersData.principalRecipients,
+      ].length > 0
+    ) {
+      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipients=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipients, ...chart4AppliedFiltersData.principalRecipients]).join(","))}`;
+    }
+    if (
+      [
+        ...appliedFiltersData.principalRecipientTypes,
+        ...chart4AppliedFiltersData.principalRecipientTypes,
+      ].length > 0
+    ) {
+      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientTypes=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipientTypes, ...chart4AppliedFiltersData.principalRecipientTypes]).join(","))}`;
+    }
+    if (
+      [...appliedFiltersData.status, ...chart4AppliedFiltersData.status]
+        .length > 0
+    ) {
+      filterString += `${filterString.length > 0 ? "&" : ""}status=${encodeURIComponent(uniq([...appliedFiltersData.status, ...chart4AppliedFiltersData.status]).join(","))}`;
+    }
+    return filterString;
+  }, [appliedFiltersData, chart4AppliedFiltersData]);
+
   React.useEffect(() => {
     fetchFinancialInsightsStats({ filterString });
-    fetchBudgetSankey({ filterString });
-    fetchBudgetTable({ filterString });
-    fetchBudgetUtilisation({ filterString });
-    fetchInCountryAbsorption({ filterString });
-    fetchDisbursementUtilisation({ filterString });
   }, [filterString]);
 
   React.useEffect(() => {
     fetchFinancialInsightsDisbursementsBarChart({
-      filterString,
+      filterString: chart1FilterString,
       routeParams: {
         componentField:
           componentsGrouping === componentsGroupingOptions[0].value
@@ -788,7 +1154,7 @@ export const GrantImplementationPage: React.FC = () => {
       },
     });
     fetchFinancialInsightsDisbursementsLineChart({
-      filterString,
+      filterString: chart1FilterString,
       routeParams: {
         componentField:
           componentsGrouping === componentsGroupingOptions[0].value
@@ -797,7 +1163,7 @@ export const GrantImplementationPage: React.FC = () => {
       },
     });
     fetchFinancialInsightsDisbursementsTable({
-      filterString,
+      filterString: chart1FilterString,
       routeParams: {
         componentField:
           componentsGrouping === componentsGroupingOptions[0].value
@@ -805,8 +1171,16 @@ export const GrantImplementationPage: React.FC = () => {
             : "activityArea",
       },
     });
+  }, [chart1FilterString, componentsGrouping]);
+
+  React.useEffect(() => {
+    fetchBudgetSankey({ filterString: chart2FilterString });
+    fetchBudgetTable({ filterString: chart2FilterString });
+  }, [chart2FilterString]);
+
+  React.useEffect(() => {
     fetchBudgetTreemap({
-      filterString,
+      filterString: chart2FilterString,
       routeParams: {
         componentField:
           componentsGrouping === componentsGroupingOptions[0].value
@@ -814,8 +1188,17 @@ export const GrantImplementationPage: React.FC = () => {
             : "activityArea",
       },
     });
+  }, [chart2FilterString, componentsGrouping]);
+
+  React.useEffect(() => {
+    fetchBudgetUtilisation({ filterString: chart3FilterString });
+    fetchInCountryAbsorption({ filterString: chart3FilterString });
+    fetchDisbursementUtilisation({ filterString: chart3FilterString });
+  }, [chart3FilterString]);
+
+  React.useEffect(() => {
     fetchExpendituresHeatmap({
-      filterString,
+      filterString: chart4FilterString,
       routeParams: {
         row: "principalRecipientType,principalRecipient",
         column: "component",
@@ -826,7 +1209,7 @@ export const GrantImplementationPage: React.FC = () => {
       },
     });
     fetchExpendituresBarChart({
-      filterString,
+      filterString: chart4FilterString,
       routeParams: {
         componentField:
           componentsGrouping === componentsGroupingOptions[0].value
@@ -835,7 +1218,7 @@ export const GrantImplementationPage: React.FC = () => {
       },
     });
     fetchExpendituresTable({
-      filterString,
+      filterString: chart4FilterString,
       routeParams: {
         componentField:
           componentsGrouping === componentsGroupingOptions[0].value
@@ -843,7 +1226,7 @@ export const GrantImplementationPage: React.FC = () => {
             : "activityArea",
       },
     });
-  }, [filterString, componentsGrouping]);
+  }, [chart4FilterString, componentsGrouping]);
 
   React.useEffect(() => {
     fetchBudgetBreakdown({
@@ -949,8 +1332,44 @@ export const GrantImplementationPage: React.FC = () => {
               dropdownItemsDisbursements[2].value
             }
             empty={disbursementsChartEmpty}
+            filterGroups={filterGroups}
+            appliedFilters={chart1AppliedFilters}
+            toggleFilter={handleToggleChartFilter(1)}
+            removeFilter={handleRemoveChartFilter(1)}
+            handleResetFilters={handleResetChartFilters(1)}
+            appliedFiltersData={chart1AppliedFiltersData}
           >
             {disbursementsChartContent}
+          </DatasetChartBlock>
+        </Box>
+        <FullWidthDivider />
+        <Box
+          padding="50px 0"
+          sx={{
+            "#content": {
+              padding: 0,
+            },
+          }}
+        >
+          <DatasetChartBlock
+            title="Budgets"
+            subtitle={`${totalBudget} total budget.`}
+            dropdownItems={dropdownItemsBudgets}
+            dropdownSelected={budgetsDropdownSelected}
+            handleDropdownChange={(value) => setBudgetsDropdownSelected(value)}
+            loading={loadingBudget}
+            disableCollapse={
+              budgetsDropdownSelected === dropdownItemsBudgets[2].value
+            }
+            empty={budgetsChartEmpty}
+            filterGroups={filterGroups}
+            appliedFilters={chart2AppliedFilters}
+            toggleFilter={handleToggleChartFilter(2)}
+            removeFilter={handleRemoveChartFilter(2)}
+            handleResetFilters={handleResetChartFilters(2)}
+            appliedFiltersData={chart2AppliedFiltersData}
+          >
+            {budgetsChartContent}
           </DatasetChartBlock>
         </Box>
         <FullWidthDivider />
@@ -1046,32 +1465,14 @@ export const GrantImplementationPage: React.FC = () => {
             dropdownItems={[]}
             empty={financialMetricsEmpty}
             loading={loadingFinancialMetrics}
+            filterGroups={filterGroups}
+            appliedFilters={chart3AppliedFilters}
+            toggleFilter={handleToggleChartFilter(3)}
+            removeFilter={handleRemoveChartFilter(3)}
+            handleResetFilters={handleResetChartFilters(3)}
+            appliedFiltersData={chart3AppliedFiltersData}
           >
             {financialMetricsContent}
-          </DatasetChartBlock>
-        </Box>
-        <FullWidthDivider />
-        <Box
-          padding="50px 0"
-          sx={{
-            "#content": {
-              padding: 0,
-            },
-          }}
-        >
-          <DatasetChartBlock
-            title="Budgets"
-            subtitle={`${totalBudget} total budget.`}
-            dropdownItems={dropdownItemsBudgets}
-            dropdownSelected={budgetsDropdownSelected}
-            handleDropdownChange={(value) => setBudgetsDropdownSelected(value)}
-            loading={loadingBudget}
-            disableCollapse={
-              budgetsDropdownSelected === dropdownItemsBudgets[2].value
-            }
-            empty={budgetsChartEmpty}
-          >
-            {budgetsChartContent}
           </DatasetChartBlock>
         </Box>
         <FullWidthDivider />
@@ -1097,6 +1498,12 @@ export const GrantImplementationPage: React.FC = () => {
               dropdownItemsExpenditures[2].value
             }
             empty={expendituresChartEmpty}
+            filterGroups={filterGroups}
+            appliedFilters={chart4AppliedFilters}
+            toggleFilter={handleToggleChartFilter(4)}
+            removeFilter={handleRemoveChartFilter(4)}
+            handleResetFilters={handleResetChartFilters(4)}
+            appliedFiltersData={chart4AppliedFiltersData}
           >
             {expendituresChartContent}
           </DatasetChartBlock>

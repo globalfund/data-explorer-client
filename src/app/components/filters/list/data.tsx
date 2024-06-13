@@ -22,13 +22,17 @@ export interface FilterListItemContentProps {
   withSearch?: boolean;
   forceExpand?: boolean;
   options?: FilterModel[];
+  appliedFiltersData?: AppliedFiltersModel;
   setCollapseAll: (collapseAll: boolean) => void;
+  toggleFilter?: (checked: boolean, value: string, type: string) => void;
 }
 
 export interface FilterListProps {
   collapseAll: boolean;
   groups: FilterGroupModel[];
+  appliedFiltersData?: AppliedFiltersModel;
   setCollapseAll: (collapseAll: boolean) => void;
+  toggleFilter?: (checked: boolean, value: string, type: string) => void;
 }
 
 export const STORY_DATA_VARIANT_1: FilterGroupModel[] = [

@@ -28,6 +28,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
     return (
       <FiltersApplied
         items={props.appliedFilters}
+        removeFilter={props.removeFilter}
         filterGroups={props.filterGroups}
         appliedFilterBgColors={props.appliedFilterBgColors}
       />
@@ -131,11 +132,15 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
           },
         }}
       >
-        <Typography fontSize="12px">Filter the data page-wide.</Typography>
+        {!props.toggleFilter && (
+          <Typography fontSize="12px">Filter the data page-wide.</Typography>
+        )}
         <FilterList
           collapseAll={collapseAll}
           groups={props.filterGroups}
           setCollapseAll={setCollapseAll}
+          toggleFilter={props.toggleFilter}
+          appliedFiltersData={props.appliedFiltersData}
         />
       </Box>
     </Box>

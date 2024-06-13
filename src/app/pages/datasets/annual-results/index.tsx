@@ -1,12 +1,15 @@
 import React from "react";
 import get from "lodash/get";
+import uniq from "lodash/uniq";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import { Table } from "app/components/table";
+import { RowComponent } from "tabulator-tables";
 import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
 import { DatasetPage } from "app/pages/datasets/common/page";
 import { PolylineTree } from "app/components/charts/polyline-tree";
+import { statsOrder } from "app/pages/datasets/annual-results/data";
 import { FilterGroupModel } from "app/components/filters/list/data";
 import { TABLE_VARIATION_9_COLUMNS } from "app/components/table/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -14,13 +17,8 @@ import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { applyResultValueFormula } from "app/utils/applyResultValueFormula";
 import { PolylineTreeDataItem } from "app/components/charts/polyline-tree/data";
 import { ReactComponent as TableIcon } from "app/assets/vectors/Select_Table.svg";
+import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 import { ReactComponent as BarChartIcon } from "app/assets/vectors/Select_BarChart.svg";
-import {
-  statsOrder,
-  geographyGroupingOptions,
-  componentsGroupingOptions,
-} from "app/pages/datasets/annual-results/data";
-import { RowComponent } from "tabulator-tables";
 
 const dropdownItems = [
   { label: "Polyline Tree", value: "Polyline Tree", icon: <BarChartIcon /> },
@@ -52,8 +50,14 @@ const StatComp: React.FC<{
 
 export const AnnualResultsPage: React.FC = () => {
   const [dropdownSelected, setDropdownSelected] = React.useState(
-    dropdownItems[1].value
+    dropdownItems[0].value
   );
+  const [chartAppliedFilters, setChartAppliedFilters] = React.useState<
+    string[]
+  >([]);
+  const [chartAppliedFiltersData, setChartAppliedFiltersData] = React.useState({
+    ...defaultAppliedFilters,
+  });
 
   const annualResultsCycles = useStoreState(
     (state) => get(state.AnnualResultsCycles, "data.data", []) as number[]
@@ -145,6 +149,65 @@ export const AnnualResultsPage: React.FC = () => {
     });
   };
 
+  const handleResetChartFilters = () => {
+    setChartAppliedFiltersData({
+      ...chartAppliedFiltersData,
+      locations: [],
+      components: [],
+    });
+    setChartAppliedFilters([]);
+  };
+
+  const handleToggleChartFilter = (
+    checked: boolean,
+    value: string,
+    type: string
+  ) => {
+    const state = { ...chartAppliedFiltersData };
+    switch (type) {
+      case "geography":
+      case "geographyType":
+      case "geographySubType":
+        if (checked) {
+          state.locations.push(value);
+        } else {
+          state.locations = state.locations.filter((item) => item !== value);
+        }
+        break;
+      case "component":
+        if (checked) {
+          state.components.push(value);
+        } else {
+          state.components = state.components.filter((item) => item !== value);
+        }
+        break;
+      default:
+        break;
+    }
+    setChartAppliedFiltersData(state);
+    setChartAppliedFilters([...state.locations, ...state.components]);
+  };
+
+  const handleRemoveChartFilter = (value: string, types: string[]) => {
+    const state = { ...chartAppliedFiltersData };
+    types.forEach((type) => {
+      switch (type) {
+        case "geography":
+        case "geographyType":
+        case "geographySubType":
+          state.locations = state.locations.filter((item) => item !== value);
+          break;
+        case "component":
+          state.components = state.components.filter((item) => item !== value);
+          break;
+        default:
+          break;
+      }
+    });
+    setChartAppliedFiltersData(state);
+    setChartAppliedFilters([...state.locations, ...state.components]);
+  };
+
   const chartContent = React.useMemo(() => {
     switch (dropdownSelected) {
       case dropdownItems[0].value:
@@ -203,6 +266,23 @@ export const AnnualResultsPage: React.FC = () => {
     return filterString;
   }, [appliedFiltersData]);
 
+  const chartFilterString = React.useMemo(() => {
+    let filterString = "";
+    if (
+      [...appliedFiltersData.locations, ...chartAppliedFiltersData.locations]
+        .length > 0
+    ) {
+      filterString += `geographies=${encodeURIComponent(uniq([...appliedFiltersData.locations, ...chartAppliedFiltersData.locations]).join(","))}`;
+    }
+    if (
+      [...appliedFiltersData.components, ...chartAppliedFiltersData.components]
+        .length > 0
+    ) {
+      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(uniq([...appliedFiltersData.components, ...chartAppliedFiltersData.components]).join(","))}`;
+    }
+    return filterString;
+  }, [appliedFiltersData, chartAppliedFiltersData]);
+
   const toolbarRightContent = React.useMemo(() => {
     return (
       <Box gap="20px" display="flex" flexDirection="row" alignItems="center">
@@ -230,14 +310,17 @@ export const AnnualResultsPage: React.FC = () => {
     fetchStats({
       filterString: `${filterString}${filterString.length ? "&" : ""}cycle=${yearSelected}`,
     });
+  }, [filterString, yearSelected]);
+
+  React.useEffect(() => {
     fetchPolyline({
-      filterString,
+      filterString: chartFilterString,
       routeParams: {
         cycle: yearSelected,
       },
     });
-    fetchTable({ filterString });
-  }, [filterString, yearSelected]);
+    fetchTable({ filterString: chartFilterString });
+  }, [chartFilterString, yearSelected]);
 
   return (
     <DatasetPage
@@ -293,6 +376,12 @@ export const AnnualResultsPage: React.FC = () => {
             handleDropdownChange={handleSelectionChange}
             disableCollapse={dropdownSelected === dropdownItems[1].value}
             empty={chartEmpty}
+            filterGroups={filterGroups}
+            toggleFilter={handleToggleChartFilter}
+            removeFilter={handleRemoveChartFilter}
+            handleResetFilters={handleResetChartFilters}
+            appliedFilters={chartAppliedFilters}
+            appliedFiltersData={chartAppliedFiltersData}
           >
             {chartContent}
           </DatasetChartBlock>

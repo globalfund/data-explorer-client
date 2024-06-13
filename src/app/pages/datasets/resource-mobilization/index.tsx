@@ -1,5 +1,6 @@
 import React from "react";
 import get from "lodash/get";
+import uniq from "lodash/uniq";
 import sumBy from "lodash/sumBy";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -15,6 +16,7 @@ import { SunburstDataItem } from "app/components/charts/sunburst/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { ReactComponent as TableIcon } from "app/assets/vectors/Select_Table.svg";
+import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 import { ReactComponent as BarChartIcon } from "app/assets/vectors/Select_BarChart.svg";
 import { ExpandableHorizontalBar } from "app/components/charts/expandable-horizontal-bar";
 import { ReactComponent as SunburstChartIcon } from "app/assets/vectors/Select_SunburstChart.svg";
@@ -38,6 +40,12 @@ export const ResourceMobilizationPage: React.FC = () => {
   const [dropdownSelected, setDropdownSelected] = React.useState(
     dropdownItems[0].value
   );
+  const [chartAppliedFilters, setChartAppliedFilters] = React.useState<
+    string[]
+  >([]);
+  const [chartAppliedFiltersData, setChartAppliedFiltersData] = React.useState({
+    ...defaultAppliedFilters,
+  });
 
   const dataStats = useStoreState(
     (state) =>
@@ -140,6 +148,83 @@ export const ResourceMobilizationPage: React.FC = () => {
     });
   };
 
+  const handleResetChartFilters = () => {
+    setChartAppliedFiltersData({
+      ...chartAppliedFiltersData,
+      donorTypes: [],
+      donors: [],
+      replenishmentPeriods: [],
+    });
+    setChartAppliedFilters([]);
+  };
+
+  const handleToggleChartFilter = (
+    checked: boolean,
+    value: string,
+    type: string
+  ) => {
+    const state = { ...chartAppliedFiltersData };
+    switch (type) {
+      case "donor":
+        if (checked) {
+          state.donors.push(value);
+        } else {
+          state.donors = state.donors.filter((item) => item !== value);
+        }
+        break;
+      case "donorType":
+        if (checked) {
+          state.donorTypes.push(value);
+        } else {
+          state.donorTypes = state.donorTypes.filter((item) => item !== value);
+        }
+        break;
+      case "replenishmentPeriod":
+        if (checked) {
+          state.replenishmentPeriods.push(value);
+        } else {
+          state.replenishmentPeriods = state.replenishmentPeriods.filter(
+            (item) => item !== value
+          );
+        }
+        break;
+      default:
+        break;
+    }
+    setChartAppliedFiltersData(state);
+    setChartAppliedFilters([
+      ...state.donorTypes,
+      ...state.donors,
+      ...state.replenishmentPeriods,
+    ]);
+  };
+
+  const handleRemoveChartFilter = (value: string, types: string[]) => {
+    const state = { ...chartAppliedFiltersData };
+    types.forEach((type) => {
+      switch (type) {
+        case "donor":
+        case "donorType":
+          state.donors = state.donors.filter((item) => item !== value);
+          state.donorTypes = state.donorTypes.filter((item) => item !== value);
+          break;
+        case "replenishmentPeriod":
+          state.replenishmentPeriods = state.replenishmentPeriods.filter(
+            (item) => item !== value
+          );
+          break;
+        default:
+          break;
+      }
+    });
+    setChartAppliedFiltersData(state);
+    setChartAppliedFilters([
+      ...state.donorTypes,
+      ...state.donors,
+      ...state.replenishmentPeriods,
+    ]);
+  };
+
   const chartContent = React.useMemo(() => {
     switch (dropdownSelected) {
       case dropdownItems[0].value:
@@ -201,17 +286,45 @@ export const ResourceMobilizationPage: React.FC = () => {
     return filterString;
   }, [appliedFiltersData]);
 
+  const chartFilterString = React.useMemo(() => {
+    let filterString = "";
+    if (
+      [...appliedFiltersData.donorTypes, ...chartAppliedFiltersData.donorTypes]
+        .length > 0
+    ) {
+      filterString += `donorTypes=${encodeURIComponent(uniq([...appliedFiltersData.donorTypes, ...chartAppliedFiltersData.donorTypes]).join(","))}`;
+    }
+    if (
+      [...appliedFiltersData.donors, ...chartAppliedFiltersData.donors].length >
+      0
+    ) {
+      filterString += `${filterString.length > 0 ? "&" : ""}donors=${encodeURIComponent(uniq([...appliedFiltersData.donors, ...chartAppliedFiltersData.donors]).join(","))}`;
+    }
+    if (
+      [
+        ...appliedFiltersData.replenishmentPeriods,
+        ...chartAppliedFiltersData.replenishmentPeriods,
+      ].length > 0
+    ) {
+      filterString += `${filterString.length > 0 ? "&" : ""}periods=${encodeURIComponent(uniq([...appliedFiltersData.replenishmentPeriods, ...chartAppliedFiltersData.replenishmentPeriods]).join(","))}`;
+    }
+    return filterString;
+  }, [appliedFiltersData, chartAppliedFiltersData]);
+
   React.useEffect(() => {
     fetchStats({ filterString });
-    fetchBarChart({ filterString });
+  }, [filterString]);
+
+  React.useEffect(() => {
+    fetchBarChart({ filterString: chartFilterString });
     fetchSunburst({
-      filterString,
+      filterString: chartFilterString,
       routeParams: {
         type: "pledge",
       },
     });
-    fetchTable({ filterString });
-  }, [filterString]);
+    fetchTable({ filterString: chartFilterString });
+  }, [chartFilterString]);
 
   return (
     <DatasetPage
@@ -381,6 +494,12 @@ export const ResourceMobilizationPage: React.FC = () => {
             disableCollapse={dropdownSelected === dropdownItems[2].value}
             loading={dataChartLoading}
             empty={chartEmpty}
+            filterGroups={filterGroups}
+            appliedFilters={chartAppliedFilters}
+            toggleFilter={handleToggleChartFilter}
+            removeFilter={handleRemoveChartFilter}
+            handleResetFilters={handleResetChartFilters}
+            appliedFiltersData={chartAppliedFiltersData}
           >
             {chartContent}
           </DatasetChartBlock>

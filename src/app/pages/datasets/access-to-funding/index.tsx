@@ -1,10 +1,10 @@
 import React from "react";
 import get from "lodash/get";
+import uniq from "lodash/uniq";
 import Box from "@mui/material/Box";
 import { appColors } from "app/theme";
 import Grid from "@mui/material/Grid";
 import Tooltip from "@mui/material/Tooltip";
-import Divider from "@mui/material/Divider";
 import { Table } from "app/components/table";
 import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
@@ -20,8 +20,8 @@ import { getRange } from "app/utils/getFinancialValueWithMetricPrefix";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { BarSeriesChartDataItem } from "app/components/charts/bar-series/data";
+import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 import {
-  BOXES,
   FullWidthDivider,
   dropdownItemsAllocations,
 } from "app/pages/datasets/access-to-funding/data";
@@ -35,6 +35,27 @@ export const AccessToFundingPage: React.FC = () => {
   const [dropdownSelected, setDropdownSelected] = React.useState(
     dropdownItemsAllocations[0].value
   );
+  const [chart1AppliedFilters, setChart1AppliedFilters] = React.useState<
+    string[]
+  >([]);
+  const [chart1AppliedFiltersData, setChart1AppliedFiltersData] =
+    React.useState({
+      ...defaultAppliedFilters,
+    });
+  const [chart2AppliedFilters, setChart2AppliedFilters] = React.useState<
+    string[]
+  >([]);
+  const [chart2AppliedFiltersData, setChart2AppliedFiltersData] =
+    React.useState({
+      ...defaultAppliedFilters,
+    });
+  const [chart3AppliedFilters, setChart3AppliedFilters] = React.useState<
+    string[]
+  >([]);
+  const [chart3AppliedFiltersData, setChart3AppliedFiltersData] =
+    React.useState({
+      ...defaultAppliedFilters,
+    });
 
   const dataStats = useStoreState(
     (state) =>
@@ -72,6 +93,9 @@ export const AccessToFundingPage: React.FC = () => {
   );
   const fetchAllocationsBarSeries = useStoreActions(
     (actions) => actions.AccessToFundingAllocationBarSeries.fetch
+  );
+  const loadingAllocationsBarSeries = useStoreState(
+    (state) => state.AccessToFundingAllocationBarSeries.loading
   );
   const dataAllocationsSunburst = useStoreState((state) =>
     get(state.AccessToFundingAllocationSunburst, "data.data", [])
@@ -171,6 +195,113 @@ export const AccessToFundingPage: React.FC = () => {
     });
   };
 
+  const handleResetChartFilters = (index: number) => () => {
+    switch (index) {
+      case 1:
+        setChart1AppliedFiltersData({
+          ...chart1AppliedFiltersData,
+          locations: [],
+          components: [],
+        });
+        setChart1AppliedFilters([]);
+        break;
+      case 2:
+        setChart2AppliedFiltersData({
+          ...chart2AppliedFiltersData,
+          locations: [],
+          components: [],
+        });
+        setChart2AppliedFilters([]);
+        break;
+      case 3:
+        setChart3AppliedFiltersData({
+          ...chart3AppliedFiltersData,
+          locations: [],
+          components: [],
+        });
+        setChart3AppliedFilters([]);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleToggleChartFilter =
+    (index: number) => (checked: boolean, value: string, type: string) => {
+      let state = { ...chart1AppliedFiltersData };
+      let action1 = setChart1AppliedFiltersData;
+      let action2 = setChart1AppliedFilters;
+      if (index === 2) {
+        state = { ...chart2AppliedFiltersData };
+        action1 = setChart2AppliedFiltersData;
+        action2 = setChart2AppliedFilters;
+      }
+      if (index === 3) {
+        state = { ...chart3AppliedFiltersData };
+        action1 = setChart3AppliedFiltersData;
+        action2 = setChart3AppliedFilters;
+      }
+      switch (type) {
+        case "geography":
+        case "geographyType":
+        case "geographySubType":
+          if (checked) {
+            state.locations.push(value);
+          } else {
+            state.locations = state.locations.filter((item) => item !== value);
+          }
+          break;
+        case "component":
+          if (checked) {
+            state.components.push(value);
+          } else {
+            state.components = state.components.filter(
+              (item) => item !== value
+            );
+          }
+          break;
+        default:
+          break;
+      }
+      action1(state);
+      action2([...state.locations, ...state.components]);
+    };
+
+  const handleRemoveChartFilter =
+    (index: number) => (value: string, types: string[]) => {
+      let state = { ...chart1AppliedFiltersData };
+      let action1 = setChart1AppliedFiltersData;
+      let action2 = setChart1AppliedFilters;
+      if (index === 2) {
+        state = { ...chart2AppliedFiltersData };
+        action1 = setChart2AppliedFiltersData;
+        action2 = setChart2AppliedFilters;
+      }
+      if (index === 3) {
+        state = { ...chart3AppliedFiltersData };
+        action1 = setChart3AppliedFiltersData;
+        action2 = setChart3AppliedFilters;
+      }
+      types.forEach((type) => {
+        switch (type) {
+          case "geography":
+          case "geographyType":
+          case "geographySubType":
+            state.locations = state.locations.filter((item) => item !== value);
+            break;
+          case "component":
+            state.components = state.components.filter(
+              (item) => item !== value
+            );
+            break;
+          default:
+            break;
+        }
+      });
+      action1(state);
+      action2([...state.locations, ...state.components]);
+    };
+
   const chartContent = React.useMemo(() => {
     switch (dropdownSelected) {
       case dropdownItemsAllocations[0].value:
@@ -234,6 +365,57 @@ export const AccessToFundingPage: React.FC = () => {
     return filterString;
   }, [appliedFiltersData]);
 
+  const chart1FilterString = React.useMemo(() => {
+    let filterString = "";
+    if (
+      [...appliedFiltersData.locations, ...chart1AppliedFiltersData.locations]
+        .length > 0
+    ) {
+      filterString += `geographies=${encodeURIComponent(uniq([...appliedFiltersData.locations, ...chart1AppliedFiltersData.locations]).join(","))}`;
+    }
+    if (
+      [...appliedFiltersData.components, ...chart1AppliedFiltersData.components]
+        .length > 0
+    ) {
+      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(uniq([...appliedFiltersData.components, ...chart1AppliedFiltersData.components]).join(","))}`;
+    }
+    return filterString;
+  }, [appliedFiltersData, chart1AppliedFiltersData]);
+
+  const chart2FilterString = React.useMemo(() => {
+    let filterString = "";
+    if (
+      [...appliedFiltersData.locations, ...chart2AppliedFiltersData.locations]
+        .length > 0
+    ) {
+      filterString += `geographies=${encodeURIComponent(uniq([...appliedFiltersData.locations, ...chart2AppliedFiltersData.locations]).join(","))}`;
+    }
+    if (
+      [...appliedFiltersData.components, ...chart2AppliedFiltersData.components]
+        .length > 0
+    ) {
+      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(uniq([...appliedFiltersData.components, ...chart2AppliedFiltersData.components]).join(","))}`;
+    }
+    return filterString;
+  }, [appliedFiltersData, chart2AppliedFiltersData]);
+
+  const chart3FilterString = React.useMemo(() => {
+    let filterString = "";
+    if (
+      [...appliedFiltersData.locations, ...chart3AppliedFiltersData.locations]
+        .length > 0
+    ) {
+      filterString += `geographies=${encodeURIComponent(uniq([...appliedFiltersData.locations, ...chart3AppliedFiltersData.locations]).join(","))}`;
+    }
+    if (
+      [...appliedFiltersData.components, ...chart3AppliedFiltersData.components]
+        .length > 0
+    ) {
+      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(uniq([...appliedFiltersData.components, ...chart3AppliedFiltersData.components]).join(","))}`;
+    }
+    return filterString;
+  }, [appliedFiltersData, chart3AppliedFiltersData]);
+
   const range = React.useMemo(() => {
     const values: {
       value: number;
@@ -247,12 +429,7 @@ export const AccessToFundingPage: React.FC = () => {
   }, [dataAllocationsBarSeries]);
 
   React.useEffect(() => {
-    fetchEligibilityTable({ filterString });
     fetchAllocationsBarSeries({ filterString });
-    fetchAllocationsSunburst({ filterString });
-    fetchAllocationsTreemap({ filterString });
-    fetchAllocationsTable({ filterString });
-    fetchFundingRequestsTable({ filterString });
   }, [filterString]);
 
   React.useEffect(() => {
@@ -262,7 +439,21 @@ export const AccessToFundingPage: React.FC = () => {
         year: eligibilityYear,
       },
     });
-  }, [eligibilityYear, filterString]);
+  }, [filterString, eligibilityYear]);
+
+  React.useEffect(() => {
+    fetchEligibilityTable({ filterString: chart1FilterString });
+  }, [chart1FilterString]);
+
+  React.useEffect(() => {
+    fetchAllocationsSunburst({ filterString: chart2FilterString });
+    fetchAllocationsTreemap({ filterString: chart2FilterString });
+    fetchAllocationsTable({ filterString: chart2FilterString });
+  }, [chart2FilterString]);
+
+  React.useEffect(() => {
+    fetchFundingRequestsTable({ filterString: chart3FilterString });
+  }, [chart3FilterString]);
 
   return (
     <DatasetPage
@@ -357,6 +548,12 @@ export const AccessToFundingPage: React.FC = () => {
             disableCollapse
             loading={loadingEligibilityTable}
             empty={dataEligibilityTable.length === 0}
+            filterGroups={filterGroups}
+            appliedFilters={chart1AppliedFilters}
+            toggleFilter={handleToggleChartFilter(1)}
+            removeFilter={handleRemoveChartFilter(1)}
+            handleResetFilters={handleResetChartFilters(1)}
+            appliedFiltersData={chart1AppliedFiltersData}
           >
             <Box
               gap="20px"
@@ -381,6 +578,7 @@ export const AccessToFundingPage: React.FC = () => {
                       "#rectangle": {
                         width: "11px",
                         height: "11px",
+                        borderRadius: "2px",
                       },
                     },
                   },
@@ -482,33 +680,49 @@ export const AccessToFundingPage: React.FC = () => {
             Accompanied by the Component Breakdown.
           </Typography>
           <Box marginTop="25px" position="relative">
-            <Typography
-              left="10px"
-              bottom="40px"
-              fontSize="10px"
-              fontWeight="700"
-              position="absolute"
-              sx={{
-                transformOrigin: "left",
-                transform: "rotate(-90deg)",
-              }}
-            >
-              Allocated Amount (USD {range.abbr})
-            </Typography>
-            <BarSeriesChart
-              data={dataAllocationsBarSeries}
-              keys={keysAllocationsBarSeries}
-            />
-            <Info
-              htmlColor="#373D43"
-              sx={{
-                top: "4px",
-                width: "14px",
-                height: "14px",
-                right: "-25px",
-                position: "absolute",
-              }}
-            />
+            {!loadingAllocationsBarSeries ? (
+              <React.Fragment>
+                <Typography
+                  left="10px"
+                  bottom="40px"
+                  fontSize="10px"
+                  fontWeight="700"
+                  position="absolute"
+                  sx={{
+                    transformOrigin: "left",
+                    transform: "rotate(-90deg)",
+                  }}
+                >
+                  Allocated Amount (USD {range.abbr})
+                </Typography>
+                <BarSeriesChart
+                  data={dataAllocationsBarSeries}
+                  keys={keysAllocationsBarSeries}
+                />
+                <Info
+                  htmlColor="#373D43"
+                  sx={{
+                    top: "4px",
+                    width: "14px",
+                    height: "14px",
+                    right: "-25px",
+                    position: "absolute",
+                  }}
+                />
+              </React.Fragment>
+            ) : (
+              <Box
+                sx={{
+                  width: "100%",
+                  height: "300px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <CircularProgress />
+              </Box>
+            )}
           </Box>
         </Box>
         <FullWidthDivider />
@@ -531,6 +745,12 @@ export const AccessToFundingPage: React.FC = () => {
             disableCollapse={
               dropdownSelected === dropdownItemsAllocations[2].value
             }
+            filterGroups={filterGroups}
+            appliedFilters={chart2AppliedFilters}
+            toggleFilter={handleToggleChartFilter(2)}
+            removeFilter={handleRemoveChartFilter(2)}
+            handleResetFilters={handleResetChartFilters(2)}
+            appliedFiltersData={chart2AppliedFiltersData}
           >
             {chartContent}
           </DatasetChartBlock>
@@ -550,6 +770,13 @@ export const AccessToFundingPage: React.FC = () => {
             disableCollapse
             dropdownItems={[]}
             loading={loadingFundingRequestsTable}
+            empty={dataFundingRequestsTable.length === 0}
+            filterGroups={filterGroups}
+            appliedFilters={chart3AppliedFilters}
+            toggleFilter={handleToggleChartFilter(3)}
+            removeFilter={handleRemoveChartFilter(3)}
+            handleResetFilters={handleResetChartFilters(3)}
+            appliedFiltersData={chart3AppliedFiltersData}
           >
             <Table
               dataTree

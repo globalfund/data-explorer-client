@@ -6,10 +6,12 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { appColors } from "app/theme";
 import Divider from "@mui/material/Divider";
+import Tooltip from "@mui/material/Tooltip";
+import { Table } from "app/components/table";
 import { useParams } from "react-router-dom";
 import { CYCLES } from "app/pages/home/data";
 import Typography from "@mui/material/Typography";
-import { Heatmap } from "app/components/charts/heatmap";
+import Info from "@mui/icons-material/InfoOutlined";
 import { ChartBlock } from "app/components/chart-block";
 import { RadialChart } from "app/components/charts/radial";
 import useUpdateEffect from "react-use/lib/useUpdateEffect";
@@ -18,16 +20,13 @@ import { TableContainer } from "app/components/table-container";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { RadialChartDataItem } from "app/components/charts/radial/data";
 import {
-  HeatmapDataItem,
-  getEligibilityColor,
-} from "app/components/charts/heatmap/data";
-import {
   getRange,
   getFinancialValueWithMetricPrefix,
 } from "app/utils/getFinancialValueWithMetricPrefix";
 import {
   TABLE_VARIATION_2_COLUMNS,
   TABLE_VARIATION_6_COLUMNS,
+  TABLE_VARIATION_10_COLUMNS as ELIGIBILITY_TABLE_COLUMNS,
 } from "app/components/table/data";
 
 export const AccessToFunding: React.FC = () => {
@@ -73,13 +72,8 @@ export const AccessToFunding: React.FC = () => {
       0
     ),
   }));
-  const dataEligibilityHeatmap = useStoreState(
-    (state) =>
-      get(
-        state.GeographyEligibilityHeatmap,
-        "data.data",
-        []
-      ) as HeatmapDataItem[]
+  const dataEligibilityTable = useStoreState((state) =>
+    get(state.GeographyEligibilityTable, "data.data", [])
   );
   const dataDocumentsTable = useStoreState((state) =>
     get(state.GeographyDocumentsTable, "data.data", [])
@@ -220,7 +214,7 @@ export const AccessToFunding: React.FC = () => {
   const showAllocationRadialChart = dataAllocationsRadialChart.length > 0;
   const showFundingRequestsTable =
     dataFundingRequestsTable._children.length > 0;
-  const showEligibilityHeatmap = dataEligibilityHeatmap.length > 0;
+  const showEligibilityHeatmap = dataEligibilityTable.length > 0;
   const showDocumentsTable = dataDocumentsTable.length > 0;
 
   return (
@@ -354,66 +348,117 @@ export const AccessToFunding: React.FC = () => {
       >
         <Box height="32px" />
         <Box
+          gap="20px"
           width="100%"
           display="flex"
+          marginBottom="20px"
           flexDirection="row"
-          justifyContent="space-between"
-        >
-          <Box gap="12px" display="flex" flexDirection="row">
-            <Typography variant="overline">Burder disease</Typography>
-            <Typography variant="overline">
-              <b>H</b> - High
-            </Typography>
-            <Typography variant="overline">
-              <b>M</b> - Medium
-            </Typography>
-            <Typography variant="overline">
-              <b>L</b> - Low
-            </Typography>
-          </Box>
-          <Box
-            gap="12px"
-            display="flex"
-            flexDirection="row"
-            alignItems="center"
-            sx={{
+          justifyContent="flex-end"
+          sx={{
+            "> div": {
+              display: "flex",
+              flexDirection: "column",
               "> div": {
-                gap: "4px",
+                gap: "10px",
                 display: "flex",
                 flexDirection: "row",
-                alignItems: "center",
                 "> div": {
-                  width: "8px",
-                  height: "8px",
+                  gap: "5px",
+                  display: "flex",
+                  alignItems: "center",
+                  flexDirection: "row",
+                  "#rectangle": {
+                    width: "11px",
+                    height: "11px",
+                    borderRadius: "2px",
+                  },
                 },
               },
-            }}
-          >
+            },
+          }}
+        >
+          <Box>
+            <Typography fontSize="12px" fontWeight="700">
+              Disease Burden
+            </Typography>
             <Box>
-              <Box bgcolor={appColors.HEATMAP.CHART_ELIGIBILITY_COLORS[0]} />
-              <Typography variant="overline">Eligible</Typography>
-            </Box>
-            <Box>
-              <Box bgcolor={appColors.HEATMAP.CHART_ELIGIBILITY_COLORS[1]} />
-              <Typography variant="overline">Transition</Typography>
-            </Box>
-            <Box>
-              <Box bgcolor={appColors.HEATMAP.CHART_ELIGIBILITY_COLORS[2]} />
-              <Typography variant="overline">Not Eligible</Typography>
+              <Box>
+                <Box
+                  id="rectangle"
+                  bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[0]}
+                />
+                <Typography fontSize="12px">Extreme</Typography>
+              </Box>
+              <Box>
+                <Box
+                  id="rectangle"
+                  bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[1]}
+                />
+                <Typography fontSize="12px">Severe</Typography>
+              </Box>
+              <Box>
+                <Box
+                  id="rectangle"
+                  bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[2]}
+                />
+                <Typography fontSize="12px">High</Typography>
+              </Box>
+              <Box>
+                <Box
+                  id="rectangle"
+                  bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[3]}
+                />
+                <Typography fontSize="12px">Moderate</Typography>
+              </Box>
+              <Box>
+                <Box
+                  id="rectangle"
+                  bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[4]}
+                />
+                <Typography fontSize="12px">Not High</Typography>
+              </Box>
+              <Box>
+                <Box
+                  id="rectangle"
+                  bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[5]}
+                />
+                <Typography fontSize="12px">Low</Typography>
+              </Box>
+              <Box>
+                <Box id="rectangle" bgcolor="#FFFFFF" border="1px solid #ccc" />
+                <Typography fontSize="12px">NA</Typography>
+              </Box>
             </Box>
           </Box>
+          <Box>
+            <Typography fontSize="12px" fontWeight="700">
+              Eligibility Status
+            </Typography>
+            <Box>
+              <Box>
+                <Box id="rectangle" bgcolor="#013E77" />
+                <Typography fontSize="12px">Eligible</Typography>
+              </Box>
+              <Box>
+                <Box id="rectangle" bgcolor="#00B5AE" />
+                <Typography fontSize="12px">Transition Funding</Typography>
+              </Box>
+              <Box>
+                <Box id="rectangle" bgcolor="#D9D9D9" />
+                <Typography fontSize="12px">Not Eligible</Typography>
+              </Box>
+            </Box>
+          </Box>
+          <Tooltip title="">
+            <Info fontSize="small" />
+          </Tooltip>
         </Box>
-        <Heatmap
-          noLegend
-          noItemOrdering
-          itemWidth={42}
-          valueType="amount"
-          data={dataEligibilityHeatmap}
-          hoveredLegend={null}
-          columnCategory="year"
-          rowCategory="component"
-          contentProp="diseaseBurden"
-          getItemColor={getEligibilityColor}
+        <Table
+          dataTree
+          dataTreeStartExpanded
+          id="eligibility-table"
+          data={dataEligibilityTable}
+          columns={ELIGIBILITY_TABLE_COLUMNS}
         />
       </ChartBlock>
       {showEligibilityHeatmap && fullWidthDivider}

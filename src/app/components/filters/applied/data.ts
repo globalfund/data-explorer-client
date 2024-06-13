@@ -7,4 +7,5 @@ export interface FiltersAppliedProps {
     normal: string;
     hover: string;
   };
+  removeFilter?: (value: string, types: string[]) => void;
 }

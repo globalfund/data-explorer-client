@@ -13,10 +13,17 @@ export const FiltersApplied: React.FC<FiltersAppliedProps> = (
   );
 
   const handleRemoveFilter = (filter: string) => () => {
-    appliedFiltersActions.removeFilter({
-      value: filter,
-      types: props.filterGroups.map((group) => group.id),
-    });
+    if (props.removeFilter) {
+      props.removeFilter(
+        filter,
+        props.filterGroups.map((group) => group.id)
+      );
+    } else {
+      appliedFiltersActions.removeFilter({
+        value: filter,
+        types: props.filterGroups.map((group) => group.id),
+      });
+    }
   };
 
   return (

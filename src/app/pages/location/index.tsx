@@ -107,22 +107,17 @@ export const Location: React.FC = () => {
   const clearFundingRequestsTable = useStoreActions(
     (actions) => actions.GeographyFundingRequestsTable.clear
   );
-  const dataEligibilityHeatmap = useStoreState(
-    (state) =>
-      get(
-        state.GeographyEligibilityHeatmap,
-        "data.data",
-        []
-      ) as HeatmapDataItem[]
+  const dataEligibilityTable = useStoreState((state) =>
+    get(state.GeographyEligibilityTable, "data.data", [])
   );
-  const fetchEligibilityHeatmap = useStoreActions(
-    (actions) => actions.GeographyEligibilityHeatmap.fetch
+  const fetchEligibilityTable = useStoreActions(
+    (actions) => actions.GeographyEligibilityTable.fetch
   );
-  const loadingEligibilityHeatmap = useStoreState(
-    (state) => state.GeographyEligibilityHeatmap.loading
+  const loadingEligibilityTable = useStoreState(
+    (state) => state.GeographyEligibilityTable.loading
   );
-  const clearEligibilityHeatmap = useStoreActions(
-    (actions) => actions.GeographyEligibilityHeatmap.clear
+  const clearEligibilityTable = useStoreActions(
+    (actions) => actions.GeographyEligibilityTable.clear
   );
   const dataDocumentsTable = useStoreState((state) =>
     get(state.GeographyDocumentsTable, "data.data", [])
@@ -256,7 +251,7 @@ export const Location: React.FC = () => {
         return (
           loadingAllocationsRadialChart ||
           loadingFundingRequestsTable ||
-          loadingEligibilityHeatmap ||
+          loadingEligibilityTable ||
           loadingDocumentsTable
         );
       case LOCATION_TABS[3].link:
@@ -283,7 +278,7 @@ export const Location: React.FC = () => {
     loadingRMBarChart,
     loadingAllocationsRadialChart,
     loadingFundingRequestsTable,
-    loadingEligibilityHeatmap,
+    loadingEligibilityTable,
     loadingDocumentsTable,
     loadingDisbursementsLineChart,
     loadingBudgetSankeyChart,
@@ -327,7 +322,7 @@ export const Location: React.FC = () => {
     if (
       dataAllocationsRadialChart.length === 0 &&
       dataFundingRequestsTable._children.length === 0 &&
-      dataEligibilityHeatmap.length === 0 &&
+      dataEligibilityTable.length === 0 &&
       dataDocumentsTable.length === 0
     ) {
       remove(newTabs, (tab) => tab.label === LOCATION_TABS[2].label);
@@ -353,8 +348,8 @@ export const Location: React.FC = () => {
     dataGrantsTable,
     dataResultsTable,
     dataDocumentsTable,
+    dataEligibilityTable,
     dataBudgetSankeyChart,
-    dataEligibilityHeatmap,
     dataExpendituresHeatmap,
     dataFundingRequestsTable,
     dataResultsDocumentsTable,
@@ -387,10 +382,8 @@ export const Location: React.FC = () => {
           code: params.id,
         },
       });
-      fetchEligibilityHeatmap({
-        routeParams: {
-          code: params.id,
-        },
+      fetchEligibilityTable({
+        filterString: `geographies=${params.id}`,
       });
       fetchDisbursementsLineChart({
         filterString: `geographies=${params.id}`,
@@ -459,7 +452,7 @@ export const Location: React.FC = () => {
       clearRMBarChart();
       clearAllocationsRadialChart();
       clearFundingRequestsTable();
-      clearEligibilityHeatmap();
+      clearEligibilityTable();
       clearDocumentsTable();
       clearDisbursementsLineChart();
       clearBudgetSanketChart();

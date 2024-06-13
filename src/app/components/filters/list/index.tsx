@@ -61,15 +61,23 @@ const FilterListItemContent: React.FC<FilterListItemContentProps> = (
   }, [props.id, props.level, props.options]);
 
   const appliedFilters = React.useMemo(() => {
-    return getAppliedFilters(appliedFiltersData, props.id, props.level);
-  }, [appliedFiltersData, props.id, props.level]);
+    return getAppliedFilters(
+      props.appliedFiltersData ?? appliedFiltersData,
+      props.id,
+      props.level
+    );
+  }, [appliedFiltersData, props.appliedFiltersData, props.id, props.level]);
 
   const onCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    appliedFiltersActions.toggleFilter({
-      checked: e.target.checked,
-      value: e.target.name,
-      type: id,
-    });
+    if (props.toggleFilter) {
+      props.toggleFilter(e.target.checked, e.target.name, id);
+    } else {
+      appliedFiltersActions.toggleFilter({
+        checked: e.target.checked,
+        value: e.target.name,
+        type: id,
+      });
+    }
   };
 
   const handleChange =
@@ -258,7 +266,9 @@ const FilterListItemContent: React.FC<FilterListItemContentProps> = (
                 level={props.level + 1}
                 forceExpand={value.length > 0}
                 collapseAll={props.collapseAll}
+                toggleFilter={props.toggleFilter}
                 setCollapseAll={props.setCollapseAll}
+                appliedFiltersData={props.appliedFiltersData}
               />
             </AccordionDetails>
           </Accordion>
@@ -304,7 +314,9 @@ export const FilterList: React.FC<FilterListProps> = (
               level={0}
               withSearch
               collapseAll={props.collapseAll}
+              toggleFilter={props.toggleFilter}
               setCollapseAll={props.setCollapseAll}
+              appliedFiltersData={props.appliedFiltersData}
             />
           </AccordionDetails>
         </Accordion>

@@ -170,6 +170,7 @@ export interface StoreModel {
   GeographyAllocationsRadialChart: ApiCallModel;
   GeographyFundingRequestsTable: ApiCallModel;
   GeographyEligibilityHeatmap: ApiCallModel;
+  GeographyEligibilityTable: ApiCallModel;
   GeographyDocumentsTable: ApiCallModel;
   GeographyDisbursementsLineChart: ApiCallModel;
   GeographyBudgetSankeyChart: ApiCallModel;
