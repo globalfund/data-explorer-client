@@ -56,6 +56,17 @@ export const HeaderMenu: React.FC = () => {
     setSelectedSubPage(null);
   };
 
+  const onScroll = () => {
+    setAnchorEl(null);
+  };
+
+  React.useEffect(() => {
+    window.addEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, []);
+
   return (
     <Box
       id="header-menu-tabs-container"
@@ -85,6 +96,7 @@ export const HeaderMenu: React.FC = () => {
         </HeaderMenuButton>
       ))}
       <Popover
+        disableScrollLock
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}
         onClose={handleClose}

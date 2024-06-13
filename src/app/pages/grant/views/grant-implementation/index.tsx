@@ -196,6 +196,7 @@ export const GrantImplementation: React.FC = () => {
   return (
     <Box gap="24px" display="flex" flexDirection="column">
       <ChartBlock
+        id="radial-chart"
         title={disbursementsTotal}
         subtitle="Disbursed"
         empty={!showRadialChart}
@@ -309,6 +310,7 @@ export const GrantImplementation: React.FC = () => {
       <Divider sx={{ borderColor: "#000" }} />
       {fullWidthDivider}
       <ChartBlock
+        id="disbursements"
         title="Disbursements"
         subtitle="Overtime"
         empty={!showDisbursementsBarChart}
@@ -321,6 +323,7 @@ export const GrantImplementation: React.FC = () => {
       </ChartBlock>
       {showDisbursementsBarChart && fullWidthDivider}
       <ChartBlock
+        id="budget"
         title="Budget"
         empty={!showBudgetSankeyChart}
         subtitle="Investments and Modules"
@@ -354,6 +357,7 @@ export const GrantImplementation: React.FC = () => {
       {showBudgetSankeyChart && showExpendituresHeatmap && fullWidthDivider}
       <ChartBlock
         cycles={CYCLES}
+        id="expenditures"
         subtitle="To date"
         title="Expenditures"
         empty={!showExpendituresHeatmap}

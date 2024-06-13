@@ -1321,6 +1321,7 @@ export const GrantImplementationPage: React.FC = () => {
           }}
         >
           <DatasetChartBlock
+            id="disbursements"
             title="Disbursements"
             subtitle="Disbursement transactions for all grants across the porfolio."
             dropdownItems={dropdownItemsDisbursements}
@@ -1352,6 +1353,7 @@ export const GrantImplementationPage: React.FC = () => {
           }}
         >
           <DatasetChartBlock
+            id="budgets"
             title="Budgets"
             subtitle={`${totalBudget} total budget.`}
             dropdownItems={dropdownItemsBudgets}
@@ -1460,6 +1462,7 @@ export const GrantImplementationPage: React.FC = () => {
           }}
         >
           <DatasetChartBlock
+            id="financial-metrics"
             title="Financial Metrics"
             subtitle=""
             dropdownItems={[]}
@@ -1485,6 +1488,7 @@ export const GrantImplementationPage: React.FC = () => {
           }}
         >
           <DatasetChartBlock
+            id="expenditures"
             title="Expenditures"
             subtitle={`${totalExpenditure} reported expenditure.`}
             dropdownItems={dropdownItemsExpenditures}

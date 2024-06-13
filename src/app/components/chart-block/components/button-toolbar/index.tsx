@@ -14,6 +14,7 @@ import { ReactComponent as DownloadIcon } from "app/assets/vectors/Download_Grey
 import { ReactComponent as FavoriteIcon } from "app/assets/vectors/Favorite_GreyBG.svg";
 
 interface ChartBlockButtonToolbarProps {
+  hashId: string;
   blockId: string;
 }
 
@@ -64,12 +65,21 @@ const DownloadPanel: React.FC<ChartBlockButtonToolbarProps> = (
   );
 };
 
-const SharePanel: React.FC = () => {
+const SharePanel: React.FC<ChartBlockButtonToolbarProps> = (
+  props: ChartBlockButtonToolbarProps
+) => {
   const [feedbackMessage, setFeedbackMessage] = React.useState<string | null>(
     null
   );
 
   const handleButtonClick = (type: "code" | "link") => () => {
+    let url = window.location.href.split("#")[0];
+    if (url.endsWith("/")) {
+      url = url.slice(0, -1);
+    }
+    navigator.clipboard.writeText(
+      type === "code" ? "" : `${url}#${props.hashId}`
+    );
     setFeedbackMessage(`${type} copied!`);
   };
 
@@ -103,7 +113,25 @@ const SharePanel: React.FC = () => {
       )}
       {!feedbackMessage && (
         <React.Fragment>
-          <Button onClick={handleButtonClick("code")}>Embed code</Button>
+          <Tooltip title="Not implemented yet">
+            <Button
+              disableRipple
+              sx={{
+                opacity: 0.2,
+                "&:hover": {
+                  cursor: "default",
+                  color:
+                    appColors.CHART_BLOCK_CYCLES.BUTTON_TEXT_COLOR +
+                    " !important",
+                  background:
+                    appColors.CHART_BLOCK_CYCLES.BUTTON_BACKGROUND_COLOR +
+                    " !important",
+                },
+              }}
+            >
+              Embed code
+            </Button>
+          </Tooltip>
           <Button onClick={handleButtonClick("link")}>Link</Button>
         </React.Fragment>
       )}
@@ -162,9 +190,9 @@ export const ChartBlockButtonToolbar: React.FC<ChartBlockButtonToolbarProps> = (
   const activePanel = React.useMemo(() => {
     switch (active) {
       case "download":
-        return <DownloadPanel blockId={props.blockId} />;
+        return <DownloadPanel {...props} />;
       case "share":
-        return <SharePanel />;
+        return <SharePanel {...props} />;
       case "favorite":
         return (
           <Box
@@ -266,8 +294,17 @@ export const ChartBlockButtonToolbar: React.FC<ChartBlockButtonToolbarProps> = (
               <DownloadIcon />
             </IconButton>
           </Tooltip>
-          <Tooltip title="Favourite">
-            <IconButton onClick={handleButtonClick("favorite")}>
+          <Tooltip title="Favourite (Not implemented yet)">
+            <IconButton
+              disableRipple
+              sx={{
+                opacity: 0.2,
+                "&:hover": {
+                  cursor: "default",
+                  borderColor: "#DFE3E5 !important",
+                },
+              }}
+            >
               <FavoriteIcon />
             </IconButton>
           </Tooltip>

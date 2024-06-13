@@ -29,6 +29,17 @@ export const DatasetPage: React.FC<DatasetPageProps> = (
     setAnchorEl(null);
   };
 
+  const onScroll = () => {
+    setAnchorEl(null);
+  };
+
+  React.useEffect(() => {
+    window.addEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, []);
+
   return (
     <Box padding="50px 0">
       <Breadcrumbs items={props.breadcrumbs} />
@@ -79,6 +90,7 @@ export const DatasetPage: React.FC<DatasetPageProps> = (
             <InfoOutlined fontSize="small" />
           </Tooltip>
           <Popover
+            disableScrollLock
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
             onClose={handleFilterPanelClose}

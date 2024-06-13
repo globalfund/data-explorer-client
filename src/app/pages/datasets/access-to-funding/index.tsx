@@ -543,6 +543,7 @@ export const AccessToFundingPage: React.FC = () => {
           }}
         >
           <DatasetChartBlock
+            id="eligibility"
             title="Eligibility"
             subtitle="Country eligibility for funding over time."
             dropdownItems={[]}
@@ -736,6 +737,7 @@ export const AccessToFundingPage: React.FC = () => {
           }}
         >
           <DatasetChartBlock
+            id="allocations"
             title="Allocations"
             subtitle="Allocations amounts for countries."
             dropdownItems={dropdownItemsAllocations}
@@ -766,6 +768,7 @@ export const AccessToFundingPage: React.FC = () => {
           }}
         >
           <DatasetChartBlock
+            id="funding-requests"
             title="Funding Requests"
             subtitle="Funding request applications by countries."
             disableCollapse

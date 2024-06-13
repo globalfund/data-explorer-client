@@ -76,6 +76,7 @@ export const ResourceMobilization: React.FC = () => {
     <Box>
       <ChartBlock
         cycles={cycles}
+        id="resource-mobilization"
         loading={loadingRMBarChart}
         selectedCycles={chart1Cycles}
         title={`US$${totalContribution}`}

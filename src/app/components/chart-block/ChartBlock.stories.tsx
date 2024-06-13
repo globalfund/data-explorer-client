@@ -21,6 +21,7 @@ const Wrapper: React.FC = () => {
 
   return (
     <ChartBlock
+      id="chart"
       cycles={CYCLES}
       title="$84 Billion"
       selectedCycles={selectedCycles}

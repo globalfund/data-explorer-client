@@ -354,6 +354,7 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
   return (
     <Box gap="24px" display="flex" flexDirection="column">
       <ChartBlock
+        id="disbursements"
         title={disbursementsTotal}
         cycles={disbursementsCycles}
         selectedCycles={chart1Cycles}
@@ -370,6 +371,7 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
       </ChartBlock>
       {showDisbursementsLineChart && fullWidthDivider}
       <ChartBlock
+        id="budget"
         title="Budget"
         cycles={budgetsCycles}
         selectedCycles={chart2Cycles}
@@ -408,6 +410,7 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
       </ChartBlock>
       {showBudgetSankeyChart && fullWidthDivider}
       <ChartBlock
+        id="expenditures"
         subtitle="To date"
         title="Expenditures"
         cycles={expendituresCycles}
@@ -431,6 +434,7 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
       </ChartBlock>
       {showExpendituresHeatmap && fullWidthDivider}
       <ChartBlock
+        id="grants"
         title={`${countGrantsTable} Grants`}
         subtitle="to date"
         empty={!showGrantsTable}

@@ -492,6 +492,7 @@ export const ResourceMobilizationPage: React.FC = () => {
           }
         >
           <DatasetChartBlock
+            id="pledges-contributions"
             title="Pledges & Contributions"
             subtitle="Government, private sector, non-government and other donor pledges and contributions."
             dropdownItems={dropdownItems}

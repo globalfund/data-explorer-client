@@ -2,6 +2,7 @@ import { FilterGroupModel } from "app/components/filters/list/data";
 import { AppliedFiltersModel } from "app/state/api/action-reducers/sync/filters";
 
 export interface DatasetChartBlockProps {
+  id: string;
   title: string;
   empty?: boolean;
   subtitle: string;

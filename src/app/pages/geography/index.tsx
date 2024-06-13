@@ -81,7 +81,7 @@ const GeoSubCategory: React.FC<GeoSubCategoryProps> = (
                   }
                 : {}),
               "&:hover": {
-                fontWeight: 700,
+                textShadow: "-.35px -.35px 0 #000, .35px .35px #000",
               },
             }}
           >

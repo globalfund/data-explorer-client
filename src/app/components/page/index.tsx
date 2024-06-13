@@ -5,9 +5,11 @@ import { Header } from "app/components/header";
 import { Footer } from "app/components/footer";
 import Container from "@mui/material/Container";
 import { useUrlFilters } from "app/hooks/useUrlFilters";
+import { useScrollToAnchor } from "app/hooks/useScrollToAnchor";
 
 export const Page: React.FC = () => {
   useUrlFilters();
+  useScrollToAnchor();
 
   return (
     <React.Fragment>

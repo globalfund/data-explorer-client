@@ -14,7 +14,7 @@ import { HeaderMenu } from "app/components/header-menu";
 import { ReactComponent as HeaderToolbarLogo } from "app/assets/vectors/HeaderToolbarLogo.svg";
 
 export const Header: React.FC = () => {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
   const [searchOpen, setSearchOpen] = React.useState(false);
 
   const onSearchBtnClick = () => {
@@ -23,8 +23,10 @@ export const Header: React.FC = () => {
 
   React.useEffect(() => {
     setTimeout(() => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      if (searchOpen) setSearchOpen(false);
+      if (!hash) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        if (searchOpen) setSearchOpen(false);
+      }
     }, 100);
   }, [pathname]);
 

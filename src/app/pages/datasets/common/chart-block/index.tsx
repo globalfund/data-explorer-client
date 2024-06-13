@@ -35,6 +35,17 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
     setCollapsed(!collapsed);
   };
 
+  const onScroll = () => {
+    setAnchorEl(null);
+  };
+
+  React.useEffect(() => {
+    window.addEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, []);
+
   const content = React.useMemo(() => {
     if (props.loading) {
       return (
@@ -69,7 +80,7 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
   const id = React.useMemo(() => uniqueId("chart-block-"), []);
 
   return (
-    <Box>
+    <Box id={props.id}>
       <Typography variant="h3" lineHeight={1.2}>
         {props.title}
       </Typography>
@@ -110,6 +121,7 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
             Filters
           </Button>
           <Popover
+            disableScrollLock
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
             onClose={handleFilterPanelClose}
@@ -182,7 +194,7 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
           {content}
         </Box>
         <Box width="100%" paddingRight="32px" marginTop="40px">
-          <ChartBlockButtonToolbar blockId={id} />
+          <ChartBlockButtonToolbar blockId={id} hashId={props.id} />
         </Box>
       </Box>
     </Box>

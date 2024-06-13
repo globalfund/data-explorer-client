@@ -228,7 +228,10 @@ export const GrantOverview: React.FC = () => {
       <Box id="grant-overview-race-bar-chart">
         <RaceBarChart data={raceBarChartData} />
       </Box>
-      <ChartBlockButtonToolbar blockId="grant-overview-race-bar-chart" />
+      <ChartBlockButtonToolbar
+        hashId="grant-overview-race-bar-chart"
+        blockId="grant-overview-race-bar-chart"
+      />
     </Box>
   );
 };

@@ -55,6 +55,7 @@ export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
       {showStats && <HomeResultsStats stats={dataResultStats} />}
       {showStats && fullWidthDivider}
       <ChartBlock
+        id="results"
         title="Results"
         noBottomToolbar
         empty={!showResults}
@@ -74,6 +75,7 @@ export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
       </ChartBlock>
       {showResults && fullWidthDivider}
       <ChartBlock
+        id="documents"
         noBottomToolbar
         title="Documents"
         empty={!showDocuments}

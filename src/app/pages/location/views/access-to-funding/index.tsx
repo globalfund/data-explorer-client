@@ -220,6 +220,7 @@ export const AccessToFunding: React.FC = () => {
   return (
     <Box gap="24px" display="flex" flexDirection="column">
       <ChartBlock
+        id="allocation"
         cycles={allocationsCycles}
         title={`US$${totalAllocationAmount}`}
         selectedCycles={[chart1Cycle]}
@@ -259,6 +260,7 @@ export const AccessToFunding: React.FC = () => {
       <ChartBlock
         noSplitText
         noBottomToolbar
+        id="funding-requests"
         selectedCycles={[chart2Cycle]}
         cycles={fundingRequestsCycles}
         loading={loadingFundingRequestsTable}
@@ -342,6 +344,7 @@ export const AccessToFunding: React.FC = () => {
       {showFundingRequestsTable && fullWidthDivider}
       <ChartBlock
         noSplitText
+        id="eligibility"
         title="Eligibility"
         subtitle="To date"
         empty={!showEligibilityHeatmap}
@@ -464,6 +467,7 @@ export const AccessToFunding: React.FC = () => {
       </ChartBlock>
       {showEligibilityHeatmap && fullWidthDivider}
       <ChartBlock
+        id="documents"
         noBottomToolbar
         title="Documents"
         subtitle="Applications"

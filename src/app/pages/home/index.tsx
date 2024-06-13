@@ -503,6 +503,7 @@ export const Home: React.FC = () => {
       <Box height="64px" />
       <ChartBlock
         showCycleAll
+        id="pledges-contributions"
         selectedCycles={chart1Cycles}
         title={`${totalContribution}`}
         subtitle="Pledges & Contributions"
@@ -556,6 +557,7 @@ export const Home: React.FC = () => {
       {fullWidthDivider}
       <Box height="50px" />
       <ChartBlock
+        id="allocations"
         subtitle="Allocation"
         title={allocationsTotal}
         selectedCycles={chart2Cycles}
@@ -579,6 +581,7 @@ export const Home: React.FC = () => {
       <Box height="50px" />
       <ChartBlock
         showCycleAll
+        id="budgets"
         title={totalBudget}
         subtitle="Grant Budgets"
         selectedCycles={chart3Cycles}
@@ -600,6 +603,7 @@ export const Home: React.FC = () => {
       <Box height="50px" />
       <ChartBlock
         showCycleAll
+        id="disbursements"
         subtitle="Disbursements"
         title={disbursementsTotal}
         selectedCycles={chart4Cycles}
@@ -620,6 +624,7 @@ export const Home: React.FC = () => {
       {fullWidthDivider}
       <Box height="50px" />
       <ChartBlock
+        id="expenditures"
         subtitle="Expenditures"
         title={expendituresTotal}
         selectedCycles={chart5Cycles}

@@ -1,4 +1,5 @@
 export interface ChartBlockProps {
+  id: string;
   title: string;
   text?: string;
   empty?: boolean;

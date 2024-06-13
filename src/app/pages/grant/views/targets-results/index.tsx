@@ -119,6 +119,7 @@ export const GrantTargetsResults: React.FC = () => {
       <ChartBlock
         loading={loading}
         title="Indicators"
+        id="grant-targets-results"
         subtitle="Targets & Results"
         text="Description of Impact indicators: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >

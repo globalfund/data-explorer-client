@@ -60,7 +60,7 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
   }
 
   return (
-    <Box>
+    <Box id={props.id}>
       <Typography variant="h2" lineHeight={1}>
         {props.title}
       </Typography>
@@ -139,7 +139,7 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
       </Box>
       {!props.noBottomToolbar && (
         <Box width="100%" paddingRight="32px">
-          <ChartBlockButtonToolbar blockId={id} />
+          <ChartBlockButtonToolbar blockId={id} hashId={props.id} />
         </Box>
       )}
     </Box>

@@ -23,6 +23,7 @@ const Wrapper: React.FC = () => {
 
   return (
     <DatasetChartBlock
+      id="chart-block"
       title="$84 Billion"
       subtitle="Funds raised to date"
       dropdownItems={items}

@@ -121,6 +121,10 @@ export const Grants: React.FC = () => {
     });
   };
 
+  const onScroll = () => {
+    setAnchorEl(null);
+  };
+
   const dataTable = React.useMemo(() => {
     return data.map((item) => {
       let datesStr = "";
@@ -277,6 +281,13 @@ export const Grants: React.FC = () => {
   }, [appliedFiltersData]);
 
   React.useEffect(() => {
+    window.addEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, []);
+
+  React.useEffect(() => {
     if (showSearch) {
       searchInputRef.current?.focus();
     }
@@ -357,6 +368,7 @@ export const Grants: React.FC = () => {
             Filters
           </Button>
           <Popover
+            disableScrollLock
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
             onClose={handleFilterPanelClose}

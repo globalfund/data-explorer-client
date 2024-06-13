@@ -368,6 +368,7 @@ export const AnnualResultsPage: React.FC = () => {
           }}
         >
           <DatasetChartBlock
+            id="annual-results"
             title="Annual Results"
             subtitle="Lorem Ipsum."
             loading={loadingResults}
