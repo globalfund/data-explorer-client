@@ -228,8 +228,10 @@ export function Heatmap(props: HeatmapProps) {
     // ) {
     //   return "450px";
     // }
-    return "400px";
-  }, [props.rowCategory]);
+    const count =
+      (flatVisibleColumns.length > 5 ? 5 : flatVisibleColumns.length) + 1;
+    return 1200 - count * 110 + "px";
+  }, [props.rowCategory, flatVisibleColumns]);
 
   return (
     <React.Fragment>

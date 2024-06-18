@@ -197,7 +197,7 @@ export const LineChart: React.FC<LineChartProps> = (props: LineChartProps) => {
             const seriesData = find(props.data, { name: params.seriesName });
             let cumulative = 0;
             seriesData?.data
-              .slice(0, params.dataIndex)
+              .slice(0, params.dataIndex + 1)
               .forEach((value: number) => {
                 cumulative += value;
               });
