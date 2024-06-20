@@ -14,6 +14,7 @@ export const defaultAppliedFilters: AppliedFiltersModel = {
   donors: [] as string[],
   donorTypes: [] as string[],
   donorSubTypes: [] as string[],
+  cycles: [] as string[],
   trpWindows: [] as string[],
   portfolioCategories: [] as string[],
 };
@@ -30,6 +31,7 @@ export interface AppliedFiltersModel {
   donors: string[];
   donorTypes: string[];
   donorSubTypes: string[];
+  cycles: string[];
   trpWindows: string[];
   portfolioCategories: string[];
 }
@@ -57,6 +59,8 @@ export interface AppliedFiltersStateModel {
   setDonorTypes: Action<AppliedFiltersStateModel, string[]>;
   donorSubTypes: string[];
   setDonorSubTypes: Action<AppliedFiltersStateModel, string[]>;
+  cycles: string[];
+  setDonorCycles: Action<AppliedFiltersStateModel, string[]>;
   trpWindows: string[];
   setTrpWindows: Action<AppliedFiltersStateModel, string[]>;
   setPortfolioCategories: Action<AppliedFiltersStateModel, string[]>;
@@ -137,6 +141,11 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
     state.donorSubTypes = payload;
     state.appliedFiltersCount += payload.length;
   }),
+  cycles: [],
+  setDonorCycles: action((state, payload: string[]) => {
+    state.cycles = payload;
+    state.appliedFiltersCount += payload.length;
+  }),
   trpWindows: [],
   setTrpWindows: action((state, payload: string[]) => {
     state.trpWindows = payload;
@@ -158,6 +167,7 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
     state.donors = payload.donors;
     state.donorTypes = payload.donorTypes;
     state.donorSubTypes = payload.donorSubTypes;
+    state.cycles = payload.cycles;
     state.trpWindows = payload.trpWindows;
     state.portfolioCategories = payload.portfolioCategories;
     state.documentTypes = payload.documentTypes;
@@ -280,6 +290,15 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
           state.appliedFiltersCount -= 1;
         }
         break;
+      case "cycle":
+        if (payload.checked) {
+          state.cycles.push(payload.value);
+          state.appliedFiltersCount += 1;
+        } else {
+          state.cycles = state.cycles.filter((item) => item !== payload.value);
+          state.appliedFiltersCount -= 1;
+        }
+        break;
       default:
         break;
     }
@@ -326,6 +345,9 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
           break;
         case "status":
           state.status = state.status.filter((item) => item !== payload.value);
+          break;
+        case "cycle":
+          state.cycles = state.cycles.filter((item) => item !== payload.value);
           break;
         default:
           break;

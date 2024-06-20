@@ -361,11 +361,21 @@ export const GrantImplementationPage: React.FC = () => {
         options: [],
       }) as FilterGroupModel
   );
+  const dataCycleFilterOptions = useStoreState((state) => ({
+    id: "cycle",
+    name: "Cycle",
+    options: get(state.DisbursementsCycles, "data.data", []).map((o: any) => ({
+      name: o.value,
+      value: o.value,
+    })),
+  }));
   const cycles = useStoreState((state) =>
-    get(state.BudgetsCycles, "data.data", []).map((cycle: any) => ({
-      label: cycle.value,
-      value: cycle.value,
-    }))
+    get(state.BudgetsCycles, "data.data", [])
+      .map((cycle: any) => ({
+        label: cycle.value,
+        value: cycle.value,
+      }))
+      .reverse()
   );
   const pageAppliedFilters = useStoreState((state) => [
     ...state.AppliedFiltersState.components,
@@ -374,6 +384,7 @@ export const GrantImplementationPage: React.FC = () => {
     ...state.AppliedFiltersState.principalRecipientSubTypes,
     ...state.AppliedFiltersState.principalRecipients,
     ...state.AppliedFiltersState.status,
+    ...state.AppliedFiltersState.cycles,
   ]);
   const appliedFiltersData = useStoreState(
     (state) => state.AppliedFiltersState
@@ -383,7 +394,7 @@ export const GrantImplementationPage: React.FC = () => {
   );
 
   const [budgetBreakdownDropdownSelected, setBudgetBreakdownDropdownSelected] =
-    React.useState(cycles[0].value);
+    React.useState(cycles.length > 0 ? cycles[0].value : null);
 
   const handleDisbursementsSelectionChange = (value: string) => {
     setDisbursementsDropdownSelected(value);
@@ -648,11 +659,7 @@ export const GrantImplementationPage: React.FC = () => {
                 value: "disbursement",
               }}
               itemStyle={{
-                color: (params: any) => {
-                  if (maxValue === params.data)
-                    return appColors.TIME_CYCLE.BAR_COLOR_3;
-                  return appColors.TIME_CYCLE.BAR_COLOR_2;
-                },
+                color: () => appColors.TIME_CYCLE.BAR_COLOR_2,
               }}
             />
             <Typography
@@ -971,6 +978,7 @@ export const GrantImplementationPage: React.FC = () => {
 
   const filterGroups = React.useMemo(() => {
     return [
+      dataCycleFilterOptions,
       dataLocationFilterOptions,
       dataComponentFilterOptions,
       dataPartnerTypeFilterOptions,
@@ -981,6 +989,7 @@ export const GrantImplementationPage: React.FC = () => {
     dataComponentFilterOptions,
     dataPartnerTypeFilterOptions,
     dataStatusFilterOptions,
+    dataCycleFilterOptions,
   ]);
 
   const filterString = React.useMemo(() => {
@@ -1002,6 +1011,15 @@ export const GrantImplementationPage: React.FC = () => {
     }
     if (appliedFiltersData.status.length > 0) {
       filterString += `${filterString.length > 0 ? "&" : ""}status=${encodeURIComponent(appliedFiltersData.status.join(","))}`;
+    }
+    if (appliedFiltersData.cycles.length > 0) {
+      const years = appliedFiltersData.cycles.map(
+        (cycle) => cycle.replace(/ /g, "").split("-")[0]
+      );
+      const yearsTo = appliedFiltersData.cycles.map(
+        (cycle) => cycle.replace(/ /g, "").split("-")[1]
+      );
+      filterString += `${filterString.length > 0 ? "&" : ""}years=${encodeURIComponent(years.join(","))}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
     }
     return filterString;
   }, [appliedFiltersData]);
@@ -1050,6 +1068,20 @@ export const GrantImplementationPage: React.FC = () => {
     ) {
       filterString += `${filterString.length > 0 ? "&" : ""}status=${encodeURIComponent(uniq([...appliedFiltersData.status, ...chart1AppliedFiltersData.status]).join(","))}`;
     }
+    if (
+      [...appliedFiltersData.cycles, ...chart1AppliedFiltersData.cycles]
+        .length > 0
+    ) {
+      const years = uniq([
+        ...appliedFiltersData.cycles,
+        ...chart1AppliedFiltersData.cycles,
+      ]).map((cycle) => cycle.replace(/ /g, "").split("-")[0]);
+      const yearsTo = uniq([
+        ...appliedFiltersData.cycles,
+        ...chart1AppliedFiltersData.cycles,
+      ]).map((cycle) => cycle.replace(/ /g, "").split("-")[1]);
+      filterString += `${filterString.length > 0 ? "&" : ""}years=${encodeURIComponent(years.join(","))}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
+    }
     return filterString;
   }, [appliedFiltersData, chart1AppliedFiltersData]);
 
@@ -1096,6 +1128,20 @@ export const GrantImplementationPage: React.FC = () => {
         .length > 0
     ) {
       filterString += `${filterString.length > 0 ? "&" : ""}status=${encodeURIComponent(uniq([...appliedFiltersData.status, ...chart2AppliedFiltersData.status]).join(","))}`;
+    }
+    if (
+      [...appliedFiltersData.cycles, ...chart2AppliedFiltersData.cycles]
+        .length > 0
+    ) {
+      const years = uniq([
+        ...appliedFiltersData.cycles,
+        ...chart2AppliedFiltersData.cycles,
+      ]).map((cycle) => cycle.replace(/ /g, "").split("-")[0]);
+      const yearsTo = uniq([
+        ...appliedFiltersData.cycles,
+        ...chart2AppliedFiltersData.cycles,
+      ]).map((cycle) => cycle.replace(/ /g, "").split("-")[1]);
+      filterString += `${filterString.length > 0 ? "&" : ""}years=${encodeURIComponent(years.join(","))}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
     }
     return filterString;
   }, [appliedFiltersData, chart2AppliedFiltersData]);
@@ -1144,6 +1190,20 @@ export const GrantImplementationPage: React.FC = () => {
     ) {
       filterString += `${filterString.length > 0 ? "&" : ""}status=${encodeURIComponent(uniq([...appliedFiltersData.status, ...chart3AppliedFiltersData.status]).join(","))}`;
     }
+    if (
+      [...appliedFiltersData.cycles, ...chart3AppliedFiltersData.cycles]
+        .length > 0
+    ) {
+      const years = uniq([
+        ...appliedFiltersData.cycles,
+        ...chart3AppliedFiltersData.cycles,
+      ]).map((cycle) => cycle.replace(/ /g, "").split("-")[0]);
+      const yearsTo = uniq([
+        ...appliedFiltersData.cycles,
+        ...chart3AppliedFiltersData.cycles,
+      ]).map((cycle) => cycle.replace(/ /g, "").split("-")[1]);
+      filterString += `${filterString.length > 0 ? "&" : ""}years=${encodeURIComponent(years.join(","))}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
+    }
     return filterString;
   }, [appliedFiltersData, chart3AppliedFiltersData]);
 
@@ -1190,6 +1250,20 @@ export const GrantImplementationPage: React.FC = () => {
         .length > 0
     ) {
       filterString += `${filterString.length > 0 ? "&" : ""}status=${encodeURIComponent(uniq([...appliedFiltersData.status, ...chart4AppliedFiltersData.status]).join(","))}`;
+    }
+    if (
+      [...appliedFiltersData.cycles, ...chart4AppliedFiltersData.cycles]
+        .length > 0
+    ) {
+      const years = uniq([
+        ...appliedFiltersData.cycles,
+        ...chart4AppliedFiltersData.cycles,
+      ]).map((cycle) => cycle.replace(/ /g, "").split("-")[0]);
+      const yearsTo = uniq([
+        ...appliedFiltersData.cycles,
+        ...chart4AppliedFiltersData.cycles,
+      ]).map((cycle) => cycle.replace(/ /g, "").split("-")[1]);
+      filterString += `${filterString.length > 0 ? "&" : ""}years=${encodeURIComponent(years.join(","))}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
     }
     return filterString;
   }, [appliedFiltersData, chart4AppliedFiltersData]);
@@ -1284,16 +1358,26 @@ export const GrantImplementationPage: React.FC = () => {
   }, [chart4FilterString, componentsGrouping]);
 
   React.useEffect(() => {
-    fetchBudgetBreakdown({
-      filterString,
-      routeParams: {
-        year: budgetBreakdownDropdownSelected.replace(/ /g, ""),
-        componentField:
-          componentsGrouping === componentsGroupingOptions[0].value
-            ? "activityAreaGroup"
-            : "activityArea",
-      },
-    });
+    if (
+      cycles.length > 0 &&
+      budgetBreakdownDropdownSelected !== cycles[0].value
+    )
+      setBudgetBreakdownDropdownSelected(cycles[0].value);
+  }, [cycles]);
+
+  React.useEffect(() => {
+    if (budgetBreakdownDropdownSelected) {
+      fetchBudgetBreakdown({
+        filterString,
+        routeParams: {
+          year: budgetBreakdownDropdownSelected.replace(/ /g, ""),
+          componentField:
+            componentsGrouping === componentsGroupingOptions[0].value
+              ? "activityAreaGroup"
+              : "activityArea",
+        },
+      });
+    }
   }, [budgetBreakdownDropdownSelected, filterString, componentsGrouping]);
 
   return (

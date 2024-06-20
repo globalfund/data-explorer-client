@@ -11,6 +11,7 @@ import { DatasetPage } from "app/pages/datasets/common/page";
 import CircularProgress from "@mui/material/CircularProgress";
 import { SunburstChart } from "app/components/charts/sunburst";
 import { FilterGroupModel } from "app/components/filters/list/data";
+import { TABLE_VARIATION_8_COLUMNS } from "app/components/table/data";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { SunburstDataItem } from "app/components/charts/sunburst/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -21,10 +22,6 @@ import { ReactComponent as BarChartIcon } from "app/assets/vectors/Select_BarCha
 import { ExpandableHorizontalBar } from "app/components/charts/expandable-horizontal-bar";
 import { ReactComponent as SunburstChartIcon } from "app/assets/vectors/Select_SunburstChart.svg";
 import { ExpandableHorizontalBarChartDataItem } from "app/components/charts/expandable-horizontal-bar/data";
-import {
-  TABLE_VARIATION_8_DATA,
-  TABLE_VARIATION_8_COLUMNS,
-} from "app/components/table/data";
 
 const dropdownItems = [
   { label: "Bar Chart", value: "Bar Chart", icon: <BarChartIcon /> },

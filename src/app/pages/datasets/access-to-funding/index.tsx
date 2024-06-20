@@ -1,9 +1,11 @@
 import React from "react";
 import get from "lodash/get";
 import uniq from "lodash/uniq";
+import filter from "lodash/filter";
 import Box from "@mui/material/Box";
 import { appColors } from "app/theme";
 import Grid from "@mui/material/Grid";
+import findIndex from "lodash/findIndex";
 import Tooltip from "@mui/material/Tooltip";
 import { Table } from "app/components/table";
 import Typography from "@mui/material/Typography";
@@ -157,9 +159,20 @@ export const AccessToFundingPage: React.FC = () => {
         options: [],
       }) as FilterGroupModel
   );
+  const dataCycleFilterOptions = useStoreState((state) => ({
+    id: "cycle",
+    name: "Cycle",
+    options: get(state.AllocationsCycles, "data.data", []).map(
+      (item: { value: string }) => ({
+        name: item.value,
+        value: item.value,
+      })
+    ),
+  }));
   const pageAppliedFilters = useStoreState((state) => [
     ...state.AppliedFiltersState.components,
     ...state.AppliedFiltersState.locations,
+    ...state.AppliedFiltersState.cycles,
   ]);
   const appliedFiltersData = useStoreState(
     (state) => state.AppliedFiltersState
@@ -352,8 +365,16 @@ export const AccessToFundingPage: React.FC = () => {
   ]);
 
   const filterGroups = React.useMemo(() => {
-    return [dataLocationFilterOptions, dataComponentFilterOptions];
-  }, [dataLocationFilterOptions, dataComponentFilterOptions]);
+    return [
+      dataCycleFilterOptions,
+      dataLocationFilterOptions,
+      dataComponentFilterOptions,
+    ];
+  }, [
+    dataLocationFilterOptions,
+    dataComponentFilterOptions,
+    dataCycleFilterOptions,
+  ]);
 
   const filterString = React.useMemo(() => {
     let filterString = "";
@@ -380,6 +401,12 @@ export const AccessToFundingPage: React.FC = () => {
     ) {
       filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(uniq([...appliedFiltersData.components, ...chart1AppliedFiltersData.components]).join(","))}`;
     }
+    if (
+      [...appliedFiltersData.cycles, ...chart1AppliedFiltersData.cycles]
+        .length > 0
+    ) {
+      filterString += `${filterString.length > 0 ? "&" : ""}cycles=${encodeURIComponent(uniq([...appliedFiltersData.cycles, ...chart1AppliedFiltersData.cycles]).join(","))}`;
+    }
     return filterString;
   }, [appliedFiltersData, chart1AppliedFiltersData]);
 
@@ -396,6 +423,12 @@ export const AccessToFundingPage: React.FC = () => {
         .length > 0
     ) {
       filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(uniq([...appliedFiltersData.components, ...chart2AppliedFiltersData.components]).join(","))}`;
+    }
+    if (
+      [...appliedFiltersData.cycles, ...chart2AppliedFiltersData.cycles]
+        .length > 0
+    ) {
+      filterString += `${filterString.length > 0 ? "&" : ""}cycles=${encodeURIComponent(uniq([...appliedFiltersData.cycles, ...chart2AppliedFiltersData.cycles]).join(","))}`;
     }
     return filterString;
   }, [appliedFiltersData, chart2AppliedFiltersData]);
@@ -414,6 +447,12 @@ export const AccessToFundingPage: React.FC = () => {
     ) {
       filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(uniq([...appliedFiltersData.components, ...chart3AppliedFiltersData.components]).join(","))}`;
     }
+    if (
+      [...appliedFiltersData.cycles, ...chart3AppliedFiltersData.cycles]
+        .length > 0
+    ) {
+      filterString += `${filterString.length > 0 ? "&" : ""}periods=${encodeURIComponent(uniq([...appliedFiltersData.cycles.map((c) => c.split("-")[0]), ...chart3AppliedFiltersData.cycles.map((c) => c.split("-")[0])]).join(","))}`;
+    }
     return filterString;
   }, [appliedFiltersData, chart3AppliedFiltersData]);
 
@@ -428,6 +467,22 @@ export const AccessToFundingPage: React.FC = () => {
     });
     return getRange(values, ["value"]);
   }, [dataAllocationsBarSeries]);
+
+  const eligibilityTableColumns = React.useMemo(() => {
+    return [
+      ELIGIBILITY_TABLE_COLUMNS[0],
+      ...filter(
+        ELIGIBILITY_TABLE_COLUMNS,
+        (c) =>
+          findIndex(dataEligibilityTable, (item) => {
+            const values = Object.keys(
+              get(item, "_children[0]._children[0]", {})
+            );
+            return values.indexOf(c.title) !== -1;
+          }) !== -1
+      ),
+    ];
+  }, [dataEligibilityTable]);
 
   React.useEffect(() => {
     fetchAllocationsBarSeries({ filterString });
@@ -671,7 +726,7 @@ export const AccessToFundingPage: React.FC = () => {
               dataTree
               id="eligibility-table"
               data={dataEligibilityTable}
-              columns={ELIGIBILITY_TABLE_COLUMNS}
+              columns={eligibilityTableColumns}
             />
           </DatasetChartBlock>
         </Box>

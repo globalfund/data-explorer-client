@@ -33,6 +33,7 @@ export function useUrlFilters(): null {
       const donorSubTypes = currentUrlParams.get("donorSubTypes");
       const donorTypes = currentUrlParams.get("donorTypes");
       const replenishmentPeriods = currentUrlParams.get("replenishmentPeriods");
+      const cycles = currentUrlParams.get("cycles");
       const trpWindows = currentUrlParams.get("trpWindows");
       const portfolioCategories = currentUrlParams.get("portfolioCategories");
 
@@ -72,6 +73,10 @@ export function useUrlFilters(): null {
       if (replenishmentPeriods) {
         updatedAppliedFilters.replenishmentPeriods =
           replenishmentPeriods.split(",");
+      }
+      console.log(cycles);
+      if (cycles) {
+        updatedAppliedFilters.cycles = cycles.split(",");
       }
       if (trpWindows) {
         updatedAppliedFilters.trpWindows = trpWindows.split(",");
@@ -180,6 +185,15 @@ export function useUrlFilters(): null {
     } else {
       currentUrlParams.delete("replenishmentPeriods");
     }
+    console.log(data.cycles);
+    if (data.cycles.length > 0) {
+      currentUrlParams.set(
+        "cycles",
+        data.cycles.join(",").replace(/&/g, "%26")
+      );
+    } else {
+      currentUrlParams.delete("cycles");
+    }
     if (data.trpWindows.length > 0) {
       currentUrlParams.set(
         "trpWindows",
@@ -223,6 +237,7 @@ export function useUrlFilters(): null {
     const donorSubTypes = currentUrlParams.get("donorSubTypes");
     const donorTypes = currentUrlParams.get("donorTypes");
     const replenishmentPeriods = currentUrlParams.get("replenishmentPeriods");
+    const cycles = currentUrlParams.get("cycles");
     const trpWindows = currentUrlParams.get("trpWindows");
     const portfolioCategories = currentUrlParams.get("portfolioCategories");
 
@@ -284,6 +299,12 @@ export function useUrlFilters(): null {
         replenishmentPeriods.split(",");
     } else if (updatedAppliedFilters.replenishmentPeriods.length > 0) {
       updatedAppliedFilters.replenishmentPeriods = [];
+    }
+    console.log(cycles);
+    if (cycles) {
+      updatedAppliedFilters.cycles = cycles.split(",");
+    } else if (updatedAppliedFilters.cycles.length > 0) {
+      updatedAppliedFilters.cycles = [];
     }
     if (trpWindows) {
       updatedAppliedFilters.trpWindows = trpWindows.split(",");

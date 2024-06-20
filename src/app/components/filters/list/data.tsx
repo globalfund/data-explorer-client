@@ -121,6 +121,8 @@ export function getAppliedFilters(
       return appliedFilters.donors;
     case "replenishmentPeriod":
       return appliedFilters.replenishmentPeriods;
+    case "cycle":
+      return appliedFilters.cycles;
     default:
       return [];
   }

@@ -125,7 +125,7 @@ export const LocationOverview: React.FC = () => {
               flexDirection: "column",
             }}
           >
-            <Box>
+            <Box minHeight={110}>
               <Typography variant="body2" fontWeight="700" marginBottom="10px">
                 Current Principal Recipients in {dataOverview.name}
               </Typography>

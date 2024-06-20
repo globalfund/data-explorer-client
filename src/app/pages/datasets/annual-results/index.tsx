@@ -63,7 +63,7 @@ export const AnnualResultsPage: React.FC = () => {
     (state) => get(state.AnnualResultsCycles, "data.data", []) as number[]
   );
   const [yearSelected, setYearSelected] = React.useState(
-    annualResultsCycles[0].toString()
+    annualResultsCycles.length > 0 ? annualResultsCycles[0].toString() : null
   );
 
   const dataStats = useStoreState(
@@ -292,7 +292,7 @@ export const AnnualResultsPage: React.FC = () => {
           </Typography>
           <Dropdown
             width={100}
-            dropdownSelected={yearSelected}
+            dropdownSelected={yearSelected ?? ""}
             dropdownItems={annualResultsCycles.map((c) => ({
               label: c.toString(),
               value: c.toString(),
@@ -307,19 +307,29 @@ export const AnnualResultsPage: React.FC = () => {
   }, [yearSelected]);
 
   React.useEffect(() => {
-    fetchStats({
-      filterString: `${filterString}${filterString.length ? "&" : ""}cycle=${yearSelected}`,
-    });
+    if (annualResultsCycles.length > 0) {
+      setYearSelected(annualResultsCycles[0].toString());
+    }
+  }, [annualResultsCycles]);
+
+  React.useEffect(() => {
+    if (yearSelected) {
+      fetchStats({
+        filterString: `${filterString}${filterString.length ? "&" : ""}cycle=${yearSelected}`,
+      });
+    }
   }, [filterString, yearSelected]);
 
   React.useEffect(() => {
-    fetchPolyline({
-      filterString: chartFilterString,
-      routeParams: {
-        cycle: yearSelected,
-      },
-    });
-    fetchTable({ filterString: chartFilterString });
+    if (yearSelected) {
+      fetchPolyline({
+        filterString: chartFilterString,
+        routeParams: {
+          cycle: yearSelected,
+        },
+      });
+      fetchTable({ filterString: chartFilterString });
+    }
   }, [chartFilterString, yearSelected]);
 
   return (

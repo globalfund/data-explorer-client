@@ -387,15 +387,15 @@ const theme = createTheme({
     MuiTooltip: {
       styleOverrides: {
         arrow: {
-          color: colors.primary.black,
+          color: colors.primary.white,
         },
         tooltip: {
           fontSize: "12px",
           fontWeight: "400",
           fontFamily: "Inter",
           borderRadius: "4px",
-          color: colors.primary.white,
-          background: colors.primary.black,
+          color: colors.primary.black,
+          background: colors.primary.white,
           boxShadow: "0px 2px 7px 0px rgba(0, 0, 0, 0.12)",
         },
       },
