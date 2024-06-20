@@ -111,14 +111,22 @@ import {
   EligibilityDiseaseBurdenCodelist,
 } from "app/state/api/action-reducers/viz/eligibility";
 import {
-  AllocationsCycles,
-  AnnualResultsCycles,
   BudgetsCycles,
-  DisbursementsCycles,
+  AllocationsCycles,
   EligibilityCycles,
   ExpendituresCycles,
+  AnnualResultsCycles,
+  DisbursementsCycles,
   FundingRequestsCycles,
+  GeographyBudgetsCycles,
+  GeographyAllocationsCycles,
   PledgesContributionsCycles,
+  GeographyEligibilityCycles,
+  GeographyExpendituresCycles,
+  GeographyAnnualResultsCycles,
+  GeographyDisbursementsCycles,
+  GeographyFundingRequestsCycles,
+  GeographyPledgesContributionsCycles,
 } from "app/state/api/action-reducers/filters/cycles";
 
 const storeContent: StoreModel = {
@@ -210,6 +218,16 @@ const storeContent: StoreModel = {
   GeographyResultStats: persist(GeographyResultStats),
   GeographyResultsTable: persist(GeographyResultsTable),
   GeographyResultsDocumentsTable: persist(GeographyResultsDocumentsTable),
+  GeographyAllocationsCycles: persist(GeographyAllocationsCycles),
+  GeographyFundingRequestsCycles: persist(GeographyFundingRequestsCycles),
+  GeographyAnnualResultsCycles: persist(GeographyAnnualResultsCycles),
+  GeographyBudgetsCycles: persist(GeographyBudgetsCycles),
+  GeographyPledgesContributionsCycles: persist(
+    GeographyPledgesContributionsCycles
+  ),
+  GeographyDisbursementsCycles: persist(GeographyDisbursementsCycles),
+  GeographyExpendituresCycles: persist(GeographyExpendituresCycles),
+  GeographyEligibilityCycles: persist(GeographyEligibilityCycles),
   // grant
   GrantInfo: persist(GrantInfo),
   GrantOverview: persist(GrantOverview),

@@ -240,6 +240,54 @@ export const Location: React.FC = () => {
   const clearResultsDocumentsTable = useStoreActions(
     (actions) => actions.GeographyResultsDocumentsTable.clear
   );
+  const fetchAllocationsCycles = useStoreActions(
+    (actions) => actions.GeographyAllocationsCycles.fetch
+  );
+  const fetchAnnualResultsCycles = useStoreActions(
+    (actions) => actions.GeographyAnnualResultsCycles.fetch
+  );
+  const fetchDisbursementsCycles = useStoreActions(
+    (actions) => actions.GeographyDisbursementsCycles.fetch
+  );
+  const fetchExpendituresCycles = useStoreActions(
+    (actions) => actions.GeographyExpendituresCycles.fetch
+  );
+  const fetchEligibilityCycles = useStoreActions(
+    (actions) => actions.GeographyEligibilityCycles.fetch
+  );
+  const fetchPledgesContributionsCycles = useStoreActions(
+    (actions) => actions.GeographyPledgesContributionsCycles.fetch
+  );
+  const fetchFundingRequestsCycles = useStoreActions(
+    (actions) => actions.GeographyFundingRequestsCycles.fetch
+  );
+  const fetchBudgetsCycles = useStoreActions(
+    (actions) => actions.GeographyBudgetsCycles.fetch
+  );
+  const clearAllocationsCycles = useStoreActions(
+    (actions) => actions.GeographyAllocationsCycles.clear
+  );
+  const clearAnnualResultsCycles = useStoreActions(
+    (actions) => actions.GeographyAnnualResultsCycles.clear
+  );
+  const clearDisbursementsCycles = useStoreActions(
+    (actions) => actions.GeographyDisbursementsCycles.clear
+  );
+  const clearExpendituresCycles = useStoreActions(
+    (actions) => actions.GeographyExpendituresCycles.clear
+  );
+  const clearEligibilityCycles = useStoreActions(
+    (actions) => actions.GeographyEligibilityCycles.clear
+  );
+  const clearPledgesContributionsCycles = useStoreActions(
+    (actions) => actions.GeographyPledgesContributionsCycles.clear
+  );
+  const clearFundingRequestsCycles = useStoreActions(
+    (actions) => actions.GeographyFundingRequestsCycles.clear
+  );
+  const clearBudgetsCycles = useStoreActions(
+    (actions) => actions.GeographyBudgetsCycles.clear
+  );
 
   const loading = React.useMemo(() => {
     switch (`/${params.tab}`) {
@@ -419,6 +467,30 @@ export const Location: React.FC = () => {
       fetchResultsDocumentsTable({
         filterString: `types=Profile&geographies=${params.id}`,
       });
+      fetchAllocationsCycles({
+        filterString: `geographies=${params.id}`,
+      });
+      fetchAnnualResultsCycles({
+        filterString: `geographies=${params.id}`,
+      });
+      fetchDisbursementsCycles({
+        filterString: `geographies=${params.id}`,
+      });
+      fetchExpendituresCycles({
+        filterString: `geographies=${params.id}`,
+      });
+      fetchEligibilityCycles({
+        filterString: `geographies=${params.id}`,
+      });
+      fetchPledgesContributionsCycles({
+        filterString: `geographies=${params.id}`,
+      });
+      fetchFundingRequestsCycles({
+        filterString: `geographies=${params.id}`,
+      });
+      fetchBudgetsCycles({
+        filterString: `geographies=${params.id}`,
+      });
     }
   }, [params.id]);
 
@@ -462,6 +534,14 @@ export const Location: React.FC = () => {
       clearResultStats();
       clearResultsTable();
       clearResultsDocumentsTable();
+      clearAllocationsCycles();
+      clearAnnualResultsCycles();
+      clearDisbursementsCycles();
+      clearExpendituresCycles();
+      clearEligibilityCycles();
+      clearPledgesContributionsCycles();
+      clearFundingRequestsCycles();
+      clearBudgetsCycles();
     };
   }, []);
 

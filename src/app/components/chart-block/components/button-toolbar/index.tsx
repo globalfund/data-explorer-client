@@ -4,6 +4,7 @@ import { appColors } from "app/theme";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Tooltip from "@mui/material/Tooltip";
+import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import { exportChart } from "app/utils/exportChart";
@@ -11,11 +12,15 @@ import ClickAwayListener from "@mui/material/ClickAwayListener";
 import { ReactComponent as InfoIcon } from "app/assets/vectors/Info_GreyBG.svg";
 import { ReactComponent as ShareIcon } from "app/assets/vectors/Share_GreyBG.svg";
 import { ReactComponent as DownloadIcon } from "app/assets/vectors/Download_GreyBG.svg";
-import { ReactComponent as FavoriteIcon } from "app/assets/vectors/Favorite_GreyBG.svg";
+// import { ReactComponent as FavoriteIcon } from "app/assets/vectors/Favorite_GreyBG.svg";
 
 interface ChartBlockButtonToolbarProps {
   hashId: string;
   blockId: string;
+}
+
+interface InfoPanelProps {
+  close: () => void;
 }
 
 const DownloadPanel: React.FC<ChartBlockButtonToolbarProps> = (
@@ -28,10 +33,10 @@ const DownloadPanel: React.FC<ChartBlockButtonToolbarProps> = (
   const handleButtonClick = (type: "pdf" | "png") => () => {
     exportChart(props.blockId || "", type)
       .then(() => {
-        setFeedbackMessage(`Chart downloaded as ${type.toUpperCase()}!`);
+        setFeedbackMessage(`Asset downloaded as ${type.toUpperCase()}.`);
       })
       .catch(() => {
-        setFeedbackMessage("Oops, something went wrong!");
+        setFeedbackMessage("Oops, something went wrong.");
       });
   };
 
@@ -49,7 +54,6 @@ const DownloadPanel: React.FC<ChartBlockButtonToolbarProps> = (
         <Box
           sx={{
             lineHeight: 1.2,
-            textTransform: "capitalize",
           }}
         >
           {feedbackMessage}
@@ -91,14 +95,6 @@ const SharePanel: React.FC<ChartBlockButtonToolbarProps> = (
     }
   }, [feedbackMessage]);
 
-  React.useEffect(() => {
-    if (feedbackMessage) {
-      setTimeout(() => {
-        setFeedbackMessage(null);
-      }, 3000);
-    }
-  }, [feedbackMessage]);
-
   return (
     <React.Fragment>
       {feedbackMessage && (
@@ -113,7 +109,7 @@ const SharePanel: React.FC<ChartBlockButtonToolbarProps> = (
       )}
       {!feedbackMessage && (
         <React.Fragment>
-          <Tooltip title="Not implemented yet">
+          {/* <Tooltip title="Not implemented yet">
             <Button
               disableRipple
               sx={{
@@ -131,25 +127,44 @@ const SharePanel: React.FC<ChartBlockButtonToolbarProps> = (
             >
               Embed code
             </Button>
-          </Tooltip>
-          <Button onClick={handleButtonClick("link")}>Link</Button>
+          </Tooltip> */}
+          <Button onClick={handleButtonClick("link")}>Share link</Button>
         </React.Fragment>
       )}
     </React.Fragment>
   );
 };
 
-const InfoPanel: React.FC = () => {
+const InfoPanel: React.FC<InfoPanelProps> = (props: InfoPanelProps) => {
   return (
-    <Box padding="16px" marginTop="24px" bgcolor="#F5F5F7" borderRadius="16px">
-      <Typography
-        color="#495057"
-        fontSize="10px"
-        fontWeight="700"
-        marginBottom="4px"
-      >
-        Note
-      </Typography>
+    <Box
+      top="-300px"
+      padding="16px"
+      marginTop="24px"
+      bgcolor="#F5F5F7"
+      borderRadius="16px"
+      position="absolute"
+    >
+      <Box display="flex" justifyContent="space-between" alignItems="center">
+        <Typography
+          color="#495057"
+          fontSize="10px"
+          fontWeight="700"
+          marginBottom="4px"
+        >
+          Note
+        </Typography>
+        <IconButton
+          onClick={props.close}
+          sx={{
+            padding: "4px",
+            marginTop: "-8px",
+            marginRight: "-8px",
+          }}
+        >
+          <CloseIcon fontSize="small" />
+        </IconButton>
+      </Box>
       <Typography color="#495057" fontSize="10px">
         Amounts are in the specified currency. Where noted, the USD-equivalent
         is presented for amounts in non-USD currencies. Expenitures made in
@@ -204,7 +219,7 @@ export const ChartBlockButtonToolbar: React.FC<ChartBlockButtonToolbarProps> = (
           </Box>
         );
       case "info":
-        return <InfoPanel />;
+        return <InfoPanel close={handleClose} />;
       default:
         return null;
     }
@@ -217,6 +232,8 @@ export const ChartBlockButtonToolbar: React.FC<ChartBlockButtonToolbarProps> = (
           gap="8px"
           width="100%"
           display="flex"
+          marginTop="40px"
+          position="relative"
           flexDirection="row"
           justifyContent="flex-end"
           sx={{
@@ -228,7 +245,18 @@ export const ChartBlockButtonToolbar: React.FC<ChartBlockButtonToolbarProps> = (
               background: "transparent",
               border: "1px solid #DFE3E5",
               "&:hover": {
-                borderColor: "#70777E",
+                background: "#000000",
+                borderColor: "#000000",
+                svg: {
+                  filter: "invert(1)",
+                },
+              },
+            },
+            "#active": {
+              background: "#000000",
+              borderColor: "#000000",
+              svg: {
+                filter: "invert(1)",
               },
             },
           }}
@@ -241,13 +269,14 @@ export const ChartBlockButtonToolbar: React.FC<ChartBlockButtonToolbarProps> = (
                 flexDirection="row"
                 sx={{
                   "& > button": {
-                    height: "32px",
+                    height: "30px",
                     fontSize: "14px",
                     fontWeight: "400",
-                    padding: "7px 24px",
-                    borderRadius: "8px",
+                    padding: "7px 12px",
+                    borderRadius: "4px",
                     textTransform: "none",
                     color: appColors.CHART_BLOCK_CYCLES.BUTTON_TEXT_COLOR,
+                    border: `1px solid ${appColors.CHART_BLOCK_CYCLES.BUTTON_BORDER_COLOR}`,
                     background:
                       appColors.CHART_BLOCK_CYCLES.BUTTON_BACKGROUND_COLOR,
                     "&:hover": {
@@ -259,11 +288,11 @@ export const ChartBlockButtonToolbar: React.FC<ChartBlockButtonToolbarProps> = (
                     },
                   },
                   "& > div": {
-                    height: "32px",
+                    height: "30px",
                     fontSize: "14px",
-                    fontWeight: "700",
-                    padding: "7px 24px",
-                    borderRadius: "8px",
+                    fontWeight: "400",
+                    padding: "7px 12px",
+                    borderRadius: "4px",
                     color: appColors.COMMON.WHITE,
                     background: appColors.COMMON.BLACK,
                   },
@@ -274,27 +303,33 @@ export const ChartBlockButtonToolbar: React.FC<ChartBlockButtonToolbarProps> = (
               <Divider
                 flexItem
                 orientation="vertical"
-                sx={{ borderColor: appColors.COMMON.BLACK }}
+                sx={{ borderColor: appColors.COMMON.BLACK, margin: "0 16px" }}
               />
             </React.Fragment>
           )}
-
           <Tooltip title="Info" onClick={handleButtonClick("info")}>
-            <IconButton>
+            <IconButton id={active === "info" ? "active" : ""}>
               <InfoIcon />
             </IconButton>
           </Tooltip>
+          {active === "info" && <InfoPanel close={handleClose} />}
           <Tooltip title="Share">
-            <IconButton onClick={handleButtonClick("share")}>
+            <IconButton
+              onClick={handleButtonClick("share")}
+              id={active === "share" ? "active" : ""}
+            >
               <ShareIcon />
             </IconButton>
           </Tooltip>
           <Tooltip title="Download">
-            <IconButton onClick={handleButtonClick("download")}>
+            <IconButton
+              onClick={handleButtonClick("download")}
+              id={active === "info" ? "download" : ""}
+            >
               <DownloadIcon />
             </IconButton>
           </Tooltip>
-          <Tooltip title="Favourite (Not implemented yet)">
+          {/* <Tooltip title="Favourite (Not implemented yet)">
             <IconButton
               disableRipple
               sx={{
@@ -307,10 +342,9 @@ export const ChartBlockButtonToolbar: React.FC<ChartBlockButtonToolbarProps> = (
             >
               <FavoriteIcon />
             </IconButton>
-          </Tooltip>
+          </Tooltip> */}
         </Box>
       </ClickAwayListener>
-      {active === "info" && <InfoPanel />}
     </React.Fragment>
   );
 };

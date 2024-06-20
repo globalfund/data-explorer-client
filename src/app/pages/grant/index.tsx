@@ -105,6 +105,7 @@ export const Grant: React.FC = () => {
   const fetchTargetsResults = useStoreActions(
     (actions) => actions.GrantTargetsResultsTable.fetch
   );
+  const fetchGrant = useStoreActions((actions) => actions.GrantInfo.fetch);
 
   const [dropdownSelected, setDropdownSelected] = React.useState<{
     code: string | number;
@@ -194,6 +195,16 @@ export const Grant: React.FC = () => {
     }
   }, [params.id, dropdownSelected]);
 
+  React.useEffect(() => {
+    if (params.id && dataGrant.periods.length === 0) {
+      fetchGrant({
+        routeParams: {
+          code: params.id,
+        },
+      });
+    }
+  }, [params.id, dataGrant.periods]);
+
   const tabs = React.useMemo(() => {
     const newTabs = [...GRANT_TABS];
     if (
@@ -258,6 +269,7 @@ export const Grant: React.FC = () => {
           link: `/${params.ip}${t.link}`,
         }))}
         dropdown={{
+          width: 280,
           handleDropdownChange,
           dropdownSelected: dropdownSelected?.name || "",
           dropdownItems: dataGrant.periods.map((p) => ({

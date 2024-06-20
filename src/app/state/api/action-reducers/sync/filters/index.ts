@@ -6,6 +6,7 @@ export const defaultAppliedFilters: AppliedFiltersModel = {
   locations: [] as string[],
   components: [] as string[],
   principalRecipientTypes: [] as string[],
+  principalRecipientSubTypes: [] as string[],
   principalRecipients: [] as string[],
   status: [] as string[],
   documentTypes: [] as string[],
@@ -21,6 +22,7 @@ export interface AppliedFiltersModel {
   locations: string[];
   components: string[];
   principalRecipientTypes: string[];
+  principalRecipientSubTypes: string[];
   principalRecipients: string[];
   status: string[];
   documentTypes: string[];
@@ -39,6 +41,8 @@ export interface AppliedFiltersStateModel {
   setComponents: Action<AppliedFiltersStateModel, string[]>;
   principalRecipientTypes: string[];
   setPrincipalRecipientTypes: Action<AppliedFiltersStateModel, string[]>;
+  principalRecipientSubTypes: string[];
+  setPrincipalRecipientSubTypes: Action<AppliedFiltersStateModel, string[]>;
   principalRecipients: string[];
   setPrincipalRecipients: Action<AppliedFiltersStateModel, string[]>;
   status: string[];
@@ -93,6 +97,11 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
     state.principalRecipientTypes = payload;
     state.appliedFiltersCount += payload.length;
   }),
+  principalRecipientSubTypes: [],
+  setPrincipalRecipientSubTypes: action((state, payload: string[]) => {
+    state.principalRecipientSubTypes = payload;
+    state.appliedFiltersCount += payload.length;
+  }),
   principalRecipients: [],
   setPrincipalRecipients: action((state, payload: string[]) => {
     state.principalRecipients = payload;
@@ -142,6 +151,7 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
     state.locations = payload.locations;
     state.components = payload.components;
     state.principalRecipientTypes = payload.principalRecipientTypes;
+    state.principalRecipientSubTypes = payload.principalRecipientSubTypes;
     state.principalRecipients = payload.principalRecipients;
     state.status = payload.status;
     state.replenishmentPeriods = payload.replenishmentPeriods;
@@ -155,6 +165,7 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
       payload.locations.length +
       payload.components.length +
       payload.principalRecipients.length +
+      payload.principalRecipientSubTypes.length +
       payload.principalRecipientTypes.length +
       payload.status.length +
       payload.replenishmentPeriods.length +
@@ -237,6 +248,18 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
           state.appliedFiltersCount -= 1;
         }
         break;
+      case "principalRecipientSubType":
+        if (payload.checked) {
+          state.principalRecipientSubTypes.push(payload.value);
+          state.appliedFiltersCount += 1;
+        } else {
+          state.principalRecipientSubTypes =
+            state.principalRecipientSubTypes.filter(
+              (item) => item !== payload.value
+            );
+          state.appliedFiltersCount -= 1;
+        }
+        break;
       case "principalRecipientType":
         if (payload.checked) {
           state.principalRecipientTypes.push(payload.value);
@@ -288,10 +311,15 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
           );
           break;
         case "principalRecipient":
+        case "principalRecipientSubType":
         case "principalRecipientType":
           state.principalRecipients = state.principalRecipients.filter(
             (item) => item !== payload.value
           );
+          state.principalRecipientSubTypes =
+            state.principalRecipientSubTypes.filter(
+              (item) => item !== payload.value
+            );
           state.principalRecipientTypes = state.principalRecipientTypes.filter(
             (item) => item !== payload.value
           );

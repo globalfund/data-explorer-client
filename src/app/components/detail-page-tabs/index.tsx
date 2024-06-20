@@ -40,13 +40,13 @@ export const DetailPageTabs: React.FC<DetailPageTabsProps> = (
     >
       {props.dropdown && (
         <Dropdown
-          width={223}
+          width={props.dropdown.width ?? 223}
           dropdownItems={props.dropdown.dropdownItems}
           dropdownSelected={props.dropdown.dropdownSelected}
           handleDropdownChange={props.dropdown.handleDropdownChange}
         />
       )}
-      <Box gap="16px" display="flex">
+      <Box gap="10px" display="flex">
         {props.tabs.map((tab) => (
           <ButtonTab
             key={tab.label}

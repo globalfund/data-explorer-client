@@ -18,6 +18,7 @@ const HeaderMenuButton = styled(Button)({
   fontWeight: "400",
   textAlign: "center",
   textTransform: "none",
+  color: colors.primary.black,
   "&:hover": {
     background: "transparent",
     textShadow: "-.35px -.35px 0 #000, .35px .35px #000",

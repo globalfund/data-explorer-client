@@ -76,6 +76,7 @@ export const RowCol = styled.div`
   font-size: 10px;
   min-height: 30px;
   max-height: 30px;
+  border-radius: 4px;
   align-items: center;
   justify-content: center;
   color: ${appColors.HEATMAP.CHART_TEXT_COLOR};

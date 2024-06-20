@@ -61,10 +61,10 @@ export const HomeResultsStats: React.FC<HomeResultsStatsProps> = (
       width="100%"
       display="flex"
       flexDirection="row"
-      justifyContent="space-between"
+      justifyContent="center"
       sx={{
         "> div": {
-          width: "calc(100% / 3 - 20px)",
+          width: "calc(100% / 3)",
         },
       }}
     >

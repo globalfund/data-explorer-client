@@ -63,7 +63,7 @@ export const LocationOverview: React.FC = () => {
               flexDirection: "column",
             }}
           >
-            <Box paddingBottom="29px">
+            <Box minHeight={110}>
               <Typography variant="body2" fontWeight="700" marginBottom="10px">
                 Fund Portfolio Manager
               </Typography>

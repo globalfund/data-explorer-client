@@ -71,9 +71,7 @@ export const ResultA = styled.a`
     }
 
     > svg {
-      > path {
-        fill: ${appColors.SEARCH.RESULT_HOVER_TEXT_COLOR};
-      }
+      filter: invert(1);
     }
   }
 

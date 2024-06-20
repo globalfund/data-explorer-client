@@ -180,6 +180,14 @@ export interface StoreModel {
   GeographyResultStats: ApiCallModel;
   GeographyResultsTable: ApiCallModel;
   GeographyResultsDocumentsTable: ApiCallModel;
+  GeographyAllocationsCycles: ApiCallModel;
+  GeographyFundingRequestsCycles: ApiCallModel;
+  GeographyAnnualResultsCycles: ApiCallModel;
+  GeographyBudgetsCycles: ApiCallModel;
+  GeographyPledgesContributionsCycles: ApiCallModel;
+  GeographyDisbursementsCycles: ApiCallModel;
+  GeographyExpendituresCycles: ApiCallModel;
+  GeographyEligibilityCycles: ApiCallModel;
   // grant
   GrantInfo: ApiCallModel;
   GrantOverview: ApiCallModel;

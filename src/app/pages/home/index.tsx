@@ -36,6 +36,7 @@ import {
   getRange,
   getFinancialValueWithMetricPrefix,
 } from "app/utils/getFinancialValueWithMetricPrefix";
+import { appColors } from "app/theme";
 
 export const Home: React.FC = () => {
   const [chart1Cycles, setChart1Cycles] = React.useState<CycleProps[]>([]);
@@ -225,14 +226,17 @@ export const Home: React.FC = () => {
         flexDirection="row"
         sx={{
           "& > button": {
-            padding: "0",
-            width: "32px",
+            width: "40px",
             height: "32px",
-            fontSize: "12px",
-            borderRadius: "8px",
+            fontSize: "16px",
+            borderRadius: "4px",
+            border: `1px solid ${appColors.CHART_BLOCK_CYCLES.BUTTON_BORDER_COLOR}`,
             "&:hover": {
-              color: "#fff",
-              background: "#000",
+              color: appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_TEXT_COLOR,
+              background:
+                appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_BACKGROUND_COLOR,
+              borderColor:
+                appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_BACKGROUND_COLOR,
             },
           },
         }}
@@ -240,8 +244,18 @@ export const Home: React.FC = () => {
         <IconButton
           onClick={() => setChart5Unit("percentage")}
           sx={{
-            color: chart5Unit === "percentage" ? "#fff" : "#000",
-            background: chart5Unit === "percentage" ? "#000" : "#F1F3F4",
+            color:
+              chart5Unit === "percentage"
+                ? appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_TEXT_COLOR
+                : appColors.CHART_BLOCK_CYCLES.BUTTON_TEXT_COLOR,
+            background:
+              chart5Unit === "percentage"
+                ? appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_BACKGROUND_COLOR
+                : appColors.CHART_BLOCK_CYCLES.BUTTON_BACKGROUND_COLOR,
+            borderColor:
+              chart5Unit === "percentage"
+                ? appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_BACKGROUND_COLOR
+                : appColors.CHART_BLOCK_CYCLES.BUTTON_BORDER_COLOR,
           }}
         >
           %
@@ -249,8 +263,18 @@ export const Home: React.FC = () => {
         <IconButton
           onClick={() => setChart5Unit("amount")}
           sx={{
-            color: chart5Unit === "amount" ? "#fff" : "#000",
-            background: chart5Unit === "amount" ? "#000" : "#F1F3F4",
+            color:
+              chart5Unit === "amount"
+                ? appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_TEXT_COLOR
+                : appColors.CHART_BLOCK_CYCLES.BUTTON_TEXT_COLOR,
+            background:
+              chart5Unit === "amount"
+                ? appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_BACKGROUND_COLOR
+                : appColors.CHART_BLOCK_CYCLES.BUTTON_BACKGROUND_COLOR,
+            borderColor:
+              chart5Unit === "amount"
+                ? appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_BACKGROUND_COLOR
+                : appColors.CHART_BLOCK_CYCLES.BUTTON_BORDER_COLOR,
           }}
         >
           $

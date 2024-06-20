@@ -97,12 +97,8 @@ export const PieChart: React.FC<PieChartProps> = (props: PieChartProps) => {
           label: {
             show: true,
             fontSize: "12px",
+            fontWeight: "bold",
             fontFamily: "'Inter', sans-serif",
-            formatter: (params: any) => {
-              if (params.name.length > 15)
-                return params.name.split(" ").join("\n");
-              return params.name;
-            },
           },
           labelLine: {
             length: 10,

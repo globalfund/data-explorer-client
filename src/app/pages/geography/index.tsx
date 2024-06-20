@@ -34,7 +34,13 @@ const GeoCategory: React.FC<GeoCategoryProps> = (props: GeoCategoryProps) => {
       </Typography>
       <Grid container spacing={2}>
         {props.items.map((item) => (
-          <Grid item key={item.name} sm={12} md={4} lg={2}>
+          <Grid
+            item
+            key={item.name}
+            sm={12}
+            md={props.items.length > 1 ? 4 : 12}
+            lg={props.items.length > 1 ? 2 : 12}
+          >
             <GeoSubCategory {...item} search={props.search} />
           </Grid>
         ))}

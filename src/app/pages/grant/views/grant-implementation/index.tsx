@@ -1,5 +1,6 @@
 import React from "react";
 import get from "lodash/get";
+import filter from "lodash/filter";
 import Box from "@mui/material/Box";
 import { appColors } from "app/theme";
 import Grid from "@mui/material/Grid";
@@ -77,14 +78,17 @@ export const GrantImplementation: React.FC = () => {
         flexDirection="row"
         sx={{
           "& > button": {
-            padding: "0",
-            width: "32px",
+            width: "40px",
             height: "32px",
-            fontSize: "12px",
-            borderRadius: "8px",
+            fontSize: "16px",
+            borderRadius: "4px",
+            border: `1px solid ${appColors.CHART_BLOCK_CYCLES.BUTTON_BORDER_COLOR}`,
             "&:hover": {
-              color: "#fff",
-              background: "#000",
+              color: appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_TEXT_COLOR,
+              background:
+                appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_BACKGROUND_COLOR,
+              borderColor:
+                appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_BACKGROUND_COLOR,
             },
           },
         }}
@@ -92,8 +96,18 @@ export const GrantImplementation: React.FC = () => {
         <IconButton
           onClick={() => setChart2Unit("percentage")}
           sx={{
-            color: chart2Unit === "percentage" ? "#fff" : "#000",
-            background: chart2Unit === "percentage" ? "#000" : "#F1F3F4",
+            color:
+              chart2Unit === "percentage"
+                ? appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_TEXT_COLOR
+                : appColors.CHART_BLOCK_CYCLES.BUTTON_TEXT_COLOR,
+            background:
+              chart2Unit === "percentage"
+                ? appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_BACKGROUND_COLOR
+                : appColors.CHART_BLOCK_CYCLES.BUTTON_BACKGROUND_COLOR,
+            borderColor:
+              chart2Unit === "percentage"
+                ? appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_BACKGROUND_COLOR
+                : appColors.CHART_BLOCK_CYCLES.BUTTON_BORDER_COLOR,
           }}
         >
           %
@@ -101,8 +115,18 @@ export const GrantImplementation: React.FC = () => {
         <IconButton
           onClick={() => setChart2Unit("amount")}
           sx={{
-            color: chart2Unit === "amount" ? "#fff" : "#000",
-            background: chart2Unit === "amount" ? "#000" : "#F1F3F4",
+            color:
+              chart2Unit === "amount"
+                ? appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_TEXT_COLOR
+                : appColors.CHART_BLOCK_CYCLES.BUTTON_TEXT_COLOR,
+            background:
+              chart2Unit === "amount"
+                ? appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_BACKGROUND_COLOR
+                : appColors.CHART_BLOCK_CYCLES.BUTTON_BACKGROUND_COLOR,
+            borderColor:
+              chart2Unit === "amount"
+                ? appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_BACKGROUND_COLOR
+                : appColors.CHART_BLOCK_CYCLES.BUTTON_BORDER_COLOR,
           }}
         >
           $
@@ -170,6 +194,17 @@ export const GrantImplementation: React.FC = () => {
     );
     return `US$${getFinancialValueWithMetricPrefix(dataFinancialValues.disbursement, range.index, 2)} ${range.full}`;
   }, [dataFinancialValues.disbursement]);
+
+  const totalBudget = React.useMemo(() => {
+    let total = 0;
+    filter(dataBudgetSankeyChart.links, { source: "Total budget" }).forEach(
+      (item) => {
+        total += item.value;
+      }
+    );
+    const range = getRange([{ value: total }], ["value"]);
+    return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${range.full}`;
+  }, [dataBudgetSankeyChart]);
 
   const fullWidthDivider = (
     <React.Fragment>
@@ -324,10 +359,10 @@ export const GrantImplementation: React.FC = () => {
       {showDisbursementsBarChart && fullWidthDivider}
       <ChartBlock
         id="budget"
-        title="Budget"
+        title={totalBudget}
+        subtitle="Grant Budgets"
         empty={!showBudgetSankeyChart}
-        subtitle="Investments and Modules"
-        text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
+        text="Our Grant Implementation programs are developed meticulously, each Grant follows a well executed plan, always supervised by TGF Implementation team."
       >
         <Grid
           container

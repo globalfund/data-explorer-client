@@ -371,6 +371,7 @@ export const GrantImplementationPage: React.FC = () => {
     ...state.AppliedFiltersState.components,
     ...state.AppliedFiltersState.locations,
     ...state.AppliedFiltersState.principalRecipientTypes,
+    ...state.AppliedFiltersState.principalRecipientSubTypes,
     ...state.AppliedFiltersState.principalRecipients,
     ...state.AppliedFiltersState.status,
   ]);
@@ -406,6 +407,7 @@ export const GrantImplementationPage: React.FC = () => {
       components: [],
       locations: [],
       principalRecipients: [],
+      principalRecipientSubTypes: [],
       principalRecipientTypes: [],
       status: [],
     });
@@ -419,6 +421,7 @@ export const GrantImplementationPage: React.FC = () => {
           locations: [],
           components: [],
           principalRecipients: [],
+          principalRecipientSubTypes: [],
           principalRecipientTypes: [],
           status: [],
         });
@@ -430,6 +433,7 @@ export const GrantImplementationPage: React.FC = () => {
           locations: [],
           components: [],
           principalRecipients: [],
+          principalRecipientSubTypes: [],
           principalRecipientTypes: [],
           status: [],
         });
@@ -441,6 +445,7 @@ export const GrantImplementationPage: React.FC = () => {
           locations: [],
           components: [],
           principalRecipients: [],
+          principalRecipientSubTypes: [],
           principalRecipientTypes: [],
           status: [],
         });
@@ -452,6 +457,7 @@ export const GrantImplementationPage: React.FC = () => {
           locations: [],
           components: [],
           principalRecipients: [],
+          principalRecipientSubTypes: [],
           principalRecipientTypes: [],
           status: [],
         });
@@ -510,6 +516,14 @@ export const GrantImplementationPage: React.FC = () => {
             );
           }
           break;
+        case "principalRecipientSubType":
+          if (checked) {
+            state.principalRecipientSubTypes.push(value);
+          } else {
+            state.principalRecipientSubTypes =
+              state.principalRecipientSubTypes.filter((item) => item !== value);
+          }
+          break;
         case "principalRecipientType":
           if (checked) {
             state.principalRecipientTypes.push(value);
@@ -533,6 +547,7 @@ export const GrantImplementationPage: React.FC = () => {
         ...state.locations,
         ...state.components,
         ...state.principalRecipients,
+        ...state.principalRecipientSubTypes,
         ...state.principalRecipientTypes,
         ...state.status,
       ]);
@@ -575,6 +590,10 @@ export const GrantImplementationPage: React.FC = () => {
               (item) => item !== value
             );
             break;
+          case "principalRecipientSubType":
+            state.principalRecipientSubTypes =
+              state.principalRecipientSubTypes.filter((item) => item !== value);
+            break;
           case "principalRecipientType":
             state.principalRecipientTypes =
               state.principalRecipientTypes.filter((item) => item !== value);
@@ -591,6 +610,7 @@ export const GrantImplementationPage: React.FC = () => {
         ...state.locations,
         ...state.components,
         ...state.principalRecipients,
+        ...state.principalRecipientSubTypes,
         ...state.principalRecipientTypes,
         ...state.status,
       ]);
@@ -974,6 +994,9 @@ export const GrantImplementationPage: React.FC = () => {
     if (appliedFiltersData.principalRecipientTypes.length > 0) {
       filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientTypes=${encodeURIComponent(appliedFiltersData.principalRecipientTypes.join(","))}`;
     }
+    if (appliedFiltersData.principalRecipientSubTypes.length > 0) {
+      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientSubTypes=${encodeURIComponent(appliedFiltersData.principalRecipientSubTypes.join(","))}`;
+    }
     if (appliedFiltersData.principalRecipients.length > 0) {
       filterString += `${filterString.length > 0 ? "&" : ""}principalRecipients=${encodeURIComponent(appliedFiltersData.principalRecipients.join(","))}`;
     }
@@ -1004,6 +1027,14 @@ export const GrantImplementationPage: React.FC = () => {
       ].length > 0
     ) {
       filterString += `${filterString.length > 0 ? "&" : ""}principalRecipients=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipients, ...chart1AppliedFiltersData.principalRecipients]).join(","))}`;
+    }
+    if (
+      [
+        ...appliedFiltersData.principalRecipientSubTypes,
+        ...chart1AppliedFiltersData.principalRecipientSubTypes,
+      ].length > 0
+    ) {
+      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientSubTypes=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipientSubTypes, ...chart1AppliedFiltersData.principalRecipientSubTypes]).join(","))}`;
     }
     if (
       [
@@ -1046,6 +1077,14 @@ export const GrantImplementationPage: React.FC = () => {
     }
     if (
       [
+        ...appliedFiltersData.principalRecipientSubTypes,
+        ...chart2AppliedFiltersData.principalRecipientSubTypes,
+      ].length > 0
+    ) {
+      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientSubTypes=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipientSubTypes, ...chart2AppliedFiltersData.principalRecipientSubTypes]).join(","))}`;
+    }
+    if (
+      [
         ...appliedFiltersData.principalRecipientTypes,
         ...chart2AppliedFiltersData.principalRecipientTypes,
       ].length > 0
@@ -1085,6 +1124,14 @@ export const GrantImplementationPage: React.FC = () => {
     }
     if (
       [
+        ...appliedFiltersData.principalRecipientSubTypes,
+        ...chart3AppliedFiltersData.principalRecipientSubTypes,
+      ].length > 0
+    ) {
+      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientSubTypes=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipientSubTypes, ...chart3AppliedFiltersData.principalRecipientSubTypes]).join(","))}`;
+    }
+    if (
+      [
         ...appliedFiltersData.principalRecipientTypes,
         ...chart3AppliedFiltersData.principalRecipientTypes,
       ].length > 0
@@ -1121,6 +1168,14 @@ export const GrantImplementationPage: React.FC = () => {
       ].length > 0
     ) {
       filterString += `${filterString.length > 0 ? "&" : ""}principalRecipients=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipients, ...chart4AppliedFiltersData.principalRecipients]).join(","))}`;
+    }
+    if (
+      [
+        ...appliedFiltersData.principalRecipientSubTypes,
+        ...chart4AppliedFiltersData.principalRecipientSubTypes,
+      ].length > 0
+    ) {
+      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientSubTypes=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipientSubTypes, ...chart4AppliedFiltersData.principalRecipientSubTypes]).join(","))}`;
     }
     if (
       [

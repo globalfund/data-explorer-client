@@ -77,6 +77,7 @@ export const Grants: React.FC = () => {
     ...state.AppliedFiltersState.components,
     ...state.AppliedFiltersState.locations,
     ...state.AppliedFiltersState.principalRecipientTypes,
+    ...state.AppliedFiltersState.principalRecipientSubTypes,
     ...state.AppliedFiltersState.principalRecipients,
     ...state.AppliedFiltersState.status,
   ]);
@@ -116,6 +117,7 @@ export const Grants: React.FC = () => {
       locations: [],
       components: [],
       principalRecipients: [],
+      principalRecipientSubTypes: [],
       principalRecipientTypes: [],
       status: [],
     });
@@ -193,7 +195,7 @@ export const Grants: React.FC = () => {
 
   const pagination = React.useMemo(
     () => (
-      <Box gap="8px" padding="0 32px" display="flex" alignItems="center">
+      <Box gap="8px" display="flex" alignItems="center">
         <Typography fontSize="12px">
           {(page - 1) * 9 + 1}-{page * 9} of {count}
         </Typography>
@@ -270,6 +272,9 @@ export const Grants: React.FC = () => {
     }
     if (appliedFiltersData.principalRecipientTypes.length > 0) {
       filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientTypes=${encodeURIComponent(appliedFiltersData.principalRecipientTypes.join(","))}`;
+    }
+    if (appliedFiltersData.principalRecipientSubTypes.length > 0) {
+      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientSubTypes=${encodeURIComponent(appliedFiltersData.principalRecipientSubTypes.join(","))}`;
     }
     if (appliedFiltersData.principalRecipients.length > 0) {
       filterString += `${filterString.length > 0 ? "&" : ""}principalRecipients=${encodeURIComponent(appliedFiltersData.principalRecipients.join(","))}`;
@@ -420,10 +425,10 @@ export const Grants: React.FC = () => {
               )}
               <IconButton
                 sx={{
-                  width: "32px",
-                  height: "32px",
+                  height: "30px",
                   display: "flex",
-                  borderRadius: "8px",
+                  padding: "8px 12px",
+                  borderRadius: "4px",
                   alignItems: "center",
                   justifyContent: "center",
                   background: showSearch ? "#000" : "transparent",
@@ -447,16 +452,6 @@ export const Grants: React.FC = () => {
                   <SearchIcon htmlColor="#000" fontSize="small" />
                 )}
               </IconButton>
-              <Divider
-                orientation="vertical"
-                flexItem
-                sx={{
-                  height: "10px",
-                  margin: "0 8px",
-                  alignSelf: "center",
-                  borderColor: "#000",
-                }}
-              />
             </React.Fragment>
             <Dropdown
               dropdownSelected={view}

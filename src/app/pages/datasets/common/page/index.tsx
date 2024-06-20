@@ -6,7 +6,6 @@ import Popover from "@mui/material/Popover";
 import Divider from "@mui/material/Divider";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import { Breadcrumbs } from "app/components/breadcrumbs";
 import { FilterPanel } from "app/components/filters/panel";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import {
@@ -42,7 +41,6 @@ export const DatasetPage: React.FC<DatasetPageProps> = (
 
   return (
     <Box padding="50px 0">
-      <Breadcrumbs items={props.breadcrumbs} />
       <Typography variant="h1">{props.title}</Typography>
       <Typography variant="h6">{props.subtitle}</Typography>
       <Divider

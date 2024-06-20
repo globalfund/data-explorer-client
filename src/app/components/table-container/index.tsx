@@ -151,24 +151,33 @@ export const TableContainer: React.FC<TableContainerProps> = (
           justifyContent="flex-end"
           sx={{
             "& > button": {
-              padding: "0px",
+              padding: "0",
+              width: "40px",
+              height: "30px",
+              borderRadius: "4px",
+              background: "transparent",
+              border: "1px solid #DFE3E5",
+              "&:hover": {
+                background: "#000000",
+                borderColor: "#000000",
+                svg: {
+                  filter: "invert(1)",
+                },
+              },
             },
           }}
         >
+          <IconButton disableRipple>
+            <SearchIcon />
+          </IconButton>
           <IconButton disableRipple onClick={fullscreen}>
             <FullscreenIcon />
           </IconButton>
           <IconButton disableRipple onClick={handleColumnsMenuClick}>
             <ColumnsIcon />
           </IconButton>
-          <IconButton disableRipple>
-            <FilterIcon />
-          </IconButton>
           <IconButton disableRipple onClick={download}>
             <DownloadIcon />
-          </IconButton>
-          <IconButton disableRipple>
-            <SearchIcon />
           </IconButton>
           <Popover
             anchorEl={anchorEl}

@@ -36,7 +36,7 @@ export const ResourceMobilization: React.FC = () => {
   );
   const cycles = useStoreState(
     (state) =>
-      get(state.PledgesContributionsCycles, "data.data", []) as {
+      get(state.GeographyPledgesContributionsCycles, "data.data", []) as {
         name: string;
         value: string;
       }[]
@@ -80,9 +80,9 @@ export const ResourceMobilization: React.FC = () => {
         loading={loadingRMBarChart}
         selectedCycles={chart1Cycles}
         title={`US$${totalContribution}`}
-        empty={dataRMBarChart.length === 0}
         subtitle="Funds Contributed to date"
         handleCycleChange={handleChartCycleChange}
+        empty={dataRMBarChart.length === 0 && chart1Cycles.length === 0}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
         <BarChart

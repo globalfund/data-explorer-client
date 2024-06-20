@@ -5,14 +5,15 @@ import filter from "lodash/filter";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { appColors } from "app/theme";
+import findIndex from "lodash/findIndex";
 import Divider from "@mui/material/Divider";
 import Tooltip from "@mui/material/Tooltip";
 import { Table } from "app/components/table";
 import { useParams } from "react-router-dom";
-import { CYCLES } from "app/pages/home/data";
 import Typography from "@mui/material/Typography";
 import Info from "@mui/icons-material/InfoOutlined";
 import { ChartBlock } from "app/components/chart-block";
+import { CYCLES, CycleProps } from "app/pages/home/data";
 import { RadialChart } from "app/components/charts/radial";
 import useUpdateEffect from "react-use/lib/useUpdateEffect";
 import { RaceBarChart } from "app/components/charts/race-bar";
@@ -32,8 +33,8 @@ import {
 export const AccessToFunding: React.FC = () => {
   const params = useParams<{ id: string; tab: string }>();
 
-  const [chart1Cycle, setChart1Cycle] = React.useState(CYCLES[0]);
-  const [chart2Cycle, setChart2Cycle] = React.useState(CYCLES[0]);
+  const [chart1Cycles, setChart1Cycles] = React.useState<CycleProps[]>([]);
+  const [chart2Cycles, setChart2Cycles] = React.useState<CycleProps[]>([]);
 
   const dataAllocationsRadialChart = useStoreState(
     (state) =>
@@ -80,7 +81,7 @@ export const AccessToFunding: React.FC = () => {
   );
   const allocationsCycles = useStoreState(
     (state) =>
-      get(state.AllocationsCycles, "data.data", []).map((c: any) => ({
+      get(state.GeographyAllocationsCycles, "data.data", []).map((c: any) => ({
         name: c.value,
         value: c.value,
       })) as {
@@ -89,6 +90,31 @@ export const AccessToFunding: React.FC = () => {
       }[]
   );
   const fundingRequestsCycles = useStoreState(
+    (state) =>
+      filter(
+        get(state.GeographyFundingRequestsCycles, "data.data", []).map(
+          (c: any) => ({
+            name: c.value,
+            value: c.value,
+          })
+        ),
+        (c: any) => c.value
+      ) as {
+        name: string;
+        value: string;
+      }[]
+  );
+  const allocationsCyclesAll = useStoreState(
+    (state) =>
+      get(state.AllocationsCycles, "data.data", []).map((c: any) => ({
+        name: c.value,
+        value: c.value,
+      })) as {
+        name: string;
+        value: string;
+      }[]
+  );
+  const fundingRequestsCyclesAll = useStoreState(
     (state) =>
       filter(
         get(state.FundingRequestsCycles, "data.data", []).map((c: any) => ({
@@ -108,10 +134,10 @@ export const AccessToFunding: React.FC = () => {
   ) => {
     switch (index) {
       case 1:
-        setChart1Cycle(cycle);
+        setChart1Cycles([cycle]);
         break;
       case 2:
-        setChart2Cycle(cycle);
+        setChart2Cycles([cycle]);
         break;
       default:
         break;
@@ -119,24 +145,20 @@ export const AccessToFunding: React.FC = () => {
   };
 
   useUpdateEffect(() => {
-    if (params.id) {
+    if (params.id && chart1Cycles.length > 0) {
       let filterString = "";
-      if (chart1Cycle.value !== CYCLES[0].value) {
-        filterString = `periods=${chart1Cycle.value}`;
-      }
+      filterString = `periods=${chart1Cycles[0].value}`;
       fetchAllocationsRadialChart({
         filterString,
         routeParams: { code: params.id },
       });
     }
-  }, [chart1Cycle]);
+  }, [chart1Cycles]);
 
   useUpdateEffect(() => {
-    if (params.id) {
+    if (params.id && chart2Cycles.length > 0) {
       let filterString = "";
-      if (chart1Cycle.value !== CYCLES[0].value) {
-        filterString += `&periods=${chart2Cycle.value}`;
-      }
+      filterString += `&periods=${chart2Cycles[0].value.split("-")[0]}`;
       fetchFundingRequestsTable({
         filterString,
         routeParams: {
@@ -144,25 +166,27 @@ export const AccessToFunding: React.FC = () => {
         },
       });
     }
-  }, [chart2Cycle]);
+  }, [chart2Cycles]);
 
   React.useEffect(() => {
-    if (
-      allocationsCycles.length > 0 &&
-      chart1Cycle.value !==
-        allocationsCycles[allocationsCycles.length - 1].value
-    ) {
-      setChart1Cycle(allocationsCycles[allocationsCycles.length - 1]);
+    if (allocationsCycles.length > 0) {
+      setChart1Cycles((prev) => {
+        if (prev.length === 0) {
+          return [allocationsCycles[allocationsCycles.length - 1]];
+        }
+        return prev;
+      });
     }
   }, [allocationsCycles]);
 
   React.useEffect(() => {
-    if (
-      fundingRequestsCycles.length > 0 &&
-      chart2Cycle.value !==
-        fundingRequestsCycles[fundingRequestsCycles.length - 1].value
-    ) {
-      setChart2Cycle(fundingRequestsCycles[fundingRequestsCycles.length - 1]);
+    if (fundingRequestsCycles.length > 0) {
+      setChart2Cycles((prev) => {
+        if (prev.length === 0) {
+          return [fundingRequestsCycles[fundingRequestsCycles.length - 1]];
+        }
+        return prev;
+      });
     }
   }, [fundingRequestsCycles]);
 
@@ -221,15 +245,16 @@ export const AccessToFunding: React.FC = () => {
     <Box gap="24px" display="flex" flexDirection="column">
       <ChartBlock
         id="allocation"
-        cycles={allocationsCycles}
         title={`US$${totalAllocationAmount}`}
-        selectedCycles={[chart1Cycle]}
+        selectedCycles={chart1Cycles}
         loading={loadingAllocationsRadialChart}
         handleCycleChange={(value) => handleChartCycleChange(value, 1)}
-        subtitle={`Funds Allocated ${
-          chart1Cycle !== CYCLES[0] ? ` ${chart1Cycle.value}` : ""
-        }`}
+        subtitle={`Funds Allocated ${get(chart1Cycles, "[0].value", "")}`}
         empty={!showAllocationRadialChart}
+        cycles={allocationsCyclesAll.map((c) => ({
+          ...c,
+          disabled: findIndex(allocationsCycles, { value: c.value }) === -1,
+        }))}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
         <RadialChart
@@ -250,8 +275,7 @@ export const AccessToFunding: React.FC = () => {
               US${totalAllocationAmount}
             </Typography>
             <Typography variant="subtitle2">
-              Total Allocation
-              {chart1Cycle !== CYCLES[0] ? ` ${chart1Cycle.value}` : ""}
+              Total Allocation {get(chart1Cycles, "[0].value", "")}
             </Typography>
           </Box>
         </Box>
@@ -261,13 +285,16 @@ export const AccessToFunding: React.FC = () => {
         noSplitText
         noBottomToolbar
         id="funding-requests"
-        selectedCycles={[chart2Cycle]}
-        cycles={fundingRequestsCycles}
+        selectedCycles={chart2Cycles}
         loading={loadingFundingRequestsTable}
         title={`${dataFundingRequestsTable._children.length} Funding Requests`}
         subtitle="Submitted to date"
         empty={!showFundingRequestsTable}
         handleCycleChange={(value) => handleChartCycleChange(value, 2)}
+        cycles={fundingRequestsCyclesAll.map((c) => ({
+          ...c,
+          disabled: findIndex(fundingRequestsCycles, { value: c.value }) === -1,
+        }))}
         text="The Funding Request explains how the applicant would use Global Fund allocated funds, if approved. Funding Requests are reviewed by the Global Fund’s Technical Review Panel (TRP). Once approved by the TRP, the Funding Request is turned into one or more grants through the grant-making negotiation. The Grant Approvals Committee (GAC) reviews the final version of each grant and recommends implementation-ready grants to the Global Fund Board for approval. Funding Requests are submitted for internal Global Fund review, but the final grant is the legally-binding agreement.<br/><br/>Documents for a specific funding request can be downloaded by clicking the cloud icon. Documents from the 2017-2019 Allocation Period and earlier can be found by clicking on the “Documents’ tab above. If a Funding Request is not visible for the 2023-2025 Allocation Period and the country received an Allocation, it likely means that the applicant has not yet registered for a TRP Window."
       >
         <TableContainer
@@ -470,9 +497,8 @@ export const AccessToFunding: React.FC = () => {
         id="documents"
         noBottomToolbar
         title="Documents"
-        subtitle="Applications"
+        subtitle=""
         empty={!showDocumentsTable}
-        text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
         <Box height="64px" />
         <TableContainer

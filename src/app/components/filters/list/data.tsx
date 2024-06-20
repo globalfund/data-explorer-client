@@ -109,6 +109,7 @@ export function getAppliedFilters(
       return appliedFilters.locations;
     case "principalRecipient":
       if (level === 0) return appliedFilters.principalRecipientTypes;
+      if (level === 1) return appliedFilters.principalRecipientSubTypes;
       return appliedFilters.principalRecipients;
     case "component":
       return appliedFilters.components;

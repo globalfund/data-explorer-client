@@ -280,7 +280,7 @@ const theme = createTheme({
         root: {
           padding: 0,
           minHeight: "30px",
-          maxHeight: "30px",
+          maxHeight: "50px",
           flexDirection: "row",
           "&.Mui-expanded": {
             minHeight: "30px",
@@ -373,6 +373,9 @@ const theme = createTheme({
     },
     MuiButton: {
       styleOverrides: {
+        root: {
+          color: colors.primary.black,
+        },
         outlined: {
           fontWeight: "400",
           padding: "2px 12px",
@@ -384,16 +387,23 @@ const theme = createTheme({
     MuiTooltip: {
       styleOverrides: {
         arrow: {
-          color: colors.primary.white,
+          color: colors.primary.black,
         },
         tooltip: {
           fontSize: "12px",
           fontWeight: "400",
           fontFamily: "Inter",
           borderRadius: "4px",
-          color: colors.primary.black,
-          background: colors.primary.white,
+          color: colors.primary.white,
+          background: colors.primary.black,
           boxShadow: "0px 2px 7px 0px rgba(0, 0, 0, 0.12)",
+        },
+      },
+    },
+    MuiIcon: {
+      styleOverrides: {
+        colorPrimary: {
+          color: colors.primary.black,
         },
       },
     },
@@ -759,8 +769,10 @@ export const appColors = {
     DROPDOWN_SCROLLBAR_TRACK_BACKGROUND_COLOR: "transparent",
     DROPDOWN_SCROLLBAR_THUMB_BACKGROUND_COLOR: BLACK,
     DROPDOWN_ITEM_BACKGROUND_COLOR: BLACK,
-    DROPDOWN_ITEM_HOVER_BACKGROUND_COLOR: "#CFD4DA",
-    DROPDOWN_ITEM_ACTIVE_BACKGROUND_COLOR: "#CFD4DA",
+    DROPDOWN_ITEM_HOVER_COLOR: "#ffffff",
+    DROPDOWN_ITEM_ACTIVE_COLOR: "#ffffff",
+    DROPDOWN_ITEM_HOVER_BACKGROUND_COLOR: "#000000",
+    DROPDOWN_ITEM_ACTIVE_BACKGROUND_COLOR: "#000000",
     DROPDOWN_BUTTON_BACKGROUND_COLOR: "transparent",
     DROPDOWN_BUTTON_BORDER_COLOR: "#DFE3E5",
     DROPDOWN_BUTTON_TEXT_HOVER_COLOR: WHITE,
@@ -901,9 +913,10 @@ export const appColors = {
   },
   CHART_BLOCK_CYCLES: {
     BUTTON_TEXT_COLOR: BLACK,
-    BUTTON_BACKGROUND_COLOR: "#F1F3F4",
+    BUTTON_BACKGROUND_COLOR: WHITE,
     BUTTON_ACTIVE_TEXT_COLOR: WHITE,
     BUTTON_ACTIVE_BACKGROUND_COLOR: BLACK,
+    BUTTON_BORDER_COLOR: SECONDARY_COLOR_7,
   },
   SUNBURST: {
     ITEM_COLORS: [

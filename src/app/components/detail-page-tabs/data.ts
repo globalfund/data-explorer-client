@@ -8,6 +8,7 @@ export interface DetailPageTabsProps {
   activeTab?: string;
   tabs: DetailPageTabItem[];
   dropdown?: {
+    width?: number;
     dropdownSelected: string;
     handleDropdownChange: (value: string) => void;
     dropdownItems: { value: string; label: string }[];

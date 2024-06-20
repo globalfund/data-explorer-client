@@ -61,6 +61,7 @@ export const ChartBlockCycles: React.FC<ChartBlockCyclesProps> = (
       {props.cycles.map((cycle) => (
         <Button
           key={cycle.name}
+          disabled={cycle.disabled}
           onClick={handleCycleClick(cycle)}
           style={
             find(props.selectedCycles, { value: cycle.value })

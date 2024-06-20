@@ -1,9 +1,11 @@
 import React from "react";
 import get from "lodash/get";
 import sumBy from "lodash/sumBy";
+import filter from "lodash/filter";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { appColors } from "app/theme";
+import findIndex from "lodash/findIndex";
 import Divider from "@mui/material/Divider";
 import { useParams } from "react-router-dom";
 import { CYCLES, CycleProps } from "app/pages/home/data";
@@ -130,19 +132,40 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
   );
   const budgetsCycles = useStoreState(
     (state) =>
-      get(state.BudgetsCycles, "data.data", []) as {
+      get(state.GeographyBudgetsCycles, "data.data", []) as {
         name: string;
         value: string;
       }[]
   );
   const disbursementsCycles = useStoreState(
     (state) =>
-      get(state.DisbursementsCycles, "data.data", []) as {
+      get(state.GeographyDisbursementsCycles, "data.data", []) as {
         name: string;
         value: string;
       }[]
   );
   const expendituresCycles = useStoreState(
+    (state) =>
+      get(state.GeographyExpendituresCycles, "data.data", []) as {
+        name: string;
+        value: string;
+      }[]
+  );
+  const budgetsCyclesAll = useStoreState(
+    (state) =>
+      get(state.BudgetsCycles, "data.data", []) as {
+        name: string;
+        value: string;
+      }[]
+  );
+  const disbursementsCyclesAll = useStoreState(
+    (state) =>
+      get(state.DisbursementsCycles, "data.data", []) as {
+        name: string;
+        value: string;
+      }[]
+  );
+  const expendituresCyclesAll = useStoreState(
     (state) =>
       get(state.ExpendituresCycles, "data.data", []) as {
         name: string;
@@ -191,7 +214,19 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
   useUpdateEffect(() => {
     let filterString = `geographies=${params.id}`;
     if (chart1Cycles.length > 0) {
-      filterString += `&periods=${chart1Cycles.map((c) => c.value).join(",")}`;
+      const yearFrom: string[] = [];
+      const yearTo: string[] = [];
+      chart1Cycles.forEach((cycle) => {
+        const years = cycle.value.split(" - ");
+        yearFrom.push(years[0]);
+        yearTo.push(years[1]);
+      });
+      if (yearFrom.length > 0) {
+        filterString += `&years=${yearFrom.join(",")}`;
+      }
+      if (yearTo.length > 0) {
+        filterString += `${filterString.length > 0 ? "&" : ""}yearsTo=${yearTo.join(",")}`;
+      }
     }
     fetchDisbursementsLineChart({
       filterString,
@@ -235,14 +270,17 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
         flexDirection="row"
         sx={{
           "& > button": {
-            padding: "0",
-            width: "32px",
+            width: "40px",
             height: "32px",
-            fontSize: "12px",
-            borderRadius: "8px",
+            fontSize: "16px",
+            borderRadius: "4px",
+            border: `1px solid ${appColors.CHART_BLOCK_CYCLES.BUTTON_BORDER_COLOR}`,
             "&:hover": {
-              color: "#fff",
-              background: "#000",
+              color: appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_TEXT_COLOR,
+              background:
+                appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_BACKGROUND_COLOR,
+              borderColor:
+                appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_BACKGROUND_COLOR,
             },
           },
         }}
@@ -250,8 +288,18 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
         <IconButton
           onClick={() => setChart2Unit("percentage")}
           sx={{
-            color: chart2Unit === "percentage" ? "#fff" : "#000",
-            background: chart2Unit === "percentage" ? "#000" : "#F1F3F4",
+            color:
+              chart2Unit === "percentage"
+                ? appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_TEXT_COLOR
+                : appColors.CHART_BLOCK_CYCLES.BUTTON_TEXT_COLOR,
+            background:
+              chart2Unit === "percentage"
+                ? appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_BACKGROUND_COLOR
+                : appColors.CHART_BLOCK_CYCLES.BUTTON_BACKGROUND_COLOR,
+            borderColor:
+              chart2Unit === "percentage"
+                ? appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_BACKGROUND_COLOR
+                : appColors.CHART_BLOCK_CYCLES.BUTTON_BORDER_COLOR,
           }}
         >
           %
@@ -259,8 +307,18 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
         <IconButton
           onClick={() => setChart2Unit("amount")}
           sx={{
-            color: chart2Unit === "amount" ? "#fff" : "#000",
-            background: chart2Unit === "amount" ? "#000" : "#F1F3F4",
+            color:
+              chart2Unit === "amount"
+                ? appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_TEXT_COLOR
+                : appColors.CHART_BLOCK_CYCLES.BUTTON_TEXT_COLOR,
+            background:
+              chart2Unit === "amount"
+                ? appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_BACKGROUND_COLOR
+                : appColors.CHART_BLOCK_CYCLES.BUTTON_BACKGROUND_COLOR,
+            borderColor:
+              chart2Unit === "amount"
+                ? appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_BACKGROUND_COLOR
+                : appColors.CHART_BLOCK_CYCLES.BUTTON_BORDER_COLOR,
           }}
         >
           $
@@ -305,7 +363,7 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
 
   const pagination = React.useMemo(
     () => (
-      <Box gap="8px" padding="0 32px" display="flex" alignItems="center">
+      <Box gap="8px" display="flex" alignItems="center">
         <Typography fontSize="12px">
           {(props.page - 1) * 9 + 1}-{props.page * 9} of {countGrantsTable}
         </Typography>
@@ -330,6 +388,17 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
     ),
     [countGrantsTable, props.page]
   );
+
+  const totalBudget = React.useMemo(() => {
+    let total = 0;
+    filter(dataBudgetSankeyChart.links, { source: "Total budget" }).forEach(
+      (item) => {
+        total += item.value;
+      }
+    );
+    const range = getRange([{ value: total }], ["value"]);
+    return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${range.full}`;
+  }, [dataBudgetSankeyChart]);
 
   const fullWidthDivider = (
     <React.Fragment>
@@ -356,15 +425,19 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
       <ChartBlock
         id="disbursements"
         title={disbursementsTotal}
-        cycles={disbursementsCycles}
         selectedCycles={chart1Cycles}
         dropdownSelected={chart1Dropdown}
-        empty={!showDisbursementsLineChart}
         dropdownItems={CHART_1_DROPDOWN_ITEMS}
         loading={loadingDisbursementsLineChart}
         handleDropdownChange={setChart1Dropdown}
         subtitle={`Disbursed within ${countGrantsTable} Grants`}
         handleCycleChange={(value) => handleChartCycleChange(value, 1)}
+        empty={!showDisbursementsLineChart && chart1Cycles.length === 0}
+        cycles={disbursementsCyclesAll.map((c) => ({
+          name: c.value,
+          value: c.value,
+          disabled: findIndex(disbursementsCycles, { value: c.value }) === -1,
+        }))}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
         <LineChart {...dataDisbursementsLineChart} />
@@ -372,17 +445,21 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
       {showDisbursementsLineChart && fullWidthDivider}
       <ChartBlock
         id="budget"
-        title="Budget"
-        cycles={budgetsCycles}
+        title={totalBudget}
+        subtitle="Grant Budgets"
         selectedCycles={chart2Cycles}
-        empty={!showBudgetSankeyChart}
         dropdownSelected={chart2Dropdown}
         loading={loadingBudgetSankeyChart}
         dropdownItems={CHART_2_DROPDOWN_ITEMS}
         handleDropdownChange={setChart2Dropdown}
-        subtitle="to date with transparent budgets"
+        empty={!showBudgetSankeyChart && chart2Cycles.length === 0}
         handleCycleChange={(value) => handleChartCycleChange(value, 2)}
-        text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
+        cycles={budgetsCyclesAll.map((c) => ({
+          name: c.value,
+          value: c.value,
+          disabled: findIndex(budgetsCycles, { value: c.value }) === -1,
+        }))}
+        text="Our Grant Implementation programs are developed meticulously, each Grant follows a well executed plan, always supervised by TGF Implementation team."
       >
         <Grid
           container
@@ -413,11 +490,15 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
         id="expenditures"
         subtitle="To date"
         title="Expenditures"
-        cycles={expendituresCycles}
         selectedCycles={chart3Cycles}
-        empty={!showExpendituresHeatmap}
         loading={loadingExpendituresHeatmap}
+        empty={!showExpendituresHeatmap && chart3Cycles.length === 0}
         handleCycleChange={(value) => handleChartCycleChange(value, 3)}
+        cycles={expendituresCyclesAll.map((c) => ({
+          name: c.value,
+          value: c.value,
+          disabled: findIndex(expendituresCycles, { value: c.value }) === -1,
+        }))}
         text="Our Grant Implementation programs are developed meticulously, each Grant follows a well executed plan, always supervised by TGF Implementation team."
         unitButtons={chart2UnitButtons}
       >
@@ -437,7 +518,7 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
         id="grants"
         title={`${countGrantsTable} Grants`}
         subtitle="to date"
-        empty={!showGrantsTable}
+        empty={!showGrantsTable && chart3Cycles.length === 0}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
         <Box height="16px" />

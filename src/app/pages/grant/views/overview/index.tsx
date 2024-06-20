@@ -91,38 +91,20 @@ export const GrantOverview: React.FC = () => {
     ];
   }, [dataOverview.disbursement, dataOverview.commitment, dataOverview.signed]);
 
+  const fullWidthDivider = (
+    <Divider
+      sx={{
+        left: "-50vw",
+        width: "200vw",
+        position: "relative",
+        borderTopColor: "#868E96",
+      }}
+    />
+  );
+
   return (
     <Box gap="24px" display="flex" flexDirection="column">
       {loadingOverview && <PageLoader />}
-      <Box>
-        <Typography variant="body2" fontWeight="700">
-          Goals
-        </Typography>
-        <Typography variant="body2">
-          {dataOverview.goals.map((goal: string, index: number) => (
-            <React.Fragment key={index}>
-              {goal}
-              <br />
-              <br />
-            </React.Fragment>
-          ))}
-        </Typography>
-      </Box>
-      <Box marginBottom="32px">
-        <Typography variant="body2" fontWeight="700">
-          Objectives
-        </Typography>
-        <Typography variant="body2">
-          {dataOverview.objectives.map((objective: string, index: number) => (
-            <React.Fragment key={index}>
-              {objective}
-              <br />
-              <br />
-            </React.Fragment>
-          ))}
-        </Typography>
-      </Box>
-      <Divider sx={{ borderColor: "#000" }} />
       <Grid
         container
         spacing={2}
@@ -224,14 +206,44 @@ export const GrantOverview: React.FC = () => {
           </Box>
         </Grid>
       </Grid>
-      <Divider sx={{ borderColor: "#000" }} />
-      <Box id="grant-overview-race-bar-chart">
-        <RaceBarChart data={raceBarChartData} />
+      {fullWidthDivider}
+      <Box>
+        <Box id="grant-overview-race-bar-chart">
+          <RaceBarChart data={raceBarChartData} />
+        </Box>
+        <ChartBlockButtonToolbar
+          hashId="grant-overview-race-bar-chart"
+          blockId="grant-overview-race-bar-chart"
+        />
       </Box>
-      <ChartBlockButtonToolbar
-        hashId="grant-overview-race-bar-chart"
-        blockId="grant-overview-race-bar-chart"
-      />
+      <Box>
+        <Typography variant="body2" fontWeight="700">
+          Goals
+        </Typography>
+        <Typography variant="body2">
+          {dataOverview.goals.map((goal: string, index: number) => (
+            <React.Fragment key={index}>
+              {goal}
+              <br />
+              <br />
+            </React.Fragment>
+          ))}
+        </Typography>
+      </Box>
+      <Box marginBottom="32px">
+        <Typography variant="body2" fontWeight="700">
+          Objectives
+        </Typography>
+        <Typography variant="body2">
+          {dataOverview.objectives.map((objective: string, index: number) => (
+            <React.Fragment key={index}>
+              {objective}
+              <br />
+              <br />
+            </React.Fragment>
+          ))}
+        </Typography>
+      </Box>
     </Box>
   );
 };

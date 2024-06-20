@@ -11,9 +11,9 @@ export interface ChartBlockProps {
   noBottomToolbar?: boolean;
   dropdownSelected?: string;
   unitButtons?: React.ReactNode;
-  cycles?: { name: string; value: string }[];
   handleDropdownChange?: (value: string) => void;
   selectedCycles?: { name: string; value: string }[];
   dropdownItems?: { value: string; label: string }[];
+  cycles?: { name: string; value: string; disabled?: boolean }[];
   handleCycleChange?: (cycle: { name: string; value: string }) => void;
 }

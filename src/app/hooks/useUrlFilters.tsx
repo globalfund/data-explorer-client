@@ -21,6 +21,9 @@ export function useUrlFilters(): null {
       const locations = currentUrlParams.get("locations");
       const components = currentUrlParams.get("components");
       const principalRecipients = currentUrlParams.get("principalRecipients");
+      const principalRecipientSubTypes = currentUrlParams.get(
+        "principalRecipientSubTypes"
+      );
       const principalRecipientTypes = currentUrlParams.get(
         "principalRecipientTypes"
       );
@@ -42,6 +45,10 @@ export function useUrlFilters(): null {
       if (principalRecipients) {
         updatedAppliedFilters.principalRecipients =
           principalRecipients.split(",");
+      }
+      if (principalRecipientSubTypes) {
+        updatedAppliedFilters.principalRecipientSubTypes =
+          principalRecipientSubTypes.split(",");
       }
       if (principalRecipientTypes) {
         updatedAppliedFilters.principalRecipientTypes =
@@ -108,6 +115,14 @@ export function useUrlFilters(): null {
       );
     } else {
       currentUrlParams.delete("principalRecipientTypes");
+    }
+    if (data.principalRecipientSubTypes.length > 0) {
+      currentUrlParams.set(
+        "principalRecipientSubTypes",
+        data.principalRecipientSubTypes.join(",").replace(/&/g, "%26")
+      );
+    } else {
+      currentUrlParams.delete("principalRecipientSubTypes");
     }
     if (data.principalRecipients.length > 0) {
       currentUrlParams.set(
@@ -196,6 +211,9 @@ export function useUrlFilters(): null {
     const locations = currentUrlParams.get("locations");
     const components = currentUrlParams.get("components");
     const principalRecipients = currentUrlParams.get("principalRecipients");
+    const principalRecipientSubTypes = currentUrlParams.get(
+      "principalRecipientSubTypes"
+    );
     const principalRecipientTypes = currentUrlParams.get(
       "principalRecipientTypes"
     );
@@ -223,6 +241,12 @@ export function useUrlFilters(): null {
         principalRecipientTypes.split(",");
     } else if (updatedAppliedFilters.principalRecipientTypes.length > 0) {
       updatedAppliedFilters.principalRecipientTypes = [];
+    }
+    if (principalRecipientSubTypes) {
+      updatedAppliedFilters.principalRecipientSubTypes =
+        principalRecipientSubTypes.split(",");
+    } else if (updatedAppliedFilters.principalRecipientSubTypes.length > 0) {
+      updatedAppliedFilters.principalRecipientSubTypes = [];
     }
     if (principalRecipients) {
       updatedAppliedFilters.principalRecipients =
