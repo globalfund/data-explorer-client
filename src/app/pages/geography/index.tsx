@@ -14,6 +14,7 @@ import {
   GeoCategoryProps,
   GeoSubCategoryProps,
 } from "app/pages/geography/data";
+import { useCMSData } from "app/hooks/useCMSData";
 
 const GeoCategory: React.FC<GeoCategoryProps> = (props: GeoCategoryProps) => {
   return (
@@ -100,6 +101,8 @@ const GeoSubCategory: React.FC<GeoSubCategoryProps> = (
 };
 
 export const Geography: React.FC = () => {
+  const cmsData = useCMSData({ returnData: true });
+
   const [search, setSearch] = React.useState("");
 
   const dataList = useStoreState(
@@ -147,7 +150,9 @@ export const Geography: React.FC = () => {
 
   return (
     <Box padding="50px 0">
-      <Typography variant="h1">Geography</Typography>
+      <Typography variant="h1">
+        {get(cmsData, "pagesGeography.title", "Geography")}
+      </Typography>
       <Box height="56px" />
       <Box padding="32px">
         <Box
@@ -178,7 +183,11 @@ export const Geography: React.FC = () => {
             type="text"
             value={search}
             onChange={handleSearch}
-            placeholder="e.g. Kenya"
+            placeholder={get(
+              cmsData,
+              "componentsSearch.placeholder",
+              "e.g. Kenya"
+            )}
           />
           {search.length > 0 && (
             <IconButton

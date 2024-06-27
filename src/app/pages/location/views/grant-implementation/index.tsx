@@ -45,11 +45,13 @@ import {
   getRange,
   getFinancialValueWithMetricPrefix,
 } from "app/utils/getFinancialValueWithMetricPrefix";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export const GrantImplementation: React.FC<GrantImplementationProps> = (
   props: GrantImplementationProps
 ) => {
   const params = useParams<{ id: string; tab: string }>();
+  const cmsData = useCMSData({ returnData: true });
 
   const [chart1Cycles, setChart1Cycles] = React.useState<CycleProps[]>([]);
   const [chart2Cycles, setChart2Cycles] = React.useState<CycleProps[]>([]);
@@ -225,7 +227,9 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
         filterString += `&years=${yearFrom.join(",")}`;
       }
       if (yearTo.length > 0) {
-        filterString += `${filterString.length > 0 ? "&" : ""}yearsTo=${yearTo.join(",")}`;
+        filterString += `${
+          filterString.length > 0 ? "&" : ""
+        }yearsTo=${yearTo.join(",")}`;
       }
     }
     fetchDisbursementsLineChart({
@@ -334,10 +338,14 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
       const startDate = new Date(item.startDate);
       const endDate = new Date(item.endDate);
       if (startDate) {
-        datesStr = `${getMonthFromNumber(startDate.getMonth() + 1)} ${startDate.getFullYear()} - `;
+        datesStr = `${getMonthFromNumber(
+          startDate.getMonth() + 1
+        )} ${startDate.getFullYear()} - `;
       }
       if (endDate) {
-        datesStr += `${getMonthFromNumber(endDate.getMonth() + 1)} ${endDate.getFullYear()}`;
+        datesStr += `${getMonthFromNumber(
+          endDate.getMonth() + 1
+        )} ${endDate.getFullYear()}`;
       }
       return {
         grantId: item.number,
@@ -358,7 +366,9 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
       total += sumBy(item.data);
     });
     const range = getRange([{ value: total }], ["value"]);
-    return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${range.full}`;
+    return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${
+      range.full
+    }`;
   }, [dataDisbursementsLineChart]);
 
   const pagination = React.useMemo(
@@ -397,7 +407,9 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
       }
     );
     const range = getRange([{ value: total }], ["value"]);
-    return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${range.full}`;
+    return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${
+      range.full
+    }`;
   }, [dataBudgetSankeyChart]);
 
   const fullWidthDivider = (
@@ -430,7 +442,11 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
         dropdownItems={CHART_1_DROPDOWN_ITEMS}
         loading={loadingDisbursementsLineChart}
         handleDropdownChange={setChart1Dropdown}
-        subtitle={`Disbursed within ${countGrantsTable} Grants`}
+        subtitle={get(
+          cmsData,
+          "pagesLocationGrantImplementation.disbursementsSubtitle",
+          `Disbursed within {i} Grants`
+        ).replace("{i}", `${countGrantsTable}`)}
         handleCycleChange={(value) => handleChartCycleChange(value, 1)}
         empty={!showDisbursementsLineChart && chart1Cycles.length === 0}
         cycles={disbursementsCyclesAll.map((c) => ({
@@ -438,7 +454,11 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
           value: c.value,
           disabled: findIndex(disbursementsCycles, { value: c.value }) === -1,
         }))}
-        text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
+        text={get(
+          cmsData,
+          "pagesLocationGrantImplementation.disbursementsText",
+          `Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished.`
+        )}
       >
         <LineChart {...dataDisbursementsLineChart} />
       </ChartBlock>
@@ -446,7 +466,11 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
       <ChartBlock
         id="budget"
         title={totalBudget}
-        subtitle="Grant Budgets"
+        subtitle={get(
+          cmsData,
+          "pagesLocationGrantImplementation.budgetsSubtitle",
+          "Grant Budgets"
+        )}
         selectedCycles={chart2Cycles}
         dropdownSelected={chart2Dropdown}
         loading={loadingBudgetSankeyChart}
@@ -459,7 +483,11 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
           value: c.value,
           disabled: findIndex(budgetsCycles, { value: c.value }) === -1,
         }))}
-        text="Our Grant Implementation programs are developed meticulously, each Grant follows a well executed plan, always supervised by TGF Implementation team."
+        text={get(
+          cmsData,
+          "pagesLocationGrantImplementation.budgetsText",
+          "Our Grant Implementation programs are developed meticulously, each Grant follows a well executed plan, always supervised by TGF Implementation team."
+        )}
       >
         <Grid
           container
@@ -471,16 +499,32 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
           }}
         >
           <Grid item xs={3}>
-            Total Budgets
+            {get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.budgetsLabel1",
+              "Total budget"
+            )}
           </Grid>
           <Grid item xs={3}>
-            Landscape 1
+            {get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.budgetsLabel2",
+              "Investement Landscape 1"
+            )}
           </Grid>
           <Grid item xs={3}>
-            Landscape 2
+            {get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.budgetsLabel3",
+              "Investement Landscape 2"
+            )}
           </Grid>
           <Grid item xs={3}>
-            Cost Category
+            {get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.budgetsLabel4",
+              "Cost Category"
+            )}
           </Grid>
         </Grid>
         <SankeyChart data={dataBudgetSankeyChart} />
@@ -488,8 +532,16 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
       {showBudgetSankeyChart && fullWidthDivider}
       <ChartBlock
         id="expenditures"
-        subtitle="To date"
-        title="Expenditures"
+        subtitle={get(
+          cmsData,
+          "pagesLocationGrantImplementation.expendituresSubtitle",
+          "To date"
+        )}
+        title={get(
+          cmsData,
+          "pagesLocationGrantImplementation.expendituresTitle",
+          "Expenditures"
+        )}
         selectedCycles={chart3Cycles}
         loading={loadingExpendituresHeatmap}
         empty={!showExpendituresHeatmap && chart3Cycles.length === 0}
@@ -499,7 +551,11 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
           value: c.value,
           disabled: findIndex(expendituresCycles, { value: c.value }) === -1,
         }))}
-        text="Our Grant Implementation programs are developed meticulously, each Grant follows a well executed plan, always supervised by TGF Implementation team."
+        text={get(
+          cmsData,
+          "pagesLocationGrantImplementation.expendituresText",
+          "Our Grant Implementation programs are developed meticulously, each Grant follows a well executed plan, always supervised by TGF Implementation team."
+        )}
         unitButtons={chart2UnitButtons}
       >
         <Heatmap
@@ -516,10 +572,22 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
       {showExpendituresHeatmap && fullWidthDivider}
       <ChartBlock
         id="grants"
-        title={`${countGrantsTable} Grants`}
-        subtitle="to date"
+        title={`${countGrantsTable} ${get(
+          cmsData,
+          "pagesLocationGrantImplementation.grantsTitle",
+          "Grants"
+        )}`}
+        subtitle={get(
+          cmsData,
+          "pagesLocationGrantImplementation.grantsSubtitle",
+          "to date"
+        )}
         empty={!showGrantsTable && chart3Cycles.length === 0}
-        text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
+        text={get(
+          cmsData,
+          "pagesLocationGrantImplementation.grantsText",
+          "Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
+        )}
       >
         <Box height="16px" />
         <TableContainer
@@ -546,7 +614,11 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
             flexDirection="column"
           >
             <Typography color="#000" fontSize="18px" fontWeight="700">
-              Components
+              {get(
+                cmsData,
+                "pagesLocationGrantImplementation.grantsPieChart1Title",
+                "Components"
+              )}
             </Typography>
             <PieChart data={dataGrantsPieCharts.pie1} />
           </Box>
@@ -558,7 +630,11 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
             flexDirection="column"
           >
             <Typography color="#000" fontSize="18px" fontWeight="700">
-              Principal Recipients
+              {get(
+                cmsData,
+                "pagesLocationGrantImplementation.grantsPieChart2Title",
+                "Principal Recipients"
+              )}
             </Typography>
             <PieChart data={dataGrantsPieCharts.pie2} />
           </Box>
@@ -570,7 +646,11 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
             flexDirection="column"
           >
             <Typography color="#000" fontSize="18px" fontWeight="700">
-              Investments
+              {get(
+                cmsData,
+                "pagesLocationGrantImplementation.grantsPieChart3Title",
+                "Investments"
+              )}
             </Typography>
             <PieChart data={dataGrantsPieCharts.pie3} />
           </Box>

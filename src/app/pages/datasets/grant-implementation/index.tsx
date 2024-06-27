@@ -52,8 +52,11 @@ import {
   dropdownItemsDisbursements,
   dropdownItemsExpenditures,
 } from "app/pages/datasets/grant-implementation/data";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export const GrantImplementationPage: React.FC = () => {
+  const cmsData = useCMSData({ returnData: true });
+
   const [geographyGrouping, setGeographyGrouping] = React.useState(
     geographyGroupingOptions[0].value
   );
@@ -818,16 +821,32 @@ export const GrantImplementationPage: React.FC = () => {
               }}
             >
               <Grid item xs={3}>
-                Total budget
+                {get(
+                  cmsData,
+                  "pagesDatasetsGrantImplementation.budgetsLabel1",
+                  "Total budget"
+                )}
               </Grid>
               <Grid item xs={3}>
-                Investement Landscape 1
+                {get(
+                  cmsData,
+                  "pagesDatasetsGrantImplementation.budgetsLabel2",
+                  "Investement Landscape 1"
+                )}
               </Grid>
               <Grid item xs={3}>
-                Investement Landscape 2
+                {get(
+                  cmsData,
+                  "pagesDatasetsGrantImplementation.budgetsLabel3",
+                  "Investement Landscape 2"
+                )}
               </Grid>
               <Grid item xs={3}>
-                Cost Category
+                {get(
+                  cmsData,
+                  "pagesDatasetsGrantImplementation.budgetsLabel4",
+                  "Cost Category"
+                )}
               </Grid>
             </Grid>
             <SankeyChart data={dataBudgetSankey} />
@@ -884,16 +903,32 @@ export const GrantImplementationPage: React.FC = () => {
             rowCategory="component"
             data={dataExpendituresHeatmap}
             getItemColor={getPercentageColor}
-            columnHeader="Principal Recipients"
-            rowHeader="Components"
+            columnHeader={get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.expendituresHeatmapColumnHeader",
+              "Principal Recipients"
+            )}
+            rowHeader={get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.expendituresHeatmapRowHeader",
+              "Components"
+            )}
           />
         );
       case dropdownItemsExpenditures[1].value:
         return (
           <ExpandableHorizontalBar
             data={dataExpendituresBarChart}
-            yAxisLabel="Investment Landscapes & Analytical Group Name"
-            xAxisLabel="Cumulative Expenditure"
+            yAxisLabel={get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.expendituresBarchartYLabel",
+              "Investment Landscapes & Analytical Group Name"
+            )}
+            xAxisLabel={get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.expendituresBarchartXLabel",
+              "Cumulative Expenditure"
+            )}
             valueLabels={{
               value: "amount",
             }}
@@ -944,7 +979,11 @@ export const GrantImplementationPage: React.FC = () => {
       <Box gap="20px" display="flex" flexDirection="row" alignItems="center">
         <Box gap="10px" display="flex" flexDirection="row" alignItems="center">
           <Typography variant="body2" fontWeight="700">
-            Geography grouping
+            {get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.toolbarRightText1",
+              "Geography grouping"
+            )}
           </Typography>
           <Dropdown
             width={150}
@@ -955,7 +994,11 @@ export const GrantImplementationPage: React.FC = () => {
         </Box>
         <Box gap="10px" display="flex" flexDirection="row" alignItems="center">
           <Typography variant="body2" fontWeight="700">
-            Components grouping
+            {get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.toolbarRightText2",
+              "Components grouping"
+            )}
           </Typography>
           <Dropdown
             width={120}
@@ -995,22 +1038,42 @@ export const GrantImplementationPage: React.FC = () => {
   const filterString = React.useMemo(() => {
     let filterString = "";
     if (appliedFiltersData.locations.length > 0) {
-      filterString += `geographies=${encodeURIComponent(appliedFiltersData.locations.join(","))}`;
+      filterString += `geographies=${encodeURIComponent(
+        appliedFiltersData.locations.join(",")
+      )}`;
     }
     if (appliedFiltersData.components.length > 0) {
-      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(appliedFiltersData.components.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }components=${encodeURIComponent(
+        appliedFiltersData.components.join(",")
+      )}`;
     }
     if (appliedFiltersData.principalRecipientTypes.length > 0) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientTypes=${encodeURIComponent(appliedFiltersData.principalRecipientTypes.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipientTypes=${encodeURIComponent(
+        appliedFiltersData.principalRecipientTypes.join(",")
+      )}`;
     }
     if (appliedFiltersData.principalRecipientSubTypes.length > 0) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientSubTypes=${encodeURIComponent(appliedFiltersData.principalRecipientSubTypes.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipientSubTypes=${encodeURIComponent(
+        appliedFiltersData.principalRecipientSubTypes.join(",")
+      )}`;
     }
     if (appliedFiltersData.principalRecipients.length > 0) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipients=${encodeURIComponent(appliedFiltersData.principalRecipients.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipients=${encodeURIComponent(
+        appliedFiltersData.principalRecipients.join(",")
+      )}`;
     }
     if (appliedFiltersData.status.length > 0) {
-      filterString += `${filterString.length > 0 ? "&" : ""}status=${encodeURIComponent(appliedFiltersData.status.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }status=${encodeURIComponent(appliedFiltersData.status.join(","))}`;
     }
     if (appliedFiltersData.cycles.length > 0) {
       const years = appliedFiltersData.cycles.map(
@@ -1019,7 +1082,11 @@ export const GrantImplementationPage: React.FC = () => {
       const yearsTo = appliedFiltersData.cycles.map(
         (cycle) => cycle.replace(/ /g, "").split("-")[1]
       );
-      filterString += `${filterString.length > 0 ? "&" : ""}years=${encodeURIComponent(years.join(","))}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }years=${encodeURIComponent(
+        years.join(",")
+      )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
     }
     return filterString;
   }, [appliedFiltersData]);
@@ -1030,13 +1097,25 @@ export const GrantImplementationPage: React.FC = () => {
       [...appliedFiltersData.locations, ...chart1AppliedFiltersData.locations]
         .length > 0
     ) {
-      filterString += `geographies=${encodeURIComponent(uniq([...appliedFiltersData.locations, ...chart1AppliedFiltersData.locations]).join(","))}`;
+      filterString += `geographies=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.locations,
+          ...chart1AppliedFiltersData.locations,
+        ]).join(",")
+      )}`;
     }
     if (
       [...appliedFiltersData.components, ...chart1AppliedFiltersData.components]
         .length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(uniq([...appliedFiltersData.components, ...chart1AppliedFiltersData.components]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }components=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.components,
+          ...chart1AppliedFiltersData.components,
+        ]).join(",")
+      )}`;
     }
     if (
       [
@@ -1044,7 +1123,14 @@ export const GrantImplementationPage: React.FC = () => {
         ...chart1AppliedFiltersData.principalRecipients,
       ].length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipients=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipients, ...chart1AppliedFiltersData.principalRecipients]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipients=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipients,
+          ...chart1AppliedFiltersData.principalRecipients,
+        ]).join(",")
+      )}`;
     }
     if (
       [
@@ -1052,7 +1138,14 @@ export const GrantImplementationPage: React.FC = () => {
         ...chart1AppliedFiltersData.principalRecipientSubTypes,
       ].length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientSubTypes=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipientSubTypes, ...chart1AppliedFiltersData.principalRecipientSubTypes]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipientSubTypes=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipientSubTypes,
+          ...chart1AppliedFiltersData.principalRecipientSubTypes,
+        ]).join(",")
+      )}`;
     }
     if (
       [
@@ -1060,13 +1153,27 @@ export const GrantImplementationPage: React.FC = () => {
         ...chart1AppliedFiltersData.principalRecipientTypes,
       ].length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientTypes=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipientTypes, ...chart1AppliedFiltersData.principalRecipientTypes]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipientTypes=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipientTypes,
+          ...chart1AppliedFiltersData.principalRecipientTypes,
+        ]).join(",")
+      )}`;
     }
     if (
       [...appliedFiltersData.status, ...chart1AppliedFiltersData.status]
         .length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}status=${encodeURIComponent(uniq([...appliedFiltersData.status, ...chart1AppliedFiltersData.status]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }status=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.status,
+          ...chart1AppliedFiltersData.status,
+        ]).join(",")
+      )}`;
     }
     if (
       [...appliedFiltersData.cycles, ...chart1AppliedFiltersData.cycles]
@@ -1080,7 +1187,11 @@ export const GrantImplementationPage: React.FC = () => {
         ...appliedFiltersData.cycles,
         ...chart1AppliedFiltersData.cycles,
       ]).map((cycle) => cycle.replace(/ /g, "").split("-")[1]);
-      filterString += `${filterString.length > 0 ? "&" : ""}years=${encodeURIComponent(years.join(","))}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }years=${encodeURIComponent(
+        years.join(",")
+      )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
     }
     return filterString;
   }, [appliedFiltersData, chart1AppliedFiltersData]);
@@ -1091,13 +1202,25 @@ export const GrantImplementationPage: React.FC = () => {
       [...appliedFiltersData.locations, ...chart2AppliedFiltersData.locations]
         .length > 0
     ) {
-      filterString += `geographies=${encodeURIComponent(uniq([...appliedFiltersData.locations, ...chart2AppliedFiltersData.locations]).join(","))}`;
+      filterString += `geographies=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.locations,
+          ...chart2AppliedFiltersData.locations,
+        ]).join(",")
+      )}`;
     }
     if (
       [...appliedFiltersData.components, ...chart2AppliedFiltersData.components]
         .length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(uniq([...appliedFiltersData.components, ...chart2AppliedFiltersData.components]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }components=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.components,
+          ...chart2AppliedFiltersData.components,
+        ]).join(",")
+      )}`;
     }
     if (
       [
@@ -1105,7 +1228,14 @@ export const GrantImplementationPage: React.FC = () => {
         ...chart2AppliedFiltersData.principalRecipients,
       ].length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipients=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipients, ...chart2AppliedFiltersData.principalRecipients]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipients=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipients,
+          ...chart2AppliedFiltersData.principalRecipients,
+        ]).join(",")
+      )}`;
     }
     if (
       [
@@ -1113,7 +1243,14 @@ export const GrantImplementationPage: React.FC = () => {
         ...chart2AppliedFiltersData.principalRecipientSubTypes,
       ].length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientSubTypes=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipientSubTypes, ...chart2AppliedFiltersData.principalRecipientSubTypes]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipientSubTypes=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipientSubTypes,
+          ...chart2AppliedFiltersData.principalRecipientSubTypes,
+        ]).join(",")
+      )}`;
     }
     if (
       [
@@ -1121,13 +1258,27 @@ export const GrantImplementationPage: React.FC = () => {
         ...chart2AppliedFiltersData.principalRecipientTypes,
       ].length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientTypes=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipientTypes, ...chart2AppliedFiltersData.principalRecipientTypes]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipientTypes=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipientTypes,
+          ...chart2AppliedFiltersData.principalRecipientTypes,
+        ]).join(",")
+      )}`;
     }
     if (
       [...appliedFiltersData.status, ...chart2AppliedFiltersData.status]
         .length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}status=${encodeURIComponent(uniq([...appliedFiltersData.status, ...chart2AppliedFiltersData.status]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }status=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.status,
+          ...chart2AppliedFiltersData.status,
+        ]).join(",")
+      )}`;
     }
     if (
       [...appliedFiltersData.cycles, ...chart2AppliedFiltersData.cycles]
@@ -1141,7 +1292,11 @@ export const GrantImplementationPage: React.FC = () => {
         ...appliedFiltersData.cycles,
         ...chart2AppliedFiltersData.cycles,
       ]).map((cycle) => cycle.replace(/ /g, "").split("-")[1]);
-      filterString += `${filterString.length > 0 ? "&" : ""}years=${encodeURIComponent(years.join(","))}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }years=${encodeURIComponent(
+        years.join(",")
+      )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
     }
     return filterString;
   }, [appliedFiltersData, chart2AppliedFiltersData]);
@@ -1152,13 +1307,25 @@ export const GrantImplementationPage: React.FC = () => {
       [...appliedFiltersData.locations, ...chart3AppliedFiltersData.locations]
         .length > 0
     ) {
-      filterString += `geographies=${encodeURIComponent(uniq([...appliedFiltersData.locations, ...chart3AppliedFiltersData.locations]).join(","))}`;
+      filterString += `geographies=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.locations,
+          ...chart3AppliedFiltersData.locations,
+        ]).join(",")
+      )}`;
     }
     if (
       [...appliedFiltersData.components, ...chart3AppliedFiltersData.components]
         .length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(uniq([...appliedFiltersData.components, ...chart3AppliedFiltersData.components]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }components=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.components,
+          ...chart3AppliedFiltersData.components,
+        ]).join(",")
+      )}`;
     }
     if (
       [
@@ -1166,7 +1333,14 @@ export const GrantImplementationPage: React.FC = () => {
         ...chart3AppliedFiltersData.principalRecipients,
       ].length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipients=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipients, ...chart3AppliedFiltersData.principalRecipients]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipients=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipients,
+          ...chart3AppliedFiltersData.principalRecipients,
+        ]).join(",")
+      )}`;
     }
     if (
       [
@@ -1174,7 +1348,14 @@ export const GrantImplementationPage: React.FC = () => {
         ...chart3AppliedFiltersData.principalRecipientSubTypes,
       ].length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientSubTypes=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipientSubTypes, ...chart3AppliedFiltersData.principalRecipientSubTypes]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipientSubTypes=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipientSubTypes,
+          ...chart3AppliedFiltersData.principalRecipientSubTypes,
+        ]).join(",")
+      )}`;
     }
     if (
       [
@@ -1182,13 +1363,27 @@ export const GrantImplementationPage: React.FC = () => {
         ...chart3AppliedFiltersData.principalRecipientTypes,
       ].length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientTypes=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipientTypes, ...chart3AppliedFiltersData.principalRecipientTypes]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipientTypes=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipientTypes,
+          ...chart3AppliedFiltersData.principalRecipientTypes,
+        ]).join(",")
+      )}`;
     }
     if (
       [...appliedFiltersData.status, ...chart3AppliedFiltersData.status]
         .length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}status=${encodeURIComponent(uniq([...appliedFiltersData.status, ...chart3AppliedFiltersData.status]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }status=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.status,
+          ...chart3AppliedFiltersData.status,
+        ]).join(",")
+      )}`;
     }
     if (
       [...appliedFiltersData.cycles, ...chart3AppliedFiltersData.cycles]
@@ -1202,7 +1397,11 @@ export const GrantImplementationPage: React.FC = () => {
         ...appliedFiltersData.cycles,
         ...chart3AppliedFiltersData.cycles,
       ]).map((cycle) => cycle.replace(/ /g, "").split("-")[1]);
-      filterString += `${filterString.length > 0 ? "&" : ""}years=${encodeURIComponent(years.join(","))}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }years=${encodeURIComponent(
+        years.join(",")
+      )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
     }
     return filterString;
   }, [appliedFiltersData, chart3AppliedFiltersData]);
@@ -1213,13 +1412,25 @@ export const GrantImplementationPage: React.FC = () => {
       [...appliedFiltersData.locations, ...chart4AppliedFiltersData.locations]
         .length > 0
     ) {
-      filterString += `geographies=${encodeURIComponent(uniq([...appliedFiltersData.locations, ...chart4AppliedFiltersData.locations]).join(","))}`;
+      filterString += `geographies=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.locations,
+          ...chart4AppliedFiltersData.locations,
+        ]).join(",")
+      )}`;
     }
     if (
       [...appliedFiltersData.components, ...chart4AppliedFiltersData.components]
         .length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(uniq([...appliedFiltersData.components, ...chart4AppliedFiltersData.components]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }components=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.components,
+          ...chart4AppliedFiltersData.components,
+        ]).join(",")
+      )}`;
     }
     if (
       [
@@ -1227,7 +1438,14 @@ export const GrantImplementationPage: React.FC = () => {
         ...chart4AppliedFiltersData.principalRecipients,
       ].length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipients=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipients, ...chart4AppliedFiltersData.principalRecipients]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipients=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipients,
+          ...chart4AppliedFiltersData.principalRecipients,
+        ]).join(",")
+      )}`;
     }
     if (
       [
@@ -1235,7 +1453,14 @@ export const GrantImplementationPage: React.FC = () => {
         ...chart4AppliedFiltersData.principalRecipientSubTypes,
       ].length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientSubTypes=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipientSubTypes, ...chart4AppliedFiltersData.principalRecipientSubTypes]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipientSubTypes=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipientSubTypes,
+          ...chart4AppliedFiltersData.principalRecipientSubTypes,
+        ]).join(",")
+      )}`;
     }
     if (
       [
@@ -1243,13 +1468,27 @@ export const GrantImplementationPage: React.FC = () => {
         ...chart4AppliedFiltersData.principalRecipientTypes,
       ].length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientTypes=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipientTypes, ...chart4AppliedFiltersData.principalRecipientTypes]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipientTypes=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipientTypes,
+          ...chart4AppliedFiltersData.principalRecipientTypes,
+        ]).join(",")
+      )}`;
     }
     if (
       [...appliedFiltersData.status, ...chart4AppliedFiltersData.status]
         .length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}status=${encodeURIComponent(uniq([...appliedFiltersData.status, ...chart4AppliedFiltersData.status]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }status=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.status,
+          ...chart4AppliedFiltersData.status,
+        ]).join(",")
+      )}`;
     }
     if (
       [...appliedFiltersData.cycles, ...chart4AppliedFiltersData.cycles]
@@ -1263,7 +1502,11 @@ export const GrantImplementationPage: React.FC = () => {
         ...appliedFiltersData.cycles,
         ...chart4AppliedFiltersData.cycles,
       ]).map((cycle) => cycle.replace(/ /g, "").split("-")[1]);
-      filterString += `${filterString.length > 0 ? "&" : ""}years=${encodeURIComponent(years.join(","))}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }years=${encodeURIComponent(
+        years.join(",")
+      )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
     }
     return filterString;
   }, [appliedFiltersData, chart4AppliedFiltersData]);
@@ -1382,11 +1625,19 @@ export const GrantImplementationPage: React.FC = () => {
 
   return (
     <DatasetPage
-      title="Financial Insights"
+      title={get(
+        cmsData,
+        "pagesDatasetsGrantImplementation.title",
+        "Financial Insights"
+      )}
       filterGroups={filterGroups}
       appliedFilters={pageAppliedFilters}
       handleResetFilters={handleResetFilters}
-      subtitle="See the disbursements, budgets and expenditures datasets and relating insights."
+      subtitle={get(
+        cmsData,
+        "pagesDatasetsGrantImplementation.subtitle",
+        "See the disbursements, budgets and expenditures datasets and relating insights."
+      )}
       breadcrumbs={[{ label: "Datasets" }, { label: "Financial Insights" }]}
       toolbarRightContent={toolbarRightContent}
     >
@@ -1430,7 +1681,11 @@ export const GrantImplementationPage: React.FC = () => {
               {formatFinancialValue(dataFinancialInsightsStats.signed)}
             </Typography>
             <Typography fontSize="14px" fontWeight="700">
-              Total Signed Amount
+              {get(
+                cmsData,
+                "pagesDatasetsGrantImplementation.statsText1",
+                "Total Signed Amount"
+              )}
             </Typography>
           </Box>
           <Box>
@@ -1438,7 +1693,11 @@ export const GrantImplementationPage: React.FC = () => {
               {formatFinancialValue(dataFinancialInsightsStats.committed)}
             </Typography>
             <Typography fontSize="14px" fontWeight="700">
-              Total Committed Amount
+              {get(
+                cmsData,
+                "pagesDatasetsGrantImplementation.statsText2",
+                "Total Committed Amount"
+              )}
             </Typography>
           </Box>
           <Box>
@@ -1446,7 +1705,11 @@ export const GrantImplementationPage: React.FC = () => {
               {formatFinancialValue(dataFinancialInsightsStats.disbursed)}
             </Typography>
             <Typography fontSize="14px" fontWeight="700">
-              Total Disbursed Amount
+              {get(
+                cmsData,
+                "pagesDatasetsGrantImplementation.statsText3",
+                "Total Disbursed Amount"
+              )}
             </Typography>
           </Box>
         </Box>
@@ -1461,8 +1724,16 @@ export const GrantImplementationPage: React.FC = () => {
         >
           <DatasetChartBlock
             id="disbursements"
-            title="Disbursements"
-            subtitle="Disbursement transactions for all grants across the porfolio."
+            title={get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.disbursementsTitle",
+              "Disbursements"
+            )}
+            subtitle={get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.disbursementsSubtitle",
+              "Disbursement transactions for all grants across the porfolio."
+            )}
             dropdownItems={dropdownItemsDisbursements}
             dropdownSelected={disbursementsDropdownSelected}
             handleDropdownChange={handleDisbursementsSelectionChange}
@@ -1493,8 +1764,16 @@ export const GrantImplementationPage: React.FC = () => {
         >
           <DatasetChartBlock
             id="budgets"
-            title="Budgets"
-            subtitle={`${totalBudget} total budget.`}
+            title={get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.budgetsTitle",
+              "Budgets"
+            )}
+            subtitle={`${totalBudget} ${get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.budgetsSubtitle",
+              "total budget."
+            )}`}
             dropdownItems={dropdownItemsBudgets}
             dropdownSelected={budgetsDropdownSelected}
             handleDropdownChange={(value) => setBudgetsDropdownSelected(value)}
@@ -1542,9 +1821,19 @@ export const GrantImplementationPage: React.FC = () => {
             justifyContent="space-between"
           >
             <Box>
-              <Typography variant="h5">Budget Breakdown</Typography>
+              <Typography variant="h5">
+                {get(
+                  cmsData,
+                  "pagesDatasetsGrantImplementation.budgetBreakdownTitle",
+                  "Budget Breakdown"
+                )}
+              </Typography>
               <Typography fontSize="14px" fontWeight="700">
-                By grant component
+                {get(
+                  cmsData,
+                  "pagesDatasetsGrantImplementation.budgetBreakdownSubtitle",
+                  "By grant component"
+                )}
               </Typography>
             </Box>
             <Box>
@@ -1602,7 +1891,11 @@ export const GrantImplementationPage: React.FC = () => {
         >
           <DatasetChartBlock
             id="financial-metrics"
-            title="Financial Metrics"
+            title={get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.financialMetricsTitle",
+              "Financial Metrics"
+            )}
             subtitle=""
             dropdownItems={[]}
             empty={financialMetricsEmpty}
@@ -1628,7 +1921,11 @@ export const GrantImplementationPage: React.FC = () => {
         >
           <DatasetChartBlock
             id="expenditures"
-            title="Expenditures"
+            title={get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.expendituresTitle",
+              "Expenditures"
+            )}
             subtitle={`${totalExpenditure} reported expenditure.`}
             dropdownItems={dropdownItemsExpenditures}
             dropdownSelected={expendituresDropdownSelected}

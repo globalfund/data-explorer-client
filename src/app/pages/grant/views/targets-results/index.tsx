@@ -11,8 +11,10 @@ import { TableContainer } from "app/components/table-container";
 import { TABS } from "app/pages/grant/views/targets-results/data";
 import { TABLE_VARIATION_4_COLUMNS } from "app/components/table/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export const GrantTargetsResults: React.FC = () => {
+  const cmsData = useCMSData({ returnData: true });
   const params = useParams<{ id: string; ip: string }>();
 
   const [tab, setTab] = React.useState(TABS[0]);
@@ -95,8 +97,13 @@ export const GrantTargetsResults: React.FC = () => {
 
   return (
     <Box marginTop="24px">
-      <Typography variant="body2">
-        This page provides an overview of the IATI ('open') data currently
+      <Typography
+        variant="body2"
+        dangerouslySetInnerHTML={{
+          __html: get(
+            cmsData,
+            "pagesGrantTargetResults.description",
+            `This page provides an overview of the IATI ('open') data currently
         published by individual Grand Bargain signatories and/or their
         affiliated organisations. Its primary purpose is to enable signatories
         to monitor their own progress in relation to meeting the data
@@ -111,17 +118,27 @@ export const GrantTargetsResults: React.FC = () => {
         IATI ('open') data currently published by individual Grand Bargain
         signatories and/or their affiliated organisations. Its primary purpose
         is to enable signatories to monitor their own progress in relation to
-        meeting the data publication commitment of the Grand Bargain.
-      </Typography>
+        meeting the data publication commitment of the Grand Bargain.`
+          ),
+        }}
+      />
       <Box height="50px" />
       {fullWidthDivider}
       <Box height="50px" />
       <ChartBlock
         loading={loading}
-        title="Indicators"
+        title={get(cmsData, "pagesGrantTargetResults.title", "Indicators")}
         id="grant-targets-results"
-        subtitle="Targets & Results"
-        text="Description of Impact indicators: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
+        subtitle={get(
+          cmsData,
+          "pagesGrantTargetResults.subtitle",
+          "Targets & Results"
+        )}
+        text={get(
+          cmsData,
+          "pagesGrantTargetResults.text",
+          "Description of Impact indicators: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
+        )}
       >
         <Box width="100%" height="32px" />
         <TableContainer

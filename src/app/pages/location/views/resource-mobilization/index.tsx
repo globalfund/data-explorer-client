@@ -14,8 +14,10 @@ import {
   getFinancialValueWithMetricPrefix,
   getRange,
 } from "app/utils/getFinancialValueWithMetricPrefix";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export const ResourceMobilization: React.FC = () => {
+  const cmsData = useCMSData({ returnData: true });
   const params = useParams<{ id: string; tab: string }>();
 
   const [chart1Cycles, setChart1Cycles] = React.useState<CycleProps[]>([]);
@@ -63,13 +65,17 @@ export const ResourceMobilization: React.FC = () => {
   const totalPledge = React.useMemo(() => {
     const value = sumBy(dataRMBarChart, "value");
     const range = getRange([{ value }], ["value"]);
-    return `${getFinancialValueWithMetricPrefix(value, range.index, 2)} ${range.full}`;
+    return `${getFinancialValueWithMetricPrefix(value, range.index, 2)} ${
+      range.full
+    }`;
   }, [dataRMBarChart]);
 
   const totalContribution = React.useMemo(() => {
     const value = sumBy(dataRMBarChart, "value1");
     const range = getRange([{ value }], ["value"]);
-    return `${getFinancialValueWithMetricPrefix(value, range.index, 2)} ${range.full}`;
+    return `${getFinancialValueWithMetricPrefix(value, range.index, 2)} ${
+      range.full
+    }`;
   }, [dataRMBarChart]);
 
   return (
@@ -80,16 +86,32 @@ export const ResourceMobilization: React.FC = () => {
         loading={loadingRMBarChart}
         selectedCycles={chart1Cycles}
         title={`US$${totalContribution}`}
-        subtitle="Funds Contributed to date"
+        subtitle={get(
+          cmsData,
+          "pagesLocationResourceMobilization.title",
+          "Funds Contributed to date"
+        )}
         handleCycleChange={handleChartCycleChange}
         empty={dataRMBarChart.length === 0 && chart1Cycles.length === 0}
-        text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
+        text={get(
+          cmsData,
+          "pagesLocationResourceMobilization.text",
+          "Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
+        )}
       >
         <BarChart
           data={dataRMBarChart}
           valueLabels={{
-            value: "Pledge",
-            value1: "Contribution",
+            value: get(
+              cmsData,
+              "pagesLocationResourceMobilization.barchartLabel1",
+              "Pledge"
+            ),
+            value1: get(
+              cmsData,
+              "pagesLocationResourceMobilization.barchartLabel2",
+              "Contribution"
+            ),
           }}
         />
       </ChartBlock>
@@ -110,7 +132,11 @@ export const ResourceMobilization: React.FC = () => {
             US${totalPledge}
           </Typography>
           <Typography variant="subtitle2">
-            Total Pledge
+            {get(
+              cmsData,
+              "pagesLocationResourceMobilization.statsLabel1",
+              "Total Pledge"
+            )}
             {chart1Cycles.length > 0
               ? ` ${chart1Cycles.map((c) => c.name).join(",")}`
               : ""}
@@ -126,7 +152,11 @@ export const ResourceMobilization: React.FC = () => {
             US${totalContribution}
           </Typography>
           <Typography variant="subtitle2">
-            Total Contribution
+            {get(
+              cmsData,
+              "pagesLocationResourceMobilization.statsLabel2",
+              "Total Contribution"
+            )}
             {chart1Cycles.length > 0
               ? ` ${chart1Cycles.map((c) => c.name).join(",")}`
               : ""}

@@ -32,8 +32,10 @@ import {
   TABLE_VARIATION_11_COLUMNS as ALLOCATIONS_TABLE_COLUMNS,
   TABLE_VARIATION_12_COLUMNS as FUNDING_REQUESTS_TABLE_COLUMNS,
 } from "app/components/table/data";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export const AccessToFundingPage: React.FC = () => {
+  const cmsData = useCMSData({ returnData: true });
   const [dropdownSelected, setDropdownSelected] = React.useState(
     dropdownItemsAllocations[0].value
   );
@@ -379,10 +381,16 @@ export const AccessToFundingPage: React.FC = () => {
   const filterString = React.useMemo(() => {
     let filterString = "";
     if (appliedFiltersData.locations.length > 0) {
-      filterString += `geographies=${encodeURIComponent(appliedFiltersData.locations.join(","))}`;
+      filterString += `geographies=${encodeURIComponent(
+        appliedFiltersData.locations.join(",")
+      )}`;
     }
     if (appliedFiltersData.components.length > 0) {
-      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(appliedFiltersData.components.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }components=${encodeURIComponent(
+        appliedFiltersData.components.join(",")
+      )}`;
     }
     return filterString;
   }, [appliedFiltersData]);
@@ -393,19 +401,38 @@ export const AccessToFundingPage: React.FC = () => {
       [...appliedFiltersData.locations, ...chart1AppliedFiltersData.locations]
         .length > 0
     ) {
-      filterString += `geographies=${encodeURIComponent(uniq([...appliedFiltersData.locations, ...chart1AppliedFiltersData.locations]).join(","))}`;
+      filterString += `geographies=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.locations,
+          ...chart1AppliedFiltersData.locations,
+        ]).join(",")
+      )}`;
     }
     if (
       [...appliedFiltersData.components, ...chart1AppliedFiltersData.components]
         .length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(uniq([...appliedFiltersData.components, ...chart1AppliedFiltersData.components]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }components=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.components,
+          ...chart1AppliedFiltersData.components,
+        ]).join(",")
+      )}`;
     }
     if (
       [...appliedFiltersData.cycles, ...chart1AppliedFiltersData.cycles]
         .length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}cycles=${encodeURIComponent(uniq([...appliedFiltersData.cycles, ...chart1AppliedFiltersData.cycles]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }cycles=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.cycles,
+          ...chart1AppliedFiltersData.cycles,
+        ]).join(",")
+      )}`;
     }
     return filterString;
   }, [appliedFiltersData, chart1AppliedFiltersData]);
@@ -416,19 +443,38 @@ export const AccessToFundingPage: React.FC = () => {
       [...appliedFiltersData.locations, ...chart2AppliedFiltersData.locations]
         .length > 0
     ) {
-      filterString += `geographies=${encodeURIComponent(uniq([...appliedFiltersData.locations, ...chart2AppliedFiltersData.locations]).join(","))}`;
+      filterString += `geographies=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.locations,
+          ...chart2AppliedFiltersData.locations,
+        ]).join(",")
+      )}`;
     }
     if (
       [...appliedFiltersData.components, ...chart2AppliedFiltersData.components]
         .length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(uniq([...appliedFiltersData.components, ...chart2AppliedFiltersData.components]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }components=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.components,
+          ...chart2AppliedFiltersData.components,
+        ]).join(",")
+      )}`;
     }
     if (
       [...appliedFiltersData.cycles, ...chart2AppliedFiltersData.cycles]
         .length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}cycles=${encodeURIComponent(uniq([...appliedFiltersData.cycles, ...chart2AppliedFiltersData.cycles]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }cycles=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.cycles,
+          ...chart2AppliedFiltersData.cycles,
+        ]).join(",")
+      )}`;
     }
     return filterString;
   }, [appliedFiltersData, chart2AppliedFiltersData]);
@@ -439,19 +485,38 @@ export const AccessToFundingPage: React.FC = () => {
       [...appliedFiltersData.locations, ...chart3AppliedFiltersData.locations]
         .length > 0
     ) {
-      filterString += `geographies=${encodeURIComponent(uniq([...appliedFiltersData.locations, ...chart3AppliedFiltersData.locations]).join(","))}`;
+      filterString += `geographies=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.locations,
+          ...chart3AppliedFiltersData.locations,
+        ]).join(",")
+      )}`;
     }
     if (
       [...appliedFiltersData.components, ...chart3AppliedFiltersData.components]
         .length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(uniq([...appliedFiltersData.components, ...chart3AppliedFiltersData.components]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }components=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.components,
+          ...chart3AppliedFiltersData.components,
+        ]).join(",")
+      )}`;
     }
     if (
       [...appliedFiltersData.cycles, ...chart3AppliedFiltersData.cycles]
         .length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}periods=${encodeURIComponent(uniq([...appliedFiltersData.cycles.map((c) => c.split("-")[0]), ...chart3AppliedFiltersData.cycles.map((c) => c.split("-")[0])]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }periods=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.cycles.map((c) => c.split("-")[0]),
+          ...chart3AppliedFiltersData.cycles.map((c) => c.split("-")[0]),
+        ]).join(",")
+      )}`;
     }
     return filterString;
   }, [appliedFiltersData, chart3AppliedFiltersData]);
@@ -513,8 +578,16 @@ export const AccessToFundingPage: React.FC = () => {
 
   return (
     <DatasetPage
-      title="Access to Funding"
-      subtitle="Lorem ipsum."
+      title={get(
+        cmsData,
+        "pagesDatasetsAccessToFunding.title",
+        "Access to Funding"
+      )}
+      subtitle={get(
+        cmsData,
+        "pagesDatasetsAccessToFunding.subtitle",
+        "Lorem ipsum."
+      )}
       filterGroups={filterGroups}
       appliedFilters={pageAppliedFilters}
       handleResetFilters={handleResetFilters}
@@ -531,10 +604,18 @@ export const AccessToFundingPage: React.FC = () => {
           >
             <Box>
               <Typography variant="h5">
-                Eligible Countries by Numbers
+                {get(
+                  cmsData,
+                  "pagesDatasetsAccessToFunding.statsTitle",
+                  "Eligible Countries by Numbers"
+                )}
               </Typography>
               <Typography variant="body2" fontWeight="700">
-                Segmented by Components.
+                {get(
+                  cmsData,
+                  "pagesDatasetsAccessToFunding.statsSubtitle",
+                  "Segmented by Components."
+                )}
               </Typography>
             </Box>
             <Box
@@ -544,7 +625,11 @@ export const AccessToFundingPage: React.FC = () => {
               alignItems="center"
             >
               <Typography fontSize="12px" fontWeight="700">
-                Eligibility Year
+                {get(
+                  cmsData,
+                  "pagesDatasetsAccessToFunding.statsDropDownLabel",
+                  "Eligibility Year"
+                )}
               </Typography>
               <Dropdown
                 width={100}
@@ -599,8 +684,16 @@ export const AccessToFundingPage: React.FC = () => {
         >
           <DatasetChartBlock
             id="eligibility"
-            title="Eligibility"
-            subtitle="Country eligibility for funding over time."
+            title={get(
+              cmsData,
+              "pagesDatasetsAccessToFunding.eligibilityTitle",
+              "Eligibility"
+            )}
+            subtitle={get(
+              cmsData,
+              "pagesDatasetsAccessToFunding.eligibilitySubtitle",
+              "Country eligibility for funding over time."
+            )}
             dropdownItems={[]}
             disableCollapse
             loading={loadingEligibilityTable}
@@ -644,7 +737,11 @@ export const AccessToFundingPage: React.FC = () => {
             >
               <Box>
                 <Typography fontSize="12px" fontWeight="700">
-                  Disease Burden
+                  {get(
+                    cmsData,
+                    "componentsChartsEligibility.diseaseBurdenTitle",
+                    "Disease Burden"
+                  )}
                 </Typography>
                 <Box>
                   <Box>
@@ -652,42 +749,78 @@ export const AccessToFundingPage: React.FC = () => {
                       id="rectangle"
                       bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[0]}
                     />
-                    <Typography fontSize="12px">Extreme</Typography>
+                    <Typography fontSize="12px">
+                      {get(
+                        cmsData,
+                        "componentsChartsEligibility.diseaseBurdenExtreme",
+                        "Extreme"
+                      )}
+                    </Typography>
                   </Box>
                   <Box>
                     <Box
                       id="rectangle"
                       bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[1]}
                     />
-                    <Typography fontSize="12px">Severe</Typography>
+                    <Typography fontSize="12px">
+                      {get(
+                        cmsData,
+                        "componentsChartsEligibility.diseaseBurdenSevere",
+                        "Severe"
+                      )}
+                    </Typography>
                   </Box>
                   <Box>
                     <Box
                       id="rectangle"
                       bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[2]}
                     />
-                    <Typography fontSize="12px">High</Typography>
+                    <Typography fontSize="12px">
+                      {get(
+                        cmsData,
+                        "componentsChartsEligibility.diseaseBurdenHigh",
+                        "High"
+                      )}
+                    </Typography>
                   </Box>
                   <Box>
                     <Box
                       id="rectangle"
                       bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[3]}
                     />
-                    <Typography fontSize="12px">Moderate</Typography>
+                    <Typography fontSize="12px">
+                      {get(
+                        cmsData,
+                        "componentsChartsEligibility.diseaseBurdenModerate",
+                        "Moderate"
+                      )}
+                    </Typography>
                   </Box>
                   <Box>
                     <Box
                       id="rectangle"
                       bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[4]}
                     />
-                    <Typography fontSize="12px">Not High</Typography>
+                    <Typography fontSize="12px">
+                      {get(
+                        cmsData,
+                        "componentsChartsEligibility.diseaseBurdenNotHigh",
+                        "Not High"
+                      )}
+                    </Typography>
                   </Box>
                   <Box>
                     <Box
                       id="rectangle"
                       bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[5]}
                     />
-                    <Typography fontSize="12px">Low</Typography>
+                    <Typography fontSize="12px">
+                      {get(
+                        cmsData,
+                        "componentsChartsEligibility.diseaseBurdenLow",
+                        "Low"
+                      )}
+                    </Typography>
                   </Box>
                   <Box>
                     <Box
@@ -695,26 +828,54 @@ export const AccessToFundingPage: React.FC = () => {
                       bgcolor="#FFFFFF"
                       border="1px solid #ccc"
                     />
-                    <Typography fontSize="12px">NA</Typography>
+                    <Typography fontSize="12px">
+                      {get(
+                        cmsData,
+                        "componentsChartsEligibility.diseaseBurdenNA",
+                        "NA"
+                      )}
+                    </Typography>
                   </Box>
                 </Box>
               </Box>
               <Box>
                 <Typography fontSize="12px" fontWeight="700">
-                  Eligibility Status
+                  {get(
+                    cmsData,
+                    "componentsChartsEligibility.statusTitle",
+                    "Eligibility Status"
+                  )}
                 </Typography>
                 <Box>
                   <Box>
                     <Box id="rectangle" bgcolor="#013E77" />
-                    <Typography fontSize="12px">Eligible</Typography>
+                    <Typography fontSize="12px">
+                      {get(
+                        cmsData,
+                        "componentsChartsEligibility.statusEligible",
+                        "Eligible"
+                      )}
+                    </Typography>
                   </Box>
                   <Box>
                     <Box id="rectangle" bgcolor="#00B5AE" />
-                    <Typography fontSize="12px">Transition Funding</Typography>
+                    <Typography fontSize="12px">
+                      {get(
+                        cmsData,
+                        "componentsChartsEligibility.statusTransitionFunding",
+                        "Transition Funding"
+                      )}
+                    </Typography>
                   </Box>
                   <Box>
                     <Box id="rectangle" bgcolor="#D9D9D9" />
-                    <Typography fontSize="12px">Not Eligible</Typography>
+                    <Typography fontSize="12px">
+                      {get(
+                        cmsData,
+                        "componentsChartsEligibility.statusNotEligible",
+                        "Not Eligible"
+                      )}
+                    </Typography>
                   </Box>
                 </Box>
               </Box>
@@ -741,8 +902,16 @@ export const AccessToFundingPage: React.FC = () => {
         >
           <DatasetChartBlock
             id="allocation"
-            title="Allocation"
-            subtitle="Allocations amounts for countries."
+            title={get(
+              cmsData,
+              "pagesDatasetsAccessToFunding.allocationTitle",
+              "Allocation"
+            )}
+            subtitle={get(
+              cmsData,
+              "pagesDatasetsAccessToFunding.allocationSubtitle",
+              "Allocations amounts for countries."
+            )}
             dropdownItems={dropdownItemsAllocations}
             dropdownSelected={dropdownSelected}
             handleDropdownChange={handleSelectionChange}
@@ -763,9 +932,19 @@ export const AccessToFundingPage: React.FC = () => {
         </Box>
         <FullWidthDivider />
         <Box padding="50px 0">
-          <Typography variant="h5">Cumulative Allocation by Cycles</Typography>
+          <Typography variant="h5">
+            {get(
+              cmsData,
+              "pagesDatasetsAccessToFunding.cumulativeAllocationTitle",
+              "Cumulative Allocation by Cycles"
+            )}
+          </Typography>
           <Typography fontSize="14px" fontWeight="700">
-            Accompanied by the Component Breakdown.
+            {get(
+              cmsData,
+              "pagesDatasetsAccessToFunding.cumulativeAllocationSubtitle",
+              "Accompanied by the Component Breakdown."
+            )}
           </Typography>
           <Box marginTop="25px" position="relative">
             {!loadingAllocationsBarSeries ? (
@@ -824,8 +1003,16 @@ export const AccessToFundingPage: React.FC = () => {
         >
           <DatasetChartBlock
             id="funding-requests"
-            title="Funding Requests"
-            subtitle="Funding request applications by countries."
+            title={get(
+              cmsData,
+              "pagesDatasetsAccessToFunding.fundingRequestsTitle",
+              "Funding Requests"
+            )}
+            subtitle={get(
+              cmsData,
+              "pagesDatasetsAccessToFunding.fundingRequestsSubtitle",
+              "Funding request applications by countries."
+            )}
             disableCollapse
             dropdownItems={[]}
             loading={loadingFundingRequestsTable}

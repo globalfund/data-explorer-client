@@ -8,8 +8,10 @@ import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import { Link as RouteLink } from "react-router-dom";
 import { useStoreState } from "app/state/store/hooks";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export const LocationOverview: React.FC = () => {
+  const cmsData = useCMSData({ returnData: true });
   const dataOverview = useStoreState((state) =>
     get(state.GeographyOverview, "data.data[0]", {
       name: "",
@@ -29,7 +31,11 @@ export const LocationOverview: React.FC = () => {
     <Box gap="24px" display="flex" flexDirection="column">
       <Box>
         <Typography fontSize="18px" fontWeight="700">
-          Description
+          {get(
+            cmsData,
+            "pagesLocationOverview.descriptionTitle",
+            "Description"
+          )}
         </Typography>
         <Box
           sx={{
@@ -65,7 +71,11 @@ export const LocationOverview: React.FC = () => {
           >
             <Box minHeight={110}>
               <Typography variant="body2" fontWeight="700" marginBottom="10px">
-                Fund Portfolio Manager
+                {get(
+                  cmsData,
+                  "pagesLocationOverview.portfolioManagerTitle",
+                  "Fund Portfolio Manager"
+                )}
               </Typography>
               <Typography fontSize="12px">
                 {dataOverview.FPMName}
@@ -78,7 +88,11 @@ export const LocationOverview: React.FC = () => {
             <Divider sx={{ borderColor: "#000" }} />
             <Box>
               <Typography variant="body2" fontWeight="700" marginBottom="10px">
-                Coordinating Mechanism Contacts
+                {get(
+                  cmsData,
+                  "pagesLocationOverview.coordinatingMechanismContactsTitle",
+                  "Coordinating Mechanism Contacts"
+                )}
               </Typography>
               <Box>
                 {dataCCMContacts.map((ccm: any) => (

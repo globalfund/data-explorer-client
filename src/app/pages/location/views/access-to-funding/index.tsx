@@ -29,8 +29,10 @@ import {
   TABLE_VARIATION_6_COLUMNS,
   TABLE_VARIATION_10_COLUMNS as ELIGIBILITY_TABLE_COLUMNS,
 } from "app/components/table/data";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export const AccessToFunding: React.FC = () => {
+  const cmsData = useCMSData({ returnData: true });
   const params = useParams<{ id: string; tab: string }>();
 
   const [chart1Cycles, setChart1Cycles] = React.useState<CycleProps[]>([]);
@@ -193,7 +195,9 @@ export const AccessToFunding: React.FC = () => {
   const totalAllocationAmount = React.useMemo(() => {
     const value = sumBy(dataAllocationsRadialChart, "value");
     const range = getRange([{ value }], ["value"]);
-    return `${getFinancialValueWithMetricPrefix(value, range.index, 2)} ${range.full}`;
+    return `${getFinancialValueWithMetricPrefix(value, range.index, 2)} ${
+      range.full
+    }`;
   }, [dataAllocationsRadialChart]);
 
   const raceBarData = React.useMemo(() => {
@@ -249,16 +253,28 @@ export const AccessToFunding: React.FC = () => {
         selectedCycles={chart1Cycles}
         loading={loadingAllocationsRadialChart}
         handleCycleChange={(value) => handleChartCycleChange(value, 1)}
-        subtitle={`Funds Allocated ${get(chart1Cycles, "[0].value", "")}`}
+        subtitle={`${get(
+          cmsData,
+          "pagesLocationAccessToFunding.allocationSubtitle",
+          "Funds Allocated"
+        )} ${get(chart1Cycles, "[0].value", "")}`}
         empty={!showAllocationRadialChart}
         cycles={allocationsCyclesAll.map((c) => ({
           ...c,
           disabled: findIndex(allocationsCycles, { value: c.value }) === -1,
         }))}
-        text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
+        text={get(
+          cmsData,
+          "pagesLocationAccessToFunding.allocationText",
+          "Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
+        )}
       >
         <RadialChart
-          tooltipLabel="Allocation"
+          tooltipLabel={get(
+            cmsData,
+            "pagesLocationAccessToFunding.allocationTooltipLabel",
+            "Allocation"
+          )}
           data={dataAllocationsRadialChart}
           itemLabelFormatterType="name"
         />
@@ -275,7 +291,12 @@ export const AccessToFunding: React.FC = () => {
               US${totalAllocationAmount}
             </Typography>
             <Typography variant="subtitle2">
-              Total Allocation {get(chart1Cycles, "[0].value", "")}
+              {get(
+                cmsData,
+                "pagesLocationAccessToFunding.allocationRadialChartSubtitle",
+                "Total Allocation"
+              )}{" "}
+              {get(chart1Cycles, "[0].value", "")}
             </Typography>
           </Box>
         </Box>
@@ -287,15 +308,27 @@ export const AccessToFunding: React.FC = () => {
         id="funding-requests"
         selectedCycles={chart2Cycles}
         loading={loadingFundingRequestsTable}
-        title={`${dataFundingRequestsTable._children.length} Funding Requests`}
-        subtitle="Submitted to date"
+        title={`${dataFundingRequestsTable._children.length} ${get(
+          cmsData,
+          "pagesLocationAccessToFunding.fundingRequestsTitle",
+          "Funding Requests"
+        )}`}
+        subtitle={get(
+          cmsData,
+          "pagesLocationAccessToFunding.fundingRequestsSubtitle",
+          "Submitted to date"
+        )}
         empty={!showFundingRequestsTable}
         handleCycleChange={(value) => handleChartCycleChange(value, 2)}
         cycles={fundingRequestsCyclesAll.map((c) => ({
           ...c,
           disabled: findIndex(fundingRequestsCycles, { value: c.value }) === -1,
         }))}
-        text="The Funding Request explains how the applicant would use Global Fund allocated funds, if approved. Funding Requests are reviewed by the Global Fund’s Technical Review Panel (TRP). Once approved by the TRP, the Funding Request is turned into one or more grants through the grant-making negotiation. The Grant Approvals Committee (GAC) reviews the final version of each grant and recommends implementation-ready grants to the Global Fund Board for approval. Funding Requests are submitted for internal Global Fund review, but the final grant is the legally-binding agreement.<br/><br/>Documents for a specific funding request can be downloaded by clicking the cloud icon. Documents from the 2017-2019 Allocation Period and earlier can be found by clicking on the “Documents’ tab above. If a Funding Request is not visible for the 2023-2025 Allocation Period and the country received an Allocation, it likely means that the applicant has not yet registered for a TRP Window."
+        text={get(
+          cmsData,
+          "pagesLocationAccessToFunding.fundingRequestsText",
+          "The Funding Request explains how the applicant would use Global Fund allocated funds, if approved. Funding Requests are reviewed by the Global Fund’s Technical Review Panel (TRP). Once approved by the TRP, the Funding Request is turned into one or more grants through the grant-making negotiation. The Grant Approvals Committee (GAC) reviews the final version of each grant and recommends implementation-ready grants to the Global Fund Board for approval. Funding Requests are submitted for internal Global Fund review, but the final grant is the legally-binding agreement.<br/><br/>Documents for a specific funding request can be downloaded by clicking the cloud icon. Documents from the 2017-2019 Allocation Period and earlier can be found by clicking on the “Documents’ tab above. If a Funding Request is not visible for the 2023-2025 Allocation Period and the country received an Allocation, it likely means that the applicant has not yet registered for a TRP Window."
+        )}
       >
         <TableContainer
           dataTree
@@ -337,9 +370,20 @@ export const AccessToFunding: React.FC = () => {
               />
               <Box>
                 <Typography variant="h3" fontWeight="900">
-                  {dataFundingRequestStats.submitted} Submitted
+                  {dataFundingRequestStats.submitted}{" "}
+                  {get(
+                    cmsData,
+                    "pagesLocationAccessToFunding.fundingRequestsStatsSubmittedTitle",
+                    "Submitted"
+                  )}
                 </Typography>
-                <Typography variant="subtitle2">Funding Requests</Typography>
+                <Typography variant="subtitle2">
+                  {get(
+                    cmsData,
+                    "pagesLocationAccessToFunding.fundingRequestsStatsSubmittedSubtitle",
+                    "Funding Requests"
+                  )}
+                </Typography>
               </Box>
             </Box>
           </Grid>
@@ -353,7 +397,12 @@ export const AccessToFunding: React.FC = () => {
               />
               <Box>
                 <Typography variant="h3" fontWeight="900">
-                  {dataFundingRequestStats.signed} Signed
+                  {dataFundingRequestStats.signed}{" "}
+                  {get(
+                    cmsData,
+                    "pagesLocationAccessToFunding.fundingRequestsStatsSignedTitle",
+                    "Signed"
+                  )}
                 </Typography>
                 <Typography variant="subtitle2">
                   {(
@@ -361,7 +410,12 @@ export const AccessToFunding: React.FC = () => {
                       dataFundingRequestStats.submitted) *
                     100
                   ).toFixed(2)}
-                  % Grants
+                  %{" "}
+                  {get(
+                    cmsData,
+                    "pagesLocationAccessToFunding.fundingRequestsStatsSignedSubtitle",
+                    "Grants"
+                  )}
                 </Typography>
               </Box>
             </Box>
@@ -372,10 +426,22 @@ export const AccessToFunding: React.FC = () => {
       <ChartBlock
         noSplitText
         id="eligibility"
-        title="Eligibility"
-        subtitle="To date"
+        title={get(
+          cmsData,
+          "pagesLocationAccessToFunding.eligibilityTitle",
+          "Eligibility"
+        )}
+        subtitle={get(
+          cmsData,
+          "pagesLocationAccessToFunding.eligibilitySubtitle",
+          "To date"
+        )}
         empty={!showEligibilityHeatmap}
-        text="Eligibility for funding from the Global Fund is determined by country income classification and disease burden for HIV, tuberculosis and malaria. Below are the components which are eligible for an allocation for the selected allocation period, according to the Global Fund Eligibility Policy.<br/><br/>Eligibility for the 2023-2025 Allocation Period was determined in 2022 and documented in the 2023 Eligibility List. Eligibility does not guarantee a funding allocation. Learn more about Eligibility <a target='_blank' href='https://www.theglobalfund.org/en/applying-for-funding/understand-and-prepare/eligibility/'>here</a> or <a>see the full history of eligibility for this country</a>."
+        text={get(
+          cmsData,
+          "pagesLocationAccessToFunding.eligibilityText",
+          "Eligibility for funding from the Global Fund is determined by country income classification and disease burden for HIV, tuberculosis and malaria. Below are the components which are eligible for an allocation for the selected allocation period, according to the Global Fund Eligibility Policy.<br/><br/>Eligibility for the 2023-2025 Allocation Period was determined in 2022 and documented in the 2023 Eligibility List. Eligibility does not guarantee a funding allocation. Learn more about Eligibility <a target='_blank' href='https://www.theglobalfund.org/en/applying-for-funding/understand-and-prepare/eligibility/'>here</a> or <a>see the full history of eligibility for this country</a>."
+        )}
       >
         <Box height="32px" />
         <Box
@@ -410,7 +476,11 @@ export const AccessToFunding: React.FC = () => {
         >
           <Box>
             <Typography fontSize="12px" fontWeight="700">
-              Disease Burden
+              {get(
+                cmsData,
+                "componentsChartsEligibility.diseaseBurdenTitle",
+                "Disease Burden"
+              )}
             </Typography>
             <Box>
               <Box>
@@ -418,65 +488,129 @@ export const AccessToFunding: React.FC = () => {
                   id="rectangle"
                   bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[0]}
                 />
-                <Typography fontSize="12px">Extreme</Typography>
+                <Typography fontSize="12px">
+                  {get(
+                    cmsData,
+                    "componentsChartsEligibility.diseaseBurdenExtreme",
+                    "Extreme"
+                  )}
+                </Typography>
               </Box>
               <Box>
                 <Box
                   id="rectangle"
                   bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[1]}
                 />
-                <Typography fontSize="12px">Severe</Typography>
+                <Typography fontSize="12px">
+                  {get(
+                    cmsData,
+                    "componentsChartsEligibility.diseaseBurdenSevere",
+                    "Severe"
+                  )}
+                </Typography>
               </Box>
               <Box>
                 <Box
                   id="rectangle"
                   bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[2]}
                 />
-                <Typography fontSize="12px">High</Typography>
+                <Typography fontSize="12px">
+                  {get(
+                    cmsData,
+                    "componentsChartsEligibility.diseaseBurdenHigh",
+                    "High"
+                  )}
+                </Typography>
               </Box>
               <Box>
                 <Box
                   id="rectangle"
                   bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[3]}
                 />
-                <Typography fontSize="12px">Moderate</Typography>
+                <Typography fontSize="12px">
+                  {get(
+                    cmsData,
+                    "componentsChartsEligibility.diseaseBurdenModerate",
+                    "Moderate"
+                  )}
+                </Typography>
               </Box>
               <Box>
                 <Box
                   id="rectangle"
                   bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[4]}
                 />
-                <Typography fontSize="12px">Not High</Typography>
+                <Typography fontSize="12px">
+                  {get(
+                    cmsData,
+                    "componentsChartsEligibility.diseaseBurdenNotHigh",
+                    "Not High"
+                  )}
+                </Typography>
               </Box>
               <Box>
                 <Box
                   id="rectangle"
                   bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[5]}
                 />
-                <Typography fontSize="12px">Low</Typography>
+                <Typography fontSize="12px">
+                  {get(
+                    cmsData,
+                    "componentsChartsEligibility.diseaseBurdenLow",
+                    "Low"
+                  )}
+                </Typography>
               </Box>
               <Box>
                 <Box id="rectangle" bgcolor="#FFFFFF" border="1px solid #ccc" />
-                <Typography fontSize="12px">NA</Typography>
+                <Typography fontSize="12px">
+                  {get(
+                    cmsData,
+                    "componentsChartsEligibility.diseaseBurdenNA",
+                    "NA"
+                  )}
+                </Typography>
               </Box>
             </Box>
           </Box>
           <Box>
             <Typography fontSize="12px" fontWeight="700">
-              Eligibility Status
+              {get(
+                cmsData,
+                "componentsChartsEligibility.statusTitle",
+                "Eligibility Status"
+              )}
             </Typography>
             <Box>
               <Box>
                 <Box id="rectangle" bgcolor="#013E77" />
-                <Typography fontSize="12px">Eligible</Typography>
+                <Typography fontSize="12px">
+                  {get(
+                    cmsData,
+                    "componentsChartsEligibility.statusEligible",
+                    "Eligible"
+                  )}
+                </Typography>
               </Box>
               <Box>
                 <Box id="rectangle" bgcolor="#00B5AE" />
-                <Typography fontSize="12px">Transition Funding</Typography>
+                <Typography fontSize="12px">
+                  {get(
+                    cmsData,
+                    "componentsChartsEligibility.statusTransitionFunding",
+                    "Transition Funding"
+                  )}
+                </Typography>
               </Box>
               <Box>
                 <Box id="rectangle" bgcolor="#D9D9D9" />
-                <Typography fontSize="12px">Not Eligible</Typography>
+                <Typography fontSize="12px">
+                  {get(
+                    cmsData,
+                    "componentsChartsEligibility.statusNotEligible",
+                    "Not Eligible"
+                  )}
+                </Typography>
               </Box>
             </Box>
           </Box>
@@ -496,7 +630,11 @@ export const AccessToFunding: React.FC = () => {
       <ChartBlock
         id="documents"
         noBottomToolbar
-        title="Documents"
+        title={get(
+          cmsData,
+          "pagesLocationAccessToFunding.documentsTitle",
+          "Documents"
+        )}
         subtitle=""
         empty={!showDocumentsTable}
       >

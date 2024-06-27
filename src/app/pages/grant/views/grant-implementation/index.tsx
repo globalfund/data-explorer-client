@@ -26,8 +26,10 @@ import {
   getRange,
   getFinancialValueWithMetricPrefix,
 } from "app/utils/getFinancialValueWithMetricPrefix";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export const GrantImplementation: React.FC = () => {
+  const cmsData = useCMSData({ returnData: true });
   const [chart2Dropdown, setChart2Dropdown] = React.useState(
     CHART_2_DROPDOWN_ITEMS[0].value
   );
@@ -158,7 +160,11 @@ export const GrantImplementation: React.FC = () => {
 
   const signedFormatted = React.useMemo(() => {
     const range = getRange([dataFinancialValues], ["signed"]);
-    return `${getFinancialValueWithMetricPrefix(dataFinancialValues.signed, range.index, 2)} ${range.abbr}`;
+    return `${getFinancialValueWithMetricPrefix(
+      dataFinancialValues.signed,
+      range.index,
+      2
+    )} ${range.abbr}`;
   }, [dataFinancialValues]);
 
   const raceBarChartData = React.useMemo(() => {
@@ -192,7 +198,11 @@ export const GrantImplementation: React.FC = () => {
       [{ value: dataFinancialValues.disbursement }],
       ["value"]
     );
-    return `US$${getFinancialValueWithMetricPrefix(dataFinancialValues.disbursement, range.index, 2)} ${range.full}`;
+    return `US$${getFinancialValueWithMetricPrefix(
+      dataFinancialValues.disbursement,
+      range.index,
+      2
+    )} ${range.full}`;
   }, [dataFinancialValues.disbursement]);
 
   const totalBudget = React.useMemo(() => {
@@ -203,7 +213,9 @@ export const GrantImplementation: React.FC = () => {
       }
     );
     const range = getRange([{ value: total }], ["value"]);
-    return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${range.full}`;
+    return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${
+      range.full
+    }`;
   }, [dataBudgetSankeyChart]);
 
   const fullWidthDivider = (
@@ -233,12 +245,24 @@ export const GrantImplementation: React.FC = () => {
       <ChartBlock
         id="radial-chart"
         title={disbursementsTotal}
-        subtitle="Disbursed"
+        subtitle={get(
+          cmsData,
+          "pagesGrantGrantImplementation.disbursedSubtitle",
+          "Disbursed"
+        )}
         empty={!showRadialChart}
-        text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
+        text={get(
+          cmsData,
+          "pagesGrantGrantImplementation.disbursedText",
+          "Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
+        )}
       >
         <RadialChart
-          tooltipLabel="Amount"
+          tooltipLabel={get(
+            cmsData,
+            "pagesGrantGrantImplementation.disbursedTooltipLabel",
+            "Amount"
+          )}
           data={radialChartData}
           itemLabelFormatterType="name-value-percent"
         />
@@ -258,7 +282,10 @@ export const GrantImplementation: React.FC = () => {
             bgcolor={appColors.RADIAL_CHART.ITEM_COLORS[2]}
           />
           <Typography variant="body2" fontWeight="700">
-            Signed
+            {get(
+              cmsData,
+              "pagesGrantGrantImplementation.disbursedRadialChartLabel"
+            )}
           </Typography>
           <Typography variant="body2">{signedFormatted}</Typography>
         </Box>
@@ -299,7 +326,11 @@ export const GrantImplementation: React.FC = () => {
             flexDirection="column"
           >
             <Typography variant="body2" fontWeight="700">
-              Board Approved Date
+              {get(
+                cmsData,
+                "pagesGrantGrantImplementation.dateStat1",
+                "Board Approved Date"
+              )}
             </Typography>
             <Typography variant="overline">
               {dataProgrameDates.boardApprovedDate}
@@ -314,7 +345,11 @@ export const GrantImplementation: React.FC = () => {
             flexDirection="column"
           >
             <Typography variant="body2" fontWeight="700">
-              Program Start Date
+              {get(
+                cmsData,
+                "pagesGrantGrantImplementation.dateStat2",
+                "Program Start Date"
+              )}
             </Typography>
             <Typography
               gap="4px"
@@ -334,7 +369,11 @@ export const GrantImplementation: React.FC = () => {
             flexDirection="column"
           >
             <Typography variant="body2" fontWeight="700">
-              Program End Date
+              {get(
+                cmsData,
+                "pagesGrantGrantImplementation.dateStat3",
+                "Program End Date"
+              )}
             </Typography>
             <Typography variant="overline">
               {dataProgrameDates.programEndDate}
@@ -346,10 +385,22 @@ export const GrantImplementation: React.FC = () => {
       {fullWidthDivider}
       <ChartBlock
         id="disbursements"
-        title="Disbursements"
-        subtitle="Overtime"
+        title={get(
+          cmsData,
+          "pagesGrantGrantImplementation.disbursementsTitle",
+          "Disbursements"
+        )}
+        subtitle={get(
+          cmsData,
+          "pagesGrantGrantImplementation.disbursementsSubtitle",
+          "Overtime"
+        )}
         empty={!showDisbursementsBarChart}
-        text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
+        text={get(
+          cmsData,
+          "pagesGrantGrantImplementation.disbursementsText",
+          "Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
+        )}
       >
         <BarChart
           data={dataDisbursementsBarChart}
@@ -360,9 +411,17 @@ export const GrantImplementation: React.FC = () => {
       <ChartBlock
         id="budget"
         title={totalBudget}
-        subtitle="Grant Budgets"
+        subtitle={get(
+          cmsData,
+          "pagesGrantGrantImplementation.budgetsSubtitle",
+          "Grant Budgets"
+        )}
         empty={!showBudgetSankeyChart}
-        text="Our Grant Implementation programs are developed meticulously, each Grant follows a well executed plan, always supervised by TGF Implementation team."
+        text={get(
+          cmsData,
+          "pagesGrantGrantImplementation.budgetsText",
+          "Our Grant Implementation programs are developed meticulously, each Grant follows a well executed plan, always supervised by TGF Implementation team."
+        )}
       >
         <Grid
           container
@@ -375,16 +434,32 @@ export const GrantImplementation: React.FC = () => {
           }}
         >
           <Grid item xs={3}>
-            Total Budgets
+            {get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.budgetsLabel1",
+              "Total budget"
+            )}
           </Grid>
           <Grid item xs={3}>
-            Landscape 1
+            {get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.budgetsLabel2",
+              "Investement Landscape 1"
+            )}
           </Grid>
           <Grid item xs={3}>
-            Landscape 2
+            {get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.budgetsLabel3",
+              "Investement Landscape 2"
+            )}
           </Grid>
           <Grid item xs={3}>
-            Cost Category
+            {get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.budgetsLabel4",
+              "Cost Category"
+            )}
           </Grid>
         </Grid>
         <SankeyChart data={dataBudgetSankeyChart} />
@@ -393,13 +468,25 @@ export const GrantImplementation: React.FC = () => {
       <ChartBlock
         cycles={CYCLES}
         id="expenditures"
-        subtitle="To date"
-        title="Expenditures"
+        subtitle={get(
+          cmsData,
+          "pagesGrantGrantImplementation.expendituresSubtitle",
+          "To date"
+        )}
+        title={get(
+          cmsData,
+          "pagesGrantGrantImplementation.expendituresTitle",
+          "Expenditures"
+        )}
         empty={!showExpendituresHeatmap}
         dropdownSelected={chart2Dropdown}
         dropdownItems={CHART_2_DROPDOWN_ITEMS}
         handleDropdownChange={setChart2Dropdown}
-        text="Our Grant Implementation programs are developed meticulously, each Grant follows a well executed plan, always supervised by TGF Implementation team."
+        text={get(
+          cmsData,
+          "pagesGrantGrantImplementation.expendituresText",
+          "Our Grant Implementation programs are developed meticulously, each Grant follows a well executed plan, always supervised by TGF Implementation team."
+        )}
         unitButtons={chart2UnitButtons}
       >
         <Heatmap

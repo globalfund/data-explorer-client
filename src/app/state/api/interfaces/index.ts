@@ -30,6 +30,26 @@ import {
   CMSApiCountrySummary,
   CMSApiNotesAndDisclaimers,
   CMSApiModulesFundingRequests,
+  CMSApiPagesDatasets,
+  CMSApiPagesGeography,
+  CMSApiPagesGrantDetail,
+  CMSApiPagesGrants,
+  CMSApiPagesHome,
+  CMSApiPagesLocation,
+  CMSApiGeneral,
+  CMSApiPagesDatatsetsAccessToFunding,
+  CMSApiPagesDatatsetsAnnualResults,
+  CMSApiPagesDatatsetsGrantImplementation,
+  CMSApiPagesDatatsetsResourceMobilization,
+  CMSApiPagesLocationAccessToFunding,
+  CMSApiPagesLocationGrantImplementation,
+  CMSApiPagesLocationOverview,
+  CMSApiPagesLocationResults,
+  CMSApiPagesLocationResourceMobilization,
+  CMSApiPagesGrantDocuments,
+  CMSApiPagesGrantGrantImplementation,
+  CMSApiPagesGrantOverview,
+  CMSApiPagesGrantTargetResults,
 } from "app/state/api/interfaces/cms";
 
 export interface RequestValues<T> {
@@ -115,6 +135,26 @@ export type CMSApiCallModel = ApiModel<
   | CMSApiCountrySummary
   | CMSApiNotesAndDisclaimers
   | CMSApiModulesFundingRequests
+  | CMSApiPagesDatasets
+  | CMSApiPagesGeography
+  | CMSApiPagesGrantDetail
+  | CMSApiPagesGrants
+  | CMSApiPagesHome
+  | CMSApiPagesLocation
+  | CMSApiGeneral
+  | CMSApiPagesDatatsetsAccessToFunding
+  | CMSApiPagesDatatsetsAnnualResults
+  | CMSApiPagesDatatsetsGrantImplementation
+  | CMSApiPagesDatatsetsResourceMobilization
+  | CMSApiPagesLocationAccessToFunding
+  | CMSApiPagesLocationGrantImplementation
+  | CMSApiPagesLocationOverview
+  | CMSApiPagesLocationResults
+  | CMSApiPagesLocationResourceMobilization
+  | CMSApiPagesGrantDocuments
+  | CMSApiPagesGrantGrantImplementation
+  | CMSApiPagesGrantOverview
+  | CMSApiPagesGrantTargetResults
 >;
 
 export interface CMSApiCallParams {}
@@ -258,5 +298,25 @@ export interface StoreModel {
     modulesFundingRequests: CMSApiCallModel;
     countrySummary: CMSApiCallModel;
     notesAndDisclaimers: CMSApiCallModel;
+    pagesDatasets: CMSApiCallModel;
+    pagesGeography: CMSApiCallModel;
+    pagesGrantDetail: CMSApiCallModel;
+    pagesGrants: CMSApiCallModel;
+    pagesHome: CMSApiCallModel;
+    pagesLocation: CMSApiCallModel;
+    general: CMSApiCallModel;
+    pagesDatasetsAccessToFunding: CMSApiCallModel;
+    pagesDatasetsGrantImplementation: CMSApiCallModel;
+    pagesDatasetsAnnualResults: CMSApiCallModel;
+    pagesDatasetsResourceMobilization: CMSApiCallModel;
+    pagesLocationAccessToFunding: CMSApiCallModel;
+    pagesLocationGrantImplementation: CMSApiCallModel;
+    pagesLocationOverview: CMSApiCallModel;
+    pagesLocationResourceMobilization: CMSApiCallModel;
+    pagesLocationResults: CMSApiCallModel;
+    pagesGrantDocuments: CMSApiCallModel;
+    pagesGrantGrantImplementation: CMSApiCallModel;
+    pagesGrantOverview: CMSApiCallModel;
+    pagesGrantTargetResults: CMSApiCallModel;
   };
 }

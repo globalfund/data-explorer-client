@@ -128,6 +128,29 @@ import {
   GeographyFundingRequestsCycles,
   GeographyPledgesContributionsCycles,
 } from "app/state/api/action-reducers/filters/cycles";
+import pagesDatasets, {
+  pagesDatasetsAccessToFunding,
+  pagesDatasetsAnnualResults,
+  pagesDatasetsGrantImplementation,
+  pagesDatasetsResourceMobilization,
+} from "../api/action-reducers/cms/pagesDatasets";
+import pagesGeography from "../api/action-reducers/cms/pagesGeography";
+import pagesGrantDetail, {
+  pagesGrantDocuments,
+  pagesGrantGrantImplementation,
+  pagesGrantOverview,
+  pagesGrantTargetResults,
+} from "../api/action-reducers/cms/pagesGrantDetail";
+import pagesGrants from "../api/action-reducers/cms/pagesGrants";
+import pagesHome from "../api/action-reducers/cms/pagesHome";
+import pagesLocation, {
+  pagesLocationAccessToFunding,
+  pagesLocationGrantImplementation,
+  pagesLocationOverview,
+  pagesLocationResourceMobilization,
+  pagesLocationResults,
+} from "../api/action-reducers/cms/pagesLocation";
+import general from "../api/action-reducers/cms/general";
 
 const storeContent: StoreModel = {
   // homepage
@@ -305,6 +328,30 @@ const storeContent: StoreModel = {
     modulesFundingRequests: persist(modulesFundingRequests),
     countrySummary: persist(countrySummary),
     notesAndDisclaimers: persist(notesAndDisclaimers),
+    pagesDatasets: persist(pagesDatasets),
+    pagesGeography: persist(pagesGeography),
+    pagesGrantDetail: persist(pagesGrantDetail),
+    pagesGrants: persist(pagesGrants),
+    pagesHome: persist(pagesHome),
+    pagesLocation: persist(pagesLocation),
+    general: persist(general),
+    pagesDatasetsAccessToFunding: persist(pagesDatasetsAccessToFunding),
+    pagesDatasetsGrantImplementation: persist(pagesDatasetsGrantImplementation),
+    pagesDatasetsAnnualResults: persist(pagesDatasetsAnnualResults),
+    pagesDatasetsResourceMobilization: persist(
+      pagesDatasetsResourceMobilization
+    ),
+    pagesLocationAccessToFunding: persist(pagesLocationAccessToFunding),
+    pagesLocationGrantImplementation: persist(pagesLocationGrantImplementation),
+    pagesLocationOverview: persist(pagesLocationOverview),
+    pagesLocationResourceMobilization: persist(
+      pagesLocationResourceMobilization
+    ),
+    pagesLocationResults: persist(pagesLocationResults),
+    pagesGrantDocuments: persist(pagesGrantDocuments),
+    pagesGrantGrantImplementation: persist(pagesGrantGrantImplementation),
+    pagesGrantOverview: persist(pagesGrantOverview),
+    pagesGrantTargetResults: persist(pagesGrantTargetResults),
   },
 };
 

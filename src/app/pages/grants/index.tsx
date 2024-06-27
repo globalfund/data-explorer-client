@@ -26,8 +26,11 @@ import { getMonthFromNumber } from "app/utils/getMonthFromNumber";
 import { FilterGroupModel } from "app/components/filters/list/data";
 import { TABLE_VARIATION_5_COLUMNS } from "app/components/table/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export const Grants: React.FC = () => {
+  const cmsData = useCMSData({ returnData: true });
+
   const [page, setPage] = React.useState(1);
   const [search, setSearch] = React.useState("");
   const [showSearch, setShowSearch] = React.useState(false);
@@ -133,10 +136,14 @@ export const Grants: React.FC = () => {
       const startDate = new Date(item.startDate);
       const endDate = new Date(item.endDate);
       if (startDate) {
-        datesStr = `${getMonthFromNumber(startDate.getMonth() + 1)} ${startDate.getFullYear()} - `;
+        datesStr = `${getMonthFromNumber(
+          startDate.getMonth() + 1
+        )} ${startDate.getFullYear()} - `;
       }
       if (endDate) {
-        datesStr += `${getMonthFromNumber(endDate.getMonth() + 1)} ${endDate.getFullYear()}`;
+        datesStr += `${getMonthFromNumber(
+          endDate.getMonth() + 1
+        )} ${endDate.getFullYear()}`;
       }
       return {
         grantId: item.number,
@@ -265,22 +272,42 @@ export const Grants: React.FC = () => {
   const filterString = React.useMemo(() => {
     let filterString = "";
     if (appliedFiltersData.locations.length > 0) {
-      filterString += `geographies=${encodeURIComponent(appliedFiltersData.locations.join(","))}`;
+      filterString += `geographies=${encodeURIComponent(
+        appliedFiltersData.locations.join(",")
+      )}`;
     }
     if (appliedFiltersData.components.length > 0) {
-      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(appliedFiltersData.components.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }components=${encodeURIComponent(
+        appliedFiltersData.components.join(",")
+      )}`;
     }
     if (appliedFiltersData.principalRecipientTypes.length > 0) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientTypes=${encodeURIComponent(appliedFiltersData.principalRecipientTypes.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipientTypes=${encodeURIComponent(
+        appliedFiltersData.principalRecipientTypes.join(",")
+      )}`;
     }
     if (appliedFiltersData.principalRecipientSubTypes.length > 0) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientSubTypes=${encodeURIComponent(appliedFiltersData.principalRecipientSubTypes.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipientSubTypes=${encodeURIComponent(
+        appliedFiltersData.principalRecipientSubTypes.join(",")
+      )}`;
     }
     if (appliedFiltersData.principalRecipients.length > 0) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipients=${encodeURIComponent(appliedFiltersData.principalRecipients.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipients=${encodeURIComponent(
+        appliedFiltersData.principalRecipients.join(",")
+      )}`;
     }
     if (appliedFiltersData.status.length > 0) {
-      filterString += `${filterString.length > 0 ? "&" : ""}status=${encodeURIComponent(appliedFiltersData.status.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }status=${encodeURIComponent(appliedFiltersData.status.join(","))}`;
     }
     return filterString;
   }, [appliedFiltersData]);
@@ -304,7 +331,9 @@ export const Grants: React.FC = () => {
         page: `${page}`,
         pageSize: "9",
       },
-      filterString: `q=${search}${filterString.length ? `&${filterString}` : ""}`,
+      filterString: `q=${search}${
+        filterString.length ? `&${filterString}` : ""
+      }`,
     });
   }, [page, filterString]);
 
@@ -315,7 +344,9 @@ export const Grants: React.FC = () => {
           page: `${page}`,
           pageSize: "9",
         },
-        filterString: `q=${search}${filterString.length ? `&${filterString}` : ""}`,
+        filterString: `q=${search}${
+          filterString.length ? `&${filterString}` : ""
+        }`,
       });
     }
   }, [search]);
@@ -333,7 +364,9 @@ export const Grants: React.FC = () => {
 
   return (
     <Box padding="50px 0">
-      <Typography variant="h1">Grants</Typography>
+      <Typography variant="h1">
+        {get(cmsData, "pagesGrants.title", "Grants")}
+      </Typography>
       <Box height="50px" />
       {fullWidthDivider}
       <Box
