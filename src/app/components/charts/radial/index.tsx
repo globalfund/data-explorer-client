@@ -169,6 +169,7 @@ export const RadialChart: React.FC<RadialChartProps> = (
     <React.Fragment>
       <Box
         id="radial-chart"
+        data-cy="radial-chart"
         ref={containerRef}
         width="100%"
         height={props.height ?? "480px"}

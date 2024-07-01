@@ -179,6 +179,7 @@ export const Geography: React.FC = () => {
             value={search}
             onChange={handleSearch}
             placeholder="e.g. Kenya"
+            data-cy="geography-search-input"
           />
           {search.length > 0 && (
             <IconButton

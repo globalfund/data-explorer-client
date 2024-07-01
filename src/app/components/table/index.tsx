@@ -26,8 +26,8 @@ export const Table: React.FC<TableProps> = (props: TableProps) => {
         dataTreeStartExpanded: props.dataTreeStartExpanded
           ? Boolean(props.dataTreeStartExpanded)
           : props.dataTreeStartExpandedFn
-            ? props.dataTreeStartExpandedFn
-            : false,
+          ? props.dataTreeStartExpandedFn
+          : false,
       });
 
       table.on("dataTreeRowExpanded", (_, level) => {
@@ -77,6 +77,7 @@ export const Table: React.FC<TableProps> = (props: TableProps) => {
       ref={ref}
       id={props.id}
       border="1px solid #CFD4DA"
+      data-cy="table"
       sx={{
         maxHeight: "500px",
         ".tabulator-col-title, .tabulator-cell": {

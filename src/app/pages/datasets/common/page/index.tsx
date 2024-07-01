@@ -81,6 +81,7 @@ export const DatasetPage: React.FC<DatasetPageProps> = (
                   }
                 : {}
             }
+            data-cy="datasets-filter-btn"
           >
             Filters
           </Button>

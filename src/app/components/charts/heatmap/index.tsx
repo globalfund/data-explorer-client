@@ -275,6 +275,7 @@ export function Heatmap(props: HeatmapProps) {
         position="relative"
         borderRadius="16px"
         bgcolor={props.bgColor}
+        data-cy="heatmap-chart"
       >
         {props.rowHeader && (
           <Typography

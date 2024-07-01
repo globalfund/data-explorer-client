@@ -67,6 +67,7 @@ export const HomeResultsStats: React.FC<HomeResultsStatsProps> = (
           width: "calc(100% / 3)",
         },
       }}
+      data-cy="home-results-stats"
     >
       {props.loading && props.stats.length === 0 && (
         <Box

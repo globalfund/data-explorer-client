@@ -63,6 +63,7 @@ export const ChartBlockCycles: React.FC<ChartBlockCyclesProps> = (
           key={cycle.name}
           disabled={cycle.disabled}
           onClick={handleCycleClick(cycle)}
+          data-cy={`chart-cycle-button`}
           style={
             find(props.selectedCycles, { value: cycle.value })
               ? {

@@ -92,6 +92,7 @@ export const HeaderMenu: React.FC = () => {
                 }
               : {}
           }
+          data-cy="header-menu-button"
         >
           {page.label}
         </HeaderMenuButton>
@@ -159,6 +160,7 @@ export const HeaderMenu: React.FC = () => {
                         ? "-.35px -.35px 0 #000, .35px .35px #000"
                         : "-.35px -.35px 0 transparent, .35px .35px transparent",
                   }}
+                  data-cy="header-menu-button"
                 >
                   {subPage.label}
                 </HeaderMenuButton>
@@ -173,6 +175,7 @@ export const HeaderMenu: React.FC = () => {
                         padding: "0 60px",
                         width: "fit-content",
                       }}
+                      data-cy="header-menu-button"
                     >
                       {subSubPage.label}
                     </HeaderMenuButton>

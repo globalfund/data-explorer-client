@@ -144,6 +144,7 @@ const InfoPanel: React.FC<InfoPanelProps> = (props: InfoPanelProps) => {
       bgcolor="#F5F5F7"
       borderRadius="16px"
       position="absolute"
+      data-cy="chart-info-dialog"
     >
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Typography
@@ -307,7 +308,11 @@ export const ChartBlockButtonToolbar: React.FC<ChartBlockButtonToolbarProps> = (
               />
             </React.Fragment>
           )}
-          <Tooltip title="Info" onClick={handleButtonClick("info")}>
+          <Tooltip
+            title="Info"
+            data-cy="chart-info-button"
+            onClick={handleButtonClick("info")}
+          >
             <IconButton id={active === "info" ? "active" : ""}>
               <InfoIcon />
             </IconButton>

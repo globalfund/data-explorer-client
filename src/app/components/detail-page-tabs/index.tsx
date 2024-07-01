@@ -54,6 +54,7 @@ export const DetailPageTabs: React.FC<DetailPageTabsProps> = (
             theme={{
               active: props.activeTab === tab.link.replace("/", ""),
             }}
+            data-cy="page-tab-button"
           >
             {tab.label}
           </ButtonTab>

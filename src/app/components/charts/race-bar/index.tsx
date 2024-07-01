@@ -28,6 +28,7 @@ export const RaceBarChart: React.FC<RaceBarChartProps> = (
             key={item.name}
             alignItems="center"
             flexDirection="row"
+            data-cy="race-bar-chart"
           >
             <Typography
               fontSize="14px"

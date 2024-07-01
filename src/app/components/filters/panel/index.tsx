@@ -45,6 +45,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
       borderRadius="4px"
       flexDirection="column"
       border="1px solid #70777E"
+      data-cy="filter-panel"
     >
       <Box
         width="100%"
