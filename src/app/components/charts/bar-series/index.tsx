@@ -226,6 +226,7 @@ export const BarSeriesChart: React.FC<BarSeriesChartProps> = (
     <React.Fragment>
       <Box
         id="bar-chart"
+        data-cy="bar-series-chart"
         ref={containerRef}
         width="100%"
         height="300px"
