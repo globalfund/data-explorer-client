@@ -837,7 +837,7 @@ export const TABLE_VARIATION_5_DATA: {
 
 export const TABLE_VARIATION_6_COLUMNS: ColumnDefinition[] = [
   {
-    title: "Location",
+    title: "Geography",
     field: "name",
     width: "80%",
     formatter: cellBGColorFormatter,

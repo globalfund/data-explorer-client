@@ -203,6 +203,7 @@ export const AccessToFundingPage: React.FC = () => {
   const handleResetFilters = () => {
     appliedFiltersActions.setAll({
       ...appliedFiltersData,
+      cycles: [],
       locations: [],
       components: [],
     });
@@ -379,10 +380,16 @@ export const AccessToFundingPage: React.FC = () => {
   const filterString = React.useMemo(() => {
     let filterString = "";
     if (appliedFiltersData.locations.length > 0) {
-      filterString += `geographies=${encodeURIComponent(appliedFiltersData.locations.join(","))}`;
+      filterString += `geographies=${encodeURIComponent(
+        appliedFiltersData.locations.join(",")
+      )}`;
     }
     if (appliedFiltersData.components.length > 0) {
-      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(appliedFiltersData.components.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }components=${encodeURIComponent(
+        appliedFiltersData.components.join(",")
+      )}`;
     }
     return filterString;
   }, [appliedFiltersData]);
@@ -393,19 +400,38 @@ export const AccessToFundingPage: React.FC = () => {
       [...appliedFiltersData.locations, ...chart1AppliedFiltersData.locations]
         .length > 0
     ) {
-      filterString += `geographies=${encodeURIComponent(uniq([...appliedFiltersData.locations, ...chart1AppliedFiltersData.locations]).join(","))}`;
+      filterString += `geographies=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.locations,
+          ...chart1AppliedFiltersData.locations,
+        ]).join(",")
+      )}`;
     }
     if (
       [...appliedFiltersData.components, ...chart1AppliedFiltersData.components]
         .length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(uniq([...appliedFiltersData.components, ...chart1AppliedFiltersData.components]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }components=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.components,
+          ...chart1AppliedFiltersData.components,
+        ]).join(",")
+      )}`;
     }
     if (
       [...appliedFiltersData.cycles, ...chart1AppliedFiltersData.cycles]
         .length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}cycles=${encodeURIComponent(uniq([...appliedFiltersData.cycles, ...chart1AppliedFiltersData.cycles]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }cycles=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.cycles,
+          ...chart1AppliedFiltersData.cycles,
+        ]).join(",")
+      )}`;
     }
     return filterString;
   }, [appliedFiltersData, chart1AppliedFiltersData]);
@@ -416,19 +442,38 @@ export const AccessToFundingPage: React.FC = () => {
       [...appliedFiltersData.locations, ...chart2AppliedFiltersData.locations]
         .length > 0
     ) {
-      filterString += `geographies=${encodeURIComponent(uniq([...appliedFiltersData.locations, ...chart2AppliedFiltersData.locations]).join(","))}`;
+      filterString += `geographies=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.locations,
+          ...chart2AppliedFiltersData.locations,
+        ]).join(",")
+      )}`;
     }
     if (
       [...appliedFiltersData.components, ...chart2AppliedFiltersData.components]
         .length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(uniq([...appliedFiltersData.components, ...chart2AppliedFiltersData.components]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }components=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.components,
+          ...chart2AppliedFiltersData.components,
+        ]).join(",")
+      )}`;
     }
     if (
       [...appliedFiltersData.cycles, ...chart2AppliedFiltersData.cycles]
         .length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}cycles=${encodeURIComponent(uniq([...appliedFiltersData.cycles, ...chart2AppliedFiltersData.cycles]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }cycles=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.cycles,
+          ...chart2AppliedFiltersData.cycles,
+        ]).join(",")
+      )}`;
     }
     return filterString;
   }, [appliedFiltersData, chart2AppliedFiltersData]);
@@ -439,19 +484,38 @@ export const AccessToFundingPage: React.FC = () => {
       [...appliedFiltersData.locations, ...chart3AppliedFiltersData.locations]
         .length > 0
     ) {
-      filterString += `geographies=${encodeURIComponent(uniq([...appliedFiltersData.locations, ...chart3AppliedFiltersData.locations]).join(","))}`;
+      filterString += `geographies=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.locations,
+          ...chart3AppliedFiltersData.locations,
+        ]).join(",")
+      )}`;
     }
     if (
       [...appliedFiltersData.components, ...chart3AppliedFiltersData.components]
         .length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(uniq([...appliedFiltersData.components, ...chart3AppliedFiltersData.components]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }components=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.components,
+          ...chart3AppliedFiltersData.components,
+        ]).join(",")
+      )}`;
     }
     if (
       [...appliedFiltersData.cycles, ...chart3AppliedFiltersData.cycles]
         .length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}periods=${encodeURIComponent(uniq([...appliedFiltersData.cycles.map((c) => c.split("-")[0]), ...chart3AppliedFiltersData.cycles.map((c) => c.split("-")[0])]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }periods=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.cycles.map((c) => c.split("-")[0]),
+          ...chart3AppliedFiltersData.cycles.map((c) => c.split("-")[0]),
+        ]).join(",")
+      )}`;
     }
     return filterString;
   }, [appliedFiltersData, chart3AppliedFiltersData]);
@@ -514,7 +578,7 @@ export const AccessToFundingPage: React.FC = () => {
   return (
     <DatasetPage
       title="Access to Funding"
-      subtitle="Lorem ipsum."
+      subtitle=""
       filterGroups={filterGroups}
       appliedFilters={pageAppliedFilters}
       handleResetFilters={handleResetFilters}

@@ -278,13 +278,21 @@ export const ResourceMobilizationPage: React.FC = () => {
   const filterString = React.useMemo(() => {
     let filterString = "";
     if (appliedFiltersData.donorTypes.length > 0) {
-      filterString += `donorTypes=${encodeURIComponent(appliedFiltersData.donorTypes.join(","))}`;
+      filterString += `donorTypes=${encodeURIComponent(
+        appliedFiltersData.donorTypes.join(",")
+      )}`;
     }
     if (appliedFiltersData.donors.length > 0) {
-      filterString += `${filterString.length > 0 ? "&" : ""}donors=${encodeURIComponent(appliedFiltersData.donors.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }donors=${encodeURIComponent(appliedFiltersData.donors.join(","))}`;
     }
     if (appliedFiltersData.replenishmentPeriods.length > 0) {
-      filterString += `${filterString.length > 0 ? "&" : ""}periods=${encodeURIComponent(appliedFiltersData.replenishmentPeriods.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }periods=${encodeURIComponent(
+        appliedFiltersData.replenishmentPeriods.join(",")
+      )}`;
     }
     return filterString;
   }, [appliedFiltersData]);
@@ -295,13 +303,25 @@ export const ResourceMobilizationPage: React.FC = () => {
       [...appliedFiltersData.donorTypes, ...chartAppliedFiltersData.donorTypes]
         .length > 0
     ) {
-      filterString += `donorTypes=${encodeURIComponent(uniq([...appliedFiltersData.donorTypes, ...chartAppliedFiltersData.donorTypes]).join(","))}`;
+      filterString += `donorTypes=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.donorTypes,
+          ...chartAppliedFiltersData.donorTypes,
+        ]).join(",")
+      )}`;
     }
     if (
       [...appliedFiltersData.donors, ...chartAppliedFiltersData.donors].length >
       0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}donors=${encodeURIComponent(uniq([...appliedFiltersData.donors, ...chartAppliedFiltersData.donors]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }donors=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.donors,
+          ...chartAppliedFiltersData.donors,
+        ]).join(",")
+      )}`;
     }
     if (
       [
@@ -309,7 +329,14 @@ export const ResourceMobilizationPage: React.FC = () => {
         ...chartAppliedFiltersData.replenishmentPeriods,
       ].length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}periods=${encodeURIComponent(uniq([...appliedFiltersData.replenishmentPeriods, ...chartAppliedFiltersData.replenishmentPeriods]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }periods=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.replenishmentPeriods,
+          ...chartAppliedFiltersData.replenishmentPeriods,
+        ]).join(",")
+      )}`;
     }
     return filterString;
   }, [appliedFiltersData, chartAppliedFiltersData]);
@@ -460,7 +487,7 @@ export const ResourceMobilizationPage: React.FC = () => {
                   <Grid item xs={12} sm={6} md={6} lg={3} key={item.name}>
                     <Box bgcolor="#F1F3F5" padding="5px 10px">
                       <Typography variant="h5">{item.value}</Typography>
-                      <Typography fontSize="12px">from {item.name}</Typography>
+                      <Typography fontSize="12px">{item.name}</Typography>
                     </Box>
                   </Grid>
                 ))}

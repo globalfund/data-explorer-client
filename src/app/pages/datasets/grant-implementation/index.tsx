@@ -415,6 +415,7 @@ export const GrantImplementationPage: React.FC = () => {
   const handleResetFilters = () => {
     appliedFiltersActions.setAll({
       ...appliedFiltersData,
+      cycles: [],
       components: [],
       locations: [],
       principalRecipients: [],
@@ -995,22 +996,42 @@ export const GrantImplementationPage: React.FC = () => {
   const filterString = React.useMemo(() => {
     let filterString = "";
     if (appliedFiltersData.locations.length > 0) {
-      filterString += `geographies=${encodeURIComponent(appliedFiltersData.locations.join(","))}`;
+      filterString += `geographies=${encodeURIComponent(
+        appliedFiltersData.locations.join(",")
+      )}`;
     }
     if (appliedFiltersData.components.length > 0) {
-      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(appliedFiltersData.components.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }components=${encodeURIComponent(
+        appliedFiltersData.components.join(",")
+      )}`;
     }
     if (appliedFiltersData.principalRecipientTypes.length > 0) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientTypes=${encodeURIComponent(appliedFiltersData.principalRecipientTypes.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipientTypes=${encodeURIComponent(
+        appliedFiltersData.principalRecipientTypes.join(",")
+      )}`;
     }
     if (appliedFiltersData.principalRecipientSubTypes.length > 0) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientSubTypes=${encodeURIComponent(appliedFiltersData.principalRecipientSubTypes.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipientSubTypes=${encodeURIComponent(
+        appliedFiltersData.principalRecipientSubTypes.join(",")
+      )}`;
     }
     if (appliedFiltersData.principalRecipients.length > 0) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipients=${encodeURIComponent(appliedFiltersData.principalRecipients.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipients=${encodeURIComponent(
+        appliedFiltersData.principalRecipients.join(",")
+      )}`;
     }
     if (appliedFiltersData.status.length > 0) {
-      filterString += `${filterString.length > 0 ? "&" : ""}status=${encodeURIComponent(appliedFiltersData.status.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }status=${encodeURIComponent(appliedFiltersData.status.join(","))}`;
     }
     if (appliedFiltersData.cycles.length > 0) {
       const years = appliedFiltersData.cycles.map(
@@ -1019,7 +1040,11 @@ export const GrantImplementationPage: React.FC = () => {
       const yearsTo = appliedFiltersData.cycles.map(
         (cycle) => cycle.replace(/ /g, "").split("-")[1]
       );
-      filterString += `${filterString.length > 0 ? "&" : ""}years=${encodeURIComponent(years.join(","))}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }years=${encodeURIComponent(
+        years.join(",")
+      )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
     }
     return filterString;
   }, [appliedFiltersData]);
@@ -1030,13 +1055,25 @@ export const GrantImplementationPage: React.FC = () => {
       [...appliedFiltersData.locations, ...chart1AppliedFiltersData.locations]
         .length > 0
     ) {
-      filterString += `geographies=${encodeURIComponent(uniq([...appliedFiltersData.locations, ...chart1AppliedFiltersData.locations]).join(","))}`;
+      filterString += `geographies=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.locations,
+          ...chart1AppliedFiltersData.locations,
+        ]).join(",")
+      )}`;
     }
     if (
       [...appliedFiltersData.components, ...chart1AppliedFiltersData.components]
         .length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(uniq([...appliedFiltersData.components, ...chart1AppliedFiltersData.components]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }components=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.components,
+          ...chart1AppliedFiltersData.components,
+        ]).join(",")
+      )}`;
     }
     if (
       [
@@ -1044,7 +1081,14 @@ export const GrantImplementationPage: React.FC = () => {
         ...chart1AppliedFiltersData.principalRecipients,
       ].length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipients=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipients, ...chart1AppliedFiltersData.principalRecipients]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipients=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipients,
+          ...chart1AppliedFiltersData.principalRecipients,
+        ]).join(",")
+      )}`;
     }
     if (
       [
@@ -1052,7 +1096,14 @@ export const GrantImplementationPage: React.FC = () => {
         ...chart1AppliedFiltersData.principalRecipientSubTypes,
       ].length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientSubTypes=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipientSubTypes, ...chart1AppliedFiltersData.principalRecipientSubTypes]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipientSubTypes=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipientSubTypes,
+          ...chart1AppliedFiltersData.principalRecipientSubTypes,
+        ]).join(",")
+      )}`;
     }
     if (
       [
@@ -1060,13 +1111,27 @@ export const GrantImplementationPage: React.FC = () => {
         ...chart1AppliedFiltersData.principalRecipientTypes,
       ].length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientTypes=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipientTypes, ...chart1AppliedFiltersData.principalRecipientTypes]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipientTypes=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipientTypes,
+          ...chart1AppliedFiltersData.principalRecipientTypes,
+        ]).join(",")
+      )}`;
     }
     if (
       [...appliedFiltersData.status, ...chart1AppliedFiltersData.status]
         .length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}status=${encodeURIComponent(uniq([...appliedFiltersData.status, ...chart1AppliedFiltersData.status]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }status=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.status,
+          ...chart1AppliedFiltersData.status,
+        ]).join(",")
+      )}`;
     }
     if (
       [...appliedFiltersData.cycles, ...chart1AppliedFiltersData.cycles]
@@ -1080,7 +1145,11 @@ export const GrantImplementationPage: React.FC = () => {
         ...appliedFiltersData.cycles,
         ...chart1AppliedFiltersData.cycles,
       ]).map((cycle) => cycle.replace(/ /g, "").split("-")[1]);
-      filterString += `${filterString.length > 0 ? "&" : ""}years=${encodeURIComponent(years.join(","))}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }years=${encodeURIComponent(
+        years.join(",")
+      )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
     }
     return filterString;
   }, [appliedFiltersData, chart1AppliedFiltersData]);
@@ -1091,13 +1160,25 @@ export const GrantImplementationPage: React.FC = () => {
       [...appliedFiltersData.locations, ...chart2AppliedFiltersData.locations]
         .length > 0
     ) {
-      filterString += `geographies=${encodeURIComponent(uniq([...appliedFiltersData.locations, ...chart2AppliedFiltersData.locations]).join(","))}`;
+      filterString += `geographies=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.locations,
+          ...chart2AppliedFiltersData.locations,
+        ]).join(",")
+      )}`;
     }
     if (
       [...appliedFiltersData.components, ...chart2AppliedFiltersData.components]
         .length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(uniq([...appliedFiltersData.components, ...chart2AppliedFiltersData.components]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }components=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.components,
+          ...chart2AppliedFiltersData.components,
+        ]).join(",")
+      )}`;
     }
     if (
       [
@@ -1105,7 +1186,14 @@ export const GrantImplementationPage: React.FC = () => {
         ...chart2AppliedFiltersData.principalRecipients,
       ].length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipients=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipients, ...chart2AppliedFiltersData.principalRecipients]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipients=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipients,
+          ...chart2AppliedFiltersData.principalRecipients,
+        ]).join(",")
+      )}`;
     }
     if (
       [
@@ -1113,7 +1201,14 @@ export const GrantImplementationPage: React.FC = () => {
         ...chart2AppliedFiltersData.principalRecipientSubTypes,
       ].length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientSubTypes=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipientSubTypes, ...chart2AppliedFiltersData.principalRecipientSubTypes]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipientSubTypes=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipientSubTypes,
+          ...chart2AppliedFiltersData.principalRecipientSubTypes,
+        ]).join(",")
+      )}`;
     }
     if (
       [
@@ -1121,13 +1216,27 @@ export const GrantImplementationPage: React.FC = () => {
         ...chart2AppliedFiltersData.principalRecipientTypes,
       ].length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientTypes=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipientTypes, ...chart2AppliedFiltersData.principalRecipientTypes]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipientTypes=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipientTypes,
+          ...chart2AppliedFiltersData.principalRecipientTypes,
+        ]).join(",")
+      )}`;
     }
     if (
       [...appliedFiltersData.status, ...chart2AppliedFiltersData.status]
         .length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}status=${encodeURIComponent(uniq([...appliedFiltersData.status, ...chart2AppliedFiltersData.status]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }status=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.status,
+          ...chart2AppliedFiltersData.status,
+        ]).join(",")
+      )}`;
     }
     if (
       [...appliedFiltersData.cycles, ...chart2AppliedFiltersData.cycles]
@@ -1141,7 +1250,11 @@ export const GrantImplementationPage: React.FC = () => {
         ...appliedFiltersData.cycles,
         ...chart2AppliedFiltersData.cycles,
       ]).map((cycle) => cycle.replace(/ /g, "").split("-")[1]);
-      filterString += `${filterString.length > 0 ? "&" : ""}years=${encodeURIComponent(years.join(","))}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }years=${encodeURIComponent(
+        years.join(",")
+      )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
     }
     return filterString;
   }, [appliedFiltersData, chart2AppliedFiltersData]);
@@ -1152,13 +1265,25 @@ export const GrantImplementationPage: React.FC = () => {
       [...appliedFiltersData.locations, ...chart3AppliedFiltersData.locations]
         .length > 0
     ) {
-      filterString += `geographies=${encodeURIComponent(uniq([...appliedFiltersData.locations, ...chart3AppliedFiltersData.locations]).join(","))}`;
+      filterString += `geographies=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.locations,
+          ...chart3AppliedFiltersData.locations,
+        ]).join(",")
+      )}`;
     }
     if (
       [...appliedFiltersData.components, ...chart3AppliedFiltersData.components]
         .length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(uniq([...appliedFiltersData.components, ...chart3AppliedFiltersData.components]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }components=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.components,
+          ...chart3AppliedFiltersData.components,
+        ]).join(",")
+      )}`;
     }
     if (
       [
@@ -1166,7 +1291,14 @@ export const GrantImplementationPage: React.FC = () => {
         ...chart3AppliedFiltersData.principalRecipients,
       ].length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipients=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipients, ...chart3AppliedFiltersData.principalRecipients]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipients=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipients,
+          ...chart3AppliedFiltersData.principalRecipients,
+        ]).join(",")
+      )}`;
     }
     if (
       [
@@ -1174,7 +1306,14 @@ export const GrantImplementationPage: React.FC = () => {
         ...chart3AppliedFiltersData.principalRecipientSubTypes,
       ].length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientSubTypes=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipientSubTypes, ...chart3AppliedFiltersData.principalRecipientSubTypes]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipientSubTypes=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipientSubTypes,
+          ...chart3AppliedFiltersData.principalRecipientSubTypes,
+        ]).join(",")
+      )}`;
     }
     if (
       [
@@ -1182,13 +1321,27 @@ export const GrantImplementationPage: React.FC = () => {
         ...chart3AppliedFiltersData.principalRecipientTypes,
       ].length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientTypes=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipientTypes, ...chart3AppliedFiltersData.principalRecipientTypes]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipientTypes=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipientTypes,
+          ...chart3AppliedFiltersData.principalRecipientTypes,
+        ]).join(",")
+      )}`;
     }
     if (
       [...appliedFiltersData.status, ...chart3AppliedFiltersData.status]
         .length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}status=${encodeURIComponent(uniq([...appliedFiltersData.status, ...chart3AppliedFiltersData.status]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }status=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.status,
+          ...chart3AppliedFiltersData.status,
+        ]).join(",")
+      )}`;
     }
     if (
       [...appliedFiltersData.cycles, ...chart3AppliedFiltersData.cycles]
@@ -1202,7 +1355,11 @@ export const GrantImplementationPage: React.FC = () => {
         ...appliedFiltersData.cycles,
         ...chart3AppliedFiltersData.cycles,
       ]).map((cycle) => cycle.replace(/ /g, "").split("-")[1]);
-      filterString += `${filterString.length > 0 ? "&" : ""}years=${encodeURIComponent(years.join(","))}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }years=${encodeURIComponent(
+        years.join(",")
+      )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
     }
     return filterString;
   }, [appliedFiltersData, chart3AppliedFiltersData]);
@@ -1213,13 +1370,25 @@ export const GrantImplementationPage: React.FC = () => {
       [...appliedFiltersData.locations, ...chart4AppliedFiltersData.locations]
         .length > 0
     ) {
-      filterString += `geographies=${encodeURIComponent(uniq([...appliedFiltersData.locations, ...chart4AppliedFiltersData.locations]).join(","))}`;
+      filterString += `geographies=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.locations,
+          ...chart4AppliedFiltersData.locations,
+        ]).join(",")
+      )}`;
     }
     if (
       [...appliedFiltersData.components, ...chart4AppliedFiltersData.components]
         .length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(uniq([...appliedFiltersData.components, ...chart4AppliedFiltersData.components]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }components=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.components,
+          ...chart4AppliedFiltersData.components,
+        ]).join(",")
+      )}`;
     }
     if (
       [
@@ -1227,7 +1396,14 @@ export const GrantImplementationPage: React.FC = () => {
         ...chart4AppliedFiltersData.principalRecipients,
       ].length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipients=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipients, ...chart4AppliedFiltersData.principalRecipients]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipients=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipients,
+          ...chart4AppliedFiltersData.principalRecipients,
+        ]).join(",")
+      )}`;
     }
     if (
       [
@@ -1235,7 +1411,14 @@ export const GrantImplementationPage: React.FC = () => {
         ...chart4AppliedFiltersData.principalRecipientSubTypes,
       ].length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientSubTypes=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipientSubTypes, ...chart4AppliedFiltersData.principalRecipientSubTypes]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipientSubTypes=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipientSubTypes,
+          ...chart4AppliedFiltersData.principalRecipientSubTypes,
+        ]).join(",")
+      )}`;
     }
     if (
       [
@@ -1243,13 +1426,27 @@ export const GrantImplementationPage: React.FC = () => {
         ...chart4AppliedFiltersData.principalRecipientTypes,
       ].length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientTypes=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipientTypes, ...chart4AppliedFiltersData.principalRecipientTypes]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipientTypes=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipientTypes,
+          ...chart4AppliedFiltersData.principalRecipientTypes,
+        ]).join(",")
+      )}`;
     }
     if (
       [...appliedFiltersData.status, ...chart4AppliedFiltersData.status]
         .length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}status=${encodeURIComponent(uniq([...appliedFiltersData.status, ...chart4AppliedFiltersData.status]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }status=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.status,
+          ...chart4AppliedFiltersData.status,
+        ]).join(",")
+      )}`;
     }
     if (
       [...appliedFiltersData.cycles, ...chart4AppliedFiltersData.cycles]
@@ -1263,7 +1460,11 @@ export const GrantImplementationPage: React.FC = () => {
         ...appliedFiltersData.cycles,
         ...chart4AppliedFiltersData.cycles,
       ]).map((cycle) => cycle.replace(/ /g, "").split("-")[1]);
-      filterString += `${filterString.length > 0 ? "&" : ""}years=${encodeURIComponent(years.join(","))}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }years=${encodeURIComponent(
+        years.join(",")
+      )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
     }
     return filterString;
   }, [appliedFiltersData, chart4AppliedFiltersData]);

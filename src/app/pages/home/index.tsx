@@ -506,6 +506,8 @@ export const Home: React.FC = () => {
 
   const expendituresTotal = React.useMemo(() => {
     const total = sumBy(dataExpendituresHeatmap, "value");
+    console.log("total", total);
+    console.log(dataExpendituresHeatmap, "dataExpendituresHeatmap");
     const range = getRange([{ value: total }], ["value"]);
     return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${
       range.full
