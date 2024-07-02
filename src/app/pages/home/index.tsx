@@ -327,7 +327,9 @@ export const Home: React.FC = () => {
         filterString = `years=${yearFrom.join(",")}`;
       }
       if (yearTo.length > 0) {
-        filterString += `${filterString.length > 0 ? "&" : ""}yearsTo=${yearTo.join(",")}`;
+        filterString += `${
+          filterString.length > 0 ? "&" : ""
+        }yearsTo=${yearTo.join(",")}`;
       }
     }
     fetchBudgetsTreemap({
@@ -361,7 +363,9 @@ export const Home: React.FC = () => {
         filterString = `years=${yearFrom.join(",")}`;
       }
       if (yearTo.length > 0) {
-        filterString += `${filterString.length > 0 ? "&" : ""}yearsTo=${yearTo.join(",")}`;
+        filterString += `${
+          filterString.length > 0 ? "&" : ""
+        }yearsTo=${yearTo.join(",")}`;
       }
     }
     fetchDisbursementsLineChart({
@@ -395,7 +399,9 @@ export const Home: React.FC = () => {
         filterString = `years=${yearFrom.join(",")}`;
       }
       if (yearTo.length > 0) {
-        filterString += `${filterString.length > 0 ? "&" : ""}yearsTo=${yearTo.join(",")}`;
+        filterString += `${
+          filterString.length > 0 ? "&" : ""
+        }yearsTo=${yearTo.join(",")}`;
       }
     }
     fetchExpendituresHeatmap({
@@ -458,7 +464,9 @@ export const Home: React.FC = () => {
   const allocationsTotal = React.useMemo(() => {
     const total = sumBy(dataAllocationsRadialChart, "value");
     const range = getRange([{ value: total }], ["value"]);
-    return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${range.full}`;
+    return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${
+      range.full
+    }`;
   }, [dataAllocationsRadialChart]);
 
   const disbursementsTotal = React.useMemo(() => {
@@ -467,7 +475,9 @@ export const Home: React.FC = () => {
       total += sumBy(item.data);
     });
     const range = getRange([{ value: total }], ["value"]);
-    return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${range.full}`;
+    return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${
+      range.full
+    }`;
   }, [dataDisbursementsLineChart]);
 
   const totalPledge = React.useMemo(() => {
@@ -489,13 +499,17 @@ export const Home: React.FC = () => {
   const totalBudget = React.useMemo(() => {
     const total = sumBy(dataBudgetsTreemap, "value");
     const range = getRange([{ value: total }], ["value"]);
-    return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${range.full}`;
+    return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${
+      range.full
+    }`;
   }, [dataBudgetsTreemap]);
 
   const expendituresTotal = React.useMemo(() => {
     const total = sumBy(dataExpendituresHeatmap, "value");
     const range = getRange([{ value: total }], ["value"]);
-    return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${range.full}`;
+    return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${
+      range.full
+    }`;
   }, [dataExpendituresHeatmap]);
 
   const fullWidthDivider = (
@@ -529,7 +543,7 @@ export const Home: React.FC = () => {
         showCycleAll
         id="pledges-contributions"
         selectedCycles={chart1Cycles}
-        title={`${totalContribution}`}
+        title={`${totalPledge}`}
         subtitle="Pledges & Contributions"
         loading={loadingPledgesContributionsBarChart}
         empty={dataPledgesContributionsBarChart.length === 0}
