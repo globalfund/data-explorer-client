@@ -176,7 +176,7 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
         }}
       >
         <Box
-          id="content"
+          id={id}
           width="100%"
           minHeight="400px"
           padding="0 32px"
