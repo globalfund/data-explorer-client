@@ -193,7 +193,9 @@ export const AccessToFunding: React.FC = () => {
   const totalAllocationAmount = React.useMemo(() => {
     const value = sumBy(dataAllocationsRadialChart, "value");
     const range = getRange([{ value }], ["value"]);
-    return `${getFinancialValueWithMetricPrefix(value, range.index, 2)} ${range.full}`;
+    return `${getFinancialValueWithMetricPrefix(value, range.index, 2)} ${
+      range.full
+    }`;
   }, [dataAllocationsRadialChart]);
 
   const raceBarData = React.useMemo(() => {
@@ -373,9 +375,9 @@ export const AccessToFunding: React.FC = () => {
         noSplitText
         id="eligibility"
         title="Eligibility"
-        subtitle="To date"
+        subtitle=""
         empty={!showEligibilityHeatmap}
-        text="Eligibility for funding from the Global Fund is determined by country income classification and disease burden for HIV, tuberculosis and malaria. Below are the components which are eligible for an allocation for the selected allocation period, according to the Global Fund Eligibility Policy.<br/><br/>Eligibility for the 2023-2025 Allocation Period was determined in 2022 and documented in the 2023 Eligibility List. Eligibility does not guarantee a funding allocation. Learn more about Eligibility <a target='_blank' href='https://www.theglobalfund.org/en/applying-for-funding/understand-and-prepare/eligibility/'>here</a> or <a>see the full history of eligibility for this country</a>."
+        text="Eligibility for funding from the Global Fund is determined by country income classification and disease burden for HIV, tuberculosis and malaria. Below are the components which are eligible for an allocation for the selected allocation period, according to the Global Fund Eligibility Policy.<br/><br/>Eligibility for the 2023-2025 Allocation Period was determined in 2022 and documented in the 2023 Eligibility List. Eligibility does not guarantee a funding allocation. Learn more about Eligibility <a target='_blank' href='https://www.theglobalfund.org/en/applying-for-funding/understand-and-prepare/eligibility/'>here</a>."
       >
         <Box height="32px" />
         <Box
@@ -480,9 +482,6 @@ export const AccessToFunding: React.FC = () => {
               </Box>
             </Box>
           </Box>
-          <Tooltip title="">
-            <Info fontSize="small" />
-          </Tooltip>
         </Box>
         <Table
           dataTree
