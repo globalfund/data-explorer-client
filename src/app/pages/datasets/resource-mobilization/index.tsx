@@ -384,19 +384,25 @@ export const ResourceMobilizationPage: React.FC = () => {
             item
             sm={12}
             md={4}
-            gap="20px"
+            // gap="20px"
             display="flex"
             flexDirection="column"
             sx={{
               paddingRight: "21px",
               borderRight: "1px solid #CFD4DA",
+              "> div": {
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+              },
               "@media (max-width: 600px)": {
                 paddingRight: "0px",
                 borderRightStyle: "none",
               },
             }}
           >
-            <Box>
+            {/* <Box>
               <Typography variant="h5">
                 {get(dataStats, "percentage", 0).toFixed(2).replace(".00", "")}%
               </Typography>
@@ -404,7 +410,7 @@ export const ResourceMobilizationPage: React.FC = () => {
                 Pledge Conversion based on the announce pledge
               </Typography>
             </Box>
-            <Divider />
+            <Divider /> */}
             <Box>
               <Typography variant="h5">
                 {formatFinancialValue(get(dataStats, "totalPledges", 0))}
@@ -435,7 +441,7 @@ export const ResourceMobilizationPage: React.FC = () => {
             }}
           >
             <Box marginBottom="20px">
-              <Typography variant="h5">Total Donors Mobilized</Typography>
+              <Typography variant="h5">Number of Donors Mobilized</Typography>
               <Typography variant="body2" fontWeight="700">
                 Grouped by their Donor types
               </Typography>
