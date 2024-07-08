@@ -1,7 +1,9 @@
 import React from "react";
 import get from "lodash/get";
 import sumBy from "lodash/sumBy";
+import filter from "lodash/filter";
 import Box from "@mui/material/Box";
+import { appColors } from "app/theme";
 import Divider from "@mui/material/Divider";
 import { Search } from "app/components/search";
 import Typography from "@mui/material/Typography";
@@ -36,7 +38,6 @@ import {
   getRange,
   getFinancialValueWithMetricPrefix,
 } from "app/utils/getFinancialValueWithMetricPrefix";
-import { appColors } from "app/theme";
 
 export const Home: React.FC = () => {
   const [chart1Cycles, setChart1Cycles] = React.useState<CycleProps[]>([]);
@@ -505,9 +506,13 @@ export const Home: React.FC = () => {
   }, [dataBudgetsTreemap]);
 
   const expendituresTotal = React.useMemo(() => {
-    const total = sumBy(dataExpendituresHeatmap, "value");
-    console.log("total", total);
-    console.log(dataExpendituresHeatmap, "dataExpendituresHeatmap");
+    const total = sumBy(
+      filter(
+        dataExpendituresHeatmap,
+        (item) => !item.parentRow && !item.parentColumn
+      ),
+      "value"
+    );
     const range = getRange([{ value: total }], ["value"]);
     return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${
       range.full

@@ -3,6 +3,7 @@ import get from "lodash/get";
 import uniq from "lodash/uniq";
 import maxBy from "lodash/maxBy";
 import sumBy from "lodash/sumBy";
+import filter from "lodash/filter";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { appColors } from "app/theme";
@@ -974,7 +975,15 @@ export const GrantImplementationPage: React.FC = () => {
   }, [dataBudgetTreemap]);
 
   const totalExpenditure = React.useMemo(() => {
-    return formatFinancialValue(sumBy(dataExpendituresHeatmap, "value"));
+    return formatFinancialValue(
+      sumBy(
+        filter(
+          dataExpendituresHeatmap,
+          (item) => !item.parentRow && !item.parentColumn
+        ),
+        "value"
+      )
+    );
   }, [dataExpendituresHeatmap]);
 
   const filterGroups = React.useMemo(() => {
