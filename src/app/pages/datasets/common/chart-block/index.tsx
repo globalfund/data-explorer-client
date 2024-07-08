@@ -179,7 +179,6 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
           id={id}
           width="100%"
           minHeight="400px"
-          padding="0 32px"
           position="relative"
           sx={
             props.loading
