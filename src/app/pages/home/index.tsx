@@ -166,7 +166,11 @@ export const Home: React.FC = () => {
       }[]
   );
   const annualResultsCycles = useStoreState(
-    (state) => get(state.AnnualResultsCycles, "data.data", []) as number[]
+    (state) =>
+      get(state.AnnualResultsCycles, "data.data", []) as {
+        name: number;
+        value: number;
+      }[]
   );
 
   const handleChartCycleChange = (cycle: CycleProps, index: number) => {
@@ -421,7 +425,7 @@ export const Home: React.FC = () => {
   React.useEffect(() => {
     if (annualResultsCycles.length > 0) {
       fetchResultsStats({
-        filterString: `cycle=${annualResultsCycles[0]}`,
+        filterString: `cycle=${annualResultsCycles[0].value}`,
       });
     }
   }, [annualResultsCycles]);

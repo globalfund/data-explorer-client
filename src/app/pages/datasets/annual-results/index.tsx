@@ -65,10 +65,16 @@ export const AnnualResultsPage: React.FC = () => {
   });
 
   const annualResultsCycles = useStoreState(
-    (state) => get(state.AnnualResultsCycles, "data.data", []) as number[]
+    (state) =>
+      get(state.AnnualResultsCycles, "data.data", []) as {
+        name: number;
+        value: number;
+      }[]
   );
   const [yearSelected, setYearSelected] = React.useState(
-    annualResultsCycles.length > 0 ? annualResultsCycles[0].toString() : null
+    annualResultsCycles.length > 0
+      ? annualResultsCycles[0].value.toString()
+      : null
   );
 
   const dataStats = useStoreState(
@@ -308,8 +314,8 @@ export const AnnualResultsPage: React.FC = () => {
             width={100}
             dropdownSelected={yearSelected ?? ""}
             dropdownItems={annualResultsCycles.map((c) => ({
-              label: c.toString(),
-              value: c.toString(),
+              label: c.name.toString(),
+              value: c.value.toString(),
             }))}
             handleDropdownChange={(value) => {
               setYearSelected(value);
@@ -322,7 +328,7 @@ export const AnnualResultsPage: React.FC = () => {
 
   React.useEffect(() => {
     if (annualResultsCycles.length > 0) {
-      setYearSelected(annualResultsCycles[0].toString());
+      setYearSelected(annualResultsCycles[0].value.toString());
     }
   }, [annualResultsCycles]);
 
