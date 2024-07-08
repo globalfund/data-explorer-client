@@ -256,13 +256,13 @@ export const AccessToFunding: React.FC = () => {
         }))}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
-        <RadialChart
-          tooltipLabel="Allocation"
-          data={dataAllocationsRadialChart}
-          itemLabelFormatterType="name"
-        />
-      </ChartBlock>
-      {showAllocationRadialChart && (
+        <Box marginTop="-100px" marginBottom="-100px">
+          <RadialChart
+            tooltipLabel="Allocation"
+            data={dataAllocationsRadialChart}
+            itemLabelFormatterType="name"
+          />
+        </Box>
         <Box
           width="100%"
           display="flex"
@@ -270,7 +270,7 @@ export const AccessToFunding: React.FC = () => {
           justifyContent="center"
         >
           <Box display="flex" alignItems="center" flexDirection="column">
-            <Typography variant="h3" fontWeight="900">
+            <Typography variant="h4" fontWeight="900">
               US${totalAllocationAmount}
             </Typography>
             <Typography variant="subtitle2">
@@ -278,7 +278,7 @@ export const AccessToFunding: React.FC = () => {
             </Typography>
           </Box>
         </Box>
-      )}
+      </ChartBlock>
       {showAllocationRadialChart && fullWidthDivider}
       <ChartBlock
         noSplitText
