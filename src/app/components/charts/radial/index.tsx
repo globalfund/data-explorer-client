@@ -18,6 +18,11 @@ import {
 echarts.use([EChartsPie, TooltipComponent, SVGRenderer]);
 
 const Tooltip = (props: any) => {
+  const showList =
+    props.data.tooltip &&
+    props.data.tooltip.items.length > 0 &&
+    props.data.tooltip.items[0].name.length > 0;
+
   return (
     <div
       style={{
@@ -40,10 +45,13 @@ const Tooltip = (props: any) => {
           <b>{props.label}</b>
         </div>
         <div className="chart-tooltip-text">
+          {showList
+            ? ""
+            : `${((props.value / props.totalValue) * 100).toFixed(2).replace(".00", "")}% - `}
           {formatFinancialValue(props.value)}
         </div>
       </div>
-      {props.data.tooltip && props.data.tooltip.items.length > 0 && (
+      {showList && (
         <React.Fragment>
           <Divider
             style={{ width: "100%", borderColor: "#DFE3E5", margin: "5px 0" }}
@@ -106,6 +114,10 @@ export const RadialChart: React.FC<RadialChartProps> = (
   const [stateChart, setStateChart] =
     React.useState<echarts.EChartsType | null>(null);
 
+  const totalValue = React.useMemo(() => {
+    return props.data.reduce((acc, item) => acc + item.value, 0);
+  }, [props.data]);
+
   useChartResizeObserver({
     chart: stateChart,
     containerId: "radial-chart",
@@ -153,7 +165,11 @@ export const RadialChart: React.FC<RadialChartProps> = (
           ...chartTooltipCommonConfig(isTouch),
           formatter: (params: any) => {
             const html = ReactDOMServer.renderToString(
-              <Tooltip {...params} label={props.tooltipLabel} />
+              <Tooltip
+                {...params}
+                totalValue={totalValue}
+                label={props.tooltipLabel}
+              />
             );
             return html;
           },
