@@ -138,9 +138,10 @@ const SharePanel: React.FC<ChartBlockButtonToolbarProps> = (
 const InfoPanel: React.FC<InfoPanelProps> = (props: InfoPanelProps) => {
   return (
     <Box
-      top="-300px"
+      left="5%"
+      width="90%"
+      top="-200px"
       padding="16px"
-      marginTop="24px"
       bgcolor="#F5F5F7"
       borderRadius="16px"
       position="absolute"
@@ -148,9 +149,9 @@ const InfoPanel: React.FC<InfoPanelProps> = (props: InfoPanelProps) => {
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Typography
           color="#495057"
-          fontSize="10px"
+          fontSize="12px"
           fontWeight="700"
-          marginBottom="4px"
+          marginBottom="8px"
         >
           Note
         </Typography>
@@ -165,7 +166,7 @@ const InfoPanel: React.FC<InfoPanelProps> = (props: InfoPanelProps) => {
           <CloseIcon fontSize="small" />
         </IconButton>
       </Box>
-      <Typography color="#495057" fontSize="10px">
+      <Typography color="#495057" fontSize="12px">
         Amounts are in the specified currency. Where noted, the USD-equivalent
         is presented for amounts in non-USD currencies. Expenitures made in
         currencies other than USD from 2014 onward were converted to USD using
