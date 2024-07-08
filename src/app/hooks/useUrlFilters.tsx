@@ -74,7 +74,6 @@ export function useUrlFilters(): null {
         updatedAppliedFilters.replenishmentPeriods =
           replenishmentPeriods.split(",");
       }
-      console.log(cycles);
       if (cycles) {
         updatedAppliedFilters.cycles = cycles.split(",");
       }

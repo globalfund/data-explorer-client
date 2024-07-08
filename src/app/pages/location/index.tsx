@@ -35,6 +35,7 @@ export const Location: React.FC = () => {
       name: "",
       region: "",
       description: "",
+      isDonor: false,
       FPMName: "",
       FPMEmail: "",
       currentPrincipalRecipients: [],
@@ -364,25 +365,8 @@ export const Location: React.FC = () => {
 
   const tabs = React.useMemo(() => {
     const newTabs = [...LOCATION_TABS];
-    if (dataRMBarChart.length === 0) {
+    if (!dataOverview.isDonor) {
       remove(newTabs, (tab) => tab.label === LOCATION_TABS[1].label);
-    }
-    if (
-      dataAllocationsRadialChart.length === 0 &&
-      dataFundingRequestsTable._children.length === 0 &&
-      dataEligibilityTable.length === 0 &&
-      dataDocumentsTable.length === 0
-    ) {
-      remove(newTabs, (tab) => tab.label === LOCATION_TABS[2].label);
-    }
-    if (
-      dataDisbursementsLineChart.data.length === 0 &&
-      dataBudgetSankeyChart.nodes.length === 0 &&
-      dataBudgetSankeyChart.links.length === 0 &&
-      dataExpendituresHeatmap.length === 0 &&
-      dataGrantsTable.length === 0
-    ) {
-      remove(newTabs, (tab) => tab.label === LOCATION_TABS[3].label);
     }
     if (
       dataResultsTable.length === 0 &&
@@ -391,19 +375,7 @@ export const Location: React.FC = () => {
       remove(newTabs, (tab) => tab.label === LOCATION_TABS[4].label);
     }
     return newTabs;
-  }, [
-    dataRMBarChart,
-    dataGrantsTable,
-    dataResultsTable,
-    dataDocumentsTable,
-    dataEligibilityTable,
-    dataBudgetSankeyChart,
-    dataExpendituresHeatmap,
-    dataFundingRequestsTable,
-    dataResultsDocumentsTable,
-    dataAllocationsRadialChart,
-    dataDisbursementsLineChart,
-  ]);
+  }, [dataOverview, dataResultsTable, dataResultsDocumentsTable]);
 
   React.useEffect(() => {
     if (params.id) {
