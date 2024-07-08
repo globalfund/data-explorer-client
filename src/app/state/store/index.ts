@@ -22,6 +22,7 @@ import componentsSearch from "app/state/api/action-reducers/cms/componentsSearch
 import componentsMobile from "app/state/api/action-reducers/cms/componentsMobile";
 import LocationFilterOptions from "app/state/api/action-reducers/filters/locations";
 import componentsSidebar from "app/state/api/action-reducers/cms/componentsSidebar";
+import ResultsDocuments from "app/state/api/action-reducers/annual-results/documents";
 import modulesGrantDetail from "app/state/api/action-reducers/cms/modulesGrantDetail";
 import { AnnualResultsStats } from "app/state/api/action-reducers/annual-results/stats";
 import { AnnualResultsTable } from "app/state/api/action-reducers/annual-results/table";
@@ -197,6 +198,7 @@ const storeContent: StoreModel = {
   AnnualResultsStats: persist(AnnualResultsStats),
   AnnualResultsPolyline: persist(AnnualResultsPolyline),
   AnnualResultsTable: persist(AnnualResultsTable),
+  AnnualResultsDocumentsTable: persist(ResultsDocuments),
   // grants
   GrantList: persist(GrantList),
   // location

@@ -8,10 +8,11 @@ import { RowComponent } from "tabulator-tables";
 import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
 import { DatasetPage } from "app/pages/datasets/common/page";
+import CircularProgress from "@mui/material/CircularProgress";
+import { TableContainer } from "app/components/table-container";
 import { PolylineTree } from "app/components/charts/polyline-tree";
 import { statsOrder } from "app/pages/datasets/annual-results/data";
 import { FilterGroupModel } from "app/components/filters/list/data";
-import { TABLE_VARIATION_9_COLUMNS } from "app/components/table/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { applyResultValueFormula } from "app/utils/applyResultValueFormula";
@@ -19,6 +20,10 @@ import { PolylineTreeDataItem } from "app/components/charts/polyline-tree/data";
 import { ReactComponent as TableIcon } from "app/assets/vectors/Select_Table.svg";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 import { ReactComponent as BarChartIcon } from "app/assets/vectors/Select_BarChart.svg";
+import {
+  TABLE_VARIATION_9_COLUMNS,
+  TABLE_VARIATION_6_COLUMNS as DOCUMENTS_TABLE_COLUMNS,
+} from "app/components/table/data";
 
 const dropdownItems = [
   { label: "Polyline Tree", value: "Polyline Tree", icon: <BarChartIcon /> },
@@ -110,6 +115,15 @@ export const AnnualResultsPage: React.FC = () => {
         return false;
     }
   });
+  const dataDocumentsTable = useStoreState((state) =>
+    get(state.AnnualResultsDocumentsTable, "data.data", [])
+  );
+  const loadingDocumentsTable = useStoreState(
+    (state) => state.AnnualResultsDocumentsTable.loading
+  );
+  const fetchDocumentsTable = useStoreActions(
+    (actions) => actions.AnnualResultsDocumentsTable.fetch
+  );
   const dataLocationFilterOptions = useStoreState(
     (state) =>
       get(state.LocationFilterOptions, "data.data", {
@@ -318,6 +332,9 @@ export const AnnualResultsPage: React.FC = () => {
         filterString: `${filterString}${filterString.length ? "&" : ""}cycle=${yearSelected}`,
       });
     }
+    fetchDocumentsTable({
+      filterString: `types=Profile&${filterString}${filterString.length ? "&" : ""}cycle=${yearSelected}`,
+    });
   }, [filterString, yearSelected]);
 
   React.useEffect(() => {
@@ -396,6 +413,67 @@ export const AnnualResultsPage: React.FC = () => {
           >
             {chartContent}
           </DatasetChartBlock>
+        </Box>
+        <Divider
+          sx={{
+            left: 0,
+            width: "100vw",
+            position: "absolute",
+            borderColor: "#CFD4DA",
+          }}
+        />
+        <Box
+          paddingTop="50px"
+          sx={{
+            "#content": {
+              padding: 0,
+            },
+          }}
+        >
+          <Box id="documents" padding="50px 0">
+            <Typography variant="h3" lineHeight={1.2}>
+              Documents
+            </Typography>
+            <Divider
+              sx={{
+                margin: "20px 0",
+              }}
+            />
+            {loadingDocumentsTable && (
+              <Box
+                width="100%"
+                height="100%"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+              >
+                <CircularProgress />
+              </Box>
+            )}
+            {!loadingDocumentsTable && dataDocumentsTable.length > 0 ? (
+              <React.Fragment>
+                <Box height="40px" />
+                <TableContainer
+                  dataTree
+                  id="documents-table"
+                  dataTreeStartExpanded
+                  data={dataDocumentsTable}
+                  columns={DOCUMENTS_TABLE_COLUMNS}
+                />
+              </React.Fragment>
+            ) : (
+              <Box
+                width="100%"
+                height="100%"
+                minHeight="250px"
+                alignItems="center"
+                justifyContent="center"
+                display={!loadingDocumentsTable ? "flex" : "none"}
+              >
+                <Typography>No data available</Typography>
+              </Box>
+            )}
+          </Box>
         </Box>
       </Box>
     </DatasetPage>
