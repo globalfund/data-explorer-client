@@ -3,17 +3,14 @@ import get from "lodash/get";
 import sumBy from "lodash/sumBy";
 import filter from "lodash/filter";
 import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
 import { appColors } from "app/theme";
 import findIndex from "lodash/findIndex";
 import Divider from "@mui/material/Divider";
-import Tooltip from "@mui/material/Tooltip";
 import { Table } from "app/components/table";
 import { useParams } from "react-router-dom";
 import Typography from "@mui/material/Typography";
-import Info from "@mui/icons-material/InfoOutlined";
 import { ChartBlock } from "app/components/chart-block";
-import { CYCLES, CycleProps } from "app/pages/home/data";
+import { CycleProps } from "app/pages/home/data";
 import { RadialChart } from "app/components/charts/radial";
 import useUpdateEffect from "react-use/lib/useUpdateEffect";
 import { RaceBarChart } from "app/components/charts/race-bar";
@@ -297,79 +294,19 @@ export const AccessToFunding: React.FC = () => {
           ...c,
           disabled: findIndex(fundingRequestsCycles, { value: c.value }) === -1,
         }))}
-        text="The Funding Request explains how the applicant would use Global Fund allocated funds, if approved. Funding Requests are reviewed by the Global Fund’s Technical Review Panel (TRP). Once approved by the TRP, the Funding Request is turned into one or more grants through the grant-making negotiation. The Grant Approvals Committee (GAC) reviews the final version of each grant and recommends implementation-ready grants to the Global Fund Board for approval. Funding Requests are submitted for internal Global Fund review, but the final grant is the legally-binding agreement.<br/><br/>Documents for a specific funding request can be downloaded by clicking the cloud icon. Documents from the 2017-2019 Allocation Period and earlier can be found by clicking on the “Documents’ tab above. If a Funding Request is not visible for the 2023-2025 Allocation Period and the country received an Allocation, it likely means that the applicant has not yet registered for a TRP Window."
+        text="The Funding Request explains how the applicant would use Global Fund allocated funds, if approved. Funding Requests are reviewed by the Global Fund’s Technical Review Panel (TRP). Once approved by the TRP, the Funding Request is turned into one or more grants through the grant-making negotiation. The Grant Approvals Committee (GAC) reviews the final version of each grant and recommends implementation-ready grants to the Global Fund Board for approval. Funding Requests are submitted for internal Global Fund review, but the final grant is the legally-binding agreement.<br/><br/>Documents for a specific funding request can be downloaded by clicking the cloud icon. Documents from the 2017-2019 Allocation Period and earlier can be found by clicking on the “Documents’ section below. If a Funding Request is not visible for the 2023-2025 Allocation Period and the country received an Allocation, it likely means that the applicant has not yet registered for a TRP Window."
       >
         <TableContainer
           dataTree
           withCycles
+          dataTreeStartExpanded
           id="funding-requests-table"
+          columns={TABLE_VARIATION_2_COLUMNS}
           data={dataFundingRequestsTable._children}
-          columns={TABLE_VARIATION_2_COLUMNS.slice(0, 7)}
-          extraColumns={TABLE_VARIATION_2_COLUMNS.slice(7)}
         />
         <Box height="64px" />
         <RaceBarChart noValuesFormat data={raceBarData} />
       </ChartBlock>
-      <Box height="50px" />
-      {showFundingRequestsTable && (
-        <Grid
-          container
-          spacing={2}
-          sx={{
-            "> div": {
-              "> div": {
-                gap: "10px",
-                width: "100%",
-                display: "flex",
-                textAlign: "center",
-                alignItems: "center",
-                flexDirection: "column",
-                justifyContent: "center",
-              },
-            },
-          }}
-        >
-          <Grid item xs={12} sm={6}>
-            <Box>
-              <Box
-                width="40px"
-                height="40px"
-                borderRadius="50%"
-                bgcolor={appColors.RADIAL_CHART.ITEM_COLORS[2]}
-              />
-              <Box>
-                <Typography variant="h3" fontWeight="900">
-                  {dataFundingRequestStats.submitted} Submitted
-                </Typography>
-                <Typography variant="subtitle2">Funding Requests</Typography>
-              </Box>
-            </Box>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Box>
-              <Box
-                width="40px"
-                height="40px"
-                borderRadius="50%"
-                bgcolor={appColors.RADIAL_CHART.ITEM_COLORS[0]}
-              />
-              <Box>
-                <Typography variant="h3" fontWeight="900">
-                  {dataFundingRequestStats.signed} Signed
-                </Typography>
-                <Typography variant="subtitle2">
-                  {(
-                    (dataFundingRequestStats.signed /
-                      dataFundingRequestStats.submitted) *
-                    100
-                  ).toFixed(2)}
-                  % Grants
-                </Typography>
-              </Box>
-            </Box>
-          </Grid>
-        </Grid>
-      )}
       {showFundingRequestsTable && fullWidthDivider}
       <ChartBlock
         noSplitText

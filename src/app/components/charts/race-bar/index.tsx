@@ -15,7 +15,7 @@ export const RaceBarChart: React.FC<RaceBarChartProps> = (
       gap="12px"
       width="100%"
       display="flex"
-      padding="32px"
+      padding="32px 0"
       flexDirection="column"
     >
       {props.data.map((item) => {

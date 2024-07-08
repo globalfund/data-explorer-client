@@ -273,7 +273,12 @@ export const TABLE_VARIATION_1_DATA: {
 ];
 
 export const TABLE_VARIATION_2_COLUMNS: ColumnDefinition[] = [
-  { title: "Components", field: "components", formatter: cellBGColorFormatter },
+  {
+    title: "Components",
+    field: "components",
+    formatter: cellBGColorFormatter,
+    minWidth: 180,
+  },
   {
     title: "Submission Date",
     field: "submissionDate",
