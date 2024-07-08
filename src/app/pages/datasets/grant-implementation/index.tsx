@@ -641,7 +641,7 @@ export const GrantImplementationPage: React.FC = () => {
         return (
           <Box position="relative">
             <Typography
-              left="-5px"
+              left="-15px"
               bottom="20px"
               fontSize="10px"
               padding="7px 12px"

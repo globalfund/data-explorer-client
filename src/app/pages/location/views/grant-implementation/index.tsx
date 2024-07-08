@@ -400,6 +400,17 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
     return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${range.full}`;
   }, [dataBudgetSankeyChart]);
 
+  const lineChartRange = React.useMemo(() => {
+    const values: { value: number }[] = [];
+    dataDisbursementsLineChart.data.forEach((item) => {
+      item.data.forEach((value) => {
+        values.push({ value });
+      });
+    });
+    const range = getRange(values, ["value"]);
+    return range;
+  }, [dataDisbursementsLineChart.data]);
+
   const fullWidthDivider = (
     <React.Fragment>
       <Box height="2px" />
@@ -438,9 +449,36 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
           value: c.value,
           disabled: findIndex(disbursementsCycles, { value: c.value }) === -1,
         }))}
-        text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
+        text="Disbursement transactions for all grants across the porfolio."
       >
-        <LineChart {...dataDisbursementsLineChart} />
+        <Box position="relative">
+          <Typography
+            bottom="20px"
+            fontSize="10px"
+            padding="7px 12px"
+            borderRadius="4px"
+            position="absolute"
+            border="1px solid #DFE3E5"
+            sx={{
+              transformOrigin: "left",
+              transform: "rotate(-90deg)",
+            }}
+          >
+            Y Axis/<b>Disbursed Amount (US$ {lineChartRange.abbr})</b>
+          </Typography>
+          <LineChart {...dataDisbursementsLineChart} />
+          <Typography
+            left="40px"
+            bottom="-20px"
+            fontSize="10px"
+            padding="7px 12px"
+            borderRadius="4px"
+            position="absolute"
+            border="1px solid #DFE3E5"
+          >
+            X Axis/<b>Years</b>
+          </Typography>
+        </Box>
       </ChartBlock>
       {showDisbursementsLineChart && fullWidthDivider}
       <ChartBlock

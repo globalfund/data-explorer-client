@@ -519,6 +519,17 @@ export const Home: React.FC = () => {
     }`;
   }, [dataExpendituresHeatmap]);
 
+  const lineChartRange = React.useMemo(() => {
+    const values: { value: number }[] = [];
+    dataDisbursementsLineChart.data.forEach((item) => {
+      item.data.forEach((value) => {
+        values.push({ value });
+      });
+    });
+    const range = getRange(values, ["value"]);
+    return range;
+  }, [dataDisbursementsLineChart.data]);
+
   const fullWidthDivider = (
     <Divider
       sx={{
@@ -663,7 +674,34 @@ export const Home: React.FC = () => {
           value: c.value,
         }))}
       >
-        <LineChart {...dataDisbursementsLineChart} />
+        <Box position="relative">
+          <Typography
+            bottom="20px"
+            fontSize="10px"
+            padding="7px 12px"
+            borderRadius="4px"
+            position="absolute"
+            border="1px solid #DFE3E5"
+            sx={{
+              transformOrigin: "left",
+              transform: "rotate(-90deg)",
+            }}
+          >
+            Y Axis/<b>Disbursed Amount (US$ {lineChartRange.abbr})</b>
+          </Typography>
+          <LineChart {...dataDisbursementsLineChart} />
+          <Typography
+            left="40px"
+            bottom="-20px"
+            fontSize="10px"
+            padding="7px 12px"
+            borderRadius="4px"
+            position="absolute"
+            border="1px solid #DFE3E5"
+          >
+            X Axis/<b>Years</b>
+          </Typography>
+        </Box>
       </ChartBlock>
       <Box height="50px" />
       {fullWidthDivider}
