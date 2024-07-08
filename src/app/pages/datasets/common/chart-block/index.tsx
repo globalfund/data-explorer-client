@@ -66,7 +66,7 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
           width="100%"
           height="100%"
           display="flex"
-          minHeight="400px"
+          minHeight="250px"
           alignItems="center"
           justifyContent="center"
         >
@@ -178,7 +178,6 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
         <Box
           id={id}
           width="100%"
-          minHeight="400px"
           position="relative"
           sx={
             props.loading
