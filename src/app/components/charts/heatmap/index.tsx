@@ -348,14 +348,17 @@ export function Heatmap(props: HeatmapProps) {
                 <RowName
                   theme={{
                     width: rowNameWidth,
+                    cursor: row.children ? "pointer" : "default",
                     background:
                       row.level % 2 === 0 ? appColors.COMMON.WHITE : "#F1F3F5",
                   }}
                   style={row.expanded ? { fontWeight: 700 } : {}}
+                  onClick={
+                    row.children ? onRowExpandClick(row.name) : undefined
+                  }
                 >
                   {row.children ? (
                     <IconButton
-                      onClick={onRowExpandClick(row.name)}
                       sx={{
                         padding: "4px",
                         transform: `rotate(${row.expanded ? -90 : 90}deg)`,
