@@ -7400,31 +7400,25 @@ export const TABLE_VARIATION_13_COLUMNS: ColumnDefinition[] = [
   {
     title: "Components",
     field: "component",
-    width: "20%",
-    formatter: cellBGColorFormatter,
-  },
-  {
-    title: "Grants",
-    field: "grants",
-    width: "20%",
+    width: "25%",
     formatter: cellBGColorFormatter,
   },
   {
     title: "Signed (US$)",
     field: "signed",
-    width: "20%",
+    width: "25%",
     formatter: financialFormatter,
   },
   {
     title: "Committed (US$)",
     field: "committed",
-    width: "20%",
+    width: "25%",
     formatter: financialFormatter,
   },
   {
     title: "Disbursed (US$)",
     field: "disbursed",
-    width: "20%",
+    width: "25%",
     formatter: financialFormatter,
   },
 ];
