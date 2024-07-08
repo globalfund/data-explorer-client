@@ -245,7 +245,7 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
       filterString += `&periods=${chart2Cycles.map((c) => c.value).join(",")}`;
     }
     fetchBudgetSankeyChart({ filterString });
-  }, [chart2Cycles, chart2Dropdown]);
+  }, [chart2Cycles]);
 
   useUpdateEffect(() => {
     let filterString = `geographies=${params.id}`;
