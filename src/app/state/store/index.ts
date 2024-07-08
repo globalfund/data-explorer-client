@@ -45,6 +45,7 @@ import componentsChartsNetwork from "app/state/api/action-reducers/cms/component
 import componentsChartsPledges from "app/state/api/action-reducers/cms/componentsChartsPledges";
 import { FundingRequestsTableGeneric } from "app/state/api/action-reducers/viz/fundingRequests";
 import { FinancialInsightsStats } from "app/state/api/action-reducers/financial-insights/stats";
+import AccessToFundingDocuments from "app/state/api/action-reducers/access-to-funding/documents";
 import { GrantBudgetSankeyChart } from "app/state/api/action-reducers/grant/budget-sankey-chart";
 import { HomeExpendituresHeatmap } from "app/state/api/action-reducers/home/expenditures-heatmap";
 import { GeographyDocumentsTable } from "app/state/api/action-reducers/geography/documents-table";
@@ -158,6 +159,7 @@ const storeContent: StoreModel = {
   AccessToFundingFundingRequestsTable: persist(
     AccessToFundingFundingRequestsTable
   ),
+  AccessToFundingDocumentsTable: persist(AccessToFundingDocuments),
   // financial insights
   FinancialInsightsStats: persist(FinancialInsightsStats),
   FinancialInsightsDisbursementsBarChart: persist(

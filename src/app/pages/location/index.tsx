@@ -60,14 +60,6 @@ export const Location: React.FC = () => {
   const clearCCMContacts = useStoreActions(
     (actions) => actions.GeographyOverviewCoordinatingMechanismsContacts.clear
   );
-  const dataRMBarChart = useStoreState(
-    (state) =>
-      get(
-        state.GeographyResourceMobilizationBarChart,
-        "data.data",
-        []
-      ) as BarChartDataItem[]
-  );
   const fetchRMBarChart = useStoreActions(
     (actions) => actions.GeographyResourceMobilizationBarChart.fetch
   );
@@ -76,14 +68,6 @@ export const Location: React.FC = () => {
   );
   const clearRMBarChart = useStoreActions(
     (actions) => actions.GeographyResourceMobilizationBarChart.clear
-  );
-  const dataAllocationsRadialChart = useStoreState(
-    (state) =>
-      get(
-        state.GeographyAllocationsRadialChart,
-        "data.data.chart",
-        []
-      ) as RadialChartDataItem[]
   );
   const fetchAllocationsRadialChart = useStoreActions(
     (actions) => actions.GeographyAllocationsRadialChart.fetch
@@ -94,11 +78,6 @@ export const Location: React.FC = () => {
   const clearAllocationsRadialChart = useStoreActions(
     (actions) => actions.GeographyAllocationsRadialChart.clear
   );
-  const dataFundingRequestsTable = useStoreState((state) =>
-    get(state.GeographyFundingRequestsTable, "data.data[0]", {
-      _children: [],
-    })
-  );
   const fetchFundingRequestsTable = useStoreActions(
     (actions) => actions.GeographyFundingRequestsTable.fetch
   );
@@ -107,9 +86,6 @@ export const Location: React.FC = () => {
   );
   const clearFundingRequestsTable = useStoreActions(
     (actions) => actions.GeographyFundingRequestsTable.clear
-  );
-  const dataEligibilityTable = useStoreState((state) =>
-    get(state.GeographyEligibilityTable, "data.data", [])
   );
   const fetchEligibilityTable = useStoreActions(
     (actions) => actions.GeographyEligibilityTable.fetch
@@ -120,9 +96,6 @@ export const Location: React.FC = () => {
   const clearEligibilityTable = useStoreActions(
     (actions) => actions.GeographyEligibilityTable.clear
   );
-  const dataDocumentsTable = useStoreState((state) =>
-    get(state.GeographyDocumentsTable, "data.data", [])
-  );
   const fetchDocumentsTable = useStoreActions(
     (actions) => actions.GeographyDocumentsTable.fetch
   );
@@ -131,13 +104,6 @@ export const Location: React.FC = () => {
   );
   const clearDocumentsTable = useStoreActions(
     (actions) => actions.GeographyDocumentsTable.clear
-  );
-  const dataDisbursementsLineChart = useStoreState(
-    (state) =>
-      get(state.GeographyDisbursementsLineChart, "data", {
-        data: [],
-        xAxisKeys: [],
-      }) as LineChartProps
   );
   const fetchDisbursementsLineChart = useStoreActions(
     (actions) => actions.GeographyDisbursementsLineChart.fetch
@@ -148,18 +114,6 @@ export const Location: React.FC = () => {
   const clearDisbursementsLineChart = useStoreActions(
     (actions) => actions.GeographyDisbursementsLineChart.clear
   );
-  const dataBudgetSankeyChart = useStoreState((state) => ({
-    nodes: get(
-      state.GeographyBudgetSankeyChart,
-      "data.data.nodes",
-      []
-    ) as SankeyChartData["nodes"],
-    links: get(
-      state.GeographyBudgetSankeyChart,
-      "data.data.links",
-      []
-    ) as SankeyChartData["links"],
-  }));
   const fetchBudgetSankeyChart = useStoreActions(
     (actions) => actions.GeographyBudgetSankeyChart.fetch
   );
@@ -168,14 +122,6 @@ export const Location: React.FC = () => {
   );
   const clearBudgetSanketChart = useStoreActions(
     (actions) => actions.GeographyBudgetSankeyChart.clear
-  );
-  const dataExpendituresHeatmap = useStoreState(
-    (state) =>
-      get(
-        state.GeographyExpendituresHeatmap,
-        "data.data",
-        []
-      ) as HeatmapDataItem[]
   );
   const fetchExpendituresHeatmap = useStoreActions(
     (actions) => actions.GeographyExpendituresHeatmap.fetch
@@ -194,10 +140,6 @@ export const Location: React.FC = () => {
   );
   const clearGrantsPieCharts = useStoreActions(
     (actions) => actions.GeographyGrantsPieCharts.clear
-  );
-  const dataGrantsTable = useStoreState(
-    (state) =>
-      get(state.GeographyGrantsTable, "data.data", []) as GrantCardProps[]
   );
   const fetchGrantsTable = useStoreActions(
     (actions) => actions.GeographyGrantsTable.fetch

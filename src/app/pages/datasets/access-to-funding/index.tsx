@@ -7,6 +7,7 @@ import { appColors } from "app/theme";
 import Grid from "@mui/material/Grid";
 import findIndex from "lodash/findIndex";
 import Tooltip from "@mui/material/Tooltip";
+import Divider from "@mui/material/Divider";
 import { Table } from "app/components/table";
 import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
@@ -15,6 +16,7 @@ import { Treemap } from "app/components/charts/treemap";
 import { DatasetPage } from "app/pages/datasets/common/page";
 import CircularProgress from "@mui/material/CircularProgress";
 import { SunburstChart } from "app/components/charts/sunburst";
+import { TableContainer } from "app/components/table-container";
 import { BarSeriesChart } from "app/components/charts/bar-series";
 import { FilterGroupModel } from "app/components/filters/list/data";
 import { TreemapDataItem } from "app/components/charts/treemap/data";
@@ -28,6 +30,7 @@ import {
   dropdownItemsAllocations,
 } from "app/pages/datasets/access-to-funding/data";
 import {
+  TABLE_VARIATION_6_COLUMNS as DOCUMENTS_TABLE_COLUMNS,
   TABLE_VARIATION_10_COLUMNS as ELIGIBILITY_TABLE_COLUMNS,
   TABLE_VARIATION_11_COLUMNS as ALLOCATIONS_TABLE_COLUMNS,
   TABLE_VARIATION_12_COLUMNS as FUNDING_REQUESTS_TABLE_COLUMNS,
@@ -170,6 +173,33 @@ export const AccessToFundingPage: React.FC = () => {
   );
   const fetchFundingRequestsTable = useStoreActions(
     (actions) => actions.AccessToFundingFundingRequestsTable.fetch
+  );
+  const dataDocumentsTable = useStoreState((state) =>
+    get(state.AccessToFundingDocumentsTable, "data.data", []).map(
+      (item: any, index) => {
+        if (index === 0) {
+          return {
+            ...item,
+            top: true,
+            _children: item._children.map((item: any) => ({
+              ...item,
+              top: true,
+              _children: item._children.map((subitem: any) => ({
+                ...subitem,
+                top: true,
+              })),
+            })),
+          };
+        }
+        return item;
+      }
+    )
+  );
+  const loadingDocumentsTable = useStoreState(
+    (state) => state.AccessToFundingDocumentsTable.loading
+  );
+  const fetchDocumentsTable = useStoreActions(
+    (actions) => actions.AccessToFundingDocumentsTable.fetch
   );
   const dataLocationFilterOptions = useStoreState(
     (state) =>
@@ -578,6 +608,9 @@ export const AccessToFundingPage: React.FC = () => {
 
   React.useEffect(() => {
     fetchAllocationsBarSeries({ filterString });
+    fetchDocumentsTable({
+      filterString: `types=Application${filterString.length > 0 ? `&${filterString}` : ""}`,
+    });
   }, [filterString]);
 
   React.useEffect(() => {
@@ -938,6 +971,51 @@ export const AccessToFundingPage: React.FC = () => {
               dataTreeStartExpandedFn={(row) => row.getData().top}
             />
           </DatasetChartBlock>
+        </Box>
+        <FullWidthDivider />
+        <Box id="documents" padding="50px 0">
+          <Typography variant="h3" lineHeight={1.2}>
+            Documents
+          </Typography>
+          <Divider
+            sx={{
+              margin: "20px 0",
+            }}
+          />
+          {loadingDocumentsTable && (
+            <Box
+              width="100%"
+              height="100%"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <CircularProgress />
+            </Box>
+          )}
+          {!loadingDocumentsTable && dataDocumentsTable.length > 0 ? (
+            <React.Fragment>
+              <Box height="40px" />
+              <TableContainer
+                dataTree
+                id="documents-table"
+                data={dataDocumentsTable}
+                columns={DOCUMENTS_TABLE_COLUMNS}
+                dataTreeStartExpandedFn={(row) => row.getData().top}
+              />
+            </React.Fragment>
+          ) : (
+            <Box
+              width="100%"
+              height="100%"
+              minHeight="250px"
+              alignItems="center"
+              justifyContent="center"
+              display={!loadingDocumentsTable ? "flex" : "none"}
+            >
+              <Typography>No data available</Typography>
+            </Box>
+          )}
         </Box>
       </Box>
     </DatasetPage>
