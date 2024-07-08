@@ -73,7 +73,21 @@ export const AccessToFundingPage: React.FC = () => {
     (actions) => actions.AccessToFundingStats.fetch
   );
   const dataEligibilityTable = useStoreState((state) =>
-    get(state.AccessToFundingEligibilityTable, "data.data", [])
+    get(state.AccessToFundingEligibilityTable, "data.data", []).map(
+      (item: any, index) => {
+        if (index === 0) {
+          return {
+            ...item,
+            top: true,
+            _children: item._children.map((item: any) => ({
+              ...item,
+              top: true,
+            })),
+          };
+        }
+        return item;
+      }
+    )
   );
   const loadingEligibilityTable = useStoreState(
     (state) => state.AccessToFundingEligibilityTable.loading
@@ -135,7 +149,21 @@ export const AccessToFundingPage: React.FC = () => {
     }
   });
   const dataFundingRequestsTable = useStoreState((state) =>
-    get(state.AccessToFundingFundingRequestsTable, "data.data", [])
+    get(state.AccessToFundingFundingRequestsTable, "data.data", []).map(
+      (item: any, index) => {
+        if (index === 0) {
+          return {
+            ...item,
+            top: true,
+            _children: item._children.map((item: any) => ({
+              ...item,
+              top: true,
+            })),
+          };
+        }
+        return item;
+      }
+    )
   );
   const loadingFundingRequestsTable = useStoreState(
     (state) => state.AccessToFundingFundingRequestsTable.loading
@@ -791,6 +819,7 @@ export const AccessToFundingPage: React.FC = () => {
               id="eligibility-table"
               data={dataEligibilityTable}
               columns={eligibilityTableColumns}
+              dataTreeStartExpandedFn={(row) => row.getData().top}
             />
           </DatasetChartBlock>
         </Box>
@@ -906,6 +935,7 @@ export const AccessToFundingPage: React.FC = () => {
               id="funding-requests-table"
               data={dataFundingRequestsTable}
               columns={FUNDING_REQUESTS_TABLE_COLUMNS}
+              dataTreeStartExpandedFn={(row) => row.getData().top}
             />
           </DatasetChartBlock>
         </Box>
