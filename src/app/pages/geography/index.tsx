@@ -74,7 +74,7 @@ const GeoSubCategory: React.FC<GeoSubCategoryProps> = (
           <Link
             key={item.name}
             component={NavLink}
-            to={`/location/${item.value}`}
+            to={`/location/${item.value.replace(/\//g, "|")}`}
             sx={{
               color: "#000",
               display: "block",

@@ -17,6 +17,7 @@ import {
 
 export const ResourceMobilization: React.FC = () => {
   const params = useParams<{ id: string; tab: string }>();
+  const paramsId = params.id?.replace("|", "%2F");
 
   const [chart1Cycles, setChart1Cycles] = React.useState<CycleProps[]>([]);
 
@@ -58,7 +59,7 @@ export const ResourceMobilization: React.FC = () => {
   };
 
   useUpdateEffect(() => {
-    let filterString = `donors=${params.id}`;
+    let filterString = `donors=${paramsId}`;
     if (chart1Cycles.length > 0) {
       filterString += `&periods=${chart1Cycles.map((c) => c.value).join(",")}`;
     }

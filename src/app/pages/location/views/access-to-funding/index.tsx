@@ -29,6 +29,7 @@ import {
 
 export const AccessToFunding: React.FC = () => {
   const params = useParams<{ id: string; tab: string }>();
+  const paramsId = params.id?.replace("|", "%2F");
 
   const [chart1Cycles, setChart1Cycles] = React.useState<CycleProps[]>([]);
   const [chart2Cycles, setChart2Cycles] = React.useState<CycleProps[]>([]);
@@ -142,24 +143,24 @@ export const AccessToFunding: React.FC = () => {
   };
 
   useUpdateEffect(() => {
-    if (params.id && chart1Cycles.length > 0) {
+    if (paramsId && chart1Cycles.length > 0) {
       let filterString = "";
       filterString = `periods=${chart1Cycles[0].value}`;
       fetchAllocationsRadialChart({
         filterString,
-        routeParams: { code: params.id },
+        routeParams: { code: paramsId },
       });
     }
   }, [chart1Cycles]);
 
   useUpdateEffect(() => {
-    if (params.id && chart2Cycles.length > 0) {
+    if (paramsId && chart2Cycles.length > 0) {
       let filterString = "";
       filterString += `&periods=${chart2Cycles[0].value.split("-")[0]}`;
       fetchFundingRequestsTable({
         filterString,
         routeParams: {
-          code: params.id,
+          code: paramsId,
         },
       });
     }

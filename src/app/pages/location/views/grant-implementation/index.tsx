@@ -50,6 +50,7 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
   props: GrantImplementationProps
 ) => {
   const params = useParams<{ id: string; tab: string }>();
+  const paramsId = params.id?.replace("|", "%2F");
 
   const [chart1Cycles, setChart1Cycles] = React.useState<CycleProps[]>([]);
   const [chart2Cycles, setChart2Cycles] = React.useState<CycleProps[]>([]);
@@ -212,7 +213,7 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
   };
 
   useUpdateEffect(() => {
-    let filterString = `geographies=${params.id}`;
+    let filterString = `geographies=${paramsId}`;
     if (chart1Cycles.length > 0) {
       const yearFrom: string[] = [];
       const yearTo: string[] = [];
@@ -240,7 +241,7 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
   }, [chart1Cycles, chart1Dropdown]);
 
   useUpdateEffect(() => {
-    let filterString = `geographies=${params.id}`;
+    let filterString = `geographies=${paramsId}`;
     if (chart2Cycles.length > 0) {
       filterString += `&periods=${chart2Cycles.map((c) => c.value).join(",")}`;
     }
@@ -248,7 +249,7 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
   }, [chart2Cycles]);
 
   useUpdateEffect(() => {
-    let filterString = `geographies=${params.id}`;
+    let filterString = `geographies=${paramsId}`;
     if (chart3Cycles.length > 0) {
       filterString += `&periods=${chart3Cycles.map((c) => c.value).join(",")}`;
     }

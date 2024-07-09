@@ -24,6 +24,7 @@ import { ResourceMobilization } from "app/pages/location/views/resource-mobiliza
 
 export const Location: React.FC = () => {
   const params = useParams<{ id: string; tab: string }>();
+  const paramsId = params.id?.replace("|", "%2F");
 
   const [grantsTablePage, setGrantsTablePage] = React.useState(1);
   const [resultsYear, setResultsYear] = React.useState(
@@ -320,44 +321,44 @@ export const Location: React.FC = () => {
   }, [dataOverview, dataResultsTable, dataResultsDocumentsTable]);
 
   React.useEffect(() => {
-    if (params.id) {
+    if (paramsId) {
       fetchOverview({
         routeParams: {
-          code: params.id,
+          code: paramsId,
         },
       });
       fetchCCMContacts({
         routeParams: {
-          code: params.id,
+          code: paramsId,
         },
       });
       fetchAllocationsRadialChart({
         routeParams: {
-          code: params.id,
+          code: paramsId,
         },
       });
       fetchFundingRequestsTable({
         routeParams: {
-          code: params.id,
+          code: paramsId,
         },
       });
       fetchEligibilityTable({
-        filterString: `geographies=${params.id}`,
+        filterString: `geographies=${paramsId}`,
       });
       fetchDisbursementsLineChart({
-        filterString: `geographies=${params.id}`,
+        filterString: `geographies=${paramsId}`,
         routeParams: {
           componentField: "activityAreaGroup",
         },
       });
       fetchBudgetSankeyChart({
-        filterString: `geographies=${params.id}`,
+        filterString: `geographies=${paramsId}`,
         routeParams: {
           componentField: "activityAreaGroup",
         },
       });
       fetchExpendituresHeatmap({
-        filterString: `geographies=${params.id}`,
+        filterString: `geographies=${paramsId}`,
         routeParams: {
           row: "principalRecipientType,principalRecipientSubType,principalRecipient",
           column: "component",
@@ -366,44 +367,44 @@ export const Location: React.FC = () => {
       });
       fetchGrantsPieCharts({
         routeParams: {
-          code: params.id,
+          code: paramsId,
         },
       });
       fetchResultStats({
-        filterString: `geographies=${params.id}&cycle=${RESULT_YEARS[RESULT_YEARS.length - 1].value}`,
+        filterString: `geographies=${paramsId}&cycle=${RESULT_YEARS[RESULT_YEARS.length - 1].value}`,
       });
       fetchDocumentsTable({
-        filterString: `types=Application&geographies=${params.id}`,
+        filterString: `types=Application&geographies=${paramsId}`,
       });
       fetchResultsDocumentsTable({
-        filterString: `types=Profile&geographies=${params.id}`,
+        filterString: `types=Profile&geographies=${paramsId}`,
       });
       fetchAllocationsCycles({
-        filterString: `geographies=${params.id}`,
+        filterString: `geographies=${paramsId}`,
       });
       fetchAnnualResultsCycles({
-        filterString: `geographies=${params.id}`,
+        filterString: `geographies=${paramsId}`,
       });
       fetchDisbursementsCycles({
-        filterString: `geographies=${params.id}`,
+        filterString: `geographies=${paramsId}`,
       });
       fetchExpendituresCycles({
-        filterString: `geographies=${params.id}`,
+        filterString: `geographies=${paramsId}`,
       });
       fetchEligibilityCycles({
-        filterString: `geographies=${params.id}`,
+        filterString: `geographies=${paramsId}`,
       });
       fetchPledgesContributionsCycles({
-        filterString: `geographies=${params.id}`,
+        filterString: `geographies=${paramsId}`,
       });
       fetchFundingRequestsCycles({
-        filterString: `geographies=${params.id}`,
+        filterString: `geographies=${paramsId}`,
       });
       fetchBudgetsCycles({
-        filterString: `geographies=${params.id}`,
+        filterString: `geographies=${paramsId}`,
       });
     }
-  }, [params.id]);
+  }, [paramsId]);
 
   React.useEffect(() => {
     if (dataOverview.isDonor) {
@@ -414,27 +415,27 @@ export const Location: React.FC = () => {
   }, [dataOverview]);
 
   React.useEffect(() => {
-    if (params.id) {
+    if (paramsId) {
       fetchGrantsTable({
-        filterString: `geographies=${params.id}`,
+        filterString: `geographies=${paramsId}`,
         routeParams: {
           page: grantsTablePage.toString(),
           pageSize: "10",
         },
       });
     }
-  }, [params.id, grantsTablePage]);
+  }, [paramsId, grantsTablePage]);
 
   React.useEffect(() => {
-    if (params.id) {
+    if (paramsId) {
       fetchResultsTable({
         routeParams: {
-          code: params.id,
+          code: paramsId,
           cycle: resultsYear.value,
         },
       });
     }
-  }, [params.id, resultsYear]);
+  }, [paramsId, resultsYear]);
 
   React.useEffect(() => {
     return () => {
