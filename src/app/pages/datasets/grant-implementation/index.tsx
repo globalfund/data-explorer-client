@@ -777,30 +777,36 @@ export const GrantImplementationPage: React.FC = () => {
   const financialMetricsContent = React.useMemo(() => {
     return (
       <Box gap="40px" width="100%" display="flex" flexDirection="column">
-        <FinancialMetric
-          {...FINANCIAL_METRICS_DATA_1}
-          donutChart={{
-            ...FINANCIAL_METRICS_DATA_1.donutChart,
-            value: dataBudgetUtilisation.value,
-          }}
-          items={dataBudgetUtilisation.items}
-        />
-        <FinancialMetric
-          {...FINANCIAL_METRICS_DATA_2}
-          donutChart={{
-            ...FINANCIAL_METRICS_DATA_2.donutChart,
-            value: dataInCountryAbsorption.value,
-          }}
-          items={dataInCountryAbsorption.items}
-        />
-        <FinancialMetric
-          {...FINANCIAL_METRICS_DATA_3}
-          donutChart={{
-            ...FINANCIAL_METRICS_DATA_3.donutChart,
-            value: dataDisbursementUtilisation.value,
-          }}
-          items={dataDisbursementUtilisation.items}
-        />
+        {dataBudgetUtilisation.items.length > 0 && (
+          <FinancialMetric
+            {...FINANCIAL_METRICS_DATA_1}
+            donutChart={{
+              ...FINANCIAL_METRICS_DATA_1.donutChart,
+              value: dataBudgetUtilisation.value,
+            }}
+            items={dataBudgetUtilisation.items}
+          />
+        )}
+        {dataInCountryAbsorption.items.length > 0 && (
+          <FinancialMetric
+            {...FINANCIAL_METRICS_DATA_2}
+            donutChart={{
+              ...FINANCIAL_METRICS_DATA_2.donutChart,
+              value: dataInCountryAbsorption.value,
+            }}
+            items={dataInCountryAbsorption.items}
+          />
+        )}
+        {dataDisbursementUtilisation.items.length > 0 && (
+          <FinancialMetric
+            {...FINANCIAL_METRICS_DATA_3}
+            donutChart={{
+              ...FINANCIAL_METRICS_DATA_3.donutChart,
+              value: dataDisbursementUtilisation.value,
+            }}
+            items={dataDisbursementUtilisation.items}
+          />
+        )}
       </Box>
     );
   }, [
@@ -811,8 +817,8 @@ export const GrantImplementationPage: React.FC = () => {
 
   const financialMetricsEmpty = React.useMemo(() => {
     return (
-      !dataBudgetUtilisation.items.length ||
-      !dataInCountryAbsorption.items.length ||
+      !dataBudgetUtilisation.items.length &&
+      !dataInCountryAbsorption.items.length &&
       !dataDisbursementUtilisation.items.length
     );
   }, [
