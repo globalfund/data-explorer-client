@@ -59,9 +59,9 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
   const [chart1Dropdown, setChart1Dropdown] = React.useState(
     CHART_1_DROPDOWN_ITEMS[0].value
   );
-  const [chart2Dropdown, setChart2Dropdown] = React.useState(
-    CHART_2_DROPDOWN_ITEMS[0].value
-  );
+  // const [chart2Dropdown, setChart2Dropdown] = React.useState(
+  //   CHART_2_DROPDOWN_ITEMS[0].value
+  // );
 
   const [chart2Unit, setChart2Unit] = React.useState<"amount" | "percentage">(
     "percentage"
@@ -186,7 +186,6 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
       case 2:
         cycles = chart2Cycles;
         setCycle = setChart2Cycles;
-        multi = false;
         break;
       case 3:
         cycles = chart3Cycles;
@@ -243,7 +242,17 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
   useUpdateEffect(() => {
     let filterString = `geographies=${paramsId}`;
     if (chart2Cycles.length > 0) {
-      filterString += `&periods=${chart2Cycles.map((c) => c.value).join(",")}`;
+      const years = chart2Cycles.map(
+        (cycle) => cycle.value.replace(/ /g, "").split("-")[0]
+      );
+      const yearsTo = chart2Cycles.map(
+        (cycle) => cycle.value.replace(/ /g, "").split("-")[1]
+      );
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }years=${encodeURIComponent(
+        years.join(",")
+      )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
     }
     fetchBudgetSankeyChart({ filterString });
   }, [chart2Cycles]);
@@ -487,10 +496,10 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
         title={totalBudget}
         subtitle="Grant Budgets"
         selectedCycles={chart2Cycles}
-        dropdownSelected={chart2Dropdown}
+        // dropdownSelected={chart2Dropdown}
         loading={loadingBudgetSankeyChart}
-        dropdownItems={CHART_2_DROPDOWN_ITEMS}
-        handleDropdownChange={setChart2Dropdown}
+        // dropdownItems={CHART_2_DROPDOWN_ITEMS}
+        // handleDropdownChange={setChart2Dropdown}
         empty={!showBudgetSankeyChart && chart2Cycles.length === 0}
         handleCycleChange={(value) => handleChartCycleChange(value, 2)}
         cycles={budgetsCyclesAll.map((c) => ({
