@@ -68,6 +68,7 @@ const cellBGColorFormatter = (cell: CellComponent) => {
     backgroundColor = "#FFFFFF";
   }
   cell.getElement().style.backgroundColor = backgroundColor;
+  cell.getElement().style.whiteSpace = "pre-wrap";
   return text;
 };
 
@@ -551,6 +552,7 @@ export const TABLE_VARIATION_4_COLUMNS: ColumnDefinition[] = [
     title: "Modules & Coverage Indicators",
     field: "name",
     formatter: cellBGColorFormatter,
+    width: "35%",
   },
   {
     title: "Reversed",

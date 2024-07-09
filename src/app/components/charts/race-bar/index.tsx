@@ -41,7 +41,7 @@ export const RaceBarChart: React.FC<RaceBarChartProps> = (
               height="9px"
               borderRadius="16px"
               bgcolor={item.color}
-              width={`calc(${item.percentage}% - 120px)`}
+              width={`calc(${item.sizePercentage ?? item.percentage}% - 120px)`}
             />
             <Typography fontSize="14px" color="#333" whiteSpace="nowrap">
               {!props.noValuesFormat

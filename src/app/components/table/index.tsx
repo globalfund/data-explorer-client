@@ -43,8 +43,8 @@ export const Table: React.FC<TableProps> = (props: TableProps) => {
 
       if (props.dataTreeStartExpanded || props.dataTreeStartExpandedFn) {
         setTimeout(() => {
-          // table.redraw();
-        }, 100);
+          table.redraw();
+        }, 500);
       }
 
       return () => {
