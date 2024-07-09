@@ -52,11 +52,11 @@ export const TableContainer: React.FC<TableContainerProps> = (
     }
   }, []);
 
-  const download = () => {
-    if (table) {
-      table.download("csv", "data.csv");
-    }
-  };
+  // const download = () => {
+  //   if (table) {
+  //     table.download("csv", "data.csv");
+  //   }
+  // };
 
   const handleColumnsMenuClick = (
     event: React.MouseEvent<HTMLButtonElement>
@@ -167,18 +167,18 @@ export const TableContainer: React.FC<TableContainerProps> = (
             },
           }}
         >
-          <IconButton disableRipple>
+          {/* <IconButton disableRipple>
             <SearchIcon />
-          </IconButton>
+          </IconButton> */}
           <IconButton disableRipple onClick={fullscreen}>
             <FullscreenIcon />
           </IconButton>
           <IconButton disableRipple onClick={handleColumnsMenuClick}>
             <ColumnsIcon />
           </IconButton>
-          <IconButton disableRipple onClick={download}>
+          {/* <IconButton disableRipple onClick={download}>
             <DownloadIcon />
-          </IconButton>
+          </IconButton> */}
           <Popover
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}

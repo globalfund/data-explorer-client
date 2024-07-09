@@ -140,7 +140,8 @@ const InfoPanel: React.FC<InfoPanelProps> = (props: InfoPanelProps) => {
     <Box
       left="5%"
       width="90%"
-      top="-200px"
+      top="-300px"
+      zIndex={1000}
       padding="16px"
       bgcolor="#F5F5F7"
       borderRadius="16px"

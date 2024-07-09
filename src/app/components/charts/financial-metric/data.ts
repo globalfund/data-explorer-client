@@ -25,11 +25,11 @@ export const STORY_DATA_VARIANT_1: FinancialMetricProps = {
   title: "Budget Utilisation",
   legends: [
     {
-      name: "Reported Budget",
+      name: "Disbursement + Cash balance",
       color: "#013E77",
     },
     {
-      name: "Cumulative Budget",
+      name: "Budget",
       color: "#CFD4DA",
     },
   ],
@@ -1507,11 +1507,11 @@ export const STORY_DATA_VARIANT_2: FinancialMetricProps = {
   title: "In-Country Absorption",
   legends: [
     {
-      name: "Reported Expenditure",
+      name: "Expenditure",
       color: "#00B5AE",
     },
     {
-      name: "Cumulative Expenditure",
+      name: "Budget",
       color: "#CFD4DA",
     },
   ],
@@ -2989,11 +2989,11 @@ export const STORY_DATA_VARIANT_3: FinancialMetricProps = {
   title: "Disbursement Utilisation",
   legends: [
     {
-      name: "Disbursement",
+      name: "Expenditure",
       color: "#0A2840",
     },
     {
-      name: "Cumulative Expenditure",
+      name: "Disbursement",
       color: "#CFD4DA",
     },
   ],

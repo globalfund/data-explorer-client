@@ -36,7 +36,12 @@ export const ResourceMobilization: React.FC = () => {
   );
   const cycles = useStoreState(
     (state) =>
-      get(state.GeographyPledgesContributionsCycles, "data.data", []) as {
+      get(state.GeographyPledgesContributionsCycles, "data.data", []).map(
+        (item: any) => ({
+          name: item.value,
+          value: item.value,
+        })
+      ) as {
         name: string;
         value: string;
       }[]

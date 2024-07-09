@@ -133,7 +133,7 @@ export const GrantImplementationPage: React.FC = () => {
     (state) =>
       get(
         state.FinancialInsightsDisbursementsLineChart,
-        "data.keys",
+        "data.xAxisKeys",
         []
       ) as string[]
   );
@@ -177,6 +177,9 @@ export const GrantImplementationPage: React.FC = () => {
   );
   const fetchBudgetBreakdown = useStoreActions(
     (actions) => actions.FinancialInsightsBudgetBreakdown.fetch
+  );
+  const loadingBudgetBreakdown = useStoreState(
+    (state) => state.FinancialInsightsBudgetBreakdown.loading
   );
   const dataBudgetUtilisation = useStoreState(
     (state) =>
@@ -437,6 +440,7 @@ export const GrantImplementationPage: React.FC = () => {
           principalRecipientSubTypes: [],
           principalRecipientTypes: [],
           status: [],
+          cycles: [],
         });
         setChart1AppliedFilters([]);
         break;
@@ -449,6 +453,7 @@ export const GrantImplementationPage: React.FC = () => {
           principalRecipientSubTypes: [],
           principalRecipientTypes: [],
           status: [],
+          cycles: [],
         });
         setChart2AppliedFilters([]);
         break;
@@ -461,6 +466,7 @@ export const GrantImplementationPage: React.FC = () => {
           principalRecipientSubTypes: [],
           principalRecipientTypes: [],
           status: [],
+          cycles: [],
         });
         setChart3AppliedFilters([]);
         break;
@@ -473,6 +479,7 @@ export const GrantImplementationPage: React.FC = () => {
           principalRecipientSubTypes: [],
           principalRecipientTypes: [],
           status: [],
+          cycles: [],
         });
         setChart4AppliedFilters([]);
         break;
@@ -552,6 +559,13 @@ export const GrantImplementationPage: React.FC = () => {
             state.status = state.status.filter((item) => item !== value);
           }
           break;
+        case "cycle":
+          if (checked) {
+            state.cycles.push(value);
+          } else {
+            state.cycles = state.cycles.filter((item) => item !== value);
+          }
+          break;
         default:
           break;
       }
@@ -563,6 +577,7 @@ export const GrantImplementationPage: React.FC = () => {
         ...state.principalRecipientSubTypes,
         ...state.principalRecipientTypes,
         ...state.status,
+        ...state.cycles,
       ]);
     };
 
@@ -626,6 +641,7 @@ export const GrantImplementationPage: React.FC = () => {
         ...state.principalRecipientSubTypes,
         ...state.principalRecipientTypes,
         ...state.status,
+        ...state.cycles,
       ]);
     };
 
@@ -894,8 +910,8 @@ export const GrantImplementationPage: React.FC = () => {
         return (
           <ExpandableHorizontalBar
             data={dataExpendituresBarChart}
-            yAxisLabel="Investment Landscapes & Analytical Group Name"
-            xAxisLabel="Cumulative Expenditure"
+            yAxisLabel="Modules & Interventions"
+            xAxisLabel="Expenditure"
             valueLabels={{
               value: "amount",
             }}
@@ -1539,7 +1555,7 @@ export const GrantImplementationPage: React.FC = () => {
     fetchExpendituresHeatmap({
       filterString: chart4FilterString,
       routeParams: {
-        row: "principalRecipientType,principalRecipient",
+        row: "principalRecipientType,principalRecipientSubType,principalRecipient",
         column: "component",
         componentField:
           componentsGrouping === componentsGroupingOptions[0].value
@@ -1732,19 +1748,6 @@ export const GrantImplementationPage: React.FC = () => {
           position="relative"
           flexDirection="column"
         >
-          {loadingStats && (
-            <Box
-              width="100%"
-              height="100%"
-              display="flex"
-              position="absolute"
-              alignItems="center"
-              justifyContent="center"
-              bgcolor="rgba(255, 255, 255, 0.8)"
-            >
-              <CircularProgress />
-            </Box>
-          )}
           <Box
             width="100%"
             display="flex"
@@ -1800,6 +1803,19 @@ export const GrantImplementationPage: React.FC = () => {
               </Box>
             ))}
           </Box>
+          {loadingBudgetBreakdown && (
+            <Box
+              width="100%"
+              height="100%"
+              display="flex"
+              position="absolute"
+              alignItems="center"
+              justifyContent="center"
+              bgcolor="rgba(255, 255, 255, 0.8)"
+            >
+              <CircularProgress />
+            </Box>
+          )}
         </Box>
         <FullWidthDivider />
         <Box

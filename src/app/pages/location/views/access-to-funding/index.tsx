@@ -166,7 +166,7 @@ export const AccessToFunding: React.FC = () => {
   }, [chart2Cycles]);
 
   React.useEffect(() => {
-    if (allocationsCycles.length > 0) {
+    if (allocationsCycles.length > 0 && chart1Cycles.length === 0) {
       setChart1Cycles((prev) => {
         if (prev.length === 0) {
           return [allocationsCycles[allocationsCycles.length - 1]];
@@ -177,7 +177,7 @@ export const AccessToFunding: React.FC = () => {
   }, [allocationsCycles]);
 
   React.useEffect(() => {
-    if (fundingRequestsCycles.length > 0) {
+    if (fundingRequestsCycles.length > 0 && chart2Cycles.length === 0) {
       setChart2Cycles((prev) => {
         if (prev.length === 0) {
           return [fundingRequestsCycles[fundingRequestsCycles.length - 1]];

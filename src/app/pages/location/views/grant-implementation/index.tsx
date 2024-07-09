@@ -255,7 +255,7 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
     fetchExpendituresHeatmap({
       filterString,
       routeParams: {
-        row: "principalRecipientType,principalRecipient",
+        row: "principalRecipientType,principalRecipientSubType,principalRecipient",
         column: "component",
         componentField: "activityAreaGroup",
       },
@@ -549,6 +549,8 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
           rowCategory="component"
           getItemColor={getPercentageColor}
           bgColor={appColors.HEATMAP.CHART_BG_COLOR}
+          columnHeader="Principal Recipients"
+          rowHeader="Components"
         />
       </ChartBlock>
       {showExpendituresHeatmap && fullWidthDivider}

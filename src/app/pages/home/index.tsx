@@ -735,6 +735,8 @@ export const Home: React.FC = () => {
           rowCategory="principalRecipient"
           getItemColor={getPercentageColor}
           contentProp={chart5Unit === "percentage" ? "percentage" : "value"}
+          columnHeader="Principal Recipients"
+          rowHeader="Components"
         />
       </ChartBlock>
     </Box>

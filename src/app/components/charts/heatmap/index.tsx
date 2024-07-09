@@ -270,15 +270,15 @@ export function Heatmap(props: HeatmapProps) {
       )}
       <Box
         maxWidth="100%"
-        padding="10px 0"
         maxHeight="60vh"
         position="relative"
         borderRadius="16px"
         bgcolor={props.bgColor}
+        padding="20px 0 10px 0"
       >
         {props.rowHeader && (
           <Typography
-            top="0px"
+            top="5px"
             fontSize="10px"
             fontWeight="700"
             paddingLeft="20px"

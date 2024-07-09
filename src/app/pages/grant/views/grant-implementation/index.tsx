@@ -8,14 +8,12 @@ import Divider from "@mui/material/Divider";
 import { CYCLES } from "app/pages/home/data";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
-import { BarChart } from "app/components/charts/bar";
 import { useStoreState } from "app/state/store/hooks";
 import { ChartBlock } from "app/components/chart-block";
 import { Heatmap } from "app/components/charts/heatmap";
 import { RadialChart } from "app/components/charts/radial";
 import { SankeyChart } from "app/components/charts/sankey";
 import { RaceBarChart } from "app/components/charts/race-bar";
-import { BarChartDataItem } from "app/components/charts/bar/data";
 import { SankeyChartData } from "app/components/charts/sankey/data";
 import { CHART_2_DROPDOWN_ITEMS } from "app/pages/grant/views/grant-implementation/data";
 import {
@@ -50,14 +48,6 @@ export const GrantImplementation: React.FC = () => {
     programStartDate: get(state.GrantOverview, "data.data[0].dates[0]"),
     programEndDate: get(state.GrantOverview, "data.data[0].dates[1]"),
   }));
-  const dataDisbursementsBarChart = useStoreState(
-    (state) =>
-      get(
-        state.GrantDisbursementsBarChart,
-        "data.data",
-        []
-      ) as BarChartDataItem[]
-  );
   const dataBudgetSankeyChart = useStoreState(
     (state) =>
       get(state.GrantBudgetSankeyChart, "data.data[0]", {
@@ -222,7 +212,6 @@ export const GrantImplementation: React.FC = () => {
   );
 
   const showRadialChart = radialChartData.length > 0;
-  const showDisbursementsBarChart = dataDisbursementsBarChart.length > 0;
   const showBudgetSankeyChart =
     dataBudgetSankeyChart.nodes.length > 0 &&
     dataBudgetSankeyChart.links.length > 0;
@@ -230,42 +219,6 @@ export const GrantImplementation: React.FC = () => {
 
   return (
     <Box gap="24px" display="flex" flexDirection="column">
-      <ChartBlock
-        id="radial-chart"
-        title={disbursementsTotal}
-        subtitle="Disbursed"
-        empty={!showRadialChart}
-        text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
-      >
-        <RadialChart
-          tooltipLabel="Amount"
-          data={radialChartData}
-          itemLabelFormatterType="name-value-percent"
-        />
-        <Box
-          top="55%"
-          display="flex"
-          alignItems="center"
-          position="absolute"
-          flexDirection="column"
-          justifyContent="center"
-          right="calc(50% - 33px)"
-        >
-          <Box
-            width="17px"
-            height="17px"
-            borderRadius="50%"
-            bgcolor={appColors.RADIAL_CHART.ITEM_COLORS[2]}
-          />
-          <Typography variant="body2" fontWeight="700">
-            Signed
-          </Typography>
-          <Typography variant="body2">{signedFormatted}</Typography>
-        </Box>
-        <RaceBarChart data={raceBarChartData} />
-      </ChartBlock>
-      {showRadialChart && fullWidthDivider}
-      <Divider sx={{ borderColor: "#000" }} />
       <Grid
         container
         spacing={2}
@@ -342,21 +295,43 @@ export const GrantImplementation: React.FC = () => {
           </Box>
         </Grid>
       </Grid>
-      <Divider sx={{ borderColor: "#000" }} />
       {fullWidthDivider}
       <ChartBlock
-        id="disbursements"
-        title="Disbursements"
-        subtitle="Overtime"
-        empty={!showDisbursementsBarChart}
+        id="radial-chart"
+        title={disbursementsTotal}
+        subtitle="Disbursement"
+        empty={!showRadialChart}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
-        <BarChart
-          data={dataDisbursementsBarChart}
-          valueLabels={{ value: "" }}
+        <RadialChart
+          tooltipLabel="Amount"
+          data={radialChartData}
+          itemLabelFormatterType="name-value-percent"
         />
+        <Box
+          top="55%"
+          display="flex"
+          alignItems="center"
+          position="absolute"
+          flexDirection="column"
+          justifyContent="center"
+          right="calc(50% - 33px)"
+        >
+          <Box
+            width="17px"
+            height="17px"
+            borderRadius="50%"
+            bgcolor={appColors.RADIAL_CHART.ITEM_COLORS[2]}
+          />
+          <Typography variant="body2" fontWeight="700">
+            Signed
+          </Typography>
+          <Typography variant="body2">{signedFormatted}</Typography>
+        </Box>
+        <RaceBarChart data={raceBarChartData} />
       </ChartBlock>
-      {showDisbursementsBarChart && fullWidthDivider}
+      {showRadialChart && fullWidthDivider}
+      {fullWidthDivider}
       <ChartBlock
         id="budget"
         title={totalBudget}
@@ -410,6 +385,8 @@ export const GrantImplementation: React.FC = () => {
           rowCategory="component"
           data={dataExpendituresHeatmap}
           getItemColor={getPercentageColor}
+          columnHeader="Principal Recipients"
+          rowHeader="Components"
         />
       </ChartBlock>
     </Box>

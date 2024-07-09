@@ -847,7 +847,7 @@ export const AccessToFundingPage: React.FC = () => {
                 <Info fontSize="small" />
               </Tooltip>
             </Box>
-            <Table
+            <TableContainer
               dataTree
               id="eligibility-table"
               data={dataEligibilityTable}
@@ -963,7 +963,7 @@ export const AccessToFundingPage: React.FC = () => {
             handleResetFilters={handleResetChartFilters(3)}
             appliedFiltersData={chart3AppliedFiltersData}
           >
-            <Table
+            <TableContainer
               dataTree
               id="funding-requests-table"
               data={dataFundingRequestsTable}

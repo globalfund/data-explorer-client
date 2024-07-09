@@ -79,6 +79,44 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
 
   const id = React.useMemo(() => uniqueId("chart-block-"), []);
 
+  const filterPopover = React.useMemo(() => {
+    return (
+      <Popover
+        disableScrollLock
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        id={`filter-popover-${id}`}
+        onClose={handleFilterPanelClose}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
+      >
+        <FilterPanel
+          onClose={handleFilterPanelClose}
+          filterGroups={props.filterGroups}
+          toggleFilter={props.toggleFilter}
+          removeFilter={props.removeFilter}
+          appliedFilters={props.appliedFilters}
+          handleResetFilters={props.handleResetFilters}
+          appliedFiltersData={props.appliedFiltersData}
+          appliedFilterBgColors={{
+            hover: "#2196F3",
+            normal: "rgba(33, 150, 243, 0.2)",
+          }}
+        />
+      </Popover>
+    );
+  }, [
+    anchorEl,
+    props.appliedFilters,
+    props.filterGroups,
+    props.appliedFiltersData,
+    props.toggleFilter,
+    props.removeFilter,
+    props.handleResetFilters,
+  ]);
+
   return (
     <Box id={props.id}>
       <Typography variant="h3" lineHeight={1.2}>
@@ -120,33 +158,10 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
           >
             Filters
           </Button>
-          <Popover
-            disableScrollLock
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleFilterPanelClose}
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "left",
-            }}
-          >
-            <FilterPanel
-              onClose={handleFilterPanelClose}
-              filterGroups={props.filterGroups}
-              toggleFilter={props.toggleFilter}
-              removeFilter={props.removeFilter}
-              appliedFilters={props.appliedFilters}
-              handleResetFilters={props.handleResetFilters}
-              appliedFiltersData={props.appliedFiltersData}
-              appliedFilterBgColors={{
-                hover: "#2196F3",
-                normal: "rgba(33, 150, 243, 0.2)",
-              }}
-            />
-          </Popover>
-          <Button variant="outlined" startIcon={<SettingsIcon />}>
+          {filterPopover}
+          {/* <Button variant="outlined" startIcon={<SettingsIcon />}>
             Settings
-          </Button>
+          </Button> */}
           <Button
             variant="outlined"
             onClick={handleCollapse}

@@ -184,7 +184,6 @@ export function useUrlFilters(): null {
     } else {
       currentUrlParams.delete("replenishmentPeriods");
     }
-    console.log(data.cycles);
     if (data.cycles.length > 0) {
       currentUrlParams.set(
         "cycles",
@@ -299,7 +298,6 @@ export function useUrlFilters(): null {
     } else if (updatedAppliedFilters.replenishmentPeriods.length > 0) {
       updatedAppliedFilters.replenishmentPeriods = [];
     }
-    console.log(cycles);
     if (cycles) {
       updatedAppliedFilters.cycles = cycles.split(",");
     } else if (updatedAppliedFilters.cycles.length > 0) {

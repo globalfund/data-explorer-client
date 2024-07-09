@@ -331,9 +331,6 @@ export const Location: React.FC = () => {
           code: params.id,
         },
       });
-      fetchRMBarChart({
-        filterString: `donors=${params.id}`,
-      });
       fetchAllocationsRadialChart({
         routeParams: {
           code: params.id,
@@ -362,7 +359,7 @@ export const Location: React.FC = () => {
       fetchExpendituresHeatmap({
         filterString: `geographies=${params.id}`,
         routeParams: {
-          row: "principalRecipientType,principalRecipient",
+          row: "principalRecipientType,principalRecipientSubType,principalRecipient",
           column: "component",
           componentField: "activityAreaGroup",
         },
@@ -407,6 +404,14 @@ export const Location: React.FC = () => {
       });
     }
   }, [params.id]);
+
+  React.useEffect(() => {
+    if (dataOverview.isDonor) {
+      fetchRMBarChart({
+        filterString: `donors=${dataOverview.name}`,
+      });
+    }
+  }, [dataOverview]);
 
   React.useEffect(() => {
     if (params.id) {
