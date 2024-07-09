@@ -173,9 +173,11 @@ export const TableContainer: React.FC<TableContainerProps> = (
           <IconButton disableRipple onClick={fullscreen}>
             <FullscreenIcon />
           </IconButton>
-          <IconButton disableRipple onClick={handleColumnsMenuClick}>
-            <ColumnsIcon />
-          </IconButton>
+          {!props.noColumnVisibilitySelection && (
+            <IconButton disableRipple onClick={handleColumnsMenuClick}>
+              <ColumnsIcon />
+            </IconButton>
+          )}
           {/* <IconButton disableRipple onClick={download}>
             <DownloadIcon />
           </IconButton> */}

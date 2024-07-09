@@ -11,8 +11,8 @@ export const TABS = [
     name: "Modules & Coverage Indicators",
     value: "Coverage / Output indicator",
   },
-  {
-    name: "Modules and Workplan Tracking Measures",
-    value: "Process indicator / WPMT",
-  },
+  // {
+  //   name: "Modules and Workplan Tracking Measures",
+  //   value: "Process indicator / WPMT",
+  // },
 ];

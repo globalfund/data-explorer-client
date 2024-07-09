@@ -168,6 +168,7 @@ export const GrantTargetsResults: React.FC = () => {
           data={dataTable}
           columns={columns}
           dataTreeStartExpanded
+          noColumnVisibilitySelection
           id="grant-targets-results-table"
           tabsView={{
             tabs: TABS.map((t) => t.name),
