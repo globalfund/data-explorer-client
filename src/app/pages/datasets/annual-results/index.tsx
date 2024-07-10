@@ -4,6 +4,7 @@ import uniq from "lodash/uniq";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import { Table } from "app/components/table";
+import { useLocation } from "react-router-dom";
 import { RowComponent } from "tabulator-tables";
 import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
@@ -54,6 +55,8 @@ const StatComp: React.FC<{
 };
 
 export const AnnualResultsPage: React.FC = () => {
+  const location = useLocation();
+
   const [dropdownSelected, setDropdownSelected] = React.useState(
     dropdownItems[0].value
   );
@@ -277,31 +280,57 @@ export const AnnualResultsPage: React.FC = () => {
 
   const filterString = React.useMemo(() => {
     let filterString = "";
-    if (appliedFiltersData.locations.length > 0) {
-      filterString += `geographies=${encodeURIComponent(appliedFiltersData.locations.join(","))}`;
+    if (
+      appliedFiltersData.locations.length > 0 &&
+      location.search.includes("geographies=")
+    ) {
+      filterString += `geographies=${encodeURIComponent(
+        appliedFiltersData.locations.join(",")
+      )}`;
     }
-    if (appliedFiltersData.components.length > 0) {
-      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(appliedFiltersData.components.join(","))}`;
+    if (
+      appliedFiltersData.components.length > 0 &&
+      location.search.includes("components=")
+    ) {
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }components=${encodeURIComponent(
+        appliedFiltersData.components.join(",")
+      )}`;
     }
     return filterString;
-  }, [appliedFiltersData]);
+  }, [appliedFiltersData, location.search]);
 
   const chartFilterString = React.useMemo(() => {
     let filterString = "";
     if (
-      [...appliedFiltersData.locations, ...chartAppliedFiltersData.locations]
-        .length > 0
+      (appliedFiltersData.locations.length > 0 &&
+        location.search.includes("geographies=")) ||
+      chartAppliedFiltersData.locations.length > 0
     ) {
-      filterString += `geographies=${encodeURIComponent(uniq([...appliedFiltersData.locations, ...chartAppliedFiltersData.locations]).join(","))}`;
+      filterString += `geographies=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.locations,
+          ...chartAppliedFiltersData.locations,
+        ]).join(",")
+      )}`;
     }
     if (
-      [...appliedFiltersData.components, ...chartAppliedFiltersData.components]
-        .length > 0
+      (appliedFiltersData.components.length > 0 &&
+        location.search.includes("components=")) ||
+      chartAppliedFiltersData.components.length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(uniq([...appliedFiltersData.components, ...chartAppliedFiltersData.components]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }components=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.components,
+          ...chartAppliedFiltersData.components,
+        ]).join(",")
+      )}`;
     }
     return filterString;
-  }, [appliedFiltersData, chartAppliedFiltersData]);
+  }, [appliedFiltersData, chartAppliedFiltersData, location.search]);
 
   const toolbarRightContent = React.useMemo(() => {
     return (
@@ -335,11 +364,15 @@ export const AnnualResultsPage: React.FC = () => {
   React.useEffect(() => {
     if (yearSelected) {
       fetchStats({
-        filterString: `${filterString}${filterString.length ? "&" : ""}cycle=${yearSelected}`,
+        filterString: `${filterString}${
+          filterString.length ? "&" : ""
+        }cycle=${yearSelected}`,
       });
     }
     fetchDocumentsTable({
-      filterString: `types=Profile&${filterString}${filterString.length ? "&" : ""}cycle=${yearSelected}`,
+      filterString: `types=Profile&${filterString}${
+        filterString.length ? "&" : ""
+      }cycle=${yearSelected}`,
     });
   }, [filterString, yearSelected]);
 

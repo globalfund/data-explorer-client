@@ -9,6 +9,7 @@ import findIndex from "lodash/findIndex";
 import Tooltip from "@mui/material/Tooltip";
 import Divider from "@mui/material/Divider";
 import { Table } from "app/components/table";
+import { useLocation } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
 import Info from "@mui/icons-material/InfoOutlined";
@@ -37,6 +38,8 @@ import {
 } from "app/components/table/data";
 
 export const AccessToFundingPage: React.FC = () => {
+  const location = useLocation();
+
   const [dropdownSelected, setDropdownSelected] = React.useState(
     dropdownItemsAllocations[0].value
   );
@@ -437,12 +440,18 @@ export const AccessToFundingPage: React.FC = () => {
 
   const filterString = React.useMemo(() => {
     let filterString = "";
-    if (appliedFiltersData.locations.length > 0) {
+    if (
+      appliedFiltersData.locations.length > 0 &&
+      location.search.includes("geographies=")
+    ) {
       filterString += `geographies=${encodeURIComponent(
         appliedFiltersData.locations.join(",")
       )}`;
     }
-    if (appliedFiltersData.components.length > 0) {
+    if (
+      appliedFiltersData.components.length > 0 &&
+      location.search.includes("components=")
+    ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
       }components=${encodeURIComponent(
@@ -450,13 +459,14 @@ export const AccessToFundingPage: React.FC = () => {
       )}`;
     }
     return filterString;
-  }, [appliedFiltersData]);
+  }, [appliedFiltersData, location.search]);
 
   const chart1FilterString = React.useMemo(() => {
     let filterString = "";
     if (
-      [...appliedFiltersData.locations, ...chart1AppliedFiltersData.locations]
-        .length > 0
+      (appliedFiltersData.locations.length > 0 &&
+        location.search.includes("geographies=")) ||
+      chart1AppliedFiltersData.locations.length > 0
     ) {
       filterString += `geographies=${encodeURIComponent(
         uniq([
@@ -466,8 +476,9 @@ export const AccessToFundingPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.components, ...chart1AppliedFiltersData.components]
-        .length > 0
+      (appliedFiltersData.components.length > 0 &&
+        location.search.includes("components=")) ||
+      chart1AppliedFiltersData.components.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -479,8 +490,9 @@ export const AccessToFundingPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.cycles, ...chart1AppliedFiltersData.cycles]
-        .length > 0
+      (appliedFiltersData.cycles.length > 0 &&
+        location.search.includes("cycles=")) ||
+      chart1AppliedFiltersData.cycles.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -492,13 +504,14 @@ export const AccessToFundingPage: React.FC = () => {
       )}`;
     }
     return filterString;
-  }, [appliedFiltersData, chart1AppliedFiltersData]);
+  }, [appliedFiltersData, chart1AppliedFiltersData, location.search]);
 
   const chart2FilterString = React.useMemo(() => {
     let filterString = "";
     if (
-      [...appliedFiltersData.locations, ...chart2AppliedFiltersData.locations]
-        .length > 0
+      (appliedFiltersData.locations.length > 0 &&
+        location.search.includes("geographies=")) ||
+      chart2AppliedFiltersData.locations.length > 0
     ) {
       filterString += `geographies=${encodeURIComponent(
         uniq([
@@ -508,8 +521,9 @@ export const AccessToFundingPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.components, ...chart2AppliedFiltersData.components]
-        .length > 0
+      (appliedFiltersData.components.length > 0 &&
+        location.search.includes("components=")) ||
+      chart2AppliedFiltersData.components.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -521,8 +535,9 @@ export const AccessToFundingPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.cycles, ...chart2AppliedFiltersData.cycles]
-        .length > 0
+      (appliedFiltersData.cycles.length > 0 &&
+        location.search.includes("cycles=")) ||
+      chart2AppliedFiltersData.cycles.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -534,13 +549,14 @@ export const AccessToFundingPage: React.FC = () => {
       )}`;
     }
     return filterString;
-  }, [appliedFiltersData, chart2AppliedFiltersData]);
+  }, [appliedFiltersData, chart2AppliedFiltersData, location.search]);
 
   const chart3FilterString = React.useMemo(() => {
     let filterString = "";
     if (
-      [...appliedFiltersData.locations, ...chart3AppliedFiltersData.locations]
-        .length > 0
+      (appliedFiltersData.locations.length > 0 &&
+        location.search.includes("geographies=")) ||
+      chart3AppliedFiltersData.locations.length > 0
     ) {
       filterString += `geographies=${encodeURIComponent(
         uniq([
@@ -550,8 +566,9 @@ export const AccessToFundingPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.components, ...chart3AppliedFiltersData.components]
-        .length > 0
+      (appliedFiltersData.components.length > 0 &&
+        location.search.includes("components=")) ||
+      chart3AppliedFiltersData.components.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -563,8 +580,9 @@ export const AccessToFundingPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.cycles, ...chart3AppliedFiltersData.cycles]
-        .length > 0
+      (appliedFiltersData.cycles.length > 0 &&
+        location.search.includes("cycles=")) ||
+      chart3AppliedFiltersData.cycles.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -576,7 +594,7 @@ export const AccessToFundingPage: React.FC = () => {
       )}`;
     }
     return filterString;
-  }, [appliedFiltersData, chart3AppliedFiltersData]);
+  }, [appliedFiltersData, chart3AppliedFiltersData, location.search]);
 
   const range = React.useMemo(() => {
     const values: {

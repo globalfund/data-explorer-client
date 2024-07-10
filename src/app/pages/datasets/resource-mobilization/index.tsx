@@ -6,6 +6,7 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import { Table } from "app/components/table";
+import { useLocation } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import { DatasetPage } from "app/pages/datasets/common/page";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -26,6 +27,8 @@ const dropdownItems = [
 ];
 
 export const ResourceMobilizationPage: React.FC = () => {
+  const location = useLocation();
+
   const [dropdownSelected, setDropdownSelected] = React.useState(
     dropdownItems[0].value
   );
@@ -246,17 +249,26 @@ export const ResourceMobilizationPage: React.FC = () => {
 
   const filterString = React.useMemo(() => {
     let filterString = "";
-    if (appliedFiltersData.donorTypes.length > 0) {
+    if (
+      appliedFiltersData.donorTypes.length > 0 &&
+      location.search.includes("donorTypes=")
+    ) {
       filterString += `donorTypes=${encodeURIComponent(
         appliedFiltersData.donorTypes.join(",")
       )}`;
     }
-    if (appliedFiltersData.donors.length > 0) {
+    if (
+      appliedFiltersData.donors.length > 0 &&
+      location.search.includes("donors=")
+    ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
       }donors=${encodeURIComponent(appliedFiltersData.donors.join(","))}`;
     }
-    if (appliedFiltersData.replenishmentPeriods.length > 0) {
+    if (
+      appliedFiltersData.replenishmentPeriods.length > 0 &&
+      location.search.includes("periods=")
+    ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
       }periods=${encodeURIComponent(
@@ -264,13 +276,14 @@ export const ResourceMobilizationPage: React.FC = () => {
       )}`;
     }
     return filterString;
-  }, [appliedFiltersData]);
+  }, [appliedFiltersData, location.search]);
 
   const chartFilterString = React.useMemo(() => {
     let filterString = "";
     if (
-      [...appliedFiltersData.donorTypes, ...chartAppliedFiltersData.donorTypes]
-        .length > 0
+      (appliedFiltersData.donorTypes.length > 0 &&
+        location.search.includes("donorTypes=")) ||
+      chartAppliedFiltersData.donorTypes.length > 0
     ) {
       filterString += `donorTypes=${encodeURIComponent(
         uniq([
@@ -280,8 +293,9 @@ export const ResourceMobilizationPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.donors, ...chartAppliedFiltersData.donors].length >
-      0
+      (appliedFiltersData.donors.length > 0 &&
+        location.search.includes("donors=")) ||
+      chartAppliedFiltersData.donors.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -293,10 +307,9 @@ export const ResourceMobilizationPage: React.FC = () => {
       )}`;
     }
     if (
-      [
-        ...appliedFiltersData.replenishmentPeriods,
-        ...chartAppliedFiltersData.replenishmentPeriods,
-      ].length > 0
+      (appliedFiltersData.replenishmentPeriods.length > 0 &&
+        location.search.includes("periods=")) ||
+      chartAppliedFiltersData.replenishmentPeriods.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -308,7 +321,7 @@ export const ResourceMobilizationPage: React.FC = () => {
       )}`;
     }
     return filterString;
-  }, [appliedFiltersData, chartAppliedFiltersData]);
+  }, [appliedFiltersData, chartAppliedFiltersData, location.search]);
 
   React.useEffect(() => {
     fetchStats({ filterString });

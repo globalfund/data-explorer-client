@@ -9,6 +9,7 @@ import Grid from "@mui/material/Grid";
 import { appColors } from "app/theme";
 import Divider from "@mui/material/Divider";
 import { Table } from "app/components/table";
+import { useLocation } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
 import { BarChart } from "app/components/charts/bar";
@@ -57,6 +58,8 @@ import {
 } from "app/pages/datasets/grant-implementation/data";
 
 export const GrantImplementationPage: React.FC = () => {
+  const location = useLocation();
+
   const [geographyGrouping, setGeographyGrouping] = React.useState(
     geographyGroupingOptions[0].value
   );
@@ -1058,45 +1061,66 @@ export const GrantImplementationPage: React.FC = () => {
 
   const filterString = React.useMemo(() => {
     let filterString = "";
-    if (appliedFiltersData.locations.length > 0) {
+    if (
+      appliedFiltersData.locations.length > 0 &&
+      location.search.includes("geographies=")
+    ) {
       filterString += `geographies=${encodeURIComponent(
         appliedFiltersData.locations.join(",")
       )}`;
     }
-    if (appliedFiltersData.components.length > 0) {
+    if (
+      appliedFiltersData.components.length > 0 &&
+      location.search.includes("components=")
+    ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
       }components=${encodeURIComponent(
         appliedFiltersData.components.join(",")
       )}`;
     }
-    if (appliedFiltersData.principalRecipientTypes.length > 0) {
+    if (
+      appliedFiltersData.principalRecipientTypes.length > 0 &&
+      location.search.includes("principalRecipientTypes=")
+    ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
       }principalRecipientTypes=${encodeURIComponent(
         appliedFiltersData.principalRecipientTypes.join(",")
       )}`;
     }
-    if (appliedFiltersData.principalRecipientSubTypes.length > 0) {
+    if (
+      appliedFiltersData.principalRecipientSubTypes.length > 0 &&
+      location.search.includes("principalRecipientSubTypes=")
+    ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
       }principalRecipientSubTypes=${encodeURIComponent(
         appliedFiltersData.principalRecipientSubTypes.join(",")
       )}`;
     }
-    if (appliedFiltersData.principalRecipients.length > 0) {
+    if (
+      appliedFiltersData.principalRecipients.length > 0 &&
+      location.search.includes("principalRecipients=")
+    ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
       }principalRecipients=${encodeURIComponent(
         appliedFiltersData.principalRecipients.join(",")
       )}`;
     }
-    if (appliedFiltersData.status.length > 0) {
+    if (
+      appliedFiltersData.status.length > 0 &&
+      location.search.includes("status=")
+    ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
       }status=${encodeURIComponent(appliedFiltersData.status.join(","))}`;
     }
-    if (appliedFiltersData.cycles.length > 0) {
+    if (
+      appliedFiltersData.cycles.length > 0 &&
+      location.search.includes("cycles=")
+    ) {
       const years = appliedFiltersData.cycles.map(
         (cycle) => cycle.replace(/ /g, "").split("-")[0]
       );
@@ -1110,13 +1134,14 @@ export const GrantImplementationPage: React.FC = () => {
       )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
     }
     return filterString;
-  }, [appliedFiltersData]);
+  }, [appliedFiltersData, location.search]);
 
   const chart1FilterString = React.useMemo(() => {
     let filterString = "";
     if (
-      [...appliedFiltersData.locations, ...chart1AppliedFiltersData.locations]
-        .length > 0
+      (appliedFiltersData.locations.length > 0 &&
+        location.search.includes("geographies=")) ||
+      chart1AppliedFiltersData.locations.length > 0
     ) {
       filterString += `geographies=${encodeURIComponent(
         uniq([
@@ -1126,8 +1151,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.components, ...chart1AppliedFiltersData.components]
-        .length > 0
+      (appliedFiltersData.components.length > 0 &&
+        location.search.includes("components=")) ||
+      chart1AppliedFiltersData.components.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1139,10 +1165,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [
-        ...appliedFiltersData.principalRecipients,
-        ...chart1AppliedFiltersData.principalRecipients,
-      ].length > 0
+      (appliedFiltersData.principalRecipients.length > 0 &&
+        location.search.includes("principalRecipients=")) ||
+      chart1AppliedFiltersData.principalRecipients.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1154,10 +1179,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [
-        ...appliedFiltersData.principalRecipientSubTypes,
-        ...chart1AppliedFiltersData.principalRecipientSubTypes,
-      ].length > 0
+      (appliedFiltersData.principalRecipientSubTypes.length > 0 &&
+        location.search.includes("principalRecipientSubTypes=")) ||
+      chart1AppliedFiltersData.principalRecipientSubTypes.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1169,10 +1193,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [
-        ...appliedFiltersData.principalRecipientTypes,
-        ...chart1AppliedFiltersData.principalRecipientTypes,
-      ].length > 0
+      (appliedFiltersData.principalRecipientTypes.length > 0 &&
+        location.search.includes("principalRecipientTypes=")) ||
+      chart1AppliedFiltersData.principalRecipientTypes.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1184,8 +1207,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.status, ...chart1AppliedFiltersData.status]
-        .length > 0
+      (appliedFiltersData.status.length > 0 &&
+        location.search.includes("status=")) ||
+      chart1AppliedFiltersData.status.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1197,8 +1221,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.cycles, ...chart1AppliedFiltersData.cycles]
-        .length > 0
+      (appliedFiltersData.cycles.length > 0 &&
+        location.search.includes("cycles=")) ||
+      chart1AppliedFiltersData.cycles.length > 0
     ) {
       const years = uniq([
         ...appliedFiltersData.cycles,
@@ -1215,13 +1240,14 @@ export const GrantImplementationPage: React.FC = () => {
       )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
     }
     return filterString;
-  }, [appliedFiltersData, chart1AppliedFiltersData]);
+  }, [appliedFiltersData, chart1AppliedFiltersData, location.search]);
 
   const chart2FilterString = React.useMemo(() => {
     let filterString = "";
     if (
-      [...appliedFiltersData.locations, ...chart2AppliedFiltersData.locations]
-        .length > 0
+      (appliedFiltersData.locations.length > 0 &&
+        location.search.includes("geographies=")) ||
+      chart2AppliedFiltersData.locations.length > 0
     ) {
       filterString += `geographies=${encodeURIComponent(
         uniq([
@@ -1231,8 +1257,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.components, ...chart2AppliedFiltersData.components]
-        .length > 0
+      (appliedFiltersData.components.length > 0 &&
+        location.search.includes("components=")) ||
+      chart2AppliedFiltersData.components.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1244,10 +1271,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [
-        ...appliedFiltersData.principalRecipients,
-        ...chart2AppliedFiltersData.principalRecipients,
-      ].length > 0
+      (appliedFiltersData.principalRecipients.length > 0 &&
+        location.search.includes("principalRecipients=")) ||
+      chart2AppliedFiltersData.principalRecipients.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1259,10 +1285,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [
-        ...appliedFiltersData.principalRecipientSubTypes,
-        ...chart2AppliedFiltersData.principalRecipientSubTypes,
-      ].length > 0
+      (appliedFiltersData.principalRecipientSubTypes.length > 0 &&
+        location.search.includes("principalRecipientSubTypes=")) ||
+      chart2AppliedFiltersData.principalRecipientSubTypes.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1274,10 +1299,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [
-        ...appliedFiltersData.principalRecipientTypes,
-        ...chart2AppliedFiltersData.principalRecipientTypes,
-      ].length > 0
+      (appliedFiltersData.principalRecipientTypes.length > 0 &&
+        location.search.includes("principalRecipientTypes=")) ||
+      chart2AppliedFiltersData.principalRecipientTypes.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1289,8 +1313,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.status, ...chart2AppliedFiltersData.status]
-        .length > 0
+      (appliedFiltersData.status.length > 0 &&
+        location.search.includes("status=")) ||
+      chart2AppliedFiltersData.status.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1302,8 +1327,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.cycles, ...chart2AppliedFiltersData.cycles]
-        .length > 0
+      (appliedFiltersData.cycles.length > 0 &&
+        location.search.includes("cycles=")) ||
+      chart2AppliedFiltersData.cycles.length > 0
     ) {
       const years = uniq([
         ...appliedFiltersData.cycles,
@@ -1320,13 +1346,14 @@ export const GrantImplementationPage: React.FC = () => {
       )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
     }
     return filterString;
-  }, [appliedFiltersData, chart2AppliedFiltersData]);
+  }, [appliedFiltersData, chart2AppliedFiltersData, location.search]);
 
   const chart3FilterString = React.useMemo(() => {
     let filterString = "";
     if (
-      [...appliedFiltersData.locations, ...chart3AppliedFiltersData.locations]
-        .length > 0
+      (appliedFiltersData.locations.length > 0 &&
+        location.search.includes("geographies=")) ||
+      chart3AppliedFiltersData.locations.length > 0
     ) {
       filterString += `geographies=${encodeURIComponent(
         uniq([
@@ -1336,8 +1363,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.components, ...chart3AppliedFiltersData.components]
-        .length > 0
+      (appliedFiltersData.components.length > 0 &&
+        location.search.includes("components=")) ||
+      chart3AppliedFiltersData.components.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1349,10 +1377,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [
-        ...appliedFiltersData.principalRecipients,
-        ...chart3AppliedFiltersData.principalRecipients,
-      ].length > 0
+      (appliedFiltersData.principalRecipients.length > 0 &&
+        location.search.includes("principalRecipients=")) ||
+      chart3AppliedFiltersData.principalRecipients.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1364,10 +1391,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [
-        ...appliedFiltersData.principalRecipientSubTypes,
-        ...chart3AppliedFiltersData.principalRecipientSubTypes,
-      ].length > 0
+      (appliedFiltersData.principalRecipientSubTypes.length > 0 &&
+        location.search.includes("principalRecipientSubTypes=")) ||
+      chart3AppliedFiltersData.principalRecipientSubTypes.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1379,10 +1405,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [
-        ...appliedFiltersData.principalRecipientTypes,
-        ...chart3AppliedFiltersData.principalRecipientTypes,
-      ].length > 0
+      (appliedFiltersData.principalRecipientTypes.length > 0 &&
+        location.search.includes("principalRecipientTypes=")) ||
+      chart3AppliedFiltersData.principalRecipientTypes.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1394,8 +1419,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.status, ...chart3AppliedFiltersData.status]
-        .length > 0
+      (appliedFiltersData.status.length > 0 &&
+        location.search.includes("status=")) ||
+      chart3AppliedFiltersData.status.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1407,8 +1433,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.cycles, ...chart3AppliedFiltersData.cycles]
-        .length > 0
+      (appliedFiltersData.cycles.length > 0 &&
+        location.search.includes("cycles=")) ||
+      chart3AppliedFiltersData.cycles.length > 0
     ) {
       const years = uniq([
         ...appliedFiltersData.cycles,
@@ -1425,13 +1452,14 @@ export const GrantImplementationPage: React.FC = () => {
       )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
     }
     return filterString;
-  }, [appliedFiltersData, chart3AppliedFiltersData]);
+  }, [appliedFiltersData, chart3AppliedFiltersData, location.search]);
 
   const chart4FilterString = React.useMemo(() => {
     let filterString = "";
     if (
-      [...appliedFiltersData.locations, ...chart4AppliedFiltersData.locations]
-        .length > 0
+      (appliedFiltersData.locations.length > 0 &&
+        location.search.includes("geographies=")) ||
+      chart4AppliedFiltersData.locations.length > 0
     ) {
       filterString += `geographies=${encodeURIComponent(
         uniq([
@@ -1441,8 +1469,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.components, ...chart4AppliedFiltersData.components]
-        .length > 0
+      (appliedFiltersData.components.length > 0 &&
+        location.search.includes("components=")) ||
+      chart4AppliedFiltersData.components.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1454,10 +1483,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [
-        ...appliedFiltersData.principalRecipients,
-        ...chart4AppliedFiltersData.principalRecipients,
-      ].length > 0
+      (appliedFiltersData.principalRecipients.length > 0 &&
+        location.search.includes("principalRecipients=")) ||
+      chart4AppliedFiltersData.principalRecipients.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1469,10 +1497,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [
-        ...appliedFiltersData.principalRecipientSubTypes,
-        ...chart4AppliedFiltersData.principalRecipientSubTypes,
-      ].length > 0
+      (appliedFiltersData.principalRecipientSubTypes.length > 0 &&
+        location.search.includes("principalRecipientSubTypes=")) ||
+      chart4AppliedFiltersData.principalRecipientSubTypes.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1484,10 +1511,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [
-        ...appliedFiltersData.principalRecipientTypes,
-        ...chart4AppliedFiltersData.principalRecipientTypes,
-      ].length > 0
+      (appliedFiltersData.principalRecipientTypes.length > 0 &&
+        location.search.includes("principalRecipientTypes=")) ||
+      chart4AppliedFiltersData.principalRecipientTypes.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1499,8 +1525,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.status, ...chart4AppliedFiltersData.status]
-        .length > 0
+      (appliedFiltersData.status.length > 0 &&
+        location.search.includes("status=")) ||
+      chart4AppliedFiltersData.status.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1512,8 +1539,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.cycles, ...chart4AppliedFiltersData.cycles]
-        .length > 0
+      (appliedFiltersData.cycles.length > 0 &&
+        location.search.includes("cycles=")) ||
+      chart4AppliedFiltersData.cycles.length > 0
     ) {
       const years = uniq([
         ...appliedFiltersData.cycles,
@@ -1530,7 +1558,7 @@ export const GrantImplementationPage: React.FC = () => {
       )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
     }
     return filterString;
-  }, [appliedFiltersData, chart4AppliedFiltersData]);
+  }, [appliedFiltersData, chart4AppliedFiltersData, location.search]);
 
   React.useEffect(() => {
     fetchFinancialInsightsStats({ filterString });
