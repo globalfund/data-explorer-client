@@ -16,6 +16,7 @@ import { LineChart } from "app/components/charts/line";
 import { Treemap } from "app/components/charts/treemap";
 import { Heatmap } from "app/components/charts/heatmap";
 import { SankeyChart } from "app/components/charts/sankey";
+import useUpdateEffect from "react-use/lib/useUpdateEffect";
 import { DatasetPage } from "app/pages/datasets/common/page";
 import CircularProgress from "@mui/material/CircularProgress";
 import { BarChartDataItem } from "app/components/charts/bar/data";
@@ -1589,12 +1590,17 @@ export const GrantImplementationPage: React.FC = () => {
     });
   }, [chart4FilterString, componentsGrouping]);
 
-  React.useEffect(() => {
+  const budgetBreakdownDropdownSelectedRef = React.useRef(null);
+
+  useUpdateEffect(() => {
     if (
       cycles.length > 0 &&
-      budgetBreakdownDropdownSelected !== cycles[0].value
-    )
+      budgetBreakdownDropdownSelected !== cycles[0].value &&
+      !budgetBreakdownDropdownSelectedRef.current
+    ) {
       setBudgetBreakdownDropdownSelected(cycles[0].value);
+      budgetBreakdownDropdownSelectedRef.current = cycles[0].value;
+    }
   }, [cycles]);
 
   React.useEffect(() => {
