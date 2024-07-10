@@ -53,6 +53,7 @@ import {
   componentsGroupingOptions,
   dropdownItemsDisbursements,
   dropdownItemsExpenditures,
+  dropdownItemsBudgetsTableDataTypes,
 } from "app/pages/datasets/grant-implementation/data";
 
 export const GrantImplementationPage: React.FC = () => {
@@ -401,12 +402,20 @@ export const GrantImplementationPage: React.FC = () => {
   const [budgetBreakdownDropdownSelected, setBudgetBreakdownDropdownSelected] =
     React.useState(cycles.length > 0 ? cycles[0].value : null);
 
+  const [budgetTableDataType, setBudgetTableDataType] = React.useState(
+    dropdownItemsBudgetsTableDataTypes[0].value
+  );
+
   const handleDisbursementsSelectionChange = (value: string) => {
     setDisbursementsDropdownSelected(value);
   };
 
   const handleBudgetBreakdownSelectionChange = (value: string) => {
     setBudgetBreakdownDropdownSelected(value);
+  };
+
+  const handleBudgetTableDataTypeChange = (value: string) => {
+    setBudgetTableDataType(value);
   };
 
   const handleGeographyGroupingChange = (value: string) => {
@@ -861,6 +870,14 @@ export const GrantImplementationPage: React.FC = () => {
       case dropdownItemsBudgets[1].value:
         return <Treemap data={dataBudgetTreemap} />;
       case dropdownItemsBudgets[2].value:
+        const columns = [...BUDGET_TABLE_COLUMNS];
+        if (
+          budgetTableDataType === dropdownItemsBudgetsTableDataTypes[1].value
+        ) {
+          columns[0].title = "Modules & Interventions";
+        } else {
+          columns[0].title = "Investment Landscapes & Cost Category";
+        }
         return (
           <Table
             dataTree
@@ -877,7 +894,21 @@ export const GrantImplementationPage: React.FC = () => {
     dataBudgetSankey,
     dataBudgetTreemap,
     dataBudgetTable,
+    budgetTableDataType,
   ]);
+
+  const budgetsTableDataTypeDropdown = React.useMemo(() => {
+    if (budgetsDropdownSelected === dropdownItemsBudgets[2].value) {
+      return (
+        <Dropdown
+          dropdownSelected={budgetTableDataType}
+          dropdownItems={dropdownItemsBudgetsTableDataTypes}
+          handleDropdownChange={handleBudgetTableDataTypeChange}
+        />
+      );
+    }
+    return undefined;
+  }, [budgetsDropdownSelected, budgetTableDataType]);
 
   const budgetsChartEmpty = React.useMemo(() => {
     switch (budgetsDropdownSelected) {
@@ -1537,8 +1568,19 @@ export const GrantImplementationPage: React.FC = () => {
 
   React.useEffect(() => {
     fetchBudgetSankey({ filterString: chart2FilterString });
-    fetchBudgetTable({ filterString: chart2FilterString });
   }, [chart2FilterString]);
+
+  React.useEffect(() => {
+    let filterString = chart2FilterString;
+    if (budgetTableDataType === dropdownItemsBudgetsTableDataTypes[1].value) {
+      filterString += `${filterString.length > 0 ? "&" : ""}var2=${
+        componentsGrouping === componentsGroupingOptions[0].value
+          ? "activityAreaGroup"
+          : "activityArea"
+      }`;
+    }
+    fetchBudgetTable({ filterString });
+  }, [chart2FilterString, budgetTableDataType, componentsGrouping]);
 
   React.useEffect(() => {
     fetchBudgetTreemap({
@@ -1747,6 +1789,7 @@ export const GrantImplementationPage: React.FC = () => {
             removeFilter={handleRemoveChartFilter(2)}
             handleResetFilters={handleResetChartFilters(2)}
             appliedFiltersData={chart2AppliedFiltersData}
+            extraDropdown={budgetsTableDataTypeDropdown}
           >
             {budgetsChartContent}
           </DatasetChartBlock>

@@ -371,7 +371,9 @@ export const Location: React.FC = () => {
         },
       });
       fetchResultStats({
-        filterString: `geographies=${paramsId}&cycle=${RESULT_YEARS[RESULT_YEARS.length - 1].value}`,
+        filterString: `geographies=${paramsId}&cycle=${
+          RESULT_YEARS[RESULT_YEARS.length - 1].value
+        }`,
       });
       fetchDocumentsTable({
         filterString: `types=Application&geographies=${paramsId}`,

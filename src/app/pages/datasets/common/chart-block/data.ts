@@ -13,6 +13,7 @@ export interface DatasetChartBlockProps {
   disableCollapse?: boolean;
   handleResetFilters: () => void;
   filterGroups: FilterGroupModel[];
+  extraDropdown?: React.ReactElement;
   appliedFiltersData?: AppliedFiltersModel;
   handleDropdownChange?: (value: string) => void;
   removeFilter: (value: string, types: string[]) => void;

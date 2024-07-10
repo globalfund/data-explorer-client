@@ -175,15 +175,18 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
             {collapsed ? "Expand" : "Collapse"}
           </Button>
         </Box>
-        {props.dropdownItems &&
-          props.dropdownSelected &&
-          props.handleDropdownChange && (
-            <Dropdown
-              dropdownItems={props.dropdownItems}
-              dropdownSelected={props.dropdownSelected}
-              handleDropdownChange={props.handleDropdownChange}
-            />
-          )}
+        <Box gap="10px" display="flex" flexDirection="row">
+          {props.extraDropdown && props.extraDropdown}
+          {props.dropdownItems &&
+            props.dropdownSelected &&
+            props.handleDropdownChange && (
+              <Dropdown
+                dropdownItems={props.dropdownItems}
+                dropdownSelected={props.dropdownSelected}
+                handleDropdownChange={props.handleDropdownChange}
+              />
+            )}
+        </Box>
       </Box>
       <Box
         sx={{
