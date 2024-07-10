@@ -846,7 +846,7 @@ export const TABLE_VARIATION_6_COLUMNS: ColumnDefinition[] = [
   {
     title: "Geography",
     field: "name",
-    width: "80%",
+    width: "78%",
     formatter: cellBGColorFormatter,
   },
   {

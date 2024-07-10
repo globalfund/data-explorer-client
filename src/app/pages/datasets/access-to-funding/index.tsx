@@ -609,7 +609,9 @@ export const AccessToFundingPage: React.FC = () => {
   React.useEffect(() => {
     fetchAllocationsBarSeries({ filterString });
     fetchDocumentsTable({
-      filterString: `types=Application${filterString.length > 0 ? `&${filterString}` : ""}`,
+      filterString: `types=Application${
+        filterString.length > 0 ? `&${filterString}` : ""
+      }`,
     });
   }, [filterString]);
 

@@ -16,9 +16,9 @@ export const Table: React.FC<TableProps> = (props: TableProps) => {
       const table = new Tabulator(ref.current, {
         data: props.data,
         reactiveData: true,
+        layout: "fitDataFill",
         columns: props.columns,
         dataTreeChildIndent: 10,
-        layout: "fitDataStretch",
         dataTree: props.dataTree,
         dataTreeExpandElement: ExpandElement,
         dataTreeCollapseElement: CollapseElement,
@@ -46,12 +46,8 @@ export const Table: React.FC<TableProps> = (props: TableProps) => {
           table.redraw();
         }, 500);
       }
-
-      return () => {
-        // table.destroy();
-      };
     }
-  }, [props.data]);
+  }, []);
 
   React.useEffect(() => {
     if (ref.current) {
