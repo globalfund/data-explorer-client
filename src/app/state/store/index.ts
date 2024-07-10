@@ -90,7 +90,6 @@ import { AccessToFundingFundingRequestsTable } from "app/state/api/action-reduce
 import { FinancialInsightsExpendituresHeatmap } from "app/state/api/action-reducers/financial-insights/expenditures-heatmap";
 import { GeographyResourceMobilizationBarChart } from "app/state/api/action-reducers/geography/resource-mobilization-bar-chart";
 import { FinancialInsightsExpendituresBarChart } from "app/state/api/action-reducers/financial-insights/expenditures-bar-chart";
-import { ResourceMobilizationSunburst } from "app/state/api/action-reducers/resource-mobilization/pledges-contributions-sunburst";
 import { FinancialInsightsDisbursementsBarChart } from "app/state/api/action-reducers/financial-insights/disbursements-bar-chart";
 import componentsPerformanceFrameworkComponents from "app/state/api/action-reducers/cms/componentsPerformanceFrameworkComponents";
 import { FinancialInsightsDisbursementsLineChart } from "app/state/api/action-reducers/financial-insights/disbursements-line-chart";
@@ -144,7 +143,6 @@ const storeContent: StoreModel = {
   ResourceMobilizationExpandableBarChart: persist(
     ResourceMobilizationExpandableBarChart
   ),
-  ResourceMobilizationSunburst: persist(ResourceMobilizationSunburst),
   ResourceMobilizationTable: persist(ResourceMobilizationTable),
   // geographies
   GeographyList: persist(GeographyList),

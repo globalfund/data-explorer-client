@@ -9,27 +9,19 @@ import { Table } from "app/components/table";
 import Typography from "@mui/material/Typography";
 import { DatasetPage } from "app/pages/datasets/common/page";
 import CircularProgress from "@mui/material/CircularProgress";
-import { SunburstChart } from "app/components/charts/sunburst";
 import { FilterGroupModel } from "app/components/filters/list/data";
 import { TABLE_VARIATION_8_COLUMNS } from "app/components/table/data";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
-import { SunburstDataItem } from "app/components/charts/sunburst/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { ReactComponent as TableIcon } from "app/assets/vectors/Select_Table.svg";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 import { ReactComponent as BarChartIcon } from "app/assets/vectors/Select_BarChart.svg";
 import { ExpandableHorizontalBar } from "app/components/charts/expandable-horizontal-bar";
-import { ReactComponent as SunburstChartIcon } from "app/assets/vectors/Select_SunburstChart.svg";
 import { ExpandableHorizontalBarChartDataItem } from "app/components/charts/expandable-horizontal-bar/data";
 
 const dropdownItems = [
   { label: "Bar Chart", value: "Bar Chart", icon: <BarChartIcon /> },
-  {
-    label: "Sunburst Chart",
-    value: "Sunburst Chart",
-    icon: <SunburstChartIcon />,
-  },
   { label: "Table View", value: "Table View", icon: <TableIcon /> },
 ];
 
@@ -75,17 +67,6 @@ export const ResourceMobilizationPage: React.FC = () => {
   const fetchBarChart = useStoreActions(
     (actions) => actions.ResourceMobilizationExpandableBarChart.fetch
   );
-  const dataSunburst = useStoreState(
-    (state) =>
-      get(
-        state.ResourceMobilizationSunburst,
-        "data.data",
-        []
-      ) as SunburstDataItem[]
-  );
-  const fetchSunburst = useStoreActions(
-    (actions) => actions.ResourceMobilizationSunburst.fetch
-  );
   const dataTable = useStoreState((state) =>
     get(state.ResourceMobilizationTable, "data.data", [])
   );
@@ -97,8 +78,6 @@ export const ResourceMobilizationPage: React.FC = () => {
       case dropdownItems[0].value:
         return state.ResourceMobilizationExpandableBarChart.loading;
       case dropdownItems[1].value:
-        return state.ResourceMobilizationSunburst.loading;
-      case dropdownItems[2].value:
         return state.ResourceMobilizationTable.loading;
       default:
         return false;
@@ -238,14 +217,6 @@ export const ResourceMobilizationPage: React.FC = () => {
         );
       case dropdownItems[1].value:
         return (
-          <SunburstChart
-            data={dataSunburst}
-            tooltipLabel="Pledge"
-            centerLabel="Total Pledge"
-          />
-        );
-      case dropdownItems[2].value:
-        return (
           <Table
             dataTree
             data={dataTable}
@@ -256,20 +227,18 @@ export const ResourceMobilizationPage: React.FC = () => {
       default:
         return null;
     }
-  }, [dropdownSelected, dataBarChart, dataSunburst, dataTable]);
+  }, [dropdownSelected, dataBarChart, dataTable]);
 
   const chartEmpty = React.useMemo(() => {
     switch (dropdownSelected) {
       case dropdownItems[0].value:
         return !dataBarChart || !dataBarChart.length;
       case dropdownItems[1].value:
-        return !dataSunburst || !dataSunburst.length;
-      case dropdownItems[2].value:
         return !dataTable || !dataTable.length;
       default:
         return false;
     }
-  }, [dropdownSelected, dataBarChart, dataSunburst, dataTable]);
+  }, [dropdownSelected, dataBarChart, dataTable]);
 
   const filterGroups = React.useMemo(() => {
     return [dataDonorFilterOptions, dataReplenishmentPeriodFilterOptions];
@@ -347,12 +316,6 @@ export const ResourceMobilizationPage: React.FC = () => {
 
   React.useEffect(() => {
     fetchBarChart({ filterString: chartFilterString });
-    fetchSunburst({
-      filterString: chartFilterString,
-      routeParams: {
-        type: "pledge",
-      },
-    });
     fetchTable({ filterString: chartFilterString });
   }, [chartFilterString]);
 
@@ -512,7 +475,7 @@ export const ResourceMobilizationPage: React.FC = () => {
         <Box
           paddingTop="50px"
           sx={
-            dropdownSelected === dropdownItems[2].value
+            dropdownSelected === dropdownItems[1].value
               ? {
                   "#content": {
                     padding: 0,
@@ -528,7 +491,7 @@ export const ResourceMobilizationPage: React.FC = () => {
             dropdownItems={dropdownItems}
             dropdownSelected={dropdownSelected}
             handleDropdownChange={handleSelectionChange}
-            disableCollapse={dropdownSelected === dropdownItems[2].value}
+            disableCollapse={dropdownSelected === dropdownItems[1].value}
             loading={dataChartLoading}
             empty={chartEmpty}
             filterGroups={filterGroups}
