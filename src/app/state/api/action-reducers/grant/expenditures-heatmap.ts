@@ -6,3 +6,7 @@ export const GrantExpendituresHeatmap: ApiCallModel = {
     `${process.env.REACT_APP_API}/expenditures/heatmap/{row}/{column}/{componentField}/{geographyGrouping}`
   ),
 };
+
+export const GrantHasExpenditures: ApiCallModel = {
+  ...APIModel(`${process.env.REACT_APP_API}/has/expenditures`),
+};

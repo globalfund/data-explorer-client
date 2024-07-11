@@ -92,12 +92,19 @@ export const Grant: React.FC = () => {
   const clearExpendituresHeatmap = useStoreActions(
     (actions) => actions.FinancialInsightsExpendituresHeatmap.clear
   );
-  const dataExpendituresHeatmap = useStoreState(
-    (state) =>
-      get(state.GrantExpendituresHeatmap, "data.data", []) as HeatmapDataItem[]
-  );
   const fetchExpendituresHeatmap = useStoreActions(
     (actions) => actions.GrantExpendituresHeatmap.fetch
+  );
+  const dataHasExpenditures = useStoreState(
+    (state) =>
+      get(
+        state.GrantHasExpenditures,
+        "data.data.hasExpenditures",
+        false
+      ) as boolean
+  );
+  const fetchHasExpenditures = useStoreActions(
+    (actions) => actions.GrantHasExpenditures.fetch
   );
   const dataTargetsResultsTable = useStoreState((state) =>
     get(state.GrantTargetsResultsTable, "data.data", [])
@@ -178,9 +185,12 @@ export const Grant: React.FC = () => {
           variant: "2",
         },
       });
+      fetchHasExpenditures({
+        filterString: `grantIP=${params.id}P0${dropdownSelected.code}`,
+      });
       fetchExpendituresHeatmap({
         routeParams: {
-          row: "principalRecipientType,principalRecipientSubType,principalRecipient",
+          row: "module,intervention",
           column: "component",
           componentField: "activityAreaGroup",
           geographyGrouping: "Standard View",
@@ -212,7 +222,7 @@ export const Grant: React.FC = () => {
       dataDisbursementsBarChart.length === 0 &&
       dataBudgetSankeyChart.nodes.length === 0 &&
       dataBudgetSankeyChart.links.length === 0 &&
-      dataExpendituresHeatmap.length === 0
+      !dataHasExpenditures
     ) {
       remove(newTabs, (t) => t.label === GRANT_TABS[1].label);
     }
@@ -221,8 +231,8 @@ export const Grant: React.FC = () => {
     }
     return newTabs;
   }, [
+    dataHasExpenditures,
     dataBudgetSankeyChart,
-    dataExpendituresHeatmap,
     dataTargetsResultsTable,
     dataDisbursementsBarChart,
   ]);

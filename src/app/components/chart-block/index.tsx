@@ -20,13 +20,15 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
         props.dropdownItems.length > 0 &&
         props.dropdownSelected &&
         props.handleDropdownChange) ||
-      props.unitButtons
+      props.unitButtons ||
+      props.extraDropdown
     );
   }, [
     props.dropdownItems,
     props.dropdownSelected,
     props.handleDropdownChange,
     props.unitButtons,
+    props.extraDropdown,
   ]);
 
   const showCycles = React.useMemo(() => {
@@ -106,6 +108,7 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
               alignItems="center"
             >
               {props.unitButtons ?? props.unitButtons}
+              {props.extraDropdown ?? props.extraDropdown}
               {props.dropdownItems &&
                 props.dropdownItems.length > 0 &&
                 props.dropdownSelected &&
