@@ -148,25 +148,31 @@ export const GrantImplementation: React.FC = () => {
 
   const signedFormatted = React.useMemo(() => {
     const range = getRange([dataFinancialValues], ["signed"]);
-    return `${getFinancialValueWithMetricPrefix(dataFinancialValues.signed, range.index, 2)} ${range.abbr}`;
+    return `${getFinancialValueWithMetricPrefix(
+      dataFinancialValues.signed,
+      range.index,
+      2
+    )} ${range.abbr}`;
   }, [dataFinancialValues]);
 
   const raceBarChartData = React.useMemo(() => {
+    const disbursementPercentage =
+      (dataFinancialValues.disbursement / dataFinancialValues.commitment) * 100;
+    const commitmentPercentage =
+      (dataFinancialValues.commitment / dataFinancialValues.signed) * 100;
     return [
       {
         name: "Disbursed",
         value: dataFinancialValues.disbursement,
         color: "#0A2840",
-        percentage:
-          (dataFinancialValues.disbursement / dataFinancialValues.commitment) *
-          100,
+        percentage: disbursementPercentage,
+        sizePercentage: (disbursementPercentage * commitmentPercentage) / 100,
       },
       {
         name: "Committed",
         value: dataFinancialValues.commitment,
         color: "#013E77",
-        percentage:
-          (dataFinancialValues.commitment / dataFinancialValues.signed) * 100,
+        percentage: commitmentPercentage,
       },
       {
         name: "Signed",
@@ -175,14 +181,22 @@ export const GrantImplementation: React.FC = () => {
         percentage: 100,
       },
     ];
-  }, [dataFinancialValues]);
+  }, [
+    dataFinancialValues.disbursement,
+    dataFinancialValues.commitment,
+    dataFinancialValues.signed,
+  ]);
 
   const disbursementsTotal = React.useMemo(() => {
     const range = getRange(
       [{ value: dataFinancialValues.disbursement }],
       ["value"]
     );
-    return `US$${getFinancialValueWithMetricPrefix(dataFinancialValues.disbursement, range.index, 2)} ${range.full}`;
+    return `US$${getFinancialValueWithMetricPrefix(
+      dataFinancialValues.disbursement,
+      range.index,
+      2
+    )} ${range.full}`;
   }, [dataFinancialValues.disbursement]);
 
   const totalBudget = React.useMemo(() => {
@@ -193,7 +207,9 @@ export const GrantImplementation: React.FC = () => {
       }
     );
     const range = getRange([{ value: total }], ["value"]);
-    return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${range.full}`;
+    return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${
+      range.full
+    }`;
   }, [dataBudgetSankeyChart]);
 
   const fullWidthDivider = (
