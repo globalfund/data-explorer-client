@@ -94,6 +94,7 @@ export const ResourceMobilization: React.FC = () => {
         handleCycleChange={handleChartCycleChange}
         empty={dataRMBarChart.length === 0 && chart1Cycles.length === 0}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
+        infoType="pledges_contributions"
       >
         <BarChart
           data={dataRMBarChart}

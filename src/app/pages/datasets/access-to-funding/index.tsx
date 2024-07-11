@@ -756,6 +756,7 @@ export const AccessToFundingPage: React.FC = () => {
             removeFilter={handleRemoveChartFilter(1)}
             handleResetFilters={handleResetChartFilters(1)}
             appliedFiltersData={chart1AppliedFiltersData}
+            infoType="global"
           >
             <Box
               gap="20px"
@@ -903,6 +904,7 @@ export const AccessToFundingPage: React.FC = () => {
             removeFilter={handleRemoveChartFilter(2)}
             handleResetFilters={handleResetChartFilters(2)}
             appliedFiltersData={chart2AppliedFiltersData}
+            infoType="global"
           >
             {chartContent}
           </DatasetChartBlock>
@@ -982,6 +984,7 @@ export const AccessToFundingPage: React.FC = () => {
             removeFilter={handleRemoveChartFilter(3)}
             handleResetFilters={handleResetChartFilters(3)}
             appliedFiltersData={chart3AppliedFiltersData}
+            infoType="global"
           >
             <TableContainer
               dataTree

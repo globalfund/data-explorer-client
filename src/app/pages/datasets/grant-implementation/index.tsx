@@ -1884,6 +1884,7 @@ export const GrantImplementationPage: React.FC = () => {
             removeFilter={handleRemoveChartFilter(1)}
             handleResetFilters={handleResetChartFilters(1)}
             appliedFiltersData={chart1AppliedFiltersData}
+            infoType="global"
           >
             {disbursementsChartContent}
           </DatasetChartBlock>
@@ -1916,6 +1917,7 @@ export const GrantImplementationPage: React.FC = () => {
             handleResetFilters={handleResetChartFilters(2)}
             appliedFiltersData={chart2AppliedFiltersData}
             extraDropdown={budgetsTableDataTypeDropdown}
+            infoType="budgets"
           >
             {budgetsChartContent}
           </DatasetChartBlock>
@@ -2020,6 +2022,7 @@ export const GrantImplementationPage: React.FC = () => {
             removeFilter={handleRemoveChartFilter(3)}
             handleResetFilters={handleResetChartFilters(3)}
             appliedFiltersData={chart3AppliedFiltersData}
+            infoType="global"
           >
             {financialMetricsContent}
           </DatasetChartBlock>
@@ -2054,6 +2057,7 @@ export const GrantImplementationPage: React.FC = () => {
             removeFilter={handleRemoveChartFilter(4)}
             handleResetFilters={handleResetChartFilters(4)}
             appliedFiltersData={chart4AppliedFiltersData}
+            infoType="expenditures"
           >
             {expendituresChartContent}
           </DatasetChartBlock>

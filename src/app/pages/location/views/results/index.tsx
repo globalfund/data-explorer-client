@@ -64,6 +64,7 @@ export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
         subtitle=""
         selectedCycles={[props.resultsYear]}
         handleCycleChange={props.setResultsYear}
+        infoType="global"
       >
         <TableContainer
           withCycles
@@ -79,6 +80,7 @@ export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
         title="Documents"
         empty={!showDocuments}
         subtitle=""
+        infoType="global"
       >
         <TableContainer
           dataTree

@@ -449,6 +449,7 @@ export const AnnualResultsPage: React.FC = () => {
             handleResetFilters={handleResetChartFilters}
             appliedFilters={chartAppliedFilters}
             appliedFiltersData={chartAppliedFiltersData}
+            infoType="global"
           >
             {chartContent}
           </DatasetChartBlock>

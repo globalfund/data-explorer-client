@@ -210,7 +210,11 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
           {content}
         </Box>
         <Box width="100%" marginTop="40px">
-          <ChartBlockButtonToolbar blockId={id} hashId={props.id} />
+          <ChartBlockButtonToolbar
+            blockId={id}
+            hashId={props.id}
+            infoType={props.infoType}
+          />
         </Box>
       </Box>
     </Box>

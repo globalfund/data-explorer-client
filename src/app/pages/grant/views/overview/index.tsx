@@ -217,6 +217,7 @@ export const GrantOverview: React.FC = () => {
           <RaceBarChart data={raceBarChartData} />
         </Box>
         <ChartBlockButtonToolbar
+          infoType="global"
           hashId="grant-overview-race-bar-chart"
           blockId="grant-overview-race-bar-chart"
         />

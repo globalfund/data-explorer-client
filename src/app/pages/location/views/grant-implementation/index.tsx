@@ -476,6 +476,7 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
           disabled: findIndex(disbursementsCycles, { value: c.value }) === -1,
         }))}
         text="Disbursement transactions for all grants across the porfolio."
+        infoType="global"
       >
         <Box position="relative">
           <Typography
@@ -524,6 +525,7 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
           disabled: findIndex(budgetsCycles, { value: c.value }) === -1,
         }))}
         text="Our Grant Implementation programs are developed meticulously, each Grant follows a well executed plan, always supervised by TGF Implementation team."
+        infoType="budgets"
       >
         <Grid
           container
@@ -565,6 +567,7 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
         }))}
         text="Our Grant Implementation programs are developed meticulously, each Grant follows a well executed plan, always supervised by TGF Implementation team."
         unitButtons={chart2UnitButtons}
+        infoType="expenditures"
       >
         <Heatmap
           valueType={chart2Unit}
@@ -586,6 +589,7 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
         subtitle="to date"
         empty={!showGrantsTable && chart3Cycles.length === 0}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
+        infoType="global"
       >
         <Box height="16px" />
         <TableContainer

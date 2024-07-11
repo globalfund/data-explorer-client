@@ -513,6 +513,7 @@ export const ResourceMobilizationPage: React.FC = () => {
             removeFilter={handleRemoveChartFilter}
             handleResetFilters={handleResetChartFilters}
             appliedFiltersData={chartAppliedFiltersData}
+            infoType="pledges_contributions"
           >
             {chartContent}
           </DatasetChartBlock>

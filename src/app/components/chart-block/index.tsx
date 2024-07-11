@@ -138,7 +138,11 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
       </Box>
       {!props.noBottomToolbar && (
         <Box width="100%">
-          <ChartBlockButtonToolbar blockId={id} hashId={props.id} />
+          <ChartBlockButtonToolbar
+            blockId={id}
+            hashId={props.id}
+            infoType={props.infoType}
+          />
         </Box>
       )}
     </Box>

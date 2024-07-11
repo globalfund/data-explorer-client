@@ -576,6 +576,7 @@ export const Home: React.FC = () => {
           name: c.value,
           value: c.value,
         }))}
+        infoType="pledges_contributions"
       >
         <BarChart
           data={dataPledgesContributionsBarChart}
@@ -631,6 +632,7 @@ export const Home: React.FC = () => {
           value: c.value,
         }))}
         text="The Global Fund is distinct from other organizations in that it gives countries (or groups of countries) an allocation and asks countries to describe how they will use those funds rather than asking for applications and then determining an amount per-country based on the merits of the various proposals received.<br/><br/>This provides greater predictability for countries and helps ensure that the programs being funded are not just the ones with the most capacity to write good applications."
+        infoType="global"
       >
         <Box marginTop="-100px" marginBottom="-100px">
           <RadialChart
@@ -659,6 +661,7 @@ export const Home: React.FC = () => {
           name: c.value,
           value: c.value,
         }))}
+        infoType="budgets"
       >
         <Treemap data={dataBudgetsTreemap} />
       </ChartBlock>
@@ -681,6 +684,7 @@ export const Home: React.FC = () => {
           name: c.value,
           value: c.value,
         }))}
+        infoType="global"
       >
         <Box position="relative">
           <Typography
@@ -730,6 +734,7 @@ export const Home: React.FC = () => {
           name: c.value,
           value: c.value,
         }))}
+        infoType="expenditures"
       >
         <Heatmap
           data={dataExpendituresHeatmap}
