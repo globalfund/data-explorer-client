@@ -8,6 +8,7 @@ export interface ChartBlockButtonToolbarProps {
   hashId: string;
   blockId: string;
   infoType: InfoPanelType;
+  chartType?: string;
 }
 
 export interface InfoPanelProps {

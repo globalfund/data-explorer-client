@@ -1778,6 +1778,30 @@ export const GrantImplementationPage: React.FC = () => {
     });
   }, [geographyGrouping]);
 
+  React.useEffect(() => {
+    if (location.hash) {
+      const blockId = location.hash.slice(1).split("|")[0];
+      const blockChartType = location.hash.slice(1).split("|")[1];
+      if (blockId && blockChartType) {
+        switch (blockId) {
+          case "disbursements":
+            setDisbursementsDropdownSelected(
+              decodeURIComponent(blockChartType)
+            );
+            break;
+          case "budgets":
+            setBudgetsDropdownSelected(decodeURIComponent(blockChartType));
+            break;
+          case "expenditures":
+            setExpendituresDropdownSelected(decodeURIComponent(blockChartType));
+            break;
+          default:
+            break;
+        }
+      }
+    }
+  }, [location.hash]);
+
   useUnmount(() => {
     fetchLocationFilterOptions({
       routeParams: {

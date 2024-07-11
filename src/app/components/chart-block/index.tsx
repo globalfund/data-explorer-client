@@ -43,7 +43,7 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
       return (
         <Box
           width="100%"
-          height="100%"
+          height="300px"
           display="flex"
           alignItems="center"
           justifyContent="center"
@@ -55,7 +55,7 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
     return props.children;
   }, [props.children, props.loading]);
 
-  if (props.empty) {
+  if (props.empty && !props.loading) {
     return <React.Fragment />;
   }
 
@@ -142,6 +142,7 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
             blockId={id}
             hashId={props.id}
             infoType={props.infoType}
+            chartType={props.dropdownSelected}
           />
         </Box>
       )}

@@ -81,7 +81,11 @@ const SharePanel: React.FC<ChartBlockButtonToolbarProps> = (
       url = url.slice(0, -1);
     }
     navigator.clipboard.writeText(
-      type === "code" ? "" : `${url}#${props.hashId}`
+      type === "code"
+        ? ""
+        : `${url}#${props.hashId}${
+            props.chartType ? `|${props.chartType}` : ""
+          }`
     );
     setFeedbackMessage(`${type} copied!`);
   };
