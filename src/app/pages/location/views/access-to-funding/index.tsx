@@ -249,13 +249,16 @@ export const AccessToFunding: React.FC = () => {
         selectedCycles={chart1Cycles}
         loading={loadingAllocationsRadialChart}
         handleCycleChange={(value) => handleChartCycleChange(value, 1)}
-        subtitle={`Funds Allocated ${get(chart1Cycles, "[0].value", "")}`}
+        subtitle={`Funds Allocated ${get(chart1Cycles, "[0].value", "").replace(
+          " - ",
+          "-"
+        )}`}
         empty={!showAllocationRadialChart}
         cycles={allocationsCyclesAll.map((c) => ({
           ...c,
           disabled: findIndex(allocationsCycles, { value: c.value }) === -1,
         }))}
-        text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
+        text="The Global Fund is distinct from other organizations in that it gives countries (or groups of countries) an allocation and asks countries to describe how they will use those funds rather than asking for applications and then determining an amount per-country based on the merits of the various proposals received.<br/><br/>This provides greater predictability for countries and helps ensure that the programs being funded are not just the ones with the most capacity to write good applications."
       >
         <Box marginTop="-100px" marginBottom="-100px">
           <RadialChart
@@ -288,7 +291,10 @@ export const AccessToFunding: React.FC = () => {
         selectedCycles={chart2Cycles}
         loading={loadingFundingRequestsTable}
         title={`${dataFundingRequestsTable._children.length} Funding Requests`}
-        subtitle="Submitted to date"
+        subtitle={`Submitted for ${get(chart2Cycles, "[0].value", "").replace(
+          " - ",
+          "-"
+        )}`}
         empty={!showFundingRequestsTable}
         handleCycleChange={(value) => handleChartCycleChange(value, 2)}
         cycles={fundingRequestsCyclesAll.map((c) => ({
