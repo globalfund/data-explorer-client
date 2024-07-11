@@ -315,9 +315,8 @@ export const GrantImplementation: React.FC = () => {
       <ChartBlock
         id="radial-chart"
         title={disbursementsTotal}
-        subtitle="Disbursement"
+        subtitle="Disbursements"
         empty={!showRadialChart}
-        text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
         infoType="global"
       >
         <RadialChart
@@ -354,7 +353,6 @@ export const GrantImplementation: React.FC = () => {
         title={totalBudget}
         subtitle="Grant Budgets"
         empty={!showBudgetSankeyChart}
-        text="Our Grant Implementation programs are developed meticulously, each Grant follows a well executed plan, always supervised by TGF Implementation team."
         infoType="budgets"
       >
         <Grid
@@ -392,7 +390,6 @@ export const GrantImplementation: React.FC = () => {
         dropdownSelected={chart2Dropdown}
         dropdownItems={CHART_2_DROPDOWN_ITEMS}
         handleDropdownChange={setChart2Dropdown}
-        text="Our Grant Implementation programs are developed meticulously, each Grant follows a well executed plan, always supervised by TGF Implementation team."
         unitButtons={chart2UnitButtons}
         infoType="expenditures"
       >

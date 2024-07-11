@@ -426,6 +426,20 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
     }`;
   }, [dataBudgetSankeyChart]);
 
+  const expendituresTotal = React.useMemo(() => {
+    const total = sumBy(
+      filter(
+        dataExpendituresHeatmap,
+        (item) => !item.parentRow && !item.parentColumn
+      ),
+      "value"
+    );
+    const range = getRange([{ value: total }], ["value"]);
+    return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${
+      range.full
+    }`;
+  }, [dataExpendituresHeatmap]);
+
   const lineChartRange = React.useMemo(() => {
     const values: { value: number }[] = [];
     dataDisbursementsLineChart.data.forEach((item) => {
@@ -461,13 +475,13 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
     <Box gap="24px" display="flex" flexDirection="column">
       <ChartBlock
         id="disbursements"
+        subtitle="Disbursements"
         title={disbursementsTotal}
         selectedCycles={chart1Cycles}
         dropdownSelected={chart1Dropdown}
         dropdownItems={CHART_1_DROPDOWN_ITEMS}
         loading={loadingDisbursementsLineChart}
         handleDropdownChange={setChart1Dropdown}
-        subtitle={`Disbursed within ${countGrantsTable} Grants`}
         handleCycleChange={(value) => handleChartCycleChange(value, 1)}
         empty={!showDisbursementsLineChart && chart1Cycles.length === 0}
         cycles={disbursementsCyclesAll.map((c) => ({
@@ -475,7 +489,6 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
           value: c.value,
           disabled: findIndex(disbursementsCycles, { value: c.value }) === -1,
         }))}
-        text="Disbursement transactions for all grants across the porfolio."
         infoType="global"
       >
         <Box position="relative">
@@ -524,7 +537,6 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
           value: c.value,
           disabled: findIndex(budgetsCycles, { value: c.value }) === -1,
         }))}
-        text="Our Grant Implementation programs are developed meticulously, each Grant follows a well executed plan, always supervised by TGF Implementation team."
         infoType="budgets"
       >
         <Grid
@@ -554,8 +566,8 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
       {showBudgetSankeyChart && fullWidthDivider}
       <ChartBlock
         id="expenditures"
-        subtitle="To date"
-        title="Expenditures"
+        subtitle="Expenditures"
+        title={expendituresTotal}
         selectedCycles={chart3Cycles}
         loading={loadingExpendituresHeatmap}
         empty={!showExpendituresHeatmap && chart3Cycles.length === 0}
@@ -565,7 +577,6 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
           value: c.value,
           disabled: findIndex(expendituresCycles, { value: c.value }) === -1,
         }))}
-        text="Our Grant Implementation programs are developed meticulously, each Grant follows a well executed plan, always supervised by TGF Implementation team."
         unitButtons={chart2UnitButtons}
         infoType="expenditures"
       >
@@ -586,9 +597,8 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
       <ChartBlock
         id="grants"
         title={`${countGrantsTable} Grants`}
-        subtitle="to date"
+        subtitle=""
         empty={!showGrantsTable && chart3Cycles.length === 0}
-        text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
         infoType="global"
       >
         <Box height="16px" />
