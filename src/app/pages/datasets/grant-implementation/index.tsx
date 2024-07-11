@@ -56,6 +56,7 @@ import {
   dropdownItemsExpenditures,
   dropdownItemsBudgetsTableDataTypes,
 } from "app/pages/datasets/grant-implementation/data";
+import { useUnmount } from "react-use";
 
 export const GrantImplementationPage: React.FC = () => {
   const location = useLocation();
@@ -385,6 +386,12 @@ export const GrantImplementationPage: React.FC = () => {
         value: cycle.value,
       }))
       .reverse()
+  );
+  const fetchComponentFilterOptions = useStoreActions(
+    (actions) => actions.ComponentFilterOptions.fetch
+  );
+  const fetchLocationFilterOptions = useStoreActions(
+    (actions) => actions.LocationFilterOptions.fetch
   );
   const pageAppliedFilters = useStoreState((state) => [
     ...state.AppliedFiltersState.components,
@@ -1134,7 +1141,7 @@ export const GrantImplementationPage: React.FC = () => {
       )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
     }
     return filterString;
-  }, [appliedFiltersData, location.search]);
+  }, [appliedFiltersData, geographyGrouping, location.search]);
 
   const chart1FilterString = React.useMemo(() => {
     let filterString = "";
@@ -1561,8 +1568,17 @@ export const GrantImplementationPage: React.FC = () => {
   }, [appliedFiltersData, chart4AppliedFiltersData, location.search]);
 
   React.useEffect(() => {
-    fetchFinancialInsightsStats({ filterString });
-  }, [filterString]);
+    fetchFinancialInsightsStats({
+      filterString,
+      routeParams: {
+        componentField:
+          componentsGrouping === componentsGroupingOptions[0].value
+            ? "activityAreaGroup"
+            : "activityArea",
+        geographyGrouping,
+      },
+    });
+  }, [filterString, componentsGrouping, geographyGrouping]);
 
   React.useEffect(() => {
     fetchFinancialInsightsDisbursementsBarChart({
@@ -1572,6 +1588,7 @@ export const GrantImplementationPage: React.FC = () => {
           componentsGrouping === componentsGroupingOptions[0].value
             ? "activityAreaGroup"
             : "activityArea",
+        geographyGrouping,
       },
     });
     fetchFinancialInsightsDisbursementsLineChart({
@@ -1581,6 +1598,7 @@ export const GrantImplementationPage: React.FC = () => {
           componentsGrouping === componentsGroupingOptions[0].value
             ? "activityAreaGroup"
             : "activityArea",
+        geographyGrouping,
       },
     });
     fetchFinancialInsightsDisbursementsTable({
@@ -1590,13 +1608,33 @@ export const GrantImplementationPage: React.FC = () => {
           componentsGrouping === componentsGroupingOptions[0].value
             ? "activityAreaGroup"
             : "activityArea",
+        geographyGrouping,
       },
     });
-  }, [chart1FilterString, componentsGrouping]);
+  }, [chart1FilterString, componentsGrouping, geographyGrouping]);
 
   React.useEffect(() => {
-    fetchBudgetSankey({ filterString: chart2FilterString });
-  }, [chart2FilterString]);
+    fetchBudgetSankey({
+      filterString: chart2FilterString,
+      routeParams: {
+        componentField:
+          componentsGrouping === componentsGroupingOptions[0].value
+            ? "activityAreaGroup"
+            : "activityArea",
+        geographyGrouping,
+      },
+    });
+    fetchBudgetTreemap({
+      filterString: chart2FilterString,
+      routeParams: {
+        componentField:
+          componentsGrouping === componentsGroupingOptions[0].value
+            ? "activityAreaGroup"
+            : "activityArea",
+        geographyGrouping,
+      },
+    });
+  }, [chart2FilterString, componentsGrouping, geographyGrouping]);
 
   React.useEffect(() => {
     let filterString = chart2FilterString;
@@ -1607,26 +1645,50 @@ export const GrantImplementationPage: React.FC = () => {
           : "activityArea"
       }`;
     }
-    fetchBudgetTable({ filterString });
-  }, [chart2FilterString, budgetTableDataType, componentsGrouping]);
-
-  React.useEffect(() => {
-    fetchBudgetTreemap({
-      filterString: chart2FilterString,
+    fetchBudgetTable({
+      filterString,
       routeParams: {
         componentField:
           componentsGrouping === componentsGroupingOptions[0].value
             ? "activityAreaGroup"
             : "activityArea",
+        geographyGrouping,
       },
     });
-  }, [chart2FilterString, componentsGrouping]);
+  }, [chart2FilterString, budgetTableDataType, componentsGrouping]);
 
   React.useEffect(() => {
-    fetchBudgetUtilisation({ filterString: chart3FilterString });
-    fetchInCountryAbsorption({ filterString: chart3FilterString });
-    fetchDisbursementUtilisation({ filterString: chart3FilterString });
-  }, [chart3FilterString]);
+    fetchBudgetUtilisation({
+      filterString: chart3FilterString,
+      routeParams: {
+        componentField:
+          componentsGrouping === componentsGroupingOptions[0].value
+            ? "activityAreaGroup"
+            : "activityArea",
+        geographyGrouping,
+      },
+    });
+    fetchInCountryAbsorption({
+      filterString: chart3FilterString,
+      routeParams: {
+        componentField:
+          componentsGrouping === componentsGroupingOptions[0].value
+            ? "activityAreaGroup"
+            : "activityArea",
+        geographyGrouping,
+      },
+    });
+    fetchDisbursementUtilisation({
+      filterString: chart3FilterString,
+      routeParams: {
+        componentField:
+          componentsGrouping === componentsGroupingOptions[0].value
+            ? "activityAreaGroup"
+            : "activityArea",
+        geographyGrouping,
+      },
+    });
+  }, [chart3FilterString, componentsGrouping, geographyGrouping]);
 
   React.useEffect(() => {
     fetchExpendituresHeatmap({
@@ -1638,6 +1700,7 @@ export const GrantImplementationPage: React.FC = () => {
           componentsGrouping === componentsGroupingOptions[0].value
             ? "activityAreaGroup"
             : "activityArea",
+        geographyGrouping,
       },
     });
     fetchExpendituresBarChart({
@@ -1647,6 +1710,7 @@ export const GrantImplementationPage: React.FC = () => {
           componentsGrouping === componentsGroupingOptions[0].value
             ? "activityAreaGroup"
             : "activityArea",
+        geographyGrouping,
       },
     });
     fetchExpendituresTable({
@@ -1656,9 +1720,10 @@ export const GrantImplementationPage: React.FC = () => {
           componentsGrouping === componentsGroupingOptions[0].value
             ? "activityAreaGroup"
             : "activityArea",
+        geographyGrouping,
       },
     });
-  }, [chart4FilterString, componentsGrouping]);
+  }, [chart4FilterString, componentsGrouping, geographyGrouping]);
 
   const budgetBreakdownDropdownSelectedRef = React.useRef(null);
 
@@ -1683,10 +1748,43 @@ export const GrantImplementationPage: React.FC = () => {
             componentsGrouping === componentsGroupingOptions[0].value
               ? "activityAreaGroup"
               : "activityArea",
+          geographyGrouping,
         },
       });
     }
-  }, [budgetBreakdownDropdownSelected, filterString, componentsGrouping]);
+  }, [
+    budgetBreakdownDropdownSelected,
+    filterString,
+    componentsGrouping,
+    geographyGrouping,
+  ]);
+
+  React.useEffect(() => {
+    fetchComponentFilterOptions({
+      routeParams: {
+        type:
+          componentsGrouping === componentsGroupingOptions[0].value
+            ? "grouped"
+            : "ungrouped",
+      },
+    });
+  }, [componentsGrouping]);
+
+  React.useEffect(() => {
+    fetchLocationFilterOptions({
+      routeParams: {
+        type: geographyGrouping,
+      },
+    });
+  }, [geographyGrouping]);
+
+  useUnmount(() => {
+    fetchLocationFilterOptions({
+      routeParams: {
+        type: geographyGroupingOptions[0].value,
+      },
+    });
+  });
 
   return (
     <DatasetPage

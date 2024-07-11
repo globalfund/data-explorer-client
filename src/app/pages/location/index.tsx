@@ -363,6 +363,7 @@ export const Location: React.FC = () => {
           row: "principalRecipientType,principalRecipientSubType,principalRecipient",
           column: "component",
           componentField: "activityAreaGroup",
+          geographyGrouping: "Standard View",
         },
       });
       fetchGrantsPieCharts({

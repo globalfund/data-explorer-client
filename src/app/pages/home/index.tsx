@@ -344,6 +344,7 @@ export const Home: React.FC = () => {
           componentField === CHART_3_DROPDOWN_ITEMS[0].value
             ? "activityAreaGroup"
             : "activityArea",
+        geographyGrouping: "Standard View",
       },
     });
   };
@@ -418,6 +419,7 @@ export const Home: React.FC = () => {
           componentField === CHART_5_DROPDOWN_ITEMS[0].value
             ? "activityAreaGroup"
             : "activityArea",
+        geographyGrouping: "Standard View",
       },
     });
   };

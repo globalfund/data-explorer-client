@@ -183,6 +183,7 @@ export const Grant: React.FC = () => {
           row: "principalRecipientType,principalRecipientSubType,principalRecipient",
           column: "component",
           componentField: "activityAreaGroup",
+          geographyGrouping: "Standard View",
         },
         filterString: `grantIP=${params.id}P0${dropdownSelected.code}`,
       });
@@ -335,7 +336,9 @@ export const PreGrant: React.FC = () => {
   React.useEffect(() => {
     if (dataGrant.periods.length > 0) {
       navigate(
-        `/grant/${params.id}/${dataGrant.periods[dataGrant.periods.length - 1].code}/overview`,
+        `/grant/${params.id}/${
+          dataGrant.periods[dataGrant.periods.length - 1].code
+        }/overview`,
         { replace: true }
       );
     }

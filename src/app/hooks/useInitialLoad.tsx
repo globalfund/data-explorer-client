@@ -56,8 +56,16 @@ export const useInitialLoad = () => {
     fetchBudgetsCycles({});
     fetchDonorFilterOptions({});
     fetchReplenishmentPeriodFilterOptions({});
-    fetchLocationFilterOptions({});
-    fetchComponentFilterOptions({});
+    fetchLocationFilterOptions({
+      routeParams: {
+        type: "Standard View",
+      },
+    });
+    fetchComponentFilterOptions({
+      routeParams: {
+        type: "grouped",
+      },
+    });
     fetchPartnerTypeFilterOptions({});
     fetchStatusFilterOptions({});
   }, []);

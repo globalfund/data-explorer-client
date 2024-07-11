@@ -225,7 +225,9 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
         filterString += `&years=${yearFrom.join(",")}`;
       }
       if (yearTo.length > 0) {
-        filterString += `${filterString.length > 0 ? "&" : ""}yearsTo=${yearTo.join(",")}`;
+        filterString += `${
+          filterString.length > 0 ? "&" : ""
+        }yearsTo=${yearTo.join(",")}`;
       }
     }
     fetchDisbursementsLineChart({
@@ -254,7 +256,13 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
         years.join(",")
       )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
     }
-    fetchBudgetSankeyChart({ filterString });
+    fetchBudgetSankeyChart({
+      filterString,
+      routeParams: {
+        componentField: "activityAreaGroup",
+        geographyGrouping: "Standard View",
+      },
+    });
   }, [chart2Cycles]);
 
   useUpdateEffect(() => {
@@ -344,10 +352,14 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
       const startDate = new Date(item.startDate);
       const endDate = new Date(item.endDate);
       if (startDate) {
-        datesStr = `${getMonthFromNumber(startDate.getMonth() + 1)} ${startDate.getFullYear()} - `;
+        datesStr = `${getMonthFromNumber(
+          startDate.getMonth() + 1
+        )} ${startDate.getFullYear()} - `;
       }
       if (endDate) {
-        datesStr += `${getMonthFromNumber(endDate.getMonth() + 1)} ${endDate.getFullYear()}`;
+        datesStr += `${getMonthFromNumber(
+          endDate.getMonth() + 1
+        )} ${endDate.getFullYear()}`;
       }
       return {
         grantId: item.number,
@@ -368,7 +380,9 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
       total += sumBy(item.data);
     });
     const range = getRange([{ value: total }], ["value"]);
-    return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${range.full}`;
+    return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${
+      range.full
+    }`;
   }, [dataDisbursementsLineChart]);
 
   const pagination = React.useMemo(
@@ -407,7 +421,9 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
       }
     );
     const range = getRange([{ value: total }], ["value"]);
-    return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${range.full}`;
+    return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${
+      range.full
+    }`;
   }, [dataBudgetSankeyChart]);
 
   const lineChartRange = React.useMemo(() => {
