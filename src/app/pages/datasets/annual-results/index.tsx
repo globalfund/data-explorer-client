@@ -457,6 +457,7 @@ export const AnnualResultsPage: React.FC = () => {
           sx={{
             left: 0,
             width: "100vw",
+            marginTop: "50px",
             position: "absolute",
             borderColor: "#CFD4DA",
           }}
