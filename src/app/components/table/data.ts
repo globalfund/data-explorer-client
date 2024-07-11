@@ -68,6 +68,7 @@ const cellBGColorFormatter = (cell: CellComponent) => {
     backgroundColor = "#FFFFFF";
   }
   cell.getElement().style.backgroundColor = backgroundColor;
+  cell.getElement().style.whiteSpace = "pre-wrap";
   return text;
 };
 
@@ -273,7 +274,12 @@ export const TABLE_VARIATION_1_DATA: {
 ];
 
 export const TABLE_VARIATION_2_COLUMNS: ColumnDefinition[] = [
-  { title: "Components", field: "components", formatter: cellBGColorFormatter },
+  {
+    title: "Components",
+    field: "components",
+    formatter: cellBGColorFormatter,
+    minWidth: 180,
+  },
   {
     title: "Submission Date",
     field: "submissionDate",
@@ -546,6 +552,7 @@ export const TABLE_VARIATION_4_COLUMNS: ColumnDefinition[] = [
     title: "Modules & Coverage Indicators",
     field: "name",
     formatter: cellBGColorFormatter,
+    width: "35%",
   },
   {
     title: "Reversed",
@@ -837,9 +844,9 @@ export const TABLE_VARIATION_5_DATA: {
 
 export const TABLE_VARIATION_6_COLUMNS: ColumnDefinition[] = [
   {
-    title: "Location",
+    title: "Geography",
     field: "name",
-    width: "80%",
+    width: "78%",
     formatter: cellBGColorFormatter,
   },
   {
@@ -7395,31 +7402,25 @@ export const TABLE_VARIATION_13_COLUMNS: ColumnDefinition[] = [
   {
     title: "Components",
     field: "component",
-    width: "20%",
-    formatter: cellBGColorFormatter,
-  },
-  {
-    title: "Grants",
-    field: "grants",
-    width: "20%",
+    width: "25%",
     formatter: cellBGColorFormatter,
   },
   {
     title: "Signed (US$)",
     field: "signed",
-    width: "20%",
+    width: "25%",
     formatter: financialFormatter,
   },
   {
     title: "Committed (US$)",
     field: "committed",
-    width: "20%",
+    width: "25%",
     formatter: financialFormatter,
   },
   {
     title: "Disbursed (US$)",
     field: "disbursed",
-    width: "20%",
+    width: "25%",
     formatter: financialFormatter,
   },
 ];

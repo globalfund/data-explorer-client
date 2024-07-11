@@ -12,5 +12,5 @@ export const ResultsStats: ApiCallModel = {
 };
 
 export const ResultsYears: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/results/years`),
+  ...APIModel(`${process.env.REACT_APP_API}/results/cycles`),
 };

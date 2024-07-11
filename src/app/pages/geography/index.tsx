@@ -74,11 +74,12 @@ const GeoSubCategory: React.FC<GeoSubCategoryProps> = (
           <Link
             key={item.name}
             component={NavLink}
-            to={`/location/${item.value}`}
+            to={`/location/${item.value.replace(/\//g, "|")}`}
             sx={{
               color: "#000",
               display: "block",
               fontSize: "12px",
+              fontWeight: "400",
               textDecoration: "none",
               ...(props.search
                 ? {
@@ -87,7 +88,7 @@ const GeoSubCategory: React.FC<GeoSubCategoryProps> = (
                   }
                 : {}),
               "&:hover": {
-                textShadow: "-.35px -.35px 0 #000, .35px .35px #000",
+                fontWeight: "700",
               },
             }}
           >

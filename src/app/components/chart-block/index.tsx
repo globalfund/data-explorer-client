@@ -123,7 +123,6 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
       <Box
         id={id}
         width="100%"
-        minHeight="400px"
         position="relative"
         sx={
           props.loading

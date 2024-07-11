@@ -42,7 +42,18 @@ export const DatasetPage: React.FC<DatasetPageProps> = (
   return (
     <Box padding="50px 0">
       <Typography variant="h1">{props.title}</Typography>
-      <Typography variant="h6">{props.subtitle}</Typography>
+      <Typography
+        variant="h6"
+        sx={
+          props.subtitle.length > 0
+            ? {}
+            : {
+                height: "28.8px",
+              }
+        }
+      >
+        {props.subtitle}
+      </Typography>
       <Divider
         sx={{
           left: 0,

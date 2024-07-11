@@ -23,6 +23,9 @@ export const GrantTargetsResults: React.FC = () => {
   const years = useStoreState((state) =>
     get(state.GrantTargetsResultsTable, "data.years", [])
   );
+  const dates = useStoreState((state) =>
+    get(state.GrantTargetsResultsTable, "data.dates", [])
+  );
   const loading = useStoreState(
     (state) => state.GrantTargetsResultsTable.loading
   );
@@ -77,10 +80,46 @@ export const GrantTargetsResults: React.FC = () => {
 
           return tableEl;
         },
+        minWidth: 250,
       });
     });
+    if (years.length === 0) {
+      dates.forEach((date) => {
+        res.push({
+          title: date,
+          field: date,
+          formatter: (cell: CellComponent) => {
+            var tableEl = document.createElement("div");
+            cell.getElement().appendChild(tableEl);
+            const data = cell.getValue();
+
+            if (!cell.getValue()) {
+              return "";
+            }
+
+            new Tabulator(tableEl, {
+              data,
+              layout: "fitDataTable",
+              height: "fit-content",
+              columns: [
+                { title: "Target", field: "target" },
+                { title: "Result", field: "result" },
+                { title: "Achievement", field: "achievement" },
+              ],
+            });
+
+            // cell.getElement().style.height = "max-content";
+            cell.getElement().style.padding = "0";
+
+            return tableEl;
+          },
+          minWidth: 250,
+        });
+      });
+    }
+    res[0].title = tab.name;
     return res;
-  }, [years]);
+  }, [tab, years]);
 
   const fullWidthDivider = (
     <Divider
@@ -129,6 +168,7 @@ export const GrantTargetsResults: React.FC = () => {
           data={dataTable}
           columns={columns}
           dataTreeStartExpanded
+          noColumnVisibilitySelection
           id="grant-targets-results-table"
           tabsView={{
             tabs: TABS.map((t) => t.name),

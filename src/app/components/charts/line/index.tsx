@@ -114,13 +114,13 @@ export const LineChart: React.FC<LineChartProps> = (props: LineChartProps) => {
       > = {
         grid: {
           top: 40,
-          left: 40,
+          left: 60,
           right: 70,
           bottom: 40,
         },
         yAxis: {
+          name: "",
           type: "value",
-          name: range.abbr,
           position: "left",
           alignTicks: true,
           nameTextStyle: {

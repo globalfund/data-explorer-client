@@ -17,9 +17,13 @@ import {
 
 export const ResourceMobilization: React.FC = () => {
   const params = useParams<{ id: string; tab: string }>();
+  const paramsId = params.id?.replace("|", "%2F");
 
   const [chart1Cycles, setChart1Cycles] = React.useState<CycleProps[]>([]);
 
+  const locationName = useStoreState((state) =>
+    get(state.GeographyOverview, "data.data[0].name", paramsId)
+  );
   const dataRMBarChart = useStoreState(
     (state) =>
       get(
@@ -36,14 +40,19 @@ export const ResourceMobilization: React.FC = () => {
   );
   const cycles = useStoreState(
     (state) =>
-      get(state.GeographyPledgesContributionsCycles, "data.data", []) as {
+      get(state.GeographyPledgesContributionsCycles, "data.data", []).map(
+        (item: any) => ({
+          name: item.value,
+          value: item.value,
+        })
+      ) as {
         name: string;
         value: string;
       }[]
   );
 
   const handleChartCycleChange = (cycle: CycleProps) => {
-    const cycleIndex = cycles.findIndex((c) => c.value === cycle.value);
+    const cycleIndex = chart1Cycles.findIndex((c) => c.value === cycle.value);
 
     if (cycleIndex === -1) {
       setChart1Cycles((prev) => [...prev, cycle]);
@@ -53,7 +62,7 @@ export const ResourceMobilization: React.FC = () => {
   };
 
   useUpdateEffect(() => {
-    let filterString = `donors=${params.id}`;
+    let filterString = `donors=${locationName}`;
     if (chart1Cycles.length > 0) {
       filterString += `&periods=${chart1Cycles.map((c) => c.value).join(",")}`;
     }
@@ -63,13 +72,17 @@ export const ResourceMobilization: React.FC = () => {
   const totalPledge = React.useMemo(() => {
     const value = sumBy(dataRMBarChart, "value");
     const range = getRange([{ value }], ["value"]);
-    return `${getFinancialValueWithMetricPrefix(value, range.index, 2)} ${range.full}`;
+    return `${getFinancialValueWithMetricPrefix(value, range.index, 2)} ${
+      range.full
+    }`;
   }, [dataRMBarChart]);
 
   const totalContribution = React.useMemo(() => {
     const value = sumBy(dataRMBarChart, "value1");
     const range = getRange([{ value }], ["value"]);
-    return `${getFinancialValueWithMetricPrefix(value, range.index, 2)} ${range.full}`;
+    return `${getFinancialValueWithMetricPrefix(value, range.index, 2)} ${
+      range.full
+    }`;
   }, [dataRMBarChart]);
 
   return (

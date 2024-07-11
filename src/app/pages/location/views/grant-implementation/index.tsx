@@ -50,6 +50,7 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
   props: GrantImplementationProps
 ) => {
   const params = useParams<{ id: string; tab: string }>();
+  const paramsId = params.id?.replace("|", "%2F");
 
   const [chart1Cycles, setChart1Cycles] = React.useState<CycleProps[]>([]);
   const [chart2Cycles, setChart2Cycles] = React.useState<CycleProps[]>([]);
@@ -58,9 +59,9 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
   const [chart1Dropdown, setChart1Dropdown] = React.useState(
     CHART_1_DROPDOWN_ITEMS[0].value
   );
-  const [chart2Dropdown, setChart2Dropdown] = React.useState(
-    CHART_2_DROPDOWN_ITEMS[0].value
-  );
+  // const [chart2Dropdown, setChart2Dropdown] = React.useState(
+  //   CHART_2_DROPDOWN_ITEMS[0].value
+  // );
 
   const [chart2Unit, setChart2Unit] = React.useState<"amount" | "percentage">(
     "percentage"
@@ -185,7 +186,6 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
       case 2:
         cycles = chart2Cycles;
         setCycle = setChart2Cycles;
-        multi = false;
         break;
       case 3:
         cycles = chart3Cycles;
@@ -212,7 +212,7 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
   };
 
   useUpdateEffect(() => {
-    let filterString = `geographies=${params.id}`;
+    let filterString = `geographies=${paramsId}`;
     if (chart1Cycles.length > 0) {
       const yearFrom: string[] = [];
       const yearTo: string[] = [];
@@ -240,22 +240,32 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
   }, [chart1Cycles, chart1Dropdown]);
 
   useUpdateEffect(() => {
-    let filterString = `geographies=${params.id}`;
+    let filterString = `geographies=${paramsId}`;
     if (chart2Cycles.length > 0) {
-      filterString += `&periods=${chart2Cycles.map((c) => c.value).join(",")}`;
+      const years = chart2Cycles.map(
+        (cycle) => cycle.value.replace(/ /g, "").split("-")[0]
+      );
+      const yearsTo = chart2Cycles.map(
+        (cycle) => cycle.value.replace(/ /g, "").split("-")[1]
+      );
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }years=${encodeURIComponent(
+        years.join(",")
+      )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
     }
     fetchBudgetSankeyChart({ filterString });
-  }, [chart2Cycles, chart2Dropdown]);
+  }, [chart2Cycles]);
 
   useUpdateEffect(() => {
-    let filterString = `geographies=${params.id}`;
+    let filterString = `geographies=${paramsId}`;
     if (chart3Cycles.length > 0) {
       filterString += `&periods=${chart3Cycles.map((c) => c.value).join(",")}`;
     }
     fetchExpendituresHeatmap({
       filterString,
       routeParams: {
-        row: "principalRecipientType,principalRecipient",
+        row: "principalRecipientType,principalRecipientSubType,principalRecipient",
         column: "component",
         componentField: "activityAreaGroup",
       },
@@ -400,6 +410,17 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
     return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${range.full}`;
   }, [dataBudgetSankeyChart]);
 
+  const lineChartRange = React.useMemo(() => {
+    const values: { value: number }[] = [];
+    dataDisbursementsLineChart.data.forEach((item) => {
+      item.data.forEach((value) => {
+        values.push({ value });
+      });
+    });
+    const range = getRange(values, ["value"]);
+    return range;
+  }, [dataDisbursementsLineChart.data]);
+
   const fullWidthDivider = (
     <React.Fragment>
       <Box height="2px" />
@@ -438,9 +459,36 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
           value: c.value,
           disabled: findIndex(disbursementsCycles, { value: c.value }) === -1,
         }))}
-        text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
+        text="Disbursement transactions for all grants across the porfolio."
       >
-        <LineChart {...dataDisbursementsLineChart} />
+        <Box position="relative">
+          <Typography
+            bottom="20px"
+            fontSize="10px"
+            padding="7px 12px"
+            borderRadius="4px"
+            position="absolute"
+            border="1px solid #DFE3E5"
+            sx={{
+              transformOrigin: "left",
+              transform: "rotate(-90deg)",
+            }}
+          >
+            Y Axis/<b>Disbursed Amount (US$ {lineChartRange.abbr})</b>
+          </Typography>
+          <LineChart {...dataDisbursementsLineChart} />
+          <Typography
+            left="40px"
+            bottom="-20px"
+            fontSize="10px"
+            padding="7px 12px"
+            borderRadius="4px"
+            position="absolute"
+            border="1px solid #DFE3E5"
+          >
+            X Axis/<b>Years</b>
+          </Typography>
+        </Box>
       </ChartBlock>
       {showDisbursementsLineChart && fullWidthDivider}
       <ChartBlock
@@ -448,10 +496,10 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
         title={totalBudget}
         subtitle="Grant Budgets"
         selectedCycles={chart2Cycles}
-        dropdownSelected={chart2Dropdown}
+        // dropdownSelected={chart2Dropdown}
         loading={loadingBudgetSankeyChart}
-        dropdownItems={CHART_2_DROPDOWN_ITEMS}
-        handleDropdownChange={setChart2Dropdown}
+        // dropdownItems={CHART_2_DROPDOWN_ITEMS}
+        // handleDropdownChange={setChart2Dropdown}
         empty={!showBudgetSankeyChart && chart2Cycles.length === 0}
         handleCycleChange={(value) => handleChartCycleChange(value, 2)}
         cycles={budgetsCyclesAll.map((c) => ({
@@ -511,6 +559,8 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
           rowCategory="component"
           getItemColor={getPercentageColor}
           bgColor={appColors.HEATMAP.CHART_BG_COLOR}
+          columnHeader="Principal Recipients"
+          rowHeader="Components"
         />
       </ChartBlock>
       {showExpendituresHeatmap && fullWidthDivider}

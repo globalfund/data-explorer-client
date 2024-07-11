@@ -130,7 +130,6 @@ export interface StoreModel {
   // resource mobilization
   ResourceMobilizationStats: ApiCallModel;
   ResourceMobilizationExpandableBarChart: ApiCallModel;
-  ResourceMobilizationSunburst: ApiCallModel;
   ResourceMobilizationTable: ApiCallModel;
   // geographies
   GeographyList: ApiCallModel;
@@ -142,6 +141,7 @@ export interface StoreModel {
   AccessToFundingAllocationTreemap: ApiCallModel;
   AccessToFundingAllocationTable: ApiCallModel;
   AccessToFundingFundingRequestsTable: ApiCallModel;
+  AccessToFundingDocumentsTable: ApiCallModel;
   // financial insights
   FinancialInsightsStats: ApiCallModel;
   FinancialInsightsDisbursementsBarChart: ApiCallModel;
@@ -161,6 +161,7 @@ export interface StoreModel {
   AnnualResultsStats: ApiCallModel;
   AnnualResultsPolyline: ApiCallModel;
   AnnualResultsTable: ApiCallModel;
+  AnnualResultsDocumentsTable: ApiCallModel;
   // grants
   GrantList: ApiCallModel;
   // location

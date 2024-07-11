@@ -1,7 +1,9 @@
 import React from "react";
 import get from "lodash/get";
 import sumBy from "lodash/sumBy";
+import filter from "lodash/filter";
 import Box from "@mui/material/Box";
+import { appColors } from "app/theme";
 import Divider from "@mui/material/Divider";
 import { Search } from "app/components/search";
 import Typography from "@mui/material/Typography";
@@ -36,7 +38,6 @@ import {
   getRange,
   getFinancialValueWithMetricPrefix,
 } from "app/utils/getFinancialValueWithMetricPrefix";
-import { appColors } from "app/theme";
 
 export const Home: React.FC = () => {
   const [chart1Cycles, setChart1Cycles] = React.useState<CycleProps[]>([]);
@@ -165,7 +166,11 @@ export const Home: React.FC = () => {
       }[]
   );
   const annualResultsCycles = useStoreState(
-    (state) => get(state.AnnualResultsCycles, "data.data", []) as number[]
+    (state) =>
+      get(state.AnnualResultsCycles, "data.data", []) as {
+        name: number;
+        value: number;
+      }[]
   );
 
   const handleChartCycleChange = (cycle: CycleProps, index: number) => {
@@ -420,7 +425,7 @@ export const Home: React.FC = () => {
   React.useEffect(() => {
     if (annualResultsCycles.length > 0) {
       fetchResultsStats({
-        filterString: `cycle=${annualResultsCycles[0]}`,
+        filterString: `cycle=${annualResultsCycles[0].value}`,
       });
     }
   }, [annualResultsCycles]);
@@ -505,12 +510,29 @@ export const Home: React.FC = () => {
   }, [dataBudgetsTreemap]);
 
   const expendituresTotal = React.useMemo(() => {
-    const total = sumBy(dataExpendituresHeatmap, "value");
+    const total = sumBy(
+      filter(
+        dataExpendituresHeatmap,
+        (item) => !item.parentRow && !item.parentColumn
+      ),
+      "value"
+    );
     const range = getRange([{ value: total }], ["value"]);
     return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${
       range.full
     }`;
   }, [dataExpendituresHeatmap]);
+
+  const lineChartRange = React.useMemo(() => {
+    const values: { value: number }[] = [];
+    dataDisbursementsLineChart.data.forEach((item) => {
+      item.data.forEach((value) => {
+        values.push({ value });
+      });
+    });
+    const range = getRange(values, ["value"]);
+    return range;
+  }, [dataDisbursementsLineChart.data]);
 
   const fullWidthDivider = (
     <Divider
@@ -543,7 +565,7 @@ export const Home: React.FC = () => {
         showCycleAll
         id="pledges-contributions"
         selectedCycles={chart1Cycles}
-        title={`${totalContribution}`}
+        title={`${totalPledge}`}
         subtitle="Pledges & Contributions"
         loading={loadingPledgesContributionsBarChart}
         empty={dataPledgesContributionsBarChart.length === 0}
@@ -608,11 +630,13 @@ export const Home: React.FC = () => {
         }))}
         text="The Global Fund is distinct from other organizations in that it gives countries (or groups of countries) an allocation and asks countries to describe how they will use those funds rather than asking for applications and then determining an amount per-country based on the merits of the various proposals received.<br/><br/>This provides greater predictability for countries and helps ensure that the programs being funded are not just the ones with the most capacity to write good applications."
       >
-        <RadialChart
-          tooltipLabel="Total allocation amount"
-          data={dataAllocationsRadialChart}
-          itemLabelFormatterType="name"
-        />
+        <Box marginTop="-100px" marginBottom="-100px">
+          <RadialChart
+            tooltipLabel="Total allocation amount"
+            data={dataAllocationsRadialChart}
+            itemLabelFormatterType="name"
+          />
+        </Box>
       </ChartBlock>
       <Box height="50px" />
       {fullWidthDivider}
@@ -656,7 +680,34 @@ export const Home: React.FC = () => {
           value: c.value,
         }))}
       >
-        <LineChart {...dataDisbursementsLineChart} />
+        <Box position="relative">
+          <Typography
+            bottom="20px"
+            fontSize="10px"
+            padding="7px 12px"
+            borderRadius="4px"
+            position="absolute"
+            border="1px solid #DFE3E5"
+            sx={{
+              transformOrigin: "left",
+              transform: "rotate(-90deg)",
+            }}
+          >
+            Y Axis/<b>Disbursed Amount (US$ {lineChartRange.abbr})</b>
+          </Typography>
+          <LineChart {...dataDisbursementsLineChart} />
+          <Typography
+            left="40px"
+            bottom="-20px"
+            fontSize="10px"
+            padding="7px 12px"
+            borderRadius="4px"
+            position="absolute"
+            border="1px solid #DFE3E5"
+          >
+            X Axis/<b>Years</b>
+          </Typography>
+        </Box>
       </ChartBlock>
       <Box height="50px" />
       {fullWidthDivider}
@@ -686,6 +737,8 @@ export const Home: React.FC = () => {
           rowCategory="principalRecipient"
           getItemColor={getPercentageColor}
           contentProp={chart5Unit === "percentage" ? "percentage" : "value"}
+          columnHeader="Principal Recipients"
+          rowHeader="Components"
         />
       </ChartBlock>
     </Box>

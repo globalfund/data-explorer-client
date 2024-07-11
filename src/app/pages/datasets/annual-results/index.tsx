@@ -4,14 +4,16 @@ import uniq from "lodash/uniq";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import { Table } from "app/components/table";
+import { useLocation } from "react-router-dom";
 import { RowComponent } from "tabulator-tables";
 import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
 import { DatasetPage } from "app/pages/datasets/common/page";
+import CircularProgress from "@mui/material/CircularProgress";
+import { TableContainer } from "app/components/table-container";
 import { PolylineTree } from "app/components/charts/polyline-tree";
 import { statsOrder } from "app/pages/datasets/annual-results/data";
 import { FilterGroupModel } from "app/components/filters/list/data";
-import { TABLE_VARIATION_9_COLUMNS } from "app/components/table/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { applyResultValueFormula } from "app/utils/applyResultValueFormula";
@@ -19,6 +21,10 @@ import { PolylineTreeDataItem } from "app/components/charts/polyline-tree/data";
 import { ReactComponent as TableIcon } from "app/assets/vectors/Select_Table.svg";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 import { ReactComponent as BarChartIcon } from "app/assets/vectors/Select_BarChart.svg";
+import {
+  TABLE_VARIATION_9_COLUMNS,
+  TABLE_VARIATION_6_COLUMNS as DOCUMENTS_TABLE_COLUMNS,
+} from "app/components/table/data";
 
 const dropdownItems = [
   { label: "Polyline Tree", value: "Polyline Tree", icon: <BarChartIcon /> },
@@ -49,6 +55,8 @@ const StatComp: React.FC<{
 };
 
 export const AnnualResultsPage: React.FC = () => {
+  const location = useLocation();
+
   const [dropdownSelected, setDropdownSelected] = React.useState(
     dropdownItems[0].value
   );
@@ -60,10 +68,16 @@ export const AnnualResultsPage: React.FC = () => {
   });
 
   const annualResultsCycles = useStoreState(
-    (state) => get(state.AnnualResultsCycles, "data.data", []) as number[]
+    (state) =>
+      get(state.AnnualResultsCycles, "data.data", []) as {
+        name: number;
+        value: number;
+      }[]
   );
   const [yearSelected, setYearSelected] = React.useState(
-    annualResultsCycles.length > 0 ? annualResultsCycles[0].toString() : null
+    annualResultsCycles.length > 0
+      ? annualResultsCycles[0].value.toString()
+      : null
   );
 
   const dataStats = useStoreState(
@@ -110,6 +124,15 @@ export const AnnualResultsPage: React.FC = () => {
         return false;
     }
   });
+  const dataDocumentsTable = useStoreState((state) =>
+    get(state.AnnualResultsDocumentsTable, "data.data", [])
+  );
+  const loadingDocumentsTable = useStoreState(
+    (state) => state.AnnualResultsDocumentsTable.loading
+  );
+  const fetchDocumentsTable = useStoreActions(
+    (actions) => actions.AnnualResultsDocumentsTable.fetch
+  );
   const dataLocationFilterOptions = useStoreState(
     (state) =>
       get(state.LocationFilterOptions, "data.data", {
@@ -257,31 +280,57 @@ export const AnnualResultsPage: React.FC = () => {
 
   const filterString = React.useMemo(() => {
     let filterString = "";
-    if (appliedFiltersData.locations.length > 0) {
-      filterString += `geographies=${encodeURIComponent(appliedFiltersData.locations.join(","))}`;
+    if (
+      appliedFiltersData.locations.length > 0 &&
+      location.search.includes("geographies=")
+    ) {
+      filterString += `geographies=${encodeURIComponent(
+        appliedFiltersData.locations.join(",")
+      )}`;
     }
-    if (appliedFiltersData.components.length > 0) {
-      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(appliedFiltersData.components.join(","))}`;
+    if (
+      appliedFiltersData.components.length > 0 &&
+      location.search.includes("components=")
+    ) {
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }components=${encodeURIComponent(
+        appliedFiltersData.components.join(",")
+      )}`;
     }
     return filterString;
-  }, [appliedFiltersData]);
+  }, [appliedFiltersData, location.search]);
 
   const chartFilterString = React.useMemo(() => {
     let filterString = "";
     if (
-      [...appliedFiltersData.locations, ...chartAppliedFiltersData.locations]
-        .length > 0
+      (appliedFiltersData.locations.length > 0 &&
+        location.search.includes("geographies=")) ||
+      chartAppliedFiltersData.locations.length > 0
     ) {
-      filterString += `geographies=${encodeURIComponent(uniq([...appliedFiltersData.locations, ...chartAppliedFiltersData.locations]).join(","))}`;
+      filterString += `geographies=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.locations,
+          ...chartAppliedFiltersData.locations,
+        ]).join(",")
+      )}`;
     }
     if (
-      [...appliedFiltersData.components, ...chartAppliedFiltersData.components]
-        .length > 0
+      (appliedFiltersData.components.length > 0 &&
+        location.search.includes("components=")) ||
+      chartAppliedFiltersData.components.length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(uniq([...appliedFiltersData.components, ...chartAppliedFiltersData.components]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }components=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.components,
+          ...chartAppliedFiltersData.components,
+        ]).join(",")
+      )}`;
     }
     return filterString;
-  }, [appliedFiltersData, chartAppliedFiltersData]);
+  }, [appliedFiltersData, chartAppliedFiltersData, location.search]);
 
   const toolbarRightContent = React.useMemo(() => {
     return (
@@ -294,8 +343,8 @@ export const AnnualResultsPage: React.FC = () => {
             width={100}
             dropdownSelected={yearSelected ?? ""}
             dropdownItems={annualResultsCycles.map((c) => ({
-              label: c.toString(),
-              value: c.toString(),
+              label: c.name.toString(),
+              value: c.value.toString(),
             }))}
             handleDropdownChange={(value) => {
               setYearSelected(value);
@@ -308,16 +357,23 @@ export const AnnualResultsPage: React.FC = () => {
 
   React.useEffect(() => {
     if (annualResultsCycles.length > 0) {
-      setYearSelected(annualResultsCycles[0].toString());
+      setYearSelected(annualResultsCycles[0].value.toString());
     }
   }, [annualResultsCycles]);
 
   React.useEffect(() => {
     if (yearSelected) {
       fetchStats({
-        filterString: `${filterString}${filterString.length ? "&" : ""}cycle=${yearSelected}`,
+        filterString: `${filterString}${
+          filterString.length ? "&" : ""
+        }cycle=${yearSelected}`,
       });
     }
+    fetchDocumentsTable({
+      filterString: `types=Profile&${filterString}${
+        filterString.length ? "&" : ""
+      }cycle=${yearSelected}`,
+    });
   }, [filterString, yearSelected]);
 
   React.useEffect(() => {
@@ -396,6 +452,67 @@ export const AnnualResultsPage: React.FC = () => {
           >
             {chartContent}
           </DatasetChartBlock>
+        </Box>
+        <Divider
+          sx={{
+            left: 0,
+            width: "100vw",
+            position: "absolute",
+            borderColor: "#CFD4DA",
+          }}
+        />
+        <Box
+          paddingTop="50px"
+          sx={{
+            "#content": {
+              padding: 0,
+            },
+          }}
+        >
+          <Box id="documents" padding="50px 0">
+            <Typography variant="h3" lineHeight={1.2}>
+              Documents
+            </Typography>
+            <Divider
+              sx={{
+                margin: "20px 0",
+              }}
+            />
+            {loadingDocumentsTable && (
+              <Box
+                width="100%"
+                height="100%"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+              >
+                <CircularProgress />
+              </Box>
+            )}
+            {!loadingDocumentsTable && dataDocumentsTable.length > 0 ? (
+              <React.Fragment>
+                <Box height="40px" />
+                <TableContainer
+                  dataTree
+                  id="documents-table"
+                  dataTreeStartExpanded
+                  data={dataDocumentsTable}
+                  columns={DOCUMENTS_TABLE_COLUMNS}
+                />
+              </React.Fragment>
+            ) : (
+              <Box
+                width="100%"
+                height="100%"
+                minHeight="250px"
+                alignItems="center"
+                justifyContent="center"
+                display={!loadingDocumentsTable ? "flex" : "none"}
+              >
+                <Typography>No data available</Typography>
+              </Box>
+            )}
+          </Box>
         </Box>
       </Box>
     </DatasetPage>

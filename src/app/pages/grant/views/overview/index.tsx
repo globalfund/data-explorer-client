@@ -69,18 +69,23 @@ export const GrantOverview: React.FC = () => {
   }, [dataOverview.status]);
 
   const raceBarChartData = React.useMemo(() => {
+    const disbursementPercentage =
+      (dataOverview.disbursement / dataOverview.commitment) * 100;
+    const commitmentPercentage =
+      (dataOverview.commitment / dataOverview.signed) * 100;
     return [
       {
         name: "Disbursed",
         value: dataOverview.disbursement,
         color: "#0A2840",
-        percentage: (dataOverview.disbursement / dataOverview.commitment) * 100,
+        percentage: disbursementPercentage,
+        sizePercentage: (disbursementPercentage * commitmentPercentage) / 100,
       },
       {
         name: "Committed",
         value: dataOverview.commitment,
         color: "#013E77",
-        percentage: (dataOverview.commitment / dataOverview.signed) * 100,
+        percentage: commitmentPercentage,
       },
       {
         name: "Signed",

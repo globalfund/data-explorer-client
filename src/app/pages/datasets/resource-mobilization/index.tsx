@@ -6,34 +6,29 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import { Table } from "app/components/table";
+import { useLocation } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import { DatasetPage } from "app/pages/datasets/common/page";
 import CircularProgress from "@mui/material/CircularProgress";
-import { SunburstChart } from "app/components/charts/sunburst";
 import { FilterGroupModel } from "app/components/filters/list/data";
 import { TABLE_VARIATION_8_COLUMNS } from "app/components/table/data";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
-import { SunburstDataItem } from "app/components/charts/sunburst/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { ReactComponent as TableIcon } from "app/assets/vectors/Select_Table.svg";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 import { ReactComponent as BarChartIcon } from "app/assets/vectors/Select_BarChart.svg";
 import { ExpandableHorizontalBar } from "app/components/charts/expandable-horizontal-bar";
-import { ReactComponent as SunburstChartIcon } from "app/assets/vectors/Select_SunburstChart.svg";
 import { ExpandableHorizontalBarChartDataItem } from "app/components/charts/expandable-horizontal-bar/data";
 
 const dropdownItems = [
   { label: "Bar Chart", value: "Bar Chart", icon: <BarChartIcon /> },
-  {
-    label: "Sunburst Chart",
-    value: "Sunburst Chart",
-    icon: <SunburstChartIcon />,
-  },
   { label: "Table View", value: "Table View", icon: <TableIcon /> },
 ];
 
 export const ResourceMobilizationPage: React.FC = () => {
+  const location = useLocation();
+
   const [dropdownSelected, setDropdownSelected] = React.useState(
     dropdownItems[0].value
   );
@@ -75,17 +70,6 @@ export const ResourceMobilizationPage: React.FC = () => {
   const fetchBarChart = useStoreActions(
     (actions) => actions.ResourceMobilizationExpandableBarChart.fetch
   );
-  const dataSunburst = useStoreState(
-    (state) =>
-      get(
-        state.ResourceMobilizationSunburst,
-        "data.data",
-        []
-      ) as SunburstDataItem[]
-  );
-  const fetchSunburst = useStoreActions(
-    (actions) => actions.ResourceMobilizationSunburst.fetch
-  );
   const dataTable = useStoreState((state) =>
     get(state.ResourceMobilizationTable, "data.data", [])
   );
@@ -97,8 +81,6 @@ export const ResourceMobilizationPage: React.FC = () => {
       case dropdownItems[0].value:
         return state.ResourceMobilizationExpandableBarChart.loading;
       case dropdownItems[1].value:
-        return state.ResourceMobilizationSunburst.loading;
-      case dropdownItems[2].value:
         return state.ResourceMobilizationTable.loading;
       default:
         return false;
@@ -238,14 +220,6 @@ export const ResourceMobilizationPage: React.FC = () => {
         );
       case dropdownItems[1].value:
         return (
-          <SunburstChart
-            data={dataSunburst}
-            tooltipLabel="Pledge"
-            centerLabel="Total Pledge"
-          />
-        );
-      case dropdownItems[2].value:
-        return (
           <Table
             dataTree
             data={dataTable}
@@ -256,20 +230,18 @@ export const ResourceMobilizationPage: React.FC = () => {
       default:
         return null;
     }
-  }, [dropdownSelected, dataBarChart, dataSunburst, dataTable]);
+  }, [dropdownSelected, dataBarChart, dataTable]);
 
   const chartEmpty = React.useMemo(() => {
     switch (dropdownSelected) {
       case dropdownItems[0].value:
         return !dataBarChart || !dataBarChart.length;
       case dropdownItems[1].value:
-        return !dataSunburst || !dataSunburst.length;
-      case dropdownItems[2].value:
         return !dataTable || !dataTable.length;
       default:
         return false;
     }
-  }, [dropdownSelected, dataBarChart, dataSunburst, dataTable]);
+  }, [dropdownSelected, dataBarChart, dataTable]);
 
   const filterGroups = React.useMemo(() => {
     return [dataDonorFilterOptions, dataReplenishmentPeriodFilterOptions];
@@ -277,42 +249,79 @@ export const ResourceMobilizationPage: React.FC = () => {
 
   const filterString = React.useMemo(() => {
     let filterString = "";
-    if (appliedFiltersData.donorTypes.length > 0) {
-      filterString += `donorTypes=${encodeURIComponent(appliedFiltersData.donorTypes.join(","))}`;
+    if (
+      appliedFiltersData.donorTypes.length > 0 &&
+      location.search.includes("donorTypes=")
+    ) {
+      filterString += `donorTypes=${encodeURIComponent(
+        appliedFiltersData.donorTypes.join(",")
+      )}`;
     }
-    if (appliedFiltersData.donors.length > 0) {
-      filterString += `${filterString.length > 0 ? "&" : ""}donors=${encodeURIComponent(appliedFiltersData.donors.join(","))}`;
+    if (
+      appliedFiltersData.donors.length > 0 &&
+      location.search.includes("donors=")
+    ) {
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }donors=${encodeURIComponent(appliedFiltersData.donors.join(","))}`;
     }
-    if (appliedFiltersData.replenishmentPeriods.length > 0) {
-      filterString += `${filterString.length > 0 ? "&" : ""}periods=${encodeURIComponent(appliedFiltersData.replenishmentPeriods.join(","))}`;
+    if (
+      appliedFiltersData.replenishmentPeriods.length > 0 &&
+      location.search.includes("periods=")
+    ) {
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }periods=${encodeURIComponent(
+        appliedFiltersData.replenishmentPeriods.join(",")
+      )}`;
     }
     return filterString;
-  }, [appliedFiltersData]);
+  }, [appliedFiltersData, location.search]);
 
   const chartFilterString = React.useMemo(() => {
     let filterString = "";
     if (
-      [...appliedFiltersData.donorTypes, ...chartAppliedFiltersData.donorTypes]
-        .length > 0
+      (appliedFiltersData.donorTypes.length > 0 &&
+        location.search.includes("donorTypes=")) ||
+      chartAppliedFiltersData.donorTypes.length > 0
     ) {
-      filterString += `donorTypes=${encodeURIComponent(uniq([...appliedFiltersData.donorTypes, ...chartAppliedFiltersData.donorTypes]).join(","))}`;
+      filterString += `donorTypes=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.donorTypes,
+          ...chartAppliedFiltersData.donorTypes,
+        ]).join(",")
+      )}`;
     }
     if (
-      [...appliedFiltersData.donors, ...chartAppliedFiltersData.donors].length >
-      0
+      (appliedFiltersData.donors.length > 0 &&
+        location.search.includes("donors=")) ||
+      chartAppliedFiltersData.donors.length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}donors=${encodeURIComponent(uniq([...appliedFiltersData.donors, ...chartAppliedFiltersData.donors]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }donors=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.donors,
+          ...chartAppliedFiltersData.donors,
+        ]).join(",")
+      )}`;
     }
     if (
-      [
-        ...appliedFiltersData.replenishmentPeriods,
-        ...chartAppliedFiltersData.replenishmentPeriods,
-      ].length > 0
+      (appliedFiltersData.replenishmentPeriods.length > 0 &&
+        location.search.includes("periods=")) ||
+      chartAppliedFiltersData.replenishmentPeriods.length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}periods=${encodeURIComponent(uniq([...appliedFiltersData.replenishmentPeriods, ...chartAppliedFiltersData.replenishmentPeriods]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }periods=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.replenishmentPeriods,
+          ...chartAppliedFiltersData.replenishmentPeriods,
+        ]).join(",")
+      )}`;
     }
     return filterString;
-  }, [appliedFiltersData, chartAppliedFiltersData]);
+  }, [appliedFiltersData, chartAppliedFiltersData, location.search]);
 
   React.useEffect(() => {
     fetchStats({ filterString });
@@ -320,12 +329,6 @@ export const ResourceMobilizationPage: React.FC = () => {
 
   React.useEffect(() => {
     fetchBarChart({ filterString: chartFilterString });
-    fetchSunburst({
-      filterString: chartFilterString,
-      routeParams: {
-        type: "pledge",
-      },
-    });
     fetchTable({ filterString: chartFilterString });
   }, [chartFilterString]);
 
@@ -357,19 +360,25 @@ export const ResourceMobilizationPage: React.FC = () => {
             item
             sm={12}
             md={4}
-            gap="20px"
+            // gap="20px"
             display="flex"
             flexDirection="column"
             sx={{
               paddingRight: "21px",
               borderRight: "1px solid #CFD4DA",
+              "> div": {
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+              },
               "@media (max-width: 600px)": {
                 paddingRight: "0px",
                 borderRightStyle: "none",
               },
             }}
           >
-            <Box>
+            {/* <Box>
               <Typography variant="h5">
                 {get(dataStats, "percentage", 0).toFixed(2).replace(".00", "")}%
               </Typography>
@@ -377,7 +386,7 @@ export const ResourceMobilizationPage: React.FC = () => {
                 Pledge Conversion based on the announce pledge
               </Typography>
             </Box>
-            <Divider />
+            <Divider /> */}
             <Box>
               <Typography variant="h5">
                 {formatFinancialValue(get(dataStats, "totalPledges", 0))}
@@ -408,7 +417,7 @@ export const ResourceMobilizationPage: React.FC = () => {
             }}
           >
             <Box marginBottom="20px">
-              <Typography variant="h5">Total Donors Mobilized</Typography>
+              <Typography variant="h5">Number of Donors Mobilized</Typography>
               <Typography variant="body2" fontWeight="700">
                 Grouped by their Donor types
               </Typography>
@@ -460,7 +469,7 @@ export const ResourceMobilizationPage: React.FC = () => {
                   <Grid item xs={12} sm={6} md={6} lg={3} key={item.name}>
                     <Box bgcolor="#F1F3F5" padding="5px 10px">
                       <Typography variant="h5">{item.value}</Typography>
-                      <Typography fontSize="12px">from {item.name}</Typography>
+                      <Typography fontSize="12px">{item.name}</Typography>
                     </Box>
                   </Grid>
                 ))}
@@ -479,7 +488,7 @@ export const ResourceMobilizationPage: React.FC = () => {
         <Box
           paddingTop="50px"
           sx={
-            dropdownSelected === dropdownItems[2].value
+            dropdownSelected === dropdownItems[1].value
               ? {
                   "#content": {
                     padding: 0,
@@ -495,7 +504,7 @@ export const ResourceMobilizationPage: React.FC = () => {
             dropdownItems={dropdownItems}
             dropdownSelected={dropdownSelected}
             handleDropdownChange={handleSelectionChange}
-            disableCollapse={dropdownSelected === dropdownItems[2].value}
+            disableCollapse={dropdownSelected === dropdownItems[1].value}
             loading={dataChartLoading}
             empty={chartEmpty}
             filterGroups={filterGroups}

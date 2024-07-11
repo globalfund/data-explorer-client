@@ -3,11 +3,13 @@ import get from "lodash/get";
 import uniq from "lodash/uniq";
 import maxBy from "lodash/maxBy";
 import sumBy from "lodash/sumBy";
+import filter from "lodash/filter";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { appColors } from "app/theme";
 import Divider from "@mui/material/Divider";
 import { Table } from "app/components/table";
+import { useLocation } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
 import { BarChart } from "app/components/charts/bar";
@@ -15,6 +17,7 @@ import { LineChart } from "app/components/charts/line";
 import { Treemap } from "app/components/charts/treemap";
 import { Heatmap } from "app/components/charts/heatmap";
 import { SankeyChart } from "app/components/charts/sankey";
+import useUpdateEffect from "react-use/lib/useUpdateEffect";
 import { DatasetPage } from "app/pages/datasets/common/page";
 import CircularProgress from "@mui/material/CircularProgress";
 import { BarChartDataItem } from "app/components/charts/bar/data";
@@ -51,9 +54,12 @@ import {
   componentsGroupingOptions,
   dropdownItemsDisbursements,
   dropdownItemsExpenditures,
+  dropdownItemsBudgetsTableDataTypes,
 } from "app/pages/datasets/grant-implementation/data";
 
 export const GrantImplementationPage: React.FC = () => {
+  const location = useLocation();
+
   const [geographyGrouping, setGeographyGrouping] = React.useState(
     geographyGroupingOptions[0].value
   );
@@ -132,7 +138,7 @@ export const GrantImplementationPage: React.FC = () => {
     (state) =>
       get(
         state.FinancialInsightsDisbursementsLineChart,
-        "data.keys",
+        "data.xAxisKeys",
         []
       ) as string[]
   );
@@ -176,6 +182,9 @@ export const GrantImplementationPage: React.FC = () => {
   );
   const fetchBudgetBreakdown = useStoreActions(
     (actions) => actions.FinancialInsightsBudgetBreakdown.fetch
+  );
+  const loadingBudgetBreakdown = useStoreState(
+    (state) => state.FinancialInsightsBudgetBreakdown.loading
   );
   const dataBudgetUtilisation = useStoreState(
     (state) =>
@@ -396,12 +405,20 @@ export const GrantImplementationPage: React.FC = () => {
   const [budgetBreakdownDropdownSelected, setBudgetBreakdownDropdownSelected] =
     React.useState(cycles.length > 0 ? cycles[0].value : null);
 
+  const [budgetTableDataType, setBudgetTableDataType] = React.useState(
+    dropdownItemsBudgetsTableDataTypes[0].value
+  );
+
   const handleDisbursementsSelectionChange = (value: string) => {
     setDisbursementsDropdownSelected(value);
   };
 
   const handleBudgetBreakdownSelectionChange = (value: string) => {
     setBudgetBreakdownDropdownSelected(value);
+  };
+
+  const handleBudgetTableDataTypeChange = (value: string) => {
+    setBudgetTableDataType(value);
   };
 
   const handleGeographyGroupingChange = (value: string) => {
@@ -415,6 +432,7 @@ export const GrantImplementationPage: React.FC = () => {
   const handleResetFilters = () => {
     appliedFiltersActions.setAll({
       ...appliedFiltersData,
+      cycles: [],
       components: [],
       locations: [],
       principalRecipients: [],
@@ -435,6 +453,7 @@ export const GrantImplementationPage: React.FC = () => {
           principalRecipientSubTypes: [],
           principalRecipientTypes: [],
           status: [],
+          cycles: [],
         });
         setChart1AppliedFilters([]);
         break;
@@ -447,6 +466,7 @@ export const GrantImplementationPage: React.FC = () => {
           principalRecipientSubTypes: [],
           principalRecipientTypes: [],
           status: [],
+          cycles: [],
         });
         setChart2AppliedFilters([]);
         break;
@@ -459,6 +479,7 @@ export const GrantImplementationPage: React.FC = () => {
           principalRecipientSubTypes: [],
           principalRecipientTypes: [],
           status: [],
+          cycles: [],
         });
         setChart3AppliedFilters([]);
         break;
@@ -471,6 +492,7 @@ export const GrantImplementationPage: React.FC = () => {
           principalRecipientSubTypes: [],
           principalRecipientTypes: [],
           status: [],
+          cycles: [],
         });
         setChart4AppliedFilters([]);
         break;
@@ -550,6 +572,13 @@ export const GrantImplementationPage: React.FC = () => {
             state.status = state.status.filter((item) => item !== value);
           }
           break;
+        case "cycle":
+          if (checked) {
+            state.cycles.push(value);
+          } else {
+            state.cycles = state.cycles.filter((item) => item !== value);
+          }
+          break;
         default:
           break;
       }
@@ -561,6 +590,7 @@ export const GrantImplementationPage: React.FC = () => {
         ...state.principalRecipientSubTypes,
         ...state.principalRecipientTypes,
         ...state.status,
+        ...state.cycles,
       ]);
     };
 
@@ -624,6 +654,7 @@ export const GrantImplementationPage: React.FC = () => {
         ...state.principalRecipientSubTypes,
         ...state.principalRecipientTypes,
         ...state.status,
+        ...state.cycles,
       ]);
     };
 
@@ -639,7 +670,7 @@ export const GrantImplementationPage: React.FC = () => {
         return (
           <Box position="relative">
             <Typography
-              left="-5px"
+              left="-15px"
               bottom="20px"
               fontSize="10px"
               padding="7px 12px"
@@ -759,30 +790,36 @@ export const GrantImplementationPage: React.FC = () => {
   const financialMetricsContent = React.useMemo(() => {
     return (
       <Box gap="40px" width="100%" display="flex" flexDirection="column">
-        <FinancialMetric
-          {...FINANCIAL_METRICS_DATA_1}
-          donutChart={{
-            ...FINANCIAL_METRICS_DATA_1.donutChart,
-            value: dataBudgetUtilisation.value,
-          }}
-          items={dataBudgetUtilisation.items}
-        />
-        <FinancialMetric
-          {...FINANCIAL_METRICS_DATA_2}
-          donutChart={{
-            ...FINANCIAL_METRICS_DATA_2.donutChart,
-            value: dataInCountryAbsorption.value,
-          }}
-          items={dataInCountryAbsorption.items}
-        />
-        <FinancialMetric
-          {...FINANCIAL_METRICS_DATA_3}
-          donutChart={{
-            ...FINANCIAL_METRICS_DATA_3.donutChart,
-            value: dataDisbursementUtilisation.value,
-          }}
-          items={dataDisbursementUtilisation.items}
-        />
+        {dataBudgetUtilisation.items.length > 0 && (
+          <FinancialMetric
+            {...FINANCIAL_METRICS_DATA_1}
+            donutChart={{
+              ...FINANCIAL_METRICS_DATA_1.donutChart,
+              value: dataBudgetUtilisation.value,
+            }}
+            items={dataBudgetUtilisation.items}
+          />
+        )}
+        {dataInCountryAbsorption.items.length > 0 && (
+          <FinancialMetric
+            {...FINANCIAL_METRICS_DATA_2}
+            donutChart={{
+              ...FINANCIAL_METRICS_DATA_2.donutChart,
+              value: dataInCountryAbsorption.value,
+            }}
+            items={dataInCountryAbsorption.items}
+          />
+        )}
+        {dataDisbursementUtilisation.items.length > 0 && (
+          <FinancialMetric
+            {...FINANCIAL_METRICS_DATA_3}
+            donutChart={{
+              ...FINANCIAL_METRICS_DATA_3.donutChart,
+              value: dataDisbursementUtilisation.value,
+            }}
+            items={dataDisbursementUtilisation.items}
+          />
+        )}
       </Box>
     );
   }, [
@@ -793,8 +830,8 @@ export const GrantImplementationPage: React.FC = () => {
 
   const financialMetricsEmpty = React.useMemo(() => {
     return (
-      !dataBudgetUtilisation.items.length ||
-      !dataInCountryAbsorption.items.length ||
+      !dataBudgetUtilisation.items.length &&
+      !dataInCountryAbsorption.items.length &&
       !dataDisbursementUtilisation.items.length
     );
   }, [
@@ -836,6 +873,14 @@ export const GrantImplementationPage: React.FC = () => {
       case dropdownItemsBudgets[1].value:
         return <Treemap data={dataBudgetTreemap} />;
       case dropdownItemsBudgets[2].value:
+        const columns = [...BUDGET_TABLE_COLUMNS];
+        if (
+          budgetTableDataType === dropdownItemsBudgetsTableDataTypes[1].value
+        ) {
+          columns[0].title = "Modules & Interventions";
+        } else {
+          columns[0].title = "Investment Landscapes & Cost Category";
+        }
         return (
           <Table
             dataTree
@@ -852,7 +897,21 @@ export const GrantImplementationPage: React.FC = () => {
     dataBudgetSankey,
     dataBudgetTreemap,
     dataBudgetTable,
+    budgetTableDataType,
   ]);
+
+  const budgetsTableDataTypeDropdown = React.useMemo(() => {
+    if (budgetsDropdownSelected === dropdownItemsBudgets[2].value) {
+      return (
+        <Dropdown
+          dropdownSelected={budgetTableDataType}
+          dropdownItems={dropdownItemsBudgetsTableDataTypes}
+          handleDropdownChange={handleBudgetTableDataTypeChange}
+        />
+      );
+    }
+    return undefined;
+  }, [budgetsDropdownSelected, budgetTableDataType]);
 
   const budgetsChartEmpty = React.useMemo(() => {
     switch (budgetsDropdownSelected) {
@@ -892,8 +951,8 @@ export const GrantImplementationPage: React.FC = () => {
         return (
           <ExpandableHorizontalBar
             data={dataExpendituresBarChart}
-            yAxisLabel="Investment Landscapes & Analytical Group Name"
-            xAxisLabel="Cumulative Expenditure"
+            yAxisLabel="Modules & Interventions"
+            xAxisLabel="Expenditure"
             valueLabels={{
               value: "amount",
             }}
@@ -973,7 +1032,15 @@ export const GrantImplementationPage: React.FC = () => {
   }, [dataBudgetTreemap]);
 
   const totalExpenditure = React.useMemo(() => {
-    return formatFinancialValue(sumBy(dataExpendituresHeatmap, "value"));
+    return formatFinancialValue(
+      sumBy(
+        filter(
+          dataExpendituresHeatmap,
+          (item) => !item.parentRow && !item.parentColumn
+        ),
+        "value"
+      )
+    );
   }, [dataExpendituresHeatmap]);
 
   const filterGroups = React.useMemo(() => {
@@ -994,83 +1061,169 @@ export const GrantImplementationPage: React.FC = () => {
 
   const filterString = React.useMemo(() => {
     let filterString = "";
-    if (appliedFiltersData.locations.length > 0) {
-      filterString += `geographies=${encodeURIComponent(appliedFiltersData.locations.join(","))}`;
+    if (
+      appliedFiltersData.locations.length > 0 &&
+      location.search.includes("geographies=")
+    ) {
+      filterString += `geographies=${encodeURIComponent(
+        appliedFiltersData.locations.join(",")
+      )}`;
     }
-    if (appliedFiltersData.components.length > 0) {
-      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(appliedFiltersData.components.join(","))}`;
+    if (
+      appliedFiltersData.components.length > 0 &&
+      location.search.includes("components=")
+    ) {
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }components=${encodeURIComponent(
+        appliedFiltersData.components.join(",")
+      )}`;
     }
-    if (appliedFiltersData.principalRecipientTypes.length > 0) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientTypes=${encodeURIComponent(appliedFiltersData.principalRecipientTypes.join(","))}`;
+    if (
+      appliedFiltersData.principalRecipientTypes.length > 0 &&
+      location.search.includes("principalRecipientTypes=")
+    ) {
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipientTypes=${encodeURIComponent(
+        appliedFiltersData.principalRecipientTypes.join(",")
+      )}`;
     }
-    if (appliedFiltersData.principalRecipientSubTypes.length > 0) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientSubTypes=${encodeURIComponent(appliedFiltersData.principalRecipientSubTypes.join(","))}`;
+    if (
+      appliedFiltersData.principalRecipientSubTypes.length > 0 &&
+      location.search.includes("principalRecipientSubTypes=")
+    ) {
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipientSubTypes=${encodeURIComponent(
+        appliedFiltersData.principalRecipientSubTypes.join(",")
+      )}`;
     }
-    if (appliedFiltersData.principalRecipients.length > 0) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipients=${encodeURIComponent(appliedFiltersData.principalRecipients.join(","))}`;
+    if (
+      appliedFiltersData.principalRecipients.length > 0 &&
+      location.search.includes("principalRecipients=")
+    ) {
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipients=${encodeURIComponent(
+        appliedFiltersData.principalRecipients.join(",")
+      )}`;
     }
-    if (appliedFiltersData.status.length > 0) {
-      filterString += `${filterString.length > 0 ? "&" : ""}status=${encodeURIComponent(appliedFiltersData.status.join(","))}`;
+    if (
+      appliedFiltersData.status.length > 0 &&
+      location.search.includes("status=")
+    ) {
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }status=${encodeURIComponent(appliedFiltersData.status.join(","))}`;
     }
-    if (appliedFiltersData.cycles.length > 0) {
+    if (
+      appliedFiltersData.cycles.length > 0 &&
+      location.search.includes("cycles=")
+    ) {
       const years = appliedFiltersData.cycles.map(
         (cycle) => cycle.replace(/ /g, "").split("-")[0]
       );
       const yearsTo = appliedFiltersData.cycles.map(
         (cycle) => cycle.replace(/ /g, "").split("-")[1]
       );
-      filterString += `${filterString.length > 0 ? "&" : ""}years=${encodeURIComponent(years.join(","))}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }years=${encodeURIComponent(
+        years.join(",")
+      )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
     }
     return filterString;
-  }, [appliedFiltersData]);
+  }, [appliedFiltersData, location.search]);
 
   const chart1FilterString = React.useMemo(() => {
     let filterString = "";
     if (
-      [...appliedFiltersData.locations, ...chart1AppliedFiltersData.locations]
-        .length > 0
+      (appliedFiltersData.locations.length > 0 &&
+        location.search.includes("geographies=")) ||
+      chart1AppliedFiltersData.locations.length > 0
     ) {
-      filterString += `geographies=${encodeURIComponent(uniq([...appliedFiltersData.locations, ...chart1AppliedFiltersData.locations]).join(","))}`;
+      filterString += `geographies=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.locations,
+          ...chart1AppliedFiltersData.locations,
+        ]).join(",")
+      )}`;
     }
     if (
-      [...appliedFiltersData.components, ...chart1AppliedFiltersData.components]
-        .length > 0
+      (appliedFiltersData.components.length > 0 &&
+        location.search.includes("components=")) ||
+      chart1AppliedFiltersData.components.length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(uniq([...appliedFiltersData.components, ...chart1AppliedFiltersData.components]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }components=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.components,
+          ...chart1AppliedFiltersData.components,
+        ]).join(",")
+      )}`;
     }
     if (
-      [
-        ...appliedFiltersData.principalRecipients,
-        ...chart1AppliedFiltersData.principalRecipients,
-      ].length > 0
+      (appliedFiltersData.principalRecipients.length > 0 &&
+        location.search.includes("principalRecipients=")) ||
+      chart1AppliedFiltersData.principalRecipients.length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipients=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipients, ...chart1AppliedFiltersData.principalRecipients]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipients=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipients,
+          ...chart1AppliedFiltersData.principalRecipients,
+        ]).join(",")
+      )}`;
     }
     if (
-      [
-        ...appliedFiltersData.principalRecipientSubTypes,
-        ...chart1AppliedFiltersData.principalRecipientSubTypes,
-      ].length > 0
+      (appliedFiltersData.principalRecipientSubTypes.length > 0 &&
+        location.search.includes("principalRecipientSubTypes=")) ||
+      chart1AppliedFiltersData.principalRecipientSubTypes.length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientSubTypes=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipientSubTypes, ...chart1AppliedFiltersData.principalRecipientSubTypes]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipientSubTypes=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipientSubTypes,
+          ...chart1AppliedFiltersData.principalRecipientSubTypes,
+        ]).join(",")
+      )}`;
     }
     if (
-      [
-        ...appliedFiltersData.principalRecipientTypes,
-        ...chart1AppliedFiltersData.principalRecipientTypes,
-      ].length > 0
+      (appliedFiltersData.principalRecipientTypes.length > 0 &&
+        location.search.includes("principalRecipientTypes=")) ||
+      chart1AppliedFiltersData.principalRecipientTypes.length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientTypes=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipientTypes, ...chart1AppliedFiltersData.principalRecipientTypes]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipientTypes=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipientTypes,
+          ...chart1AppliedFiltersData.principalRecipientTypes,
+        ]).join(",")
+      )}`;
     }
     if (
-      [...appliedFiltersData.status, ...chart1AppliedFiltersData.status]
-        .length > 0
+      (appliedFiltersData.status.length > 0 &&
+        location.search.includes("status=")) ||
+      chart1AppliedFiltersData.status.length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}status=${encodeURIComponent(uniq([...appliedFiltersData.status, ...chart1AppliedFiltersData.status]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }status=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.status,
+          ...chart1AppliedFiltersData.status,
+        ]).join(",")
+      )}`;
     }
     if (
-      [...appliedFiltersData.cycles, ...chart1AppliedFiltersData.cycles]
-        .length > 0
+      (appliedFiltersData.cycles.length > 0 &&
+        location.search.includes("cycles=")) ||
+      chart1AppliedFiltersData.cycles.length > 0
     ) {
       const years = uniq([
         ...appliedFiltersData.cycles,
@@ -1080,58 +1233,103 @@ export const GrantImplementationPage: React.FC = () => {
         ...appliedFiltersData.cycles,
         ...chart1AppliedFiltersData.cycles,
       ]).map((cycle) => cycle.replace(/ /g, "").split("-")[1]);
-      filterString += `${filterString.length > 0 ? "&" : ""}years=${encodeURIComponent(years.join(","))}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }years=${encodeURIComponent(
+        years.join(",")
+      )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
     }
     return filterString;
-  }, [appliedFiltersData, chart1AppliedFiltersData]);
+  }, [appliedFiltersData, chart1AppliedFiltersData, location.search]);
 
   const chart2FilterString = React.useMemo(() => {
     let filterString = "";
     if (
-      [...appliedFiltersData.locations, ...chart2AppliedFiltersData.locations]
-        .length > 0
+      (appliedFiltersData.locations.length > 0 &&
+        location.search.includes("geographies=")) ||
+      chart2AppliedFiltersData.locations.length > 0
     ) {
-      filterString += `geographies=${encodeURIComponent(uniq([...appliedFiltersData.locations, ...chart2AppliedFiltersData.locations]).join(","))}`;
+      filterString += `geographies=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.locations,
+          ...chart2AppliedFiltersData.locations,
+        ]).join(",")
+      )}`;
     }
     if (
-      [...appliedFiltersData.components, ...chart2AppliedFiltersData.components]
-        .length > 0
+      (appliedFiltersData.components.length > 0 &&
+        location.search.includes("components=")) ||
+      chart2AppliedFiltersData.components.length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(uniq([...appliedFiltersData.components, ...chart2AppliedFiltersData.components]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }components=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.components,
+          ...chart2AppliedFiltersData.components,
+        ]).join(",")
+      )}`;
     }
     if (
-      [
-        ...appliedFiltersData.principalRecipients,
-        ...chart2AppliedFiltersData.principalRecipients,
-      ].length > 0
+      (appliedFiltersData.principalRecipients.length > 0 &&
+        location.search.includes("principalRecipients=")) ||
+      chart2AppliedFiltersData.principalRecipients.length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipients=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipients, ...chart2AppliedFiltersData.principalRecipients]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipients=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipients,
+          ...chart2AppliedFiltersData.principalRecipients,
+        ]).join(",")
+      )}`;
     }
     if (
-      [
-        ...appliedFiltersData.principalRecipientSubTypes,
-        ...chart2AppliedFiltersData.principalRecipientSubTypes,
-      ].length > 0
+      (appliedFiltersData.principalRecipientSubTypes.length > 0 &&
+        location.search.includes("principalRecipientSubTypes=")) ||
+      chart2AppliedFiltersData.principalRecipientSubTypes.length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientSubTypes=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipientSubTypes, ...chart2AppliedFiltersData.principalRecipientSubTypes]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipientSubTypes=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipientSubTypes,
+          ...chart2AppliedFiltersData.principalRecipientSubTypes,
+        ]).join(",")
+      )}`;
     }
     if (
-      [
-        ...appliedFiltersData.principalRecipientTypes,
-        ...chart2AppliedFiltersData.principalRecipientTypes,
-      ].length > 0
+      (appliedFiltersData.principalRecipientTypes.length > 0 &&
+        location.search.includes("principalRecipientTypes=")) ||
+      chart2AppliedFiltersData.principalRecipientTypes.length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientTypes=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipientTypes, ...chart2AppliedFiltersData.principalRecipientTypes]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipientTypes=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipientTypes,
+          ...chart2AppliedFiltersData.principalRecipientTypes,
+        ]).join(",")
+      )}`;
     }
     if (
-      [...appliedFiltersData.status, ...chart2AppliedFiltersData.status]
-        .length > 0
+      (appliedFiltersData.status.length > 0 &&
+        location.search.includes("status=")) ||
+      chart2AppliedFiltersData.status.length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}status=${encodeURIComponent(uniq([...appliedFiltersData.status, ...chart2AppliedFiltersData.status]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }status=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.status,
+          ...chart2AppliedFiltersData.status,
+        ]).join(",")
+      )}`;
     }
     if (
-      [...appliedFiltersData.cycles, ...chart2AppliedFiltersData.cycles]
-        .length > 0
+      (appliedFiltersData.cycles.length > 0 &&
+        location.search.includes("cycles=")) ||
+      chart2AppliedFiltersData.cycles.length > 0
     ) {
       const years = uniq([
         ...appliedFiltersData.cycles,
@@ -1141,58 +1339,103 @@ export const GrantImplementationPage: React.FC = () => {
         ...appliedFiltersData.cycles,
         ...chart2AppliedFiltersData.cycles,
       ]).map((cycle) => cycle.replace(/ /g, "").split("-")[1]);
-      filterString += `${filterString.length > 0 ? "&" : ""}years=${encodeURIComponent(years.join(","))}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }years=${encodeURIComponent(
+        years.join(",")
+      )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
     }
     return filterString;
-  }, [appliedFiltersData, chart2AppliedFiltersData]);
+  }, [appliedFiltersData, chart2AppliedFiltersData, location.search]);
 
   const chart3FilterString = React.useMemo(() => {
     let filterString = "";
     if (
-      [...appliedFiltersData.locations, ...chart3AppliedFiltersData.locations]
-        .length > 0
+      (appliedFiltersData.locations.length > 0 &&
+        location.search.includes("geographies=")) ||
+      chart3AppliedFiltersData.locations.length > 0
     ) {
-      filterString += `geographies=${encodeURIComponent(uniq([...appliedFiltersData.locations, ...chart3AppliedFiltersData.locations]).join(","))}`;
+      filterString += `geographies=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.locations,
+          ...chart3AppliedFiltersData.locations,
+        ]).join(",")
+      )}`;
     }
     if (
-      [...appliedFiltersData.components, ...chart3AppliedFiltersData.components]
-        .length > 0
+      (appliedFiltersData.components.length > 0 &&
+        location.search.includes("components=")) ||
+      chart3AppliedFiltersData.components.length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(uniq([...appliedFiltersData.components, ...chart3AppliedFiltersData.components]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }components=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.components,
+          ...chart3AppliedFiltersData.components,
+        ]).join(",")
+      )}`;
     }
     if (
-      [
-        ...appliedFiltersData.principalRecipients,
-        ...chart3AppliedFiltersData.principalRecipients,
-      ].length > 0
+      (appliedFiltersData.principalRecipients.length > 0 &&
+        location.search.includes("principalRecipients=")) ||
+      chart3AppliedFiltersData.principalRecipients.length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipients=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipients, ...chart3AppliedFiltersData.principalRecipients]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipients=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipients,
+          ...chart3AppliedFiltersData.principalRecipients,
+        ]).join(",")
+      )}`;
     }
     if (
-      [
-        ...appliedFiltersData.principalRecipientSubTypes,
-        ...chart3AppliedFiltersData.principalRecipientSubTypes,
-      ].length > 0
+      (appliedFiltersData.principalRecipientSubTypes.length > 0 &&
+        location.search.includes("principalRecipientSubTypes=")) ||
+      chart3AppliedFiltersData.principalRecipientSubTypes.length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientSubTypes=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipientSubTypes, ...chart3AppliedFiltersData.principalRecipientSubTypes]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipientSubTypes=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipientSubTypes,
+          ...chart3AppliedFiltersData.principalRecipientSubTypes,
+        ]).join(",")
+      )}`;
     }
     if (
-      [
-        ...appliedFiltersData.principalRecipientTypes,
-        ...chart3AppliedFiltersData.principalRecipientTypes,
-      ].length > 0
+      (appliedFiltersData.principalRecipientTypes.length > 0 &&
+        location.search.includes("principalRecipientTypes=")) ||
+      chart3AppliedFiltersData.principalRecipientTypes.length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientTypes=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipientTypes, ...chart3AppliedFiltersData.principalRecipientTypes]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipientTypes=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipientTypes,
+          ...chart3AppliedFiltersData.principalRecipientTypes,
+        ]).join(",")
+      )}`;
     }
     if (
-      [...appliedFiltersData.status, ...chart3AppliedFiltersData.status]
-        .length > 0
+      (appliedFiltersData.status.length > 0 &&
+        location.search.includes("status=")) ||
+      chart3AppliedFiltersData.status.length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}status=${encodeURIComponent(uniq([...appliedFiltersData.status, ...chart3AppliedFiltersData.status]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }status=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.status,
+          ...chart3AppliedFiltersData.status,
+        ]).join(",")
+      )}`;
     }
     if (
-      [...appliedFiltersData.cycles, ...chart3AppliedFiltersData.cycles]
-        .length > 0
+      (appliedFiltersData.cycles.length > 0 &&
+        location.search.includes("cycles=")) ||
+      chart3AppliedFiltersData.cycles.length > 0
     ) {
       const years = uniq([
         ...appliedFiltersData.cycles,
@@ -1202,58 +1445,103 @@ export const GrantImplementationPage: React.FC = () => {
         ...appliedFiltersData.cycles,
         ...chart3AppliedFiltersData.cycles,
       ]).map((cycle) => cycle.replace(/ /g, "").split("-")[1]);
-      filterString += `${filterString.length > 0 ? "&" : ""}years=${encodeURIComponent(years.join(","))}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }years=${encodeURIComponent(
+        years.join(",")
+      )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
     }
     return filterString;
-  }, [appliedFiltersData, chart3AppliedFiltersData]);
+  }, [appliedFiltersData, chart3AppliedFiltersData, location.search]);
 
   const chart4FilterString = React.useMemo(() => {
     let filterString = "";
     if (
-      [...appliedFiltersData.locations, ...chart4AppliedFiltersData.locations]
-        .length > 0
+      (appliedFiltersData.locations.length > 0 &&
+        location.search.includes("geographies=")) ||
+      chart4AppliedFiltersData.locations.length > 0
     ) {
-      filterString += `geographies=${encodeURIComponent(uniq([...appliedFiltersData.locations, ...chart4AppliedFiltersData.locations]).join(","))}`;
+      filterString += `geographies=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.locations,
+          ...chart4AppliedFiltersData.locations,
+        ]).join(",")
+      )}`;
     }
     if (
-      [...appliedFiltersData.components, ...chart4AppliedFiltersData.components]
-        .length > 0
+      (appliedFiltersData.components.length > 0 &&
+        location.search.includes("components=")) ||
+      chart4AppliedFiltersData.components.length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(uniq([...appliedFiltersData.components, ...chart4AppliedFiltersData.components]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }components=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.components,
+          ...chart4AppliedFiltersData.components,
+        ]).join(",")
+      )}`;
     }
     if (
-      [
-        ...appliedFiltersData.principalRecipients,
-        ...chart4AppliedFiltersData.principalRecipients,
-      ].length > 0
+      (appliedFiltersData.principalRecipients.length > 0 &&
+        location.search.includes("principalRecipients=")) ||
+      chart4AppliedFiltersData.principalRecipients.length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipients=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipients, ...chart4AppliedFiltersData.principalRecipients]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipients=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipients,
+          ...chart4AppliedFiltersData.principalRecipients,
+        ]).join(",")
+      )}`;
     }
     if (
-      [
-        ...appliedFiltersData.principalRecipientSubTypes,
-        ...chart4AppliedFiltersData.principalRecipientSubTypes,
-      ].length > 0
+      (appliedFiltersData.principalRecipientSubTypes.length > 0 &&
+        location.search.includes("principalRecipientSubTypes=")) ||
+      chart4AppliedFiltersData.principalRecipientSubTypes.length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientSubTypes=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipientSubTypes, ...chart4AppliedFiltersData.principalRecipientSubTypes]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipientSubTypes=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipientSubTypes,
+          ...chart4AppliedFiltersData.principalRecipientSubTypes,
+        ]).join(",")
+      )}`;
     }
     if (
-      [
-        ...appliedFiltersData.principalRecipientTypes,
-        ...chart4AppliedFiltersData.principalRecipientTypes,
-      ].length > 0
+      (appliedFiltersData.principalRecipientTypes.length > 0 &&
+        location.search.includes("principalRecipientTypes=")) ||
+      chart4AppliedFiltersData.principalRecipientTypes.length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientTypes=${encodeURIComponent(uniq([...appliedFiltersData.principalRecipientTypes, ...chart4AppliedFiltersData.principalRecipientTypes]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipientTypes=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipientTypes,
+          ...chart4AppliedFiltersData.principalRecipientTypes,
+        ]).join(",")
+      )}`;
     }
     if (
-      [...appliedFiltersData.status, ...chart4AppliedFiltersData.status]
-        .length > 0
+      (appliedFiltersData.status.length > 0 &&
+        location.search.includes("status=")) ||
+      chart4AppliedFiltersData.status.length > 0
     ) {
-      filterString += `${filterString.length > 0 ? "&" : ""}status=${encodeURIComponent(uniq([...appliedFiltersData.status, ...chart4AppliedFiltersData.status]).join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }status=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.status,
+          ...chart4AppliedFiltersData.status,
+        ]).join(",")
+      )}`;
     }
     if (
-      [...appliedFiltersData.cycles, ...chart4AppliedFiltersData.cycles]
-        .length > 0
+      (appliedFiltersData.cycles.length > 0 &&
+        location.search.includes("cycles=")) ||
+      chart4AppliedFiltersData.cycles.length > 0
     ) {
       const years = uniq([
         ...appliedFiltersData.cycles,
@@ -1263,10 +1551,14 @@ export const GrantImplementationPage: React.FC = () => {
         ...appliedFiltersData.cycles,
         ...chart4AppliedFiltersData.cycles,
       ]).map((cycle) => cycle.replace(/ /g, "").split("-")[1]);
-      filterString += `${filterString.length > 0 ? "&" : ""}years=${encodeURIComponent(years.join(","))}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }years=${encodeURIComponent(
+        years.join(",")
+      )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
     }
     return filterString;
-  }, [appliedFiltersData, chart4AppliedFiltersData]);
+  }, [appliedFiltersData, chart4AppliedFiltersData, location.search]);
 
   React.useEffect(() => {
     fetchFinancialInsightsStats({ filterString });
@@ -1304,8 +1596,19 @@ export const GrantImplementationPage: React.FC = () => {
 
   React.useEffect(() => {
     fetchBudgetSankey({ filterString: chart2FilterString });
-    fetchBudgetTable({ filterString: chart2FilterString });
   }, [chart2FilterString]);
+
+  React.useEffect(() => {
+    let filterString = chart2FilterString;
+    if (budgetTableDataType === dropdownItemsBudgetsTableDataTypes[1].value) {
+      filterString += `${filterString.length > 0 ? "&" : ""}var2=${
+        componentsGrouping === componentsGroupingOptions[0].value
+          ? "activityAreaGroup"
+          : "activityArea"
+      }`;
+    }
+    fetchBudgetTable({ filterString });
+  }, [chart2FilterString, budgetTableDataType, componentsGrouping]);
 
   React.useEffect(() => {
     fetchBudgetTreemap({
@@ -1329,7 +1632,7 @@ export const GrantImplementationPage: React.FC = () => {
     fetchExpendituresHeatmap({
       filterString: chart4FilterString,
       routeParams: {
-        row: "principalRecipientType,principalRecipient",
+        row: "principalRecipientType,principalRecipientSubType,principalRecipient",
         column: "component",
         componentField:
           componentsGrouping === componentsGroupingOptions[0].value
@@ -1357,12 +1660,17 @@ export const GrantImplementationPage: React.FC = () => {
     });
   }, [chart4FilterString, componentsGrouping]);
 
-  React.useEffect(() => {
+  const budgetBreakdownDropdownSelectedRef = React.useRef(null);
+
+  useUpdateEffect(() => {
     if (
       cycles.length > 0 &&
-      budgetBreakdownDropdownSelected !== cycles[0].value
-    )
+      budgetBreakdownDropdownSelected !== cycles[0].value &&
+      !budgetBreakdownDropdownSelectedRef.current
+    ) {
       setBudgetBreakdownDropdownSelected(cycles[0].value);
+      budgetBreakdownDropdownSelectedRef.current = cycles[0].value;
+    }
   }, [cycles]);
 
   React.useEffect(() => {
@@ -1509,6 +1817,7 @@ export const GrantImplementationPage: React.FC = () => {
             removeFilter={handleRemoveChartFilter(2)}
             handleResetFilters={handleResetChartFilters(2)}
             appliedFiltersData={chart2AppliedFiltersData}
+            extraDropdown={budgetsTableDataTypeDropdown}
           >
             {budgetsChartContent}
           </DatasetChartBlock>
@@ -1522,19 +1831,6 @@ export const GrantImplementationPage: React.FC = () => {
           position="relative"
           flexDirection="column"
         >
-          {loadingStats && (
-            <Box
-              width="100%"
-              height="100%"
-              display="flex"
-              position="absolute"
-              alignItems="center"
-              justifyContent="center"
-              bgcolor="rgba(255, 255, 255, 0.8)"
-            >
-              <CircularProgress />
-            </Box>
-          )}
           <Box
             width="100%"
             display="flex"
@@ -1590,6 +1886,19 @@ export const GrantImplementationPage: React.FC = () => {
               </Box>
             ))}
           </Box>
+          {loadingBudgetBreakdown && (
+            <Box
+              width="100%"
+              height="100%"
+              display="flex"
+              position="absolute"
+              alignItems="center"
+              justifyContent="center"
+              bgcolor="rgba(255, 255, 255, 0.8)"
+            >
+              <CircularProgress />
+            </Box>
+          )}
         </Box>
         <FullWidthDivider />
         <Box

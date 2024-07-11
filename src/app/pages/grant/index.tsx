@@ -180,7 +180,7 @@ export const Grant: React.FC = () => {
       });
       fetchExpendituresHeatmap({
         routeParams: {
-          row: "principalRecipientType,principalRecipient",
+          row: "principalRecipientType,principalRecipientSubType,principalRecipient",
           column: "component",
           componentField: "activityAreaGroup",
         },

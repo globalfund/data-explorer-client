@@ -7,7 +7,9 @@ import { appColors } from "app/theme";
 import Grid from "@mui/material/Grid";
 import findIndex from "lodash/findIndex";
 import Tooltip from "@mui/material/Tooltip";
+import Divider from "@mui/material/Divider";
 import { Table } from "app/components/table";
+import { useLocation } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
 import Info from "@mui/icons-material/InfoOutlined";
@@ -15,6 +17,7 @@ import { Treemap } from "app/components/charts/treemap";
 import { DatasetPage } from "app/pages/datasets/common/page";
 import CircularProgress from "@mui/material/CircularProgress";
 import { SunburstChart } from "app/components/charts/sunburst";
+import { TableContainer } from "app/components/table-container";
 import { BarSeriesChart } from "app/components/charts/bar-series";
 import { FilterGroupModel } from "app/components/filters/list/data";
 import { TreemapDataItem } from "app/components/charts/treemap/data";
@@ -28,12 +31,15 @@ import {
   dropdownItemsAllocations,
 } from "app/pages/datasets/access-to-funding/data";
 import {
+  TABLE_VARIATION_6_COLUMNS as DOCUMENTS_TABLE_COLUMNS,
   TABLE_VARIATION_10_COLUMNS as ELIGIBILITY_TABLE_COLUMNS,
   TABLE_VARIATION_11_COLUMNS as ALLOCATIONS_TABLE_COLUMNS,
   TABLE_VARIATION_12_COLUMNS as FUNDING_REQUESTS_TABLE_COLUMNS,
 } from "app/components/table/data";
 
 export const AccessToFundingPage: React.FC = () => {
+  const location = useLocation();
+
   const [dropdownSelected, setDropdownSelected] = React.useState(
     dropdownItemsAllocations[0].value
   );
@@ -73,7 +79,21 @@ export const AccessToFundingPage: React.FC = () => {
     (actions) => actions.AccessToFundingStats.fetch
   );
   const dataEligibilityTable = useStoreState((state) =>
-    get(state.AccessToFundingEligibilityTable, "data.data", [])
+    get(state.AccessToFundingEligibilityTable, "data.data", []).map(
+      (item: any, index) => {
+        if (index === 0) {
+          return {
+            ...item,
+            top: true,
+            _children: item._children.map((item: any) => ({
+              ...item,
+              top: true,
+            })),
+          };
+        }
+        return item;
+      }
+    )
   );
   const loadingEligibilityTable = useStoreState(
     (state) => state.AccessToFundingEligibilityTable.loading
@@ -135,13 +155,54 @@ export const AccessToFundingPage: React.FC = () => {
     }
   });
   const dataFundingRequestsTable = useStoreState((state) =>
-    get(state.AccessToFundingFundingRequestsTable, "data.data", [])
+    get(state.AccessToFundingFundingRequestsTable, "data.data", []).map(
+      (item: any, index) => {
+        if (index === 0) {
+          return {
+            ...item,
+            top: true,
+            _children: item._children.map((item: any) => ({
+              ...item,
+              top: true,
+            })),
+          };
+        }
+        return item;
+      }
+    )
   );
   const loadingFundingRequestsTable = useStoreState(
     (state) => state.AccessToFundingFundingRequestsTable.loading
   );
   const fetchFundingRequestsTable = useStoreActions(
     (actions) => actions.AccessToFundingFundingRequestsTable.fetch
+  );
+  const dataDocumentsTable = useStoreState((state) =>
+    get(state.AccessToFundingDocumentsTable, "data.data", []).map(
+      (item: any, index) => {
+        if (index === 0) {
+          return {
+            ...item,
+            top: true,
+            _children: item._children.map((item: any) => ({
+              ...item,
+              top: true,
+              _children: item._children.map((subitem: any) => ({
+                ...subitem,
+                top: true,
+              })),
+            })),
+          };
+        }
+        return item;
+      }
+    )
+  );
+  const loadingDocumentsTable = useStoreState(
+    (state) => state.AccessToFundingDocumentsTable.loading
+  );
+  const fetchDocumentsTable = useStoreActions(
+    (actions) => actions.AccessToFundingDocumentsTable.fetch
   );
   const dataLocationFilterOptions = useStoreState(
     (state) =>
@@ -203,6 +264,7 @@ export const AccessToFundingPage: React.FC = () => {
   const handleResetFilters = () => {
     appliedFiltersActions.setAll({
       ...appliedFiltersData,
+      cycles: [],
       locations: [],
       components: [],
     });
@@ -378,12 +440,18 @@ export const AccessToFundingPage: React.FC = () => {
 
   const filterString = React.useMemo(() => {
     let filterString = "";
-    if (appliedFiltersData.locations.length > 0) {
+    if (
+      appliedFiltersData.locations.length > 0 &&
+      location.search.includes("geographies=")
+    ) {
       filterString += `geographies=${encodeURIComponent(
         appliedFiltersData.locations.join(",")
       )}`;
     }
-    if (appliedFiltersData.components.length > 0) {
+    if (
+      appliedFiltersData.components.length > 0 &&
+      location.search.includes("components=")
+    ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
       }components=${encodeURIComponent(
@@ -391,13 +459,14 @@ export const AccessToFundingPage: React.FC = () => {
       )}`;
     }
     return filterString;
-  }, [appliedFiltersData]);
+  }, [appliedFiltersData, location.search]);
 
   const chart1FilterString = React.useMemo(() => {
     let filterString = "";
     if (
-      [...appliedFiltersData.locations, ...chart1AppliedFiltersData.locations]
-        .length > 0
+      (appliedFiltersData.locations.length > 0 &&
+        location.search.includes("geographies=")) ||
+      chart1AppliedFiltersData.locations.length > 0
     ) {
       filterString += `geographies=${encodeURIComponent(
         uniq([
@@ -407,8 +476,9 @@ export const AccessToFundingPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.components, ...chart1AppliedFiltersData.components]
-        .length > 0
+      (appliedFiltersData.components.length > 0 &&
+        location.search.includes("components=")) ||
+      chart1AppliedFiltersData.components.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -420,8 +490,9 @@ export const AccessToFundingPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.cycles, ...chart1AppliedFiltersData.cycles]
-        .length > 0
+      (appliedFiltersData.cycles.length > 0 &&
+        location.search.includes("cycles=")) ||
+      chart1AppliedFiltersData.cycles.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -433,13 +504,14 @@ export const AccessToFundingPage: React.FC = () => {
       )}`;
     }
     return filterString;
-  }, [appliedFiltersData, chart1AppliedFiltersData]);
+  }, [appliedFiltersData, chart1AppliedFiltersData, location.search]);
 
   const chart2FilterString = React.useMemo(() => {
     let filterString = "";
     if (
-      [...appliedFiltersData.locations, ...chart2AppliedFiltersData.locations]
-        .length > 0
+      (appliedFiltersData.locations.length > 0 &&
+        location.search.includes("geographies=")) ||
+      chart2AppliedFiltersData.locations.length > 0
     ) {
       filterString += `geographies=${encodeURIComponent(
         uniq([
@@ -449,8 +521,9 @@ export const AccessToFundingPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.components, ...chart2AppliedFiltersData.components]
-        .length > 0
+      (appliedFiltersData.components.length > 0 &&
+        location.search.includes("components=")) ||
+      chart2AppliedFiltersData.components.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -462,8 +535,9 @@ export const AccessToFundingPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.cycles, ...chart2AppliedFiltersData.cycles]
-        .length > 0
+      (appliedFiltersData.cycles.length > 0 &&
+        location.search.includes("cycles=")) ||
+      chart2AppliedFiltersData.cycles.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -475,13 +549,14 @@ export const AccessToFundingPage: React.FC = () => {
       )}`;
     }
     return filterString;
-  }, [appliedFiltersData, chart2AppliedFiltersData]);
+  }, [appliedFiltersData, chart2AppliedFiltersData, location.search]);
 
   const chart3FilterString = React.useMemo(() => {
     let filterString = "";
     if (
-      [...appliedFiltersData.locations, ...chart3AppliedFiltersData.locations]
-        .length > 0
+      (appliedFiltersData.locations.length > 0 &&
+        location.search.includes("geographies=")) ||
+      chart3AppliedFiltersData.locations.length > 0
     ) {
       filterString += `geographies=${encodeURIComponent(
         uniq([
@@ -491,8 +566,9 @@ export const AccessToFundingPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.components, ...chart3AppliedFiltersData.components]
-        .length > 0
+      (appliedFiltersData.components.length > 0 &&
+        location.search.includes("components=")) ||
+      chart3AppliedFiltersData.components.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -504,8 +580,9 @@ export const AccessToFundingPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.cycles, ...chart3AppliedFiltersData.cycles]
-        .length > 0
+      (appliedFiltersData.cycles.length > 0 &&
+        location.search.includes("cycles=")) ||
+      chart3AppliedFiltersData.cycles.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -517,7 +594,7 @@ export const AccessToFundingPage: React.FC = () => {
       )}`;
     }
     return filterString;
-  }, [appliedFiltersData, chart3AppliedFiltersData]);
+  }, [appliedFiltersData, chart3AppliedFiltersData, location.search]);
 
   const range = React.useMemo(() => {
     const values: {
@@ -549,6 +626,11 @@ export const AccessToFundingPage: React.FC = () => {
 
   React.useEffect(() => {
     fetchAllocationsBarSeries({ filterString });
+    fetchDocumentsTable({
+      filterString: `types=Application${
+        filterString.length > 0 ? `&${filterString}` : ""
+      }`,
+    });
   }, [filterString]);
 
   React.useEffect(() => {
@@ -577,7 +659,7 @@ export const AccessToFundingPage: React.FC = () => {
   return (
     <DatasetPage
       title="Access to Funding"
-      subtitle="Lorem ipsum."
+      subtitle=""
       filterGroups={filterGroups}
       appliedFilters={pageAppliedFilters}
       handleResetFilters={handleResetFilters}
@@ -785,11 +867,12 @@ export const AccessToFundingPage: React.FC = () => {
                 <Info fontSize="small" />
               </Tooltip>
             </Box>
-            <Table
+            <TableContainer
               dataTree
               id="eligibility-table"
               data={dataEligibilityTable}
               columns={eligibilityTableColumns}
+              dataTreeStartExpandedFn={(row) => row.getData().top}
             />
           </DatasetChartBlock>
         </Box>
@@ -900,13 +983,59 @@ export const AccessToFundingPage: React.FC = () => {
             handleResetFilters={handleResetChartFilters(3)}
             appliedFiltersData={chart3AppliedFiltersData}
           >
-            <Table
+            <TableContainer
               dataTree
               id="funding-requests-table"
               data={dataFundingRequestsTable}
               columns={FUNDING_REQUESTS_TABLE_COLUMNS}
+              dataTreeStartExpandedFn={(row) => row.getData().top}
             />
           </DatasetChartBlock>
+        </Box>
+        <FullWidthDivider />
+        <Box id="documents" padding="50px 0">
+          <Typography variant="h3" lineHeight={1.2}>
+            Documents
+          </Typography>
+          <Divider
+            sx={{
+              margin: "20px 0",
+            }}
+          />
+          {loadingDocumentsTable && (
+            <Box
+              width="100%"
+              height="100%"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <CircularProgress />
+            </Box>
+          )}
+          {!loadingDocumentsTable && dataDocumentsTable.length > 0 ? (
+            <React.Fragment>
+              <Box height="40px" />
+              <TableContainer
+                dataTree
+                id="documents-table"
+                data={dataDocumentsTable}
+                columns={DOCUMENTS_TABLE_COLUMNS}
+                dataTreeStartExpandedFn={(row) => row.getData().top}
+              />
+            </React.Fragment>
+          ) : (
+            <Box
+              width="100%"
+              height="100%"
+              minHeight="250px"
+              alignItems="center"
+              justifyContent="center"
+              display={!loadingDocumentsTable ? "flex" : "none"}
+            >
+              <Typography>No data available</Typography>
+            </Box>
+          )}
         </Box>
       </Box>
     </DatasetPage>

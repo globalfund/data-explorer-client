@@ -27,7 +27,7 @@ export const LocationOverview: React.FC = () => {
 
   return (
     <Box gap="24px" display="flex" flexDirection="column">
-      <Box>
+      {/* <Box>
         <Typography fontSize="18px" fontWeight="700">
           Description
         </Typography>
@@ -44,7 +44,7 @@ export const LocationOverview: React.FC = () => {
           }}
         />
       </Box>
-      <Divider sx={{ borderColor: "#000" }} />
+      <Divider sx={{ borderColor: "#000" }} /> */}
       <Grid
         container
         spacing={4}
@@ -91,7 +91,7 @@ export const LocationOverview: React.FC = () => {
                     >
                       {ccm.name}
                     </Typography>
-                    <Grid container spacing={2}>
+                    <Grid container spacing={1}>
                       {uniqBy(ccm.items, "fullname").map((item: any) => (
                         <Grid key={item.fullname} item xs={6}>
                           <Typography
@@ -131,9 +131,10 @@ export const LocationOverview: React.FC = () => {
               </Typography>
               <Grid
                 container
-                spacing={2}
+                spacing={1}
                 sx={{
-                  a: {
+                  // a: {
+                  span: {
                     display: "block",
                     fontSize: "12px",
                     lineHeight: 1.8,
@@ -142,9 +143,9 @@ export const LocationOverview: React.FC = () => {
               >
                 {dataOverview.currentPrincipalRecipients.map((item: any) => (
                   <Grid key={item.name} item xs={6}>
-                    <Link component={RouteLink} to="">
-                      {item.name}
-                    </Link>
+                    {/* <Link component={RouteLink} to=""> */}
+                    <span>{item.name}</span>
+                    {/* </Link> */}
                   </Grid>
                 ))}
               </Grid>
@@ -156,9 +157,10 @@ export const LocationOverview: React.FC = () => {
               </Typography>
               <Grid
                 container
-                spacing={2}
+                spacing={1}
                 sx={{
-                  a: {
+                  // a: {
+                  span: {
                     display: "block",
                     fontSize: "12px",
                     lineHeight: 1.8,
@@ -167,9 +169,9 @@ export const LocationOverview: React.FC = () => {
               >
                 {dataOverview.formerPrincipalRecipients.map((item: any) => (
                   <Grid key={item.name} item xs={6}>
-                    <Link component={RouteLink} to="">
-                      {item.name}
-                    </Link>
+                    {/* <Link component={RouteLink} to=""> */}
+                    <span>{item.name}</span>
+                    {/* </Link> */}
                   </Grid>
                 ))}
               </Grid>

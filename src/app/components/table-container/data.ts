@@ -2,6 +2,7 @@ import { TableProps } from "app/components/table/data";
 
 export interface TableContainerProps extends TableProps {
   withCycles?: boolean;
+  noColumnVisibilitySelection?: boolean;
   tabsView?: {
     tabs: string[];
     selectedTab: string;

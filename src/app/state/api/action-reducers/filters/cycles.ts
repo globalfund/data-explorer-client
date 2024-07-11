@@ -12,7 +12,7 @@ export const FundingRequestsCycles: ApiCallModel = {
 };
 
 export const AnnualResultsCycles: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/results/years`),
+  ...APIModel(`${process.env.REACT_APP_API}/results/cycles`),
 };
 
 export const BudgetsCycles: ApiCallModel = {
@@ -46,7 +46,7 @@ export const GeographyFundingRequestsCycles: ApiCallModel = {
 };
 
 export const GeographyAnnualResultsCycles: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/results/years`),
+  ...APIModel(`${process.env.REACT_APP_API}/results/cycles`),
 };
 
 export const GeographyBudgetsCycles: ApiCallModel = {

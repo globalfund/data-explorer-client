@@ -3,17 +3,14 @@ import get from "lodash/get";
 import sumBy from "lodash/sumBy";
 import filter from "lodash/filter";
 import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
 import { appColors } from "app/theme";
 import findIndex from "lodash/findIndex";
 import Divider from "@mui/material/Divider";
-import Tooltip from "@mui/material/Tooltip";
 import { Table } from "app/components/table";
 import { useParams } from "react-router-dom";
 import Typography from "@mui/material/Typography";
-import Info from "@mui/icons-material/InfoOutlined";
 import { ChartBlock } from "app/components/chart-block";
-import { CYCLES, CycleProps } from "app/pages/home/data";
+import { CycleProps } from "app/pages/home/data";
 import { RadialChart } from "app/components/charts/radial";
 import useUpdateEffect from "react-use/lib/useUpdateEffect";
 import { RaceBarChart } from "app/components/charts/race-bar";
@@ -32,6 +29,7 @@ import {
 
 export const AccessToFunding: React.FC = () => {
   const params = useParams<{ id: string; tab: string }>();
+  const paramsId = params.id?.replace("|", "%2F");
 
   const [chart1Cycles, setChart1Cycles] = React.useState<CycleProps[]>([]);
   const [chart2Cycles, setChart2Cycles] = React.useState<CycleProps[]>([]);
@@ -145,31 +143,31 @@ export const AccessToFunding: React.FC = () => {
   };
 
   useUpdateEffect(() => {
-    if (params.id && chart1Cycles.length > 0) {
+    if (paramsId && chart1Cycles.length > 0) {
       let filterString = "";
       filterString = `periods=${chart1Cycles[0].value}`;
       fetchAllocationsRadialChart({
         filterString,
-        routeParams: { code: params.id },
+        routeParams: { code: paramsId },
       });
     }
   }, [chart1Cycles]);
 
   useUpdateEffect(() => {
-    if (params.id && chart2Cycles.length > 0) {
+    if (paramsId && chart2Cycles.length > 0) {
       let filterString = "";
       filterString += `&periods=${chart2Cycles[0].value.split("-")[0]}`;
       fetchFundingRequestsTable({
         filterString,
         routeParams: {
-          code: params.id,
+          code: paramsId,
         },
       });
     }
   }, [chart2Cycles]);
 
   React.useEffect(() => {
-    if (allocationsCycles.length > 0) {
+    if (allocationsCycles.length > 0 && chart1Cycles.length === 0) {
       setChart1Cycles((prev) => {
         if (prev.length === 0) {
           return [allocationsCycles[allocationsCycles.length - 1]];
@@ -180,7 +178,7 @@ export const AccessToFunding: React.FC = () => {
   }, [allocationsCycles]);
 
   React.useEffect(() => {
-    if (fundingRequestsCycles.length > 0) {
+    if (fundingRequestsCycles.length > 0 && chart2Cycles.length === 0) {
       setChart2Cycles((prev) => {
         if (prev.length === 0) {
           return [fundingRequestsCycles[fundingRequestsCycles.length - 1]];
@@ -193,7 +191,9 @@ export const AccessToFunding: React.FC = () => {
   const totalAllocationAmount = React.useMemo(() => {
     const value = sumBy(dataAllocationsRadialChart, "value");
     const range = getRange([{ value }], ["value"]);
-    return `${getFinancialValueWithMetricPrefix(value, range.index, 2)} ${range.full}`;
+    return `${getFinancialValueWithMetricPrefix(value, range.index, 2)} ${
+      range.full
+    }`;
   }, [dataAllocationsRadialChart]);
 
   const raceBarData = React.useMemo(() => {
@@ -257,13 +257,13 @@ export const AccessToFunding: React.FC = () => {
         }))}
         text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
       >
-        <RadialChart
-          tooltipLabel="Allocation"
-          data={dataAllocationsRadialChart}
-          itemLabelFormatterType="name"
-        />
-      </ChartBlock>
-      {showAllocationRadialChart && (
+        <Box marginTop="-100px" marginBottom="-100px">
+          <RadialChart
+            tooltipLabel="Allocation"
+            data={dataAllocationsRadialChart}
+            itemLabelFormatterType="name"
+          />
+        </Box>
         <Box
           width="100%"
           display="flex"
@@ -271,7 +271,7 @@ export const AccessToFunding: React.FC = () => {
           justifyContent="center"
         >
           <Box display="flex" alignItems="center" flexDirection="column">
-            <Typography variant="h3" fontWeight="900">
+            <Typography variant="h4" fontWeight="900">
               US${totalAllocationAmount}
             </Typography>
             <Typography variant="subtitle2">
@@ -279,7 +279,7 @@ export const AccessToFunding: React.FC = () => {
             </Typography>
           </Box>
         </Box>
-      )}
+      </ChartBlock>
       {showAllocationRadialChart && fullWidthDivider}
       <ChartBlock
         noSplitText
@@ -295,87 +295,27 @@ export const AccessToFunding: React.FC = () => {
           ...c,
           disabled: findIndex(fundingRequestsCycles, { value: c.value }) === -1,
         }))}
-        text="The Funding Request explains how the applicant would use Global Fund allocated funds, if approved. Funding Requests are reviewed by the Global Fund’s Technical Review Panel (TRP). Once approved by the TRP, the Funding Request is turned into one or more grants through the grant-making negotiation. The Grant Approvals Committee (GAC) reviews the final version of each grant and recommends implementation-ready grants to the Global Fund Board for approval. Funding Requests are submitted for internal Global Fund review, but the final grant is the legally-binding agreement.<br/><br/>Documents for a specific funding request can be downloaded by clicking the cloud icon. Documents from the 2017-2019 Allocation Period and earlier can be found by clicking on the “Documents’ tab above. If a Funding Request is not visible for the 2023-2025 Allocation Period and the country received an Allocation, it likely means that the applicant has not yet registered for a TRP Window."
+        text="The Funding Request explains how the applicant would use Global Fund allocated funds, if approved. Funding Requests are reviewed by the Global Fund’s Technical Review Panel (TRP). Once approved by the TRP, the Funding Request is turned into one or more grants through the grant-making negotiation. The Grant Approvals Committee (GAC) reviews the final version of each grant and recommends implementation-ready grants to the Global Fund Board for approval. Funding Requests are submitted for internal Global Fund review, but the final grant is the legally-binding agreement.<br/><br/>Documents for a specific funding request can be downloaded by clicking the cloud icon. Documents from the 2017-2019 Allocation Period and earlier can be found by clicking on the “Documents’ section below. If a Funding Request is not visible for the 2023-2025 Allocation Period and the country received an Allocation, it likely means that the applicant has not yet registered for a TRP Window."
       >
         <TableContainer
           dataTree
           withCycles
+          dataTreeStartExpanded
           id="funding-requests-table"
+          columns={TABLE_VARIATION_2_COLUMNS}
           data={dataFundingRequestsTable._children}
-          columns={TABLE_VARIATION_2_COLUMNS.slice(0, 7)}
-          extraColumns={TABLE_VARIATION_2_COLUMNS.slice(7)}
         />
         <Box height="64px" />
         <RaceBarChart noValuesFormat data={raceBarData} />
       </ChartBlock>
-      <Box height="50px" />
-      {showFundingRequestsTable && (
-        <Grid
-          container
-          spacing={2}
-          sx={{
-            "> div": {
-              "> div": {
-                gap: "10px",
-                width: "100%",
-                display: "flex",
-                textAlign: "center",
-                alignItems: "center",
-                flexDirection: "column",
-                justifyContent: "center",
-              },
-            },
-          }}
-        >
-          <Grid item xs={12} sm={6}>
-            <Box>
-              <Box
-                width="40px"
-                height="40px"
-                borderRadius="50%"
-                bgcolor={appColors.RADIAL_CHART.ITEM_COLORS[2]}
-              />
-              <Box>
-                <Typography variant="h3" fontWeight="900">
-                  {dataFundingRequestStats.submitted} Submitted
-                </Typography>
-                <Typography variant="subtitle2">Funding Requests</Typography>
-              </Box>
-            </Box>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Box>
-              <Box
-                width="40px"
-                height="40px"
-                borderRadius="50%"
-                bgcolor={appColors.RADIAL_CHART.ITEM_COLORS[0]}
-              />
-              <Box>
-                <Typography variant="h3" fontWeight="900">
-                  {dataFundingRequestStats.signed} Signed
-                </Typography>
-                <Typography variant="subtitle2">
-                  {(
-                    (dataFundingRequestStats.signed /
-                      dataFundingRequestStats.submitted) *
-                    100
-                  ).toFixed(2)}
-                  % Grants
-                </Typography>
-              </Box>
-            </Box>
-          </Grid>
-        </Grid>
-      )}
       {showFundingRequestsTable && fullWidthDivider}
       <ChartBlock
         noSplitText
         id="eligibility"
         title="Eligibility"
-        subtitle="To date"
+        subtitle=""
         empty={!showEligibilityHeatmap}
-        text="Eligibility for funding from the Global Fund is determined by country income classification and disease burden for HIV, tuberculosis and malaria. Below are the components which are eligible for an allocation for the selected allocation period, according to the Global Fund Eligibility Policy.<br/><br/>Eligibility for the 2023-2025 Allocation Period was determined in 2022 and documented in the 2023 Eligibility List. Eligibility does not guarantee a funding allocation. Learn more about Eligibility <a target='_blank' href='https://www.theglobalfund.org/en/applying-for-funding/understand-and-prepare/eligibility/'>here</a> or <a>see the full history of eligibility for this country</a>."
+        text="Eligibility for funding from the Global Fund is determined by country income classification and disease burden for HIV, tuberculosis and malaria. Below are the components which are eligible for an allocation for the selected allocation period, according to the Global Fund Eligibility Policy.<br/><br/>Eligibility for the 2023-2025 Allocation Period was determined in 2022 and documented in the 2023 Eligibility List. Eligibility does not guarantee a funding allocation. Learn more about Eligibility <a target='_blank' href='https://www.theglobalfund.org/en/applying-for-funding/understand-and-prepare/eligibility/'>here</a>."
       >
         <Box height="32px" />
         <Box
@@ -480,9 +420,6 @@ export const AccessToFunding: React.FC = () => {
               </Box>
             </Box>
           </Box>
-          <Tooltip title="">
-            <Info fontSize="small" />
-          </Tooltip>
         </Box>
         <Table
           dataTree

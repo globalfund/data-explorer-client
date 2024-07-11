@@ -65,6 +65,11 @@ export const dropdownItemsExpenditures = [
   { label: "Table View", value: "Table View", icon: <TableIcon /> },
 ];
 
+export const dropdownItemsBudgetsTableDataTypes = [
+  { label: "Investment Landscape", value: "Investment Landscape" },
+  { label: "Modules & Interventions", value: "Modules & Interventions" },
+];
+
 export const FullWidthDivider = () => (
   <Divider
     sx={{

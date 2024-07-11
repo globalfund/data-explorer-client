@@ -52,6 +52,7 @@ export const RowName = styled.div`
   align-items: center;
   word-wrap: break-word;
   justify-content: flex-start;
+  cursor: ${(props) => props.theme.cursor};
   min-width: ${(props) => props.theme.width};
   max-width: ${(props) => props.theme.width};
   color: ${appColors.HEATMAP.CHART_TEXT_COLOR};

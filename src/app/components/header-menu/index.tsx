@@ -20,8 +20,8 @@ const HeaderMenuButton = styled(Button)({
   textTransform: "none",
   color: colors.primary.black,
   "&:hover": {
+    fontWeight: "700",
     background: "transparent",
-    textShadow: "-.35px -.35px 0 #000, .35px .35px #000",
   },
 });
 
@@ -87,8 +87,8 @@ export const HeaderMenu: React.FC = () => {
           sx={
             isNavButtonActive(page.id, location.pathname)
               ? {
+                  fontWeight: "700",
                   borderBottom: `2px solid ${colors.primary.black}`,
-                  textShadow: "-.35px -.35px 0 #000, .35px .35px #000",
                 }
               : {}
           }
@@ -155,10 +155,8 @@ export const HeaderMenu: React.FC = () => {
                     width: "fit-content",
                     marginBottom: "20px",
                     borderRight: `1px solid ${colors.primary.black}`,
-                    textShadow:
-                      subPage.link === location.pathname
-                        ? "-.35px -.35px 0 #000, .35px .35px #000"
-                        : "-.35px -.35px 0 transparent, .35px .35px transparent",
+                    fontWeight:
+                      subPage.link === location.pathname ? "700" : "400",
                   }}
                   data-cy="header-menu-button"
                 >

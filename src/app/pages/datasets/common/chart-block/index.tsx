@@ -66,7 +66,7 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
           width="100%"
           height="100%"
           display="flex"
-          minHeight="400px"
+          minHeight="250px"
           alignItems="center"
           justifyContent="center"
         >
@@ -78,6 +78,44 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
   }, [props.children, props.loading, props.empty]);
 
   const id = React.useMemo(() => uniqueId("chart-block-"), []);
+
+  const filterPopover = React.useMemo(() => {
+    return (
+      <Popover
+        disableScrollLock
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        id={`filter-popover-${id}`}
+        onClose={handleFilterPanelClose}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
+      >
+        <FilterPanel
+          onClose={handleFilterPanelClose}
+          filterGroups={props.filterGroups}
+          toggleFilter={props.toggleFilter}
+          removeFilter={props.removeFilter}
+          appliedFilters={props.appliedFilters}
+          handleResetFilters={props.handleResetFilters}
+          appliedFiltersData={props.appliedFiltersData}
+          appliedFilterBgColors={{
+            hover: "#2196F3",
+            normal: "rgba(33, 150, 243, 0.2)",
+          }}
+        />
+      </Popover>
+    );
+  }, [
+    anchorEl,
+    props.appliedFilters,
+    props.filterGroups,
+    props.appliedFiltersData,
+    props.toggleFilter,
+    props.removeFilter,
+    props.handleResetFilters,
+  ]);
 
   return (
     <Box id={props.id} data-cy="dataset-chart-block">
@@ -120,33 +158,10 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
           >
             Filters
           </Button>
-          <Popover
-            disableScrollLock
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleFilterPanelClose}
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "left",
-            }}
-          >
-            <FilterPanel
-              onClose={handleFilterPanelClose}
-              filterGroups={props.filterGroups}
-              toggleFilter={props.toggleFilter}
-              removeFilter={props.removeFilter}
-              appliedFilters={props.appliedFilters}
-              handleResetFilters={props.handleResetFilters}
-              appliedFiltersData={props.appliedFiltersData}
-              appliedFilterBgColors={{
-                hover: "#2196F3",
-                normal: "rgba(33, 150, 243, 0.2)",
-              }}
-            />
-          </Popover>
-          <Button variant="outlined" startIcon={<SettingsIcon />}>
+          {filterPopover}
+          {/* <Button variant="outlined" startIcon={<SettingsIcon />}>
             Settings
-          </Button>
+          </Button> */}
           <Button
             variant="outlined"
             onClick={handleCollapse}
@@ -160,15 +175,18 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
             {collapsed ? "Expand" : "Collapse"}
           </Button>
         </Box>
-        {props.dropdownItems &&
-          props.dropdownSelected &&
-          props.handleDropdownChange && (
-            <Dropdown
-              dropdownItems={props.dropdownItems}
-              dropdownSelected={props.dropdownSelected}
-              handleDropdownChange={props.handleDropdownChange}
-            />
-          )}
+        <Box gap="10px" display="flex" flexDirection="row">
+          {props.extraDropdown && props.extraDropdown}
+          {props.dropdownItems &&
+            props.dropdownSelected &&
+            props.handleDropdownChange && (
+              <Dropdown
+                dropdownItems={props.dropdownItems}
+                dropdownSelected={props.dropdownSelected}
+                handleDropdownChange={props.handleDropdownChange}
+              />
+            )}
+        </Box>
       </Box>
       <Box
         sx={{
@@ -176,10 +194,8 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
         }}
       >
         <Box
-          id="content"
+          id={id}
           width="100%"
-          minHeight="400px"
-          padding="0 32px"
           position="relative"
           sx={
             props.loading
