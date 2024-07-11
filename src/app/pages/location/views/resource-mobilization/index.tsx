@@ -3,7 +3,7 @@ import get from "lodash/get";
 import sumBy from "lodash/sumBy";
 import Box from "@mui/material/Box";
 import { useParams } from "react-router-dom";
-import { CYCLES, CycleProps } from "app/pages/home/data";
+import { CycleProps } from "app/pages/home/data";
 import Typography from "@mui/material/Typography";
 import { BarChart } from "app/components/charts/bar";
 import { ChartBlock } from "app/components/chart-block";
@@ -21,9 +21,6 @@ export const ResourceMobilization: React.FC = () => {
 
   const [chart1Cycles, setChart1Cycles] = React.useState<CycleProps[]>([]);
 
-  const locationName = useStoreState((state) =>
-    get(state.GeographyOverview, "data.data[0].name", paramsId)
-  );
   const dataRMBarChart = useStoreState(
     (state) =>
       get(
@@ -62,7 +59,7 @@ export const ResourceMobilization: React.FC = () => {
   };
 
   useUpdateEffect(() => {
-    let filterString = `donors=${locationName}`;
+    let filterString = `geographies=${paramsId}`;
     if (chart1Cycles.length > 0) {
       filterString += `&periods=${chart1Cycles.map((c) => c.value).join(",")}`;
     }

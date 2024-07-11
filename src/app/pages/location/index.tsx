@@ -411,7 +411,7 @@ export const Location: React.FC = () => {
   React.useEffect(() => {
     if (dataOverview.isDonor) {
       fetchRMBarChart({
-        filterString: `donors=${dataOverview.name}`,
+        filterString: `geographies=${paramsId}`,
       });
     }
   }, [dataOverview]);
