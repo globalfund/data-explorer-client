@@ -3,7 +3,6 @@ import get from "lodash/get";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import { useParams } from "react-router-dom";
-import Typography from "@mui/material/Typography";
 import { ChartBlock } from "app/components/chart-block";
 import useUpdateEffect from "react-use/lib/useUpdateEffect";
 import { CellComponent, Tabulator } from "tabulator-tables";
@@ -134,27 +133,6 @@ export const GrantTargetsResults: React.FC = () => {
 
   return (
     <Box marginTop="24px">
-      <Typography variant="body2">
-        This page provides an overview of the IATI ('open') data currently
-        published by individual Grand Bargain signatories and/or their
-        affiliated organisations. Its primary purpose is to enable signatories
-        to monitor their own progress in relation to meeting the data
-        publication commitment of the Grand Bargain.This page provides an
-        overview of the IATI ('open') data currently published by individual
-        Grand Bargain signatories and/or their affiliated organisations. Its
-        primary purpose is to enable signatories to monitor
-        <br />
-        <br />
-        their own progress in relation to meeting the data publication
-        commitment of the Grand Bargain.This page provides an overview of the
-        IATI ('open') data currently published by individual Grand Bargain
-        signatories and/or their affiliated organisations. Its primary purpose
-        is to enable signatories to monitor their own progress in relation to
-        meeting the data publication commitment of the Grand Bargain.
-      </Typography>
-      <Box height="50px" />
-      {fullWidthDivider}
-      <Box height="50px" />
       <ChartBlock
         loading={loading}
         title="Indicators"
