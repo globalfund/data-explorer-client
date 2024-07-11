@@ -1,11 +1,9 @@
 import React from "react";
 import get from "lodash/get";
 import uniq from "lodash/uniq";
-import filter from "lodash/filter";
 import Box from "@mui/material/Box";
 import { appColors } from "app/theme";
 import Grid from "@mui/material/Grid";
-import findIndex from "lodash/findIndex";
 import Tooltip from "@mui/material/Tooltip";
 import Divider from "@mui/material/Divider";
 import { Table } from "app/components/table";
@@ -31,6 +29,7 @@ import {
   dropdownItemsAllocations,
 } from "app/pages/datasets/access-to-funding/data";
 import {
+  cellBGColorFormatter,
   TABLE_VARIATION_6_COLUMNS as DOCUMENTS_TABLE_COLUMNS,
   TABLE_VARIATION_10_COLUMNS as ELIGIBILITY_TABLE_COLUMNS,
   TABLE_VARIATION_11_COLUMNS as ALLOCATIONS_TABLE_COLUMNS,
@@ -94,6 +93,9 @@ export const AccessToFundingPage: React.FC = () => {
         return item;
       }
     )
+  );
+  const dataEligibilityTableYears = useStoreState((state) =>
+    get(state.AccessToFundingEligibilityTable, "data.years", [])
   );
   const loadingEligibilityTable = useStoreState(
     (state) => state.AccessToFundingEligibilityTable.loading
@@ -611,16 +613,13 @@ export const AccessToFundingPage: React.FC = () => {
   const eligibilityTableColumns = React.useMemo(() => {
     return [
       ELIGIBILITY_TABLE_COLUMNS[0],
-      ...filter(
-        ELIGIBILITY_TABLE_COLUMNS,
-        (c) =>
-          findIndex(dataEligibilityTable, (item) => {
-            const values = Object.keys(
-              get(item, "_children[0]._children[0]", {})
-            );
-            return values.indexOf(c.title) !== -1;
-          }) !== -1
-      ),
+      ...dataEligibilityTableYears.map((year) => ({
+        width: 60,
+        title: year,
+        field: year,
+        headerSort: false,
+        formatter: cellBGColorFormatter,
+      })),
     ];
   }, [dataEligibilityTable]);
 
