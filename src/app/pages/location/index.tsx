@@ -26,7 +26,6 @@ export const Location: React.FC = () => {
   const params = useParams<{ id: string; tab: string }>();
   const paramsId = params.id?.replace("|", "%2F");
 
-  const [grantsTablePage, setGrantsTablePage] = React.useState(1);
   const [resultsYear, setResultsYear] = React.useState(
     RESULT_YEARS[RESULT_YEARS.length - 1]
   );
@@ -287,12 +286,7 @@ export const Location: React.FC = () => {
       case "overview":
         return <LocationOverview />;
       case "financial-insights":
-        return (
-          <GrantImplementation
-            page={grantsTablePage}
-            setPage={setGrantsTablePage}
-          />
-        );
+        return <GrantImplementation />;
       case "resource-mobilization":
         return <ResourceMobilization />;
       case "access-to-funding":
@@ -304,7 +298,7 @@ export const Location: React.FC = () => {
       default:
         return <div />;
     }
-  }, [params.tab, grantsTablePage, resultsYear]);
+  }, [params.tab, resultsYear]);
 
   const tabs = React.useMemo(() => {
     const newTabs = [...LOCATION_TABS];
@@ -363,7 +357,6 @@ export const Location: React.FC = () => {
           row: "principalRecipientType,principalRecipientSubType,principalRecipient",
           column: "component",
           componentField: "activityAreaGroup",
-          geographyGrouping: "Standard View",
         },
       });
       fetchGrantsPieCharts({
@@ -422,12 +415,12 @@ export const Location: React.FC = () => {
       fetchGrantsTable({
         filterString: `geographies=${paramsId}`,
         routeParams: {
-          page: grantsTablePage.toString(),
-          pageSize: "10",
+          page: "1",
+          pageSize: "all",
         },
       });
     }
-  }, [paramsId, grantsTablePage]);
+  }, [paramsId]);
 
   React.useEffect(() => {
     if (paramsId) {

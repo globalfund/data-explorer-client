@@ -8,47 +8,34 @@ import { appColors } from "app/theme";
 import findIndex from "lodash/findIndex";
 import Divider from "@mui/material/Divider";
 import { useParams } from "react-router-dom";
-import { CYCLES, CycleProps } from "app/pages/home/data";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import { PieChart } from "app/components/charts/pie";
-import ArrowBack from "@mui/icons-material/ArrowBack";
 import { LineChart } from "app/components/charts/line";
 import { ChartBlock } from "app/components/chart-block";
 import { Heatmap } from "app/components/charts/heatmap";
+import { CYCLES, CycleProps } from "app/pages/home/data";
 import { SankeyChart } from "app/components/charts/sankey";
 import useUpdateEffect from "react-use/lib/useUpdateEffect";
-import ArrowForward from "@mui/icons-material/ArrowForward";
 import { TableContainer } from "app/components/table-container";
 import { GrantCardProps } from "app/components/grant-card/data";
 import { LineChartProps } from "app/components/charts/line/data";
 import { getMonthFromNumber } from "app/utils/getMonthFromNumber";
+import { PieChartDataItem } from "app/components/charts/pie/data";
 import { SankeyChartData } from "app/components/charts/sankey/data";
 import { TABLE_VARIATION_5_COLUMNS } from "app/components/table/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import {
-  CHART_1_DROPDOWN_ITEMS,
-  CHART_2_DROPDOWN_ITEMS,
-  GrantImplementationProps,
-} from "app/pages/location/views/grant-implementation/data";
+import { CHART_1_DROPDOWN_ITEMS } from "app/pages/location/views/grant-implementation/data";
 import {
   HeatmapDataItem,
   getPercentageColor,
 } from "app/components/charts/heatmap/data";
 import {
-  STORY_DATA_VARIANT_1 as PIE_CHART_DATA_1,
-  STORY_DATA_VARIANT_2 as PIE_CHART_DATA_2,
-  STORY_DATA_VARIANT_3 as PIE_CHART_DATA_3,
-  PieChartDataItem,
-} from "app/components/charts/pie/data";
-import {
   getRange,
   getFinancialValueWithMetricPrefix,
 } from "app/utils/getFinancialValueWithMetricPrefix";
 
-export const GrantImplementation: React.FC<GrantImplementationProps> = (
-  props: GrantImplementationProps
-) => {
+export const GrantImplementation = () => {
   const params = useParams<{ id: string; tab: string }>();
   const paramsId = params.id?.replace("|", "%2F");
 
@@ -186,10 +173,12 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
       case 2:
         cycles = chart2Cycles;
         setCycle = setChart2Cycles;
+        multi = false;
         break;
       case 3:
         cycles = chart3Cycles;
         setCycle = setChart3Cycles;
+        multi = false;
         break;
       default:
         break;
@@ -279,6 +268,18 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
       },
     });
   }, [chart3Cycles]);
+
+  React.useEffect(() => {
+    if (budgetsCycles.length > 0) {
+      setChart2Cycles([budgetsCycles[budgetsCycles.length - 1]]);
+    }
+  }, [budgetsCycles]);
+
+  React.useEffect(() => {
+    if (expendituresCycles.length > 0) {
+      setChart3Cycles([expendituresCycles[expendituresCycles.length - 1]]);
+    }
+  }, [expendituresCycles]);
 
   const chart2UnitButtons = React.useMemo(
     () => (
@@ -385,34 +386,6 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
     }`;
   }, [dataDisbursementsLineChart]);
 
-  const pagination = React.useMemo(
-    () => (
-      <Box gap="8px" display="flex" alignItems="center">
-        <Typography fontSize="12px">
-          {(props.page - 1) * 9 + 1}-{props.page * 9} of {countGrantsTable}
-        </Typography>
-        <IconButton
-          sx={{ padding: 0 }}
-          onClick={() => {
-            if (props.page > 1) props.setPage(props.page - 1);
-          }}
-        >
-          <ArrowBack htmlColor="#000" sx={{ fontSize: "16px" }} />
-        </IconButton>
-        <IconButton
-          sx={{ padding: 0 }}
-          onClick={() => {
-            if (props.page < countGrantsTable / 9)
-              props.setPage(props.page + 1);
-          }}
-        >
-          <ArrowForward htmlColor="#000" sx={{ fontSize: "16px" }} />
-        </IconButton>
-      </Box>
-    ),
-    [countGrantsTable, props.page]
-  );
-
   const totalBudget = React.useMemo(() => {
     let total = 0;
     filter(dataBudgetSankeyChart.links, { source: "Total budget" }).forEach(
@@ -474,6 +447,7 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
   return (
     <Box gap="24px" display="flex" flexDirection="column">
       <ChartBlock
+        showCycleAll
         id="disbursements"
         subtitle="Disbursements"
         title={disbursementsTotal}
@@ -608,8 +582,6 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
           data={dataGrantsTableFormatted}
           columns={TABLE_VARIATION_5_COLUMNS}
         />
-        <Box height="16px" />
-        {pagination}
         <Box height="64px" />
         <Box
           width="100%"
