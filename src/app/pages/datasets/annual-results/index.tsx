@@ -282,7 +282,7 @@ export const AnnualResultsPage: React.FC = () => {
     let filterString = "";
     if (
       appliedFiltersData.locations.length > 0 &&
-      location.search.includes("geographies=")
+      location.search.includes("locations=")
     ) {
       filterString += `geographies=${encodeURIComponent(
         appliedFiltersData.locations.join(",")
@@ -305,7 +305,7 @@ export const AnnualResultsPage: React.FC = () => {
     let filterString = "";
     if (
       (appliedFiltersData.locations.length > 0 &&
-        location.search.includes("geographies=")) ||
+        location.search.includes("locations=")) ||
       chartAppliedFiltersData.locations.length > 0
     ) {
       filterString += `geographies=${encodeURIComponent(

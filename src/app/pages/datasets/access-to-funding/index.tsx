@@ -446,7 +446,7 @@ export const AccessToFundingPage: React.FC = () => {
     let filterString = "";
     if (
       appliedFiltersData.locations.length > 0 &&
-      location.search.includes("geographies=")
+      location.search.includes("locations=")
     ) {
       filterString += `geographies=${encodeURIComponent(
         appliedFiltersData.locations.join(",")
@@ -469,7 +469,7 @@ export const AccessToFundingPage: React.FC = () => {
     let filterString = "";
     if (
       (appliedFiltersData.locations.length > 0 &&
-        location.search.includes("geographies=")) ||
+        location.search.includes("locations=")) ||
       chart1AppliedFiltersData.locations.length > 0
     ) {
       filterString += `geographies=${encodeURIComponent(
@@ -514,7 +514,7 @@ export const AccessToFundingPage: React.FC = () => {
     let filterString = "";
     if (
       (appliedFiltersData.locations.length > 0 &&
-        location.search.includes("geographies=")) ||
+        location.search.includes("locations=")) ||
       chart2AppliedFiltersData.locations.length > 0
     ) {
       filterString += `geographies=${encodeURIComponent(
@@ -555,7 +555,7 @@ export const AccessToFundingPage: React.FC = () => {
     let filterString = "";
     if (
       (appliedFiltersData.locations.length > 0 &&
-        location.search.includes("geographies=")) ||
+        location.search.includes("locations=")) ||
       chart3AppliedFiltersData.locations.length > 0
     ) {
       filterString += `geographies=${encodeURIComponent(
