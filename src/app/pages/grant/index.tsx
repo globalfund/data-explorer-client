@@ -56,6 +56,7 @@ export const Grant: React.FC = () => {
         FPMName: string;
       }
   );
+  const clearGrant = useStoreActions((actions) => actions.GrantInfo.clear);
   const fetchOverview = useStoreActions(
     (actions) => actions.GrantOverview.fetch
   );
@@ -239,6 +240,7 @@ export const Grant: React.FC = () => {
 
   React.useEffect(() => {
     return () => {
+      clearGrant();
       clearOverview();
       clearDisbursementsBarChart();
       clearBudgetSankeyChart();
