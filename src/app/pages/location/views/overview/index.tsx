@@ -2,6 +2,7 @@ import React from "react";
 import get from "lodash/get";
 import uniqBy from "lodash/uniqBy";
 import Box from "@mui/material/Box";
+import { useTitle } from "react-use";
 import Grid from "@mui/material/Grid";
 // import Link from "@mui/material/Link";
 import Divider from "@mui/material/Divider";
@@ -24,6 +25,8 @@ export const LocationOverview: React.FC = () => {
   const dataCCMContacts = useStoreState((state) =>
     get(state.GeographyOverviewCoordinatingMechanismsContacts, "data.data", [])
   );
+
+  useTitle(`The Data Explorer - ${dataOverview.name}`);
 
   return (
     <Box gap="24px" display="flex" flexDirection="column">

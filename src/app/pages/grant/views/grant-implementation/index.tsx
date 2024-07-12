@@ -6,12 +6,12 @@ import Box from "@mui/material/Box";
 import { appColors } from "app/theme";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
-import { useUpdateEffect } from "react-use";
 import { useParams } from "react-router-dom";
 import { CYCLES } from "app/pages/home/data";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import { Dropdown } from "app/components/dropdown";
+import { useTitle, useUpdateEffect } from "react-use";
 import { ChartBlock } from "app/components/chart-block";
 import { Heatmap } from "app/components/charts/heatmap";
 import { RadialChart } from "app/components/charts/radial";
@@ -32,6 +32,8 @@ import {
 
 export const GrantImplementation: React.FC = () => {
   const params = useParams<{ id: string; ip: string; tab: string }>();
+
+  useTitle(`The Data Explorer - ${params.id} Financial Insights`);
 
   const [chart2Dropdown, setChart2Dropdown] = React.useState(
     CHART_2_DROPDOWN_ITEMS[0].value

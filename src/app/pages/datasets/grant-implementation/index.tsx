@@ -10,6 +10,7 @@ import { appColors } from "app/theme";
 import Divider from "@mui/material/Divider";
 import { Table } from "app/components/table";
 import { useLocation } from "react-router-dom";
+import { useTitle, useUnmount } from "react-use";
 import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
 import { BarChart } from "app/components/charts/bar";
@@ -17,7 +18,6 @@ import { LineChart } from "app/components/charts/line";
 import { Treemap } from "app/components/charts/treemap";
 import { Heatmap } from "app/components/charts/heatmap";
 import { SankeyChart } from "app/components/charts/sankey";
-import useUpdateEffect from "react-use/lib/useUpdateEffect";
 import { DatasetPage } from "app/pages/datasets/common/page";
 import CircularProgress from "@mui/material/CircularProgress";
 import { BarChartDataItem } from "app/components/charts/bar/data";
@@ -56,9 +56,9 @@ import {
   dropdownItemsExpenditures,
   dropdownItemsBudgetsTableDataTypes,
 } from "app/pages/datasets/grant-implementation/data";
-import { useUnmount } from "react-use";
 
 export const GrantImplementationPage: React.FC = () => {
+  useTitle("The Data Explorer - Financial Insights");
   const location = useLocation();
 
   const [geographyGrouping, setGeographyGrouping] = React.useState(

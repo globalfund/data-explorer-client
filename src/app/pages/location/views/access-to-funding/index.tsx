@@ -3,6 +3,7 @@ import get from "lodash/get";
 import sumBy from "lodash/sumBy";
 import filter from "lodash/filter";
 import Box from "@mui/material/Box";
+import { useTitle } from "react-use";
 import { appColors } from "app/theme";
 import findIndex from "lodash/findIndex";
 import Divider from "@mui/material/Divider";
@@ -30,6 +31,11 @@ import {
 export const AccessToFunding: React.FC = () => {
   const params = useParams<{ id: string; tab: string }>();
   const paramsId = params.id?.replace("|", "%2F");
+
+  const locationName = useStoreState((state) =>
+    get(state.GeographyOverview, "data.data[0].name", params.id)
+  );
+  useTitle(`The Data Explorer - ${locationName}`);
 
   const [chart1Cycles, setChart1Cycles] = React.useState<CycleProps[]>([]);
   const [chart2Cycles, setChart2Cycles] = React.useState<CycleProps[]>([]);

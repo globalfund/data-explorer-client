@@ -1,6 +1,7 @@
 import React from "react";
 import get from "lodash/get";
 import Box from "@mui/material/Box";
+import { useTitle } from "react-use";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
@@ -54,6 +55,8 @@ export const GrantOverview: React.FC = () => {
   const loadingOverview = useStoreState(
     (state) => state.GrantInfo.loading || state.GrantOverview.loading
   );
+
+  useTitle(`The Data Explorer - ${dataGrant.code}`);
 
   const statusColor = React.useMemo(() => {
     switch (dataOverview.status) {

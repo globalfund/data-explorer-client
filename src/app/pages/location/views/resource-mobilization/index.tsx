@@ -2,6 +2,7 @@ import React from "react";
 import get from "lodash/get";
 import sumBy from "lodash/sumBy";
 import Box from "@mui/material/Box";
+import { useTitle } from "react-use";
 import { useParams } from "react-router-dom";
 import { CycleProps } from "app/pages/home/data";
 import Typography from "@mui/material/Typography";
@@ -18,6 +19,11 @@ import {
 export const ResourceMobilization: React.FC = () => {
   const params = useParams<{ id: string; tab: string }>();
   const paramsId = params.id?.replace("|", "%2F");
+
+  const locationName = useStoreState((state) =>
+    get(state.GeographyOverview, "data.data[0].name", params.id)
+  );
+  useTitle(`The Data Explorer - ${locationName}`);
 
   const [chart1Cycles, setChart1Cycles] = React.useState<CycleProps[]>([]);
 

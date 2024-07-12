@@ -3,6 +3,7 @@ import get from "lodash/get";
 import uniq from "lodash/uniq";
 import sumBy from "lodash/sumBy";
 import Box from "@mui/material/Box";
+import { useTitle } from "react-use";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import { Table } from "app/components/table";
@@ -27,6 +28,7 @@ const dropdownItems = [
 ];
 
 export const ResourceMobilizationPage: React.FC = () => {
+  useTitle("The Data Explorer - Resource Mobilization");
   const location = useLocation();
 
   const [dropdownSelected, setDropdownSelected] = React.useState(

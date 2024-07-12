@@ -2,6 +2,7 @@ import React from "react";
 import get from "lodash/get";
 import uniq from "lodash/uniq";
 import Box from "@mui/material/Box";
+import { useTitle } from "react-use";
 import { appColors } from "app/theme";
 import Grid from "@mui/material/Grid";
 import Tooltip from "@mui/material/Tooltip";
@@ -37,6 +38,7 @@ import {
 } from "app/components/table/data";
 
 export const AccessToFundingPage: React.FC = () => {
+  useTitle("The Data Explorer - Access to Funding");
   const location = useLocation();
 
   const [dropdownSelected, setDropdownSelected] = React.useState(

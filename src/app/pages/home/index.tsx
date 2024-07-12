@@ -3,6 +3,7 @@ import get from "lodash/get";
 import sumBy from "lodash/sumBy";
 import filter from "lodash/filter";
 import Box from "@mui/material/Box";
+import { useTitle } from "react-use";
 import { appColors } from "app/theme";
 import Divider from "@mui/material/Divider";
 import { Search } from "app/components/search";
@@ -40,6 +41,8 @@ import {
 } from "app/utils/getFinancialValueWithMetricPrefix";
 
 export const Home: React.FC = () => {
+  useTitle("The Data Explorer - Home");
+
   const [chart1Cycles, setChart1Cycles] = React.useState<CycleProps[]>([]);
   const [chart2Cycles, setChart2Cycles] = React.useState<CycleProps[]>([]);
   const [chart3Cycles, setChart3Cycles] = React.useState<CycleProps[]>([]);

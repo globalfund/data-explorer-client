@@ -1,7 +1,9 @@
 import React from "react";
 import get from "lodash/get";
 import Box from "@mui/material/Box";
+import { useTitle } from "react-use";
 import Divider from "@mui/material/Divider";
+import { useParams } from "react-router-dom";
 import { useStoreState } from "app/state/store/hooks";
 import { ChartBlock } from "app/components/chart-block";
 import { TableContainer } from "app/components/table-container";
@@ -17,6 +19,13 @@ import {
 } from "app/components/table/data";
 
 export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
+  const params = useParams<{ id: string; tab: string }>();
+
+  const locationName = useStoreState((state) =>
+    get(state.GeographyOverview, "data.data[0].name", params.id)
+  );
+  useTitle(`The Data Explorer - ${locationName}`);
+
   const dataResultStats = useStoreState(
     (state) =>
       get(state.GeographyResultStats, "data.stats", []) as StatCompProps[]

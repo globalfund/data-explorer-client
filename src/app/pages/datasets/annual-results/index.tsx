@@ -2,6 +2,7 @@ import React from "react";
 import get from "lodash/get";
 import uniq from "lodash/uniq";
 import Box from "@mui/material/Box";
+import { useTitle } from "react-use";
 import Divider from "@mui/material/Divider";
 import { Table } from "app/components/table";
 import { useLocation } from "react-router-dom";
@@ -55,6 +56,7 @@ const StatComp: React.FC<{
 };
 
 export const AnnualResultsPage: React.FC = () => {
+  useTitle("The Data Explorer - Annual Results");
   const location = useLocation();
 
   const [dropdownSelected, setDropdownSelected] = React.useState(

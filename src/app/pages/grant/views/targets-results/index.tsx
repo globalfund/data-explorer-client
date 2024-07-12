@@ -1,6 +1,7 @@
 import React from "react";
 import get from "lodash/get";
 import Box from "@mui/material/Box";
+import { useTitle } from "react-use";
 import Divider from "@mui/material/Divider";
 import { useParams } from "react-router-dom";
 import { ChartBlock } from "app/components/chart-block";
@@ -13,6 +14,8 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 
 export const GrantTargetsResults: React.FC = () => {
   const params = useParams<{ id: string; ip: string }>();
+
+  useTitle(`The Data Explorer - ${params.id} Targets & Results`);
 
   const [tab, setTab] = React.useState(TABS[0]);
 

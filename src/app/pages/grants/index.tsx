@@ -1,6 +1,7 @@
 import React from "react";
 import get from "lodash/get";
 import Box from "@mui/material/Box";
+import { useTitle } from "react-use";
 import Grid from "@mui/material/Grid";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
@@ -28,6 +29,8 @@ import { TABLE_VARIATION_5_COLUMNS } from "app/components/table/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 
 export const Grants: React.FC = () => {
+  useTitle("The Data Explorer - Grants");
+
   const [page, setPage] = React.useState(1);
   const [search, setSearch] = React.useState("");
   const [showSearch, setShowSearch] = React.useState(false);
@@ -133,10 +136,14 @@ export const Grants: React.FC = () => {
       const startDate = new Date(item.startDate);
       const endDate = new Date(item.endDate);
       if (startDate) {
-        datesStr = `${getMonthFromNumber(startDate.getMonth() + 1)} ${startDate.getFullYear()} - `;
+        datesStr = `${getMonthFromNumber(
+          startDate.getMonth() + 1
+        )} ${startDate.getFullYear()} - `;
       }
       if (endDate) {
-        datesStr += `${getMonthFromNumber(endDate.getMonth() + 1)} ${endDate.getFullYear()}`;
+        datesStr += `${getMonthFromNumber(
+          endDate.getMonth() + 1
+        )} ${endDate.getFullYear()}`;
       }
       return {
         grantId: item.number,
@@ -265,22 +272,42 @@ export const Grants: React.FC = () => {
   const filterString = React.useMemo(() => {
     let filterString = "";
     if (appliedFiltersData.locations.length > 0) {
-      filterString += `geographies=${encodeURIComponent(appliedFiltersData.locations.join(","))}`;
+      filterString += `geographies=${encodeURIComponent(
+        appliedFiltersData.locations.join(",")
+      )}`;
     }
     if (appliedFiltersData.components.length > 0) {
-      filterString += `${filterString.length > 0 ? "&" : ""}components=${encodeURIComponent(appliedFiltersData.components.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }components=${encodeURIComponent(
+        appliedFiltersData.components.join(",")
+      )}`;
     }
     if (appliedFiltersData.principalRecipientTypes.length > 0) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientTypes=${encodeURIComponent(appliedFiltersData.principalRecipientTypes.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipientTypes=${encodeURIComponent(
+        appliedFiltersData.principalRecipientTypes.join(",")
+      )}`;
     }
     if (appliedFiltersData.principalRecipientSubTypes.length > 0) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipientSubTypes=${encodeURIComponent(appliedFiltersData.principalRecipientSubTypes.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipientSubTypes=${encodeURIComponent(
+        appliedFiltersData.principalRecipientSubTypes.join(",")
+      )}`;
     }
     if (appliedFiltersData.principalRecipients.length > 0) {
-      filterString += `${filterString.length > 0 ? "&" : ""}principalRecipients=${encodeURIComponent(appliedFiltersData.principalRecipients.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }principalRecipients=${encodeURIComponent(
+        appliedFiltersData.principalRecipients.join(",")
+      )}`;
     }
     if (appliedFiltersData.status.length > 0) {
-      filterString += `${filterString.length > 0 ? "&" : ""}status=${encodeURIComponent(appliedFiltersData.status.join(","))}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }status=${encodeURIComponent(appliedFiltersData.status.join(","))}`;
     }
     return filterString;
   }, [appliedFiltersData]);
@@ -304,7 +331,9 @@ export const Grants: React.FC = () => {
         page: `${page}`,
         pageSize: "9",
       },
-      filterString: `q=${search}${filterString.length ? `&${filterString}` : ""}`,
+      filterString: `q=${search}${
+        filterString.length ? `&${filterString}` : ""
+      }`,
     });
   }, [page, filterString]);
 
@@ -315,7 +344,9 @@ export const Grants: React.FC = () => {
           page: `${page}`,
           pageSize: "9",
         },
-        filterString: `q=${search}${filterString.length ? `&${filterString}` : ""}`,
+        filterString: `q=${search}${
+          filterString.length ? `&${filterString}` : ""
+        }`,
       });
     }
   }, [search]);
