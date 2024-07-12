@@ -131,6 +131,7 @@ import {
   GeographyDisbursementsCycles,
   GeographyFundingRequestsCycles,
   GeographyPledgesContributionsCycles,
+  FinancialMetricsCycles,
 } from "app/state/api/action-reducers/filters/cycles";
 
 const storeContent: StoreModel = {
@@ -265,6 +266,7 @@ const storeContent: StoreModel = {
   FundingRequestsCycles: persist(FundingRequestsCycles),
   AnnualResultsCycles: persist(AnnualResultsCycles),
   BudgetsCycles: persist(BudgetsCycles),
+  FinancialMetricsCycles: persist(FinancialMetricsCycles),
   PledgesContributionsCycles: persist(PledgesContributionsCycles),
   DisbursementsCycles: persist(DisbursementsCycles),
   ExpendituresCycles: persist(ExpendituresCycles),

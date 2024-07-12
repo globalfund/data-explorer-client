@@ -219,6 +219,7 @@ export interface StoreModel {
   FundingRequestsCycles: ApiCallModel;
   AnnualResultsCycles: ApiCallModel;
   BudgetsCycles: ApiCallModel;
+  FinancialMetricsCycles: ApiCallModel;
   PledgesContributionsCycles: ApiCallModel;
   DisbursementsCycles: ApiCallModel;
   ExpendituresCycles: ApiCallModel;

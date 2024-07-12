@@ -387,6 +387,22 @@ export const GrantImplementationPage: React.FC = () => {
       }))
       .reverse()
   );
+  const metricsCycles = useStoreState((state) =>
+    get(state.FinancialMetricsCycles, "data.data", [])
+      .map((cycle: any) => ({
+        label: cycle.value,
+        value: cycle.value,
+      }))
+      .reverse()
+  );
+  const expenditureCycles = useStoreState((state) =>
+    get(state.ExpendituresCycles, "data.data", [])
+      .map((cycle: any) => ({
+        label: cycle.value,
+        value: cycle.value,
+      }))
+      .reverse()
+  );
   const fetchComponentFilterOptions = useStoreActions(
     (actions) => actions.ComponentFilterOptions.fetch
   );
@@ -412,15 +428,17 @@ export const GrantImplementationPage: React.FC = () => {
   const [budgetBreakdownDropdownSelected, setBudgetBreakdownDropdownSelected] =
     React.useState(cycles.length > 0 ? cycles[0].value : null);
   const [budgetCycleDropdownSelected, setBudgetCycleDropdownSelected] =
-    React.useState<string | null>(null);
+    React.useState(cycles.length > 0 ? cycles[0].value : null);
   const [
     financialMetricsCycleDropdownSelected,
     setFinancialMetricsCycleDropdownSelected,
-  ] = React.useState<string | null>(null);
+  ] = React.useState(metricsCycles.length > 0 ? metricsCycles[0].value : null);
   const [
     expendituresCycleDropdownSelected,
     setExpendituresCycleDropdownSelected,
-  ] = React.useState<string | null>(null);
+  ] = React.useState(
+    expenditureCycles.length > 0 ? expenditureCycles[0].value : null
+  );
 
   const [budgetTableDataType, setBudgetTableDataType] = React.useState(
     dropdownItemsBudgetsTableDataTypes[0].value
@@ -952,12 +970,12 @@ export const GrantImplementationPage: React.FC = () => {
     }
     return (
       <Dropdown
-        dropdownItems={cycles}
+        dropdownItems={metricsCycles}
         dropdownSelected={financialMetricsCycleDropdownSelected}
         handleDropdownChange={setFinancialMetricsCycleDropdownSelected}
       />
     );
-  }, [cycles, financialMetricsCycleDropdownSelected]);
+  }, [metricsCycles, financialMetricsCycleDropdownSelected]);
 
   const expendituresCycleDropdown = React.useMemo(() => {
     if (!expendituresCycleDropdownSelected) {
@@ -965,12 +983,12 @@ export const GrantImplementationPage: React.FC = () => {
     }
     return (
       <Dropdown
-        dropdownItems={cycles}
+        dropdownItems={expenditureCycles}
         dropdownSelected={expendituresCycleDropdownSelected}
         handleDropdownChange={setExpendituresCycleDropdownSelected}
       />
     );
-  }, [cycles, expendituresCycleDropdownSelected]);
+  }, [expenditureCycles, expendituresCycleDropdownSelected]);
 
   const budgetsChartEmpty = React.useMemo(() => {
     switch (budgetsDropdownSelected) {
