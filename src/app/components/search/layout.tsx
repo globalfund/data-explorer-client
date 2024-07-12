@@ -141,6 +141,7 @@ export function SearchLayout(props: SearchLayoutProps) {
           tabIndex={0}
           ref={inputRef}
           value={props.value}
+          id="general-search"
           placeholder={get(
             cmsData,
             "componentsSearch.placeholder",

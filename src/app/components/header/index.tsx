@@ -21,6 +21,17 @@ export const Header: React.FC = () => {
     setSearchOpen(!searchOpen);
   };
 
+  const handleKeyPress = (e: KeyboardEvent) => {
+    if (e.key === "/") {
+      e.preventDefault();
+      setSearchOpen(true);
+      setTimeout(() => {
+        const input = document.getElementById("general-search");
+        if (input) input.focus();
+      }, 100);
+    }
+  };
+
   React.useEffect(() => {
     setTimeout(() => {
       if (!hash) {
@@ -29,6 +40,12 @@ export const Header: React.FC = () => {
       }
     }, 100);
   }, [pathname]);
+
+  React.useEffect(() => {
+    document.addEventListener("keypress", handleKeyPress);
+
+    return () => document.removeEventListener("keypress", handleKeyPress);
+  }, []);
 
   return (
     <Box sx={{ zIndex: 1000, flexGrow: 1, top: 0, position: "sticky" }}>

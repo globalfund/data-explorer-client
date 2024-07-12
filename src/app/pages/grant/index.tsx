@@ -10,19 +10,17 @@ import { GrantTargetsResults } from "./views/targets-results";
 import { GrantOverview } from "app/pages/grant/views/overview";
 import { DetailPageTabs } from "app/components/detail-page-tabs";
 import { GrantDocuments } from "app/pages/grant/views/documents";
+import { GRANT_TABS } from "app/components/detail-page-tabs/data";
 import { BarChartDataItem } from "app/components/charts/bar/data";
 import { splitStringInMiddle } from "app/utils/splitStringInMiddle";
 import { SankeyChartData } from "app/components/charts/sankey/data";
-import { HeatmapDataItem } from "app/components/charts/heatmap/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { GrantImplementation } from "app/pages/grant/views/grant-implementation";
-import {
-  GRANT_TABS,
-  GRANT_DROPDOWN_ITEMS,
-} from "app/components/detail-page-tabs/data";
+import { useMediaQuery } from "@mui/material";
 
 export const Grant: React.FC = () => {
   const navigate = useNavigate();
+  const smallScreen = useMediaQuery("(max-width: 920px)");
   const params = useParams<{ id: string; ip: string; tab: string }>();
 
   const dataGrant = useStoreState(
@@ -265,12 +263,14 @@ export const Grant: React.FC = () => {
         {params.id}
       </Typography>
       <Typography variant="h5" lineHeight={1} marginBottom="50px">
-        {titleSplits.map((s) => (
-          <React.Fragment key={s}>
-            {s}
-            <br />
-          </React.Fragment>
-        ))}
+        {smallScreen && dropdownSelected?.title}
+        {!smallScreen &&
+          titleSplits.map((s) => (
+            <React.Fragment key={s}>
+              {s}
+              <br />
+            </React.Fragment>
+          ))}
       </Typography>
       {fullWidthDivider}
       <Box height="20px" />

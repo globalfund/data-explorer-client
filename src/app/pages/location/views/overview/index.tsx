@@ -3,10 +3,10 @@ import get from "lodash/get";
 import uniqBy from "lodash/uniqBy";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import Link from "@mui/material/Link";
+// import Link from "@mui/material/Link";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
-import { Link as RouteLink } from "react-router-dom";
+// import { Link as RouteLink } from "react-router-dom";
 import { useStoreState } from "app/state/store/hooks";
 
 export const LocationOverview: React.FC = () => {
@@ -63,7 +63,14 @@ export const LocationOverview: React.FC = () => {
               flexDirection: "column",
             }}
           >
-            <Box minHeight={110}>
+            <Box
+              minHeight={110}
+              sx={{
+                "@media (max-width: 920px)": {
+                  minHeight: "auto",
+                },
+              }}
+            >
               <Typography variant="body2" fontWeight="700" marginBottom="10px">
                 Fund Portfolio Manager
               </Typography>
@@ -125,7 +132,14 @@ export const LocationOverview: React.FC = () => {
               flexDirection: "column",
             }}
           >
-            <Box minHeight={110}>
+            <Box
+              minHeight={110}
+              sx={{
+                "@media (max-width: 920px)": {
+                  minHeight: "auto",
+                },
+              }}
+            >
               <Typography variant="body2" fontWeight="700" marginBottom="10px">
                 Current Principal Recipients in {dataOverview.name}
               </Typography>

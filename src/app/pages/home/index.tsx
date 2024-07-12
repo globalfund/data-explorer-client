@@ -565,7 +565,16 @@ export const Home: React.FC = () => {
       />
       <Box height="64px" />
       <Box display="flex" flexDirection="row" justifyContent="center">
-        <Box width="800px">
+        <Box
+          width="800px"
+          sx={{
+            "@media (max-width: 920px)": {
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+            },
+          }}
+        >
           <Search />
         </Box>
       </Box>

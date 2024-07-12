@@ -62,7 +62,7 @@ const SM = [
   {
     name: "twitter",
     icon: <TwitterIcon />,
-    link: "https://twitter.com/globalfund",
+    link: "https://x.com/globalfund",
   },
   {
     name: "linkedin",
@@ -80,9 +80,17 @@ export const Footer: React.FC = () => {
   return (
     <React.Fragment>
       <FooterContainer>
-        <Container maxWidth="lg" disableGutters>
+        <Container
+          maxWidth="lg"
+          disableGutters
+          sx={{
+            "@media (max-width: 1200px)": {
+              padding: "0 16px",
+            },
+          }}
+        >
           <Grid container>
-            <Grid item sm={12} md={6} lg={7}>
+            <Grid item sm={6} md={6} lg={7}>
               <FooterLogo />
               <Box
                 gap="15px"
@@ -107,8 +115,8 @@ export const Footer: React.FC = () => {
                 Tuberculosis and Malaria
               </Typography>
             </Grid>
-            <Grid item container sm={12} md={6} lg={5} spacing={2}>
-              <Grid item sm={12} md={4}>
+            <Grid item container sm={6} md={6} lg={5} spacing={2}>
+              <Grid item sm={4} md={4}>
                 <FooterHeader>CONNECT</FooterHeader>
                 <FooterExternalLink
                   target="_blank"
@@ -142,7 +150,7 @@ export const Footer: React.FC = () => {
                   Donate to the Global Fund through United Nations Foundation
                 </FooterExternalLink>
               </Grid>
-              <Grid item sm={12} md={4}>
+              <Grid item sm={4} md={4}>
                 <FooterHeader>ABOUT THE WEBSITE</FooterHeader>
                 <FooterExternalLink
                   target="_blank"
@@ -169,7 +177,7 @@ export const Footer: React.FC = () => {
                   Cookies
                 </FooterExternalLink>
               </Grid>
-              <Grid item sm={12} md={4}>
+              <Grid item sm={4} md={4}>
                 <FooterHeader>MORE GLOBAL FUND SITES</FooterHeader>
                 <FooterExternalLink
                   target="_blank"

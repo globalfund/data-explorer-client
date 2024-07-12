@@ -130,8 +130,11 @@ export const GrantOverview: React.FC = () => {
               width: "1px",
               content: '""',
               height: "38px",
+              background: "#000",
               position: "absolute",
-              backgroundColor: "#000",
+              "@media (max-width: 1200px)": {
+                display: "none",
+              },
             },
             "> div > *": {
               maxWidth: "100%",

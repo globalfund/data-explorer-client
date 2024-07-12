@@ -1913,6 +1913,12 @@ export const GrantImplementationPage: React.FC = () => {
               "&:first-of-type": {
                 paddingLeft: 0,
               },
+              "@media (max-width: 920px)": {
+                padding: "0 15px",
+                h5: {
+                  fontSize: "20px",
+                },
+              },
             },
           }}
         >
@@ -2069,7 +2075,7 @@ export const GrantImplementationPage: React.FC = () => {
                 position="relative"
               >
                 <Box
-                  top="-25px"
+                  top="-35px"
                   fontSize="12px"
                   fontWeight="400"
                   position="absolute"

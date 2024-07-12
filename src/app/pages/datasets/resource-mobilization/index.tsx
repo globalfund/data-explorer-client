@@ -388,9 +388,12 @@ export const ResourceMobilizationPage: React.FC = () => {
                 flexDirection: "column",
                 justifyContent: "center",
               },
-              "@media (max-width: 600px)": {
+              "@media (max-width: 920px)": {
                 paddingRight: "0px",
+                flexDirection: "row",
+                marginBottom: "50px",
                 borderRightStyle: "none",
+                justifyContent: "space-around",
               },
             }}
           >
@@ -411,7 +414,7 @@ export const ResourceMobilizationPage: React.FC = () => {
                 Total Pledged
               </Typography>
             </Box>
-            <Divider />
+            <Divider orientation="vertical" />
             <Box>
               <Typography variant="h5">
                 {formatFinancialValue(get(dataStats, "totalContributions", 0))}
@@ -427,7 +430,7 @@ export const ResourceMobilizationPage: React.FC = () => {
             md={8}
             sx={{
               paddingLeft: "21px",
-              "@media (max-width: 600px)": {
+              "@media (max-width: 920px)": {
                 paddingLeft: "0px",
               },
             }}
@@ -477,12 +480,15 @@ export const ResourceMobilizationPage: React.FC = () => {
                       "> *": {
                         lineHeight: "normal",
                       },
+                      "@media (max-width: 920px)": {
+                        height: "104px",
+                      },
                     },
                   },
                 }}
               >
                 {get(dataStats, "donorTypesCount", []).map((item) => (
-                  <Grid item xs={12} sm={6} md={6} lg={3} key={item.name}>
+                  <Grid item xs={12} sm={3} md={3} lg={3} key={item.name}>
                     <Box bgcolor="#F1F3F5" padding="5px 10px">
                       <Typography variant="h5">{item.value}</Typography>
                       <Typography fontSize="12px">{item.name}</Typography>

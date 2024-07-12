@@ -909,7 +909,14 @@ export const AccessToFundingPage: React.FC = () => {
                 </Box>
               </Box>
               <Tooltip title="">
-                <Info fontSize="small" />
+                <Info
+                  fontSize="small"
+                  sx={{
+                    "@media (max-width: 920px)": {
+                      display: "none",
+                    },
+                  }}
+                />
               </Tooltip>
             </Box>
             <TableContainer

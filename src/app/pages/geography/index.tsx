@@ -37,7 +37,7 @@ const GeoCategory: React.FC<GeoCategoryProps> = (props: GeoCategoryProps) => {
           <Grid
             item
             key={item.name}
-            sm={12}
+            sm={props.items.length > 1 ? 6 : 12}
             md={props.items.length > 1 ? 4 : 12}
             lg={props.items.length > 1 ? 2 : 12}
           >

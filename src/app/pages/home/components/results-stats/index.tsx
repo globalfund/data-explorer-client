@@ -37,7 +37,15 @@ const StatComp: React.FC<StatCompProps> = (props: StatCompProps) => {
     >
       {icon}
       <Box>
-        <Typography variant="h3" fontWeight="900">
+        <Typography
+          variant="h3"
+          fontWeight="900"
+          sx={{
+            "@media (max-width: 1200px)": {
+              fontSize: "32px",
+            },
+          }}
+        >
           {value.number} {value.text}
         </Typography>
         <Typography
@@ -65,6 +73,12 @@ export const HomeResultsStats: React.FC<HomeResultsStatsProps> = (
       sx={{
         "> div": {
           width: "calc(100% / 3)",
+        },
+        "@media (max-width: 920px)": {
+          justifyContent: "space-around",
+          "> div": {
+            width: "fit-content",
+          },
         },
       }}
     >
