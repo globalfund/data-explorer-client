@@ -371,14 +371,14 @@ export const GrantImplementationPage: React.FC = () => {
         options: [],
       }) as FilterGroupModel
   );
-  const dataCycleFilterOptions = useStoreState((state) => ({
-    id: "cycle",
-    name: "Cycle",
-    options: get(state.DisbursementsCycles, "data.data", []).map((o: any) => ({
-      name: o.value,
-      value: o.value,
-    })),
-  }));
+  // const dataCycleFilterOptions = useStoreState((state) => ({
+  //   id: "cycle",
+  //   name: "Cycle",
+  //   options: get(state.DisbursementsCycles, "data.data", []).map((o: any) => ({
+  //     name: o.value,
+  //     value: o.value,
+  //   })),
+  // }));
   const cycles = useStoreState((state) =>
     get(state.BudgetsCycles, "data.data", [])
       .map((cycle: any) => ({
@@ -1052,7 +1052,7 @@ export const GrantImplementationPage: React.FC = () => {
 
   const filterGroups = React.useMemo(() => {
     return [
-      dataCycleFilterOptions,
+      // dataCycleFilterOptions,
       dataLocationFilterOptions,
       dataComponentFilterOptions,
       dataPartnerTypeFilterOptions,
@@ -1063,7 +1063,7 @@ export const GrantImplementationPage: React.FC = () => {
     dataComponentFilterOptions,
     dataPartnerTypeFilterOptions,
     dataStatusFilterOptions,
-    dataCycleFilterOptions,
+    // dataCycleFilterOptions,
   ]);
 
   const filterString = React.useMemo(() => {

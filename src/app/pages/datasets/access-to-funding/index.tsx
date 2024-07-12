@@ -254,6 +254,8 @@ export const AccessToFundingPage: React.FC = () => {
   const [eligibilityYear, setEligibilityYear] = React.useState(
     eligibilityYears[0].value
   );
+  const [allocationCycleDropdownSelected, setAllocationCycleDropdownSelected] =
+    React.useState<string | null>(null);
 
   const handleSelectionChange = (value: string) => {
     setDropdownSelected(value);
@@ -430,14 +432,14 @@ export const AccessToFundingPage: React.FC = () => {
 
   const filterGroups = React.useMemo(() => {
     return [
-      dataCycleFilterOptions,
+      // dataCycleFilterOptions,
       dataLocationFilterOptions,
       dataComponentFilterOptions,
     ];
   }, [
     dataLocationFilterOptions,
     dataComponentFilterOptions,
-    dataCycleFilterOptions,
+    // dataCycleFilterOptions,
   ]);
 
   const filterString = React.useMemo(() => {
@@ -536,22 +538,18 @@ export const AccessToFundingPage: React.FC = () => {
         ]).join(",")
       )}`;
     }
-    if (
-      (appliedFiltersData.cycles.length > 0 &&
-        location.search.includes("cycles=")) ||
-      chart2AppliedFiltersData.cycles.length > 0
-    ) {
+    if (allocationCycleDropdownSelected) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
-      }cycles=${encodeURIComponent(
-        uniq([
-          ...appliedFiltersData.cycles,
-          ...chart2AppliedFiltersData.cycles,
-        ]).join(",")
-      )}`;
+      }cycles=${encodeURIComponent(allocationCycleDropdownSelected)}`;
     }
     return filterString;
-  }, [appliedFiltersData, chart2AppliedFiltersData, location.search]);
+  }, [
+    location.search,
+    appliedFiltersData,
+    chart2AppliedFiltersData,
+    allocationCycleDropdownSelected,
+  ]);
 
   const chart3FilterString = React.useMemo(() => {
     let filterString = "";
@@ -623,6 +621,35 @@ export const AccessToFundingPage: React.FC = () => {
     ];
   }, [dataEligibilityTable]);
 
+  const allocationCycleDropdown = React.useMemo(() => {
+    if (!allocationCycleDropdownSelected) {
+      return <React.Fragment />;
+    }
+    return (
+      <Dropdown
+        dropdownItems={dataCycleFilterOptions.options.map((item) => ({
+          label: item.name,
+          value: item.value,
+        }))}
+        dropdownSelected={allocationCycleDropdownSelected}
+        handleDropdownChange={setAllocationCycleDropdownSelected}
+      />
+    );
+  }, [dataCycleFilterOptions, allocationCycleDropdownSelected]);
+
+  React.useEffect(() => {
+    if (
+      dataCycleFilterOptions.options.length > 0 &&
+      !allocationCycleDropdownSelected
+    ) {
+      setAllocationCycleDropdownSelected(
+        dataCycleFilterOptions.options[
+          dataCycleFilterOptions.options.length - 1
+        ].value
+      );
+    }
+  }, [dataCycleFilterOptions]);
+
   React.useEffect(() => {
     fetchAllocationsBarSeries({ filterString });
     fetchDocumentsTable({
@@ -646,9 +673,11 @@ export const AccessToFundingPage: React.FC = () => {
   }, [chart1FilterString]);
 
   React.useEffect(() => {
-    fetchAllocationsSunburst({ filterString: chart2FilterString });
-    fetchAllocationsTreemap({ filterString: chart2FilterString });
-    fetchAllocationsTable({ filterString: chart2FilterString });
+    if (allocationCycleDropdownSelected) {
+      fetchAllocationsSunburst({ filterString: chart2FilterString });
+      fetchAllocationsTreemap({ filterString: chart2FilterString });
+      fetchAllocationsTable({ filterString: chart2FilterString });
+    }
   }, [chart2FilterString]);
 
   React.useEffect(() => {
@@ -919,6 +948,7 @@ export const AccessToFundingPage: React.FC = () => {
             removeFilter={handleRemoveChartFilter(2)}
             handleResetFilters={handleResetChartFilters(2)}
             appliedFiltersData={chart2AppliedFiltersData}
+            extraDropdown={allocationCycleDropdown}
             infoType="global"
           >
             {chartContent}
