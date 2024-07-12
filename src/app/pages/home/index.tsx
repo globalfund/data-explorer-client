@@ -193,6 +193,7 @@ export const Home: React.FC = () => {
       case 3:
         cycles = chart3Cycles;
         setCycle = setChart3Cycles;
+        multi = false;
         break;
       case 4:
         cycles = chart4Cycles;
@@ -463,6 +464,12 @@ export const Home: React.FC = () => {
   }, [allocationsCycles]);
 
   React.useEffect(() => {
+    if (budgetsCycles.length > 0) {
+      setChart3Cycles([budgetsCycles[budgetsCycles.length - 1]]);
+    }
+  }, [budgetsCycles]);
+
+  React.useEffect(() => {
     if (expendituresCycles.length > 0) {
       setChart5Cycles([expendituresCycles[expendituresCycles.length - 1]]);
     }
@@ -646,7 +653,6 @@ export const Home: React.FC = () => {
       {fullWidthDivider}
       <Box height="50px" />
       <ChartBlock
-        showCycleAll
         id="budgets"
         title={totalBudget}
         subtitle="Grant Budgets"
