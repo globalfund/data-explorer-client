@@ -1,18 +1,20 @@
 /* eslint-disable no-param-reassign */
 import { action, Action } from "easy-peasy";
+import { FilterModel } from "app/components/filters/list/data";
 
 export const defaultAppliedFilters: AppliedFiltersModel = {
   locations: [] as string[],
   components: [] as string[],
-  partnerTypes: [] as string[],
-  partnerSubTypes: [] as string[],
-  partners: [] as string[],
+  principalRecipientTypes: [] as string[],
+  principalRecipientSubTypes: [] as string[],
+  principalRecipients: [] as string[],
   status: [] as string[],
   documentTypes: [] as string[],
   replenishmentPeriods: [] as string[],
   donors: [] as string[],
-  donorCategories: [] as string[],
-  donorSubCategories: [] as string[],
+  donorTypes: [] as string[],
+  donorSubTypes: [] as string[],
+  cycles: [] as string[],
   trpWindows: [] as string[],
   portfolioCategories: [] as string[],
 };
@@ -20,15 +22,16 @@ export const defaultAppliedFilters: AppliedFiltersModel = {
 export interface AppliedFiltersModel {
   locations: string[];
   components: string[];
-  partnerTypes: string[];
-  partnerSubTypes: string[];
-  partners: string[];
+  principalRecipientTypes: string[];
+  principalRecipientSubTypes: string[];
+  principalRecipients: string[];
   status: string[];
   documentTypes: string[];
   replenishmentPeriods: string[];
   donors: string[];
-  donorCategories: string[];
-  donorSubCategories: string[];
+  donorTypes: string[];
+  donorSubTypes: string[];
+  cycles: string[];
   trpWindows: string[];
   portfolioCategories: string[];
 }
@@ -38,12 +41,12 @@ export interface AppliedFiltersStateModel {
   setLocations: Action<AppliedFiltersStateModel, string[]>;
   components: string[];
   setComponents: Action<AppliedFiltersStateModel, string[]>;
-  partnerTypes: string[];
-  setPartnerTypes: Action<AppliedFiltersStateModel, string[]>;
-  partnerSubTypes: string[];
-  setPartnerSubTypes: Action<AppliedFiltersStateModel, string[]>;
-  partners: string[];
-  setPartners: Action<AppliedFiltersStateModel, string[]>;
+  principalRecipientTypes: string[];
+  setPrincipalRecipientTypes: Action<AppliedFiltersStateModel, string[]>;
+  principalRecipientSubTypes: string[];
+  setPrincipalRecipientSubTypes: Action<AppliedFiltersStateModel, string[]>;
+  principalRecipients: string[];
+  setPrincipalRecipients: Action<AppliedFiltersStateModel, string[]>;
   status: string[];
   setStatus: Action<AppliedFiltersStateModel, string[]>;
   documentTypes: string[];
@@ -52,10 +55,12 @@ export interface AppliedFiltersStateModel {
   setReplenishmentPeriods: Action<AppliedFiltersStateModel, string[]>;
   donors: string[];
   setDonors: Action<AppliedFiltersStateModel, string[]>;
-  donorCategories: string[];
-  setDonorCategories: Action<AppliedFiltersStateModel, string[]>;
-  donorSubCategories: string[];
-  setDonorSubCategories: Action<AppliedFiltersStateModel, string[]>;
+  donorTypes: string[];
+  setDonorTypes: Action<AppliedFiltersStateModel, string[]>;
+  donorSubTypes: string[];
+  setDonorSubTypes: Action<AppliedFiltersStateModel, string[]>;
+  cycles: string[];
+  setDonorCycles: Action<AppliedFiltersStateModel, string[]>;
   trpWindows: string[];
   setTrpWindows: Action<AppliedFiltersStateModel, string[]>;
   setPortfolioCategories: Action<AppliedFiltersStateModel, string[]>;
@@ -63,6 +68,21 @@ export interface AppliedFiltersStateModel {
   setAll: Action<AppliedFiltersStateModel, AppliedFiltersModel>;
   actionDefaultNone: Action<AppliedFiltersStateModel, string[]>;
   appliedFiltersCount: number;
+  toggleFilter: Action<
+    AppliedFiltersStateModel,
+    {
+      type: string;
+      value: string;
+      checked: boolean;
+    }
+  >;
+  removeFilter: Action<
+    AppliedFiltersStateModel,
+    {
+      value: string;
+      types: string[];
+    }
+  >;
 }
 
 export const AppliedFiltersState: AppliedFiltersStateModel = {
@@ -76,19 +96,19 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
     state.components = payload;
     state.appliedFiltersCount += payload.length;
   }),
-  partnerTypes: [],
-  setPartnerTypes: action((state, payload: string[]) => {
-    state.partnerTypes = payload;
+  principalRecipientTypes: [],
+  setPrincipalRecipientTypes: action((state, payload: string[]) => {
+    state.principalRecipientTypes = payload;
     state.appliedFiltersCount += payload.length;
   }),
-  partnerSubTypes: [],
-  setPartnerSubTypes: action((state, payload: string[]) => {
-    state.partnerSubTypes = payload;
+  principalRecipientSubTypes: [],
+  setPrincipalRecipientSubTypes: action((state, payload: string[]) => {
+    state.principalRecipientSubTypes = payload;
     state.appliedFiltersCount += payload.length;
   }),
-  partners: [],
-  setPartners: action((state, payload: string[]) => {
-    state.partners = payload;
+  principalRecipients: [],
+  setPrincipalRecipients: action((state, payload: string[]) => {
+    state.principalRecipients = payload;
     state.appliedFiltersCount += payload.length;
   }),
   status: [],
@@ -111,14 +131,19 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
     state.donors = payload;
     state.appliedFiltersCount += payload.length;
   }),
-  donorCategories: [],
-  setDonorCategories: action((state, payload: string[]) => {
-    state.donorCategories = payload;
+  donorTypes: [],
+  setDonorTypes: action((state, payload: string[]) => {
+    state.donorTypes = payload;
     state.appliedFiltersCount += payload.length;
   }),
-  donorSubCategories: [],
-  setDonorSubCategories: action((state, payload: string[]) => {
-    state.donorSubCategories = payload;
+  donorSubTypes: [],
+  setDonorSubTypes: action((state, payload: string[]) => {
+    state.donorSubTypes = payload;
+    state.appliedFiltersCount += payload.length;
+  }),
+  cycles: [],
+  setDonorCycles: action((state, payload: string[]) => {
+    state.cycles = payload;
     state.appliedFiltersCount += payload.length;
   }),
   trpWindows: [],
@@ -134,28 +159,29 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
   setAll: action((state, payload: AppliedFiltersModel) => {
     state.locations = payload.locations;
     state.components = payload.components;
-    state.partnerTypes = payload.partnerTypes;
-    state.partnerSubTypes = payload.partnerSubTypes;
-    state.partners = payload.partners;
+    state.principalRecipientTypes = payload.principalRecipientTypes;
+    state.principalRecipientSubTypes = payload.principalRecipientSubTypes;
+    state.principalRecipients = payload.principalRecipients;
     state.status = payload.status;
     state.replenishmentPeriods = payload.replenishmentPeriods;
     state.donors = payload.donors;
-    state.donorCategories = payload.donorCategories;
-    state.donorSubCategories = payload.donorSubCategories;
+    state.donorTypes = payload.donorTypes;
+    state.donorSubTypes = payload.donorSubTypes;
+    state.cycles = payload.cycles;
     state.trpWindows = payload.trpWindows;
     state.portfolioCategories = payload.portfolioCategories;
     state.documentTypes = payload.documentTypes;
     state.appliedFiltersCount =
       payload.locations.length +
       payload.components.length +
-      payload.partnerTypes.length +
-      payload.partnerSubTypes.length +
-      payload.partners.length +
+      payload.principalRecipients.length +
+      payload.principalRecipientSubTypes.length +
+      payload.principalRecipientTypes.length +
       payload.status.length +
       payload.replenishmentPeriods.length +
       payload.donors.length +
-      payload.donorCategories.length +
-      payload.donorSubCategories.length +
+      payload.donorTypes.length +
+      payload.donorSubTypes.length +
       payload.trpWindows.length +
       payload.portfolioCategories.length +
       payload.documentTypes.length;
@@ -164,4 +190,169 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
     console.log("Incorrect filter type");
   }),
   appliedFiltersCount: 0,
+  toggleFilter: action((state, payload) => {
+    switch (payload.type) {
+      case "donor":
+        if (payload.checked) {
+          state.donors.push(payload.value);
+          state.appliedFiltersCount += 1;
+        } else {
+          state.donors = state.donors.filter((item) => item !== payload.value);
+          state.appliedFiltersCount -= 1;
+        }
+        break;
+      case "donorType":
+        if (payload.checked) {
+          state.donorTypes.push(payload.value);
+          state.appliedFiltersCount += 1;
+        } else {
+          state.donorTypes = state.donorTypes.filter(
+            (item) => item !== payload.value
+          );
+          state.appliedFiltersCount -= 1;
+        }
+        break;
+      case "replenishmentPeriod":
+        if (payload.checked) {
+          state.replenishmentPeriods.push(payload.value);
+          state.appliedFiltersCount += 1;
+        } else {
+          state.replenishmentPeriods = state.replenishmentPeriods.filter(
+            (item) => item !== payload.value
+          );
+          state.appliedFiltersCount -= 1;
+        }
+        break;
+      case "geography":
+      case "geographyType":
+      case "geographySubType":
+        if (payload.checked) {
+          state.locations.push(payload.value);
+          state.appliedFiltersCount += 1;
+        } else {
+          state.locations = state.locations.filter(
+            (item) => item !== payload.value
+          );
+          state.appliedFiltersCount -= 1;
+        }
+        break;
+      case "component":
+        if (payload.checked) {
+          state.components.push(payload.value);
+          state.appliedFiltersCount += 1;
+        } else {
+          state.components = state.components.filter(
+            (item) => item !== payload.value
+          );
+          state.appliedFiltersCount -= 1;
+        }
+        break;
+      case "principalRecipient":
+        if (payload.checked) {
+          state.principalRecipients.push(payload.value);
+          state.appliedFiltersCount += 1;
+        } else {
+          state.principalRecipients = state.principalRecipients.filter(
+            (item) => item !== payload.value
+          );
+          state.appliedFiltersCount -= 1;
+        }
+        break;
+      case "principalRecipientSubType":
+        if (payload.checked) {
+          state.principalRecipientSubTypes.push(payload.value);
+          state.appliedFiltersCount += 1;
+        } else {
+          state.principalRecipientSubTypes =
+            state.principalRecipientSubTypes.filter(
+              (item) => item !== payload.value
+            );
+          state.appliedFiltersCount -= 1;
+        }
+        break;
+      case "principalRecipientType":
+        if (payload.checked) {
+          state.principalRecipientTypes.push(payload.value);
+          state.appliedFiltersCount += 1;
+        } else {
+          state.principalRecipientTypes = state.principalRecipientTypes.filter(
+            (item) => item !== payload.value
+          );
+          state.appliedFiltersCount -= 1;
+        }
+        break;
+      case "status":
+        if (payload.checked) {
+          state.status.push(payload.value);
+          state.appliedFiltersCount += 1;
+        } else {
+          state.status = state.status.filter((item) => item !== payload.value);
+          state.appliedFiltersCount -= 1;
+        }
+        break;
+      case "cycle":
+        if (payload.checked) {
+          state.cycles.push(payload.value);
+          state.appliedFiltersCount += 1;
+        } else {
+          state.cycles = state.cycles.filter((item) => item !== payload.value);
+          state.appliedFiltersCount -= 1;
+        }
+        break;
+      default:
+        break;
+    }
+  }),
+  removeFilter: action((state, payload) => {
+    payload.types.forEach((type) => {
+      switch (type) {
+        case "donor":
+          state.donors = state.donors.filter((item) => item !== payload.value);
+          state.donorTypes = state.donorTypes.filter(
+            (item) => item !== payload.value
+          );
+          break;
+        case "replenishmentPeriod":
+          state.replenishmentPeriods = state.replenishmentPeriods.filter(
+            (item) => item !== payload.value
+          );
+          break;
+        case "geography":
+        case "geographyType":
+        case "geographySubType":
+          state.locations = state.locations.filter(
+            (item) => item !== payload.value
+          );
+          break;
+        case "component":
+          state.components = state.components.filter(
+            (item) => item !== payload.value
+          );
+          break;
+        case "principalRecipient":
+        case "principalRecipientSubType":
+        case "principalRecipientType":
+          state.principalRecipients = state.principalRecipients.filter(
+            (item) => item !== payload.value
+          );
+          state.principalRecipientSubTypes =
+            state.principalRecipientSubTypes.filter(
+              (item) => item !== payload.value
+            );
+          state.principalRecipientTypes = state.principalRecipientTypes.filter(
+            (item) => item !== payload.value
+          );
+          break;
+        case "status":
+          state.status = state.status.filter((item) => item !== payload.value);
+          break;
+        case "cycle":
+          state.cycles = state.cycles.filter((item) => item !== payload.value);
+          break;
+        default:
+          break;
+      }
+      state.appliedFiltersCount -= 1;
+    });
+  }),
 };
