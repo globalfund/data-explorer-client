@@ -18,7 +18,7 @@ import { ChartBlockButtonToolbar } from "app/components/chart-block/components/b
 export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
   props: DatasetChartBlockProps
 ) => {
-  const [collapsed, setCollapsed] = React.useState(false);
+  // const [collapsed, setCollapsed] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleFilterButtonClick = (
@@ -31,9 +31,9 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
     setAnchorEl(null);
   };
 
-  const handleCollapse = () => {
-    setCollapsed(!collapsed);
-  };
+  // const handleCollapse = () => {
+  //   setCollapsed(!collapsed);
+  // };
 
   const onScroll = () => {
     setAnchorEl(null);
@@ -51,7 +51,7 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
       return (
         <Box
           width="100%"
-          height="100%"
+          height="300px"
           display="flex"
           alignItems="center"
           justifyContent="center"
@@ -162,7 +162,7 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
           {/* <Button variant="outlined" startIcon={<SettingsIcon />}>
             Settings
           </Button> */}
-          <Button
+          {/* <Button
             variant="outlined"
             onClick={handleCollapse}
             startIcon={collapsed ? <UnfoldMoreIcon /> : <CollapseIcon />}
@@ -173,7 +173,7 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
             }
           >
             {collapsed ? "Expand" : "Collapse"}
-          </Button>
+          </Button> */}
         </Box>
         <Box gap="10px" display="flex" flexDirection="row">
           {props.extraDropdown && props.extraDropdown}
@@ -189,9 +189,9 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
         </Box>
       </Box>
       <Box
-        sx={{
-          display: collapsed ? "none" : "block",
-        }}
+      // sx={{
+      //   display: collapsed ? "none" : "block",
+      // }}
       >
         <Box
           id={id}
@@ -210,7 +210,12 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
           {content}
         </Box>
         <Box width="100%" marginTop="40px">
-          <ChartBlockButtonToolbar blockId={id} hashId={props.id} />
+          <ChartBlockButtonToolbar
+            blockId={id}
+            hashId={props.id}
+            infoType={props.infoType}
+            chartType={props.dropdownSelected}
+          />
         </Box>
       </Box>
     </Box>

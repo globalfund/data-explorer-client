@@ -3,42 +3,28 @@ import Box from "@mui/material/Box";
 import { appColors } from "app/theme";
 import Grid from "@mui/material/Grid";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
-import Divider from "@mui/material/Divider";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import TwitterIcon from "@mui/icons-material/Twitter";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import InstagramIcon from "@mui/icons-material/Instagram";
 import { ReactComponent as FooterLogo } from "app/assets/vectors/FooterLogo.svg";
+import { ReactComponent as TwitterIcon } from "app/assets/vectors/SM_Twitter.svg";
+import { ReactComponent as FacebookIcon } from "app/assets/vectors/SM_Facebook.svg";
+import { ReactComponent as LinkedInIcon } from "app/assets/vectors/SM_LinkedIn.svg";
+import { ReactComponent as InstagramIcon } from "app/assets/vectors/SM_Instagram.svg";
 
 const FooterContainer = styled.footer`
   width: 100vw;
   height: 256px;
-  padding: 38px 0;
+  padding: 33px 0;
   position: relative;
-  background-size: contain;
-  background-position-x: left;
-  background-repeat: no-repeat;
-  background-position-y: bottom;
-  background-color: ${appColors.COMMON.BLACK};
-  background-image: url("/static/images/FooterOrnament.png");
+  background-color: ${appColors.COMMON.WHITE};
+  border-top: 1px solid ${appColors.COMMON.SECONDARY_COLOR_3};
 `;
 
 const FooterHeader = styled(Typography)`
   font-size: 10px;
   font-weight: 900;
   margin-bottom: 23px;
-  color: ${appColors.COMMON.WHITE};
-`;
-
-const FooterInternalLink = styled(Link)`
-  display: block;
-  font-size: 10px;
-  margin-bottom: 5px;
-  text-decoration: none;
-  color: ${appColors.COMMON.WHITE};
+  color: ${appColors.COMMON.BLACK};
 `;
 
 const FooterExternalLink = styled.a`
@@ -46,158 +32,186 @@ const FooterExternalLink = styled.a`
   font-size: 10px;
   margin-bottom: 5px;
   text-decoration: none;
-  color: ${appColors.COMMON.WHITE};
+  color: ${appColors.COMMON.BLACK};
+`;
+
+const FooterLinkSeparator = styled.div`
+  font-size: 10px;
+  margin-bottom: 5px;
 `;
 
 const FooterSM = styled.a`
-  width: 23px;
-  height: 23px;
-  border-radius: 50%;
   text-decoration: none;
-  color: ${appColors.COMMON.WHITE};
-  border: 1px solid ${appColors.COMMON.WHITE};
-
-  > svg {
-    transform: scale(0.7);
-  }
 `;
 
-const FooterDonateButton = styled.button`
-  padding: 0;
-  width: 140px;
-  height: 32px;
-  font-size: 10px;
-  cursor: pointer;
-  font-weight: 700;
-  border-radius: 50px;
-  color: ${appColors.COMMON.WHITE};
-  background: ${appColors.COMMON.BLACK};
-  border: 1px solid ${appColors.COMMON.WHITE};
+const FooterBottomBgBlock = styled.div`
+  height: 150px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: bottom;
+  background-image: url("/static/images/FooterOrnament2.png");
 `;
 
 const SM = [
   {
     name: "facebook",
-    icon: <FacebookIcon fontSize="small" htmlColor={appColors.COMMON.WHITE} />,
+    icon: <FacebookIcon />,
     link: "https://www.facebook.com/theglobalfund",
   },
   {
     name: "twitter",
-    icon: <TwitterIcon fontSize="small" htmlColor={appColors.COMMON.WHITE} />,
-    link: "https://twitter.com/theglobalfund",
+    icon: <TwitterIcon />,
+    link: "https://x.com/globalfund",
   },
   {
     name: "linkedin",
-    icon: <LinkedInIcon fontSize="small" htmlColor={appColors.COMMON.WHITE} />,
-    link: "https://www.linkedin.com/company/the-global-fund-to-fight-aids-tuberculosis-and-malaria",
+    icon: <LinkedInIcon />,
+    link: "https://www.linkedin.com/company/the-global-fund/",
   },
   {
     name: "instagram",
-    icon: <InstagramIcon fontSize="small" htmlColor={appColors.COMMON.WHITE} />,
-    link: "https://www.instagram.com/theglobalfund",
+    icon: <InstagramIcon />,
+    link: "https://www.instagram.com/globalfund",
   },
 ];
 
 export const Footer: React.FC = () => {
   return (
-    <FooterContainer>
-      <Container maxWidth="lg" disableGutters>
-        <Grid container>
-          <Grid item sm={false} md={6} lg={7} />
-          <Grid item container sm={12} md={6} lg={5}>
-            <Grid item sm={12} md={4}>
-              <FooterHeader>CONNECT</FooterHeader>
-              <FooterInternalLink to="/about">About Us</FooterInternalLink>
-              <FooterExternalLink
-                target="_blank"
-                href="https://www.theglobalfund.org/en/contact"
+    <React.Fragment>
+      <FooterContainer>
+        <Container
+          maxWidth="lg"
+          disableGutters
+          sx={{
+            "@media (max-width: 1200px)": {
+              padding: "0 16px",
+            },
+          }}
+        >
+          <Grid container>
+            <Grid item sm={6} md={6} lg={7}>
+              <FooterLogo />
+              <Box
+                gap="15px"
+                display="flex"
+                marginTop="56px"
+                marginBottom="16px"
               >
-                Contact Us
-              </FooterExternalLink>
-              <FooterExternalLink
-                target="_blank"
-                href="https://www.theglobalfund.org/en/site/rss"
-              >
-                RSS Feeds
-              </FooterExternalLink>
-              <FooterExternalLink
-                target="_blank"
-                href="https://www.theglobalfund.org/en/oig/report-fraud-and-abuse/"
-              >
-                Report Fraud & Abuse
-              </FooterExternalLink>
-            </Grid>
-            <Grid item sm={12} md={4}>
-              <FooterHeader>MORE GLOBAL FUND SITES</FooterHeader>
-              <FooterExternalLink
-                target="_blank"
-                href="https://www.theglobalfund.org/en"
-              >
-                TGF Website
-              </FooterExternalLink>
-              <FooterExternalLink
-                target="_blank"
-                href="https://data-service.theglobalfund.org"
-              >
-                Data Service
-              </FooterExternalLink>
-              <FooterExternalLink
-                target="_blank"
-                href="https://www.theglobalfund.org/en/newsroom/digital-media"
-              >
-                Digital Library
-              </FooterExternalLink>
-            </Grid>
-            <Grid
-              item
-              sm={12}
-              md={4}
-              display="flex"
-              alignItems="flex-end"
-              flexDirection="column"
-            >
-              <Box display="flex" gap="15px" marginBottom="32px">
                 {SM.map((sm) => (
                   <FooterSM key={sm.name} href={sm.link} target="_blank">
                     {sm.icon}
                   </FooterSM>
                 ))}
               </Box>
-              <FooterDonateButton
-                onClick={() =>
-                  window.open(
-                    "https://act.unfoundation.org/FJvB3vUCJUepH_5KN75TTQ2",
-                    "_blank"
-                  )
-                }
-              >
-                DONATE NOW
-              </FooterDonateButton>
-            </Grid>
-            <Grid item sm={12}>
-              <Divider
-                sx={{
-                  margin: "16px 0",
-                  background: appColors.COMMON.WHITE,
-                }}
-              />
-            </Grid>
-            <Grid item sm={12} marginTop="5px">
-              <FooterLogo />
               <Typography
                 display="block"
                 fontSize="10px"
                 marginTop="-5px"
                 variant="caption"
-                color={appColors.COMMON.WHITE}
+                color={appColors.COMMON.BLACK}
               >
                 © {new Date().getFullYear()} The Global Fund to Fight AIDS,
                 Tuberculosis and Malaria
               </Typography>
             </Grid>
+            <Grid item container sm={6} md={6} lg={5} spacing={2}>
+              <Grid item sm={4} md={4}>
+                <FooterHeader>CONNECT</FooterHeader>
+                <FooterExternalLink
+                  target="_blank"
+                  href="https://www.theglobalfund.org/en/contact/"
+                >
+                  Contact Us
+                </FooterExternalLink>
+                <FooterExternalLink
+                  target="_blank"
+                  href="https://www.theglobalfund.org/en/careers/"
+                >
+                  Careers
+                </FooterExternalLink>
+                <FooterExternalLink
+                  target="_blank"
+                  href="https://www.theglobalfund.org/en/site/rss"
+                >
+                  RSS Feeds
+                </FooterExternalLink>
+                <FooterExternalLink
+                  target="_blank"
+                  href="https://www.theglobalfund.org/en/oig/report-fraud-and-abuse/"
+                >
+                  Report Fraud & Abuse
+                </FooterExternalLink>
+                <FooterLinkSeparator>-</FooterLinkSeparator>
+                <FooterExternalLink
+                  target="_blank"
+                  href="https://act.unfoundation.org/FJvB3vUCJUepH_5KN75TTQ2"
+                >
+                  Donate to the Global Fund through United Nations Foundation
+                </FooterExternalLink>
+              </Grid>
+              <Grid item sm={4} md={4}>
+                <FooterHeader>ABOUT THE WEBSITE</FooterHeader>
+                <FooterExternalLink
+                  target="_blank"
+                  href="https://www.theglobalfund.org/en/site/phishing-and-scam-alert/"
+                >
+                  Phishing & Scam Alert
+                </FooterExternalLink>
+                <FooterExternalLink
+                  target="_blank"
+                  href="https://www.theglobalfund.org/en/site/privacy-statement/"
+                >
+                  Privacy Statement
+                </FooterExternalLink>
+                <FooterExternalLink
+                  target="_blank"
+                  href="https://www.theglobalfund.org/en/site/terms-of-use/"
+                >
+                  Terms of Use
+                </FooterExternalLink>
+                <FooterExternalLink
+                  target="_blank"
+                  href="https://www.theglobalfund.org/en/site/cookies/"
+                >
+                  Cookies
+                </FooterExternalLink>
+              </Grid>
+              <Grid item sm={4} md={4}>
+                <FooterHeader>MORE GLOBAL FUND SITES</FooterHeader>
+                <FooterExternalLink
+                  target="_blank"
+                  href="http://www.theglobalfund.org"
+                >
+                  The Global Fund Website
+                </FooterExternalLink>
+                <FooterExternalLink
+                  target="_blank"
+                  href="https://data-service.theglobalfund.org"
+                >
+                  Data Service
+                </FooterExternalLink>
+                <FooterExternalLink
+                  target="_blank"
+                  href="https://www.theglobalfund.org/en/newsroom/digital-media"
+                >
+                  Digital Library
+                </FooterExternalLink>
+                <FooterLinkSeparator>-</FooterLinkSeparator>
+                <FooterExternalLink
+                  target="_blank"
+                  href="https://archive.theglobalfund.org"
+                >
+                  Archive
+                </FooterExternalLink>
+              </Grid>
+            </Grid>
           </Grid>
-        </Grid>
+        </Container>
+      </FooterContainer>
+      <Container maxWidth="lg" disableGutters>
+        <FooterBottomBgBlock />
       </Container>
-    </FooterContainer>
+    </React.Fragment>
   );
 };

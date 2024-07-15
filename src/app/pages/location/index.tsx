@@ -7,17 +7,11 @@ import { useParams } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import { Results } from "app/pages/location/views/results";
 import CircularProgress from "@mui/material/CircularProgress";
-import { GrantCardProps } from "app/components/grant-card/data";
 import { DetailPageTabs } from "app/components/detail-page-tabs";
-import { LineChartProps } from "app/components/charts/line/data";
-import { BarChartDataItem } from "app/components/charts/bar/data";
-import { SankeyChartData } from "app/components/charts/sankey/data";
 import { LocationOverview } from "app/pages/location/views/overview";
 import { RESULT_YEARS } from "app/pages/location/views/results/data";
 import { LOCATION_TABS } from "app/components/detail-page-tabs/data";
-import { HeatmapDataItem } from "app/components/charts/heatmap/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { RadialChartDataItem } from "app/components/charts/radial/data";
 import { AccessToFunding } from "app/pages/location/views/access-to-funding";
 import { GrantImplementation } from "app/pages/location/views/grant-implementation";
 import { ResourceMobilization } from "app/pages/location/views/resource-mobilization";
@@ -26,7 +20,6 @@ export const Location: React.FC = () => {
   const params = useParams<{ id: string; tab: string }>();
   const paramsId = params.id?.replace("|", "%2F");
 
-  const [grantsTablePage, setGrantsTablePage] = React.useState(1);
   const [resultsYear, setResultsYear] = React.useState(
     RESULT_YEARS[RESULT_YEARS.length - 1]
   );
@@ -287,12 +280,7 @@ export const Location: React.FC = () => {
       case "overview":
         return <LocationOverview />;
       case "financial-insights":
-        return (
-          <GrantImplementation
-            page={grantsTablePage}
-            setPage={setGrantsTablePage}
-          />
-        );
+        return <GrantImplementation />;
       case "resource-mobilization":
         return <ResourceMobilization />;
       case "access-to-funding":
@@ -304,7 +292,7 @@ export const Location: React.FC = () => {
       default:
         return <div />;
     }
-  }, [params.tab, grantsTablePage, resultsYear]);
+  }, [params.tab, resultsYear]);
 
   const tabs = React.useMemo(() => {
     const newTabs = [...LOCATION_TABS];
@@ -411,7 +399,7 @@ export const Location: React.FC = () => {
   React.useEffect(() => {
     if (dataOverview.isDonor) {
       fetchRMBarChart({
-        filterString: `donors=${dataOverview.name}`,
+        filterString: `geographies=${paramsId}`,
       });
     }
   }, [dataOverview]);
@@ -421,12 +409,12 @@ export const Location: React.FC = () => {
       fetchGrantsTable({
         filterString: `geographies=${paramsId}`,
         routeParams: {
-          page: grantsTablePage.toString(),
-          pageSize: "10",
+          page: "1",
+          pageSize: "all",
         },
       });
     }
-  }, [paramsId, grantsTablePage]);
+  }, [paramsId]);
 
   React.useEffect(() => {
     if (paramsId) {

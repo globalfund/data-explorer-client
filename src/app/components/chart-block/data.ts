@@ -1,3 +1,5 @@
+import { InfoPanelType } from "app/components/chart-block/components/button-toolbar/data";
+
 export interface ChartBlockProps {
   id: string;
   title: string;
@@ -7,10 +9,12 @@ export interface ChartBlockProps {
   loading?: boolean;
   noSplitText?: boolean;
   showCycleAll?: boolean;
+  infoType: InfoPanelType;
   children: React.ReactNode;
   noBottomToolbar?: boolean;
   dropdownSelected?: string;
   unitButtons?: React.ReactNode;
+  extraDropdown?: React.ReactElement;
   handleDropdownChange?: (value: string) => void;
   selectedCycles?: { name: string; value: string }[];
   dropdownItems?: { value: string; label: string }[];

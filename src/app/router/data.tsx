@@ -11,6 +11,41 @@ import { AccessToFundingPage } from "app/pages/datasets/access-to-funding";
 import { GrantImplementationPage } from "app/pages/datasets/grant-implementation";
 import { ResourceMobilizationPage } from "app/pages/datasets/resource-mobilization";
 
+const REDIRECT_ROUTES: RouteObject[] = [
+  {
+    path: "/datasets",
+    element: <Redirect to="/" />,
+  },
+  {
+    path: "/grants/:subType",
+    element: <Redirect to="/grants" />,
+  },
+  {
+    path: "/results",
+    element: <Redirect to="/annual-results" />,
+  },
+  {
+    path: "/documents",
+    element: <Redirect to="/" />,
+  },
+  {
+    path: "/viz/:vizType?/:subType?",
+    element: <Redirect to="/" />,
+  },
+  {
+    path: "/location/:code/:vizType?/:subType?",
+    element: <Redirect to="/geography" />,
+  },
+  {
+    path: "/partner/:code/:vizType?/:subType?",
+    element: <Redirect to="/" />,
+  },
+  {
+    path: "/grant/:id/:period?/:vizType?/:subType?",
+    element: <Redirect to="/grants" />,
+  },
+];
+
 export const ROUTES: RouteObject[] = [
   {
     path: "/",
@@ -47,32 +82,17 @@ export const ROUTES: RouteObject[] = [
         path: "/annual-results",
         element: <AnnualResultsPage />,
       },
-      {
-        path: "/about",
-        element: (
-          <div
-            style={{
-              width: "100%",
-              height: "200px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            Coming soon
-          </div>
-        ),
-      },
+      ...REDIRECT_ROUTES,
       {
         path: "*",
         element: (
           <div
             style={{
               width: "100%",
-              height: "200px",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              height: "calc(100vh - 91px - 256px - 150px)",
             }}
           >
             Page not found

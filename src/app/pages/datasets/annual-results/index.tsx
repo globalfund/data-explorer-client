@@ -2,6 +2,7 @@ import React from "react";
 import get from "lodash/get";
 import uniq from "lodash/uniq";
 import Box from "@mui/material/Box";
+import { useTitle } from "react-use";
 import Divider from "@mui/material/Divider";
 import { Table } from "app/components/table";
 import { useLocation } from "react-router-dom";
@@ -55,6 +56,7 @@ const StatComp: React.FC<{
 };
 
 export const AnnualResultsPage: React.FC = () => {
+  useTitle("The Data Explorer - Annual Results");
   const location = useLocation();
 
   const [dropdownSelected, setDropdownSelected] = React.useState(
@@ -282,7 +284,7 @@ export const AnnualResultsPage: React.FC = () => {
     let filterString = "";
     if (
       appliedFiltersData.locations.length > 0 &&
-      location.search.includes("geographies=")
+      location.search.includes("locations=")
     ) {
       filterString += `geographies=${encodeURIComponent(
         appliedFiltersData.locations.join(",")
@@ -305,7 +307,7 @@ export const AnnualResultsPage: React.FC = () => {
     let filterString = "";
     if (
       (appliedFiltersData.locations.length > 0 &&
-        location.search.includes("geographies=")) ||
+        location.search.includes("locations=")) ||
       chartAppliedFiltersData.locations.length > 0
     ) {
       filterString += `geographies=${encodeURIComponent(
@@ -388,6 +390,22 @@ export const AnnualResultsPage: React.FC = () => {
     }
   }, [chartFilterString, yearSelected]);
 
+  React.useEffect(() => {
+    if (location.hash) {
+      const blockId = location.hash.slice(1).split("|")[0];
+      const blockChartType = location.hash.slice(1).split("|")[1];
+      if (blockId && blockChartType) {
+        switch (blockId) {
+          case "disbursements":
+            setDropdownSelected(decodeURIComponent(blockChartType));
+            break;
+          default:
+            break;
+        }
+      }
+    }
+  }, [location.hash]);
+
   return (
     <DatasetPage
       title="Annual Results"
@@ -436,7 +454,7 @@ export const AnnualResultsPage: React.FC = () => {
           <DatasetChartBlock
             id="annual-results"
             title="Annual Results"
-            subtitle="Lorem Ipsum."
+            subtitle=""
             loading={loadingResults}
             dropdownItems={dropdownItems}
             dropdownSelected={dropdownSelected}
@@ -449,6 +467,7 @@ export const AnnualResultsPage: React.FC = () => {
             handleResetFilters={handleResetChartFilters}
             appliedFilters={chartAppliedFilters}
             appliedFiltersData={chartAppliedFiltersData}
+            infoType="global"
           >
             {chartContent}
           </DatasetChartBlock>
@@ -457,6 +476,7 @@ export const AnnualResultsPage: React.FC = () => {
           sx={{
             left: 0,
             width: "100vw",
+            marginTop: "50px",
             position: "absolute",
             borderColor: "#CFD4DA",
           }}

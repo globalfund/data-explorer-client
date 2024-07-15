@@ -23,6 +23,7 @@ const Wrapper: React.FC = () => {
     <ChartBlock
       id="chart"
       cycles={CYCLES}
+      infoType="global"
       title="$84 Billion"
       selectedCycles={selectedCycles}
       subtitle="Funds raised to date"

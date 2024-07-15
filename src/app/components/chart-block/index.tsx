@@ -20,13 +20,15 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
         props.dropdownItems.length > 0 &&
         props.dropdownSelected &&
         props.handleDropdownChange) ||
-      props.unitButtons
+      props.unitButtons ||
+      props.extraDropdown
     );
   }, [
     props.dropdownItems,
     props.dropdownSelected,
     props.handleDropdownChange,
     props.unitButtons,
+    props.extraDropdown,
   ]);
 
   const showCycles = React.useMemo(() => {
@@ -43,7 +45,7 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
       return (
         <Box
           width="100%"
-          height="100%"
+          height="300px"
           display="flex"
           alignItems="center"
           justifyContent="center"
@@ -55,7 +57,7 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
     return props.children;
   }, [props.children, props.loading]);
 
-  if (props.empty) {
+  if (props.empty && !props.loading) {
     return <React.Fragment />;
   }
 
@@ -88,6 +90,7 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
           display="flex"
           flexDirection="row"
           padding="20px 0 40px 0"
+          alignItems="flex-start"
           justifyContent={showCycles ? "space-between" : "flex-end"}
         >
           {props.cycles && props.selectedCycles && props.handleCycleChange && (
@@ -106,6 +109,7 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
               alignItems="center"
             >
               {props.unitButtons ?? props.unitButtons}
+              {props.extraDropdown ?? props.extraDropdown}
               {props.dropdownItems &&
                 props.dropdownItems.length > 0 &&
                 props.dropdownSelected &&
@@ -138,7 +142,12 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
       </Box>
       {!props.noBottomToolbar && (
         <Box width="100%">
-          <ChartBlockButtonToolbar blockId={id} hashId={props.id} />
+          <ChartBlockButtonToolbar
+            blockId={id}
+            hashId={props.id}
+            infoType={props.infoType}
+            chartType={props.dropdownSelected}
+          />
         </Box>
       )}
     </Box>

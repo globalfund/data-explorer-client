@@ -26,6 +26,9 @@ export const useInitialLoad = () => {
   const fetchBudgetsCycles = useStoreActions(
     (actions) => actions.BudgetsCycles.fetch
   );
+  const fetchFinancialMetricsCycles = useStoreActions(
+    (actions) => actions.FinancialMetricsCycles.fetch
+  );
   const fetchDonorFilterOptions = useStoreActions(
     (actions) => actions.DonorFilterOptions.fetch
   );
@@ -54,10 +57,19 @@ export const useInitialLoad = () => {
     fetchPledgesContributionsCycles({});
     fetchFundingRequestsCycles({});
     fetchBudgetsCycles({});
+    fetchFinancialMetricsCycles({});
     fetchDonorFilterOptions({});
     fetchReplenishmentPeriodFilterOptions({});
-    fetchLocationFilterOptions({});
-    fetchComponentFilterOptions({});
+    fetchLocationFilterOptions({
+      routeParams: {
+        type: "Standard View",
+      },
+    });
+    fetchComponentFilterOptions({
+      routeParams: {
+        type: "grouped",
+      },
+    });
     fetchPartnerTypeFilterOptions({});
     fetchStatusFilterOptions({});
   }, []);

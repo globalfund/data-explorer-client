@@ -1,6 +1,7 @@
 import React from "react";
 import get from "lodash/get";
 import Box from "@mui/material/Box";
+import { useTitle } from "react-use";
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import { NavLink } from "react-router-dom";
@@ -37,7 +38,7 @@ const GeoCategory: React.FC<GeoCategoryProps> = (props: GeoCategoryProps) => {
           <Grid
             item
             key={item.name}
-            sm={12}
+            sm={props.items.length > 1 ? 6 : 12}
             md={props.items.length > 1 ? 4 : 12}
             lg={props.items.length > 1 ? 2 : 12}
           >
@@ -101,6 +102,7 @@ const GeoSubCategory: React.FC<GeoSubCategoryProps> = (
 };
 
 export const Geography: React.FC = () => {
+  useTitle("The Data Explorer - Geography");
   const [search, setSearch] = React.useState("");
 
   const dataList = useStoreState(

@@ -1,6 +1,7 @@
 import React from "react";
 import get from "lodash/get";
 import Box from "@mui/material/Box";
+import { useTitle } from "react-use";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
@@ -54,6 +55,8 @@ export const GrantOverview: React.FC = () => {
   const loadingOverview = useStoreState(
     (state) => state.GrantInfo.loading || state.GrantOverview.loading
   );
+
+  useTitle(`The Data Explorer - ${dataGrant.code}`);
 
   const statusColor = React.useMemo(() => {
     switch (dataOverview.status) {
@@ -130,8 +133,11 @@ export const GrantOverview: React.FC = () => {
               width: "1px",
               content: '""',
               height: "38px",
+              background: "#000",
               position: "absolute",
-              backgroundColor: "#000",
+              "@media (max-width: 1200px)": {
+                display: "none",
+              },
             },
             "> div > *": {
               maxWidth: "100%",
@@ -217,6 +223,7 @@ export const GrantOverview: React.FC = () => {
           <RaceBarChart data={raceBarChartData} />
         </Box>
         <ChartBlockButtonToolbar
+          infoType="global"
           hashId="grant-overview-race-bar-chart"
           blockId="grant-overview-race-bar-chart"
         />

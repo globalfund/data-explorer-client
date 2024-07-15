@@ -2,8 +2,9 @@ import React from "react";
 import get from "lodash/get";
 import sumBy from "lodash/sumBy";
 import Box from "@mui/material/Box";
+import { useTitle } from "react-use";
 import { useParams } from "react-router-dom";
-import { CYCLES, CycleProps } from "app/pages/home/data";
+import { CycleProps } from "app/pages/home/data";
 import Typography from "@mui/material/Typography";
 import { BarChart } from "app/components/charts/bar";
 import { ChartBlock } from "app/components/chart-block";
@@ -19,11 +20,13 @@ export const ResourceMobilization: React.FC = () => {
   const params = useParams<{ id: string; tab: string }>();
   const paramsId = params.id?.replace("|", "%2F");
 
+  const locationName = useStoreState((state) =>
+    get(state.GeographyOverview, "data.data[0].name", params.id)
+  );
+  useTitle(`The Data Explorer - ${locationName}`);
+
   const [chart1Cycles, setChart1Cycles] = React.useState<CycleProps[]>([]);
 
-  const locationName = useStoreState((state) =>
-    get(state.GeographyOverview, "data.data[0].name", paramsId)
-  );
   const dataRMBarChart = useStoreState(
     (state) =>
       get(
@@ -62,7 +65,7 @@ export const ResourceMobilization: React.FC = () => {
   };
 
   useUpdateEffect(() => {
-    let filterString = `donors=${locationName}`;
+    let filterString = `geographies=${paramsId}`;
     if (chart1Cycles.length > 0) {
       filterString += `&periods=${chart1Cycles.map((c) => c.value).join(",")}`;
     }
@@ -91,12 +94,12 @@ export const ResourceMobilization: React.FC = () => {
         cycles={cycles}
         id="resource-mobilization"
         loading={loadingRMBarChart}
+        title={`US$${totalPledge}`}
         selectedCycles={chart1Cycles}
-        title={`US$${totalContribution}`}
-        subtitle="Funds Contributed to date"
+        subtitle="Pledges & Contributions"
         handleCycleChange={handleChartCycleChange}
         empty={dataRMBarChart.length === 0 && chart1Cycles.length === 0}
-        text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
+        infoType="pledges_contributions"
       >
         <BarChart
           data={dataRMBarChart}

@@ -3,54 +3,47 @@ import get from "lodash/get";
 import sumBy from "lodash/sumBy";
 import filter from "lodash/filter";
 import Box from "@mui/material/Box";
+import { useTitle } from "react-use";
 import Grid from "@mui/material/Grid";
 import { appColors } from "app/theme";
 import findIndex from "lodash/findIndex";
 import Divider from "@mui/material/Divider";
 import { useParams } from "react-router-dom";
-import { CYCLES, CycleProps } from "app/pages/home/data";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import { PieChart } from "app/components/charts/pie";
-import ArrowBack from "@mui/icons-material/ArrowBack";
 import { LineChart } from "app/components/charts/line";
 import { ChartBlock } from "app/components/chart-block";
 import { Heatmap } from "app/components/charts/heatmap";
+import { CYCLES, CycleProps } from "app/pages/home/data";
 import { SankeyChart } from "app/components/charts/sankey";
 import useUpdateEffect from "react-use/lib/useUpdateEffect";
-import ArrowForward from "@mui/icons-material/ArrowForward";
 import { TableContainer } from "app/components/table-container";
 import { GrantCardProps } from "app/components/grant-card/data";
 import { LineChartProps } from "app/components/charts/line/data";
 import { getMonthFromNumber } from "app/utils/getMonthFromNumber";
+import { PieChartDataItem } from "app/components/charts/pie/data";
 import { SankeyChartData } from "app/components/charts/sankey/data";
 import { TABLE_VARIATION_5_COLUMNS } from "app/components/table/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import {
-  CHART_1_DROPDOWN_ITEMS,
-  CHART_2_DROPDOWN_ITEMS,
-  GrantImplementationProps,
-} from "app/pages/location/views/grant-implementation/data";
+import { CHART_1_DROPDOWN_ITEMS } from "app/pages/location/views/grant-implementation/data";
 import {
   HeatmapDataItem,
   getPercentageColor,
 } from "app/components/charts/heatmap/data";
 import {
-  STORY_DATA_VARIANT_1 as PIE_CHART_DATA_1,
-  STORY_DATA_VARIANT_2 as PIE_CHART_DATA_2,
-  STORY_DATA_VARIANT_3 as PIE_CHART_DATA_3,
-  PieChartDataItem,
-} from "app/components/charts/pie/data";
-import {
   getRange,
   getFinancialValueWithMetricPrefix,
 } from "app/utils/getFinancialValueWithMetricPrefix";
 
-export const GrantImplementation: React.FC<GrantImplementationProps> = (
-  props: GrantImplementationProps
-) => {
+export const GrantImplementation = () => {
   const params = useParams<{ id: string; tab: string }>();
   const paramsId = params.id?.replace("|", "%2F");
+
+  const locationName = useStoreState((state) =>
+    get(state.GeographyOverview, "data.data[0].name", params.id)
+  );
+  useTitle(`The Data Explorer - ${locationName}`);
 
   const [chart1Cycles, setChart1Cycles] = React.useState<CycleProps[]>([]);
   const [chart2Cycles, setChart2Cycles] = React.useState<CycleProps[]>([]);
@@ -186,10 +179,12 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
       case 2:
         cycles = chart2Cycles;
         setCycle = setChart2Cycles;
+        multi = false;
         break;
       case 3:
         cycles = chart3Cycles;
         setCycle = setChart3Cycles;
+        multi = false;
         break;
       default:
         break;
@@ -225,7 +220,9 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
         filterString += `&years=${yearFrom.join(",")}`;
       }
       if (yearTo.length > 0) {
-        filterString += `${filterString.length > 0 ? "&" : ""}yearsTo=${yearTo.join(",")}`;
+        filterString += `${
+          filterString.length > 0 ? "&" : ""
+        }yearsTo=${yearTo.join(",")}`;
       }
     }
     fetchDisbursementsLineChart({
@@ -254,7 +251,13 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
         years.join(",")
       )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
     }
-    fetchBudgetSankeyChart({ filterString });
+    fetchBudgetSankeyChart({
+      filterString,
+      routeParams: {
+        componentField: "activityAreaGroup",
+        geographyGrouping: "Standard View",
+      },
+    });
   }, [chart2Cycles]);
 
   useUpdateEffect(() => {
@@ -271,6 +274,18 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
       },
     });
   }, [chart3Cycles]);
+
+  React.useEffect(() => {
+    if (budgetsCycles.length > 0) {
+      setChart2Cycles([budgetsCycles[budgetsCycles.length - 1]]);
+    }
+  }, [budgetsCycles]);
+
+  React.useEffect(() => {
+    if (expendituresCycles.length > 0) {
+      setChart3Cycles([expendituresCycles[expendituresCycles.length - 1]]);
+    }
+  }, [expendituresCycles]);
 
   const chart2UnitButtons = React.useMemo(
     () => (
@@ -344,10 +359,14 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
       const startDate = new Date(item.startDate);
       const endDate = new Date(item.endDate);
       if (startDate) {
-        datesStr = `${getMonthFromNumber(startDate.getMonth() + 1)} ${startDate.getFullYear()} - `;
+        datesStr = `${getMonthFromNumber(
+          startDate.getMonth() + 1
+        )} ${startDate.getFullYear()} - `;
       }
       if (endDate) {
-        datesStr += `${getMonthFromNumber(endDate.getMonth() + 1)} ${endDate.getFullYear()}`;
+        datesStr += `${getMonthFromNumber(
+          endDate.getMonth() + 1
+        )} ${endDate.getFullYear()}`;
       }
       return {
         grantId: item.number,
@@ -368,36 +387,10 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
       total += sumBy(item.data);
     });
     const range = getRange([{ value: total }], ["value"]);
-    return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${range.full}`;
+    return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${
+      range.full
+    }`;
   }, [dataDisbursementsLineChart]);
-
-  const pagination = React.useMemo(
-    () => (
-      <Box gap="8px" display="flex" alignItems="center">
-        <Typography fontSize="12px">
-          {(props.page - 1) * 9 + 1}-{props.page * 9} of {countGrantsTable}
-        </Typography>
-        <IconButton
-          sx={{ padding: 0 }}
-          onClick={() => {
-            if (props.page > 1) props.setPage(props.page - 1);
-          }}
-        >
-          <ArrowBack htmlColor="#000" sx={{ fontSize: "16px" }} />
-        </IconButton>
-        <IconButton
-          sx={{ padding: 0 }}
-          onClick={() => {
-            if (props.page < countGrantsTable / 9)
-              props.setPage(props.page + 1);
-          }}
-        >
-          <ArrowForward htmlColor="#000" sx={{ fontSize: "16px" }} />
-        </IconButton>
-      </Box>
-    ),
-    [countGrantsTable, props.page]
-  );
 
   const totalBudget = React.useMemo(() => {
     let total = 0;
@@ -407,8 +400,24 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
       }
     );
     const range = getRange([{ value: total }], ["value"]);
-    return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${range.full}`;
+    return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${
+      range.full
+    }`;
   }, [dataBudgetSankeyChart]);
+
+  const expendituresTotal = React.useMemo(() => {
+    const total = sumBy(
+      filter(
+        dataExpendituresHeatmap,
+        (item) => !item.parentRow && !item.parentColumn
+      ),
+      "value"
+    );
+    const range = getRange([{ value: total }], ["value"]);
+    return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${
+      range.full
+    }`;
+  }, [dataExpendituresHeatmap]);
 
   const lineChartRange = React.useMemo(() => {
     const values: { value: number }[] = [];
@@ -444,14 +453,15 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
   return (
     <Box gap="24px" display="flex" flexDirection="column">
       <ChartBlock
+        showCycleAll
         id="disbursements"
+        subtitle="Disbursements"
         title={disbursementsTotal}
         selectedCycles={chart1Cycles}
         dropdownSelected={chart1Dropdown}
         dropdownItems={CHART_1_DROPDOWN_ITEMS}
         loading={loadingDisbursementsLineChart}
         handleDropdownChange={setChart1Dropdown}
-        subtitle={`Disbursed within ${countGrantsTable} Grants`}
         handleCycleChange={(value) => handleChartCycleChange(value, 1)}
         empty={!showDisbursementsLineChart && chart1Cycles.length === 0}
         cycles={disbursementsCyclesAll.map((c) => ({
@@ -459,7 +469,7 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
           value: c.value,
           disabled: findIndex(disbursementsCycles, { value: c.value }) === -1,
         }))}
-        text="Disbursement transactions for all grants across the porfolio."
+        infoType="global"
       >
         <Box position="relative">
           <Typography
@@ -507,7 +517,7 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
           value: c.value,
           disabled: findIndex(budgetsCycles, { value: c.value }) === -1,
         }))}
-        text="Our Grant Implementation programs are developed meticulously, each Grant follows a well executed plan, always supervised by TGF Implementation team."
+        infoType="budgets"
       >
         <Grid
           container
@@ -536,8 +546,8 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
       {showBudgetSankeyChart && fullWidthDivider}
       <ChartBlock
         id="expenditures"
-        subtitle="To date"
-        title="Expenditures"
+        subtitle="Expenditures"
+        title={expendituresTotal}
         selectedCycles={chart3Cycles}
         loading={loadingExpendituresHeatmap}
         empty={!showExpendituresHeatmap && chart3Cycles.length === 0}
@@ -547,8 +557,8 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
           value: c.value,
           disabled: findIndex(expendituresCycles, { value: c.value }) === -1,
         }))}
-        text="Our Grant Implementation programs are developed meticulously, each Grant follows a well executed plan, always supervised by TGF Implementation team."
         unitButtons={chart2UnitButtons}
+        infoType="expenditures"
       >
         <Heatmap
           valueType={chart2Unit}
@@ -567,9 +577,9 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
       <ChartBlock
         id="grants"
         title={`${countGrantsTable} Grants`}
-        subtitle="to date"
+        subtitle=""
         empty={!showGrantsTable && chart3Cycles.length === 0}
-        text="Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
+        infoType="global"
       >
         <Box height="16px" />
         <TableContainer
@@ -578,8 +588,6 @@ export const GrantImplementation: React.FC<GrantImplementationProps> = (
           data={dataGrantsTableFormatted}
           columns={TABLE_VARIATION_5_COLUMNS}
         />
-        <Box height="16px" />
-        {pagination}
         <Box height="64px" />
         <Box
           width="100%"

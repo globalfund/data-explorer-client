@@ -5,24 +5,22 @@ import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import { PageLoader } from "app/components/page-loader";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { useNavigate, useParams } from "react-router-dom";
 import { GrantTargetsResults } from "./views/targets-results";
 import { GrantOverview } from "app/pages/grant/views/overview";
 import { DetailPageTabs } from "app/components/detail-page-tabs";
 import { GrantDocuments } from "app/pages/grant/views/documents";
+import { GRANT_TABS } from "app/components/detail-page-tabs/data";
 import { BarChartDataItem } from "app/components/charts/bar/data";
 import { splitStringInMiddle } from "app/utils/splitStringInMiddle";
 import { SankeyChartData } from "app/components/charts/sankey/data";
-import { HeatmapDataItem } from "app/components/charts/heatmap/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { GrantImplementation } from "app/pages/grant/views/grant-implementation";
-import {
-  GRANT_TABS,
-  GRANT_DROPDOWN_ITEMS,
-} from "app/components/detail-page-tabs/data";
 
 export const Grant: React.FC = () => {
   const navigate = useNavigate();
+  const smallScreen = useMediaQuery("(max-width: 920px)");
   const params = useParams<{ id: string; ip: string; tab: string }>();
 
   const dataGrant = useStoreState(
@@ -56,6 +54,7 @@ export const Grant: React.FC = () => {
         FPMName: string;
       }
   );
+  const clearGrant = useStoreActions((actions) => actions.GrantInfo.clear);
   const fetchOverview = useStoreActions(
     (actions) => actions.GrantOverview.fetch
   );
@@ -92,12 +91,19 @@ export const Grant: React.FC = () => {
   const clearExpendituresHeatmap = useStoreActions(
     (actions) => actions.FinancialInsightsExpendituresHeatmap.clear
   );
-  const dataExpendituresHeatmap = useStoreState(
-    (state) =>
-      get(state.GrantExpendituresHeatmap, "data.data", []) as HeatmapDataItem[]
-  );
   const fetchExpendituresHeatmap = useStoreActions(
     (actions) => actions.GrantExpendituresHeatmap.fetch
+  );
+  const dataHasExpenditures = useStoreState(
+    (state) =>
+      get(
+        state.GrantHasExpenditures,
+        "data.data.hasExpenditures",
+        false
+      ) as boolean
+  );
+  const fetchHasExpenditures = useStoreActions(
+    (actions) => actions.GrantHasExpenditures.fetch
   );
   const dataTargetsResultsTable = useStoreState((state) =>
     get(state.GrantTargetsResultsTable, "data.data", [])
@@ -178,11 +184,15 @@ export const Grant: React.FC = () => {
           variant: "2",
         },
       });
+      fetchHasExpenditures({
+        filterString: `grantIP=${params.id}P0${dropdownSelected.code}`,
+      });
       fetchExpendituresHeatmap({
         routeParams: {
-          row: "principalRecipientType,principalRecipientSubType,principalRecipient",
+          row: "module,intervention",
           column: "component",
           componentField: "activityAreaGroup",
+          geographyGrouping: "Standard View",
         },
         filterString: `grantIP=${params.id}P0${dropdownSelected.code}`,
       });
@@ -211,7 +221,7 @@ export const Grant: React.FC = () => {
       dataDisbursementsBarChart.length === 0 &&
       dataBudgetSankeyChart.nodes.length === 0 &&
       dataBudgetSankeyChart.links.length === 0 &&
-      dataExpendituresHeatmap.length === 0
+      !dataHasExpenditures
     ) {
       remove(newTabs, (t) => t.label === GRANT_TABS[1].label);
     }
@@ -220,14 +230,15 @@ export const Grant: React.FC = () => {
     }
     return newTabs;
   }, [
+    dataHasExpenditures,
     dataBudgetSankeyChart,
-    dataExpendituresHeatmap,
     dataTargetsResultsTable,
     dataDisbursementsBarChart,
   ]);
 
   React.useEffect(() => {
     return () => {
+      clearGrant();
       clearOverview();
       clearDisbursementsBarChart();
       clearBudgetSankeyChart();
@@ -252,12 +263,14 @@ export const Grant: React.FC = () => {
         {params.id}
       </Typography>
       <Typography variant="h5" lineHeight={1} marginBottom="50px">
-        {titleSplits.map((s) => (
-          <React.Fragment key={s}>
-            {s}
-            <br />
-          </React.Fragment>
-        ))}
+        {smallScreen && dropdownSelected?.title}
+        {!smallScreen &&
+          titleSplits.map((s) => (
+            <React.Fragment key={s}>
+              {s}
+              <br />
+            </React.Fragment>
+          ))}
       </Typography>
       {fullWidthDivider}
       <Box height="20px" />
@@ -335,7 +348,9 @@ export const PreGrant: React.FC = () => {
   React.useEffect(() => {
     if (dataGrant.periods.length > 0) {
       navigate(
-        `/grant/${params.id}/${dataGrant.periods[dataGrant.periods.length - 1].code}/overview`,
+        `/grant/${params.id}/${
+          dataGrant.periods[dataGrant.periods.length - 1].code
+        }/overview`,
         { replace: true }
       );
     }

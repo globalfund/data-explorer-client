@@ -16,6 +16,10 @@ const ButtonTab = styled(NavLink)`
   background: ${({ theme }) => (theme.active ? "#000" : "#fff")};
   border: 1px solid ${({ theme }) => (theme.active ? "#000" : "#DFE3E5")};
 
+  @media (max-width: 920px) {
+    padding: 5px 12px;
+  }
+
   &:hover {
     color: #fff;
     background: #000;

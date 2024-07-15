@@ -18,7 +18,10 @@ export const Page: React.FC = () => {
         maxWidth="lg"
         disableGutters
         sx={{
-          minHeight: "calc(100vh - 91px - 256px)",
+          minHeight: "calc(100vh - 91px - 256px - 150px)",
+          "@media (max-width: 1200px)": {
+            padding: "0 16px",
+          },
         }}
       >
         <Box id="main">

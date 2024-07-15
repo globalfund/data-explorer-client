@@ -20,7 +20,7 @@ export interface TableProps {
   dataTreeStartExpandedFn?: (row: RowComponent, level: number) => boolean;
 }
 
-const cellBGColorFormatter = (cell: CellComponent) => {
+export const cellBGColorFormatter = (cell: CellComponent) => {
   const cellValue = cell.getValue();
   let text = "";
   let backgroundColor = "#FFFFFF";

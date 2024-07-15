@@ -3,6 +3,7 @@ import get from "lodash/get";
 import sumBy from "lodash/sumBy";
 import filter from "lodash/filter";
 import Box from "@mui/material/Box";
+import { useTitle } from "react-use";
 import { appColors } from "app/theme";
 import Divider from "@mui/material/Divider";
 import { Search } from "app/components/search";
@@ -40,6 +41,8 @@ import {
 } from "app/utils/getFinancialValueWithMetricPrefix";
 
 export const Home: React.FC = () => {
+  useTitle("The Data Explorer - Home");
+
   const [chart1Cycles, setChart1Cycles] = React.useState<CycleProps[]>([]);
   const [chart2Cycles, setChart2Cycles] = React.useState<CycleProps[]>([]);
   const [chart3Cycles, setChart3Cycles] = React.useState<CycleProps[]>([]);
@@ -193,6 +196,7 @@ export const Home: React.FC = () => {
       case 3:
         cycles = chart3Cycles;
         setCycle = setChart3Cycles;
+        multi = false;
         break;
       case 4:
         cycles = chart4Cycles;
@@ -344,6 +348,7 @@ export const Home: React.FC = () => {
           componentField === CHART_3_DROPDOWN_ITEMS[0].value
             ? "activityAreaGroup"
             : "activityArea",
+        geographyGrouping: "Standard View",
       },
     });
   };
@@ -418,6 +423,7 @@ export const Home: React.FC = () => {
           componentField === CHART_5_DROPDOWN_ITEMS[0].value
             ? "activityAreaGroup"
             : "activityArea",
+        geographyGrouping: "Standard View",
       },
     });
   };
@@ -459,6 +465,12 @@ export const Home: React.FC = () => {
       setChart2Cycles([allocationsCycles[allocationsCycles.length - 1]]);
     }
   }, [allocationsCycles]);
+
+  React.useEffect(() => {
+    if (budgetsCycles.length > 0) {
+      setChart3Cycles([budgetsCycles[budgetsCycles.length - 1]]);
+    }
+  }, [budgetsCycles]);
 
   React.useEffect(() => {
     if (expendituresCycles.length > 0) {
@@ -556,7 +568,16 @@ export const Home: React.FC = () => {
       />
       <Box height="64px" />
       <Box display="flex" flexDirection="row" justifyContent="center">
-        <Box width="800px">
+        <Box
+          width="800px"
+          sx={{
+            "@media (max-width: 920px)": {
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+            },
+          }}
+        >
           <Search />
         </Box>
       </Box>
@@ -574,6 +595,7 @@ export const Home: React.FC = () => {
           name: c.value,
           value: c.value,
         }))}
+        infoType="pledges_contributions"
       >
         <BarChart
           data={dataPledgesContributionsBarChart}
@@ -629,6 +651,7 @@ export const Home: React.FC = () => {
           value: c.value,
         }))}
         text="The Global Fund is distinct from other organizations in that it gives countries (or groups of countries) an allocation and asks countries to describe how they will use those funds rather than asking for applications and then determining an amount per-country based on the merits of the various proposals received.<br/><br/>This provides greater predictability for countries and helps ensure that the programs being funded are not just the ones with the most capacity to write good applications."
+        infoType="global"
       >
         <Box marginTop="-100px" marginBottom="-100px">
           <RadialChart
@@ -642,7 +665,6 @@ export const Home: React.FC = () => {
       {fullWidthDivider}
       <Box height="50px" />
       <ChartBlock
-        showCycleAll
         id="budgets"
         title={totalBudget}
         subtitle="Grant Budgets"
@@ -657,6 +679,7 @@ export const Home: React.FC = () => {
           name: c.value,
           value: c.value,
         }))}
+        infoType="budgets"
       >
         <Treemap data={dataBudgetsTreemap} />
       </ChartBlock>
@@ -679,6 +702,7 @@ export const Home: React.FC = () => {
           name: c.value,
           value: c.value,
         }))}
+        infoType="global"
       >
         <Box position="relative">
           <Typography
@@ -728,6 +752,7 @@ export const Home: React.FC = () => {
           name: c.value,
           value: c.value,
         }))}
+        infoType="expenditures"
       >
         <Heatmap
           data={dataExpendituresHeatmap}

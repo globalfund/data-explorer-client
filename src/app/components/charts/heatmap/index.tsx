@@ -280,10 +280,9 @@ export function Heatmap(props: HeatmapProps) {
         {props.rowHeader && (
           <Typography
             top="5px"
+            right="20px"
             fontSize="10px"
             fontWeight="700"
-            paddingLeft="20px"
-            left={rowNameWidth}
             position="absolute"
           >
             {props.rowHeader}

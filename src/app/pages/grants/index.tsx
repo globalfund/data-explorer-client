@@ -1,6 +1,7 @@
 import React from "react";
 import get from "lodash/get";
 import Box from "@mui/material/Box";
+import { useTitle } from "react-use";
 import Grid from "@mui/material/Grid";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
@@ -28,6 +29,8 @@ import { TABLE_VARIATION_5_COLUMNS } from "app/components/table/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 
 export const Grants: React.FC = () => {
+  useTitle("The Data Explorer - Grants");
+
   const [page, setPage] = React.useState(1);
   const [search, setSearch] = React.useState("");
   const [showSearch, setShowSearch] = React.useState(false);

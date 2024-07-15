@@ -3,11 +3,13 @@ import get from "lodash/get";
 import uniq from "lodash/uniq";
 import sumBy from "lodash/sumBy";
 import Box from "@mui/material/Box";
+import { useTitle } from "react-use";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import { Table } from "app/components/table";
 import { useLocation } from "react-router-dom";
 import Typography from "@mui/material/Typography";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { DatasetPage } from "app/pages/datasets/common/page";
 import CircularProgress from "@mui/material/CircularProgress";
 import { FilterGroupModel } from "app/components/filters/list/data";
@@ -27,7 +29,9 @@ const dropdownItems = [
 ];
 
 export const ResourceMobilizationPage: React.FC = () => {
+  useTitle("The Data Explorer - Resource Mobilization");
   const location = useLocation();
+  const smallScreen = useMediaQuery("(max-width:920px)");
 
   const [dropdownSelected, setDropdownSelected] = React.useState(
     dropdownItems[0].value
@@ -332,6 +336,22 @@ export const ResourceMobilizationPage: React.FC = () => {
     fetchTable({ filterString: chartFilterString });
   }, [chartFilterString]);
 
+  React.useEffect(() => {
+    if (location.hash) {
+      const blockId = location.hash.slice(1).split("|")[0];
+      const blockChartType = location.hash.slice(1).split("|")[1];
+      if (blockId && blockChartType) {
+        switch (blockId) {
+          case "disbursements":
+            setDropdownSelected(decodeURIComponent(blockChartType));
+            break;
+          default:
+            break;
+        }
+      }
+    }
+  }, [location.hash]);
+
   return (
     <DatasetPage
       title="Resource Mobilization"
@@ -372,9 +392,12 @@ export const ResourceMobilizationPage: React.FC = () => {
                 flexDirection: "column",
                 justifyContent: "center",
               },
-              "@media (max-width: 600px)": {
+              "@media (max-width: 920px)": {
                 paddingRight: "0px",
+                flexDirection: "row",
+                marginBottom: "50px",
                 borderRightStyle: "none",
+                justifyContent: "space-around",
               },
             }}
           >
@@ -395,7 +418,7 @@ export const ResourceMobilizationPage: React.FC = () => {
                 Total Pledged
               </Typography>
             </Box>
-            <Divider />
+            <Divider orientation={smallScreen ? "vertical" : "horizontal"} />
             <Box>
               <Typography variant="h5">
                 {formatFinancialValue(get(dataStats, "totalContributions", 0))}
@@ -411,7 +434,7 @@ export const ResourceMobilizationPage: React.FC = () => {
             md={8}
             sx={{
               paddingLeft: "21px",
-              "@media (max-width: 600px)": {
+              "@media (max-width: 920px)": {
                 paddingLeft: "0px",
               },
             }}
@@ -461,12 +484,15 @@ export const ResourceMobilizationPage: React.FC = () => {
                       "> *": {
                         lineHeight: "normal",
                       },
+                      "@media (max-width: 920px)": {
+                        height: "104px",
+                      },
                     },
                   },
                 }}
               >
                 {get(dataStats, "donorTypesCount", []).map((item) => (
-                  <Grid item xs={12} sm={6} md={6} lg={3} key={item.name}>
+                  <Grid item xs={12} sm={3} md={3} lg={3} key={item.name}>
                     <Box bgcolor="#F1F3F5" padding="5px 10px">
                       <Typography variant="h5">{item.value}</Typography>
                       <Typography fontSize="12px">{item.name}</Typography>
@@ -513,6 +539,7 @@ export const ResourceMobilizationPage: React.FC = () => {
             removeFilter={handleRemoveChartFilter}
             handleResetFilters={handleResetChartFilters}
             appliedFiltersData={chartAppliedFiltersData}
+            infoType="pledges_contributions"
           >
             {chartContent}
           </DatasetChartBlock>

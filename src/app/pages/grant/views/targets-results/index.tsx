@@ -1,9 +1,9 @@
 import React from "react";
 import get from "lodash/get";
 import Box from "@mui/material/Box";
+import { useTitle } from "react-use";
 import Divider from "@mui/material/Divider";
 import { useParams } from "react-router-dom";
-import Typography from "@mui/material/Typography";
 import { ChartBlock } from "app/components/chart-block";
 import useUpdateEffect from "react-use/lib/useUpdateEffect";
 import { CellComponent, Tabulator } from "tabulator-tables";
@@ -14,6 +14,8 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 
 export const GrantTargetsResults: React.FC = () => {
   const params = useParams<{ id: string; ip: string }>();
+
+  useTitle(`The Data Explorer - ${params.id} Targets & Results`);
 
   const [tab, setTab] = React.useState(TABS[0]);
 
@@ -134,33 +136,13 @@ export const GrantTargetsResults: React.FC = () => {
 
   return (
     <Box marginTop="24px">
-      <Typography variant="body2">
-        This page provides an overview of the IATI ('open') data currently
-        published by individual Grand Bargain signatories and/or their
-        affiliated organisations. Its primary purpose is to enable signatories
-        to monitor their own progress in relation to meeting the data
-        publication commitment of the Grand Bargain.This page provides an
-        overview of the IATI ('open') data currently published by individual
-        Grand Bargain signatories and/or their affiliated organisations. Its
-        primary purpose is to enable signatories to monitor
-        <br />
-        <br />
-        their own progress in relation to meeting the data publication
-        commitment of the Grand Bargain.This page provides an overview of the
-        IATI ('open') data currently published by individual Grand Bargain
-        signatories and/or their affiliated organisations. Its primary purpose
-        is to enable signatories to monitor their own progress in relation to
-        meeting the data publication commitment of the Grand Bargain.
-      </Typography>
-      <Box height="50px" />
-      {fullWidthDivider}
-      <Box height="50px" />
       <ChartBlock
         loading={loading}
         title="Indicators"
         id="grant-targets-results"
         subtitle="Targets & Results"
         text="Description of Impact indicators: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
+        infoType="global"
       >
         <Box width="100%" height="32px" />
         <TableContainer
