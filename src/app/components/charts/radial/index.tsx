@@ -25,6 +25,7 @@ const Tooltip = (props: any) => {
 
   return (
     <div
+      className="chart-tooltip"
       style={{
         gap: "10px",
         width: "400px",
@@ -47,7 +48,9 @@ const Tooltip = (props: any) => {
         <div className="chart-tooltip-text">
           {showList
             ? ""
-            : `${((props.value / props.totalValue) * 100).toFixed(2).replace(".00", "")}% - `}
+            : `${((props.value / props.totalValue) * 100)
+                .toFixed(2)
+                .replace(".00", "")}% - `}
           {formatFinancialValue(props.value)}
         </div>
       </div>

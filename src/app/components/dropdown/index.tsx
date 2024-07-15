@@ -118,7 +118,7 @@ export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
           "& .MuiPaper-root": {
             width: props.width,
             "@media (max-width: 767px)": {
-              width: props.width ?? "160px",
+              width: props.width ?? "180px",
             },
           },
         }}

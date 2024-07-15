@@ -137,6 +137,7 @@ export const ResultLink = styled(Link)`
 
 export const NoResults = styled.div`
   width: 100%;
+  color: #000;
   height: 100%;
   display: flex;
   align-items: center;

@@ -122,6 +122,9 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
                   width: "100%",
                   marginTop: "20px",
                   justifyContent: "flex-end",
+                  "> button": {
+                    maxWidth: "unset",
+                  },
                 },
               }}
             >

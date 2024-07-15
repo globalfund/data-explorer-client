@@ -23,6 +23,11 @@ export const Header: React.FC = () => {
 
   const onSearchBtnClick = () => {
     setSearchOpen(!searchOpen);
+    if (!searchOpen)
+      setTimeout(() => {
+        const input = document.getElementById("general-search");
+        if (input) input.focus();
+      }, 100);
   };
 
   const handleKeyPress = (e: KeyboardEvent) => {

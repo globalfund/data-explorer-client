@@ -24,6 +24,7 @@ echarts.use([EChartsSunburst, TooltipComponent, SVGRenderer]);
 const Tooltip = (props: any) => {
   return (
     <div
+      className="chart-tooltip"
       style={{
         gap: "10px",
         width: "400px",

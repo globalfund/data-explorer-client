@@ -45,6 +45,7 @@ echarts.use([
 const Tooltip = (props: any) => {
   return (
     <div
+      className="chart-tooltip"
       style={{
         gap: "10px",
         width: "400px",
