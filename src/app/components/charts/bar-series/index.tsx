@@ -192,9 +192,9 @@ export const BarSeriesChart: React.FC<BarSeriesChartProps> = (
         },
         dataZoom: [
           {
-            start: 90,
             show: mobile,
             type: "slider",
+            start: mobile ? 90 : 0,
           },
         ],
         series: props.data.map((serie) => ({

@@ -134,6 +134,7 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
       />
       <Box
         display="flex"
+        marginBottom="40px"
         flexDirection="row"
         justifyContent="space-between"
         sx={{
@@ -141,6 +142,7 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
             props.extraDropdown && props.dropdownItems.length > 0
               ? {
                   gap: "16px",
+                  marginBottom: 0,
                   flexDirection: "column",
                 }
               : {},
