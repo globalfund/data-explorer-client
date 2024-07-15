@@ -5,6 +5,7 @@ import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import { PageLoader } from "app/components/page-loader";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { useNavigate, useParams } from "react-router-dom";
 import { GrantTargetsResults } from "./views/targets-results";
 import { GrantOverview } from "app/pages/grant/views/overview";
@@ -16,7 +17,6 @@ import { splitStringInMiddle } from "app/utils/splitStringInMiddle";
 import { SankeyChartData } from "app/components/charts/sankey/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { GrantImplementation } from "app/pages/grant/views/grant-implementation";
-import { useMediaQuery } from "@mui/material";
 
 export const Grant: React.FC = () => {
   const navigate = useNavigate();

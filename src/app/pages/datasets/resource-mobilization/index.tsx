@@ -9,6 +9,7 @@ import Divider from "@mui/material/Divider";
 import { Table } from "app/components/table";
 import { useLocation } from "react-router-dom";
 import Typography from "@mui/material/Typography";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { DatasetPage } from "app/pages/datasets/common/page";
 import CircularProgress from "@mui/material/CircularProgress";
 import { FilterGroupModel } from "app/components/filters/list/data";
@@ -30,6 +31,7 @@ const dropdownItems = [
 export const ResourceMobilizationPage: React.FC = () => {
   useTitle("The Data Explorer - Resource Mobilization");
   const location = useLocation();
+  const smallScreen = useMediaQuery("(max-width:920px)");
 
   const [dropdownSelected, setDropdownSelected] = React.useState(
     dropdownItems[0].value
@@ -416,7 +418,7 @@ export const ResourceMobilizationPage: React.FC = () => {
                 Total Pledged
               </Typography>
             </Box>
-            <Divider orientation="vertical" />
+            <Divider orientation={smallScreen ? "vertical" : "horizontal"} />
             <Box>
               <Typography variant="h5">
                 {formatFinancialValue(get(dataStats, "totalContributions", 0))}
