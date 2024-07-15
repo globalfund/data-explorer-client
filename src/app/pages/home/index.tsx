@@ -553,6 +553,9 @@ export const Home: React.FC = () => {
         width: "200vw",
         position: "relative",
         borderTopColor: "#868E96",
+        "@media (max-width: 767px)": {
+          display: "none",
+        },
       }}
     />
   );
@@ -561,7 +564,14 @@ export const Home: React.FC = () => {
     <Box padding="50px 0">
       <HomeHero />
       {fullWidthDivider}
-      <Box height="50px" />
+      <Box
+        height="50px"
+        sx={{
+          "@media (max-width: 767px)": {
+            display: "none",
+          },
+        }}
+      />
       <HomeResultsStats
         stats={dataResultsStats}
         loading={loadingResultsStats}
@@ -611,6 +621,15 @@ export const Home: React.FC = () => {
         display="flex"
         flexDirection="row"
         justifyContent="center"
+        sx={{
+          "@media (max-width: 767px)": {
+            gap: "76px",
+            flexDirection: "column",
+            "> div": {
+              width: "100%",
+            },
+          },
+        }}
       >
         <Box
           width="50%"

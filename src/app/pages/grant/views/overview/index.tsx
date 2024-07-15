@@ -106,6 +106,9 @@ export const GrantOverview: React.FC = () => {
         width: "200vw",
         position: "relative",
         borderTopColor: "#868E96",
+        "@media (max-width: 767px)": {
+          display: "none",
+        },
       }}
     />
   );
@@ -148,7 +151,7 @@ export const GrantOverview: React.FC = () => {
           },
         }}
       >
-        <Grid item xs={6} md={4} lg={3}>
+        <Grid item xs={12} sm={6} md={4} lg={3}>
           <Box gap="10px" display="flex" flexDirection="column">
             <Typography variant="body2" fontWeight="700">
               Fund Portfolio Manager
@@ -160,7 +163,7 @@ export const GrantOverview: React.FC = () => {
             </Typography>
           </Box>
         </Grid>
-        <Grid item xs={6} md={4} lg={2}>
+        <Grid item xs={12} sm={6} md={4} lg={2}>
           <Box gap="10px" display="flex" flexDirection="column">
             <Typography variant="body2" fontWeight="700">
               Grant Status
@@ -181,7 +184,7 @@ export const GrantOverview: React.FC = () => {
             </Typography>
           </Box>
         </Grid>
-        <Grid item xs={6} md={4} lg={2}>
+        <Grid item xs={12} sm={6} md={4} lg={2}>
           <Box gap="10px" display="flex" flexDirection="column">
             <Typography variant="body2" fontWeight="700">
               Country
@@ -189,7 +192,7 @@ export const GrantOverview: React.FC = () => {
             <Typography variant="overline">{dataGrant.countryName}</Typography>
           </Box>
         </Grid>
-        <Grid item xs={6} md={4} lg={2}>
+        <Grid item xs={12} sm={6} md={4} lg={2}>
           <Box gap="10px" display="flex" flexDirection="column">
             <Typography variant="body2" fontWeight="700">
               Component
@@ -197,7 +200,7 @@ export const GrantOverview: React.FC = () => {
             <Typography variant="overline">{dataGrant.component}</Typography>
           </Box>
         </Grid>
-        {/* <Grid item xs={6} md={4} lg={2}>
+        {/* <Grid item xs={12} sm={6} md={4} lg={2}>
           <Box gap="10px" display="flex" flexDirection="column">
             <Typography variant="body2" fontWeight="700">
               Rating
@@ -205,7 +208,7 @@ export const GrantOverview: React.FC = () => {
             <Typography variant="overline">-</Typography>
           </Box>
         </Grid> */}
-        <Grid item xs={6} md={4} lg={3}>
+        <Grid item xs={12} sm={6} md={4} lg={3}>
           <Box gap="10px" display="flex" flexDirection="column">
             <Typography variant="body2" fontWeight="700">
               Principal Recipient

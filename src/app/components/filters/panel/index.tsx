@@ -45,6 +45,11 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
       borderRadius="4px"
       flexDirection="column"
       border="1px solid #70777E"
+      sx={{
+        "@media (max-width: 767px)": {
+          width: "100%",
+        },
+      }}
     >
       <Box
         width="100%"
@@ -129,6 +134,9 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
           "&::-webkit-scrollbar-thumb": {
             background: "#70777E",
             borderRadius: "3px",
+          },
+          "@media (max-width: 767px)": {
+            padding: "20px 0",
           },
         }}
       >

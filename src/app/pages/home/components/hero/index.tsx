@@ -15,6 +15,9 @@ export const HomeHero: React.FC = () => {
           "@media (max-width: 1200px)": {
             maxWidth: "100%",
           },
+          "@media (max-width: 767px)": {
+            fontSize: "20px",
+          },
         }}
       >
         The Global Fund invests US$5 billion a year to defeat HIV, TB and

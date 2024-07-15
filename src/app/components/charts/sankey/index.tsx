@@ -4,6 +4,8 @@ import { appColors } from "app/theme";
 import * as echarts from "echarts/core";
 import ReactDOMServer from "react-dom/server";
 import { SVGRenderer } from "echarts/renderers";
+import Typography from "@mui/material/Typography";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { SankeyChartProps } from "app/components/charts/sankey/data";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { useChartResizeObserver } from "app/hooks/useChartResizeObserver";
@@ -13,13 +15,13 @@ import {
   SankeySeriesOption,
   SankeyChart as EChartsSankey,
 } from "echarts/charts";
-import Typography from "@mui/material/Typography";
 
 echarts.use([TooltipComponent, EChartsSankey, SVGRenderer]);
 
 export const SankeyChart: React.FC<SankeyChartProps> = (
   props: SankeyChartProps
 ) => {
+  const mobile = useMediaQuery("(max-width: 767px)");
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   const [stateChart, setStateChart] =
@@ -51,11 +53,11 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
           top: 10,
           left: 0,
           bottom: 16,
-          right: 250,
           nodeWidth: 13,
           type: "sankey",
           draggable: false,
           layoutIterations: 0,
+          right: mobile ? 0 : 250,
           nodes: props.data.nodes,
           links: props.data.links,
           emphasis: {
@@ -70,6 +72,7 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
           },
           label: {
             fontSize: 12,
+            show: !mobile,
             textShadowColor: "none",
             fontFamily: "'Inter', sans-serif",
           },
@@ -77,6 +80,7 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
             {
               depth: 0,
               label: {
+                show: !mobile,
                 position: "right",
                 fontWeight: "bold",
                 color: appColors.COMMON.WHITE,
@@ -91,6 +95,7 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
             {
               depth: 1,
               label: {
+                show: !mobile,
                 position: "left",
                 color: appColors.COMMON.WHITE,
               },
@@ -114,6 +119,7 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
             {
               depth: 3,
               label: {
+                show: !mobile,
                 position: "right",
                 color: appColors.COMMON.BLACK,
               },
@@ -189,7 +195,7 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
       chart.setOption(option);
       setStateChart(chart);
     }
-  }, [containerRef.current, totalValue, props.data]);
+  }, [containerRef.current, totalValue, props.data, mobile]);
 
   return (
     <React.Fragment>

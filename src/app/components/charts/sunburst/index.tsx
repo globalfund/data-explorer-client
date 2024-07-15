@@ -198,6 +198,11 @@ export const SunburstChart: React.FC<SunburstProps> = (
             alignItems: "center",
             flexDirection: "column",
             justifyContent: "center",
+            "@media (max-width: 767px)": {
+              h5: {
+                fontSize: "18px",
+              },
+            },
           }}
         >
           <Typography variant="h5">{props.centerLabel}</Typography>

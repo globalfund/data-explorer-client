@@ -74,3 +74,20 @@ input[type="text"] {
   color: #262C34;
   line-height: 1;
 }
+
+.tabulator .tabulator-tableholder {
+  overflow: auto;
+}
+.tabulator .tabulator-tableholder::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  background: #f5f5f7;
+}
+.tabulator .tabulator-tableholder::-webkit-scrollbar-track {
+  border-radius: 24px;
+  background: #ebebeb;
+}
+.tabulator .tabulator-tableholder::-webkit-scrollbar-thumb {
+  background: #000;
+  border-radius: 24px;
+}

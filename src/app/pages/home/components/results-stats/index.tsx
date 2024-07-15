@@ -80,6 +80,13 @@ export const HomeResultsStats: React.FC<HomeResultsStatsProps> = (
             width: "fit-content",
           },
         },
+        "@media (max-width: 767px)": {
+          gap: "88px",
+          flexDirection: "column",
+          "> div": {
+            width: "100%",
+          },
+        },
       }}
     >
       {props.loading && props.stats.length === 0 && (

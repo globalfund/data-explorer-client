@@ -126,13 +126,25 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
       <Divider
         sx={{
           margin: "20px 0",
+          "@media (max-width: 767px)": {
+            margin: "10px 0",
+            borderColor: "#fff",
+          },
         }}
       />
       <Box
         display="flex"
-        marginBottom="40px"
         flexDirection="row"
         justifyContent="space-between"
+        sx={{
+          "@media (max-width: 767px)":
+            props.extraDropdown && props.dropdownItems.length > 0
+              ? {
+                  gap: "16px",
+                  flexDirection: "column",
+                }
+              : {},
+        }}
       >
         <Box gap="10px" display="flex" flexDirection="row">
           <Button

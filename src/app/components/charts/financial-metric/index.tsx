@@ -102,22 +102,35 @@ const ExpandableItem: React.FC<FinancialMetricExpandableItemProps> = (
         height="38px"
         display="flex"
         padding="0 10px"
+        bgcolor={bgcolor}
         flexDirection="row"
         alignItems="center"
         borderBottom="1px solid #CFD4DA"
-        bgcolor={bgcolor}
+        sx={{
+          "@media (max-width: 767px)": {
+            height: "auto",
+            paddingTop: "10px",
+            flexDirection: "column",
+          },
+        }}
       >
-        <Typography fontSize="12px" minWidth="50px">
-          {props.value.toFixed(1).replace(".0", "")}%
-        </Typography>
-        <Box
-          width="220px"
-          height="12px"
-          display="flex"
-          bgcolor="#CFD4DA"
-          justifyContent="flex-start"
-        >
-          <Box width={`${props.value}%`} height="100%" bgcolor={props.color} />
+        <Box gap="10px" display="flex" flexDirection="row">
+          <Typography fontSize="12px" minWidth="50px">
+            {props.value.toFixed(1).replace(".0", "")}%
+          </Typography>
+          <Box
+            width="220px"
+            height="12px"
+            display="flex"
+            bgcolor="#CFD4DA"
+            justifyContent="flex-start"
+          >
+            <Box
+              height="100%"
+              bgcolor={props.color}
+              width={`${props.value}%`}
+            />
+          </Box>
         </Box>
         <Button
           fullWidth
@@ -128,7 +141,9 @@ const ExpandableItem: React.FC<FinancialMetricExpandableItemProps> = (
             fontWeight: "400",
             textTransform: "none",
             justifyContent: "flex-start",
-            paddingLeft: `${(props.level + 1 + (props.items.length === 0 ? 1 : 0)) * 20}px`,
+            paddingLeft: `${
+              (props.level + 1 + (props.items.length === 0 ? 1 : 0)) * 20
+            }px`,
             "&:hover": {
               background: "transparent",
             },

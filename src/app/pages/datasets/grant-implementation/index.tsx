@@ -715,6 +715,9 @@ export const GrantImplementationPage: React.FC = () => {
               sx={{
                 transformOrigin: "left",
                 transform: "rotate(-90deg)",
+                "@media (max-width: 767px)": {
+                  left: 0,
+                },
               }}
             >
               Y Axis/<b>Disbursed Amount (US$ {range.abbr})</b>
@@ -736,6 +739,11 @@ export const GrantImplementationPage: React.FC = () => {
               borderRadius="4px"
               position="absolute"
               border="1px solid #DFE3E5"
+              sx={{
+                "@media (max-width: 767px)": {
+                  bottom: 0,
+                },
+              }}
             >
               X Axis/<b>Components</b>
             </Typography>
@@ -824,7 +832,17 @@ export const GrantImplementationPage: React.FC = () => {
 
   const financialMetricsContent = React.useMemo(() => {
     return (
-      <Box gap="40px" width="100%" display="flex" flexDirection="column">
+      <Box
+        gap="40px"
+        width="100%"
+        display="flex"
+        flexDirection="column"
+        sx={{
+          "@media (max-width: 767px)": {
+            marginTop: "32px",
+          },
+        }}
+      >
         {dataBudgetUtilisation.items.length > 0 && (
           <FinancialMetric
             {...FINANCIAL_METRICS_DATA_1}
@@ -887,6 +905,9 @@ export const GrantImplementationPage: React.FC = () => {
                 color: "#464646",
                 fontSize: "10px",
                 fontWeight: "700",
+                "@media (max-width: 767px)": {
+                  marginTop: "16px",
+                },
               }}
             >
               <Grid item xs={3}>
@@ -1077,7 +1098,19 @@ export const GrantImplementationPage: React.FC = () => {
 
   const toolbarRightContent = React.useMemo(() => {
     return (
-      <Box gap="20px" display="flex" flexDirection="row" alignItems="center">
+      <Box
+        gap="20px"
+        display="flex"
+        flexDirection="row"
+        alignItems="center"
+        sx={{
+          "@media (max-width: 767px)": {
+            gap: "16px",
+            flexDirection: "column",
+            alignItems: "flex-start",
+          },
+        }}
+      >
         <Box gap="10px" display="flex" flexDirection="row" alignItems="center">
           <Typography variant="body2" fontWeight="700">
             Geography grouping
@@ -1919,6 +1952,18 @@ export const GrantImplementationPage: React.FC = () => {
                   fontSize: "20px",
                 },
               },
+              "@media (max-width: 767px)": {
+                width: "100%",
+                padding: "16px 0",
+                "&:not(:last-child)": {
+                  borderRightStyle: "none",
+                  borderBottom: "1px solid #DFE3E5",
+                },
+              },
+            },
+            "@media (max-width: 767px)": {
+              marginBottom: 0,
+              flexDirection: "column",
             },
           }}
         >
@@ -2064,21 +2109,27 @@ export const GrantImplementationPage: React.FC = () => {
             marginTop="40px"
             flexDirection="row"
           >
-            {dataBudgetBreakdown.map((i) => (
+            {dataBudgetBreakdown.map((i, ix) => (
               <Box
                 key={i.name}
                 display="flex"
                 bgcolor={i.color}
+                position="relative"
+                alignItems="center"
                 width={`${i.value}%`}
                 flexDirection="column"
-                alignItems="center"
-                position="relative"
               >
                 <Box
                   top="-35px"
                   fontSize="12px"
                   fontWeight="400"
                   position="absolute"
+                  sx={{
+                    "@media (max-width: 767px)": {
+                      top: ix % 2 === 0 ? "-35px" : "auto",
+                      bottom: ix % 2 === 1 ? "-35px" : "auto",
+                    },
+                  }}
                 >
                   {i.name} ({i.value.toFixed(2).replace(".00", "")}%)
                 </Box>
@@ -2087,6 +2138,9 @@ export const GrantImplementationPage: React.FC = () => {
                   sx={{
                     marginTop: "-5px",
                     borderColor: i.color,
+                    "@media (max-width: 767px)": {
+                      display: "none",
+                    },
                   }}
                 />
               </Box>
@@ -2167,6 +2221,15 @@ export const GrantImplementationPage: React.FC = () => {
             extraDropdown={expendituresCycleDropdown}
             infoType="expenditures"
           >
+            <Box
+              sx={{
+                width: "100%",
+                height: "16px",
+                "@media (min-width: 768px)": {
+                  display: "none",
+                },
+              }}
+            />
             {expendituresChartContent}
           </DatasetChartBlock>
         </Box>

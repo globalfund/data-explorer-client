@@ -20,6 +20,8 @@ import {
   GridComponent,
   LegendComponent,
   TooltipComponent,
+  DataZoomSliderComponent,
+  DataZoomComponentOption,
 } from "echarts/components";
 import {
   GridComponentOption,
@@ -35,6 +37,7 @@ echarts.use([
   GridComponent,
   LegendComponent,
   TooltipComponent,
+  DataZoomSliderComponent,
 ]);
 
 const Tooltip = (props: any) => {
@@ -92,6 +95,7 @@ const Tooltip = (props: any) => {
 
 export const BarChart: React.FC<BarChartProps> = (props: BarChartProps) => {
   const isTouch = useMediaQuery("(hover: none)");
+  const mobile = useMediaQuery("(max-width: 767px)");
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   const [stateChart, setStateChart] =
@@ -126,6 +130,16 @@ export const BarChart: React.FC<BarChartProps> = (props: BarChartProps) => {
     return [values, values1];
   }, [props.data]);
 
+  const barWidth = React.useMemo(() => {
+    if (mobile) {
+      return "30px";
+    }
+    if (seriesData.length > 1) {
+      return "37px";
+    }
+    return "72px";
+  }, [seriesData, mobile]);
+
   React.useEffect(() => {
     if (containerRef.current) {
       const chart = echarts.init(containerRef.current, undefined, {
@@ -139,13 +153,14 @@ export const BarChart: React.FC<BarChartProps> = (props: BarChartProps) => {
         | XAXisComponentOption
         | LegendComponentOption
         | TooltipComponentOption
+        | DataZoomComponentOption
       > = {
         grid: {
           top: 40,
           left: 20,
           right: 0,
-          bottom: 20,
           containLabel: true,
+          bottom: mobile ? 50 : 20,
         },
         yAxis: {
           type: "value",
@@ -187,6 +202,8 @@ export const BarChart: React.FC<BarChartProps> = (props: BarChartProps) => {
             fontSize: "12px",
             fontFamily: "Inter, sans-serif",
             color: appColors.TIME_CYCLE.AXIS_TEXT_COLOR,
+            rotate:
+              mobile && !(seriesData[0] && seriesData[0].length > 4) ? 90 : 0,
           },
           axisLine: {
             lineStyle: {
@@ -195,12 +212,19 @@ export const BarChart: React.FC<BarChartProps> = (props: BarChartProps) => {
             },
           },
         },
+        dataZoom: [
+          {
+            type: "slider",
+            show: mobile && seriesData[0] && seriesData[0].length > 4,
+            start: mobile && seriesData[0] && seriesData[0].length > 4 ? 70 : 0,
+          },
+        ],
         series: seriesData.map((values, index) => ({
           type: "bar",
           name:
             index === 0 ? props.valueLabels.value : props.valueLabels.value1,
           data: values,
-          barWidth: seriesData.length > 1 ? "37px" : "72px",
+          barWidth,
           colorBy: seriesData.length > 1 ? "series" : "data",
           color:
             seriesData.length > 1
@@ -264,6 +288,9 @@ export const BarChart: React.FC<BarChartProps> = (props: BarChartProps) => {
   React.useEffect(() => {
     if (stateChart) {
       stateChart.setOption({
+        grid: {
+          bottom: mobile ? 50 : 20,
+        },
         yAxis: {
           axisLabel: {
             formatter: (value: number) => {
@@ -273,11 +300,21 @@ export const BarChart: React.FC<BarChartProps> = (props: BarChartProps) => {
         },
         xAxis: {
           data: xAxisKeys,
+          rotate:
+            mobile && !(seriesData[0] && seriesData[0].length > 4) ? 90 : 0,
         },
+        dataZoom: [
+          {
+            type: "slider",
+            show: mobile && seriesData[0] && seriesData[0].length > 4,
+            start: mobile && seriesData[0] && seriesData[0].length > 4 ? 70 : 0,
+          },
+        ],
         series: seriesData.map((values, index) => ({
           data: values,
           name:
             index === 0 ? props.valueLabels.value : props.valueLabels.value1,
+          barWidth,
           itemStyle:
             seriesData.length > 1
               ? {
@@ -290,7 +327,15 @@ export const BarChart: React.FC<BarChartProps> = (props: BarChartProps) => {
         })),
       });
     }
-  }, [range, xAxisKeys, seriesData, props.valueLabels, stateChart]);
+  }, [
+    range,
+    mobile,
+    barWidth,
+    xAxisKeys,
+    seriesData,
+    stateChart,
+    props.valueLabels,
+  ]);
 
   return (
     <React.Fragment>

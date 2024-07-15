@@ -15,7 +15,6 @@ export const Container = styled.div`
   background: ${appColors.SEARCH.RESULTS_CONTAINER_BACKGROUND_COLOR};
 
   @media (max-width: 767px) {
-    box-shadow: none;
     padding: 0 0 20px 0;
   }
 `;
@@ -41,12 +40,6 @@ export const Results = styled.div`
   &::-webkit-scrollbar-thumb {
     border-radius: 4px;
     background: ${appColors.SEARCH.DROPDOWN_SCROLLBAR_THUMB_BACKGROUND_COLOR};
-  }
-
-  @media (max-width: 767px) {
-    height: calc(100vh - 150px);
-    min-height: calc(100vh - 150px);
-    max-height: calc(100vh - 150px);
   }
 `;
 
