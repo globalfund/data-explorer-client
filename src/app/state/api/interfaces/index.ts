@@ -1,20 +1,6 @@
 import { Action, Thunk } from "easy-peasy";
-import {
-  PageHeaderVizDrilldownsStateModel,
-  ToolBoxPanelAggregateByStateModel,
-  ToolBoxPanelAllocationsPeriodStateModel,
-  ToolBoxPanelBudgetFlowDrilldownSelectorsModel,
-  ToolBoxPanelBudgetTimeCycleDrilldownYearSelectorModel,
-  ToolBoxPanelDisbursementsSliderValuesModel,
-  ToolBoxPanelDonorMapTypeStateModel,
-  ToolBoxPanelDonorMapViewStateModel,
-  ToolBoxPanelEligibilityAdvancedCheckboxStateModel,
-  ToolBoxPanelEligibilityYearStateModel,
-  ToolBoxPanelInvestmentsMapViewStateModel,
-  ToolBoxPanelPFPeriodStateModel,
-  ToolBoxPanelResultsYearStateModel,
-} from "app/state/api/action-reducers/sync";
-import { AppliedFiltersStateModel } from "../action-reducers/sync/filters";
+import { CMSDataModel } from "app/state/api/action-reducers/sync";
+import { AppliedFiltersStateModel } from "app/state/api/action-reducers/sync/filters";
 import {
   CMSApiComponentsAppBar,
   CMSApiComponentsChartsBudgets,
@@ -45,16 +31,15 @@ import {
   CMSApiNotesAndDisclaimers,
   CMSApiModulesFundingRequests,
 } from "app/state/api/interfaces/cms";
-import {
-  DataPathActiveStepStateModel,
-  DataPathStepsStateModel,
-} from "../action-reducers/sync/dataPath";
 
 export interface RequestValues<T> {
   values?: T;
   addOnData?: boolean;
   isCMSfetch?: boolean;
   filterString?: string;
+  routeParams?: {
+    [key: string]: string;
+  };
 }
 
 export interface ResponseData<T> {
@@ -86,9 +71,6 @@ export interface ApiModel<QueryModel, ResponseModel> {
   clear: Action<ApiModel<QueryModel, ResponseModel>>;
   post: Thunk<ApiModel<QueryModel, ResponseModel>, RequestValues<QueryModel>>;
 }
-
-// todo: add all available filters
-interface ApiCallParamsFilters {}
 
 export interface ApiCallParams {}
 
@@ -138,111 +120,85 @@ export type CMSApiCallModel = ApiModel<
 export interface CMSApiCallParams {}
 
 export interface StoreModel {
-  // data viz api
-  Documents: ApiCallModel;
-  GrantsList: ApiCallModel;
-  Allocations: ApiCallModel;
-  AllocationsPeriods: ApiCallModel;
-  AllocationsDrilldown: ApiCallModel;
-  AllocationsGeomap: ApiCallModel;
-  AllocationsMCGeomap: ApiCallModel;
-  AllocationsTable: ApiCallModel;
-  Eligibility: ApiCallModel;
-  EligibilityTable: ApiCallModel;
-  EligibilityYears: ApiCallModel;
-  EligibilityStatusCodelist: ApiCallModel;
-  EligibilityDiseaseBurdenCodelist: ApiCallModel;
-  BudgetsFlow: ApiCallModel;
-  BudgetsFlowDrilldownLevel1: ApiCallModel;
-  BudgetsFlowDrilldownLevel2: ApiCallModel;
-  BudgetsGeomap: ApiCallModel;
-  BudgetsMCGeomap: ApiCallModel;
-  BudgetsTimeCycle: ApiCallModel;
-  BudgetsTimeCycleDrilldownLevel1: ApiCallModel;
-  BudgetsTimeCycleDrilldownLevel2: ApiCallModel;
-  DisbursementsGeomap: ApiCallModel;
-  DisbursementsGeomapMulticountries: ApiCallModel;
-  DisbursementsTreemap: ApiCallModel;
-  DisbursementsTreemapDrilldown: ApiCallModel;
-  DisbursementsTimeCycle: ApiCallModel;
-  DisbursementsTimeCycleDrilldown: ApiCallModel;
-  DisbursementsTimeCycleDrilldown2: ApiCallModel;
-  SignedTreemap: ApiCallModel;
-  SignedTreemapDrilldown: ApiCallModel;
-  SignedTimeCycle: ApiCallModel;
-  SignedTimeCycleDrilldown: ApiCallModel;
-  SignedTimeCycleDrilldown2: ApiCallModel;
-  CommitmentTreemap: ApiCallModel;
-  CommitmentTreemapDrilldown: ApiCallModel;
-  CommitmentTimeCycle: ApiCallModel;
-  CommitmentTimeCycleDrilldown: ApiCallModel;
-  CommitmentTimeCycleDrilldown2: ApiCallModel;
-  PledgesContributionsGeomap: ApiCallModel;
-  PledgesContributionsTimeCycle: ApiCallModel;
-  PledgesContributionsTimeCycleDrilldown: ApiCallModel;
-  PledgesContributionsTreemap: ApiCallModel;
-  PledgesContributionsTable: ApiCallModel;
-  ResultsList: ApiCallModel;
-  ResultsStats: ApiCallModel;
-  ResultsYears: ApiCallModel;
-  FundingRequestsTable: ApiCallModel;
-  // global search
+  // homepage
+  HomeResultsStats: ApiCallModel;
+  HomePledgesContributionsBarChart: ApiCallModel;
+  HomeAllocationsRadialChart: ApiCallModel;
+  HomeBudgetsTreemap: ApiCallModel;
+  HomeDisbursementsLineChart: ApiCallModel;
+  HomeExpendituresHeatmap: ApiCallModel;
+  // resource mobilization
+  ResourceMobilizationStats: ApiCallModel;
+  ResourceMobilizationExpandableBarChart: ApiCallModel;
+  ResourceMobilizationTable: ApiCallModel;
+  // geographies
+  GeographyList: ApiCallModel;
+  // access to funding
+  AccessToFundingStats: ApiCallModel;
+  AccessToFundingEligibilityTable: ApiCallModel;
+  AccessToFundingAllocationBarSeries: ApiCallModel;
+  AccessToFundingAllocationSunburst: ApiCallModel;
+  AccessToFundingAllocationTreemap: ApiCallModel;
+  AccessToFundingAllocationTable: ApiCallModel;
+  AccessToFundingFundingRequestsTable: ApiCallModel;
+  AccessToFundingDocumentsTable: ApiCallModel;
+  // financial insights
+  FinancialInsightsStats: ApiCallModel;
+  FinancialInsightsDisbursementsBarChart: ApiCallModel;
+  FinancialInsightsDisbursementsLineChart: ApiCallModel;
+  FinancialInsightsDisbursementsTable: ApiCallModel;
+  FinancialInsightsBudgetBreakdown: ApiCallModel;
+  FinancialInsightsBudgetUtilisation: ApiCallModel;
+  FinancialInsightsCountryAbsorption: ApiCallModel;
+  FinancialInsightsDisbursementUtilisation: ApiCallModel;
+  FinancialInsightsBudgetSankey: ApiCallModel;
+  FinancialInsightsBudgetTreemap: ApiCallModel;
+  FinancialInsightsBudgetTable: ApiCallModel;
+  FinancialInsightsExpendituresHeatmap: ApiCallModel;
+  FinancialInsightsExpendituresBarChart: ApiCallModel;
+  FinancialInsightsExpendituresTable: ApiCallModel;
+  // annual results
+  AnnualResultsStats: ApiCallModel;
+  AnnualResultsPolyline: ApiCallModel;
+  AnnualResultsTable: ApiCallModel;
+  AnnualResultsDocumentsTable: ApiCallModel;
+  // grants
+  GrantList: ApiCallModel;
+  // location
+  GeographyOverview: ApiCallModel;
+  GeographyOverviewCoordinatingMechanismsContacts: ApiCallModel;
+  GeographyResourceMobilizationBarChart: ApiCallModel;
+  GeographyAllocationsRadialChart: ApiCallModel;
+  GeographyFundingRequestsTable: ApiCallModel;
+  GeographyEligibilityHeatmap: ApiCallModel;
+  GeographyEligibilityTable: ApiCallModel;
+  GeographyDocumentsTable: ApiCallModel;
+  GeographyDisbursementsLineChart: ApiCallModel;
+  GeographyBudgetSankeyChart: ApiCallModel;
+  GeographyExpendituresHeatmap: ApiCallModel;
+  GeographyGrantsPieCharts: ApiCallModel;
+  GeographyGrantsTable: ApiCallModel;
+  GeographyResultStats: ApiCallModel;
+  GeographyResultsTable: ApiCallModel;
+  GeographyResultsDocumentsTable: ApiCallModel;
+  GeographyAllocationsCycles: ApiCallModel;
+  GeographyFundingRequestsCycles: ApiCallModel;
+  GeographyAnnualResultsCycles: ApiCallModel;
+  GeographyBudgetsCycles: ApiCallModel;
+  GeographyPledgesContributionsCycles: ApiCallModel;
+  GeographyDisbursementsCycles: ApiCallModel;
+  GeographyExpendituresCycles: ApiCallModel;
+  GeographyEligibilityCycles: ApiCallModel;
+  // grant
+  GrantInfo: ApiCallModel;
+  GrantOverview: ApiCallModel;
+  GrantDisbursementsBarChart: ApiCallModel;
+  GrantBudgetSankeyChart: ApiCallModel;
+  GrantExpendituresHeatmap: ApiCallModel;
+  GrantHasExpenditures: ApiCallModel;
+  GrantTargetsResultsTable: ApiCallModel;
+  // search
   GlobalSearch: ApiCallModel;
-  // grant detail api
-  GrantDetailInfo: ApiCallModel;
-  GrantDetailPeriods: ApiCallModel;
-  GrantDetailPeriodInfo: ApiCallModel;
-  GrantDetailBudgetsFlow: ApiCallModel;
-  GrantDetailBudgetsFlowDrilldownLevel1: ApiCallModel;
-  GrantDetailBudgetsFlowDrilldownLevel2: ApiCallModel;
-  GrantDetailBudgetsTimeCycle: ApiCallModel;
-  GrantDetailBudgetsTimeCycleDrilldownLevel1: ApiCallModel;
-  GrantDetailBudgetsTimeCycleDrilldownLevel2: ApiCallModel;
-  GrantDetailDisbursementsTreemap: ApiCallModel;
-  GrantDetailSignedTreemap: ApiCallModel;
-  GrantDetailCommitmentTreemap: ApiCallModel;
-  GrantDetailDisbursementsTimeCycle: ApiCallModel;
-  GrantDetailSignedTimeCycle: ApiCallModel;
-  GrantDetailCommitmentTimeCycle: ApiCallModel;
-  GrantDetailPerformanceRating: ApiCallModel;
-  GrantDetailPerformanceFramework: ApiCallModel;
-  GrantDetailPerformanceFrameworkExpand: ApiCallModel;
-  GrantDetailDocuments: ApiCallModel;
-  // location detail api
-  LocationDetailInfo: ApiCallModel;
-  EligibilityCountry: ApiCallModel;
-  LocationDetailDisbursementsTreemap: ApiCallModel;
-  LocationDetailSignedTreemap: ApiCallModel;
-  LocationDetailCommitmentTreemap: ApiCallModel;
-  LocationDetailDocuments: ApiCallModel;
-  LocationDetailBudgetsFlow: ApiCallModel;
-  LocationDetailBudgetsFlowDrilldownLevel1: ApiCallModel;
-  LocationDetailBudgetsFlowDrilldownLevel2: ApiCallModel;
-  LocationDetailBudgetsTimeCycle: ApiCallModel;
-  LocationDetailBudgetsTimeCycleDrilldownLevel1: ApiCallModel;
-  LocationDetailBudgetsTimeCycleDrilldownLevel2: ApiCallModel;
-  LocationGrants: ApiCallModel;
-  LocationAccessToFunding: {
-    EligibilityTable: ApiCallModel;
-    FundingRequestsTable: ApiCallModel;
-    GrantCycles: ApiCallModel;
-  };
-  FundingRequestsTRPWindowCodelist: ApiCallModel;
-  FundingRequestsPortfolioCategoryCodelist: ApiCallModel;
-  // partner detail api
-  PartnerDetailInfo: ApiCallModel;
-  PartnerDetailDisbursementsTreemap: ApiCallModel;
-  PartnerDetailDisbursementsTreemapDrilldown: ApiCallModel;
-  PartnerDetailSignedTreemap: ApiCallModel;
-  PartnerDetailSignedTreemapDrilldown: ApiCallModel;
-  PartnerDetailCommitmentTreemap: ApiCallModel;
-  PartnerDetailCommitmentTreemapDrilldown: ApiCallModel;
-  PartnerDetailBudgetsFlow: ApiCallModel;
-  PartnerDetailBudgetsFlowDrilldownLevel1: ApiCallModel;
-  PartnerDetailBudgetsFlowDrilldownLevel2: ApiCallModel;
-  PartnerDetailBudgetsTimeCycle: ApiCallModel;
-  PartnerDetailBudgetsTimeCycleDrilldownLevel1: ApiCallModel;
-  PartnerDetailBudgetsTimeCycleDrilldownLevel2: ApiCallModel;
   // filter options api
   LocationFilterOptions: ApiCallModel;
   ComponentFilterOptions: ApiCallModel;
@@ -250,30 +206,33 @@ export interface StoreModel {
   StatusFilterOptions: ApiCallModel;
   ReplenishmentPeriodFilterOptions: ApiCallModel;
   DonorFilterOptions: ApiCallModel;
+  EligibilityStatusCodelist: ApiCallModel;
+  EligibilityDiseaseBurdenCodelist: ApiCallModel;
+  EligibilityYearsCodelist: ApiCallModel;
+  EligibilityYears: ApiCallModel;
+  FundingRequestsTRPWindowCodelist: ApiCallModel;
+  FundingRequestsPortfolioCategoryCodelist: ApiCallModel;
+  LocationAccessToFunding: {
+    GrantCycles: ApiCallModel;
+  };
+  AllocationsCycles: ApiCallModel;
+  FundingRequestsCycles: ApiCallModel;
+  AnnualResultsCycles: ApiCallModel;
+  BudgetsCycles: ApiCallModel;
+  FinancialMetricsCycles: ApiCallModel;
+  PledgesContributionsCycles: ApiCallModel;
+  DisbursementsCycles: ApiCallModel;
+  ExpendituresCycles: ApiCallModel;
+  EligibilityCycles: ApiCallModel;
+  ResultsComponentFilterOptions: ApiCallModel;
   // sync state variables
   AppliedFiltersState: AppliedFiltersStateModel;
-  ToolBoxPanelPFPeriodState: ToolBoxPanelPFPeriodStateModel;
-  PageHeaderVizDrilldownsState: PageHeaderVizDrilldownsStateModel;
-  ToolBoxPanelAggregateByState: ToolBoxPanelAggregateByStateModel;
-  ToolBoxPanelResultsYearState: ToolBoxPanelResultsYearStateModel;
-  ToolBoxPanelDonorMapTypeState: ToolBoxPanelDonorMapTypeStateModel;
-  ToolBoxPanelDonorMapViewState: ToolBoxPanelDonorMapViewStateModel;
-  ToolBoxPanelEligibilityYearState: ToolBoxPanelEligibilityYearStateModel;
-  ToolBoxPanelAllocationsPeriodState: ToolBoxPanelAllocationsPeriodStateModel;
-  ToolBoxPanelInvestmentsMapViewState: ToolBoxPanelInvestmentsMapViewStateModel;
-  ToolBoxPanelDisbursementsSliderValues: ToolBoxPanelDisbursementsSliderValuesModel;
-  ToolBoxPanelBudgetFlowDrilldownSelectors: ToolBoxPanelBudgetFlowDrilldownSelectorsModel;
-  ToolBoxPanelEligibilityAdvancedCheckboxState: ToolBoxPanelEligibilityAdvancedCheckboxStateModel;
-  ToolBoxPanelBudgetTimeCycleDrilldownYearSelector: ToolBoxPanelBudgetTimeCycleDrilldownYearSelectorModel;
-  // sync data path vars
-  DataPathSteps: DataPathStepsStateModel;
-  DataPathActiveStep: DataPathActiveStepStateModel;
   // CMS
+  CMSData: CMSDataModel;
   cms: {
     componentsAppBar: CMSApiCallModel;
     componentsTable: CMSApiCallModel;
     componentsDialogBox: CMSApiCallModel;
-
     componentsChartsBudgets: CMSApiCallModel;
     componentsChartsCommon: CMSApiCallModel;
     componentsChartsEligibility: CMSApiCallModel;
@@ -292,7 +251,6 @@ export interface StoreModel {
     componentsSearch: CMSApiCallModel;
     componentsSlideInPanel: CMSApiCallModel;
     componentsSidebar: CMSApiCallModel;
-
     modulesLanding: CMSApiCallModel;
     modulesAbout: CMSApiCallModel;
     modulesCommon: CMSApiCallModel;

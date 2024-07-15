@@ -1,13 +1,13 @@
 import React from "react";
 import isEqual from "lodash/isEqual";
 import { useUnmount, useUpdateEffect } from "react-use";
-import { useHistory, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useComponentWillMount } from "app/hooks/useCompWillMount";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 
 export function useUrlFilters(): null {
-  const history = useHistory();
+  const nav = useNavigate();
   const location = useLocation();
 
   const data = useStoreState((state) => state.AppliedFiltersState);
@@ -20,15 +20,20 @@ export function useUrlFilters(): null {
       const currentUrlParams = new URLSearchParams(location.search);
       const locations = currentUrlParams.get("locations");
       const components = currentUrlParams.get("components");
-      const partnerTypes = currentUrlParams.get("partnerTypes");
-      const partnerSubTypes = currentUrlParams.get("partnerSubTypes");
-      const partners = currentUrlParams.get("partners");
+      const principalRecipients = currentUrlParams.get("principalRecipients");
+      const principalRecipientSubTypes = currentUrlParams.get(
+        "principalRecipientSubTypes"
+      );
+      const principalRecipientTypes = currentUrlParams.get(
+        "principalRecipientTypes"
+      );
       const status = currentUrlParams.get("status");
       const documentTypes = currentUrlParams.get("documentTypes");
       const donors = currentUrlParams.get("donors");
-      const donorSubCategories = currentUrlParams.get("donorSubCategories");
-      const donorCategories = currentUrlParams.get("donorCategories");
+      const donorSubTypes = currentUrlParams.get("donorSubTypes");
+      const donorTypes = currentUrlParams.get("donorTypes");
       const replenishmentPeriods = currentUrlParams.get("replenishmentPeriods");
+      const cycles = currentUrlParams.get("cycles");
       const trpWindows = currentUrlParams.get("trpWindows");
       const portfolioCategories = currentUrlParams.get("portfolioCategories");
 
@@ -38,14 +43,17 @@ export function useUrlFilters(): null {
       if (components) {
         updatedAppliedFilters.components = components.split(",");
       }
-      if (partnerTypes) {
-        updatedAppliedFilters.partnerTypes = partnerTypes.split(",");
+      if (principalRecipients) {
+        updatedAppliedFilters.principalRecipients =
+          principalRecipients.split(",");
       }
-      if (partnerSubTypes) {
-        updatedAppliedFilters.partnerSubTypes = partnerSubTypes.split(",");
+      if (principalRecipientSubTypes) {
+        updatedAppliedFilters.principalRecipientSubTypes =
+          principalRecipientSubTypes.split(",");
       }
-      if (partners) {
-        updatedAppliedFilters.partners = partners.split(",");
+      if (principalRecipientTypes) {
+        updatedAppliedFilters.principalRecipientTypes =
+          principalRecipientTypes.split(",");
       }
       if (status) {
         updatedAppliedFilters.status = status.split(",");
@@ -56,16 +64,18 @@ export function useUrlFilters(): null {
       if (donors) {
         updatedAppliedFilters.donors = donors.split(",");
       }
-      if (donorSubCategories) {
-        updatedAppliedFilters.donorSubCategories =
-          donorSubCategories.split(",");
+      if (donorSubTypes) {
+        updatedAppliedFilters.donorSubTypes = donorSubTypes.split(",");
       }
-      if (donorCategories) {
-        updatedAppliedFilters.donorCategories = donorCategories.split(",");
+      if (donorTypes) {
+        updatedAppliedFilters.donorTypes = donorTypes.split(",");
       }
       if (replenishmentPeriods) {
         updatedAppliedFilters.replenishmentPeriods =
           replenishmentPeriods.split(",");
+      }
+      if (cycles) {
+        updatedAppliedFilters.cycles = cycles.split(",");
       }
       if (trpWindows) {
         updatedAppliedFilters.trpWindows = trpWindows.split(",");
@@ -87,83 +97,121 @@ export function useUrlFilters(): null {
     const currentUrlParams = new URLSearchParams(location.search);
 
     if (data.locations.length > 0) {
-      currentUrlParams.set("locations", data.locations.join(","));
+      currentUrlParams.set(
+        "locations",
+        data.locations.join(",").replace(/&/g, "%26")
+      );
     } else {
       currentUrlParams.delete("locations");
     }
     if (data.components.length > 0) {
-      currentUrlParams.set("components", data.components.join(","));
+      currentUrlParams.set(
+        "components",
+        data.components.join(",").replace(/&/g, "%26")
+      );
     } else {
       currentUrlParams.delete("components");
     }
-    if (data.partnerTypes.length > 0) {
-      currentUrlParams.set("partnerTypes", data.partnerTypes.join(","));
+    if (data.principalRecipientTypes.length > 0) {
+      currentUrlParams.set(
+        "principalRecipientTypes",
+        data.principalRecipientTypes.join(",").replace(/&/g, "%26")
+      );
     } else {
-      currentUrlParams.delete("partnerTypes");
+      currentUrlParams.delete("principalRecipientTypes");
     }
-    if (data.partnerSubTypes.length > 0) {
-      currentUrlParams.set("partnerSubTypes", data.partnerSubTypes.join(","));
+    if (data.principalRecipientSubTypes.length > 0) {
+      currentUrlParams.set(
+        "principalRecipientSubTypes",
+        data.principalRecipientSubTypes.join(",").replace(/&/g, "%26")
+      );
     } else {
-      currentUrlParams.delete("partnerSubTypes");
+      currentUrlParams.delete("principalRecipientSubTypes");
     }
-    if (data.partners.length > 0) {
-      currentUrlParams.set("partners", data.partners.join(","));
+    if (data.principalRecipients.length > 0) {
+      currentUrlParams.set(
+        "principalRecipients",
+        data.principalRecipients.join(",").replace(/&/g, "%26")
+      );
     } else {
-      currentUrlParams.delete("partners");
+      currentUrlParams.delete("principalRecipients");
     }
     if (data.status.length > 0) {
-      currentUrlParams.set("status", data.status.join(","));
+      currentUrlParams.set(
+        "status",
+        data.status.join(",").replace(/&/g, "%26")
+      );
     } else {
       currentUrlParams.delete("status");
     }
     if (data.documentTypes.length > 0) {
-      currentUrlParams.set("documentTypes", data.documentTypes.join(","));
+      currentUrlParams.set(
+        "documentTypes",
+        data.documentTypes.join(",").replace(/&/g, "%26")
+      );
     } else {
       currentUrlParams.delete("documentTypes");
     }
     if (data.donors.length > 0) {
-      currentUrlParams.set("donors", data.donors.join(","));
+      currentUrlParams.set(
+        "donors",
+        data.donors.join(",").replace(/&/g, "%26")
+      );
     } else {
       currentUrlParams.delete("donors");
     }
-    if (data.donorSubCategories.length > 0) {
+    if (data.donorSubTypes.length > 0) {
       currentUrlParams.set(
-        "donorSubCategories",
-        data.donorSubCategories.join(",")
+        "donorSubTypes",
+        data.donorSubTypes.join(",").replace(/&/g, "%26")
       );
     } else {
-      currentUrlParams.delete("donorSubCategories");
+      currentUrlParams.delete("donorSubTypes");
     }
-    if (data.donorCategories.length > 0) {
-      currentUrlParams.set("donorCategories", data.donorCategories.join(","));
+    if (data.donorTypes.length > 0) {
+      currentUrlParams.set(
+        "donorTypes",
+        data.donorTypes.join(",").replace(/&/g, "%26")
+      );
     } else {
-      currentUrlParams.delete("donorCategories");
+      currentUrlParams.delete("donorTypes");
     }
     if (data.replenishmentPeriods.length > 0) {
       currentUrlParams.set(
         "replenishmentPeriods",
-        data.replenishmentPeriods.join(",")
+        data.replenishmentPeriods.join(",").replace(/&/g, "%26")
       );
     } else {
       currentUrlParams.delete("replenishmentPeriods");
     }
+    if (data.cycles.length > 0) {
+      currentUrlParams.set(
+        "cycles",
+        data.cycles.join(",").replace(/&/g, "%26")
+      );
+    } else {
+      currentUrlParams.delete("cycles");
+    }
     if (data.trpWindows.length > 0) {
-      currentUrlParams.set("trpWindows", data.trpWindows.join(","));
+      currentUrlParams.set(
+        "trpWindows",
+        data.trpWindows.join(",").replace(/&/g, "%26")
+      );
     } else {
       currentUrlParams.delete("trpWindows");
     }
     if (data.portfolioCategories.length > 0) {
       currentUrlParams.set(
         "portfolioCategories",
-        data.portfolioCategories.join(",")
+        data.portfolioCategories.join(",").replace(/&/g, "%26")
       );
     } else {
       currentUrlParams.delete("portfolioCategories");
     }
 
     const queryString = decodeURIComponent(currentUrlParams.toString());
-    history.push({
-      pathname: history.location.pathname,
+    nav({
+      pathname: location.pathname,
       search: queryString,
     });
   }, [data]);
@@ -174,15 +222,20 @@ export function useUrlFilters(): null {
     const currentUrlParams = new URLSearchParams(location.search);
     const locations = currentUrlParams.get("locations");
     const components = currentUrlParams.get("components");
-    const partnerTypes = currentUrlParams.get("partnerTypes");
-    const partnerSubTypes = currentUrlParams.get("partnerSubTypes");
-    const partners = currentUrlParams.get("partners");
+    const principalRecipients = currentUrlParams.get("principalRecipients");
+    const principalRecipientSubTypes = currentUrlParams.get(
+      "principalRecipientSubTypes"
+    );
+    const principalRecipientTypes = currentUrlParams.get(
+      "principalRecipientTypes"
+    );
     const status = currentUrlParams.get("status");
     const documentTypes = currentUrlParams.get("documentTypes");
     const donors = currentUrlParams.get("donors");
-    const donorSubCategories = currentUrlParams.get("donorSubCategories");
-    const donorCategories = currentUrlParams.get("donorCategories");
+    const donorSubTypes = currentUrlParams.get("donorSubTypes");
+    const donorTypes = currentUrlParams.get("donorTypes");
     const replenishmentPeriods = currentUrlParams.get("replenishmentPeriods");
+    const cycles = currentUrlParams.get("cycles");
     const trpWindows = currentUrlParams.get("trpWindows");
     const portfolioCategories = currentUrlParams.get("portfolioCategories");
 
@@ -196,20 +249,23 @@ export function useUrlFilters(): null {
     } else if (updatedAppliedFilters.components.length > 0) {
       updatedAppliedFilters.components = [];
     }
-    if (partnerTypes) {
-      updatedAppliedFilters.partnerTypes = partnerTypes.split(",");
-    } else if (updatedAppliedFilters.partnerTypes.length > 0) {
-      updatedAppliedFilters.partnerTypes = [];
+    if (principalRecipientTypes) {
+      updatedAppliedFilters.principalRecipientTypes =
+        principalRecipientTypes.split(",");
+    } else if (updatedAppliedFilters.principalRecipientTypes.length > 0) {
+      updatedAppliedFilters.principalRecipientTypes = [];
     }
-    if (partnerSubTypes) {
-      updatedAppliedFilters.partnerSubTypes = partnerSubTypes.split(",");
-    } else if (updatedAppliedFilters.partnerSubTypes.length > 0) {
-      updatedAppliedFilters.partnerSubTypes = [];
+    if (principalRecipientSubTypes) {
+      updatedAppliedFilters.principalRecipientSubTypes =
+        principalRecipientSubTypes.split(",");
+    } else if (updatedAppliedFilters.principalRecipientSubTypes.length > 0) {
+      updatedAppliedFilters.principalRecipientSubTypes = [];
     }
-    if (partners) {
-      updatedAppliedFilters.partners = partners.split(",");
-    } else if (updatedAppliedFilters.partners.length > 0) {
-      updatedAppliedFilters.partners = [];
+    if (principalRecipients) {
+      updatedAppliedFilters.principalRecipients =
+        principalRecipients.split(",");
+    } else if (updatedAppliedFilters.principalRecipients.length > 0) {
+      updatedAppliedFilters.principalRecipients = [];
     }
     if (status) {
       updatedAppliedFilters.status = status.split(",");
@@ -226,21 +282,26 @@ export function useUrlFilters(): null {
     } else if (updatedAppliedFilters.donors.length > 0) {
       updatedAppliedFilters.donors = [];
     }
-    if (donorSubCategories) {
-      updatedAppliedFilters.donorSubCategories = donorSubCategories.split(",");
-    } else if (updatedAppliedFilters.donorSubCategories.length > 0) {
-      updatedAppliedFilters.donorSubCategories = [];
+    if (donorSubTypes) {
+      updatedAppliedFilters.donorSubTypes = donorSubTypes.split(",");
+    } else if (updatedAppliedFilters.donorSubTypes.length > 0) {
+      updatedAppliedFilters.donorSubTypes = [];
     }
-    if (donorCategories) {
-      updatedAppliedFilters.donorCategories = donorCategories.split(",");
-    } else if (updatedAppliedFilters.donorCategories.length > 0) {
-      updatedAppliedFilters.donorCategories = [];
+    if (donorTypes) {
+      updatedAppliedFilters.donorTypes = donorTypes.split(",");
+    } else if (updatedAppliedFilters.donorTypes.length > 0) {
+      updatedAppliedFilters.donorTypes = [];
     }
     if (replenishmentPeriods) {
       updatedAppliedFilters.replenishmentPeriods =
         replenishmentPeriods.split(",");
     } else if (updatedAppliedFilters.replenishmentPeriods.length > 0) {
       updatedAppliedFilters.replenishmentPeriods = [];
+    }
+    if (cycles) {
+      updatedAppliedFilters.cycles = cycles.split(",");
+    } else if (updatedAppliedFilters.cycles.length > 0) {
+      updatedAppliedFilters.cycles = [];
     }
     if (trpWindows) {
       updatedAppliedFilters.trpWindows = trpWindows.split(",");

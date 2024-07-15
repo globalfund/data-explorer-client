@@ -3,7 +3,7 @@ import { CMSApiCallModel } from "app/state/api/interfaces";
 
 const componentsDatasetCarousel: CMSApiCallModel = {
   ...APIModel(
-    `${process.env.REACT_APP_CMS_API}/singletons/get/componentsDatasetCarousel?token=${process.env.REACT_APP_CMS_TOKEN}`
+    `${process.env.REACT_APP_CMS_API}/content/item/componentsDatasetCarousel`
   ),
 };
 

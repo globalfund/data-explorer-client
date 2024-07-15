@@ -1,50 +1,26 @@
-// cc:application base#;application providers
-import React, { ReactNode } from "react";
+import React from "react";
 import theme from "app/theme";
-import { RecoilRoot } from "recoil";
 import { store } from "app/state/store";
-import { AppBar } from "app/components/AppBar";
-import { ThemeProvider } from "@material-ui/core/styles";
-import { BrowserRouter as Router } from "react-router-dom";
-import { PageLoader } from "app/modules/common/page-loader";
+import { HelmetProvider } from "react-helmet-async";
+import CssBaseline from "@mui/material/CssBaseline";
+import { ThemeProvider } from "@mui/material/styles";
+import { PageLoader } from "app/components/page-loader";
 import { StoreProvider, useStoreRehydrated } from "easy-peasy";
-import { Container, StylesProvider, CssBaseline } from "@material-ui/core";
 
-type ProviderProps = {
-  children: any;
-};
+interface ProviderProps {
+  children?: any;
+}
 
 function Providers(props: ProviderProps) {
   return (
-    <RecoilRoot>
-      <StylesProvider injectFirst>
-        {/* material ui theme provider */}
+    <HelmetProvider>
+      <StoreProvider store={store}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <StoreProvider store={store}>
-            <AppContainer>
-              {/* react router */}
-              <Router>
-                <AppBar />
-                <Container
-                  maxWidth="lg"
-                  css={`
-                    padding: 0 24px;
-                    min-height: calc(100vh - 45px);
-
-                    @media (max-width: 767px) {
-                      padding: 0 16px;
-                    }
-                  `}
-                >
-                  {props.children}
-                </Container>
-              </Router>
-            </AppContainer>
-          </StoreProvider>
+          <AppContainer>{props.children}</AppContainer>
         </ThemeProvider>
-      </StylesProvider>
-    </RecoilRoot>
+      </StoreProvider>
+    </HelmetProvider>
   );
 }
 

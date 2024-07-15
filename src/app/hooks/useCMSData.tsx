@@ -1,9 +1,8 @@
 import React from "react";
 import get from "lodash/get";
-import { useRecoilState } from "recoil";
 import { useUpdateEffect } from "react-use";
-import { cmsDataAtom } from "app/state/recoil/atoms";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { CMSDataValueModel } from "app/state/api/action-reducers/sync";
 
 interface UseCMSDataProps {
   loadData?: boolean;
@@ -11,7 +10,8 @@ interface UseCMSDataProps {
 }
 
 export function useCMSData(props: UseCMSDataProps) {
-  const [cmsData, setCMSData] = useRecoilState(cmsDataAtom);
+  const cmsData = useStoreState((state) => state.CMSData.value);
+  const setCMSData = useStoreActions((actions) => actions.CMSData.setValue);
 
   // COMPONENTS
   const componentsAppBarCMSAction = useStoreActions(
@@ -375,7 +375,7 @@ export function useCMSData(props: UseCMSDataProps) {
         [item.key]: filteredData,
       };
     });
-    setCMSData(newData);
+    setCMSData(newData as CMSDataValueModel);
   }
 
   useUpdateEffect(() => {
