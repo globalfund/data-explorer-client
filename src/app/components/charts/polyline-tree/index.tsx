@@ -111,6 +111,7 @@ export const PolylineTree: React.FC<PolylineTreeProps> = (
     <React.Fragment>
       <Box
         id="polyline-tree"
+        data-cy="polyline-tree"
         ref={containerRef}
         width="100%"
         height="900px"

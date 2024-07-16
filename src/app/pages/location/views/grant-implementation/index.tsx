@@ -616,6 +616,7 @@ export const GrantImplementation = () => {
               },
             },
           }}
+          data-cy="location-pie-charts"
         >
           <Box
             gap="16px"

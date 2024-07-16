@@ -21,7 +21,7 @@ describe("Testing The Location page", () => {
       interceptAllRequests();
 
       cy.visit("/");
-      waitData(11);
+      waitData(22);
       cy.contains("[data-cy=header-menu-button]", "Datasets").click();
       cy.contains("[data-cy=header-menu-button]", "Annual Results").click();
       waitData(4);

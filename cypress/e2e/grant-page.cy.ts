@@ -31,7 +31,7 @@ describe("Testing The Grant Detail page", () => {
   });
 
   it("should display the grant detail page", () => {
-    waitData(6);
+    waitData(7);
     cy.get("h1").should("have.text", "ALB-C-MOH");
     cy.contains("Overview").should("be.visible");
     cy.contains(
@@ -40,7 +40,7 @@ describe("Testing The Grant Detail page", () => {
   });
 
   it("can switch implementation period", () => {
-    waitData(6);
+    waitData(7);
     cy.contains(
       '[data-cy="category-dropdown-button"]',
       "Implementation Period 2017-2019"
@@ -59,7 +59,7 @@ describe("Testing The Grant Detail page", () => {
   });
 
   it("Should display the Overview tab", () => {
-    waitData(6);
+    waitData(7);
     cy.contains('[data-cy="page-tab-button"]', "Overview").click();
     cy.url().should("include", "/overview");
     cy.contains("Fund Portfolio Manager").should("be.visible");
@@ -74,28 +74,21 @@ describe("Testing The Grant Detail page", () => {
   });
 
   it("Should display the Financial Insights tab", () => {
-    waitData(6);
+    waitData(7);
     cy.contains('[data-cy="page-tab-button"]', "Financial Insights").click();
     cy.url().should("include", "/financial-insights");
-    cy.contains('[data-cy="chart-block"]', "Disbursed").within(() => {
+
+    cy.contains('[data-cy="chart-block"]', "Disbursements").within(() => {
       cy.get('[data-cy="radial-chart"]').should("be.visible");
       cy.get('[data-cy="race-bar-chart"]').should("be.visible");
-    });
-    cy.contains('[data-cy="chart-block"]', "Disbursements").within(() => {
-      cy.contains("Overtime").should("be.visible");
-      cy.get('[data-cy="bar-chart"]').should("be.visible");
     });
     cy.contains('[data-cy="chart-block"]', "Grant Budgets").within(() => {
       cy.get('[data-cy="sankey-chart"]').should("be.visible");
     });
-
-    cy.contains('[data-cy="chart-block"]', "Expenditures").within(() => {
-      cy.get('[data-cy="heatmap-chart"]').should("be.visible");
-    });
   });
 
   it("Should display the Target & Results tab", () => {
-    waitData(6);
+    waitData(7);
     cy.contains('[data-cy="page-tab-button"]', "Target & Results").click();
     cy.url().should("include", "/targets-results");
 

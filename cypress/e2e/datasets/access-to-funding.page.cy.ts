@@ -7,31 +7,7 @@ const interceptAllRequests = () => {
 };
 
 // @ts-ignore
-const interceptRequests = () => {
-  const apiUrl = Cypress.env("api_url");
-
-  cy.intercept(`${apiUrl}/allocations/cumulative-by-cycles`).as(
-    "allocationCycle"
-  );
-  cy.intercept(`${apiUrl}/eligibility/stats/**`).as("eligibilityStats");
-  cy.intercept(`${apiUrl}/eligibility/table`).as("eligibilityTable");
-  cy.intercept(`${apiUrl}/allocations/sunburst`).as("allocationSunburst");
-  cy.intercept(`${apiUrl}/allocations/table`).as("allocationTable");
-  cy.intercept(`${apiUrl}/allocations/treemap`).as("allocationTreemap");
-  cy.intercept(`${apiUrl}/funding-requests`).as("fundingRequests");
-};
-// @ts-ignore
 const waitData = (requestCount: number) => {
-  if (requestCount === 0) {
-    cy.wait("@allocationCycle");
-    cy.wait("@eligibilityStats");
-    cy.wait("@eligibilityTable");
-    cy.wait("@allocationSunburst");
-    cy.wait("@allocationTable");
-    cy.wait("@allocationTreemap");
-    cy.wait("@fundingRequests");
-    return;
-  }
   for (let i = 0; i < requestCount; i++) {
     cy.wait("@apiData");
   }
@@ -43,13 +19,12 @@ describe(
   () => {
     beforeEach(() => {
       interceptAllRequests();
-      interceptRequests();
 
       cy.visit("/");
-      waitData(11);
+      waitData(22);
       cy.contains("[data-cy=header-menu-button]", "Datasets").click();
       cy.contains("[data-cy=header-menu-button]", "Access to Funding").click();
-      waitData(0);
+      waitData(8);
     });
 
     it("displays the header", { scrollBehavior: "nearest" }, () => {
@@ -72,7 +47,7 @@ describe(
           cy.contains('[data-cy="category-dropdown-item"]', "2022").click();
         });
 
-      cy.wait("@eligibilityStats");
+      waitData(1);
 
       cy.contains('[data-cy="category-dropdown-button"]', "2022").should(
         "be.visible"

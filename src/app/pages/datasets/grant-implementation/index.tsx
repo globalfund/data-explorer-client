@@ -1110,6 +1110,7 @@ export const GrantImplementationPage: React.FC = () => {
             alignItems: "flex-start",
           },
         }}
+        data-cy="toolbar-right-content"
       >
         <Box gap="10px" display="flex" flexDirection="row" alignItems="center">
           <Typography variant="body2" fontWeight="700">
@@ -2081,6 +2082,7 @@ export const GrantImplementationPage: React.FC = () => {
           padding="50px 0"
           position="relative"
           flexDirection="column"
+          data-cy="budgets-block-2"
         >
           <Box
             width="100%"

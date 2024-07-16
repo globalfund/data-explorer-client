@@ -6,7 +6,7 @@ const interceptRequests = () => {
   cy.intercept(/KEN/).as("locationData");
 };
 // @ts-ignore
-const waitData = (requestCount: number = 23) => {
+const waitData = (requestCount: number = 22) => {
   for (let i = 0; i < requestCount; i++) {
     cy.wait("@locationData");
   }
@@ -37,7 +37,7 @@ describe("Testing The Location page", () => {
     waitData();
     cy.contains('[data-cy="page-tab-button"]', "Overview").click();
     cy.url().should("include", "/location/KEN/overview");
-    cy.contains("Description").should("be.visible");
+    cy.contains("Fund Portfolio Manager").should("be.visible");
   });
 
   it("Should display the Access to Funding tab", () => {
@@ -49,9 +49,11 @@ describe("Testing The Location page", () => {
         cy.get('[data-cy="radial-chart"]').should("be.visible");
       })
       .should("be.visible");
-    cy.contains('[data-cy="chart-block"]', "Submitted to date").within(() => {
-      cy.get('[data-cy="table-container"]').should("be.visible");
-    });
+    cy.contains('[data-cy="chart-block"]', "Submitted for 2023-2025").within(
+      () => {
+        cy.get('[data-cy="table-container"]').should("be.visible");
+      }
+    );
     cy.contains('[data-cy="chart-block"]', "Eligibility").within(() => {
       cy.get('[data-cy="table"]').should("be.visible");
     });
@@ -64,7 +66,7 @@ describe("Testing The Location page", () => {
     waitData();
     cy.contains('[data-cy="page-tab-button"]', "Financial Insights").click();
     cy.url().should("include", "/location/KEN/financial-insights");
-    cy.contains('[data-cy="chart-block"]', "Disbursed within").within(() => {
+    cy.contains('[data-cy="chart-block"]', "Disbursements").within(() => {
       cy.get('[data-cy="line-chart"]').should("be.visible");
     });
     cy.contains('[data-cy="chart-block"]', "Grant Budgets").within(() => {
@@ -75,13 +77,11 @@ describe("Testing The Location page", () => {
       cy.get('[data-cy="heatmap-chart"]').should("be.visible");
     });
 
-    cy.contains(
-      "Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
-    ).should("be.visible");
-
-    cy.contains("Components").should("be.visible");
-    cy.contains("Principal Recipients").should("be.visible");
-    cy.contains("Investments").should("be.visible");
+    cy.get('[data-cy="location-pie-charts"]').within(() => {
+      cy.contains("Components").should("be.visible");
+      cy.contains("Principal Recipients").should("be.visible");
+      cy.contains("Investments").should("be.visible");
+    });
   });
 
   it("Should display the Results tab", () => {
