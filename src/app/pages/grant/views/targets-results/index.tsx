@@ -2,7 +2,6 @@ import React from "react";
 import get from "lodash/get";
 import Box from "@mui/material/Box";
 import { useTitle } from "react-use";
-import Divider from "@mui/material/Divider";
 import { useParams } from "react-router-dom";
 import { ChartBlock } from "app/components/chart-block";
 import useUpdateEffect from "react-use/lib/useUpdateEffect";
@@ -122,17 +121,6 @@ export const GrantTargetsResults: React.FC = () => {
     res[0].title = tab.name;
     return res;
   }, [tab, years]);
-
-  const fullWidthDivider = (
-    <Divider
-      sx={{
-        left: "-50vw",
-        width: "200vw",
-        position: "relative",
-        borderTopColor: "#868E96",
-      }}
-    />
-  );
 
   return (
     <Box marginTop="24px">

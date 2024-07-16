@@ -12,7 +12,6 @@ import { Dropdown } from "app/components/dropdown";
 import SearchIcon from "@mui/icons-material/Search";
 import { categories } from "app/components/search/data";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import IconChevronRight from "@mui/icons-material/ChevronRight";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import { SearchResults } from "app/components/search/components/results";
 import {
@@ -23,14 +22,12 @@ import {
   Input,
   Container,
   MobileContainer,
-  MobileBackButton,
 } from "app/components/search/styles";
 
 interface SearchLayoutProps {
   value: string;
   loading: boolean;
   category?: string;
-  forceFocus?: boolean;
   onClose?: () => void;
   results: SearchResultsTabModel[];
   setValue: (value: string) => void;
@@ -45,16 +42,13 @@ export function SearchLayout(props: SearchLayoutProps) {
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   const [data, setData] = React.useState<SearchResultModel[]>([]);
-  const [open, setOpen] = React.useState(
-    props.value.length > 0 ||
-      (props.forceFocus !== undefined && props.forceFocus)
-  );
+  const [open, setOpen] = React.useState(props.value.length > 0);
 
-  const handleItemClick = (value: string) => () => {
-    if (props.setCategory) {
-      props.setCategory(value);
-    }
-  };
+  // const handleItemClick = (value: string) => () => {
+  //   if (props.setCategory) {
+  //     props.setCategory(value);
+  //   }
+  // };
 
   const onKeyDown = (e: KeyboardEvent) => {
     if (e.key === "Escape") {
@@ -74,20 +68,11 @@ export function SearchLayout(props: SearchLayoutProps) {
   }, []);
 
   React.useEffect(() => {
-    if (!props.forceFocus) {
-      const newOpen = props.value.length > 0;
-      if (newOpen !== open) {
-        setOpen(newOpen);
-      }
+    const newOpen = props.value.length > 0;
+    if (newOpen !== open) {
+      setOpen(newOpen);
     }
   }, [props.value]);
-
-  React.useEffect(() => {
-    setOpen(
-      props.value.length > 0 ||
-        (props.forceFocus !== undefined && props.forceFocus)
-    );
-  }, [props.forceFocus]);
 
   React.useEffect(() => {
     let allData: SearchResultModel[] = [];
@@ -124,18 +109,6 @@ export function SearchLayout(props: SearchLayoutProps) {
             !isMobile && Boolean(props.category) && Boolean(props.setCategory),
         }}
       >
-        {isMobile && open && (
-          <MobileBackButton
-            onClick={() => {
-              props.setValue("");
-              if (props.onClose) {
-                props.onClose();
-              }
-            }}
-          >
-            <IconChevronRight />
-          </MobileBackButton>
-        )}
         <Input
           type="text"
           tabIndex={0}
@@ -147,7 +120,6 @@ export function SearchLayout(props: SearchLayoutProps) {
             "componentsSearch.placeholder",
             "e.g. Kenya"
           )}
-          autoFocus={props.forceFocus}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             props.setValue(e.target.value)
           }
@@ -182,11 +154,10 @@ export function SearchLayout(props: SearchLayoutProps) {
       {open && (
         <ClickAwayListener
           onClickAway={(event) => {
+            console.log(event.target);
             if (
               // @ts-ignore
-              get(event.target, "tagName", "") !== "INPUT" &&
-              !isMobile &&
-              !props.forceFocus
+              get(event.target, "tagName", "") !== "INPUT"
             ) {
               props.setValue("");
             }

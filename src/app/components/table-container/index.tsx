@@ -116,6 +116,9 @@ export const TableContainer: React.FC<TableContainerProps> = (
             flexDirection="row"
             alignItems="center"
             sx={{
+              "@media (max-width: 767px)": {
+                flexWrap: "wrap",
+              },
               "& > button": {
                 height: "32px",
                 fontSize: "14px",

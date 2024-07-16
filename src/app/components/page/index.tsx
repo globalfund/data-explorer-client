@@ -5,10 +5,12 @@ import { Header } from "app/components/header";
 import { Footer } from "app/components/footer";
 import Container from "@mui/material/Container";
 import { useUrlFilters } from "app/hooks/useUrlFilters";
+import { useRouteListener } from "app/hooks/useRouteListener";
 import { useScrollToAnchor } from "app/hooks/useScrollToAnchor";
 
 export const Page: React.FC = () => {
   useUrlFilters();
+  useRouteListener();
   useScrollToAnchor();
 
   return (

@@ -13,11 +13,10 @@ import { DatasetPage } from "app/pages/datasets/common/page";
 import CircularProgress from "@mui/material/CircularProgress";
 import { TableContainer } from "app/components/table-container";
 import { PolylineTree } from "app/components/charts/polyline-tree";
-import { statsOrder } from "app/pages/datasets/annual-results/data";
 import { FilterGroupModel } from "app/components/filters/list/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
-import { applyResultValueFormula } from "app/utils/applyResultValueFormula";
+import { HomeResultsStats } from "app/pages/home/components/results-stats";
 import { PolylineTreeDataItem } from "app/components/charts/polyline-tree/data";
 import { ReactComponent as TableIcon } from "app/assets/vectors/Select_Table.svg";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
@@ -31,29 +30,6 @@ const dropdownItems = [
   { label: "Polyline Tree", value: "Polyline Tree", icon: <BarChartIcon /> },
   { label: "Table View", value: "Table View", icon: <TableIcon /> },
 ];
-
-const StatComp: React.FC<{
-  label: string;
-  value: number;
-}> = (props: { label: string; value: number }) => {
-  const value = applyResultValueFormula(props.value, 3);
-
-  return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      alignItems="flex-start"
-      justifyContent="center"
-    >
-      <Typography variant="h5" fontWeight="700">
-        {value.number} {value.text}
-      </Typography>
-      <Typography variant="body2" fontWeight="700">
-        {props.label}
-      </Typography>
-    </Box>
-  );
-};
 
 export const AnnualResultsPage: React.FC = () => {
   useTitle("The Data Explorer - Annual Results");
@@ -417,30 +393,17 @@ export const AnnualResultsPage: React.FC = () => {
       breadcrumbs={[{ label: "Datasets" }, { label: "Annual Results" }]}
     >
       <Box width="100%" marginTop="50px">
-        <Box
-          width="100%"
-          display="flex"
-          marginBottom="50px"
-          flexDirection="row"
-          justifyContent="space-between"
-        >
-          {statsOrder.map((o) => {
-            const stat = dataStats.find((s) => s.label.includes(o));
-            return stat ? (
-              <StatComp
-                key={stat.label}
-                label={stat.label}
-                value={stat.value}
-              />
-            ) : null;
-          })}
-        </Box>
+        <HomeResultsStats stats={dataStats} loading={loadingResults} />
+        <Box height="50px" />
         <Divider
           sx={{
             left: 0,
             width: "100vw",
             position: "absolute",
             borderColor: "#CFD4DA",
+            "@media (max-width: 767px)": {
+              display: "none",
+            },
           }}
         />
         <Box
@@ -479,6 +442,9 @@ export const AnnualResultsPage: React.FC = () => {
             marginTop: "50px",
             position: "absolute",
             borderColor: "#CFD4DA",
+            "@media (max-width: 767px)": {
+              display: "none",
+            },
           }}
         />
         <Box
@@ -496,6 +462,9 @@ export const AnnualResultsPage: React.FC = () => {
             <Divider
               sx={{
                 margin: "20px 0",
+                "@media (max-width: 767px)": {
+                  display: "none",
+                },
               }}
             />
             {loadingDocumentsTable && (

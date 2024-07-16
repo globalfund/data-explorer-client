@@ -115,6 +115,15 @@ export const ResourceMobilization: React.FC = () => {
         marginTop="64px"
         flexDirection="row"
         justifyContent="center"
+        sx={{
+          "@media (max-width: 767px)": {
+            gap: "32px",
+            flexDirection: "column",
+            "> div": {
+              width: "100%",
+            },
+          },
+        }}
       >
         <Box
           width="50%"

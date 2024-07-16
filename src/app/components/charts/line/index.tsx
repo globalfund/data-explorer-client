@@ -29,6 +29,7 @@ echarts.use([EChartsLine, GridComponent, TooltipComponent, SVGRenderer]);
 const Tooltip = (props: any) => {
   return (
     <div
+      className="chart-tooltip"
       style={{
         gap: "10px",
         width: "400px",
@@ -78,6 +79,7 @@ const Tooltip = (props: any) => {
 
 export const LineChart: React.FC<LineChartProps> = (props: LineChartProps) => {
   const isTouch = useMediaQuery("(hover: none)");
+  const mobile = useMediaQuery("(max-width: 767px)");
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   const [stateChart, setStateChart] =
@@ -157,6 +159,7 @@ export const LineChart: React.FC<LineChartProps> = (props: LineChartProps) => {
           axisLabel: {
             interval: 1,
             fontSize: "10px",
+            rotate: mobile ? 90 : 0,
             fontFamily: "Inter, sans-serif",
             color: appColors.LINE_CHART.CHART_TEXT_COLOR,
           },

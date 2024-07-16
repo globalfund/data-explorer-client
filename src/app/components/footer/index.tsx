@@ -18,6 +18,11 @@ const FooterContainer = styled.footer`
   position: relative;
   background-color: ${appColors.COMMON.WHITE};
   border-top: 1px solid ${appColors.COMMON.SECONDARY_COLOR_3};
+
+  @media (max-width: 767px) {
+    height: auto;
+    padding: 16px 0;
+  }
 `;
 
 const FooterHeader = styled(Typography)`
@@ -51,6 +56,10 @@ const FooterBottomBgBlock = styled.div`
   background-position-x: center;
   background-position-y: bottom;
   background-image: url("/static/images/FooterOrnament2.png");
+
+  @media (max-width: 767px) {
+    height: 80px;
+  }
 `;
 
 const SM = [
@@ -97,6 +106,11 @@ export const Footer: React.FC = () => {
                 display="flex"
                 marginTop="56px"
                 marginBottom="16px"
+                sx={{
+                  "@media (max-width: 767px)": {
+                    marginTop: "16px",
+                  },
+                }}
               >
                 {SM.map((sm) => (
                   <FooterSM key={sm.name} href={sm.link} target="_blank">
@@ -115,7 +129,19 @@ export const Footer: React.FC = () => {
                 Tuberculosis and Malaria
               </Typography>
             </Grid>
-            <Grid item container sm={6} md={6} lg={5} spacing={2}>
+            <Grid
+              item
+              container
+              sm={6}
+              md={6}
+              lg={5}
+              spacing={2}
+              sx={{
+                "@media (max-width: 767px)": {
+                  display: "none",
+                },
+              }}
+            >
               <Grid item sm={4} md={4}>
                 <FooterHeader>CONNECT</FooterHeader>
                 <FooterExternalLink

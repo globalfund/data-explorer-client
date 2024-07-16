@@ -235,6 +235,9 @@ export const AccessToFunding: React.FC = () => {
           width: "200vw",
           position: "relative",
           borderTopColor: "#868E96",
+          "@media (max-width: 767px)": {
+            display: "none",
+          },
         }}
       />
       <Box height="2px" />
@@ -332,7 +335,14 @@ export const AccessToFunding: React.FC = () => {
         text="Eligibility for funding from the Global Fund is determined by country income classification and disease burden for HIV, tuberculosis and malaria. Below are the components which are eligible for an allocation for the selected allocation period, according to the Global Fund Eligibility Policy.<br/><br/>Eligibility for the 2023-2025 Allocation Period was determined in 2022 and documented in the 2023 Eligibility List. Eligibility does not guarantee a funding allocation. Learn more about Eligibility <a target='_blank' href='https://www.theglobalfund.org/en/applying-for-funding/understand-and-prepare/eligibility/'>here</a>."
         infoType="global"
       >
-        <Box height="32px" />
+        <Box
+          height="32px"
+          sx={{
+            "@media (max-width: 767px)": {
+              display: "none",
+            },
+          }}
+        />
         <Box
           gap="20px"
           width="100%"
@@ -358,6 +368,14 @@ export const AccessToFunding: React.FC = () => {
                     height: "11px",
                     borderRadius: "2px",
                   },
+                },
+              },
+            },
+            "@media (max-width: 767px)": {
+              flexDirection: "column",
+              "> div": {
+                "> div": {
+                  flexWrap: "wrap",
                 },
               },
             },
@@ -453,7 +471,14 @@ export const AccessToFunding: React.FC = () => {
         empty={!showDocumentsTable}
         infoType="global"
       >
-        <Box height="64px" />
+        <Box
+          height="64px"
+          sx={{
+            "@media (max-width: 767px)": {
+              display: "none",
+            },
+          }}
+        />
         <TableContainer
           dataTree
           id="documents-table"

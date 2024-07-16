@@ -293,6 +293,9 @@ export const GrantImplementation: React.FC = () => {
           width: "200vw",
           position: "relative",
           borderTopColor: "#868E96",
+          "@media (max-width: 767px)": {
+            display: "none",
+          },
         }}
       />
       <Box height="2px" />
@@ -330,9 +333,19 @@ export const GrantImplementation: React.FC = () => {
               textOverflow: "ellipsis",
             },
           },
+          "@media (max-width: 767px)": {
+            "> div": {
+              "> div": {
+                gap: 0,
+              },
+              ":after": {
+                display: "none",
+              },
+            },
+          },
         }}
       >
-        <Grid item xs={6} md={4}>
+        <Grid item xs={12} sm={6} md={4}>
           <Box
             gap="10px"
             display="flex"
@@ -347,7 +360,7 @@ export const GrantImplementation: React.FC = () => {
             </Typography>
           </Box>
         </Grid>
-        <Grid item xs={6} md={4}>
+        <Grid item xs={12} sm={6} md={4}>
           <Box
             gap="10px"
             display="flex"
@@ -367,7 +380,7 @@ export const GrantImplementation: React.FC = () => {
             </Typography>
           </Box>
         </Grid>
-        <Grid item xs={6} md={4}>
+        <Grid item xs={12} sm={6} md={4}>
           <Box
             gap="10px"
             display="flex"
@@ -419,7 +432,6 @@ export const GrantImplementation: React.FC = () => {
         <RaceBarChart data={raceBarChartData} />
       </ChartBlock>
       {showRadialChart && fullWidthDivider}
-      {fullWidthDivider}
       <ChartBlock
         id="budget"
         title={totalBudget}

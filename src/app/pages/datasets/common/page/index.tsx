@@ -41,19 +41,32 @@ export const DatasetPage: React.FC<DatasetPageProps> = (
 
   return (
     <Box padding="50px 0">
-      <Typography variant="h1">{props.title}</Typography>
       <Typography
-        variant="h6"
-        sx={
-          props.subtitle.length > 0
-            ? {}
-            : {
-                height: "28.8px",
-              }
-        }
+        variant="h1"
+        sx={{
+          "@media (max-width: 767px)": {
+            marginBottom: "32px",
+            letterSpacing: "-4px",
+            wordBreak: "break-word",
+          },
+        }}
       >
-        {props.subtitle}
+        {props.title}
       </Typography>
+      {props.subtitle.length > 0 && (
+        <Typography
+          variant="h6"
+          sx={
+            props.subtitle.length > 0
+              ? {}
+              : {
+                  height: "28.8px",
+                }
+          }
+        >
+          {props.subtitle}
+        </Typography>
+      )}
       <Divider
         sx={{
           left: 0,
@@ -61,6 +74,9 @@ export const DatasetPage: React.FC<DatasetPageProps> = (
           margin: "50px 0",
           position: "absolute",
           borderColor: "#CFD4DA",
+          "@media (max-width: 767px)": {
+            display: "none",
+          },
         }}
       />
       <Box
@@ -70,6 +86,13 @@ export const DatasetPage: React.FC<DatasetPageProps> = (
         marginTop="50px"
         flexDirection="row"
         justifyContent="space-between"
+        sx={{
+          "@media (max-width: 767px)": {
+            gap: "16px",
+            height: "auto",
+            flexDirection: "column",
+          },
+        }}
       >
         <Box gap="20px" display="flex" flexDirection="row" alignItems="center">
           <Button
@@ -129,6 +152,9 @@ export const DatasetPage: React.FC<DatasetPageProps> = (
           width: "100vw",
           position: "absolute",
           borderColor: "#CFD4DA",
+          "@media (max-width: 767px)": {
+            display: "none",
+          },
         }}
       />
       {props.children}

@@ -1979,6 +1979,11 @@
   resolved "https://registry.yarnpkg.com/@leichtgewicht/ip-codec/-/ip-codec-2.0.5.tgz#4fc56c15c580b9adb7dc3c333a134e540b44bfb1"
   integrity sha512-Vo+PSpZG2/fmgmiNzYK9qWRh8h/CHrwD0mo1h1DzL4yzHNSfWYujGTYsWGreD000gcgmZ7K4Ys6Tx9TxtsKdDw==
 
+"@livesession/sdk@^1.1.4":
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/@livesession/sdk/-/sdk-1.1.4.tgz#e8c020faffe4b51308a6b0bf404a1871f246a595"
+  integrity sha512-xyiDd3M9wx5k586BIQRcVxSJP5/2XWF9Ca1seLGRSaFoV8o270p5Mn5kpceZFN4STzlYubiMcrPZFFSNWEceVw==
+
 "@mdx-js/react@^3.0.0":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@mdx-js/react/-/react-3.0.1.tgz#997a19b3a5b783d936c75ae7c47cfe62f967f746"

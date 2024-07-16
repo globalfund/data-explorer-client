@@ -69,19 +69,24 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
       <Typography variant="h5" marginBottom="5px">
         {props.subtitle}
       </Typography>
-      <Typography variant="subtitle2" lineHeight="normal" marginBottom="20px">
-        <Box
-          sx={{
-            a: { textDecoration: "none", fontWeight: "700", color: "#000" },
-          }}
-          dangerouslySetInnerHTML={{
-            __html: props.text ?? "",
-          }}
-        />
-      </Typography>
+      {props.text && props.text.length > 0 && (
+        <Typography variant="subtitle2" lineHeight="normal" marginBottom="20px">
+          <Box
+            sx={{
+              a: { textDecoration: "none", fontWeight: "700", color: "#000" },
+            }}
+            dangerouslySetInnerHTML={{
+              __html: props.text ?? "",
+            }}
+          />
+        </Typography>
+      )}
       <Divider
         sx={{
           borderTopColor: "#868E96",
+          "@media (max-width: 767px)": {
+            display: "none",
+          },
         }}
       />
       {(showCycles || showRightComponents) && (
@@ -92,6 +97,11 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
           padding="20px 0 40px 0"
           alignItems="flex-start"
           justifyContent={showCycles ? "space-between" : "flex-end"}
+          sx={{
+            "@media (max-width: 767px)": {
+              flexDirection: "column",
+            },
+          }}
         >
           {props.cycles && props.selectedCycles && props.handleCycleChange && (
             <ChartBlockCycles
@@ -107,6 +117,16 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
               display="flex"
               flexDirection="row"
               alignItems="center"
+              sx={{
+                "@media (max-width: 767px)": {
+                  width: "100%",
+                  marginTop: "20px",
+                  justifyContent: "flex-end",
+                  "> button": {
+                    maxWidth: "unset",
+                  },
+                },
+              }}
             >
               {props.unitButtons ?? props.unitButtons}
               {props.extraDropdown ?? props.extraDropdown}

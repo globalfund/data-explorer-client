@@ -462,17 +462,45 @@ export const Location: React.FC = () => {
         width: "200vw",
         position: "relative",
         borderTopColor: "#868E96",
+        "@media (max-width: 767px)": {
+          display: "none",
+        },
       }}
     />
   );
 
   return (
-    <Box padding="50px 0">
-      <Typography variant="h1" lineHeight={1.2}>
+    <Box
+      padding="50px 0"
+      sx={{
+        "@media (max-width: 767px)": {
+          padding: "32px 0",
+        },
+      }}
+    >
+      <Typography
+        variant="h1"
+        lineHeight={1.2}
+        sx={{
+          "@media (max-width: 767px)": {
+            wordBreak: "break-word",
+          },
+        }}
+      >
         {dataOverview.name}
         {loading && <CircularProgress sx={{ marginLeft: "16px" }} />}
       </Typography>
-      <Typography variant="h5" lineHeight={1} marginBottom="50px">
+      <Typography
+        variant="h5"
+        lineHeight={1}
+        marginBottom="50px"
+        sx={{
+          "@media (max-width: 767px)": {
+            marginBottom: "4px",
+            wordBreak: "break-word",
+          },
+        }}
+      >
         {dataOverview.region}
       </Typography>
       {fullWidthDivider}
@@ -484,7 +512,16 @@ export const Location: React.FC = () => {
       />
       <Box height="20px" />
       {fullWidthDivider}
-      <Box marginTop="40px">{view}</Box>
+      <Box
+        marginTop="40px"
+        sx={{
+          "@media (max-width: 767px)": {
+            marginTop: 0,
+          },
+        }}
+      >
+        {view}
+      </Box>
     </Box>
   );
 };

@@ -31,7 +31,9 @@ const dropdownItems = [
 export const ResourceMobilizationPage: React.FC = () => {
   useTitle("The Data Explorer - Resource Mobilization");
   const location = useLocation();
-  const smallScreen = useMediaQuery("(max-width:920px)");
+  const tabletScreen = useMediaQuery(
+    "(min-width: 768px) and (max-width:920px)"
+  );
 
   const [dropdownSelected, setDropdownSelected] = React.useState(
     dropdownItems[0].value
@@ -362,7 +364,16 @@ export const ResourceMobilizationPage: React.FC = () => {
       subtitle="Government, private sector, non-government and other donor pledges and contributions"
     >
       <Box width="100%" marginTop="50px">
-        <Grid container marginBottom="50px" position="relative">
+        <Grid
+          container
+          marginBottom="50px"
+          position="relative"
+          sx={{
+            "@media (max-width: 767px)": {
+              marginBottom: "16px",
+            },
+          }}
+        >
           {loadingStats && (
             <Box
               width="100%"
@@ -399,6 +410,12 @@ export const ResourceMobilizationPage: React.FC = () => {
                 borderRightStyle: "none",
                 justifyContent: "space-around",
               },
+              "@media (max-width: 767px)": {
+                gap: "16px",
+                width: "100%",
+                marginBottom: "64px",
+                flexDirection: "column",
+              },
             }}
           >
             {/* <Box>
@@ -418,7 +435,7 @@ export const ResourceMobilizationPage: React.FC = () => {
                 Total Pledged
               </Typography>
             </Box>
-            <Divider orientation={smallScreen ? "vertical" : "horizontal"} />
+            <Divider orientation={tabletScreen ? "vertical" : "horizontal"} />
             <Box>
               <Typography variant="h5">
                 {formatFinancialValue(get(dataStats, "totalContributions", 0))}
@@ -452,7 +469,7 @@ export const ResourceMobilizationPage: React.FC = () => {
                 minHeight: "200px",
               }}
             >
-              <Grid item xs={12} sm={4} md={3} lg={2}>
+              <Grid item xs={4} sm={4} md={3} lg={2}>
                 <Box
                   height="100%"
                   bgcolor="#F1F3F5"
@@ -471,7 +488,7 @@ export const ResourceMobilizationPage: React.FC = () => {
                 item
                 container
                 spacing={2}
-                xs={12}
+                xs={8}
                 sm={8}
                 md={9}
                 lg={10}
@@ -486,6 +503,10 @@ export const ResourceMobilizationPage: React.FC = () => {
                       },
                       "@media (max-width: 920px)": {
                         height: "104px",
+                      },
+                      "@media (max-width: 767px)": {
+                        height: "auto",
+                        padding: "10px",
                       },
                     },
                   },
@@ -509,6 +530,9 @@ export const ResourceMobilizationPage: React.FC = () => {
             width: "100vw",
             position: "absolute",
             borderColor: "#CFD4DA",
+            "@media (max-width: 767px)": {
+              display: "none",
+            },
           }}
         />
         <Box

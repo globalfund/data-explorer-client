@@ -719,6 +719,12 @@ export const AccessToFundingPage: React.FC = () => {
             flexDirection="row"
             alignItems="center"
             justifyContent="space-between"
+            sx={{
+              "@media (max-width: 767px)": {
+                flexDirection: "column",
+                gap: "20px",
+              },
+            }}
           >
             <Box>
               <Typography variant="h5">
@@ -733,6 +739,12 @@ export const AccessToFundingPage: React.FC = () => {
               display="flex"
               flexDirection="row"
               alignItems="center"
+              sx={{
+                "@media (max-width: 767px)": {
+                  width: "100%",
+                  justifyContent: "flex-end",
+                },
+              }}
             >
               <Typography fontSize="12px" fontWeight="700">
                 Eligibility Year
@@ -768,7 +780,7 @@ export const AccessToFundingPage: React.FC = () => {
               </Box>
             )}
             {dataStats.map((item) => (
-              <Grid item key={item.name} sm={6} md={3}>
+              <Grid item key={item.name} xs={12} sm={6} md={3}>
                 <Box padding="15px" bgcolor="#F1F3F5">
                   <Typography variant="h5">{item.value}</Typography>
                   <Typography fontSize="12px">
@@ -785,6 +797,9 @@ export const AccessToFundingPage: React.FC = () => {
           sx={{
             "#content": {
               padding: 0,
+            },
+            "@media (max-width: 767px)": {
+              padding: "20px 0",
             },
           }}
         >
@@ -818,6 +833,7 @@ export const AccessToFundingPage: React.FC = () => {
                   "> div": {
                     gap: "10px",
                     display: "flex",
+                    flexWrap: "wrap",
                     flexDirection: "row",
                     "> div": {
                       gap: "5px",
@@ -831,6 +847,10 @@ export const AccessToFundingPage: React.FC = () => {
                       },
                     },
                   },
+                },
+                "@media (max-width: 767px)": {
+                  gap: "16px",
+                  flexDirection: "column",
                 },
               }}
             >
@@ -937,6 +957,9 @@ export const AccessToFundingPage: React.FC = () => {
             "#content": {
               padding: 0,
             },
+            "@media (max-width: 767px)": {
+              padding: "20px 0",
+            },
           }}
         >
           <DatasetChartBlock
@@ -964,7 +987,15 @@ export const AccessToFundingPage: React.FC = () => {
           </DatasetChartBlock>
         </Box>
         <FullWidthDivider />
-        <Box padding="50px 0" data-cy="allocation-block-2">
+        <Box
+          padding="50px 0"
+          sx={{
+            "@media (max-width: 767px)": {
+              padding: "20px 0",
+            },
+          }}
+          data-cy="allocation-block-2"
+        >
           <Typography variant="h5">Cumulative Allocation by Cycles</Typography>
           <Typography fontSize="14px" fontWeight="700">
             Accompanied by the Component Breakdown.
@@ -1022,6 +1053,9 @@ export const AccessToFundingPage: React.FC = () => {
             "#content": {
               padding: 0,
             },
+            "@media (max-width: 767px)": {
+              padding: "20px 0",
+            },
           }}
         >
           <DatasetChartBlock
@@ -1050,13 +1084,24 @@ export const AccessToFundingPage: React.FC = () => {
           </DatasetChartBlock>
         </Box>
         <FullWidthDivider />
-        <Box id="documents" padding="50px 0">
+        <Box
+          id="documents"
+          padding="50px 0"
+          sx={{
+            "@media (max-width: 767px)": {
+              padding: "20px 0",
+            },
+          }}
+        >
           <Typography variant="h3" lineHeight={1.2}>
             Documents
           </Typography>
           <Divider
             sx={{
               margin: "20px 0",
+              "@media (max-width: 767px)": {
+                display: "none",
+              },
             }}
           />
           {loadingDocumentsTable && (
@@ -1072,7 +1117,14 @@ export const AccessToFundingPage: React.FC = () => {
           )}
           {!loadingDocumentsTable && dataDocumentsTable.length > 0 ? (
             <React.Fragment>
-              <Box height="40px" />
+              <Box
+                height="40px"
+                sx={{
+                  "@media (max-width: 767px)": {
+                    display: "none",
+                  },
+                }}
+              />
               <TableContainer
                 dataTree
                 id="documents-table"

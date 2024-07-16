@@ -149,10 +149,40 @@ export const Geography: React.FC = () => {
   }, []);
 
   return (
-    <Box padding="50px 0">
-      <Typography variant="h1">Geography</Typography>
-      <Box height="56px" />
-      <Box padding="32px">
+    <Box
+      padding="50px 0"
+      sx={{
+        "@media (max-width: 767px)": {
+          padding: "32px 0",
+        },
+      }}
+    >
+      <Typography
+        variant="h1"
+        sx={{
+          "@media (max-width: 767px)": {
+            wordBreak: "break-word",
+          },
+        }}
+      >
+        Geography
+      </Typography>
+      <Box
+        height="56px"
+        sx={{
+          "@media (max-width: 767px)": {
+            display: "none",
+          },
+        }}
+      />
+      <Box
+        padding="32px"
+        sx={{
+          "@media (max-width: 767px)": {
+            padding: "16px 0",
+          },
+        }}
+      >
         <Box
           gap="8px"
           width="100%"

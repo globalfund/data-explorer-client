@@ -439,6 +439,9 @@ export const GrantImplementation = () => {
           width: "200vw",
           position: "relative",
           borderTopColor: "#868E96",
+          "@media (max-width: 767px)": {
+            display: "none",
+          },
         }}
       />
       <Box height="2px" />
@@ -588,13 +591,31 @@ export const GrantImplementation = () => {
           data={dataGrantsTableFormatted}
           columns={TABLE_VARIATION_5_COLUMNS}
         />
-        <Box height="64px" />
+        <Box
+          height="64px"
+          sx={{
+            "@media (max-width: 767px)": {
+              display: "none",
+            },
+          }}
+        />
         <Box
           width="100%"
           padding="32px"
           display="flex"
           flexDirection="row"
           justifyContent="space-between"
+          sx={{
+            "@media (max-width: 767px)": {
+              gap: "32px",
+              padding: "16px 0",
+              flexDirection: "column",
+              "> div": {
+                gap: 0,
+                width: "100%",
+              },
+            },
+          }}
         >
           <Box
             gap="16px"

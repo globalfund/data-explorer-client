@@ -253,6 +253,9 @@ export const Grant: React.FC = () => {
         width: "200vw",
         position: "relative",
         borderTopColor: "#868E96",
+        "@media (max-width: 767px)": {
+          display: "none",
+        },
       }}
     />
   );
@@ -262,7 +265,16 @@ export const Grant: React.FC = () => {
       <Typography variant="h1" lineHeight={1.2}>
         {params.id}
       </Typography>
-      <Typography variant="h5" lineHeight={1} marginBottom="50px">
+      <Typography
+        variant="h5"
+        lineHeight={1}
+        marginBottom="50px"
+        sx={{
+          "@media (max-width: 767px)": {
+            marginBottom: 0,
+          },
+        }}
+      >
         {smallScreen && dropdownSelected?.title}
         {!smallScreen &&
           titleSplits.map((s) => (

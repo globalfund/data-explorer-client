@@ -2,14 +2,23 @@ import React from "react";
 import { colors } from "app/theme";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Drawer from "@mui/material/Drawer";
 import Popover from "@mui/material/Popover";
 import { styled } from "@mui/material/styles";
+import Accordion from "@mui/material/Accordion";
+import IconClose from "@mui/icons-material/Close";
+import Typography from "@mui/material/Typography";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { useLocation, useNavigate } from "react-router-dom";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
 import {
   PAGES,
   HeaderMenuPage,
+  HeaderMenuProps,
   isNavButtonActive,
 } from "app/components/header-menu/data";
+import IconButton from "@mui/material/IconButton";
 
 const HeaderMenuButton = styled(Button)({
   width: "160px",
@@ -25,9 +34,13 @@ const HeaderMenuButton = styled(Button)({
   },
 });
 
-export const HeaderMenu: React.FC = () => {
+export const HeaderMenu: React.FC<HeaderMenuProps> = (
+  props: HeaderMenuProps
+) => {
   const navigate = useNavigate();
   const location = useLocation();
+
+  const mobile = useMediaQuery("(max-width: 767px)");
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [selectedPage, setSelectedPage] = React.useState<string | null>(null);
@@ -37,7 +50,7 @@ export const HeaderMenu: React.FC = () => {
 
   const handleClick =
     (isSubPage: boolean, page: HeaderMenuPage) =>
-    (event: React.MouseEvent<HTMLButtonElement>) => {
+    (_: React.SyntheticEvent<Element, Event>) => {
       if (!isSubPage) {
         const container = document.getElementById("header-menu-tabs-container");
         setAnchorEl(container);
@@ -61,12 +74,107 @@ export const HeaderMenu: React.FC = () => {
     setAnchorEl(null);
   };
 
+  const handleCloseMobileMenu = () => {
+    props.setMobileMenuOpen(false);
+  };
+
   React.useEffect(() => {
     window.addEventListener("scroll", onScroll);
     return () => {
       window.removeEventListener("scroll", onScroll);
     };
   }, []);
+
+  if (mobile) {
+    return (
+      <Drawer
+        anchor="right"
+        open={props.mobileMenuOpen}
+        onClose={handleCloseMobileMenu}
+      >
+        <IconButton
+          sx={{
+            top: "10px",
+            zIndex: 1000,
+            right: "10px",
+            position: "absolute",
+          }}
+          onClick={handleCloseMobileMenu}
+        >
+          <IconClose htmlColor="#000" />
+        </IconButton>
+        <Box width="100vw" padding="16px">
+          {PAGES.map((page) => {
+            if (page.subPages) {
+              return (
+                <Accordion
+                  expanded
+                  key={page.id}
+                  onChange={handleClick(false, page)}
+                >
+                  <AccordionSummary
+                    sx={{
+                      marginBottom: "8px",
+                    }}
+                  >
+                    <Typography fontSize="20px" fontWeight="700">
+                      {page.label}
+                    </Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <Box
+                      sx={{
+                        width: "100%",
+                        display: "flex",
+                        flexDirection: "column",
+                      }}
+                    >
+                      {page.subPages.map((subPage) => (
+                        <Button
+                          key={subPage.id}
+                          onClick={handleClick(false, subPage)}
+                          sx={{
+                            width: "100%",
+                            padding: "6px 16px",
+                            textTransform: "none",
+                            color: colors.primary.black,
+                            justifyContent: "flex-start",
+                            fontWeight:
+                              subPage.link === location.pathname
+                                ? "700"
+                                : "400",
+                          }}
+                        >
+                          {subPage.label}
+                        </Button>
+                      ))}
+                    </Box>
+                  </AccordionDetails>
+                </Accordion>
+              );
+            }
+            return (
+              <Button
+                key={page.id}
+                onClick={handleClick(false, page)}
+                sx={{
+                  width: "100%",
+                  fontSize: "20px",
+                  padding: "6px 0",
+                  fontWeight: "700",
+                  textTransform: "none",
+                  color: colors.primary.black,
+                  justifyContent: "flex-start",
+                }}
+              >
+                {page.label}
+              </Button>
+            );
+          })}
+        </Box>
+      </Drawer>
+    );
+  }
 
   return (
     <Box

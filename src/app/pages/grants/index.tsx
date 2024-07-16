@@ -17,6 +17,7 @@ import useDebounce from "react-use/lib/useDebounce";
 import SearchIcon from "@mui/icons-material/Search";
 import { GrantCard } from "app/components/grant-card";
 import { DROPDOWN_ITEMS } from "app/pages/grants/data";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import ArrowBack from "@mui/icons-material/ArrowBackIos";
 import { FilterPanel } from "app/components/filters/panel";
 import useUpdateEffect from "react-use/lib/useUpdateEffect";
@@ -30,6 +31,8 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 
 export const Grants: React.FC = () => {
   useTitle("The Data Explorer - Grants");
+
+  const mobile = useMediaQuery("(max-width: 767px)");
 
   const [page, setPage] = React.useState(1);
   const [search, setSearch] = React.useState("");
@@ -358,6 +361,9 @@ export const Grants: React.FC = () => {
         width: "200vw",
         position: "relative",
         borderTopColor: "#868E96",
+        "@media (max-width: 767px)": {
+          display: "none",
+        },
       }}
     />
   );
@@ -365,7 +371,14 @@ export const Grants: React.FC = () => {
   return (
     <Box padding="50px 0">
       <Typography variant="h1">Grants</Typography>
-      <Box height="50px" />
+      <Box
+        height="50px"
+        sx={{
+          "@media (max-width: 767px)": {
+            display: "none",
+          },
+        }}
+      />
       {fullWidthDivider}
       <Box
         gap="16px"
@@ -379,6 +392,24 @@ export const Grants: React.FC = () => {
           paddingBottom="4px"
           alignItems="center"
           justifyContent="space-between"
+          sx={
+            mobile && showSearch
+              ? {
+                  "> button": {
+                    display: "none",
+                  },
+                  "> div > button:nth-of-type(2)": {
+                    display: "none",
+                  },
+                  "> div": {
+                    width: "100%",
+                    " > input": {
+                      width: "100%",
+                    },
+                  },
+                }
+              : {}
+          }
         >
           <Button
             variant="outlined"
@@ -495,7 +526,14 @@ export const Grants: React.FC = () => {
           </Box>
         </Box>
         {fullWidthDivider}
-        <Box height="18px" />
+        <Box
+          height="18px"
+          sx={{
+            "@media (max-width: 767px)": {
+              display: "none",
+            },
+          }}
+        />
         {loading && (
           <Box
             top="0"

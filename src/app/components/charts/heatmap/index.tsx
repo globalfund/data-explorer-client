@@ -253,6 +253,12 @@ export function Heatmap(props: HeatmapProps) {
                 height: "11px",
               },
             },
+            "@media (max-width: 767px)": {
+              gap: "10px",
+              "> div": {
+                flexDirection: "column",
+              },
+            },
           }}
         >
           {LEGENDS.map((item) => (

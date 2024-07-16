@@ -88,11 +88,13 @@ export function SearchResults(props: SearchResultsProps) {
         })}
         {props.results.length === 0 && !props.loading && hasLoaded && (
           <NoResults>
-            {get(cmsData, "componentsSearch.noResults", "")}
+            {get(cmsData, "componentsSearch.noResults", "No results found.")}
           </NoResults>
         )}
         {props.loading && (
-          <NoResults>{get(cmsData, "componentsSearch.loading", "")}</NoResults>
+          <NoResults>
+            {get(cmsData, "componentsSearch.loading", "Loading...")}
+          </NoResults>
         )}
       </Results>
     </Container>

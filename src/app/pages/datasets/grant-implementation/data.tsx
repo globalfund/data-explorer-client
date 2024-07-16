@@ -77,6 +77,9 @@ export const FullWidthDivider = () => (
       width: "100vw",
       position: "absolute",
       borderColor: "#CFD4DA",
+      "@media (max-width: 767px)": {
+        display: "none",
+      },
     }}
   />
 );

@@ -59,6 +59,10 @@ const StyledMenuItem = styled(MenuItem)(() => ({
       filter: "invert(1)",
     },
   },
+  "@media (max-width: 767px)": {
+    height: "auto",
+    minHeight: "32px",
+  },
 }));
 
 export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
@@ -115,6 +119,9 @@ export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
         sx={{
           "& .MuiPaper-root": {
             width: props.width,
+            "@media (max-width: 767px)": {
+              width: props.width ?? "180px",
+            },
           },
         }}
       >

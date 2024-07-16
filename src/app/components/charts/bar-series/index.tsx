@@ -19,6 +19,8 @@ import {
   GridComponent,
   LegendComponent,
   TooltipComponent,
+  DataZoomComponentOption,
+  DataZoomSliderComponent,
 } from "echarts/components";
 import {
   GridComponentOption,
@@ -34,11 +36,13 @@ echarts.use([
   GridComponent,
   LegendComponent,
   TooltipComponent,
+  DataZoomSliderComponent,
 ]);
 
 const Tooltip = (props: any) => {
   return (
     <div
+      className="chart-tooltip"
       style={{
         gap: "10px",
         width: "400px",
@@ -86,6 +90,7 @@ export const BarSeriesChart: React.FC<BarSeriesChartProps> = (
   props: BarSeriesChartProps
 ) => {
   const isTouch = useMediaQuery("(hover: none)");
+  const mobile = useMediaQuery("(max-width: 767px)");
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   const [stateChart, setStateChart] =
@@ -122,13 +127,14 @@ export const BarSeriesChart: React.FC<BarSeriesChartProps> = (
         | XAXisComponentOption
         | LegendComponentOption
         | TooltipComponentOption
+        | DataZoomComponentOption
       > = {
         grid: {
           top: 40,
           left: 20,
           right: 0,
-          bottom: 20,
           containLabel: true,
+          bottom: mobile ? 50 : 20,
         },
         yAxis: {
           type: "value",
@@ -185,6 +191,13 @@ export const BarSeriesChart: React.FC<BarSeriesChartProps> = (
             },
           },
         },
+        dataZoom: [
+          {
+            show: mobile,
+            type: "slider",
+            start: mobile ? 90 : 0,
+          },
+        ],
         series: props.data.map((serie) => ({
           type: "bar",
           name: serie.name,
@@ -220,7 +233,7 @@ export const BarSeriesChart: React.FC<BarSeriesChartProps> = (
       chart.setOption(option);
       setStateChart(chart);
     }
-  }, [containerRef.current, props.data, props.keys, range]);
+  }, [containerRef.current, props.data, props.keys, range, mobile]);
 
   return (
     <React.Fragment>
