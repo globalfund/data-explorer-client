@@ -65,6 +65,7 @@ export const DonutChart: React.FC<DonutChartProps> = (
         width="150px"
         height="150px"
         position="relative"
+        data-cy="donut-chart"
         sx={{
           "> div": {
             borderRadius: "8px",

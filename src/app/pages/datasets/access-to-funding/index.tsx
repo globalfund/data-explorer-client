@@ -994,6 +994,7 @@ export const AccessToFundingPage: React.FC = () => {
               padding: "20px 0",
             },
           }}
+          data-cy="allocation-block-2"
         >
           <Typography variant="h5">Cumulative Allocation by Cycles</Typography>
           <Typography fontSize="14px" fontWeight="700">

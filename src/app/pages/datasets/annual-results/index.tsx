@@ -312,7 +312,13 @@ export const AnnualResultsPage: React.FC = () => {
 
   const toolbarRightContent = React.useMemo(() => {
     return (
-      <Box gap="20px" display="flex" flexDirection="row" alignItems="center">
+      <Box
+        gap="20px"
+        display="flex"
+        flexDirection="row"
+        alignItems="center"
+        data-cy="toolbar-right-content"
+      >
         <Box gap="10px" display="flex" flexDirection="row" alignItems="center">
           <Typography variant="body2" fontWeight="700">
             Reporting Result Year
@@ -455,7 +461,7 @@ export const AnnualResultsPage: React.FC = () => {
             },
           }}
         >
-          <Box id="documents" padding="50px 0">
+          <Box id="documents" padding="50px 0" data-cy="documents-block">
             <Typography variant="h3" lineHeight={1.2}>
               Documents
             </Typography>

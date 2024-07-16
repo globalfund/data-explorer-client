@@ -191,6 +191,7 @@ const FilterListItemContent: React.FC<FilterListItemContentProps> = (
             placeholder="Search"
             style={{ marginBottom: "10px" }}
             onChange={(e) => setValue(e.target.value)}
+            data-cy="filter-panel-search-input"
           />
         </React.Fragment>
       )}
@@ -222,6 +223,7 @@ const FilterListItemContent: React.FC<FilterListItemContentProps> = (
                   flexGrow: 0,
                 },
               }}
+              data-cy="filter-list-content-accordion-summary"
             >
               <FormControlLabel
                 control={
@@ -232,6 +234,7 @@ const FilterListItemContent: React.FC<FilterListItemContentProps> = (
                     onChange={onCheckboxChange}
                     checkedIcon={<CheckboxCheckedIcon />}
                     checked={appliedFilters.indexOf(option.name) > -1}
+                    data-cy="filter-list-content-checkbox"
                   />
                 }
                 label={option.name}
@@ -302,8 +305,12 @@ export const FilterList: React.FC<FilterListProps> = (
           key={group.name}
           expanded={expanded === group.name}
           onChange={handleChange(group.name)}
+          data-cy="filter-list-accordion"
         >
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            data-cy="filter-list-accordion-summary"
+          >
             <Typography fontSize="12px" fontWeight="700">
               {group.name}
             </Typography>

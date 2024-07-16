@@ -38,6 +38,7 @@ export const GrantCard: React.FC<GrantCardProps> = (props: GrantCardProps) => {
       bgcolor="transparent"
       flexDirection="column"
       border="1px solid #B1B1B1"
+      data-cy="grant-card"
       sx={{
         "*": {
           lineHeight: "1.4",

@@ -178,6 +178,7 @@ export const SunburstChart: React.FC<SunburstProps> = (
       >
         <Box
           id="sunburst-chart"
+          data-cy="sunburst-chart"
           ref={containerRef}
           width="600px"
           height="600px"

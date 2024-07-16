@@ -39,6 +39,7 @@ export const FiltersApplied: React.FC<FiltersAppliedProps> = (
           borderRadius="23px"
           alignItems="center"
           justifyContent="space-between"
+          data-cy="applied-filter"
           sx={{
             background: props.appliedFilterBgColors.normal,
             border: `1px solid ${props.appliedFilterBgColors.hover}`,

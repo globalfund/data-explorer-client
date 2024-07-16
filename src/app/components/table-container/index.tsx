@@ -95,6 +95,7 @@ export const TableContainer: React.FC<TableContainerProps> = (
       borderRadius="32px"
       ref={fullscreenRef}
       flexDirection="column"
+      data-cy="table-container"
       sx={{
         "&:fullscreen": {
           padding: "32px",
@@ -142,6 +143,7 @@ export const TableContainer: React.FC<TableContainerProps> = (
                   background:
                     props.tabsView?.selectedTab === tab ? "#000" : "#fff",
                 }}
+                data-cy="table-tab-button"
               >
                 {tab}
               </Button>

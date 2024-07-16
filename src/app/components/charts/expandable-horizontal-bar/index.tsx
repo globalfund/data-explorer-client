@@ -423,6 +423,7 @@ export const ExpandableHorizontalBar: React.FC<
       </Typography>
       <Box
         id="expandable-horizontal-bar-chart"
+        data-cy="expandable-horizontal-bar-chart"
         ref={containerRef}
         width="100%"
         height={data.length * 40 + 100}

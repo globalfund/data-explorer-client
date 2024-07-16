@@ -118,7 +118,7 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
   ]);
 
   return (
-    <Box id={props.id}>
+    <Box id={props.id} data-cy="dataset-chart-block">
       <Typography variant="h3" lineHeight={1.2}>
         {props.title}
       </Typography>
