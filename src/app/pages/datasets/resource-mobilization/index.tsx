@@ -22,6 +22,7 @@ import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filter
 import { ReactComponent as BarChartIcon } from "app/assets/vectors/Select_BarChart.svg";
 import { ExpandableHorizontalBar } from "app/components/charts/expandable-horizontal-bar";
 import { ExpandableHorizontalBarChartDataItem } from "app/components/charts/expandable-horizontal-bar/data";
+import { useCMSData } from "app/hooks/useCMSData";
 
 const dropdownItems = [
   { label: "Bar Chart", value: "Bar Chart", icon: <BarChartIcon /> },
@@ -29,6 +30,7 @@ const dropdownItems = [
 ];
 
 export const ResourceMobilizationPage: React.FC = () => {
+  const cmsData = useCMSData({ returnData: true });
   useTitle("The Data Explorer - Resource Mobilization");
   const location = useLocation();
   const tabletScreen = useMediaQuery(
@@ -216,11 +218,27 @@ export const ResourceMobilizationPage: React.FC = () => {
         return (
           <ExpandableHorizontalBar
             data={dataBarChart}
-            yAxisLabel="Donor Types & Donors"
-            xAxisLabel="Amount"
+            yAxisLabel={get(
+              cmsData,
+              "pagesDatasetsResourceMobilization.barchartYLabel",
+              "Donor Types & Donors"
+            )}
+            xAxisLabel={get(
+              cmsData,
+              "pagesDatasetsResourceMobilization.barchartXLabel",
+              "Amount"
+            )}
             valueLabels={{
-              value: "Pledge",
-              value1: "Contribution",
+              value: get(
+                cmsData,
+                "pagesDatasetsResourceMobilization.barchartValueLabel1",
+                "Pledge"
+              ),
+              value1: get(
+                cmsData,
+                "pagesDatasetsResourceMobilization.barchartValueLabel2",
+                "Contribution"
+              ),
             }}
           />
         );
@@ -356,12 +374,20 @@ export const ResourceMobilizationPage: React.FC = () => {
 
   return (
     <DatasetPage
-      title="Resource Mobilization"
+      title={get(
+        cmsData,
+        "pagesDatasetsResourceMobilization.title",
+        "Resource Mobilization"
+      )}
       filterGroups={filterGroups}
       appliedFilters={pageAppliedFilters}
       handleResetFilters={handleResetFilters}
       breadcrumbs={[{ label: "Datasets" }, { label: "Resource Mobilization" }]}
-      subtitle="Government, private sector, non-government and other donor pledges and contributions"
+      subtitle={get(
+        cmsData,
+        "pagesDatasetsResourceMobilization.subtitle",
+        "Government, private sector, non-government and other donor pledges and contributions"
+      )}
     >
       <Box width="100%" marginTop="50px">
         <Grid
@@ -423,7 +449,11 @@ export const ResourceMobilizationPage: React.FC = () => {
                 {get(dataStats, "percentage", 0).toFixed(2).replace(".00", "")}%
               </Typography>
               <Typography fontSize="14px" fontWeight="700">
-                Pledge Conversion based on the announce pledge
+                {get(
+                  cmsData,
+                  "pagesDatasetsResourceMobilization.statsText1",
+                  "Pledge Conversion based on the announce pledge"
+                )}
               </Typography>
             </Box>
             <Divider /> */}
@@ -432,7 +462,11 @@ export const ResourceMobilizationPage: React.FC = () => {
                 {formatFinancialValue(get(dataStats, "totalPledges", 0))}
               </Typography>
               <Typography fontSize="14px" fontWeight="700">
-                Total Pledged
+                {get(
+                  cmsData,
+                  "pagesDatasetsResourceMobilization.statsText2",
+                  "Total Pledged"
+                )}
               </Typography>
             </Box>
             <Divider orientation={tabletScreen ? "vertical" : "horizontal"} />
@@ -441,7 +475,11 @@ export const ResourceMobilizationPage: React.FC = () => {
                 {formatFinancialValue(get(dataStats, "totalContributions", 0))}
               </Typography>
               <Typography fontSize="14px" fontWeight="700">
-                Total Contributed
+                {get(
+                  cmsData,
+                  "pagesDatasetsResourceMobilization.statsText3",
+                  "Total Contributed"
+                )}
               </Typography>
             </Box>
           </Grid>
@@ -457,9 +495,19 @@ export const ResourceMobilizationPage: React.FC = () => {
             }}
           >
             <Box marginBottom="20px">
-              <Typography variant="h5">Number of Donors Mobilized</Typography>
+              <Typography variant="h5">
+                {get(
+                  cmsData,
+                  "pagesDatasetsResourceMobilization.statsText4Title",
+                  "Number of Donors Mobilized"
+                )}
+              </Typography>
               <Typography variant="body2" fontWeight="700">
-                Grouped by their Donor types
+                {get(
+                  cmsData,
+                  "pagesDatasetsResourceMobilization.statsText4Subtitle",
+                  "Grouped by their Donor types"
+                )}
               </Typography>
             </Box>
             <Grid
@@ -480,7 +528,11 @@ export const ResourceMobilizationPage: React.FC = () => {
                     {sumBy(get(dataStats, "donorTypesCount", []), "value")}
                   </Typography>
                   <Typography variant="body2">
-                    Total number of donors
+                    {get(
+                      cmsData,
+                      "pagesDatasetsResourceMobilization.statsText5",
+                      "Total number of donors"
+                    )}
                   </Typography>
                 </Box>
               </Grid>
@@ -549,8 +601,16 @@ export const ResourceMobilizationPage: React.FC = () => {
         >
           <DatasetChartBlock
             id="pledges-contributions"
-            title="Pledges & Contributions"
-            subtitle="Government, private sector, non-government and other donor pledges and contributions."
+            title={get(
+              cmsData,
+              "pagesDatasetsResourceMobilization.pledgesTitle",
+              "Pledges & Contributions"
+            )}
+            subtitle={get(
+              cmsData,
+              "pagesDatasetsResourceMobilization.pledgesSubtitle",
+              "Government, private sector, non-government and other donor pledges and contributions."
+            )}
             dropdownItems={dropdownItems}
             dropdownSelected={dropdownSelected}
             handleDropdownChange={handleSelectionChange}

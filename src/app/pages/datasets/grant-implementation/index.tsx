@@ -56,8 +56,10 @@ import {
   dropdownItemsExpenditures,
   dropdownItemsBudgetsTableDataTypes,
 } from "app/pages/datasets/grant-implementation/data";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export const GrantImplementationPage: React.FC = () => {
+  const cmsData = useCMSData({ returnData: true });
   useTitle("The Data Explorer - Financial Insights");
   const location = useLocation();
 
@@ -911,16 +913,32 @@ export const GrantImplementationPage: React.FC = () => {
               }}
             >
               <Grid item xs={3}>
-                Total budget
+                {get(
+                  cmsData,
+                  "pagesDatasetsGrantImplementation.budgetsLabel1",
+                  "Total budget"
+                )}
               </Grid>
               <Grid item xs={3}>
-                Investement Landscape 1
+                {get(
+                  cmsData,
+                  "pagesDatasetsGrantImplementation.budgetsLabel2",
+                  "Investement Landscape 1"
+                )}
               </Grid>
               <Grid item xs={3}>
-                Investement Landscape 2
+                {get(
+                  cmsData,
+                  "pagesDatasetsGrantImplementation.budgetsLabel3",
+                  "Investement Landscape 2"
+                )}
               </Grid>
               <Grid item xs={3}>
-                Cost Category
+                {get(
+                  cmsData,
+                  "pagesDatasetsGrantImplementation.budgetsLabel4",
+                  "Cost Category"
+                )}
               </Grid>
             </Grid>
             <SankeyChart data={dataBudgetSankey} />
@@ -1041,16 +1059,32 @@ export const GrantImplementationPage: React.FC = () => {
             rowCategory="component"
             data={dataExpendituresHeatmap}
             getItemColor={getPercentageColor}
-            columnHeader="Principal Recipients"
-            rowHeader="Components"
+            columnHeader={get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.expendituresHeatmapColumnHeader",
+              "Principal Recipients"
+            )}
+            rowHeader={get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.expendituresHeatmapRowHeader",
+              "Components"
+            )}
           />
         );
       case dropdownItemsExpenditures[1].value:
         return (
           <ExpandableHorizontalBar
             data={dataExpendituresBarChart}
-            yAxisLabel="Modules & Interventions"
-            xAxisLabel="Expenditure"
+            yAxisLabel={get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.expendituresBarchartYLabel",
+              "Modules & Interventions"
+            )}
+            xAxisLabel={get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.expendituresBarchartXLabel",
+              "Expenditure"
+            )}
             valueLabels={{
               value: "amount",
             }}
@@ -1113,7 +1147,11 @@ export const GrantImplementationPage: React.FC = () => {
       >
         <Box gap="10px" display="flex" flexDirection="row" alignItems="center">
           <Typography variant="body2" fontWeight="700">
-            Geography grouping
+            {get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.toolbarRightText1",
+              "Geography grouping"
+            )}
           </Typography>
           <Dropdown
             width={150}
@@ -1124,7 +1162,11 @@ export const GrantImplementationPage: React.FC = () => {
         </Box>
         <Box gap="10px" display="flex" flexDirection="row" alignItems="center">
           <Typography variant="body2" fontWeight="700">
-            Components grouping
+            {get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.toolbarRightText2",
+              "Components grouping"
+            )}
           </Typography>
           <Dropdown
             width={120}
@@ -1921,11 +1963,19 @@ export const GrantImplementationPage: React.FC = () => {
 
   return (
     <DatasetPage
-      title="Financial Insights"
+      title={get(
+        cmsData,
+        "pagesDatasetsGrantImplementation.title",
+        "Financial Insights"
+      )}
       filterGroups={filterGroups}
       appliedFilters={pageAppliedFilters}
       handleResetFilters={handleResetFilters}
-      subtitle="See the disbursements, budgets and expenditures datasets and relating insights."
+      subtitle={get(
+        cmsData,
+        "pagesDatasetsGrantImplementation.subtitle",
+        "See the disbursements, budgets and expenditures datasets and relating insights."
+      )}
       breadcrumbs={[{ label: "Datasets" }, { label: "Financial Insights" }]}
       toolbarRightContent={toolbarRightContent}
     >
@@ -1987,7 +2037,11 @@ export const GrantImplementationPage: React.FC = () => {
               {formatFinancialValue(dataFinancialInsightsStats.signed)}
             </Typography>
             <Typography fontSize="14px" fontWeight="700">
-              Total Signed Amount
+              {get(
+                cmsData,
+                "pagesDatasetsGrantImplementation.statsText1",
+                "Total Signed Amount"
+              )}
             </Typography>
           </Box>
           <Box>
@@ -1995,7 +2049,11 @@ export const GrantImplementationPage: React.FC = () => {
               {formatFinancialValue(dataFinancialInsightsStats.committed)}
             </Typography>
             <Typography fontSize="14px" fontWeight="700">
-              Total Committed Amount
+              {get(
+                cmsData,
+                "pagesDatasetsGrantImplementation.statsText2",
+                "Total Committed Amount"
+              )}
             </Typography>
           </Box>
           <Box>
@@ -2003,7 +2061,11 @@ export const GrantImplementationPage: React.FC = () => {
               {formatFinancialValue(dataFinancialInsightsStats.disbursed)}
             </Typography>
             <Typography fontSize="14px" fontWeight="700">
-              Total Disbursed Amount
+              {get(
+                cmsData,
+                "pagesDatasetsGrantImplementation.statsText3",
+                "Total Disbursed Amount"
+              )}
             </Typography>
           </Box>
         </Box>
@@ -2018,8 +2080,16 @@ export const GrantImplementationPage: React.FC = () => {
         >
           <DatasetChartBlock
             id="disbursements"
-            title="Disbursements"
-            subtitle="Disbursement transactions for all grants across the porfolio."
+            title={get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.disbursementsTitle",
+              "Disbursements"
+            )}
+            subtitle={get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.disbursementsSubtitle",
+              "Disbursement transactions for all grants across the porfolio."
+            )}
             dropdownItems={dropdownItemsDisbursements}
             dropdownSelected={disbursementsDropdownSelected}
             handleDropdownChange={handleDisbursementsSelectionChange}
@@ -2051,8 +2121,16 @@ export const GrantImplementationPage: React.FC = () => {
         >
           <DatasetChartBlock
             id="budgets"
-            title="Budgets"
-            subtitle={`${totalBudget} total budget.`}
+            title={get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.budgetsTitle",
+              "Budgets"
+            )}
+            subtitle={`${totalBudget} ${get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.budgetsSubtitle",
+              "total budget."
+            )}`}
             dropdownItems={dropdownItemsBudgets}
             dropdownSelected={budgetsDropdownSelected}
             handleDropdownChange={(value) => setBudgetsDropdownSelected(value)}
@@ -2089,9 +2167,19 @@ export const GrantImplementationPage: React.FC = () => {
             justifyContent="space-between"
           >
             <Box>
-              <Typography variant="h5">Budget Breakdown</Typography>
+              <Typography variant="h5">
+                {get(
+                  cmsData,
+                  "pagesDatasetsGrantImplementation.budgetBreakdownTitle",
+                  "Budget Breakdown"
+                )}
+              </Typography>
               <Typography fontSize="14px" fontWeight="700">
-                By grant component
+                {get(
+                  cmsData,
+                  "pagesDatasetsGrantImplementation.budgetBreakdownSubtitle",
+                  "By grant component"
+                )}
               </Typography>
             </Box>
             <Box>
@@ -2171,7 +2259,11 @@ export const GrantImplementationPage: React.FC = () => {
         >
           <DatasetChartBlock
             id="financial-metrics"
-            title="Financial Metrics"
+            title={get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.financialMetricsTitle",
+              "Financial Metrics"
+            )}
             subtitle=""
             dropdownItems={[]}
             empty={financialMetricsEmpty}
@@ -2199,7 +2291,11 @@ export const GrantImplementationPage: React.FC = () => {
         >
           <DatasetChartBlock
             id="expenditures"
-            title="Expenditures"
+            title={get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.expendituresTitle",
+              "Expenditures"
+            )}
             subtitle={`${totalExpenditure} reported expenditure.`}
             dropdownItems={dropdownItemsExpenditures}
             dropdownSelected={expendituresDropdownSelected}

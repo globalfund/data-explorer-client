@@ -9,8 +9,10 @@ import { useStoreState } from "app/state/store/hooks";
 import { PageLoader } from "app/components/page-loader";
 import { RaceBarChart } from "app/components/charts/race-bar";
 import { ChartBlockButtonToolbar } from "app/components/chart-block/components/button-toolbar";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export const GrantOverview: React.FC = () => {
+  const cmsData = useCMSData({ returnData: true });
   const dataGrant = useStoreState(
     (state) =>
       get(state.GrantInfo, "data.data[0]", {
@@ -154,7 +156,11 @@ export const GrantOverview: React.FC = () => {
         <Grid item xs={12} sm={6} md={4} lg={3}>
           <Box gap="10px" display="flex" flexDirection="column">
             <Typography variant="body2" fontWeight="700">
-              Fund Portfolio Manager
+              {get(
+                cmsData,
+                "pagesGrantOverview.portfolioManager",
+                "Fund Portfolio Manager"
+              )}
             </Typography>
             <Typography variant="overline">
               {dataGrant.FPMName}
@@ -166,7 +172,7 @@ export const GrantOverview: React.FC = () => {
         <Grid item xs={12} sm={6} md={4} lg={2}>
           <Box gap="10px" display="flex" flexDirection="column">
             <Typography variant="body2" fontWeight="700">
-              Grant Status
+              {get(cmsData, "pagesGrantOverview.grantStatus", "Grant Status")}
             </Typography>
             <Typography
               gap="4px"
@@ -187,7 +193,7 @@ export const GrantOverview: React.FC = () => {
         <Grid item xs={12} sm={6} md={4} lg={2}>
           <Box gap="10px" display="flex" flexDirection="column">
             <Typography variant="body2" fontWeight="700">
-              Country
+              {get(cmsData, "pagesGrantOverview.countryText", "Country")}
             </Typography>
             <Typography variant="overline">{dataGrant.countryName}</Typography>
           </Box>
@@ -195,7 +201,7 @@ export const GrantOverview: React.FC = () => {
         <Grid item xs={12} sm={6} md={4} lg={2}>
           <Box gap="10px" display="flex" flexDirection="column">
             <Typography variant="body2" fontWeight="700">
-              Component
+              {get(cmsData, "pagesGrantOverview.componentText", "Component")}
             </Typography>
             <Typography variant="overline">{dataGrant.component}</Typography>
           </Box>
@@ -211,7 +217,11 @@ export const GrantOverview: React.FC = () => {
         <Grid item xs={12} sm={6} md={4} lg={3}>
           <Box gap="10px" display="flex" flexDirection="column">
             <Typography variant="body2" fontWeight="700">
-              Principal Recipient
+              {get(
+                cmsData,
+                "pagesGrantOverview.principalRecipient",
+                "Principal Recipient"
+              )}
             </Typography>
             <Typography variant="overline">
               {dataGrant.principalRecipientName}{" "}
@@ -233,7 +243,7 @@ export const GrantOverview: React.FC = () => {
       </Box>
       <Box>
         <Typography variant="body2" fontWeight="700">
-          Goals
+          {get(cmsData, "pagesGrantOverview.goals", "Goals")}
         </Typography>
         <Typography variant="body2">
           {dataOverview.goals.map((goal: string, index: number) => (
@@ -247,7 +257,7 @@ export const GrantOverview: React.FC = () => {
       </Box>
       <Box marginBottom="32px">
         <Typography variant="body2" fontWeight="700">
-          Objectives
+          {get(cmsData, "pagesGrantOverview.objectives", "Objectives")}
         </Typography>
         <Typography variant="body2">
           {dataOverview.objectives.map((objective: string, index: number) => (

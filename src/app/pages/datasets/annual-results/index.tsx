@@ -21,6 +21,7 @@ import { PolylineTreeDataItem } from "app/components/charts/polyline-tree/data";
 import { ReactComponent as TableIcon } from "app/assets/vectors/Select_Table.svg";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 import { ReactComponent as BarChartIcon } from "app/assets/vectors/Select_BarChart.svg";
+import { useCMSData } from "app/hooks/useCMSData";
 import {
   TABLE_VARIATION_9_COLUMNS,
   TABLE_VARIATION_6_COLUMNS as DOCUMENTS_TABLE_COLUMNS,
@@ -32,6 +33,7 @@ const dropdownItems = [
 ];
 
 export const AnnualResultsPage: React.FC = () => {
+  const cmsData = useCMSData({ returnData: true });
   useTitle("The Data Explorer - Annual Results");
   const location = useLocation();
 
@@ -315,7 +317,11 @@ export const AnnualResultsPage: React.FC = () => {
       <Box gap="20px" display="flex" flexDirection="row" alignItems="center">
         <Box gap="10px" display="flex" flexDirection="row" alignItems="center">
           <Typography variant="body2" fontWeight="700">
-            Reporting Result Year
+            {get(
+              cmsData,
+              "pagesDatasetsAnnualResults.toolBarRightText",
+              "Reporting Result Year"
+            )}
           </Typography>
           <Dropdown
             width={100}
@@ -384,12 +390,16 @@ export const AnnualResultsPage: React.FC = () => {
 
   return (
     <DatasetPage
-      title="Annual Results"
+      title={get(cmsData, "pagesDatasetsAnnualResults.title", "Annual Results")}
       filterGroups={filterGroups}
       appliedFilters={pageAppliedFilters}
       handleResetFilters={handleResetFilters}
       toolbarRightContent={toolbarRightContent}
-      subtitle="Indicator results reported as part of annual Results Report."
+      subtitle={get(
+        cmsData,
+        "pagesDatasetsAnnualResults.subtitle",
+        "Indicator results reported as part of annual Results Report."
+      )}
       breadcrumbs={[{ label: "Datasets" }, { label: "Annual Results" }]}
     >
       <Box width="100%" marginTop="50px">
@@ -416,7 +426,11 @@ export const AnnualResultsPage: React.FC = () => {
         >
           <DatasetChartBlock
             id="annual-results"
-            title="Annual Results"
+            title={get(
+              cmsData,
+              "pagesDatasetsAnnualResults.chartTitle",
+              "Annual Results"
+            )}
             subtitle=""
             loading={loadingResults}
             dropdownItems={dropdownItems}

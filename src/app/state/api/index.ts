@@ -54,7 +54,7 @@ export const APIModel = <QueryModel, ResponseModel>(
       "Content-Type": "application/json",
       ...(process.env.REACT_APP_CMS_API &&
       localUrl.includes(process.env.REACT_APP_CMS_API)
-        ? { "api-key": process.env.REACT_APP_CMS_TOKEN }
+        ? { Authorization: `Bearer ${process.env.REACT_APP_CMS_TOKEN}` }
         : {}),
     };
     if (query.routeParams) {
@@ -66,7 +66,9 @@ export const APIModel = <QueryModel, ResponseModel>(
       console.log("debuggy - querying url", localUrl);
     axios
       .get(
-        `${localUrl}${query.filterString ? "?" : ""}${query.filterString ?? ""}`,
+        `${localUrl}${query.filterString ? "?" : ""}${
+          query.filterString ?? ""
+        }`,
         { headers }
       )
       .then(

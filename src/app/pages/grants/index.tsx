@@ -28,8 +28,10 @@ import { getMonthFromNumber } from "app/utils/getMonthFromNumber";
 import { FilterGroupModel } from "app/components/filters/list/data";
 import { TABLE_VARIATION_5_COLUMNS } from "app/components/table/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export const Grants: React.FC = () => {
+  const cmsData = useCMSData({ returnData: true });
   useTitle("The Data Explorer - Grants");
 
   const mobile = useMediaQuery("(max-width: 767px)");
@@ -370,7 +372,9 @@ export const Grants: React.FC = () => {
 
   return (
     <Box padding="50px 0">
-      <Typography variant="h1">Grants</Typography>
+      <Typography variant="h1">
+        {get(cmsData, "pagesGrants.title", "Grants")}
+      </Typography>
       <Box
         height="50px"
         sx={{

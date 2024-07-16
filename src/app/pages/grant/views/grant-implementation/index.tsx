@@ -29,8 +29,10 @@ import {
   getRange,
   getFinancialValueWithMetricPrefix,
 } from "app/utils/getFinancialValueWithMetricPrefix";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export const GrantImplementation: React.FC = () => {
+  const cmsData = useCMSData({ returnData: true });
   const params = useParams<{ id: string; ip: string; tab: string }>();
 
   useTitle(`The Data Explorer - ${params.id} Financial Insights`);
@@ -353,7 +355,11 @@ export const GrantImplementation: React.FC = () => {
             flexDirection="column"
           >
             <Typography variant="body2" fontWeight="700">
-              Board Approved Date
+              {get(
+                cmsData,
+                "pagesGrantGrantImplementation.dateStat1",
+                "Board Approved Date"
+              )}
             </Typography>
             <Typography variant="overline">
               {dataProgrameDates.boardApprovedDate}
@@ -368,7 +374,11 @@ export const GrantImplementation: React.FC = () => {
             flexDirection="column"
           >
             <Typography variant="body2" fontWeight="700">
-              Program Start Date
+              {get(
+                cmsData,
+                "pagesGrantGrantImplementation.dateStat2",
+                "Program Start Date"
+              )}
             </Typography>
             <Typography
               gap="4px"
@@ -388,7 +398,11 @@ export const GrantImplementation: React.FC = () => {
             flexDirection="column"
           >
             <Typography variant="body2" fontWeight="700">
-              Program End Date
+              {get(
+                cmsData,
+                "pagesGrantGrantImplementation.dateStat3",
+                "Program End Date"
+              )}
             </Typography>
             <Typography variant="overline">
               {dataProgrameDates.programEndDate}
@@ -400,12 +414,20 @@ export const GrantImplementation: React.FC = () => {
       <ChartBlock
         id="radial-chart"
         title={disbursementsTotal}
-        subtitle="Disbursements"
+        subtitle={get(
+          cmsData,
+          "pagesGrantGrantImplementation.disbursementsSubtitle",
+          "Disbursements"
+        )}
         empty={!showRadialChart}
         infoType="global"
       >
         <RadialChart
-          tooltipLabel="Amount"
+          tooltipLabel={get(
+            cmsData,
+            "pagesGrantGrantImplementation.disbursementsTooltipLabel",
+            "Amount"
+          )}
           data={radialChartData}
           itemLabelFormatterType="name-value-percent"
         />
@@ -425,7 +447,11 @@ export const GrantImplementation: React.FC = () => {
             bgcolor={appColors.RADIAL_CHART.ITEM_COLORS[2]}
           />
           <Typography variant="body2" fontWeight="700">
-            Signed
+            {get(
+              cmsData,
+              "pagesGrantGrantImplementation.disbursementsRadialChartLabel",
+              "Signed"
+            )}
           </Typography>
           <Typography variant="body2">{signedFormatted}</Typography>
         </Box>
@@ -435,7 +461,11 @@ export const GrantImplementation: React.FC = () => {
       <ChartBlock
         id="budget"
         title={totalBudget}
-        subtitle="Grant Budgets"
+        subtitle={get(
+          cmsData,
+          "pagesGrantGrantImplementation.budgetsSubtitle",
+          "Grant Budgets"
+        )}
         empty={!showBudgetSankeyChart}
         infoType="budgets"
       >
@@ -450,16 +480,32 @@ export const GrantImplementation: React.FC = () => {
           }}
         >
           <Grid item xs={3}>
-            Total Budgets
+            {get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.budgetsLabel1",
+              "Total budget"
+            )}
           </Grid>
           <Grid item xs={3}>
-            Landscape 1
+            {get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.budgetsLabel2",
+              "Investement Landscape 1"
+            )}
           </Grid>
           <Grid item xs={3}>
-            Landscape 2
+            {get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.budgetsLabel3",
+              "Investement Landscape 2"
+            )}
           </Grid>
           <Grid item xs={3}>
-            Cost Category
+            {get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.budgetsLabel4",
+              "Cost Category"
+            )}
           </Grid>
         </Grid>
         <SankeyChart data={dataBudgetSankeyChart} />
@@ -468,7 +514,11 @@ export const GrantImplementation: React.FC = () => {
       <ChartBlock
         cycles={CYCLES}
         id="expenditures"
-        subtitle="Expenditures"
+        subtitle={get(
+          cmsData,
+          "pagesGrantGrantImplementation.expendituresSubtitle",
+          "Expenditures"
+        )}
         title={expendituresTotal}
         empty={!showExpendituresHeatmap}
         dropdownSelected={chart2Dropdown}

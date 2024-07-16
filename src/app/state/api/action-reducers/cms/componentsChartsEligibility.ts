@@ -3,7 +3,7 @@ import { CMSApiCallModel } from "app/state/api/interfaces";
 
 const componentsChartsEligibility: CMSApiCallModel = {
   ...APIModel(
-    `${process.env.REACT_APP_CMS_API}/content/item/componentsChartsEligibility`
+    `${process.env.REACT_APP_CMS_API}/components-charts-eligibility?locale=all`
   ),
 };
 

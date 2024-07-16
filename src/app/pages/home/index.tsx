@@ -39,8 +39,11 @@ import {
   getRange,
   getFinancialValueWithMetricPrefix,
 } from "app/utils/getFinancialValueWithMetricPrefix";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export const Home: React.FC = () => {
+  const cmsData = useCMSData({ returnData: true });
+
   useTitle("The Data Explorer - Home");
 
   const [chart1Cycles, setChart1Cycles] = React.useState<CycleProps[]>([]);
@@ -597,7 +600,11 @@ export const Home: React.FC = () => {
         id="pledges-contributions"
         selectedCycles={chart1Cycles}
         title={`${totalPledge}`}
-        subtitle="Pledges & Contributions"
+        subtitle={get(
+          cmsData,
+          "pagesHome.pledgesContributionsSubtitle",
+          "Pledges & Contributions"
+        )}
         loading={loadingPledgesContributionsBarChart}
         empty={dataPledgesContributionsBarChart.length === 0}
         handleCycleChange={(value) => handleChartCycleChange(value, 1)}
@@ -610,8 +617,16 @@ export const Home: React.FC = () => {
         <BarChart
           data={dataPledgesContributionsBarChart}
           valueLabels={{
-            value: "Pledge",
-            value1: "Contribution",
+            value: get(
+              cmsData,
+              "pagesHome.pledgesContributionsLabel1",
+              "Pledge"
+            ),
+            value1: get(
+              cmsData,
+              "pagesHome.pledgesContributionsLabel2",
+              "Contribution"
+            ),
           }}
         />
       </ChartBlock>
@@ -640,7 +655,9 @@ export const Home: React.FC = () => {
           <Typography variant="h3" fontWeight="900">
             {totalPledge}
           </Typography>
-          <Typography variant="subtitle2">Pledge</Typography>
+          <Typography variant="subtitle2">
+            {get(cmsData, "pagesHome.pledgesContributionsLabel1", "Pledge")}
+          </Typography>
         </Box>
         <Box
           width="50%"
@@ -651,7 +668,13 @@ export const Home: React.FC = () => {
           <Typography variant="h3" fontWeight="900">
             {totalContribution}
           </Typography>
-          <Typography variant="subtitle2">Contribution</Typography>
+          <Typography variant="subtitle2">
+            {get(
+              cmsData,
+              "pagesHome.pledgesContributionsLabel2",
+              "Contribution"
+            )}
+          </Typography>
         </Box>
       </Box>
       <Box height="50px" />
@@ -659,7 +682,7 @@ export const Home: React.FC = () => {
       <Box height="50px" />
       <ChartBlock
         id="allocations"
-        subtitle="Allocation"
+        subtitle={get(cmsData, "pagesHome.allocationsSubtitle", "Allocations")}
         title={allocationsTotal}
         selectedCycles={chart2Cycles}
         loading={loadingAllocationsRadialChart}
@@ -669,12 +692,20 @@ export const Home: React.FC = () => {
           name: c.value,
           value: c.value,
         }))}
-        text="The Global Fund is distinct from other organizations in that it gives countries (or groups of countries) an allocation and asks countries to describe how they will use those funds rather than asking for applications and then determining an amount per-country based on the merits of the various proposals received.<br/><br/>This provides greater predictability for countries and helps ensure that the programs being funded are not just the ones with the most capacity to write good applications."
+        text={get(
+          cmsData,
+          "pagesHome.allocationsText",
+          "The Global Fund is distinct from other organizations in that it gives countries (or groups of countries) an allocation and asks countries to describe how they will use those funds rather than asking for applications and then determining an amount per-country based on the merits of the various proposals received.<br/><br/>This provides greater predictability for countries and helps ensure that the programs being funded are not just the ones with the most capacity to write good applications."
+        )}
         infoType="global"
       >
         <Box marginTop="-100px" marginBottom="-100px">
           <RadialChart
-            tooltipLabel="Total allocation amount"
+            tooltipLabel={get(
+              cmsData,
+              "pagesHome.allocationsTooltipLabel",
+              "Total allocation amount"
+            )}
             data={dataAllocationsRadialChart}
             itemLabelFormatterType="name"
           />
@@ -686,7 +717,11 @@ export const Home: React.FC = () => {
       <ChartBlock
         id="budgets"
         title={totalBudget}
-        subtitle="Grant Budgets"
+        subtitle={get(
+          cmsData,
+          "pagesHome.grantBudgetsSubtitle",
+          "Grant Budgets"
+        )}
         selectedCycles={chart3Cycles}
         loading={loadingBudgetsTreemap}
         dropdownSelected={chart3Dropdown}
@@ -708,7 +743,11 @@ export const Home: React.FC = () => {
       <ChartBlock
         showCycleAll
         id="disbursements"
-        subtitle="Disbursements"
+        subtitle={get(
+          cmsData,
+          "pagesHome.disbursementsSubtitle",
+          "Disbursements"
+        )}
         title={disbursementsTotal}
         selectedCycles={chart4Cycles}
         dropdownSelected={chart4Dropdown}
@@ -757,7 +796,11 @@ export const Home: React.FC = () => {
       <Box height="50px" />
       <ChartBlock
         id="expenditures"
-        subtitle="Expenditures"
+        subtitle={get(
+          cmsData,
+          "pagesHome.expendituresSubtitle",
+          "Expenditures"
+        )}
         title={expendituresTotal}
         selectedCycles={chart5Cycles}
         unitButtons={chart5UnitButtons}

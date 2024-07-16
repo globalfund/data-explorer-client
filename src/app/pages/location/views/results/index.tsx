@@ -17,8 +17,10 @@ import {
   TABLE_VARIATION_6_COLUMNS,
   TABLE_VARIATION_7_COLUMNS,
 } from "app/components/table/data";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
+  const cmsData = useCMSData({ returnData: true });
   const params = useParams<{ id: string; tab: string }>();
 
   const locationName = useStoreState((state) =>
@@ -65,7 +67,7 @@ export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
       {showStats && fullWidthDivider}
       <ChartBlock
         id="results"
-        title="Annual Results"
+        title={get(cmsData, "pagesLocationResults.title", "Annual Results")}
         noBottomToolbar
         empty={!showResults}
         cycles={RESULT_YEARS}
@@ -86,7 +88,7 @@ export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
       <ChartBlock
         id="documents"
         noBottomToolbar
-        title="Documents"
+        title={get(cmsData, "pagesLocationResults.documentTitle", "Documents")}
         empty={!showDocuments}
         subtitle=""
         infoType="global"

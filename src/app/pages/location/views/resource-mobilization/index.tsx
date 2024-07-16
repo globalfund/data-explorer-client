@@ -15,8 +15,10 @@ import {
   getFinancialValueWithMetricPrefix,
   getRange,
 } from "app/utils/getFinancialValueWithMetricPrefix";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export const ResourceMobilization: React.FC = () => {
+  const cmsData = useCMSData({ returnData: true });
   const params = useParams<{ id: string; tab: string }>();
   const paramsId = params.id?.replace("|", "%2F");
 
@@ -96,7 +98,11 @@ export const ResourceMobilization: React.FC = () => {
         loading={loadingRMBarChart}
         title={`US$${totalPledge}`}
         selectedCycles={chart1Cycles}
-        subtitle="Pledges & Contributions"
+        subtitle={get(
+          cmsData,
+          "pagesLocationResourceMobilization.title",
+          "Pledges & Contributions"
+        )}
         handleCycleChange={handleChartCycleChange}
         empty={dataRMBarChart.length === 0 && chart1Cycles.length === 0}
         infoType="pledges_contributions"
@@ -104,8 +110,16 @@ export const ResourceMobilization: React.FC = () => {
         <BarChart
           data={dataRMBarChart}
           valueLabels={{
-            value: "Pledge",
-            value1: "Contribution",
+            value: get(
+              cmsData,
+              "pagesLocationResourceMobilization.barchartLabel1",
+              "Pledge"
+            ),
+            value1: get(
+              cmsData,
+              "pagesLocationResourceMobilization.barchartLabel2",
+              "Contribution"
+            ),
           }}
         />
       </ChartBlock>
@@ -135,7 +149,11 @@ export const ResourceMobilization: React.FC = () => {
             US${totalPledge}
           </Typography>
           <Typography variant="subtitle2">
-            Total Pledge
+            {get(
+              cmsData,
+              "pagesLocationResourceMobilization.statsLabel1",
+              "Total Pledge"
+            )}
             {chart1Cycles.length > 0
               ? ` ${chart1Cycles.map((c) => c.name).join(",")}`
               : ""}
@@ -151,7 +169,11 @@ export const ResourceMobilization: React.FC = () => {
             US${totalContribution}
           </Typography>
           <Typography variant="subtitle2">
-            Total Contribution
+            {get(
+              cmsData,
+              "pagesLocationResourceMobilization.statsLabel2",
+              "Total Contribution"
+            )}
             {chart1Cycles.length > 0
               ? ` ${chart1Cycles.map((c) => c.name).join(",")}`
               : ""}

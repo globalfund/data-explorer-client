@@ -10,8 +10,10 @@ import { TableContainer } from "app/components/table-container";
 import { TABS } from "app/pages/grant/views/targets-results/data";
 import { TABLE_VARIATION_4_COLUMNS } from "app/components/table/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export const GrantTargetsResults: React.FC = () => {
+  const cmsData = useCMSData({ returnData: true });
   const params = useParams<{ id: string; ip: string }>();
 
   useTitle(`The Data Explorer - ${params.id} Targets & Results`);
@@ -126,10 +128,18 @@ export const GrantTargetsResults: React.FC = () => {
     <Box marginTop="24px">
       <ChartBlock
         loading={loading}
-        title="Indicators"
+        title={get(cmsData, "pagesGrantTargetResults.title", "Indicators")}
         id="grant-targets-results"
-        subtitle="Targets & Results"
-        text="Description of Impact indicators: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
+        subtitle={get(
+          cmsData,
+          "pagesGrantTargetResults.subtitle",
+          "Targets & Results"
+        )}
+        text={get(
+          cmsData,
+          "pagesGrantTargetResults.text",
+          "Description of Impact indicators: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
+        )}
         infoType="global"
       >
         <Box width="100%" height="32px" />

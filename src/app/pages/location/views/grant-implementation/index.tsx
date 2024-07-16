@@ -35,9 +35,11 @@ import {
   getRange,
   getFinancialValueWithMetricPrefix,
 } from "app/utils/getFinancialValueWithMetricPrefix";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export const GrantImplementation = () => {
   const params = useParams<{ id: string; tab: string }>();
+  const cmsData = useCMSData({ returnData: true });
   const paramsId = params.id?.replace("|", "%2F");
 
   const locationName = useStoreState((state) =>
@@ -507,7 +509,11 @@ export const GrantImplementation = () => {
       <ChartBlock
         id="budget"
         title={totalBudget}
-        subtitle="Grant Budgets"
+        subtitle={get(
+          cmsData,
+          "pagesLocationGrantImplementation.budgetsSubtitle",
+          "Grant Budgets"
+        )}
         selectedCycles={chart2Cycles}
         // dropdownSelected={chart2Dropdown}
         loading={loadingBudgetSankeyChart}
@@ -532,16 +538,32 @@ export const GrantImplementation = () => {
           }}
         >
           <Grid item xs={3}>
-            Total Budgets
+            {get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.budgetsLabel1",
+              "Total budget"
+            )}
           </Grid>
           <Grid item xs={3}>
-            Landscape 1
+            {get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.budgetsLabel2",
+              "Investement Landscape 1"
+            )}
           </Grid>
           <Grid item xs={3}>
-            Landscape 2
+            {get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.budgetsLabel3",
+              "Investement Landscape 2"
+            )}
           </Grid>
           <Grid item xs={3}>
-            Cost Category
+            {get(
+              cmsData,
+              "pagesDatasetsGrantImplementation.budgetsLabel4",
+              "Cost Category"
+            )}
           </Grid>
         </Grid>
         <SankeyChart data={dataBudgetSankeyChart} />
@@ -549,7 +571,11 @@ export const GrantImplementation = () => {
       {showBudgetSankeyChart && fullWidthDivider}
       <ChartBlock
         id="expenditures"
-        subtitle="Expenditures"
+        subtitle={get(
+          cmsData,
+          "pagesLocationGrantImplementation.expendituresSubtitle",
+          "Expenditures"
+        )}
         title={expendituresTotal}
         selectedCycles={chart3Cycles}
         loading={loadingExpendituresHeatmap}
@@ -579,7 +605,11 @@ export const GrantImplementation = () => {
       {showExpendituresHeatmap && fullWidthDivider}
       <ChartBlock
         id="grants"
-        title={`${countGrantsTable} Grants`}
+        title={`${countGrantsTable} ${get(
+          cmsData,
+          "pagesLocationGrantImplementation.grantsTitle",
+          "Grants"
+        )}`}
         subtitle=""
         empty={!showGrantsTable && chart3Cycles.length === 0}
         infoType="global"
@@ -625,7 +655,11 @@ export const GrantImplementation = () => {
             flexDirection="column"
           >
             <Typography color="#000" fontSize="18px" fontWeight="700">
-              Components
+              {get(
+                cmsData,
+                "pagesLocationGrantImplementation.grantsPieChart1Title",
+                "Components"
+              )}
             </Typography>
             <PieChart data={dataGrantsPieCharts.pie1} />
           </Box>
@@ -637,7 +671,11 @@ export const GrantImplementation = () => {
             flexDirection="column"
           >
             <Typography color="#000" fontSize="18px" fontWeight="700">
-              Principal Recipients
+              {get(
+                cmsData,
+                "pagesLocationGrantImplementation.grantsPieChart2Title",
+                "Principal Recipients"
+              )}
             </Typography>
             <PieChart data={dataGrantsPieCharts.pie2} />
           </Box>
@@ -649,7 +687,11 @@ export const GrantImplementation = () => {
             flexDirection="column"
           >
             <Typography color="#000" fontSize="18px" fontWeight="700">
-              Investments
+              {get(
+                cmsData,
+                "pagesLocationGrantImplementation.grantsPieChart3Title",
+                "Investments"
+              )}
             </Typography>
             <PieChart data={dataGrantsPieCharts.pie3} />
           </Box>
