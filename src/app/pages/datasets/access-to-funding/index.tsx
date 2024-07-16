@@ -1,13 +1,14 @@
 import React from "react";
 import get from "lodash/get";
 import uniq from "lodash/uniq";
-import filter from "lodash/filter";
 import Box from "@mui/material/Box";
+import { useTitle } from "react-use";
 import { appColors } from "app/theme";
 import Grid from "@mui/material/Grid";
-import findIndex from "lodash/findIndex";
 import Tooltip from "@mui/material/Tooltip";
+import Divider from "@mui/material/Divider";
 import { Table } from "app/components/table";
+import { useLocation } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
 import Info from "@mui/icons-material/InfoOutlined";
@@ -15,6 +16,7 @@ import { Treemap } from "app/components/charts/treemap";
 import { DatasetPage } from "app/pages/datasets/common/page";
 import CircularProgress from "@mui/material/CircularProgress";
 import { SunburstChart } from "app/components/charts/sunburst";
+import { TableContainer } from "app/components/table-container";
 import { BarSeriesChart } from "app/components/charts/bar-series";
 import { FilterGroupModel } from "app/components/filters/list/data";
 import { TreemapDataItem } from "app/components/charts/treemap/data";
@@ -28,6 +30,8 @@ import {
   dropdownItemsAllocations,
 } from "app/pages/datasets/access-to-funding/data";
 import {
+  cellBGColorFormatter,
+  TABLE_VARIATION_6_COLUMNS as DOCUMENTS_TABLE_COLUMNS,
   TABLE_VARIATION_10_COLUMNS as ELIGIBILITY_TABLE_COLUMNS,
   TABLE_VARIATION_11_COLUMNS as ALLOCATIONS_TABLE_COLUMNS,
   TABLE_VARIATION_12_COLUMNS as FUNDING_REQUESTS_TABLE_COLUMNS,
@@ -36,6 +40,9 @@ import { useCMSData } from "app/hooks/useCMSData";
 
 export const AccessToFundingPage: React.FC = () => {
   const cmsData = useCMSData({ returnData: true });
+  useTitle("The Data Explorer - Access to Funding");
+  const location = useLocation();
+
   const [dropdownSelected, setDropdownSelected] = React.useState(
     dropdownItemsAllocations[0].value
   );
@@ -75,7 +82,24 @@ export const AccessToFundingPage: React.FC = () => {
     (actions) => actions.AccessToFundingStats.fetch
   );
   const dataEligibilityTable = useStoreState((state) =>
-    get(state.AccessToFundingEligibilityTable, "data.data", [])
+    get(state.AccessToFundingEligibilityTable, "data.data", []).map(
+      (item: any, index) => {
+        if (index === 0) {
+          return {
+            ...item,
+            top: true,
+            _children: item._children.map((item: any) => ({
+              ...item,
+              top: true,
+            })),
+          };
+        }
+        return item;
+      }
+    )
+  );
+  const dataEligibilityTableYears = useStoreState((state) =>
+    get(state.AccessToFundingEligibilityTable, "data.years", [])
   );
   const loadingEligibilityTable = useStoreState(
     (state) => state.AccessToFundingEligibilityTable.loading
@@ -137,13 +161,54 @@ export const AccessToFundingPage: React.FC = () => {
     }
   });
   const dataFundingRequestsTable = useStoreState((state) =>
-    get(state.AccessToFundingFundingRequestsTable, "data.data", [])
+    get(state.AccessToFundingFundingRequestsTable, "data.data", []).map(
+      (item: any, index) => {
+        if (index === 0) {
+          return {
+            ...item,
+            top: true,
+            _children: item._children.map((item: any) => ({
+              ...item,
+              top: true,
+            })),
+          };
+        }
+        return item;
+      }
+    )
   );
   const loadingFundingRequestsTable = useStoreState(
     (state) => state.AccessToFundingFundingRequestsTable.loading
   );
   const fetchFundingRequestsTable = useStoreActions(
     (actions) => actions.AccessToFundingFundingRequestsTable.fetch
+  );
+  const dataDocumentsTable = useStoreState((state) =>
+    get(state.AccessToFundingDocumentsTable, "data.data", []).map(
+      (item: any, index) => {
+        if (index === 0) {
+          return {
+            ...item,
+            top: true,
+            _children: item._children.map((item: any) => ({
+              ...item,
+              top: true,
+              _children: item._children.map((subitem: any) => ({
+                ...subitem,
+                top: true,
+              })),
+            })),
+          };
+        }
+        return item;
+      }
+    )
+  );
+  const loadingDocumentsTable = useStoreState(
+    (state) => state.AccessToFundingDocumentsTable.loading
+  );
+  const fetchDocumentsTable = useStoreActions(
+    (actions) => actions.AccessToFundingDocumentsTable.fetch
   );
   const dataLocationFilterOptions = useStoreState(
     (state) =>
@@ -193,6 +258,8 @@ export const AccessToFundingPage: React.FC = () => {
   const [eligibilityYear, setEligibilityYear] = React.useState(
     eligibilityYears[0].value
   );
+  const [allocationCycleDropdownSelected, setAllocationCycleDropdownSelected] =
+    React.useState<string | null>(null);
 
   const handleSelectionChange = (value: string) => {
     setDropdownSelected(value);
@@ -205,6 +272,7 @@ export const AccessToFundingPage: React.FC = () => {
   const handleResetFilters = () => {
     appliedFiltersActions.setAll({
       ...appliedFiltersData,
+      cycles: [],
       locations: [],
       components: [],
     });
@@ -368,24 +436,30 @@ export const AccessToFundingPage: React.FC = () => {
 
   const filterGroups = React.useMemo(() => {
     return [
-      dataCycleFilterOptions,
+      // dataCycleFilterOptions,
       dataLocationFilterOptions,
       dataComponentFilterOptions,
     ];
   }, [
     dataLocationFilterOptions,
     dataComponentFilterOptions,
-    dataCycleFilterOptions,
+    // dataCycleFilterOptions,
   ]);
 
   const filterString = React.useMemo(() => {
     let filterString = "";
-    if (appliedFiltersData.locations.length > 0) {
+    if (
+      appliedFiltersData.locations.length > 0 &&
+      location.search.includes("locations=")
+    ) {
       filterString += `geographies=${encodeURIComponent(
         appliedFiltersData.locations.join(",")
       )}`;
     }
-    if (appliedFiltersData.components.length > 0) {
+    if (
+      appliedFiltersData.components.length > 0 &&
+      location.search.includes("components=")
+    ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
       }components=${encodeURIComponent(
@@ -393,13 +467,14 @@ export const AccessToFundingPage: React.FC = () => {
       )}`;
     }
     return filterString;
-  }, [appliedFiltersData]);
+  }, [appliedFiltersData, location.search]);
 
   const chart1FilterString = React.useMemo(() => {
     let filterString = "";
     if (
-      [...appliedFiltersData.locations, ...chart1AppliedFiltersData.locations]
-        .length > 0
+      (appliedFiltersData.locations.length > 0 &&
+        location.search.includes("locations=")) ||
+      chart1AppliedFiltersData.locations.length > 0
     ) {
       filterString += `geographies=${encodeURIComponent(
         uniq([
@@ -409,8 +484,9 @@ export const AccessToFundingPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.components, ...chart1AppliedFiltersData.components]
-        .length > 0
+      (appliedFiltersData.components.length > 0 &&
+        location.search.includes("components=")) ||
+      chart1AppliedFiltersData.components.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -422,8 +498,9 @@ export const AccessToFundingPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.cycles, ...chart1AppliedFiltersData.cycles]
-        .length > 0
+      (appliedFiltersData.cycles.length > 0 &&
+        location.search.includes("cycles=")) ||
+      chart1AppliedFiltersData.cycles.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -435,13 +512,14 @@ export const AccessToFundingPage: React.FC = () => {
       )}`;
     }
     return filterString;
-  }, [appliedFiltersData, chart1AppliedFiltersData]);
+  }, [appliedFiltersData, chart1AppliedFiltersData, location.search]);
 
   const chart2FilterString = React.useMemo(() => {
     let filterString = "";
     if (
-      [...appliedFiltersData.locations, ...chart2AppliedFiltersData.locations]
-        .length > 0
+      (appliedFiltersData.locations.length > 0 &&
+        location.search.includes("locations=")) ||
+      chart2AppliedFiltersData.locations.length > 0
     ) {
       filterString += `geographies=${encodeURIComponent(
         uniq([
@@ -451,8 +529,9 @@ export const AccessToFundingPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.components, ...chart2AppliedFiltersData.components]
-        .length > 0
+      (appliedFiltersData.components.length > 0 &&
+        location.search.includes("components=")) ||
+      chart2AppliedFiltersData.components.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -463,27 +542,25 @@ export const AccessToFundingPage: React.FC = () => {
         ]).join(",")
       )}`;
     }
-    if (
-      [...appliedFiltersData.cycles, ...chart2AppliedFiltersData.cycles]
-        .length > 0
-    ) {
+    if (allocationCycleDropdownSelected) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
-      }cycles=${encodeURIComponent(
-        uniq([
-          ...appliedFiltersData.cycles,
-          ...chart2AppliedFiltersData.cycles,
-        ]).join(",")
-      )}`;
+      }cycles=${encodeURIComponent(allocationCycleDropdownSelected)}`;
     }
     return filterString;
-  }, [appliedFiltersData, chart2AppliedFiltersData]);
+  }, [
+    location.search,
+    appliedFiltersData,
+    chart2AppliedFiltersData,
+    allocationCycleDropdownSelected,
+  ]);
 
   const chart3FilterString = React.useMemo(() => {
     let filterString = "";
     if (
-      [...appliedFiltersData.locations, ...chart3AppliedFiltersData.locations]
-        .length > 0
+      (appliedFiltersData.locations.length > 0 &&
+        location.search.includes("locations=")) ||
+      chart3AppliedFiltersData.locations.length > 0
     ) {
       filterString += `geographies=${encodeURIComponent(
         uniq([
@@ -493,8 +570,9 @@ export const AccessToFundingPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.components, ...chart3AppliedFiltersData.components]
-        .length > 0
+      (appliedFiltersData.components.length > 0 &&
+        location.search.includes("components=")) ||
+      chart3AppliedFiltersData.components.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -506,8 +584,9 @@ export const AccessToFundingPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.cycles, ...chart3AppliedFiltersData.cycles]
-        .length > 0
+      (appliedFiltersData.cycles.length > 0 &&
+        location.search.includes("cycles=")) ||
+      chart3AppliedFiltersData.cycles.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -519,7 +598,7 @@ export const AccessToFundingPage: React.FC = () => {
       )}`;
     }
     return filterString;
-  }, [appliedFiltersData, chart3AppliedFiltersData]);
+  }, [appliedFiltersData, chart3AppliedFiltersData, location.search]);
 
   const range = React.useMemo(() => {
     const values: {
@@ -536,21 +615,52 @@ export const AccessToFundingPage: React.FC = () => {
   const eligibilityTableColumns = React.useMemo(() => {
     return [
       ELIGIBILITY_TABLE_COLUMNS[0],
-      ...filter(
-        ELIGIBILITY_TABLE_COLUMNS,
-        (c) =>
-          findIndex(dataEligibilityTable, (item) => {
-            const values = Object.keys(
-              get(item, "_children[0]._children[0]", {})
-            );
-            return values.indexOf(c.title) !== -1;
-          }) !== -1
-      ),
+      ...dataEligibilityTableYears.map((year) => ({
+        width: 60,
+        title: year,
+        field: year,
+        headerSort: false,
+        formatter: cellBGColorFormatter,
+      })),
     ];
   }, [dataEligibilityTable]);
 
+  const allocationCycleDropdown = React.useMemo(() => {
+    if (!allocationCycleDropdownSelected) {
+      return <React.Fragment />;
+    }
+    return (
+      <Dropdown
+        dropdownItems={dataCycleFilterOptions.options.map((item) => ({
+          label: item.name,
+          value: item.value,
+        }))}
+        dropdownSelected={allocationCycleDropdownSelected}
+        handleDropdownChange={setAllocationCycleDropdownSelected}
+      />
+    );
+  }, [dataCycleFilterOptions, allocationCycleDropdownSelected]);
+
+  React.useEffect(() => {
+    if (
+      dataCycleFilterOptions.options.length > 0 &&
+      !allocationCycleDropdownSelected
+    ) {
+      setAllocationCycleDropdownSelected(
+        dataCycleFilterOptions.options[
+          dataCycleFilterOptions.options.length - 1
+        ].value
+      );
+    }
+  }, [dataCycleFilterOptions]);
+
   React.useEffect(() => {
     fetchAllocationsBarSeries({ filterString });
+    fetchDocumentsTable({
+      filterString: `types=Application${
+        filterString.length > 0 ? `&${filterString}` : ""
+      }`,
+    });
   }, [filterString]);
 
   React.useEffect(() => {
@@ -567,14 +677,32 @@ export const AccessToFundingPage: React.FC = () => {
   }, [chart1FilterString]);
 
   React.useEffect(() => {
-    fetchAllocationsSunburst({ filterString: chart2FilterString });
-    fetchAllocationsTreemap({ filterString: chart2FilterString });
-    fetchAllocationsTable({ filterString: chart2FilterString });
+    if (allocationCycleDropdownSelected) {
+      fetchAllocationsSunburst({ filterString: chart2FilterString });
+      fetchAllocationsTreemap({ filterString: chart2FilterString });
+      fetchAllocationsTable({ filterString: chart2FilterString });
+    }
   }, [chart2FilterString]);
 
   React.useEffect(() => {
     fetchFundingRequestsTable({ filterString: chart3FilterString });
   }, [chart3FilterString]);
+
+  React.useEffect(() => {
+    if (location.hash) {
+      const blockId = location.hash.slice(1).split("|")[0];
+      const blockChartType = location.hash.slice(1).split("|")[1];
+      if (blockId && blockChartType) {
+        switch (blockId) {
+          case "disbursements":
+            setDropdownSelected(decodeURIComponent(blockChartType));
+            break;
+          default:
+            break;
+        }
+      }
+    }
+  }, [location.hash]);
 
   return (
     <DatasetPage
@@ -583,11 +711,7 @@ export const AccessToFundingPage: React.FC = () => {
         "pagesDatasetsAccessToFunding.title",
         "Access to Funding"
       )}
-      subtitle={get(
-        cmsData,
-        "pagesDatasetsAccessToFunding.subtitle",
-        "Lorem ipsum."
-      )}
+      subtitle=""
       filterGroups={filterGroups}
       appliedFilters={pageAppliedFilters}
       handleResetFilters={handleResetFilters}
@@ -601,6 +725,12 @@ export const AccessToFundingPage: React.FC = () => {
             flexDirection="row"
             alignItems="center"
             justifyContent="space-between"
+            sx={{
+              "@media (max-width: 767px)": {
+                flexDirection: "column",
+                gap: "20px",
+              },
+            }}
           >
             <Box>
               <Typography variant="h5">
@@ -623,6 +753,12 @@ export const AccessToFundingPage: React.FC = () => {
               display="flex"
               flexDirection="row"
               alignItems="center"
+              sx={{
+                "@media (max-width: 767px)": {
+                  width: "100%",
+                  justifyContent: "flex-end",
+                },
+              }}
             >
               <Typography fontSize="12px" fontWeight="700">
                 {get(
@@ -662,7 +798,7 @@ export const AccessToFundingPage: React.FC = () => {
               </Box>
             )}
             {dataStats.map((item) => (
-              <Grid item key={item.name} sm={6} md={3}>
+              <Grid item key={item.name} xs={12} sm={6} md={3}>
                 <Box padding="15px" bgcolor="#F1F3F5">
                   <Typography variant="h5">{item.value}</Typography>
                   <Typography fontSize="12px">
@@ -679,6 +815,9 @@ export const AccessToFundingPage: React.FC = () => {
           sx={{
             "#content": {
               padding: 0,
+            },
+            "@media (max-width: 767px)": {
+              padding: "20px 0",
             },
           }}
         >
@@ -704,6 +843,7 @@ export const AccessToFundingPage: React.FC = () => {
             removeFilter={handleRemoveChartFilter(1)}
             handleResetFilters={handleResetChartFilters(1)}
             appliedFiltersData={chart1AppliedFiltersData}
+            infoType="global"
           >
             <Box
               gap="20px"
@@ -719,6 +859,7 @@ export const AccessToFundingPage: React.FC = () => {
                   "> div": {
                     gap: "10px",
                     display: "flex",
+                    flexWrap: "wrap",
                     flexDirection: "row",
                     "> div": {
                       gap: "5px",
@@ -732,6 +873,10 @@ export const AccessToFundingPage: React.FC = () => {
                       },
                     },
                   },
+                },
+                "@media (max-width: 767px)": {
+                  gap: "16px",
+                  flexDirection: "column",
                 },
               }}
             >
@@ -880,14 +1025,22 @@ export const AccessToFundingPage: React.FC = () => {
                 </Box>
               </Box>
               <Tooltip title="">
-                <Info fontSize="small" />
+                <Info
+                  fontSize="small"
+                  sx={{
+                    "@media (max-width: 920px)": {
+                      display: "none",
+                    },
+                  }}
+                />
               </Tooltip>
             </Box>
-            <Table
+            <TableContainer
               dataTree
               id="eligibility-table"
               data={dataEligibilityTable}
               columns={eligibilityTableColumns}
+              dataTreeStartExpandedFn={(row) => row.getData().top}
             />
           </DatasetChartBlock>
         </Box>
@@ -897,6 +1050,9 @@ export const AccessToFundingPage: React.FC = () => {
           sx={{
             "#content": {
               padding: 0,
+            },
+            "@media (max-width: 767px)": {
+              padding: "20px 0",
             },
           }}
         >
@@ -926,18 +1082,25 @@ export const AccessToFundingPage: React.FC = () => {
             removeFilter={handleRemoveChartFilter(2)}
             handleResetFilters={handleResetChartFilters(2)}
             appliedFiltersData={chart2AppliedFiltersData}
+            extraDropdown={allocationCycleDropdown}
+            infoType="global"
           >
             {chartContent}
           </DatasetChartBlock>
         </Box>
         <FullWidthDivider />
-        <Box padding="50px 0">
+        <Box
+          padding="50px 0"
+          sx={{
+            "@media (max-width: 767px)": {
+              padding: "20px 0",
+            },
+          }}
+        >
           <Typography variant="h5">
-            {get(
-              cmsData,
-              "pagesDatasetsAccessToFunding.cumulativeAllocationTitle",
-              "Cumulative Allocation by Cycles"
-            )}
+            get( cmsData,
+            "pagesDatasetsAccessToFunding.cumulativeAllocationTitle",
+            "Cumulative Allocation by Cycles" )
           </Typography>
           <Typography fontSize="14px" fontWeight="700">
             {get(
@@ -999,6 +1162,9 @@ export const AccessToFundingPage: React.FC = () => {
             "#content": {
               padding: 0,
             },
+            "@media (max-width: 767px)": {
+              padding: "20px 0",
+            },
           }}
         >
           <DatasetChartBlock
@@ -1023,14 +1189,79 @@ export const AccessToFundingPage: React.FC = () => {
             removeFilter={handleRemoveChartFilter(3)}
             handleResetFilters={handleResetChartFilters(3)}
             appliedFiltersData={chart3AppliedFiltersData}
+            infoType="global"
           >
-            <Table
+            <TableContainer
               dataTree
               id="funding-requests-table"
               data={dataFundingRequestsTable}
               columns={FUNDING_REQUESTS_TABLE_COLUMNS}
+              dataTreeStartExpandedFn={(row) => row.getData().top}
             />
           </DatasetChartBlock>
+        </Box>
+        <FullWidthDivider />
+        <Box
+          id="documents"
+          padding="50px 0"
+          sx={{
+            "@media (max-width: 767px)": {
+              padding: "20px 0",
+            },
+          }}
+        >
+          <Typography variant="h3" lineHeight={1.2}>
+            Documents
+          </Typography>
+          <Divider
+            sx={{
+              margin: "20px 0",
+              "@media (max-width: 767px)": {
+                display: "none",
+              },
+            }}
+          />
+          {loadingDocumentsTable && (
+            <Box
+              width="100%"
+              height="100%"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <CircularProgress />
+            </Box>
+          )}
+          {!loadingDocumentsTable && dataDocumentsTable.length > 0 ? (
+            <React.Fragment>
+              <Box
+                height="40px"
+                sx={{
+                  "@media (max-width: 767px)": {
+                    display: "none",
+                  },
+                }}
+              />
+              <TableContainer
+                dataTree
+                id="documents-table"
+                data={dataDocumentsTable}
+                columns={DOCUMENTS_TABLE_COLUMNS}
+                dataTreeStartExpandedFn={(row) => row.getData().top}
+              />
+            </React.Fragment>
+          ) : (
+            <Box
+              width="100%"
+              height="100%"
+              minHeight="250px"
+              alignItems="center"
+              justifyContent="center"
+              display={!loadingDocumentsTable ? "flex" : "none"}
+            >
+              <Typography>No data available</Typography>
+            </Box>
+          )}
         </Box>
       </Box>
     </DatasetPage>

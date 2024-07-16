@@ -3,11 +3,14 @@ import get from "lodash/get";
 import uniq from "lodash/uniq";
 import maxBy from "lodash/maxBy";
 import sumBy from "lodash/sumBy";
+import filter from "lodash/filter";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { appColors } from "app/theme";
 import Divider from "@mui/material/Divider";
 import { Table } from "app/components/table";
+import { useLocation } from "react-router-dom";
+import { useTitle, useUnmount } from "react-use";
 import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
 import { BarChart } from "app/components/charts/bar";
@@ -51,11 +54,14 @@ import {
   componentsGroupingOptions,
   dropdownItemsDisbursements,
   dropdownItemsExpenditures,
+  dropdownItemsBudgetsTableDataTypes,
 } from "app/pages/datasets/grant-implementation/data";
 import { useCMSData } from "app/hooks/useCMSData";
 
 export const GrantImplementationPage: React.FC = () => {
   const cmsData = useCMSData({ returnData: true });
+  useTitle("The Data Explorer - Financial Insights");
+  const location = useLocation();
 
   const [geographyGrouping, setGeographyGrouping] = React.useState(
     geographyGroupingOptions[0].value
@@ -135,7 +141,7 @@ export const GrantImplementationPage: React.FC = () => {
     (state) =>
       get(
         state.FinancialInsightsDisbursementsLineChart,
-        "data.keys",
+        "data.xAxisKeys",
         []
       ) as string[]
   );
@@ -179,6 +185,9 @@ export const GrantImplementationPage: React.FC = () => {
   );
   const fetchBudgetBreakdown = useStoreActions(
     (actions) => actions.FinancialInsightsBudgetBreakdown.fetch
+  );
+  const loadingBudgetBreakdown = useStoreState(
+    (state) => state.FinancialInsightsBudgetBreakdown.loading
   );
   const dataBudgetUtilisation = useStoreState(
     (state) =>
@@ -380,6 +389,28 @@ export const GrantImplementationPage: React.FC = () => {
       }))
       .reverse()
   );
+  const metricsCycles = useStoreState((state) =>
+    get(state.FinancialMetricsCycles, "data.data", [])
+      .map((cycle: any) => ({
+        label: cycle.value,
+        value: cycle.value,
+      }))
+      .reverse()
+  );
+  const expenditureCycles = useStoreState((state) =>
+    get(state.ExpendituresCycles, "data.data", [])
+      .map((cycle: any) => ({
+        label: cycle.value,
+        value: cycle.value,
+      }))
+      .reverse()
+  );
+  const fetchComponentFilterOptions = useStoreActions(
+    (actions) => actions.ComponentFilterOptions.fetch
+  );
+  const fetchLocationFilterOptions = useStoreActions(
+    (actions) => actions.LocationFilterOptions.fetch
+  );
   const pageAppliedFilters = useStoreState((state) => [
     ...state.AppliedFiltersState.components,
     ...state.AppliedFiltersState.locations,
@@ -398,6 +429,22 @@ export const GrantImplementationPage: React.FC = () => {
 
   const [budgetBreakdownDropdownSelected, setBudgetBreakdownDropdownSelected] =
     React.useState(cycles.length > 0 ? cycles[0].value : null);
+  const [budgetCycleDropdownSelected, setBudgetCycleDropdownSelected] =
+    React.useState(cycles.length > 0 ? cycles[0].value : null);
+  const [
+    financialMetricsCycleDropdownSelected,
+    setFinancialMetricsCycleDropdownSelected,
+  ] = React.useState(metricsCycles.length > 0 ? metricsCycles[0].value : null);
+  const [
+    expendituresCycleDropdownSelected,
+    setExpendituresCycleDropdownSelected,
+  ] = React.useState(
+    expenditureCycles.length > 0 ? expenditureCycles[0].value : null
+  );
+
+  const [budgetTableDataType, setBudgetTableDataType] = React.useState(
+    dropdownItemsBudgetsTableDataTypes[0].value
+  );
 
   const handleDisbursementsSelectionChange = (value: string) => {
     setDisbursementsDropdownSelected(value);
@@ -405,6 +452,10 @@ export const GrantImplementationPage: React.FC = () => {
 
   const handleBudgetBreakdownSelectionChange = (value: string) => {
     setBudgetBreakdownDropdownSelected(value);
+  };
+
+  const handleBudgetTableDataTypeChange = (value: string) => {
+    setBudgetTableDataType(value);
   };
 
   const handleGeographyGroupingChange = (value: string) => {
@@ -418,6 +469,7 @@ export const GrantImplementationPage: React.FC = () => {
   const handleResetFilters = () => {
     appliedFiltersActions.setAll({
       ...appliedFiltersData,
+      cycles: [],
       components: [],
       locations: [],
       principalRecipients: [],
@@ -438,6 +490,7 @@ export const GrantImplementationPage: React.FC = () => {
           principalRecipientSubTypes: [],
           principalRecipientTypes: [],
           status: [],
+          cycles: [],
         });
         setChart1AppliedFilters([]);
         break;
@@ -450,6 +503,7 @@ export const GrantImplementationPage: React.FC = () => {
           principalRecipientSubTypes: [],
           principalRecipientTypes: [],
           status: [],
+          cycles: [],
         });
         setChart2AppliedFilters([]);
         break;
@@ -462,6 +516,7 @@ export const GrantImplementationPage: React.FC = () => {
           principalRecipientSubTypes: [],
           principalRecipientTypes: [],
           status: [],
+          cycles: [],
         });
         setChart3AppliedFilters([]);
         break;
@@ -474,6 +529,7 @@ export const GrantImplementationPage: React.FC = () => {
           principalRecipientSubTypes: [],
           principalRecipientTypes: [],
           status: [],
+          cycles: [],
         });
         setChart4AppliedFilters([]);
         break;
@@ -553,6 +609,13 @@ export const GrantImplementationPage: React.FC = () => {
             state.status = state.status.filter((item) => item !== value);
           }
           break;
+        case "cycle":
+          if (checked) {
+            state.cycles.push(value);
+          } else {
+            state.cycles = state.cycles.filter((item) => item !== value);
+          }
+          break;
         default:
           break;
       }
@@ -564,6 +627,7 @@ export const GrantImplementationPage: React.FC = () => {
         ...state.principalRecipientSubTypes,
         ...state.principalRecipientTypes,
         ...state.status,
+        ...state.cycles,
       ]);
     };
 
@@ -627,6 +691,7 @@ export const GrantImplementationPage: React.FC = () => {
         ...state.principalRecipientSubTypes,
         ...state.principalRecipientTypes,
         ...state.status,
+        ...state.cycles,
       ]);
     };
 
@@ -642,7 +707,7 @@ export const GrantImplementationPage: React.FC = () => {
         return (
           <Box position="relative">
             <Typography
-              left="-5px"
+              left="-15px"
               bottom="20px"
               fontSize="10px"
               padding="7px 12px"
@@ -652,6 +717,9 @@ export const GrantImplementationPage: React.FC = () => {
               sx={{
                 transformOrigin: "left",
                 transform: "rotate(-90deg)",
+                "@media (max-width: 767px)": {
+                  left: 0,
+                },
               }}
             >
               Y Axis/<b>Disbursed Amount (US$ {range.abbr})</b>
@@ -673,6 +741,11 @@ export const GrantImplementationPage: React.FC = () => {
               borderRadius="4px"
               position="absolute"
               border="1px solid #DFE3E5"
+              sx={{
+                "@media (max-width: 767px)": {
+                  bottom: 0,
+                },
+              }}
             >
               X Axis/<b>Components</b>
             </Typography>
@@ -761,31 +834,47 @@ export const GrantImplementationPage: React.FC = () => {
 
   const financialMetricsContent = React.useMemo(() => {
     return (
-      <Box gap="40px" width="100%" display="flex" flexDirection="column">
-        <FinancialMetric
-          {...FINANCIAL_METRICS_DATA_1}
-          donutChart={{
-            ...FINANCIAL_METRICS_DATA_1.donutChart,
-            value: dataBudgetUtilisation.value,
-          }}
-          items={dataBudgetUtilisation.items}
-        />
-        <FinancialMetric
-          {...FINANCIAL_METRICS_DATA_2}
-          donutChart={{
-            ...FINANCIAL_METRICS_DATA_2.donutChart,
-            value: dataInCountryAbsorption.value,
-          }}
-          items={dataInCountryAbsorption.items}
-        />
-        <FinancialMetric
-          {...FINANCIAL_METRICS_DATA_3}
-          donutChart={{
-            ...FINANCIAL_METRICS_DATA_3.donutChart,
-            value: dataDisbursementUtilisation.value,
-          }}
-          items={dataDisbursementUtilisation.items}
-        />
+      <Box
+        gap="40px"
+        width="100%"
+        display="flex"
+        flexDirection="column"
+        sx={{
+          "@media (max-width: 767px)": {
+            marginTop: "32px",
+          },
+        }}
+      >
+        {dataBudgetUtilisation.items.length > 0 && (
+          <FinancialMetric
+            {...FINANCIAL_METRICS_DATA_1}
+            donutChart={{
+              ...FINANCIAL_METRICS_DATA_1.donutChart,
+              value: dataBudgetUtilisation.value,
+            }}
+            items={dataBudgetUtilisation.items}
+          />
+        )}
+        {dataInCountryAbsorption.items.length > 0 && (
+          <FinancialMetric
+            {...FINANCIAL_METRICS_DATA_2}
+            donutChart={{
+              ...FINANCIAL_METRICS_DATA_2.donutChart,
+              value: dataInCountryAbsorption.value,
+            }}
+            items={dataInCountryAbsorption.items}
+          />
+        )}
+        {dataDisbursementUtilisation.items.length > 0 && (
+          <FinancialMetric
+            {...FINANCIAL_METRICS_DATA_3}
+            donutChart={{
+              ...FINANCIAL_METRICS_DATA_3.donutChart,
+              value: dataDisbursementUtilisation.value,
+            }}
+            items={dataDisbursementUtilisation.items}
+          />
+        )}
       </Box>
     );
   }, [
@@ -796,8 +885,8 @@ export const GrantImplementationPage: React.FC = () => {
 
   const financialMetricsEmpty = React.useMemo(() => {
     return (
-      !dataBudgetUtilisation.items.length ||
-      !dataInCountryAbsorption.items.length ||
+      !dataBudgetUtilisation.items.length &&
+      !dataInCountryAbsorption.items.length &&
       !dataDisbursementUtilisation.items.length
     );
   }, [
@@ -818,6 +907,9 @@ export const GrantImplementationPage: React.FC = () => {
                 color: "#464646",
                 fontSize: "10px",
                 fontWeight: "700",
+                "@media (max-width: 767px)": {
+                  marginTop: "16px",
+                },
               }}
             >
               <Grid item xs={3}>
@@ -855,6 +947,14 @@ export const GrantImplementationPage: React.FC = () => {
       case dropdownItemsBudgets[1].value:
         return <Treemap data={dataBudgetTreemap} />;
       case dropdownItemsBudgets[2].value:
+        const columns = [...BUDGET_TABLE_COLUMNS];
+        if (
+          budgetTableDataType === dropdownItemsBudgetsTableDataTypes[1].value
+        ) {
+          columns[0].title = "Modules & Interventions";
+        } else {
+          columns[0].title = "Investment Landscapes & Cost Category";
+        }
         return (
           <Table
             dataTree
@@ -871,7 +971,63 @@ export const GrantImplementationPage: React.FC = () => {
     dataBudgetSankey,
     dataBudgetTreemap,
     dataBudgetTable,
+    budgetTableDataType,
   ]);
+
+  const budgetsCycleDropdown = React.useMemo(() => {
+    if (!budgetCycleDropdownSelected) {
+      return <React.Fragment />;
+    }
+    return (
+      <Dropdown
+        dropdownItems={cycles}
+        dropdownSelected={budgetCycleDropdownSelected}
+        handleDropdownChange={setBudgetCycleDropdownSelected}
+      />
+    );
+  }, [cycles, budgetCycleDropdownSelected]);
+
+  const budgetsTableDataTypeDropdown = React.useMemo(() => {
+    if (budgetsDropdownSelected === dropdownItemsBudgets[2].value) {
+      return (
+        <Box gap="10px" display="flex" flexDirection="row">
+          {budgetsCycleDropdown}
+          <Dropdown
+            dropdownSelected={budgetTableDataType}
+            dropdownItems={dropdownItemsBudgetsTableDataTypes}
+            handleDropdownChange={handleBudgetTableDataTypeChange}
+          />
+        </Box>
+      );
+    }
+    return budgetsCycleDropdown;
+  }, [budgetsDropdownSelected, budgetTableDataType, budgetsCycleDropdown]);
+
+  const financialMetricsCycleDropdown = React.useMemo(() => {
+    if (!financialMetricsCycleDropdownSelected) {
+      return <React.Fragment />;
+    }
+    return (
+      <Dropdown
+        dropdownItems={metricsCycles}
+        dropdownSelected={financialMetricsCycleDropdownSelected}
+        handleDropdownChange={setFinancialMetricsCycleDropdownSelected}
+      />
+    );
+  }, [metricsCycles, financialMetricsCycleDropdownSelected]);
+
+  const expendituresCycleDropdown = React.useMemo(() => {
+    if (!expendituresCycleDropdownSelected) {
+      return <React.Fragment />;
+    }
+    return (
+      <Dropdown
+        dropdownItems={expenditureCycles}
+        dropdownSelected={expendituresCycleDropdownSelected}
+        handleDropdownChange={setExpendituresCycleDropdownSelected}
+      />
+    );
+  }, [expenditureCycles, expendituresCycleDropdownSelected]);
 
   const budgetsChartEmpty = React.useMemo(() => {
     switch (budgetsDropdownSelected) {
@@ -922,12 +1078,12 @@ export const GrantImplementationPage: React.FC = () => {
             yAxisLabel={get(
               cmsData,
               "pagesDatasetsGrantImplementation.expendituresBarchartYLabel",
-              "Investment Landscapes & Analytical Group Name"
+              "Modules & Interventions"
             )}
             xAxisLabel={get(
               cmsData,
               "pagesDatasetsGrantImplementation.expendituresBarchartXLabel",
-              "Cumulative Expenditure"
+              "Expenditure"
             )}
             valueLabels={{
               value: "amount",
@@ -976,7 +1132,19 @@ export const GrantImplementationPage: React.FC = () => {
 
   const toolbarRightContent = React.useMemo(() => {
     return (
-      <Box gap="20px" display="flex" flexDirection="row" alignItems="center">
+      <Box
+        gap="20px"
+        display="flex"
+        flexDirection="row"
+        alignItems="center"
+        sx={{
+          "@media (max-width: 767px)": {
+            gap: "16px",
+            flexDirection: "column",
+            alignItems: "flex-start",
+          },
+        }}
+      >
         <Box gap="10px" display="flex" flexDirection="row" alignItems="center">
           <Typography variant="body2" fontWeight="700">
             {get(
@@ -1016,10 +1184,33 @@ export const GrantImplementationPage: React.FC = () => {
   }, [dataBudgetTreemap]);
 
   const totalExpenditure = React.useMemo(() => {
-    return formatFinancialValue(sumBy(dataExpendituresHeatmap, "value"));
+    return formatFinancialValue(
+      sumBy(
+        filter(
+          dataExpendituresHeatmap,
+          (item) => !item.parentRow && !item.parentColumn
+        ),
+        "value"
+      )
+    );
   }, [dataExpendituresHeatmap]);
 
   const filterGroups = React.useMemo(() => {
+    return [
+      // dataCycleFilterOptions,
+      dataLocationFilterOptions,
+      dataComponentFilterOptions,
+      dataPartnerTypeFilterOptions,
+      dataStatusFilterOptions,
+    ];
+  }, [
+    dataLocationFilterOptions,
+    dataComponentFilterOptions,
+    dataPartnerTypeFilterOptions,
+    dataStatusFilterOptions,
+    // dataCycleFilterOptions,
+  ]);
+  const filterGroupsDisbursements = React.useMemo(() => {
     return [
       dataCycleFilterOptions,
       dataLocationFilterOptions,
@@ -1037,45 +1228,66 @@ export const GrantImplementationPage: React.FC = () => {
 
   const filterString = React.useMemo(() => {
     let filterString = "";
-    if (appliedFiltersData.locations.length > 0) {
+    if (
+      appliedFiltersData.locations.length > 0 &&
+      location.search.includes("locations=")
+    ) {
       filterString += `geographies=${encodeURIComponent(
         appliedFiltersData.locations.join(",")
       )}`;
     }
-    if (appliedFiltersData.components.length > 0) {
+    if (
+      appliedFiltersData.components.length > 0 &&
+      location.search.includes("components=")
+    ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
       }components=${encodeURIComponent(
         appliedFiltersData.components.join(",")
       )}`;
     }
-    if (appliedFiltersData.principalRecipientTypes.length > 0) {
+    if (
+      appliedFiltersData.principalRecipientTypes.length > 0 &&
+      location.search.includes("principalRecipientTypes=")
+    ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
       }principalRecipientTypes=${encodeURIComponent(
         appliedFiltersData.principalRecipientTypes.join(",")
       )}`;
     }
-    if (appliedFiltersData.principalRecipientSubTypes.length > 0) {
+    if (
+      appliedFiltersData.principalRecipientSubTypes.length > 0 &&
+      location.search.includes("principalRecipientSubTypes=")
+    ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
       }principalRecipientSubTypes=${encodeURIComponent(
         appliedFiltersData.principalRecipientSubTypes.join(",")
       )}`;
     }
-    if (appliedFiltersData.principalRecipients.length > 0) {
+    if (
+      appliedFiltersData.principalRecipients.length > 0 &&
+      location.search.includes("principalRecipients=")
+    ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
       }principalRecipients=${encodeURIComponent(
         appliedFiltersData.principalRecipients.join(",")
       )}`;
     }
-    if (appliedFiltersData.status.length > 0) {
+    if (
+      appliedFiltersData.status.length > 0 &&
+      location.search.includes("status=")
+    ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
       }status=${encodeURIComponent(appliedFiltersData.status.join(","))}`;
     }
-    if (appliedFiltersData.cycles.length > 0) {
+    if (
+      appliedFiltersData.cycles.length > 0 &&
+      location.search.includes("cycles=")
+    ) {
       const years = appliedFiltersData.cycles.map(
         (cycle) => cycle.replace(/ /g, "").split("-")[0]
       );
@@ -1089,13 +1301,14 @@ export const GrantImplementationPage: React.FC = () => {
       )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
     }
     return filterString;
-  }, [appliedFiltersData]);
+  }, [appliedFiltersData, location.search]);
 
   const chart1FilterString = React.useMemo(() => {
     let filterString = "";
     if (
-      [...appliedFiltersData.locations, ...chart1AppliedFiltersData.locations]
-        .length > 0
+      (appliedFiltersData.locations.length > 0 &&
+        location.search.includes("locations=")) ||
+      chart1AppliedFiltersData.locations.length > 0
     ) {
       filterString += `geographies=${encodeURIComponent(
         uniq([
@@ -1105,8 +1318,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.components, ...chart1AppliedFiltersData.components]
-        .length > 0
+      (appliedFiltersData.components.length > 0 &&
+        location.search.includes("components=")) ||
+      chart1AppliedFiltersData.components.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1118,10 +1332,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [
-        ...appliedFiltersData.principalRecipients,
-        ...chart1AppliedFiltersData.principalRecipients,
-      ].length > 0
+      (appliedFiltersData.principalRecipients.length > 0 &&
+        location.search.includes("principalRecipients=")) ||
+      chart1AppliedFiltersData.principalRecipients.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1133,10 +1346,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [
-        ...appliedFiltersData.principalRecipientSubTypes,
-        ...chart1AppliedFiltersData.principalRecipientSubTypes,
-      ].length > 0
+      (appliedFiltersData.principalRecipientSubTypes.length > 0 &&
+        location.search.includes("principalRecipientSubTypes=")) ||
+      chart1AppliedFiltersData.principalRecipientSubTypes.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1148,10 +1360,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [
-        ...appliedFiltersData.principalRecipientTypes,
-        ...chart1AppliedFiltersData.principalRecipientTypes,
-      ].length > 0
+      (appliedFiltersData.principalRecipientTypes.length > 0 &&
+        location.search.includes("principalRecipientTypes=")) ||
+      chart1AppliedFiltersData.principalRecipientTypes.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1163,8 +1374,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.status, ...chart1AppliedFiltersData.status]
-        .length > 0
+      (appliedFiltersData.status.length > 0 &&
+        location.search.includes("status=")) ||
+      chart1AppliedFiltersData.status.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1176,8 +1388,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.cycles, ...chart1AppliedFiltersData.cycles]
-        .length > 0
+      (appliedFiltersData.cycles.length > 0 &&
+        location.search.includes("cycles=")) ||
+      chart1AppliedFiltersData.cycles.length > 0
     ) {
       const years = uniq([
         ...appliedFiltersData.cycles,
@@ -1194,13 +1407,14 @@ export const GrantImplementationPage: React.FC = () => {
       )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
     }
     return filterString;
-  }, [appliedFiltersData, chart1AppliedFiltersData]);
+  }, [appliedFiltersData, chart1AppliedFiltersData, location.search]);
 
   const chart2FilterString = React.useMemo(() => {
     let filterString = "";
     if (
-      [...appliedFiltersData.locations, ...chart2AppliedFiltersData.locations]
-        .length > 0
+      (appliedFiltersData.locations.length > 0 &&
+        location.search.includes("locations=")) ||
+      chart2AppliedFiltersData.locations.length > 0
     ) {
       filterString += `geographies=${encodeURIComponent(
         uniq([
@@ -1210,8 +1424,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.components, ...chart2AppliedFiltersData.components]
-        .length > 0
+      (appliedFiltersData.components.length > 0 &&
+        location.search.includes("components=")) ||
+      chart2AppliedFiltersData.components.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1223,10 +1438,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [
-        ...appliedFiltersData.principalRecipients,
-        ...chart2AppliedFiltersData.principalRecipients,
-      ].length > 0
+      (appliedFiltersData.principalRecipients.length > 0 &&
+        location.search.includes("principalRecipients=")) ||
+      chart2AppliedFiltersData.principalRecipients.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1238,10 +1452,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [
-        ...appliedFiltersData.principalRecipientSubTypes,
-        ...chart2AppliedFiltersData.principalRecipientSubTypes,
-      ].length > 0
+      (appliedFiltersData.principalRecipientSubTypes.length > 0 &&
+        location.search.includes("principalRecipientSubTypes=")) ||
+      chart2AppliedFiltersData.principalRecipientSubTypes.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1253,10 +1466,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [
-        ...appliedFiltersData.principalRecipientTypes,
-        ...chart2AppliedFiltersData.principalRecipientTypes,
-      ].length > 0
+      (appliedFiltersData.principalRecipientTypes.length > 0 &&
+        location.search.includes("principalRecipientTypes=")) ||
+      chart2AppliedFiltersData.principalRecipientTypes.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1268,8 +1480,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.status, ...chart2AppliedFiltersData.status]
-        .length > 0
+      (appliedFiltersData.status.length > 0 &&
+        location.search.includes("status=")) ||
+      chart2AppliedFiltersData.status.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1280,32 +1493,29 @@ export const GrantImplementationPage: React.FC = () => {
         ]).join(",")
       )}`;
     }
-    if (
-      [...appliedFiltersData.cycles, ...chart2AppliedFiltersData.cycles]
-        .length > 0
-    ) {
-      const years = uniq([
-        ...appliedFiltersData.cycles,
-        ...chart2AppliedFiltersData.cycles,
-      ]).map((cycle) => cycle.replace(/ /g, "").split("-")[0]);
-      const yearsTo = uniq([
-        ...appliedFiltersData.cycles,
-        ...chart2AppliedFiltersData.cycles,
-      ]).map((cycle) => cycle.replace(/ /g, "").split("-")[1]);
+    if (budgetCycleDropdownSelected) {
+      const year = budgetCycleDropdownSelected.replace(/ /g, "").split("-")[0];
+      const yearTo = budgetCycleDropdownSelected
+        .replace(/ /g, "")
+        .split("-")[1];
       filterString += `${
         filterString.length > 0 ? "&" : ""
-      }years=${encodeURIComponent(
-        years.join(",")
-      )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
+      }years=${encodeURIComponent(year)}&yearsTo=${encodeURIComponent(yearTo)}`;
     }
     return filterString;
-  }, [appliedFiltersData, chart2AppliedFiltersData]);
+  }, [
+    location.search,
+    appliedFiltersData,
+    chart2AppliedFiltersData,
+    budgetCycleDropdownSelected,
+  ]);
 
   const chart3FilterString = React.useMemo(() => {
     let filterString = "";
     if (
-      [...appliedFiltersData.locations, ...chart3AppliedFiltersData.locations]
-        .length > 0
+      (appliedFiltersData.locations.length > 0 &&
+        location.search.includes("locations=")) ||
+      chart3AppliedFiltersData.locations.length > 0
     ) {
       filterString += `geographies=${encodeURIComponent(
         uniq([
@@ -1315,8 +1525,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.components, ...chart3AppliedFiltersData.components]
-        .length > 0
+      (appliedFiltersData.components.length > 0 &&
+        location.search.includes("components=")) ||
+      chart3AppliedFiltersData.components.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1328,10 +1539,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [
-        ...appliedFiltersData.principalRecipients,
-        ...chart3AppliedFiltersData.principalRecipients,
-      ].length > 0
+      (appliedFiltersData.principalRecipients.length > 0 &&
+        location.search.includes("principalRecipients=")) ||
+      chart3AppliedFiltersData.principalRecipients.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1343,10 +1553,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [
-        ...appliedFiltersData.principalRecipientSubTypes,
-        ...chart3AppliedFiltersData.principalRecipientSubTypes,
-      ].length > 0
+      (appliedFiltersData.principalRecipientSubTypes.length > 0 &&
+        location.search.includes("principalRecipientSubTypes=")) ||
+      chart3AppliedFiltersData.principalRecipientSubTypes.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1358,10 +1567,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [
-        ...appliedFiltersData.principalRecipientTypes,
-        ...chart3AppliedFiltersData.principalRecipientTypes,
-      ].length > 0
+      (appliedFiltersData.principalRecipientTypes.length > 0 &&
+        location.search.includes("principalRecipientTypes=")) ||
+      chart3AppliedFiltersData.principalRecipientTypes.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1373,8 +1581,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.status, ...chart3AppliedFiltersData.status]
-        .length > 0
+      (appliedFiltersData.status.length > 0 &&
+        location.search.includes("status=")) ||
+      chart3AppliedFiltersData.status.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1385,32 +1594,31 @@ export const GrantImplementationPage: React.FC = () => {
         ]).join(",")
       )}`;
     }
-    if (
-      [...appliedFiltersData.cycles, ...chart3AppliedFiltersData.cycles]
-        .length > 0
-    ) {
-      const years = uniq([
-        ...appliedFiltersData.cycles,
-        ...chart3AppliedFiltersData.cycles,
-      ]).map((cycle) => cycle.replace(/ /g, "").split("-")[0]);
-      const yearsTo = uniq([
-        ...appliedFiltersData.cycles,
-        ...chart3AppliedFiltersData.cycles,
-      ]).map((cycle) => cycle.replace(/ /g, "").split("-")[1]);
+    if (financialMetricsCycleDropdownSelected) {
+      const year = financialMetricsCycleDropdownSelected
+        .replace(/ /g, "")
+        .split("-")[0];
+      const yearTo = financialMetricsCycleDropdownSelected
+        .replace(/ /g, "")
+        .split("-")[1];
       filterString += `${
         filterString.length > 0 ? "&" : ""
-      }years=${encodeURIComponent(
-        years.join(",")
-      )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
+      }years=${encodeURIComponent(year)}&yearsTo=${encodeURIComponent(yearTo)}`;
     }
     return filterString;
-  }, [appliedFiltersData, chart3AppliedFiltersData]);
+  }, [
+    location.search,
+    appliedFiltersData,
+    chart3AppliedFiltersData,
+    financialMetricsCycleDropdownSelected,
+  ]);
 
   const chart4FilterString = React.useMemo(() => {
     let filterString = "";
     if (
-      [...appliedFiltersData.locations, ...chart4AppliedFiltersData.locations]
-        .length > 0
+      (appliedFiltersData.locations.length > 0 &&
+        location.search.includes("locations=")) ||
+      chart4AppliedFiltersData.locations.length > 0
     ) {
       filterString += `geographies=${encodeURIComponent(
         uniq([
@@ -1420,8 +1628,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.components, ...chart4AppliedFiltersData.components]
-        .length > 0
+      (appliedFiltersData.components.length > 0 &&
+        location.search.includes("components=")) ||
+      chart4AppliedFiltersData.components.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1433,10 +1642,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [
-        ...appliedFiltersData.principalRecipients,
-        ...chart4AppliedFiltersData.principalRecipients,
-      ].length > 0
+      (appliedFiltersData.principalRecipients.length > 0 &&
+        location.search.includes("principalRecipients=")) ||
+      chart4AppliedFiltersData.principalRecipients.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1448,10 +1656,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [
-        ...appliedFiltersData.principalRecipientSubTypes,
-        ...chart4AppliedFiltersData.principalRecipientSubTypes,
-      ].length > 0
+      (appliedFiltersData.principalRecipientSubTypes.length > 0 &&
+        location.search.includes("principalRecipientSubTypes=")) ||
+      chart4AppliedFiltersData.principalRecipientSubTypes.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1463,10 +1670,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [
-        ...appliedFiltersData.principalRecipientTypes,
-        ...chart4AppliedFiltersData.principalRecipientTypes,
-      ].length > 0
+      (appliedFiltersData.principalRecipientTypes.length > 0 &&
+        location.search.includes("principalRecipientTypes=")) ||
+      chart4AppliedFiltersData.principalRecipientTypes.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1478,8 +1684,9 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.status, ...chart4AppliedFiltersData.status]
-        .length > 0
+      (appliedFiltersData.status.length > 0 &&
+        location.search.includes("status=")) ||
+      chart4AppliedFiltersData.status.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -1490,30 +1697,37 @@ export const GrantImplementationPage: React.FC = () => {
         ]).join(",")
       )}`;
     }
-    if (
-      [...appliedFiltersData.cycles, ...chart4AppliedFiltersData.cycles]
-        .length > 0
-    ) {
-      const years = uniq([
-        ...appliedFiltersData.cycles,
-        ...chart4AppliedFiltersData.cycles,
-      ]).map((cycle) => cycle.replace(/ /g, "").split("-")[0]);
-      const yearsTo = uniq([
-        ...appliedFiltersData.cycles,
-        ...chart4AppliedFiltersData.cycles,
-      ]).map((cycle) => cycle.replace(/ /g, "").split("-")[1]);
+    if (expendituresCycleDropdownSelected) {
+      const year = expendituresCycleDropdownSelected
+        .replace(/ /g, "")
+        .split("-")[0];
+      const yearTo = expendituresCycleDropdownSelected
+        .replace(/ /g, "")
+        .split("-")[1];
       filterString += `${
         filterString.length > 0 ? "&" : ""
-      }years=${encodeURIComponent(
-        years.join(",")
-      )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
+      }years=${encodeURIComponent(year)}&yearsTo=${encodeURIComponent(yearTo)}`;
     }
     return filterString;
-  }, [appliedFiltersData, chart4AppliedFiltersData]);
+  }, [
+    location.search,
+    appliedFiltersData,
+    chart4AppliedFiltersData,
+    expendituresCycleDropdownSelected,
+  ]);
 
   React.useEffect(() => {
-    fetchFinancialInsightsStats({ filterString });
-  }, [filterString]);
+    fetchFinancialInsightsStats({
+      filterString,
+      routeParams: {
+        componentField:
+          componentsGrouping === componentsGroupingOptions[0].value
+            ? "activityAreaGroup"
+            : "activityArea",
+        geographyGrouping,
+      },
+    });
+  }, [filterString, componentsGrouping, geographyGrouping]);
 
   React.useEffect(() => {
     fetchFinancialInsightsDisbursementsBarChart({
@@ -1523,6 +1737,7 @@ export const GrantImplementationPage: React.FC = () => {
           componentsGrouping === componentsGroupingOptions[0].value
             ? "activityAreaGroup"
             : "activityArea",
+        geographyGrouping,
       },
     });
     fetchFinancialInsightsDisbursementsLineChart({
@@ -1532,6 +1747,7 @@ export const GrantImplementationPage: React.FC = () => {
           componentsGrouping === componentsGroupingOptions[0].value
             ? "activityAreaGroup"
             : "activityArea",
+        geographyGrouping,
       },
     });
     fetchFinancialInsightsDisbursementsTable({
@@ -1541,16 +1757,22 @@ export const GrantImplementationPage: React.FC = () => {
           componentsGrouping === componentsGroupingOptions[0].value
             ? "activityAreaGroup"
             : "activityArea",
+        geographyGrouping,
       },
     });
-  }, [chart1FilterString, componentsGrouping]);
+  }, [chart1FilterString, componentsGrouping, geographyGrouping]);
 
   React.useEffect(() => {
-    fetchBudgetSankey({ filterString: chart2FilterString });
-    fetchBudgetTable({ filterString: chart2FilterString });
-  }, [chart2FilterString]);
-
-  React.useEffect(() => {
+    fetchBudgetSankey({
+      filterString: chart2FilterString,
+      routeParams: {
+        componentField:
+          componentsGrouping === componentsGroupingOptions[0].value
+            ? "activityAreaGroup"
+            : "activityArea",
+        geographyGrouping,
+      },
+    });
     fetchBudgetTreemap({
       filterString: chart2FilterString,
       routeParams: {
@@ -1558,26 +1780,76 @@ export const GrantImplementationPage: React.FC = () => {
           componentsGrouping === componentsGroupingOptions[0].value
             ? "activityAreaGroup"
             : "activityArea",
+        geographyGrouping,
       },
     });
-  }, [chart2FilterString, componentsGrouping]);
+  }, [chart2FilterString, componentsGrouping, geographyGrouping]);
 
   React.useEffect(() => {
-    fetchBudgetUtilisation({ filterString: chart3FilterString });
-    fetchInCountryAbsorption({ filterString: chart3FilterString });
-    fetchDisbursementUtilisation({ filterString: chart3FilterString });
-  }, [chart3FilterString]);
+    let filterString = chart2FilterString;
+    if (budgetTableDataType === dropdownItemsBudgetsTableDataTypes[1].value) {
+      filterString += `${filterString.length > 0 ? "&" : ""}var2=${
+        componentsGrouping === componentsGroupingOptions[0].value
+          ? "activityAreaGroup"
+          : "activityArea"
+      }`;
+    }
+    fetchBudgetTable({
+      filterString,
+      routeParams: {
+        componentField:
+          componentsGrouping === componentsGroupingOptions[0].value
+            ? "activityAreaGroup"
+            : "activityArea",
+        geographyGrouping,
+      },
+    });
+  }, [chart2FilterString, budgetTableDataType, componentsGrouping]);
+
+  React.useEffect(() => {
+    fetchBudgetUtilisation({
+      filterString: chart3FilterString,
+      routeParams: {
+        componentField:
+          componentsGrouping === componentsGroupingOptions[0].value
+            ? "activityAreaGroup"
+            : "activityArea",
+        geographyGrouping,
+      },
+    });
+    fetchInCountryAbsorption({
+      filterString: chart3FilterString,
+      routeParams: {
+        componentField:
+          componentsGrouping === componentsGroupingOptions[0].value
+            ? "activityAreaGroup"
+            : "activityArea",
+        geographyGrouping,
+      },
+    });
+    fetchDisbursementUtilisation({
+      filterString: chart3FilterString,
+      routeParams: {
+        componentField:
+          componentsGrouping === componentsGroupingOptions[0].value
+            ? "activityAreaGroup"
+            : "activityArea",
+        geographyGrouping,
+      },
+    });
+  }, [chart3FilterString, componentsGrouping, geographyGrouping]);
 
   React.useEffect(() => {
     fetchExpendituresHeatmap({
       filterString: chart4FilterString,
       routeParams: {
-        row: "principalRecipientType,principalRecipient",
+        row: "principalRecipientType,principalRecipientSubType,principalRecipient",
         column: "component",
         componentField:
           componentsGrouping === componentsGroupingOptions[0].value
             ? "activityAreaGroup"
             : "activityArea",
+        geographyGrouping,
       },
     });
     fetchExpendituresBarChart({
@@ -1587,6 +1859,7 @@ export const GrantImplementationPage: React.FC = () => {
           componentsGrouping === componentsGroupingOptions[0].value
             ? "activityAreaGroup"
             : "activityArea",
+        geographyGrouping,
       },
     });
     fetchExpendituresTable({
@@ -1596,17 +1869,10 @@ export const GrantImplementationPage: React.FC = () => {
           componentsGrouping === componentsGroupingOptions[0].value
             ? "activityAreaGroup"
             : "activityArea",
+        geographyGrouping,
       },
     });
-  }, [chart4FilterString, componentsGrouping]);
-
-  React.useEffect(() => {
-    if (
-      cycles.length > 0 &&
-      budgetBreakdownDropdownSelected !== cycles[0].value
-    )
-      setBudgetBreakdownDropdownSelected(cycles[0].value);
-  }, [cycles]);
+  }, [chart4FilterString, componentsGrouping, geographyGrouping]);
 
   React.useEffect(() => {
     if (budgetBreakdownDropdownSelected) {
@@ -1618,10 +1884,82 @@ export const GrantImplementationPage: React.FC = () => {
             componentsGrouping === componentsGroupingOptions[0].value
               ? "activityAreaGroup"
               : "activityArea",
+          geographyGrouping,
         },
       });
     }
-  }, [budgetBreakdownDropdownSelected, filterString, componentsGrouping]);
+  }, [
+    budgetBreakdownDropdownSelected,
+    filterString,
+    componentsGrouping,
+    geographyGrouping,
+  ]);
+
+  React.useEffect(() => {
+    fetchComponentFilterOptions({
+      routeParams: {
+        type:
+          componentsGrouping === componentsGroupingOptions[0].value
+            ? "grouped"
+            : "ungrouped",
+      },
+    });
+  }, [componentsGrouping]);
+
+  React.useEffect(() => {
+    fetchLocationFilterOptions({
+      routeParams: {
+        type: geographyGrouping,
+      },
+    });
+  }, [geographyGrouping]);
+
+  React.useEffect(() => {
+    if (location.hash) {
+      const blockId = location.hash.slice(1).split("|")[0];
+      const blockChartType = location.hash.slice(1).split("|")[1];
+      if (blockId && blockChartType) {
+        switch (blockId) {
+          case "disbursements":
+            setDisbursementsDropdownSelected(
+              decodeURIComponent(blockChartType)
+            );
+            break;
+          case "budgets":
+            setBudgetsDropdownSelected(decodeURIComponent(blockChartType));
+            break;
+          case "expenditures":
+            setExpendituresDropdownSelected(decodeURIComponent(blockChartType));
+            break;
+          default:
+            break;
+        }
+      }
+    }
+  }, [location.hash]);
+
+  React.useEffect(() => {
+    if (cycles.length > 0 && !budgetCycleDropdownSelected) {
+      setBudgetCycleDropdownSelected(cycles[cycles.length - 1].value);
+    }
+    if (cycles.length > 0 && !budgetBreakdownDropdownSelected) {
+      setBudgetBreakdownDropdownSelected(cycles[cycles.length - 1].value);
+    }
+    if (cycles.length > 0 && !financialMetricsCycleDropdownSelected) {
+      setFinancialMetricsCycleDropdownSelected(cycles[cycles.length - 1].value);
+    }
+    if (cycles.length > 0 && !expendituresCycleDropdownSelected) {
+      setExpendituresCycleDropdownSelected(cycles[cycles.length - 1].value);
+    }
+  }, [cycles]);
+
+  useUnmount(() => {
+    fetchLocationFilterOptions({
+      routeParams: {
+        type: geographyGroupingOptions[0].value,
+      },
+    });
+  });
 
   return (
     <DatasetPage
@@ -1658,6 +1996,24 @@ export const GrantImplementationPage: React.FC = () => {
               "&:first-of-type": {
                 paddingLeft: 0,
               },
+              "@media (max-width: 920px)": {
+                padding: "0 15px",
+                h5: {
+                  fontSize: "20px",
+                },
+              },
+              "@media (max-width: 767px)": {
+                width: "100%",
+                padding: "16px 0",
+                "&:not(:last-child)": {
+                  borderRightStyle: "none",
+                  borderBottom: "1px solid #DFE3E5",
+                },
+              },
+            },
+            "@media (max-width: 767px)": {
+              marginBottom: 0,
+              flexDirection: "column",
             },
           }}
         >
@@ -1743,12 +2099,13 @@ export const GrantImplementationPage: React.FC = () => {
               dropdownItemsDisbursements[2].value
             }
             empty={disbursementsChartEmpty}
-            filterGroups={filterGroups}
             appliedFilters={chart1AppliedFilters}
+            filterGroups={filterGroupsDisbursements}
             toggleFilter={handleToggleChartFilter(1)}
             removeFilter={handleRemoveChartFilter(1)}
             handleResetFilters={handleResetChartFilters(1)}
             appliedFiltersData={chart1AppliedFiltersData}
+            infoType="global"
           >
             {disbursementsChartContent}
           </DatasetChartBlock>
@@ -1788,6 +2145,8 @@ export const GrantImplementationPage: React.FC = () => {
             removeFilter={handleRemoveChartFilter(2)}
             handleResetFilters={handleResetChartFilters(2)}
             appliedFiltersData={chart2AppliedFiltersData}
+            extraDropdown={budgetsTableDataTypeDropdown}
+            infoType="budgets"
           >
             {budgetsChartContent}
           </DatasetChartBlock>
@@ -1801,19 +2160,6 @@ export const GrantImplementationPage: React.FC = () => {
           position="relative"
           flexDirection="column"
         >
-          {loadingStats && (
-            <Box
-              width="100%"
-              height="100%"
-              display="flex"
-              position="absolute"
-              alignItems="center"
-              justifyContent="center"
-              bgcolor="rgba(255, 255, 255, 0.8)"
-            >
-              <CircularProgress />
-            </Box>
-          )}
           <Box
             width="100%"
             display="flex"
@@ -1851,21 +2197,27 @@ export const GrantImplementationPage: React.FC = () => {
             marginTop="40px"
             flexDirection="row"
           >
-            {dataBudgetBreakdown.map((i) => (
+            {dataBudgetBreakdown.map((i, ix) => (
               <Box
                 key={i.name}
                 display="flex"
                 bgcolor={i.color}
+                position="relative"
+                alignItems="center"
                 width={`${i.value}%`}
                 flexDirection="column"
-                alignItems="center"
-                position="relative"
               >
                 <Box
-                  top="-25px"
+                  top="-35px"
                   fontSize="12px"
                   fontWeight="400"
                   position="absolute"
+                  sx={{
+                    "@media (max-width: 767px)": {
+                      top: ix % 2 === 0 ? "-35px" : "auto",
+                      bottom: ix % 2 === 1 ? "-35px" : "auto",
+                    },
+                  }}
                 >
                   {i.name} ({i.value.toFixed(2).replace(".00", "")}%)
                 </Box>
@@ -1874,11 +2226,27 @@ export const GrantImplementationPage: React.FC = () => {
                   sx={{
                     marginTop: "-5px",
                     borderColor: i.color,
+                    "@media (max-width: 767px)": {
+                      display: "none",
+                    },
                   }}
                 />
               </Box>
             ))}
           </Box>
+          {loadingBudgetBreakdown && (
+            <Box
+              width="100%"
+              height="100%"
+              display="flex"
+              position="absolute"
+              alignItems="center"
+              justifyContent="center"
+              bgcolor="rgba(255, 255, 255, 0.8)"
+            >
+              <CircularProgress />
+            </Box>
+          )}
         </Box>
         <FullWidthDivider />
         <Box
@@ -1906,6 +2274,8 @@ export const GrantImplementationPage: React.FC = () => {
             removeFilter={handleRemoveChartFilter(3)}
             handleResetFilters={handleResetChartFilters(3)}
             appliedFiltersData={chart3AppliedFiltersData}
+            extraDropdown={financialMetricsCycleDropdown}
+            infoType="global"
           >
             {financialMetricsContent}
           </DatasetChartBlock>
@@ -1944,7 +2314,18 @@ export const GrantImplementationPage: React.FC = () => {
             removeFilter={handleRemoveChartFilter(4)}
             handleResetFilters={handleResetChartFilters(4)}
             appliedFiltersData={chart4AppliedFiltersData}
+            extraDropdown={expendituresCycleDropdown}
+            infoType="expenditures"
           >
+            <Box
+              sx={{
+                width: "100%",
+                height: "16px",
+                "@media (min-width: 768px)": {
+                  display: "none",
+                },
+              }}
+            />
             {expendituresChartContent}
           </DatasetChartBlock>
         </Box>

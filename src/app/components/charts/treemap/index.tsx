@@ -24,6 +24,7 @@ echarts.use([EchartsTreemap, TooltipComponent, SVGRenderer]);
 const Tooltip = (props: any) => {
   return (
     <div
+      className="chart-tooltip"
       style={{
         gap: "10px",
         width: "250px",

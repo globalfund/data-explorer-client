@@ -10,7 +10,19 @@ export const HomeHero: React.FC = () => {
       <Typography variant="h1" marginBottom="5px">
         {get(cmsData, "pagesHome.title", "Data Explorer")}
       </Typography>
-      <Typography variant="h5" marginBottom="50px" maxWidth="80%">
+      <Typography
+        variant="h5"
+        marginBottom="50px"
+        maxWidth="80%"
+        sx={{
+          "@media (max-width: 1200px)": {
+            maxWidth: "100%",
+          },
+          "@media (max-width: 767px)": {
+            fontSize: "20px",
+          },
+        }}
+      >
         {get(
           cmsData,
           "pagesHome.subtitle",

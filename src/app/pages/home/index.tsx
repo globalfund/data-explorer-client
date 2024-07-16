@@ -1,7 +1,10 @@
 import React from "react";
 import get from "lodash/get";
 import sumBy from "lodash/sumBy";
+import filter from "lodash/filter";
 import Box from "@mui/material/Box";
+import { useTitle } from "react-use";
+import { appColors } from "app/theme";
 import Divider from "@mui/material/Divider";
 import { Search } from "app/components/search";
 import Typography from "@mui/material/Typography";
@@ -36,11 +39,12 @@ import {
   getRange,
   getFinancialValueWithMetricPrefix,
 } from "app/utils/getFinancialValueWithMetricPrefix";
-import { appColors } from "app/theme";
 import { useCMSData } from "app/hooks/useCMSData";
 
 export const Home: React.FC = () => {
   const cmsData = useCMSData({ returnData: true });
+
+  useTitle("The Data Explorer - Home");
 
   const [chart1Cycles, setChart1Cycles] = React.useState<CycleProps[]>([]);
   const [chart2Cycles, setChart2Cycles] = React.useState<CycleProps[]>([]);
@@ -168,7 +172,11 @@ export const Home: React.FC = () => {
       }[]
   );
   const annualResultsCycles = useStoreState(
-    (state) => get(state.AnnualResultsCycles, "data.data", []) as number[]
+    (state) =>
+      get(state.AnnualResultsCycles, "data.data", []) as {
+        name: number;
+        value: number;
+      }[]
   );
 
   const handleChartCycleChange = (cycle: CycleProps, index: number) => {
@@ -191,6 +199,7 @@ export const Home: React.FC = () => {
       case 3:
         cycles = chart3Cycles;
         setCycle = setChart3Cycles;
+        multi = false;
         break;
       case 4:
         cycles = chart4Cycles;
@@ -342,6 +351,7 @@ export const Home: React.FC = () => {
           componentField === CHART_3_DROPDOWN_ITEMS[0].value
             ? "activityAreaGroup"
             : "activityArea",
+        geographyGrouping: "Standard View",
       },
     });
   };
@@ -416,6 +426,7 @@ export const Home: React.FC = () => {
           componentField === CHART_5_DROPDOWN_ITEMS[0].value
             ? "activityAreaGroup"
             : "activityArea",
+        geographyGrouping: "Standard View",
       },
     });
   };
@@ -423,7 +434,7 @@ export const Home: React.FC = () => {
   React.useEffect(() => {
     if (annualResultsCycles.length > 0) {
       fetchResultsStats({
-        filterString: `cycle=${annualResultsCycles[0]}`,
+        filterString: `cycle=${annualResultsCycles[0].value}`,
       });
     }
   }, [annualResultsCycles]);
@@ -457,6 +468,12 @@ export const Home: React.FC = () => {
       setChart2Cycles([allocationsCycles[allocationsCycles.length - 1]]);
     }
   }, [allocationsCycles]);
+
+  React.useEffect(() => {
+    if (budgetsCycles.length > 0) {
+      setChart3Cycles([budgetsCycles[budgetsCycles.length - 1]]);
+    }
+  }, [budgetsCycles]);
 
   React.useEffect(() => {
     if (expendituresCycles.length > 0) {
@@ -508,12 +525,29 @@ export const Home: React.FC = () => {
   }, [dataBudgetsTreemap]);
 
   const expendituresTotal = React.useMemo(() => {
-    const total = sumBy(dataExpendituresHeatmap, "value");
+    const total = sumBy(
+      filter(
+        dataExpendituresHeatmap,
+        (item) => !item.parentRow && !item.parentColumn
+      ),
+      "value"
+    );
     const range = getRange([{ value: total }], ["value"]);
     return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${
       range.full
     }`;
   }, [dataExpendituresHeatmap]);
+
+  const lineChartRange = React.useMemo(() => {
+    const values: { value: number }[] = [];
+    dataDisbursementsLineChart.data.forEach((item) => {
+      item.data.forEach((value) => {
+        values.push({ value });
+      });
+    });
+    const range = getRange(values, ["value"]);
+    return range;
+  }, [dataDisbursementsLineChart.data]);
 
   const fullWidthDivider = (
     <Divider
@@ -522,6 +556,9 @@ export const Home: React.FC = () => {
         width: "200vw",
         position: "relative",
         borderTopColor: "#868E96",
+        "@media (max-width: 767px)": {
+          display: "none",
+        },
       }}
     />
   );
@@ -530,14 +567,30 @@ export const Home: React.FC = () => {
     <Box padding="50px 0">
       <HomeHero />
       {fullWidthDivider}
-      <Box height="50px" />
+      <Box
+        height="50px"
+        sx={{
+          "@media (max-width: 767px)": {
+            display: "none",
+          },
+        }}
+      />
       <HomeResultsStats
         stats={dataResultsStats}
         loading={loadingResultsStats}
       />
       <Box height="64px" />
       <Box display="flex" flexDirection="row" justifyContent="center">
-        <Box width="800px">
+        <Box
+          width="800px"
+          sx={{
+            "@media (max-width: 920px)": {
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+            },
+          }}
+        >
           <Search />
         </Box>
       </Box>
@@ -546,7 +599,7 @@ export const Home: React.FC = () => {
         showCycleAll
         id="pledges-contributions"
         selectedCycles={chart1Cycles}
-        title={`${totalContribution}`}
+        title={`${totalPledge}`}
         subtitle={get(
           cmsData,
           "pagesHome.pledgesContributionsSubtitle",
@@ -559,6 +612,7 @@ export const Home: React.FC = () => {
           name: c.value,
           value: c.value,
         }))}
+        infoType="pledges_contributions"
       >
         <BarChart
           data={dataPledgesContributionsBarChart}
@@ -582,6 +636,15 @@ export const Home: React.FC = () => {
         display="flex"
         flexDirection="row"
         justifyContent="center"
+        sx={{
+          "@media (max-width: 767px)": {
+            gap: "76px",
+            flexDirection: "column",
+            "> div": {
+              width: "100%",
+            },
+          },
+        }}
       >
         <Box
           width="50%"
@@ -634,22 +697,24 @@ export const Home: React.FC = () => {
           "pagesHome.allocationsText",
           "The Global Fund is distinct from other organizations in that it gives countries (or groups of countries) an allocation and asks countries to describe how they will use those funds rather than asking for applications and then determining an amount per-country based on the merits of the various proposals received.<br/><br/>This provides greater predictability for countries and helps ensure that the programs being funded are not just the ones with the most capacity to write good applications."
         )}
+        infoType="global"
       >
-        <RadialChart
-          tooltipLabel={get(
-            cmsData,
-            "pagesHome.allocationsTooltipLabel",
-            "Total allocation amount"
-          )}
-          data={dataAllocationsRadialChart}
-          itemLabelFormatterType="name"
-        />
+        <Box marginTop="-100px" marginBottom="-100px">
+          <RadialChart
+            tooltipLabel={get(
+              cmsData,
+              "pagesHome.allocationsTooltipLabel",
+              "Total allocation amount"
+            )}
+            data={dataAllocationsRadialChart}
+            itemLabelFormatterType="name"
+          />
+        </Box>
       </ChartBlock>
       <Box height="50px" />
       {fullWidthDivider}
       <Box height="50px" />
       <ChartBlock
-        showCycleAll
         id="budgets"
         title={totalBudget}
         subtitle={get(
@@ -668,6 +733,7 @@ export const Home: React.FC = () => {
           name: c.value,
           value: c.value,
         }))}
+        infoType="budgets"
       >
         <Treemap data={dataBudgetsTreemap} />
       </ChartBlock>
@@ -694,8 +760,36 @@ export const Home: React.FC = () => {
           name: c.value,
           value: c.value,
         }))}
+        infoType="global"
       >
-        <LineChart {...dataDisbursementsLineChart} />
+        <Box position="relative">
+          <Typography
+            bottom="20px"
+            fontSize="10px"
+            padding="7px 12px"
+            borderRadius="4px"
+            position="absolute"
+            border="1px solid #DFE3E5"
+            sx={{
+              transformOrigin: "left",
+              transform: "rotate(-90deg)",
+            }}
+          >
+            Y Axis/<b>Disbursed Amount (US$ {lineChartRange.abbr})</b>
+          </Typography>
+          <LineChart {...dataDisbursementsLineChart} />
+          <Typography
+            left="40px"
+            bottom="-20px"
+            fontSize="10px"
+            padding="7px 12px"
+            borderRadius="4px"
+            position="absolute"
+            border="1px solid #DFE3E5"
+          >
+            X Axis/<b>Years</b>
+          </Typography>
+        </Box>
       </ChartBlock>
       <Box height="50px" />
       {fullWidthDivider}
@@ -720,6 +814,7 @@ export const Home: React.FC = () => {
           name: c.value,
           value: c.value,
         }))}
+        infoType="expenditures"
       >
         <Heatmap
           data={dataExpendituresHeatmap}
@@ -729,6 +824,8 @@ export const Home: React.FC = () => {
           rowCategory="principalRecipient"
           getItemColor={getPercentageColor}
           contentProp={chart5Unit === "percentage" ? "percentage" : "value"}
+          columnHeader="Principal Recipients"
+          rowHeader="Components"
         />
       </ChartBlock>
     </Box>

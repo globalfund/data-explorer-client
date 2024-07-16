@@ -1,9 +1,8 @@
 import React from "react";
 import get from "lodash/get";
 import Box from "@mui/material/Box";
-import Divider from "@mui/material/Divider";
+import { useTitle } from "react-use";
 import { useParams } from "react-router-dom";
-import Typography from "@mui/material/Typography";
 import { ChartBlock } from "app/components/chart-block";
 import useUpdateEffect from "react-use/lib/useUpdateEffect";
 import { CellComponent, Tabulator } from "tabulator-tables";
@@ -17,6 +16,8 @@ export const GrantTargetsResults: React.FC = () => {
   const cmsData = useCMSData({ returnData: true });
   const params = useParams<{ id: string; ip: string }>();
 
+  useTitle(`The Data Explorer - ${params.id} Targets & Results`);
+
   const [tab, setTab] = React.useState(TABS[0]);
 
   const dataTable = useStoreState((state) =>
@@ -24,6 +25,9 @@ export const GrantTargetsResults: React.FC = () => {
   );
   const years = useStoreState((state) =>
     get(state.GrantTargetsResultsTable, "data.years", [])
+  );
+  const dates = useStoreState((state) =>
+    get(state.GrantTargetsResultsTable, "data.dates", [])
   );
   const loading = useStoreState(
     (state) => state.GrantTargetsResultsTable.loading
@@ -79,52 +83,49 @@ export const GrantTargetsResults: React.FC = () => {
 
           return tableEl;
         },
+        minWidth: 250,
       });
     });
-    return res;
-  }, [years]);
+    if (years.length === 0) {
+      dates.forEach((date) => {
+        res.push({
+          title: date,
+          field: date,
+          formatter: (cell: CellComponent) => {
+            var tableEl = document.createElement("div");
+            cell.getElement().appendChild(tableEl);
+            const data = cell.getValue();
 
-  const fullWidthDivider = (
-    <Divider
-      sx={{
-        left: "-50vw",
-        width: "200vw",
-        position: "relative",
-        borderTopColor: "#868E96",
-      }}
-    />
-  );
+            if (!cell.getValue()) {
+              return "";
+            }
+
+            new Tabulator(tableEl, {
+              data,
+              layout: "fitDataTable",
+              height: "fit-content",
+              columns: [
+                { title: "Target", field: "target" },
+                { title: "Result", field: "result" },
+                { title: "Achievement", field: "achievement" },
+              ],
+            });
+
+            // cell.getElement().style.height = "max-content";
+            cell.getElement().style.padding = "0";
+
+            return tableEl;
+          },
+          minWidth: 250,
+        });
+      });
+    }
+    res[0].title = tab.name;
+    return res;
+  }, [tab, years]);
 
   return (
     <Box marginTop="24px">
-      <Typography
-        variant="body2"
-        dangerouslySetInnerHTML={{
-          __html: get(
-            cmsData,
-            "pagesGrantTargetResults.description",
-            `This page provides an overview of the IATI ('open') data currently
-        published by individual Grand Bargain signatories and/or their
-        affiliated organisations. Its primary purpose is to enable signatories
-        to monitor their own progress in relation to meeting the data
-        publication commitment of the Grand Bargain.This page provides an
-        overview of the IATI ('open') data currently published by individual
-        Grand Bargain signatories and/or their affiliated organisations. Its
-        primary purpose is to enable signatories to monitor
-        <br />
-        <br />
-        their own progress in relation to meeting the data publication
-        commitment of the Grand Bargain.This page provides an overview of the
-        IATI ('open') data currently published by individual Grand Bargain
-        signatories and/or their affiliated organisations. Its primary purpose
-        is to enable signatories to monitor their own progress in relation to
-        meeting the data publication commitment of the Grand Bargain.`
-          ),
-        }}
-      />
-      <Box height="50px" />
-      {fullWidthDivider}
-      <Box height="50px" />
       <ChartBlock
         loading={loading}
         title={get(cmsData, "pagesGrantTargetResults.title", "Indicators")}
@@ -139,6 +140,7 @@ export const GrantTargetsResults: React.FC = () => {
           "pagesGrantTargetResults.text",
           "Description of Impact indicators: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
         )}
+        infoType="global"
       >
         <Box width="100%" height="32px" />
         <TableContainer
@@ -146,6 +148,7 @@ export const GrantTargetsResults: React.FC = () => {
           data={dataTable}
           columns={columns}
           dataTreeStartExpanded
+          noColumnVisibilitySelection
           id="grant-targets-results-table"
           tabsView={{
             tabs: TABS.map((t) => t.name),

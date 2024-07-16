@@ -3,39 +3,39 @@ import get from "lodash/get";
 import uniq from "lodash/uniq";
 import sumBy from "lodash/sumBy";
 import Box from "@mui/material/Box";
+import { useTitle } from "react-use";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import { Table } from "app/components/table";
+import { useLocation } from "react-router-dom";
 import Typography from "@mui/material/Typography";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { DatasetPage } from "app/pages/datasets/common/page";
 import CircularProgress from "@mui/material/CircularProgress";
-import { SunburstChart } from "app/components/charts/sunburst";
 import { FilterGroupModel } from "app/components/filters/list/data";
 import { TABLE_VARIATION_8_COLUMNS } from "app/components/table/data";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
-import { SunburstDataItem } from "app/components/charts/sunburst/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { ReactComponent as TableIcon } from "app/assets/vectors/Select_Table.svg";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 import { ReactComponent as BarChartIcon } from "app/assets/vectors/Select_BarChart.svg";
 import { ExpandableHorizontalBar } from "app/components/charts/expandable-horizontal-bar";
-import { ReactComponent as SunburstChartIcon } from "app/assets/vectors/Select_SunburstChart.svg";
 import { ExpandableHorizontalBarChartDataItem } from "app/components/charts/expandable-horizontal-bar/data";
 import { useCMSData } from "app/hooks/useCMSData";
 
 const dropdownItems = [
   { label: "Bar Chart", value: "Bar Chart", icon: <BarChartIcon /> },
-  {
-    label: "Sunburst Chart",
-    value: "Sunburst Chart",
-    icon: <SunburstChartIcon />,
-  },
   { label: "Table View", value: "Table View", icon: <TableIcon /> },
 ];
 
 export const ResourceMobilizationPage: React.FC = () => {
   const cmsData = useCMSData({ returnData: true });
+  useTitle("The Data Explorer - Resource Mobilization");
+  const location = useLocation();
+  const tabletScreen = useMediaQuery(
+    "(min-width: 768px) and (max-width:920px)"
+  );
 
   const [dropdownSelected, setDropdownSelected] = React.useState(
     dropdownItems[0].value
@@ -78,17 +78,6 @@ export const ResourceMobilizationPage: React.FC = () => {
   const fetchBarChart = useStoreActions(
     (actions) => actions.ResourceMobilizationExpandableBarChart.fetch
   );
-  const dataSunburst = useStoreState(
-    (state) =>
-      get(
-        state.ResourceMobilizationSunburst,
-        "data.data",
-        []
-      ) as SunburstDataItem[]
-  );
-  const fetchSunburst = useStoreActions(
-    (actions) => actions.ResourceMobilizationSunburst.fetch
-  );
   const dataTable = useStoreState((state) =>
     get(state.ResourceMobilizationTable, "data.data", [])
   );
@@ -100,8 +89,6 @@ export const ResourceMobilizationPage: React.FC = () => {
       case dropdownItems[0].value:
         return state.ResourceMobilizationExpandableBarChart.loading;
       case dropdownItems[1].value:
-        return state.ResourceMobilizationSunburst.loading;
-      case dropdownItems[2].value:
         return state.ResourceMobilizationTable.loading;
       default:
         return false;
@@ -257,22 +244,6 @@ export const ResourceMobilizationPage: React.FC = () => {
         );
       case dropdownItems[1].value:
         return (
-          <SunburstChart
-            data={dataSunburst}
-            tooltipLabel={get(
-              cmsData,
-              "pagesDatasetsResourceMobilization.sunburstTooltipLabel",
-              "Pledge"
-            )}
-            centerLabel={get(
-              cmsData,
-              "pagesDatasetsResourceMobilization.sunburstCenterLabel",
-              "Total Pledge"
-            )}
-          />
-        );
-      case dropdownItems[2].value:
-        return (
           <Table
             dataTree
             data={dataTable}
@@ -283,20 +254,18 @@ export const ResourceMobilizationPage: React.FC = () => {
       default:
         return null;
     }
-  }, [dropdownSelected, dataBarChart, dataSunburst, dataTable]);
+  }, [dropdownSelected, dataBarChart, dataTable]);
 
   const chartEmpty = React.useMemo(() => {
     switch (dropdownSelected) {
       case dropdownItems[0].value:
         return !dataBarChart || !dataBarChart.length;
       case dropdownItems[1].value:
-        return !dataSunburst || !dataSunburst.length;
-      case dropdownItems[2].value:
         return !dataTable || !dataTable.length;
       default:
         return false;
     }
-  }, [dropdownSelected, dataBarChart, dataSunburst, dataTable]);
+  }, [dropdownSelected, dataBarChart, dataTable]);
 
   const filterGroups = React.useMemo(() => {
     return [dataDonorFilterOptions, dataReplenishmentPeriodFilterOptions];
@@ -304,17 +273,26 @@ export const ResourceMobilizationPage: React.FC = () => {
 
   const filterString = React.useMemo(() => {
     let filterString = "";
-    if (appliedFiltersData.donorTypes.length > 0) {
+    if (
+      appliedFiltersData.donorTypes.length > 0 &&
+      location.search.includes("donorTypes=")
+    ) {
       filterString += `donorTypes=${encodeURIComponent(
         appliedFiltersData.donorTypes.join(",")
       )}`;
     }
-    if (appliedFiltersData.donors.length > 0) {
+    if (
+      appliedFiltersData.donors.length > 0 &&
+      location.search.includes("donors=")
+    ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
       }donors=${encodeURIComponent(appliedFiltersData.donors.join(","))}`;
     }
-    if (appliedFiltersData.replenishmentPeriods.length > 0) {
+    if (
+      appliedFiltersData.replenishmentPeriods.length > 0 &&
+      location.search.includes("periods=")
+    ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
       }periods=${encodeURIComponent(
@@ -322,13 +300,14 @@ export const ResourceMobilizationPage: React.FC = () => {
       )}`;
     }
     return filterString;
-  }, [appliedFiltersData]);
+  }, [appliedFiltersData, location.search]);
 
   const chartFilterString = React.useMemo(() => {
     let filterString = "";
     if (
-      [...appliedFiltersData.donorTypes, ...chartAppliedFiltersData.donorTypes]
-        .length > 0
+      (appliedFiltersData.donorTypes.length > 0 &&
+        location.search.includes("donorTypes=")) ||
+      chartAppliedFiltersData.donorTypes.length > 0
     ) {
       filterString += `donorTypes=${encodeURIComponent(
         uniq([
@@ -338,8 +317,9 @@ export const ResourceMobilizationPage: React.FC = () => {
       )}`;
     }
     if (
-      [...appliedFiltersData.donors, ...chartAppliedFiltersData.donors].length >
-      0
+      (appliedFiltersData.donors.length > 0 &&
+        location.search.includes("donors=")) ||
+      chartAppliedFiltersData.donors.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -351,10 +331,9 @@ export const ResourceMobilizationPage: React.FC = () => {
       )}`;
     }
     if (
-      [
-        ...appliedFiltersData.replenishmentPeriods,
-        ...chartAppliedFiltersData.replenishmentPeriods,
-      ].length > 0
+      (appliedFiltersData.replenishmentPeriods.length > 0 &&
+        location.search.includes("periods=")) ||
+      chartAppliedFiltersData.replenishmentPeriods.length > 0
     ) {
       filterString += `${
         filterString.length > 0 ? "&" : ""
@@ -366,7 +345,7 @@ export const ResourceMobilizationPage: React.FC = () => {
       )}`;
     }
     return filterString;
-  }, [appliedFiltersData, chartAppliedFiltersData]);
+  }, [appliedFiltersData, chartAppliedFiltersData, location.search]);
 
   React.useEffect(() => {
     fetchStats({ filterString });
@@ -374,14 +353,24 @@ export const ResourceMobilizationPage: React.FC = () => {
 
   React.useEffect(() => {
     fetchBarChart({ filterString: chartFilterString });
-    fetchSunburst({
-      filterString: chartFilterString,
-      routeParams: {
-        type: "pledge",
-      },
-    });
     fetchTable({ filterString: chartFilterString });
   }, [chartFilterString]);
+
+  React.useEffect(() => {
+    if (location.hash) {
+      const blockId = location.hash.slice(1).split("|")[0];
+      const blockChartType = location.hash.slice(1).split("|")[1];
+      if (blockId && blockChartType) {
+        switch (blockId) {
+          case "disbursements":
+            setDropdownSelected(decodeURIComponent(blockChartType));
+            break;
+          default:
+            break;
+        }
+      }
+    }
+  }, [location.hash]);
 
   return (
     <DatasetPage
@@ -401,7 +390,16 @@ export const ResourceMobilizationPage: React.FC = () => {
       )}
     >
       <Box width="100%" marginTop="50px">
-        <Grid container marginBottom="50px" position="relative">
+        <Grid
+          container
+          marginBottom="50px"
+          position="relative"
+          sx={{
+            "@media (max-width: 767px)": {
+              marginBottom: "16px",
+            },
+          }}
+        >
           {loadingStats && (
             <Box
               width="100%"
@@ -419,19 +417,34 @@ export const ResourceMobilizationPage: React.FC = () => {
             item
             sm={12}
             md={4}
-            gap="20px"
+            // gap="20px"
             display="flex"
             flexDirection="column"
             sx={{
               paddingRight: "21px",
               borderRight: "1px solid #CFD4DA",
-              "@media (max-width: 600px)": {
+              "> div": {
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+              },
+              "@media (max-width: 920px)": {
                 paddingRight: "0px",
+                flexDirection: "row",
+                marginBottom: "50px",
                 borderRightStyle: "none",
+                justifyContent: "space-around",
+              },
+              "@media (max-width: 767px)": {
+                gap: "16px",
+                width: "100%",
+                marginBottom: "64px",
+                flexDirection: "column",
               },
             }}
           >
-            <Box>
+            {/* <Box>
               <Typography variant="h5">
                 {get(dataStats, "percentage", 0).toFixed(2).replace(".00", "")}%
               </Typography>
@@ -443,7 +456,7 @@ export const ResourceMobilizationPage: React.FC = () => {
                 )}
               </Typography>
             </Box>
-            <Divider />
+            <Divider /> */}
             <Box>
               <Typography variant="h5">
                 {formatFinancialValue(get(dataStats, "totalPledges", 0))}
@@ -456,7 +469,7 @@ export const ResourceMobilizationPage: React.FC = () => {
                 )}
               </Typography>
             </Box>
-            <Divider />
+            <Divider orientation={tabletScreen ? "vertical" : "horizontal"} />
             <Box>
               <Typography variant="h5">
                 {formatFinancialValue(get(dataStats, "totalContributions", 0))}
@@ -476,7 +489,7 @@ export const ResourceMobilizationPage: React.FC = () => {
             md={8}
             sx={{
               paddingLeft: "21px",
-              "@media (max-width: 600px)": {
+              "@media (max-width: 920px)": {
                 paddingLeft: "0px",
               },
             }}
@@ -486,7 +499,7 @@ export const ResourceMobilizationPage: React.FC = () => {
                 {get(
                   cmsData,
                   "pagesDatasetsResourceMobilization.statsText4Title",
-                  "Total Donors Mobilized"
+                  "Number of Donors Mobilized"
                 )}
               </Typography>
               <Typography variant="body2" fontWeight="700">
@@ -504,7 +517,7 @@ export const ResourceMobilizationPage: React.FC = () => {
                 minHeight: "200px",
               }}
             >
-              <Grid item xs={12} sm={4} md={3} lg={2}>
+              <Grid item xs={4} sm={4} md={3} lg={2}>
                 <Box
                   height="100%"
                   bgcolor="#F1F3F5"
@@ -527,7 +540,7 @@ export const ResourceMobilizationPage: React.FC = () => {
                 item
                 container
                 spacing={2}
-                xs={12}
+                xs={8}
                 sm={8}
                 md={9}
                 lg={10}
@@ -540,15 +553,22 @@ export const ResourceMobilizationPage: React.FC = () => {
                       "> *": {
                         lineHeight: "normal",
                       },
+                      "@media (max-width: 920px)": {
+                        height: "104px",
+                      },
+                      "@media (max-width: 767px)": {
+                        height: "auto",
+                        padding: "10px",
+                      },
                     },
                   },
                 }}
               >
                 {get(dataStats, "donorTypesCount", []).map((item) => (
-                  <Grid item xs={12} sm={6} md={6} lg={3} key={item.name}>
+                  <Grid item xs={12} sm={3} md={3} lg={3} key={item.name}>
                     <Box bgcolor="#F1F3F5" padding="5px 10px">
                       <Typography variant="h5">{item.value}</Typography>
-                      <Typography fontSize="12px">from {item.name}</Typography>
+                      <Typography fontSize="12px">{item.name}</Typography>
                     </Box>
                   </Grid>
                 ))}
@@ -562,12 +582,15 @@ export const ResourceMobilizationPage: React.FC = () => {
             width: "100vw",
             position: "absolute",
             borderColor: "#CFD4DA",
+            "@media (max-width: 767px)": {
+              display: "none",
+            },
           }}
         />
         <Box
           paddingTop="50px"
           sx={
-            dropdownSelected === dropdownItems[2].value
+            dropdownSelected === dropdownItems[1].value
               ? {
                   "#content": {
                     padding: 0,
@@ -591,7 +614,7 @@ export const ResourceMobilizationPage: React.FC = () => {
             dropdownItems={dropdownItems}
             dropdownSelected={dropdownSelected}
             handleDropdownChange={handleSelectionChange}
-            disableCollapse={dropdownSelected === dropdownItems[2].value}
+            disableCollapse={dropdownSelected === dropdownItems[1].value}
             loading={dataChartLoading}
             empty={chartEmpty}
             filterGroups={filterGroups}
@@ -600,6 +623,7 @@ export const ResourceMobilizationPage: React.FC = () => {
             removeFilter={handleRemoveChartFilter}
             handleResetFilters={handleResetChartFilters}
             appliedFiltersData={chartAppliedFiltersData}
+            infoType="pledges_contributions"
           >
             {chartContent}
           </DatasetChartBlock>

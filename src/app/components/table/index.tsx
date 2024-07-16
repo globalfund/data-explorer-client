@@ -8,26 +8,31 @@ const ExpandElement = `<svg width="17" height="16" viewBox="0 0 17 16" fill="non
 const CollapseElement = `<svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin:0 4px -4px 0;position:absolute;right:0;"><path d="M13.348 11.3986L14.4144 10.3322L9.08223 5L3.75 10.3322L4.81644 11.3987L9.08223 7.13287L13.348 11.3986Z" fill="#373D43"/></svg>`;
 
 export const Table: React.FC<TableProps> = (props: TableProps) => {
+  const tableBuiltRef = React.useRef(false);
   const ref = React.useRef<HTMLDivElement>(null);
   const [expandedCount, setExpandedCount] = React.useState(0);
 
   React.useEffect(() => {
     if (ref.current) {
       const table = new Tabulator(ref.current, {
+        height: props.data.length > 20 ? "500px" : "auto",
         data: props.data,
+        selectable: false,
         reactiveData: true,
+        layout: "fitDataFill",
         columns: props.columns,
         dataTreeChildIndent: 10,
-        layout: "fitDataStretch",
         dataTree: props.dataTree,
+        renderVertical: "virtual",
+        renderVerticalBuffer: 100,
         dataTreeExpandElement: ExpandElement,
         dataTreeCollapseElement: CollapseElement,
         dataTreeBranchElement: props.dataTreeBranchElement,
         dataTreeStartExpanded: props.dataTreeStartExpanded
           ? Boolean(props.dataTreeStartExpanded)
           : props.dataTreeStartExpandedFn
-            ? props.dataTreeStartExpandedFn
-            : false,
+          ? props.dataTreeStartExpandedFn
+          : false,
       });
 
       table.on("dataTreeRowExpanded", (_, level) => {
@@ -40,18 +45,26 @@ export const Table: React.FC<TableProps> = (props: TableProps) => {
           setExpandedCount((prev) => prev - 1);
         }
       });
+      table.on("tableBuilt", () => {
+        tableBuiltRef.current = true;
+      });
 
       if (props.dataTreeStartExpanded || props.dataTreeStartExpandedFn) {
         setTimeout(() => {
-          // table.redraw();
-        }, 100);
+          table.redraw();
+        }, 500);
       }
-
-      return () => {
-        // table.destroy();
-      };
     }
-  }, [props.data]);
+  }, []);
+
+  React.useEffect(() => {
+    if (ref.current && tableBuiltRef.current) {
+      const tables = Tabulator.findTable(`#${props.id}`);
+      if (tables.length > 0 && tables[0]) {
+        tables[0].replaceData(props.data);
+      }
+    }
+  }, [props.data, tableBuiltRef.current]);
 
   React.useEffect(() => {
     if (ref.current) {
@@ -78,7 +91,6 @@ export const Table: React.FC<TableProps> = (props: TableProps) => {
       id={props.id}
       border="1px solid #CFD4DA"
       sx={{
-        maxHeight: "500px",
         ".tabulator-col-title, .tabulator-cell": {
           color: "#373D43",
           fontSize: "12px",

@@ -3,6 +3,7 @@ export interface RaceBarChartDataItem {
   value: number;
   color: string;
   percentage: number;
+  sizePercentage?: number;
 }
 
 export interface RaceBarChartProps {

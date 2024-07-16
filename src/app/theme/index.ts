@@ -648,10 +648,10 @@ export const appColors = {
     DISEASE_BURDEN_COLORS: [
       "#FA7355",
       "#FA9A55",
-      "#FFAA46",
-      "#FFD646",
-      "#DAFF46",
-      "#97FF46",
+      "#ECC854",
+      "#8CCD81",
+      "#11AD6B",
+      "#5E8A78",
     ],
   },
   NETWORK: {

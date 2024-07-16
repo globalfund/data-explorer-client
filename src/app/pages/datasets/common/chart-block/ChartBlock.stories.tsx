@@ -35,6 +35,7 @@ const Wrapper: React.FC = () => {
       handleResetFilters={() => {}}
       appliedFilters={[]}
       appliedFiltersData={defaultAppliedFilters}
+      infoType="global"
     >
       <BarChart
         data={STORY_DATA_VARIANT_2}

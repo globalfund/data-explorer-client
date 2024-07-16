@@ -2,5 +2,7 @@ import { APIModel } from "app/state/api";
 import { ApiCallModel } from "app/state/api/interfaces";
 
 export const HomeBudgetsTreemap: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/budgets/treemap/{componentField}`),
+  ...APIModel(
+    `${process.env.REACT_APP_API}/budgets/treemap/{componentField}/{geographyGrouping}`
+  ),
 };

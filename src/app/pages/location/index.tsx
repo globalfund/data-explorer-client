@@ -7,25 +7,19 @@ import { useParams } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import { Results } from "app/pages/location/views/results";
 import CircularProgress from "@mui/material/CircularProgress";
-import { GrantCardProps } from "app/components/grant-card/data";
 import { DetailPageTabs } from "app/components/detail-page-tabs";
-import { LineChartProps } from "app/components/charts/line/data";
-import { BarChartDataItem } from "app/components/charts/bar/data";
-import { SankeyChartData } from "app/components/charts/sankey/data";
 import { LocationOverview } from "app/pages/location/views/overview";
 import { RESULT_YEARS } from "app/pages/location/views/results/data";
 import { LOCATION_TABS } from "app/components/detail-page-tabs/data";
-import { HeatmapDataItem } from "app/components/charts/heatmap/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { RadialChartDataItem } from "app/components/charts/radial/data";
 import { AccessToFunding } from "app/pages/location/views/access-to-funding";
 import { GrantImplementation } from "app/pages/location/views/grant-implementation";
 import { ResourceMobilization } from "app/pages/location/views/resource-mobilization";
 
 export const Location: React.FC = () => {
   const params = useParams<{ id: string; tab: string }>();
+  const paramsId = params.id?.replace("|", "%2F");
 
-  const [grantsTablePage, setGrantsTablePage] = React.useState(1);
   const [resultsYear, setResultsYear] = React.useState(
     RESULT_YEARS[RESULT_YEARS.length - 1]
   );
@@ -35,6 +29,7 @@ export const Location: React.FC = () => {
       name: "",
       region: "",
       description: "",
+      isDonor: false,
       FPMName: "",
       FPMEmail: "",
       currentPrincipalRecipients: [],
@@ -59,14 +54,6 @@ export const Location: React.FC = () => {
   const clearCCMContacts = useStoreActions(
     (actions) => actions.GeographyOverviewCoordinatingMechanismsContacts.clear
   );
-  const dataRMBarChart = useStoreState(
-    (state) =>
-      get(
-        state.GeographyResourceMobilizationBarChart,
-        "data.data",
-        []
-      ) as BarChartDataItem[]
-  );
   const fetchRMBarChart = useStoreActions(
     (actions) => actions.GeographyResourceMobilizationBarChart.fetch
   );
@@ -75,14 +62,6 @@ export const Location: React.FC = () => {
   );
   const clearRMBarChart = useStoreActions(
     (actions) => actions.GeographyResourceMobilizationBarChart.clear
-  );
-  const dataAllocationsRadialChart = useStoreState(
-    (state) =>
-      get(
-        state.GeographyAllocationsRadialChart,
-        "data.data.chart",
-        []
-      ) as RadialChartDataItem[]
   );
   const fetchAllocationsRadialChart = useStoreActions(
     (actions) => actions.GeographyAllocationsRadialChart.fetch
@@ -93,11 +72,6 @@ export const Location: React.FC = () => {
   const clearAllocationsRadialChart = useStoreActions(
     (actions) => actions.GeographyAllocationsRadialChart.clear
   );
-  const dataFundingRequestsTable = useStoreState((state) =>
-    get(state.GeographyFundingRequestsTable, "data.data[0]", {
-      _children: [],
-    })
-  );
   const fetchFundingRequestsTable = useStoreActions(
     (actions) => actions.GeographyFundingRequestsTable.fetch
   );
@@ -106,9 +80,6 @@ export const Location: React.FC = () => {
   );
   const clearFundingRequestsTable = useStoreActions(
     (actions) => actions.GeographyFundingRequestsTable.clear
-  );
-  const dataEligibilityTable = useStoreState((state) =>
-    get(state.GeographyEligibilityTable, "data.data", [])
   );
   const fetchEligibilityTable = useStoreActions(
     (actions) => actions.GeographyEligibilityTable.fetch
@@ -119,9 +90,6 @@ export const Location: React.FC = () => {
   const clearEligibilityTable = useStoreActions(
     (actions) => actions.GeographyEligibilityTable.clear
   );
-  const dataDocumentsTable = useStoreState((state) =>
-    get(state.GeographyDocumentsTable, "data.data", [])
-  );
   const fetchDocumentsTable = useStoreActions(
     (actions) => actions.GeographyDocumentsTable.fetch
   );
@@ -130,13 +98,6 @@ export const Location: React.FC = () => {
   );
   const clearDocumentsTable = useStoreActions(
     (actions) => actions.GeographyDocumentsTable.clear
-  );
-  const dataDisbursementsLineChart = useStoreState(
-    (state) =>
-      get(state.GeographyDisbursementsLineChart, "data", {
-        data: [],
-        xAxisKeys: [],
-      }) as LineChartProps
   );
   const fetchDisbursementsLineChart = useStoreActions(
     (actions) => actions.GeographyDisbursementsLineChart.fetch
@@ -147,18 +108,6 @@ export const Location: React.FC = () => {
   const clearDisbursementsLineChart = useStoreActions(
     (actions) => actions.GeographyDisbursementsLineChart.clear
   );
-  const dataBudgetSankeyChart = useStoreState((state) => ({
-    nodes: get(
-      state.GeographyBudgetSankeyChart,
-      "data.data.nodes",
-      []
-    ) as SankeyChartData["nodes"],
-    links: get(
-      state.GeographyBudgetSankeyChart,
-      "data.data.links",
-      []
-    ) as SankeyChartData["links"],
-  }));
   const fetchBudgetSankeyChart = useStoreActions(
     (actions) => actions.GeographyBudgetSankeyChart.fetch
   );
@@ -167,14 +116,6 @@ export const Location: React.FC = () => {
   );
   const clearBudgetSanketChart = useStoreActions(
     (actions) => actions.GeographyBudgetSankeyChart.clear
-  );
-  const dataExpendituresHeatmap = useStoreState(
-    (state) =>
-      get(
-        state.GeographyExpendituresHeatmap,
-        "data.data",
-        []
-      ) as HeatmapDataItem[]
   );
   const fetchExpendituresHeatmap = useStoreActions(
     (actions) => actions.GeographyExpendituresHeatmap.fetch
@@ -193,10 +134,6 @@ export const Location: React.FC = () => {
   );
   const clearGrantsPieCharts = useStoreActions(
     (actions) => actions.GeographyGrantsPieCharts.clear
-  );
-  const dataGrantsTable = useStoreState(
-    (state) =>
-      get(state.GeographyGrantsTable, "data.data", []) as GrantCardProps[]
   );
   const fetchGrantsTable = useStoreActions(
     (actions) => actions.GeographyGrantsTable.fetch
@@ -343,12 +280,7 @@ export const Location: React.FC = () => {
       case "overview":
         return <LocationOverview />;
       case "financial-insights":
-        return (
-          <GrantImplementation
-            page={grantsTablePage}
-            setPage={setGrantsTablePage}
-          />
-        );
+        return <GrantImplementation />;
       case "resource-mobilization":
         return <ResourceMobilization />;
       case "access-to-funding":
@@ -360,29 +292,12 @@ export const Location: React.FC = () => {
       default:
         return <div />;
     }
-  }, [params.tab, grantsTablePage, resultsYear]);
+  }, [params.tab, resultsYear]);
 
   const tabs = React.useMemo(() => {
     const newTabs = [...LOCATION_TABS];
-    if (dataRMBarChart.length === 0) {
+    if (!dataOverview.isDonor) {
       remove(newTabs, (tab) => tab.label === LOCATION_TABS[1].label);
-    }
-    if (
-      dataAllocationsRadialChart.length === 0 &&
-      dataFundingRequestsTable._children.length === 0 &&
-      dataEligibilityTable.length === 0 &&
-      dataDocumentsTable.length === 0
-    ) {
-      remove(newTabs, (tab) => tab.label === LOCATION_TABS[2].label);
-    }
-    if (
-      dataDisbursementsLineChart.data.length === 0 &&
-      dataBudgetSankeyChart.nodes.length === 0 &&
-      dataBudgetSankeyChart.links.length === 0 &&
-      dataExpendituresHeatmap.length === 0 &&
-      dataGrantsTable.length === 0
-    ) {
-      remove(newTabs, (tab) => tab.label === LOCATION_TABS[3].label);
     }
     if (
       dataResultsTable.length === 0 &&
@@ -391,131 +306,126 @@ export const Location: React.FC = () => {
       remove(newTabs, (tab) => tab.label === LOCATION_TABS[4].label);
     }
     return newTabs;
-  }, [
-    dataRMBarChart,
-    dataGrantsTable,
-    dataResultsTable,
-    dataDocumentsTable,
-    dataEligibilityTable,
-    dataBudgetSankeyChart,
-    dataExpendituresHeatmap,
-    dataFundingRequestsTable,
-    dataResultsDocumentsTable,
-    dataAllocationsRadialChart,
-    dataDisbursementsLineChart,
-  ]);
+  }, [dataOverview, dataResultsTable, dataResultsDocumentsTable]);
 
   React.useEffect(() => {
-    if (params.id) {
+    if (paramsId) {
       fetchOverview({
         routeParams: {
-          code: params.id,
+          code: paramsId,
         },
       });
       fetchCCMContacts({
         routeParams: {
-          code: params.id,
+          code: paramsId,
         },
-      });
-      fetchRMBarChart({
-        filterString: `donors=${params.id}`,
       });
       fetchAllocationsRadialChart({
         routeParams: {
-          code: params.id,
+          code: paramsId,
         },
       });
       fetchFundingRequestsTable({
         routeParams: {
-          code: params.id,
+          code: paramsId,
         },
       });
       fetchEligibilityTable({
-        filterString: `geographies=${params.id}`,
+        filterString: `geographies=${paramsId}`,
       });
       fetchDisbursementsLineChart({
-        filterString: `geographies=${params.id}`,
+        filterString: `geographies=${paramsId}`,
         routeParams: {
           componentField: "activityAreaGroup",
         },
       });
       fetchBudgetSankeyChart({
-        filterString: `geographies=${params.id}`,
+        filterString: `geographies=${paramsId}`,
         routeParams: {
           componentField: "activityAreaGroup",
         },
       });
       fetchExpendituresHeatmap({
-        filterString: `geographies=${params.id}`,
+        filterString: `geographies=${paramsId}`,
         routeParams: {
-          row: "principalRecipientType,principalRecipient",
+          row: "principalRecipientType,principalRecipientSubType,principalRecipient",
           column: "component",
           componentField: "activityAreaGroup",
         },
       });
       fetchGrantsPieCharts({
         routeParams: {
-          code: params.id,
+          code: paramsId,
         },
       });
       fetchResultStats({
-        filterString: `geographies=${params.id}&cycle=${RESULT_YEARS[RESULT_YEARS.length - 1].value}`,
+        filterString: `geographies=${paramsId}&cycle=${
+          RESULT_YEARS[RESULT_YEARS.length - 1].value
+        }`,
       });
       fetchDocumentsTable({
-        filterString: `types=Application&geographies=${params.id}`,
+        filterString: `types=Application&geographies=${paramsId}`,
       });
       fetchResultsDocumentsTable({
-        filterString: `types=Profile&geographies=${params.id}`,
+        filterString: `types=Profile&geographies=${paramsId}`,
       });
       fetchAllocationsCycles({
-        filterString: `geographies=${params.id}`,
+        filterString: `geographies=${paramsId}`,
       });
       fetchAnnualResultsCycles({
-        filterString: `geographies=${params.id}`,
+        filterString: `geographies=${paramsId}`,
       });
       fetchDisbursementsCycles({
-        filterString: `geographies=${params.id}`,
+        filterString: `geographies=${paramsId}`,
       });
       fetchExpendituresCycles({
-        filterString: `geographies=${params.id}`,
+        filterString: `geographies=${paramsId}`,
       });
       fetchEligibilityCycles({
-        filterString: `geographies=${params.id}`,
+        filterString: `geographies=${paramsId}`,
       });
       fetchPledgesContributionsCycles({
-        filterString: `geographies=${params.id}`,
+        filterString: `geographies=${paramsId}`,
       });
       fetchFundingRequestsCycles({
-        filterString: `geographies=${params.id}`,
+        filterString: `geographies=${paramsId}`,
       });
       fetchBudgetsCycles({
-        filterString: `geographies=${params.id}`,
+        filterString: `geographies=${paramsId}`,
       });
     }
-  }, [params.id]);
+  }, [paramsId]);
 
   React.useEffect(() => {
-    if (params.id) {
+    if (dataOverview.isDonor) {
+      fetchRMBarChart({
+        filterString: `geographies=${paramsId}`,
+      });
+    }
+  }, [dataOverview]);
+
+  React.useEffect(() => {
+    if (paramsId) {
       fetchGrantsTable({
-        filterString: `geographies=${params.id}`,
+        filterString: `geographies=${paramsId}`,
         routeParams: {
-          page: grantsTablePage.toString(),
-          pageSize: "10",
+          page: "1",
+          pageSize: "all",
         },
       });
     }
-  }, [params.id, grantsTablePage]);
+  }, [paramsId]);
 
   React.useEffect(() => {
-    if (params.id) {
+    if (paramsId) {
       fetchResultsTable({
         routeParams: {
-          code: params.id,
+          code: paramsId,
           cycle: resultsYear.value,
         },
       });
     }
-  }, [params.id, resultsYear]);
+  }, [paramsId, resultsYear]);
 
   React.useEffect(() => {
     return () => {
@@ -552,17 +462,45 @@ export const Location: React.FC = () => {
         width: "200vw",
         position: "relative",
         borderTopColor: "#868E96",
+        "@media (max-width: 767px)": {
+          display: "none",
+        },
       }}
     />
   );
 
   return (
-    <Box padding="50px 0">
-      <Typography variant="h1" lineHeight={1.2}>
+    <Box
+      padding="50px 0"
+      sx={{
+        "@media (max-width: 767px)": {
+          padding: "32px 0",
+        },
+      }}
+    >
+      <Typography
+        variant="h1"
+        lineHeight={1.2}
+        sx={{
+          "@media (max-width: 767px)": {
+            wordBreak: "break-word",
+          },
+        }}
+      >
         {dataOverview.name}
         {loading && <CircularProgress sx={{ marginLeft: "16px" }} />}
       </Typography>
-      <Typography variant="h5" lineHeight={1} marginBottom="50px">
+      <Typography
+        variant="h5"
+        lineHeight={1}
+        marginBottom="50px"
+        sx={{
+          "@media (max-width: 767px)": {
+            marginBottom: "4px",
+            wordBreak: "break-word",
+          },
+        }}
+      >
         {dataOverview.region}
       </Typography>
       {fullWidthDivider}
@@ -574,7 +512,16 @@ export const Location: React.FC = () => {
       />
       <Box height="20px" />
       {fullWidthDivider}
-      <Box marginTop="40px">{view}</Box>
+      <Box
+        marginTop="40px"
+        sx={{
+          "@media (max-width: 767px)": {
+            marginTop: 0,
+          },
+        }}
+      >
+        {view}
+      </Box>
     </Box>
   );
 };

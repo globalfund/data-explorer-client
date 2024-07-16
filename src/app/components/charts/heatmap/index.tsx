@@ -253,6 +253,12 @@ export function Heatmap(props: HeatmapProps) {
                 height: "11px",
               },
             },
+            "@media (max-width: 767px)": {
+              gap: "10px",
+              "> div": {
+                flexDirection: "column",
+              },
+            },
           }}
         >
           {LEGENDS.map((item) => (
@@ -270,19 +276,18 @@ export function Heatmap(props: HeatmapProps) {
       )}
       <Box
         maxWidth="100%"
-        padding="10px 0"
         maxHeight="60vh"
         position="relative"
         borderRadius="16px"
         bgcolor={props.bgColor}
+        padding="20px 0 10px 0"
       >
         {props.rowHeader && (
           <Typography
-            top="0px"
+            top="5px"
+            right="20px"
             fontSize="10px"
             fontWeight="700"
-            paddingLeft="20px"
-            left={rowNameWidth}
             position="absolute"
           >
             {props.rowHeader}
@@ -348,14 +353,17 @@ export function Heatmap(props: HeatmapProps) {
                 <RowName
                   theme={{
                     width: rowNameWidth,
+                    cursor: row.children ? "pointer" : "default",
                     background:
                       row.level % 2 === 0 ? appColors.COMMON.WHITE : "#F1F3F5",
                   }}
                   style={row.expanded ? { fontWeight: 700 } : {}}
+                  onClick={
+                    row.children ? onRowExpandClick(row.name) : undefined
+                  }
                 >
                   {row.children ? (
                     <IconButton
-                      onClick={onRowExpandClick(row.name)}
                       sx={{
                         padding: "4px",
                         transform: `rotate(${row.expanded ? -90 : 90}deg)`,

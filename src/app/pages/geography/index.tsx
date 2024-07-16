@@ -1,6 +1,7 @@
 import React from "react";
 import get from "lodash/get";
 import Box from "@mui/material/Box";
+import { useTitle } from "react-use";
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import { NavLink } from "react-router-dom";
@@ -38,7 +39,7 @@ const GeoCategory: React.FC<GeoCategoryProps> = (props: GeoCategoryProps) => {
           <Grid
             item
             key={item.name}
-            sm={12}
+            sm={props.items.length > 1 ? 6 : 12}
             md={props.items.length > 1 ? 4 : 12}
             lg={props.items.length > 1 ? 2 : 12}
           >
@@ -75,11 +76,12 @@ const GeoSubCategory: React.FC<GeoSubCategoryProps> = (
           <Link
             key={item.name}
             component={NavLink}
-            to={`/location/${item.value}`}
+            to={`/location/${item.value.replace(/\//g, "|")}`}
             sx={{
               color: "#000",
               display: "block",
               fontSize: "12px",
+              fontWeight: "400",
               textDecoration: "none",
               ...(props.search
                 ? {
@@ -88,7 +90,7 @@ const GeoSubCategory: React.FC<GeoSubCategoryProps> = (
                   }
                 : {}),
               "&:hover": {
-                textShadow: "-.35px -.35px 0 #000, .35px .35px #000",
+                fontWeight: "700",
               },
             }}
           >
@@ -103,6 +105,7 @@ const GeoSubCategory: React.FC<GeoSubCategoryProps> = (
 export const Geography: React.FC = () => {
   const cmsData = useCMSData({ returnData: true });
 
+  useTitle("The Data Explorer - Geography");
   const [search, setSearch] = React.useState("");
 
   const dataList = useStoreState(
@@ -149,12 +152,40 @@ export const Geography: React.FC = () => {
   }, []);
 
   return (
-    <Box padding="50px 0">
-      <Typography variant="h1">
+    <Box
+      padding="50px 0"
+      sx={{
+        "@media (max-width: 767px)": {
+          padding: "32px 0",
+        },
+      }}
+    >
+      <Typography
+        variant="h1"
+        sx={{
+          "@media (max-width: 767px)": {
+            wordBreak: "break-word",
+          },
+        }}
+      >
         {get(cmsData, "pagesGeography.title", "Geography")}
       </Typography>
-      <Box height="56px" />
-      <Box padding="32px">
+      <Box
+        height="56px"
+        sx={{
+          "@media (max-width: 767px)": {
+            display: "none",
+          },
+        }}
+      />
+      <Box
+        padding="32px"
+        sx={{
+          "@media (max-width: 767px)": {
+            padding: "16px 0",
+          },
+        }}
+      >
         <Box
           gap="8px"
           width="100%"

@@ -2,7 +2,6 @@
 import React from "react";
 import get from "lodash/get";
 import Box from "@mui/material/Box";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { useDebounce, useUpdateEffect, useSessionStorage } from "react-use";
 /* project */
@@ -12,7 +11,6 @@ import { SearchResultsTabModel } from "app/components/search/components/results/
 
 export function Search(props: { hocClose?: () => void }) {
   const [open, setOpen] = React.useState(false);
-  const isMobile = useMediaQuery("(max-width: 767px)");
   const [category, setCategory] = React.useState(categories[0].label);
   const [storedValue, setStoredValue] = useSessionStorage(
     "stored-search-string",
@@ -83,7 +81,6 @@ export function Search(props: { hocClose?: () => void }) {
         setValue={setValue}
         category={category}
         setCategory={setCategory}
-        forceFocus={isMobile && open}
         setStoredValue={setStoredValue}
       />
     </Box>

@@ -39,8 +39,8 @@ export const Row = styled.div`
 `;
 
 export const RowName = styled.div`
+  left: 0px;
   z-index: 1;
-  left: -10px;
   display: flex;
   margin-top: 2px;
   font-size: 10px;
@@ -52,10 +52,16 @@ export const RowName = styled.div`
   align-items: center;
   word-wrap: break-word;
   justify-content: flex-start;
+  cursor: ${(props) => props.theme.cursor};
   min-width: ${(props) => props.theme.width};
   max-width: ${(props) => props.theme.width};
   color: ${appColors.HEATMAP.CHART_TEXT_COLOR};
   background: ${(props) => props.theme.background ?? appColors.COMMON.WHITE};
+
+  @media (max-width: 920px) {
+    min-width: 250px;
+    max-width: 250px;
+  }
 `;
 
 export const ColName = styled.div`

@@ -22,6 +22,7 @@ import componentsSearch from "app/state/api/action-reducers/cms/componentsSearch
 import componentsMobile from "app/state/api/action-reducers/cms/componentsMobile";
 import LocationFilterOptions from "app/state/api/action-reducers/filters/locations";
 import componentsSidebar from "app/state/api/action-reducers/cms/componentsSidebar";
+import ResultsDocuments from "app/state/api/action-reducers/annual-results/documents";
 import modulesGrantDetail from "app/state/api/action-reducers/cms/modulesGrantDetail";
 import { AnnualResultsStats } from "app/state/api/action-reducers/annual-results/stats";
 import { AnnualResultsTable } from "app/state/api/action-reducers/annual-results/table";
@@ -45,12 +46,16 @@ import componentsChartsNetwork from "app/state/api/action-reducers/cms/component
 import componentsChartsPledges from "app/state/api/action-reducers/cms/componentsChartsPledges";
 import { FundingRequestsTableGeneric } from "app/state/api/action-reducers/viz/fundingRequests";
 import { FinancialInsightsStats } from "app/state/api/action-reducers/financial-insights/stats";
+import AccessToFundingDocuments from "app/state/api/action-reducers/access-to-funding/documents";
 import { GrantBudgetSankeyChart } from "app/state/api/action-reducers/grant/budget-sankey-chart";
 import { HomeExpendituresHeatmap } from "app/state/api/action-reducers/home/expenditures-heatmap";
 import { GeographyDocumentsTable } from "app/state/api/action-reducers/geography/documents-table";
 import { AnnualResultsPolyline } from "app/state/api/action-reducers/annual-results/polyline-tree";
 import componentsDatasetCarousel from "app/state/api/action-reducers/cms/componentsDatasetCarousel";
-import { GrantExpendituresHeatmap } from "app/state/api/action-reducers/grant/expenditures-heatmap";
+import {
+  GrantExpendituresHeatmap,
+  GrantHasExpenditures,
+} from "app/state/api/action-reducers/grant/expenditures-heatmap";
 import { GrantTargetsResultsTable } from "app/state/api/action-reducers/grant/targets-results-table";
 import { GeographyEligibilityTable } from "app/state/api/action-reducers/geography/eligibility-table";
 import componentsInformationPanel from "app/state/api/action-reducers/cms/componentsInformationPanel";
@@ -88,7 +93,6 @@ import { AccessToFundingFundingRequestsTable } from "app/state/api/action-reduce
 import { FinancialInsightsExpendituresHeatmap } from "app/state/api/action-reducers/financial-insights/expenditures-heatmap";
 import { GeographyResourceMobilizationBarChart } from "app/state/api/action-reducers/geography/resource-mobilization-bar-chart";
 import { FinancialInsightsExpendituresBarChart } from "app/state/api/action-reducers/financial-insights/expenditures-bar-chart";
-import { ResourceMobilizationSunburst } from "app/state/api/action-reducers/resource-mobilization/pledges-contributions-sunburst";
 import { FinancialInsightsDisbursementsBarChart } from "app/state/api/action-reducers/financial-insights/disbursements-bar-chart";
 import componentsPerformanceFrameworkComponents from "app/state/api/action-reducers/cms/componentsPerformanceFrameworkComponents";
 import { FinancialInsightsDisbursementsLineChart } from "app/state/api/action-reducers/financial-insights/disbursements-line-chart";
@@ -127,6 +131,7 @@ import {
   GeographyDisbursementsCycles,
   GeographyFundingRequestsCycles,
   GeographyPledgesContributionsCycles,
+  FinancialMetricsCycles,
 } from "app/state/api/action-reducers/filters/cycles";
 import pagesDatasets, {
   pagesDatasetsAccessToFunding,
@@ -165,7 +170,6 @@ const storeContent: StoreModel = {
   ResourceMobilizationExpandableBarChart: persist(
     ResourceMobilizationExpandableBarChart
   ),
-  ResourceMobilizationSunburst: persist(ResourceMobilizationSunburst),
   ResourceMobilizationTable: persist(ResourceMobilizationTable),
   // geographies
   GeographyList: persist(GeographyList),
@@ -181,6 +185,7 @@ const storeContent: StoreModel = {
   AccessToFundingFundingRequestsTable: persist(
     AccessToFundingFundingRequestsTable
   ),
+  AccessToFundingDocumentsTable: persist(AccessToFundingDocuments),
   // financial insights
   FinancialInsightsStats: persist(FinancialInsightsStats),
   FinancialInsightsDisbursementsBarChart: persist(
@@ -218,6 +223,7 @@ const storeContent: StoreModel = {
   AnnualResultsStats: persist(AnnualResultsStats),
   AnnualResultsPolyline: persist(AnnualResultsPolyline),
   AnnualResultsTable: persist(AnnualResultsTable),
+  AnnualResultsDocumentsTable: persist(ResultsDocuments),
   // grants
   GrantList: persist(GrantList),
   // location
@@ -257,6 +263,7 @@ const storeContent: StoreModel = {
   GrantDisbursementsBarChart: persist(GrantDisbursementsBarChart),
   GrantBudgetSankeyChart: persist(GrantBudgetSankeyChart),
   GrantExpendituresHeatmap: persist(GrantExpendituresHeatmap),
+  GrantHasExpenditures: persist(GrantHasExpenditures),
   GrantTargetsResultsTable: persist(GrantTargetsResultsTable),
   // search
   GlobalSearch: persist(GlobalSearch),
@@ -282,6 +289,7 @@ const storeContent: StoreModel = {
   FundingRequestsCycles: persist(FundingRequestsCycles),
   AnnualResultsCycles: persist(AnnualResultsCycles),
   BudgetsCycles: persist(BudgetsCycles),
+  FinancialMetricsCycles: persist(FinancialMetricsCycles),
   PledgesContributionsCycles: persist(PledgesContributionsCycles),
   DisbursementsCycles: persist(DisbursementsCycles),
   ExpendituresCycles: persist(ExpendituresCycles),

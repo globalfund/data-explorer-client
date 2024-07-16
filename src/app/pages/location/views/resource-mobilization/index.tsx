@@ -2,8 +2,9 @@ import React from "react";
 import get from "lodash/get";
 import sumBy from "lodash/sumBy";
 import Box from "@mui/material/Box";
+import { useTitle } from "react-use";
 import { useParams } from "react-router-dom";
-import { CYCLES, CycleProps } from "app/pages/home/data";
+import { CycleProps } from "app/pages/home/data";
 import Typography from "@mui/material/Typography";
 import { BarChart } from "app/components/charts/bar";
 import { ChartBlock } from "app/components/chart-block";
@@ -19,6 +20,12 @@ import { useCMSData } from "app/hooks/useCMSData";
 export const ResourceMobilization: React.FC = () => {
   const cmsData = useCMSData({ returnData: true });
   const params = useParams<{ id: string; tab: string }>();
+  const paramsId = params.id?.replace("|", "%2F");
+
+  const locationName = useStoreState((state) =>
+    get(state.GeographyOverview, "data.data[0].name", params.id)
+  );
+  useTitle(`The Data Explorer - ${locationName}`);
 
   const [chart1Cycles, setChart1Cycles] = React.useState<CycleProps[]>([]);
 
@@ -38,14 +45,19 @@ export const ResourceMobilization: React.FC = () => {
   );
   const cycles = useStoreState(
     (state) =>
-      get(state.GeographyPledgesContributionsCycles, "data.data", []) as {
+      get(state.GeographyPledgesContributionsCycles, "data.data", []).map(
+        (item: any) => ({
+          name: item.value,
+          value: item.value,
+        })
+      ) as {
         name: string;
         value: string;
       }[]
   );
 
   const handleChartCycleChange = (cycle: CycleProps) => {
-    const cycleIndex = cycles.findIndex((c) => c.value === cycle.value);
+    const cycleIndex = chart1Cycles.findIndex((c) => c.value === cycle.value);
 
     if (cycleIndex === -1) {
       setChart1Cycles((prev) => [...prev, cycle]);
@@ -55,7 +67,7 @@ export const ResourceMobilization: React.FC = () => {
   };
 
   useUpdateEffect(() => {
-    let filterString = `donors=${params.id}`;
+    let filterString = `geographies=${paramsId}`;
     if (chart1Cycles.length > 0) {
       filterString += `&periods=${chart1Cycles.map((c) => c.value).join(",")}`;
     }
@@ -84,20 +96,16 @@ export const ResourceMobilization: React.FC = () => {
         cycles={cycles}
         id="resource-mobilization"
         loading={loadingRMBarChart}
+        title={`US$${totalPledge}`}
         selectedCycles={chart1Cycles}
-        title={`US$${totalContribution}`}
         subtitle={get(
           cmsData,
           "pagesLocationResourceMobilization.title",
-          "Funds Contributed to date"
+          "Pledges & Contributions"
         )}
         handleCycleChange={handleChartCycleChange}
         empty={dataRMBarChart.length === 0 && chart1Cycles.length === 0}
-        text={get(
-          cmsData,
-          "pagesLocationResourceMobilization.text",
-          "Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
-        )}
+        infoType="pledges_contributions"
       >
         <BarChart
           data={dataRMBarChart}
@@ -121,6 +129,15 @@ export const ResourceMobilization: React.FC = () => {
         marginTop="64px"
         flexDirection="row"
         justifyContent="center"
+        sx={{
+          "@media (max-width: 767px)": {
+            gap: "32px",
+            flexDirection: "column",
+            "> div": {
+              width: "100%",
+            },
+          },
+        }}
       >
         <Box
           width="50%"

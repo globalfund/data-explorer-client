@@ -1,3 +1,8 @@
+export interface HeaderMenuProps {
+  mobileMenuOpen: boolean;
+  setMobileMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 export interface HeaderMenuPage {
   id: string;
   label: string;

@@ -7,7 +7,7 @@ export function useScrollToAnchor() {
 
   React.useEffect(() => {
     if (location.hash) {
-      lastHash.current = location.hash.slice(1);
+      lastHash.current = location.hash.slice(1).split("|")[0];
     }
 
     setTimeout(() => {
@@ -17,7 +17,7 @@ export function useScrollToAnchor() {
           ?.scrollIntoView({ behavior: "smooth", block: "start" });
         lastHash.current = "";
       }
-    }, 500);
+    }, 1000);
   }, [location]);
 
   return null;

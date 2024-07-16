@@ -12,10 +12,10 @@ import Typography from "@mui/material/Typography";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { TabulatorFull as Tabulator } from "tabulator-tables";
 import { TableContainerProps } from "app/components/table-container/data";
-import { ReactComponent as FilterIcon } from "app/assets/vectors/TableToolbarFilter.svg";
-import { ReactComponent as SearchIcon } from "app/assets/vectors/TableToolbarSearch.svg";
+// import { ReactComponent as FilterIcon } from "app/assets/vectors/TableToolbarFilter.svg";
+// import { ReactComponent as SearchIcon } from "app/assets/vectors/TableToolbarSearch.svg";
 import { ReactComponent as ColumnsIcon } from "app/assets/vectors/TableToolbarColumns.svg";
-import { ReactComponent as DownloadIcon } from "app/assets/vectors/TableToolbarDownload.svg";
+// import { ReactComponent as DownloadIcon } from "app/assets/vectors/TableToolbarDownload.svg";
 import { ReactComponent as FullscreenIcon } from "app/assets/vectors/TableToolbarFullscreen.svg";
 
 export const TableContainer: React.FC<TableContainerProps> = (
@@ -52,11 +52,11 @@ export const TableContainer: React.FC<TableContainerProps> = (
     }
   }, []);
 
-  const download = () => {
-    if (table) {
-      table.download("csv", "data.csv");
-    }
-  };
+  // const download = () => {
+  //   if (table) {
+  //     table.download("csv", "data.csv");
+  //   }
+  // };
 
   const handleColumnsMenuClick = (
     event: React.MouseEvent<HTMLButtonElement>
@@ -115,6 +115,9 @@ export const TableContainer: React.FC<TableContainerProps> = (
             flexDirection="row"
             alignItems="center"
             sx={{
+              "@media (max-width: 767px)": {
+                flexWrap: "wrap",
+              },
               "& > button": {
                 height: "32px",
                 fontSize: "14px",
@@ -167,18 +170,20 @@ export const TableContainer: React.FC<TableContainerProps> = (
             },
           }}
         >
-          <IconButton disableRipple>
+          {/* <IconButton disableRipple>
             <SearchIcon />
-          </IconButton>
+          </IconButton> */}
           <IconButton disableRipple onClick={fullscreen}>
             <FullscreenIcon />
           </IconButton>
-          <IconButton disableRipple onClick={handleColumnsMenuClick}>
-            <ColumnsIcon />
-          </IconButton>
-          <IconButton disableRipple onClick={download}>
+          {!props.noColumnVisibilitySelection && (
+            <IconButton disableRipple onClick={handleColumnsMenuClick}>
+              <ColumnsIcon />
+            </IconButton>
+          )}
+          {/* <IconButton disableRipple onClick={download}>
             <DownloadIcon />
-          </IconButton>
+          </IconButton> */}
           <Popover
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}

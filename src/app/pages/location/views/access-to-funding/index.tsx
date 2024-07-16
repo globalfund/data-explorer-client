@@ -3,17 +3,15 @@ import get from "lodash/get";
 import sumBy from "lodash/sumBy";
 import filter from "lodash/filter";
 import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
+import { useTitle } from "react-use";
 import { appColors } from "app/theme";
 import findIndex from "lodash/findIndex";
 import Divider from "@mui/material/Divider";
-import Tooltip from "@mui/material/Tooltip";
 import { Table } from "app/components/table";
 import { useParams } from "react-router-dom";
 import Typography from "@mui/material/Typography";
-import Info from "@mui/icons-material/InfoOutlined";
 import { ChartBlock } from "app/components/chart-block";
-import { CYCLES, CycleProps } from "app/pages/home/data";
+import { CycleProps } from "app/pages/home/data";
 import { RadialChart } from "app/components/charts/radial";
 import useUpdateEffect from "react-use/lib/useUpdateEffect";
 import { RaceBarChart } from "app/components/charts/race-bar";
@@ -34,6 +32,12 @@ import { useCMSData } from "app/hooks/useCMSData";
 export const AccessToFunding: React.FC = () => {
   const cmsData = useCMSData({ returnData: true });
   const params = useParams<{ id: string; tab: string }>();
+  const paramsId = params.id?.replace("|", "%2F");
+
+  const locationName = useStoreState((state) =>
+    get(state.GeographyOverview, "data.data[0].name", params.id)
+  );
+  useTitle(`The Data Explorer - ${locationName}`);
 
   const [chart1Cycles, setChart1Cycles] = React.useState<CycleProps[]>([]);
   const [chart2Cycles, setChart2Cycles] = React.useState<CycleProps[]>([]);
@@ -147,31 +151,31 @@ export const AccessToFunding: React.FC = () => {
   };
 
   useUpdateEffect(() => {
-    if (params.id && chart1Cycles.length > 0) {
+    if (paramsId && chart1Cycles.length > 0) {
       let filterString = "";
       filterString = `periods=${chart1Cycles[0].value}`;
       fetchAllocationsRadialChart({
         filterString,
-        routeParams: { code: params.id },
+        routeParams: { code: paramsId },
       });
     }
   }, [chart1Cycles]);
 
   useUpdateEffect(() => {
-    if (params.id && chart2Cycles.length > 0) {
+    if (paramsId && chart2Cycles.length > 0) {
       let filterString = "";
       filterString += `&periods=${chart2Cycles[0].value.split("-")[0]}`;
       fetchFundingRequestsTable({
         filterString,
         routeParams: {
-          code: params.id,
+          code: paramsId,
         },
       });
     }
   }, [chart2Cycles]);
 
   React.useEffect(() => {
-    if (allocationsCycles.length > 0) {
+    if (allocationsCycles.length > 0 && chart1Cycles.length === 0) {
       setChart1Cycles((prev) => {
         if (prev.length === 0) {
           return [allocationsCycles[allocationsCycles.length - 1]];
@@ -182,7 +186,7 @@ export const AccessToFunding: React.FC = () => {
   }, [allocationsCycles]);
 
   React.useEffect(() => {
-    if (fundingRequestsCycles.length > 0) {
+    if (fundingRequestsCycles.length > 0 && chart2Cycles.length === 0) {
       setChart2Cycles((prev) => {
         if (prev.length === 0) {
           return [fundingRequestsCycles[fundingRequestsCycles.length - 1]];
@@ -233,6 +237,9 @@ export const AccessToFunding: React.FC = () => {
           width: "200vw",
           position: "relative",
           borderTopColor: "#868E96",
+          "@media (max-width: 767px)": {
+            display: "none",
+          },
         }}
       />
       <Box height="2px" />
@@ -257,7 +264,7 @@ export const AccessToFunding: React.FC = () => {
           cmsData,
           "pagesLocationAccessToFunding.allocationSubtitle",
           "Funds Allocated"
-        )} ${get(chart1Cycles, "[0].value", "")}`}
+        )} ${get(chart1Cycles, "[0].value", "").replace(" - ", "-")}`}
         empty={!showAllocationRadialChart}
         cycles={allocationsCyclesAll.map((c) => ({
           ...c,
@@ -266,20 +273,21 @@ export const AccessToFunding: React.FC = () => {
         text={get(
           cmsData,
           "pagesLocationAccessToFunding.allocationText",
-          "Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
+          "The Global Fund is distinct from other organizations in that it gives countries (or groups of countries) an allocation and asks countries to describe how they will use those funds rather than asking for applications and then determining an amount per-country based on the merits of the various proposals received.<br/><br/>This provides greater predictability for countries and helps ensure that the programs being funded are not just the ones with the most capacity to write good applications."
         )}
+        infoType="global"
       >
-        <RadialChart
-          tooltipLabel={get(
-            cmsData,
-            "pagesLocationAccessToFunding.allocationTooltipLabel",
-            "Allocation"
-          )}
-          data={dataAllocationsRadialChart}
-          itemLabelFormatterType="name"
-        />
-      </ChartBlock>
-      {showAllocationRadialChart && (
+        <Box marginTop="-100px" marginBottom="-100px">
+          <RadialChart
+            tooltipLabel={get(
+              cmsData,
+              "pagesLocationAccessToFunding.allocationTooltipLabel",
+              "Allocation"
+            )}
+            data={dataAllocationsRadialChart}
+            itemLabelFormatterType="name"
+          />
+        </Box>
         <Box
           width="100%"
           display="flex"
@@ -287,7 +295,7 @@ export const AccessToFunding: React.FC = () => {
           justifyContent="center"
         >
           <Box display="flex" alignItems="center" flexDirection="column">
-            <Typography variant="h3" fontWeight="900">
+            <Typography variant="h4" fontWeight="900">
               US${totalAllocationAmount}
             </Typography>
             <Typography variant="subtitle2">
@@ -300,7 +308,7 @@ export const AccessToFunding: React.FC = () => {
             </Typography>
           </Box>
         </Box>
-      )}
+      </ChartBlock>
       {showAllocationRadialChart && fullWidthDivider}
       <ChartBlock
         noSplitText
@@ -313,11 +321,11 @@ export const AccessToFunding: React.FC = () => {
           "pagesLocationAccessToFunding.fundingRequestsTitle",
           "Funding Requests"
         )}`}
-        subtitle={get(
+        subtitle={`${get(
           cmsData,
           "pagesLocationAccessToFunding.fundingRequestsSubtitle",
-          "Submitted to date"
-        )}
+          "Submitted for"
+        )} ${get(chart2Cycles, "[0].value", "").replace(" - ", "-")}`}
         empty={!showFundingRequestsTable}
         handleCycleChange={(value) => handleChartCycleChange(value, 2)}
         cycles={fundingRequestsCyclesAll.map((c) => ({
@@ -329,99 +337,19 @@ export const AccessToFunding: React.FC = () => {
           "pagesLocationAccessToFunding.fundingRequestsText",
           "The Funding Request explains how the applicant would use Global Fund allocated funds, if approved. Funding Requests are reviewed by the Global Fund’s Technical Review Panel (TRP). Once approved by the TRP, the Funding Request is turned into one or more grants through the grant-making negotiation. The Grant Approvals Committee (GAC) reviews the final version of each grant and recommends implementation-ready grants to the Global Fund Board for approval. Funding Requests are submitted for internal Global Fund review, but the final grant is the legally-binding agreement.<br/><br/>Documents for a specific funding request can be downloaded by clicking the cloud icon. Documents from the 2017-2019 Allocation Period and earlier can be found by clicking on the “Documents’ tab above. If a Funding Request is not visible for the 2023-2025 Allocation Period and the country received an Allocation, it likely means that the applicant has not yet registered for a TRP Window."
         )}
+        infoType="global"
       >
         <TableContainer
           dataTree
           withCycles
+          dataTreeStartExpanded
           id="funding-requests-table"
+          columns={TABLE_VARIATION_2_COLUMNS}
           data={dataFundingRequestsTable._children}
-          columns={TABLE_VARIATION_2_COLUMNS.slice(0, 7)}
-          extraColumns={TABLE_VARIATION_2_COLUMNS.slice(7)}
         />
         <Box height="64px" />
         <RaceBarChart noValuesFormat data={raceBarData} />
       </ChartBlock>
-      <Box height="50px" />
-      {showFundingRequestsTable && (
-        <Grid
-          container
-          spacing={2}
-          sx={{
-            "> div": {
-              "> div": {
-                gap: "10px",
-                width: "100%",
-                display: "flex",
-                textAlign: "center",
-                alignItems: "center",
-                flexDirection: "column",
-                justifyContent: "center",
-              },
-            },
-          }}
-        >
-          <Grid item xs={12} sm={6}>
-            <Box>
-              <Box
-                width="40px"
-                height="40px"
-                borderRadius="50%"
-                bgcolor={appColors.RADIAL_CHART.ITEM_COLORS[2]}
-              />
-              <Box>
-                <Typography variant="h3" fontWeight="900">
-                  {dataFundingRequestStats.submitted}{" "}
-                  {get(
-                    cmsData,
-                    "pagesLocationAccessToFunding.fundingRequestsStatsSubmittedTitle",
-                    "Submitted"
-                  )}
-                </Typography>
-                <Typography variant="subtitle2">
-                  {get(
-                    cmsData,
-                    "pagesLocationAccessToFunding.fundingRequestsStatsSubmittedSubtitle",
-                    "Funding Requests"
-                  )}
-                </Typography>
-              </Box>
-            </Box>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Box>
-              <Box
-                width="40px"
-                height="40px"
-                borderRadius="50%"
-                bgcolor={appColors.RADIAL_CHART.ITEM_COLORS[0]}
-              />
-              <Box>
-                <Typography variant="h3" fontWeight="900">
-                  {dataFundingRequestStats.signed}{" "}
-                  {get(
-                    cmsData,
-                    "pagesLocationAccessToFunding.fundingRequestsStatsSignedTitle",
-                    "Signed"
-                  )}
-                </Typography>
-                <Typography variant="subtitle2">
-                  {(
-                    (dataFundingRequestStats.signed /
-                      dataFundingRequestStats.submitted) *
-                    100
-                  ).toFixed(2)}
-                  %{" "}
-                  {get(
-                    cmsData,
-                    "pagesLocationAccessToFunding.fundingRequestsStatsSignedSubtitle",
-                    "Grants"
-                  )}
-                </Typography>
-              </Box>
-            </Box>
-          </Grid>
-        </Grid>
-      )}
       {showFundingRequestsTable && fullWidthDivider}
       <ChartBlock
         noSplitText
@@ -431,19 +359,23 @@ export const AccessToFunding: React.FC = () => {
           "pagesLocationAccessToFunding.eligibilityTitle",
           "Eligibility"
         )}
-        subtitle={get(
-          cmsData,
-          "pagesLocationAccessToFunding.eligibilitySubtitle",
-          "To date"
-        )}
+        subtitle=""
         empty={!showEligibilityHeatmap}
         text={get(
           cmsData,
           "pagesLocationAccessToFunding.eligibilityText",
           "Eligibility for funding from the Global Fund is determined by country income classification and disease burden for HIV, tuberculosis and malaria. Below are the components which are eligible for an allocation for the selected allocation period, according to the Global Fund Eligibility Policy.<br/><br/>Eligibility for the 2023-2025 Allocation Period was determined in 2022 and documented in the 2023 Eligibility List. Eligibility does not guarantee a funding allocation. Learn more about Eligibility <a target='_blank' href='https://www.theglobalfund.org/en/applying-for-funding/understand-and-prepare/eligibility/'>here</a> or <a>see the full history of eligibility for this country</a>."
         )}
+        infoType="global"
       >
-        <Box height="32px" />
+        <Box
+          height="32px"
+          sx={{
+            "@media (max-width: 767px)": {
+              display: "none",
+            },
+          }}
+        />
         <Box
           gap="20px"
           width="100%"
@@ -469,6 +401,14 @@ export const AccessToFunding: React.FC = () => {
                     height: "11px",
                     borderRadius: "2px",
                   },
+                },
+              },
+            },
+            "@media (max-width: 767px)": {
+              flexDirection: "column",
+              "> div": {
+                "> div": {
+                  flexWrap: "wrap",
                 },
               },
             },
@@ -614,9 +554,6 @@ export const AccessToFunding: React.FC = () => {
               </Box>
             </Box>
           </Box>
-          <Tooltip title="">
-            <Info fontSize="small" />
-          </Tooltip>
         </Box>
         <Table
           dataTree
@@ -637,8 +574,16 @@ export const AccessToFunding: React.FC = () => {
         )}
         subtitle=""
         empty={!showDocumentsTable}
+        infoType="global"
       >
-        <Box height="64px" />
+        <Box
+          height="64px"
+          sx={{
+            "@media (max-width: 767px)": {
+              display: "none",
+            },
+          }}
+        />
         <TableContainer
           dataTree
           id="documents-table"

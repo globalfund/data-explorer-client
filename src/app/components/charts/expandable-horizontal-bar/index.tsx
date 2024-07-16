@@ -45,6 +45,7 @@ echarts.use([
 const Tooltip = (props: any) => {
   return (
     <div
+      className="chart-tooltip"
       style={{
         gap: "10px",
         width: "400px",
@@ -401,7 +402,7 @@ export const ExpandableHorizontalBar: React.FC<
       <Typography
         fontSize="12px"
         sx={{
-          top: "40px",
+          top: "20px",
           position: "absolute",
         }}
       >
@@ -410,9 +411,9 @@ export const ExpandableHorizontalBar: React.FC<
       <Typography
         fontSize="12px"
         sx={{
+          right: 0,
           top: "20px",
           position: "absolute",
-          left: "calc(100% / 3)",
         }}
       >
         X Axis /{" "}

@@ -1,23 +1,26 @@
 import React from "react";
 import get from "lodash/get";
+import sumBy from "lodash/sumBy";
 import filter from "lodash/filter";
 import Box from "@mui/material/Box";
 import { appColors } from "app/theme";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
+import { useParams } from "react-router-dom";
 import { CYCLES } from "app/pages/home/data";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
-import { BarChart } from "app/components/charts/bar";
-import { useStoreState } from "app/state/store/hooks";
+import { Dropdown } from "app/components/dropdown";
+import { useTitle, useUpdateEffect } from "react-use";
 import { ChartBlock } from "app/components/chart-block";
 import { Heatmap } from "app/components/charts/heatmap";
 import { RadialChart } from "app/components/charts/radial";
 import { SankeyChart } from "app/components/charts/sankey";
 import { RaceBarChart } from "app/components/charts/race-bar";
-import { BarChartDataItem } from "app/components/charts/bar/data";
 import { SankeyChartData } from "app/components/charts/sankey/data";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { CHART_2_DROPDOWN_ITEMS } from "app/pages/grant/views/grant-implementation/data";
+import { componentsGroupingOptions } from "app/pages/datasets/grant-implementation/data";
 import {
   HeatmapDataItem,
   getPercentageColor,
@@ -30,8 +33,15 @@ import { useCMSData } from "app/hooks/useCMSData";
 
 export const GrantImplementation: React.FC = () => {
   const cmsData = useCMSData({ returnData: true });
+  const params = useParams<{ id: string; ip: string; tab: string }>();
+
+  useTitle(`The Data Explorer - ${params.id} Financial Insights`);
+
   const [chart2Dropdown, setChart2Dropdown] = React.useState(
     CHART_2_DROPDOWN_ITEMS[0].value
+  );
+  const [chart2Dropdown2, setChart2Dropdown2] = React.useState(
+    componentsGroupingOptions[0].value
   );
   const [chart2Unit, setChart2Unit] = React.useState<"amount" | "percentage">(
     "percentage"
@@ -52,14 +62,6 @@ export const GrantImplementation: React.FC = () => {
     programStartDate: get(state.GrantOverview, "data.data[0].dates[0]"),
     programEndDate: get(state.GrantOverview, "data.data[0].dates[1]"),
   }));
-  const dataDisbursementsBarChart = useStoreState(
-    (state) =>
-      get(
-        state.GrantDisbursementsBarChart,
-        "data.data",
-        []
-      ) as BarChartDataItem[]
-  );
   const dataBudgetSankeyChart = useStoreState(
     (state) =>
       get(state.GrantBudgetSankeyChart, "data.data[0]", {
@@ -70,6 +72,18 @@ export const GrantImplementation: React.FC = () => {
   const dataExpendituresHeatmap = useStoreState(
     (state) =>
       get(state.GrantExpendituresHeatmap, "data.data", []) as HeatmapDataItem[]
+  );
+  const dataHasExpenditures = useStoreState(
+    (state) =>
+      get(
+        state.GrantHasExpenditures,
+        "data.data.hasExpenditures",
+        false
+      ) as boolean
+  );
+
+  const fetchExpendituresHeatmap = useStoreActions(
+    (actions) => actions.GrantExpendituresHeatmap.fetch
   );
 
   const chart2UnitButtons = React.useMemo(
@@ -168,21 +182,23 @@ export const GrantImplementation: React.FC = () => {
   }, [dataFinancialValues]);
 
   const raceBarChartData = React.useMemo(() => {
+    const disbursementPercentage =
+      (dataFinancialValues.disbursement / dataFinancialValues.commitment) * 100;
+    const commitmentPercentage =
+      (dataFinancialValues.commitment / dataFinancialValues.signed) * 100;
     return [
       {
         name: "Disbursed",
         value: dataFinancialValues.disbursement,
         color: "#0A2840",
-        percentage:
-          (dataFinancialValues.disbursement / dataFinancialValues.commitment) *
-          100,
+        percentage: disbursementPercentage,
+        sizePercentage: (disbursementPercentage * commitmentPercentage) / 100,
       },
       {
         name: "Committed",
         value: dataFinancialValues.commitment,
         color: "#013E77",
-        percentage:
-          (dataFinancialValues.commitment / dataFinancialValues.signed) * 100,
+        percentage: commitmentPercentage,
       },
       {
         name: "Signed",
@@ -191,7 +207,11 @@ export const GrantImplementation: React.FC = () => {
         percentage: 100,
       },
     ];
-  }, [dataFinancialValues]);
+  }, [
+    dataFinancialValues.disbursement,
+    dataFinancialValues.commitment,
+    dataFinancialValues.signed,
+  ]);
 
   const disbursementsTotal = React.useMemo(() => {
     const range = getRange(
@@ -204,6 +224,20 @@ export const GrantImplementation: React.FC = () => {
       2
     )} ${range.full}`;
   }, [dataFinancialValues.disbursement]);
+
+  const expendituresTotal = React.useMemo(() => {
+    const total = sumBy(
+      filter(
+        dataExpendituresHeatmap,
+        (item) => !item.parentRow && !item.parentColumn
+      ),
+      "value"
+    );
+    const range = getRange([{ value: total }], ["value"]);
+    return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${
+      range.full
+    }`;
+  }, [dataExpendituresHeatmap]);
 
   const totalBudget = React.useMemo(() => {
     let total = 0;
@@ -218,6 +252,40 @@ export const GrantImplementation: React.FC = () => {
     }`;
   }, [dataBudgetSankeyChart]);
 
+  const expendituresComponentGroupingDropdown = React.useMemo(() => {
+    return (
+      <Dropdown
+        dropdownSelected={chart2Dropdown2}
+        dropdownItems={componentsGroupingOptions}
+        handleDropdownChange={setChart2Dropdown2}
+      />
+    );
+  }, [chart2Dropdown2]);
+
+  useUpdateEffect(() => {
+    fetchExpendituresHeatmap({
+      routeParams: {
+        row:
+          chart2Dropdown === CHART_2_DROPDOWN_ITEMS[0].value
+            ? "module,intervention"
+            : "investmentLandscape1,investmentLandscape2,costCategory",
+        column: "component",
+        componentField:
+          chart2Dropdown2 === componentsGroupingOptions[0].value
+            ? "activityAreaGroup"
+            : "activityArea",
+        geographyGrouping: "Standard View",
+      },
+      filterString: `grantIP=${params.id}P0${params.ip}`,
+    });
+  }, [
+    chart2Dropdown,
+    chart2Dropdown2,
+    params.id,
+    params.ip,
+    fetchExpendituresHeatmap,
+  ]);
+
   const fullWidthDivider = (
     <React.Fragment>
       <Box height="2px" />
@@ -227,6 +295,9 @@ export const GrantImplementation: React.FC = () => {
           width: "200vw",
           position: "relative",
           borderTopColor: "#868E96",
+          "@media (max-width: 767px)": {
+            display: "none",
+          },
         }}
       />
       <Box height="2px" />
@@ -234,65 +305,13 @@ export const GrantImplementation: React.FC = () => {
   );
 
   const showRadialChart = radialChartData.length > 0;
-  const showDisbursementsBarChart = dataDisbursementsBarChart.length > 0;
   const showBudgetSankeyChart =
     dataBudgetSankeyChart.nodes.length > 0 &&
     dataBudgetSankeyChart.links.length > 0;
-  const showExpendituresHeatmap = dataExpendituresHeatmap.length > 0;
+  const showExpendituresHeatmap = dataHasExpenditures;
 
   return (
     <Box gap="24px" display="flex" flexDirection="column">
-      <ChartBlock
-        id="radial-chart"
-        title={disbursementsTotal}
-        subtitle={get(
-          cmsData,
-          "pagesGrantGrantImplementation.disbursedSubtitle",
-          "Disbursed"
-        )}
-        empty={!showRadialChart}
-        text={get(
-          cmsData,
-          "pagesGrantGrantImplementation.disbursedText",
-          "Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
-        )}
-      >
-        <RadialChart
-          tooltipLabel={get(
-            cmsData,
-            "pagesGrantGrantImplementation.disbursedTooltipLabel",
-            "Amount"
-          )}
-          data={radialChartData}
-          itemLabelFormatterType="name-value-percent"
-        />
-        <Box
-          top="55%"
-          display="flex"
-          alignItems="center"
-          position="absolute"
-          flexDirection="column"
-          justifyContent="center"
-          right="calc(50% - 33px)"
-        >
-          <Box
-            width="17px"
-            height="17px"
-            borderRadius="50%"
-            bgcolor={appColors.RADIAL_CHART.ITEM_COLORS[2]}
-          />
-          <Typography variant="body2" fontWeight="700">
-            {get(
-              cmsData,
-              "pagesGrantGrantImplementation.disbursedRadialChartLabel"
-            )}
-          </Typography>
-          <Typography variant="body2">{signedFormatted}</Typography>
-        </Box>
-        <RaceBarChart data={raceBarChartData} />
-      </ChartBlock>
-      {showRadialChart && fullWidthDivider}
-      <Divider sx={{ borderColor: "#000" }} />
       <Grid
         container
         spacing={2}
@@ -316,9 +335,19 @@ export const GrantImplementation: React.FC = () => {
               textOverflow: "ellipsis",
             },
           },
+          "@media (max-width: 767px)": {
+            "> div": {
+              "> div": {
+                gap: 0,
+              },
+              ":after": {
+                display: "none",
+              },
+            },
+          },
         }}
       >
-        <Grid item xs={6} md={4}>
+        <Grid item xs={12} sm={6} md={4}>
           <Box
             gap="10px"
             display="flex"
@@ -337,7 +366,7 @@ export const GrantImplementation: React.FC = () => {
             </Typography>
           </Box>
         </Grid>
-        <Grid item xs={6} md={4}>
+        <Grid item xs={12} sm={6} md={4}>
           <Box
             gap="10px"
             display="flex"
@@ -361,7 +390,7 @@ export const GrantImplementation: React.FC = () => {
             </Typography>
           </Box>
         </Grid>
-        <Grid item xs={6} md={4}>
+        <Grid item xs={12} sm={6} md={4}>
           <Box
             gap="10px"
             display="flex"
@@ -381,33 +410,54 @@ export const GrantImplementation: React.FC = () => {
           </Box>
         </Grid>
       </Grid>
-      <Divider sx={{ borderColor: "#000" }} />
       {fullWidthDivider}
       <ChartBlock
-        id="disbursements"
-        title={get(
-          cmsData,
-          "pagesGrantGrantImplementation.disbursementsTitle",
-          "Disbursements"
-        )}
+        id="radial-chart"
+        title={disbursementsTotal}
         subtitle={get(
           cmsData,
           "pagesGrantGrantImplementation.disbursementsSubtitle",
-          "Overtime"
+          "Disbursements"
         )}
-        empty={!showDisbursementsBarChart}
-        text={get(
-          cmsData,
-          "pagesGrantGrantImplementation.disbursementsText",
-          "Description of Pledges & Contributions: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
-        )}
+        empty={!showRadialChart}
+        infoType="global"
       >
-        <BarChart
-          data={dataDisbursementsBarChart}
-          valueLabels={{ value: "" }}
+        <RadialChart
+          tooltipLabel={get(
+            cmsData,
+            "pagesGrantGrantImplementation.disbursementsTooltipLabel",
+            "Amount"
+          )}
+          data={radialChartData}
+          itemLabelFormatterType="name-value-percent"
         />
+        <Box
+          top="55%"
+          display="flex"
+          alignItems="center"
+          position="absolute"
+          flexDirection="column"
+          justifyContent="center"
+          right="calc(50% - 33px)"
+        >
+          <Box
+            width="17px"
+            height="17px"
+            borderRadius="50%"
+            bgcolor={appColors.RADIAL_CHART.ITEM_COLORS[2]}
+          />
+          <Typography variant="body2" fontWeight="700">
+            {get(
+              cmsData,
+              "pagesGrantGrantImplementation.disbursementsRadialChartLabel",
+              "Signed"
+            )}
+          </Typography>
+          <Typography variant="body2">{signedFormatted}</Typography>
+        </Box>
+        <RaceBarChart data={raceBarChartData} />
       </ChartBlock>
-      {showDisbursementsBarChart && fullWidthDivider}
+      {showRadialChart && fullWidthDivider}
       <ChartBlock
         id="budget"
         title={totalBudget}
@@ -417,11 +467,7 @@ export const GrantImplementation: React.FC = () => {
           "Grant Budgets"
         )}
         empty={!showBudgetSankeyChart}
-        text={get(
-          cmsData,
-          "pagesGrantGrantImplementation.budgetsText",
-          "Our Grant Implementation programs are developed meticulously, each Grant follows a well executed plan, always supervised by TGF Implementation team."
-        )}
+        infoType="budgets"
       >
         <Grid
           container
@@ -471,32 +517,31 @@ export const GrantImplementation: React.FC = () => {
         subtitle={get(
           cmsData,
           "pagesGrantGrantImplementation.expendituresSubtitle",
-          "To date"
-        )}
-        title={get(
-          cmsData,
-          "pagesGrantGrantImplementation.expendituresTitle",
           "Expenditures"
         )}
+        title={expendituresTotal}
         empty={!showExpendituresHeatmap}
         dropdownSelected={chart2Dropdown}
         dropdownItems={CHART_2_DROPDOWN_ITEMS}
         handleDropdownChange={setChart2Dropdown}
-        text={get(
-          cmsData,
-          "pagesGrantGrantImplementation.expendituresText",
-          "Our Grant Implementation programs are developed meticulously, each Grant follows a well executed plan, always supervised by TGF Implementation team."
-        )}
         unitButtons={chart2UnitButtons}
+        infoType="expenditures"
+        extraDropdown={expendituresComponentGroupingDropdown}
       >
         <Heatmap
-          valueType="amount"
-          contentProp="value"
           hoveredLegend={null}
           columnCategory="cycle"
+          valueType={chart2Unit}
+          rowHeader="Components"
           rowCategory="component"
           data={dataExpendituresHeatmap}
           getItemColor={getPercentageColor}
+          contentProp={chart2Unit === "percentage" ? "percentage" : "value"}
+          columnHeader={
+            chart2Dropdown === CHART_2_DROPDOWN_ITEMS[0].value
+              ? "Modules & Interventions"
+              : "Investment Landscapes & Cost Categories"
+          }
         />
       </ChartBlock>
     </Box>

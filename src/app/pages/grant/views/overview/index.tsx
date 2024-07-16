@@ -1,6 +1,7 @@
 import React from "react";
 import get from "lodash/get";
 import Box from "@mui/material/Box";
+import { useTitle } from "react-use";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
@@ -57,6 +58,8 @@ export const GrantOverview: React.FC = () => {
     (state) => state.GrantInfo.loading || state.GrantOverview.loading
   );
 
+  useTitle(`The Data Explorer - ${dataGrant.code}`);
+
   const statusColor = React.useMemo(() => {
     switch (dataOverview.status) {
       case "Active":
@@ -71,18 +74,23 @@ export const GrantOverview: React.FC = () => {
   }, [dataOverview.status]);
 
   const raceBarChartData = React.useMemo(() => {
+    const disbursementPercentage =
+      (dataOverview.disbursement / dataOverview.commitment) * 100;
+    const commitmentPercentage =
+      (dataOverview.commitment / dataOverview.signed) * 100;
     return [
       {
         name: "Disbursed",
         value: dataOverview.disbursement,
         color: "#0A2840",
-        percentage: (dataOverview.disbursement / dataOverview.commitment) * 100,
+        percentage: disbursementPercentage,
+        sizePercentage: (disbursementPercentage * commitmentPercentage) / 100,
       },
       {
         name: "Committed",
         value: dataOverview.commitment,
         color: "#013E77",
-        percentage: (dataOverview.commitment / dataOverview.signed) * 100,
+        percentage: commitmentPercentage,
       },
       {
         name: "Signed",
@@ -100,6 +108,9 @@ export const GrantOverview: React.FC = () => {
         width: "200vw",
         position: "relative",
         borderTopColor: "#868E96",
+        "@media (max-width: 767px)": {
+          display: "none",
+        },
       }}
     />
   );
@@ -127,8 +138,11 @@ export const GrantOverview: React.FC = () => {
               width: "1px",
               content: '""',
               height: "38px",
+              background: "#000",
               position: "absolute",
-              backgroundColor: "#000",
+              "@media (max-width: 1200px)": {
+                display: "none",
+              },
             },
             "> div > *": {
               maxWidth: "100%",
@@ -139,7 +153,7 @@ export const GrantOverview: React.FC = () => {
           },
         }}
       >
-        <Grid item xs={6} md={4} lg={3}>
+        <Grid item xs={12} sm={6} md={4} lg={3}>
           <Box gap="10px" display="flex" flexDirection="column">
             <Typography variant="body2" fontWeight="700">
               {get(
@@ -155,7 +169,7 @@ export const GrantOverview: React.FC = () => {
             </Typography>
           </Box>
         </Grid>
-        <Grid item xs={6} md={4} lg={2}>
+        <Grid item xs={12} sm={6} md={4} lg={2}>
           <Box gap="10px" display="flex" flexDirection="column">
             <Typography variant="body2" fontWeight="700">
               {get(cmsData, "pagesGrantOverview.grantStatus", "Grant Status")}
@@ -176,7 +190,7 @@ export const GrantOverview: React.FC = () => {
             </Typography>
           </Box>
         </Grid>
-        <Grid item xs={6} md={4} lg={2}>
+        <Grid item xs={12} sm={6} md={4} lg={2}>
           <Box gap="10px" display="flex" flexDirection="column">
             <Typography variant="body2" fontWeight="700">
               {get(cmsData, "pagesGrantOverview.countryText", "Country")}
@@ -184,7 +198,7 @@ export const GrantOverview: React.FC = () => {
             <Typography variant="overline">{dataGrant.countryName}</Typography>
           </Box>
         </Grid>
-        <Grid item xs={6} md={4} lg={2}>
+        <Grid item xs={12} sm={6} md={4} lg={2}>
           <Box gap="10px" display="flex" flexDirection="column">
             <Typography variant="body2" fontWeight="700">
               {get(cmsData, "pagesGrantOverview.componentText", "Component")}
@@ -192,7 +206,7 @@ export const GrantOverview: React.FC = () => {
             <Typography variant="overline">{dataGrant.component}</Typography>
           </Box>
         </Grid>
-        {/* <Grid item xs={6} md={4} lg={2}>
+        {/* <Grid item xs={12} sm={6} md={4} lg={2}>
           <Box gap="10px" display="flex" flexDirection="column">
             <Typography variant="body2" fontWeight="700">
               Rating
@@ -200,7 +214,7 @@ export const GrantOverview: React.FC = () => {
             <Typography variant="overline">-</Typography>
           </Box>
         </Grid> */}
-        <Grid item xs={6} md={4} lg={3}>
+        <Grid item xs={12} sm={6} md={4} lg={3}>
           <Box gap="10px" display="flex" flexDirection="column">
             <Typography variant="body2" fontWeight="700">
               {get(
@@ -222,6 +236,7 @@ export const GrantOverview: React.FC = () => {
           <RaceBarChart data={raceBarChartData} />
         </Box>
         <ChartBlockButtonToolbar
+          infoType="global"
           hashId="grant-overview-race-bar-chart"
           blockId="grant-overview-race-bar-chart"
         />

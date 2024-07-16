@@ -2,11 +2,12 @@ import React from "react";
 import get from "lodash/get";
 import uniqBy from "lodash/uniqBy";
 import Box from "@mui/material/Box";
+import { useTitle } from "react-use";
 import Grid from "@mui/material/Grid";
-import Link from "@mui/material/Link";
+// import Link from "@mui/material/Link";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
-import { Link as RouteLink } from "react-router-dom";
+// import { Link as RouteLink } from "react-router-dom";
 import { useStoreState } from "app/state/store/hooks";
 import { useCMSData } from "app/hooks/useCMSData";
 
@@ -27,9 +28,11 @@ export const LocationOverview: React.FC = () => {
     get(state.GeographyOverviewCoordinatingMechanismsContacts, "data.data", [])
   );
 
+  useTitle(`The Data Explorer - ${dataOverview.name}`);
+
   return (
     <Box gap="24px" display="flex" flexDirection="column">
-      <Box>
+      {/* <Box>
         <Typography fontSize="18px" fontWeight="700">
           {get(
             cmsData,
@@ -50,7 +53,7 @@ export const LocationOverview: React.FC = () => {
           }}
         />
       </Box>
-      <Divider sx={{ borderColor: "#000" }} />
+      <Divider sx={{ borderColor: "#000" }} /> */}
       <Grid
         container
         spacing={4}
@@ -69,7 +72,14 @@ export const LocationOverview: React.FC = () => {
               flexDirection: "column",
             }}
           >
-            <Box minHeight={110}>
+            <Box
+              minHeight={110}
+              sx={{
+                "@media (max-width: 920px)": {
+                  minHeight: "auto",
+                },
+              }}
+            >
               <Typography variant="body2" fontWeight="700" marginBottom="10px">
                 {get(
                   cmsData,
@@ -105,7 +115,7 @@ export const LocationOverview: React.FC = () => {
                     >
                       {ccm.name}
                     </Typography>
-                    <Grid container spacing={2}>
+                    <Grid container spacing={1}>
                       {uniqBy(ccm.items, "fullname").map((item: any) => (
                         <Grid key={item.fullname} item xs={6}>
                           <Typography
@@ -139,15 +149,23 @@ export const LocationOverview: React.FC = () => {
               flexDirection: "column",
             }}
           >
-            <Box minHeight={110}>
+            <Box
+              minHeight={110}
+              sx={{
+                "@media (max-width: 920px)": {
+                  minHeight: "auto",
+                },
+              }}
+            >
               <Typography variant="body2" fontWeight="700" marginBottom="10px">
                 Current Principal Recipients in {dataOverview.name}
               </Typography>
               <Grid
                 container
-                spacing={2}
+                spacing={1}
                 sx={{
-                  a: {
+                  // a: {
+                  span: {
                     display: "block",
                     fontSize: "12px",
                     lineHeight: 1.8,
@@ -156,9 +174,9 @@ export const LocationOverview: React.FC = () => {
               >
                 {dataOverview.currentPrincipalRecipients.map((item: any) => (
                   <Grid key={item.name} item xs={6}>
-                    <Link component={RouteLink} to="">
-                      {item.name}
-                    </Link>
+                    {/* <Link component={RouteLink} to=""> */}
+                    <span>{item.name}</span>
+                    {/* </Link> */}
                   </Grid>
                 ))}
               </Grid>
@@ -170,9 +188,10 @@ export const LocationOverview: React.FC = () => {
               </Typography>
               <Grid
                 container
-                spacing={2}
+                spacing={1}
                 sx={{
-                  a: {
+                  // a: {
+                  span: {
                     display: "block",
                     fontSize: "12px",
                     lineHeight: 1.8,
@@ -181,9 +200,9 @@ export const LocationOverview: React.FC = () => {
               >
                 {dataOverview.formerPrincipalRecipients.map((item: any) => (
                   <Grid key={item.name} item xs={6}>
-                    <Link component={RouteLink} to="">
-                      {item.name}
-                    </Link>
+                    {/* <Link component={RouteLink} to=""> */}
+                    <span>{item.name}</span>
+                    {/* </Link> */}
                   </Grid>
                 ))}
               </Grid>

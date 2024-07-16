@@ -11,17 +11,6 @@ export const Container = styled(Box)`
   background: ${appColors.SEARCH.CONTAINER_BACKGROUND};
   width: ${(props) =>
     props.theme.withCatMenu ? "calc(100% - 200px)" : "100%"};
-
-  @media (max-width: 767px) {
-    ${(props) =>
-      props.theme.focused
-        ? `
-      padding: 5px;
-      border-radius: 0;
-      border-bottom: 1px solid ${appColors.SEARCH.CONTAINER_BORDER_COLOR};
-    `
-        : ""}
-  }
 `;
 
 export const MobileContainer = styled(Box)`
@@ -32,50 +21,6 @@ export const MobileContainer = styled(Box)`
   @media (min-width: 768px) {
     display: flex;
     flex-direction: row;
-  }
-
-  @media (max-width: 767px) {
-    &:focus-within {
-      top: 0;
-      left: -16px;
-      width: 100vw;
-      height: 100vh;
-      background: ${appColors.SEARCH.CONTAINER_BACKGROUND};
-      position: absolute;
-      padding: 20px 12px 0 12px;
-
-      > div {
-        padding: 5px;
-        border-radius: 0;
-        border-bottom: 1px solid ${appColors.SEARCH.CONTAINER_BORDER_COLOR};
-
-        > span {
-          display: block !important;
-        }
-      }
-    }
-    ${(props) =>
-      props.theme.focused
-        ? `
-      top: 0;
-      left: -16px;
-      width: 100vw;
-      height: 100vh;
-      background: ${appColors.SEARCH.CONTAINER_BACKGROUND};
-      position: absolute;
-      padding: 20px 12px 0 12px;
-
-      > div {
-        padding: 5px;
-        border-radius: 0;
-        border-bottom: 1px solid ${appColors.SEARCH.CONTAINER_BORDER_COLOR};
-
-        > span {
-          display: block !important;
-        }
-      }
-    `
-        : ""}
   }
 `;
 

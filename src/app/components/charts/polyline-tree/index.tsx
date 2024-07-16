@@ -4,6 +4,7 @@ import { appColors } from "app/theme";
 import * as echarts from "echarts/core";
 import { SVGRenderer } from "echarts/renderers";
 import { formatLocale } from "app/utils/formatLocale";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { useChartResizeObserver } from "app/hooks/useChartResizeObserver";
 import { TreeSeriesOption, TreeChart as EchartsTree } from "echarts/charts";
 import { PolylineTreeProps } from "app/components/charts/polyline-tree/data";
@@ -13,6 +14,7 @@ echarts.use([EchartsTree, SVGRenderer]);
 export const PolylineTree: React.FC<PolylineTreeProps> = (
   props: PolylineTreeProps
 ) => {
+  const mobile = useMediaQuery("(max-width: 767px)");
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   const [stateChart, setStateChart] =
@@ -35,9 +37,9 @@ export const PolylineTree: React.FC<PolylineTreeProps> = (
           type: "tree",
           data: [props.data],
           top: "50px",
-          left: "50px",
+          left: mobile ? "25px" : "50px",
           bottom: "50px",
-          right: "70%",
+          right: mobile ? "50%" : "70%",
           edgeShape: "polyline",
           symbolSize: 9,
           symbol: (value) => {
@@ -76,7 +78,10 @@ export const PolylineTree: React.FC<PolylineTreeProps> = (
               }
               if (params.value) {
                 return [
-                  `{value|${formatLocale(params.value as number).replace("US$", "")}}`,
+                  `{value|${formatLocale(params.value as number).replace(
+                    "US$",
+                    ""
+                  )}}`,
                   `{smallName|${params.name}}`,
                 ].join(" ");
               }
@@ -91,6 +96,7 @@ export const PolylineTree: React.FC<PolylineTreeProps> = (
             },
           },
           emphasis: {
+            disabled: mobile,
             focus: "descendant",
           },
         },
@@ -99,7 +105,7 @@ export const PolylineTree: React.FC<PolylineTreeProps> = (
       chart.setOption(option);
       setStateChart(chart);
     }
-  }, [containerRef.current]);
+  }, [containerRef.current, mobile]);
 
   return (
     <React.Fragment>

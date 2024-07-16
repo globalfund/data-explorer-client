@@ -12,16 +12,15 @@ import ClickAwayListener from "@mui/material/ClickAwayListener";
 import { ReactComponent as InfoIcon } from "app/assets/vectors/Info_GreyBG.svg";
 import { ReactComponent as ShareIcon } from "app/assets/vectors/Share_GreyBG.svg";
 import { ReactComponent as DownloadIcon } from "app/assets/vectors/Download_GreyBG.svg";
+import {
+  NOTES_GLOBAL,
+  NOTES_BUDGETS,
+  InfoPanelProps,
+  NOTES_EXPENDITURES,
+  NOTES_PLEDGES_CONTRIBUTIONS,
+  ChartBlockButtonToolbarProps,
+} from "app/components/chart-block/components/button-toolbar/data";
 // import { ReactComponent as FavoriteIcon } from "app/assets/vectors/Favorite_GreyBG.svg";
-
-interface ChartBlockButtonToolbarProps {
-  hashId: string;
-  blockId: string;
-}
-
-interface InfoPanelProps {
-  close: () => void;
-}
 
 const DownloadPanel: React.FC<ChartBlockButtonToolbarProps> = (
   props: ChartBlockButtonToolbarProps
@@ -82,7 +81,11 @@ const SharePanel: React.FC<ChartBlockButtonToolbarProps> = (
       url = url.slice(0, -1);
     }
     navigator.clipboard.writeText(
-      type === "code" ? "" : `${url}#${props.hashId}`
+      type === "code"
+        ? ""
+        : `${url}#${props.hashId}${
+            props.chartType ? `|${props.chartType}` : ""
+          }`
     );
     setFeedbackMessage(`${type} copied!`);
   };
@@ -136,11 +139,28 @@ const SharePanel: React.FC<ChartBlockButtonToolbarProps> = (
 };
 
 const InfoPanel: React.FC<InfoPanelProps> = (props: InfoPanelProps) => {
+  const content = React.useMemo(() => {
+    switch (props.type) {
+      case "global":
+        return NOTES_GLOBAL;
+      case "expenditures":
+        return [NOTES_GLOBAL, NOTES_EXPENDITURES].join("<br/><br/>");
+      case "budgets":
+        return [NOTES_GLOBAL, NOTES_BUDGETS].join("<br/><br/>");
+      case "pledges_contributions":
+        return [NOTES_GLOBAL, NOTES_PLEDGES_CONTRIBUTIONS].join("<br/><br/>");
+      default:
+        return NOTES_GLOBAL;
+    }
+  }, [props.type]);
+
   return (
     <Box
-      top="-300px"
+      left="5%"
+      bottom={100}
+      width="90%"
+      zIndex={1000}
       padding="16px"
-      marginTop="24px"
       bgcolor="#F5F5F7"
       borderRadius="16px"
       position="absolute"
@@ -148,9 +168,9 @@ const InfoPanel: React.FC<InfoPanelProps> = (props: InfoPanelProps) => {
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Typography
           color="#495057"
-          fontSize="10px"
+          fontSize="12px"
           fontWeight="700"
-          marginBottom="4px"
+          marginBottom="8px"
         >
           Note
         </Typography>
@@ -165,18 +185,18 @@ const InfoPanel: React.FC<InfoPanelProps> = (props: InfoPanelProps) => {
           <CloseIcon fontSize="small" />
         </IconButton>
       </Box>
-      <Typography color="#495057" fontSize="10px">
-        Amounts are in the specified currency. Where noted, the USD-equivalent
-        is presented for amounts in non-USD currencies. Expenitures made in
-        currencies other than USD from 2014 onward were converted to USD using
-        fixed Replenishment exchange rates. Expenditure data collected before
-        2014 were converted using spot exchange rates. Amounts are in the
-        specified currency. Where noted, the USD-equivalent is presented for
-        amounts in non-USD currencies. Expenitures made in currencies other than
-        USD from 2014 onward were converted to USD using fixed Replenishment
-        exchange rates. Expenditure data collected before 2014 were converted
-        using spot exchange rates.
-      </Typography>
+      <div
+        className="scrollbar"
+        style={{
+          color: "#495057",
+          fontSize: "12px",
+          overflowY: "auto",
+          maxHeight: "270px",
+        }}
+        dangerouslySetInnerHTML={{
+          __html: content,
+        }}
+      />
     </Box>
   );
 };
@@ -190,6 +210,10 @@ export const ChartBlockButtonToolbar: React.FC<ChartBlockButtonToolbarProps> = (
 
   const handleButtonClick =
     (type: "download" | "share" | "favorite" | "info") => () => {
+      if (type === "info" && active === "info") {
+        setActive(null);
+        return;
+      }
       setActive(type);
       if (type === "favorite") {
         setTimeout(() => {
@@ -219,7 +243,7 @@ export const ChartBlockButtonToolbar: React.FC<ChartBlockButtonToolbarProps> = (
           </Box>
         );
       case "info":
-        return <InfoPanel close={handleClose} />;
+        return <InfoPanel close={handleClose} type={props.infoType} />;
       default:
         return null;
     }
@@ -312,7 +336,9 @@ export const ChartBlockButtonToolbar: React.FC<ChartBlockButtonToolbarProps> = (
               <InfoIcon />
             </IconButton>
           </Tooltip>
-          {active === "info" && <InfoPanel close={handleClose} />}
+          {active === "info" && (
+            <InfoPanel close={handleClose} type={props.infoType} />
+          )}
           <Tooltip title="Share">
             <IconButton
               onClick={handleButtonClick("share")}

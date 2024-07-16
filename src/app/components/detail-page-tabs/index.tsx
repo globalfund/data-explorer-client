@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import { styled } from "styled-components";
 import { Dropdown } from "app/components/dropdown";
 import { NavLink, useParams } from "react-router-dom";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { DetailPageTabsProps } from "app/components/detail-page-tabs/data";
 
 const ButtonTab = styled(NavLink)`
@@ -16,6 +17,10 @@ const ButtonTab = styled(NavLink)`
   background: ${({ theme }) => (theme.active ? "#000" : "#fff")};
   border: 1px solid ${({ theme }) => (theme.active ? "#000" : "#DFE3E5")};
 
+  @media (max-width: 920px) {
+    padding: 5px 12px;
+  }
+
   &:hover {
     color: #fff;
     background: #000;
@@ -25,6 +30,7 @@ const ButtonTab = styled(NavLink)`
 export const DetailPageTabs: React.FC<DetailPageTabsProps> = (
   props: DetailPageTabsProps
 ) => {
+  const mobile = useMediaQuery("(max-width:767px)");
   const params = useParams<{ id: string; tab: string }>();
 
   return (
@@ -36,17 +42,42 @@ export const DetailPageTabs: React.FC<DetailPageTabsProps> = (
         "> button": {
           width: "fit-content",
         },
+        "@media (max-width: 767px)": {
+          flexWrap: "wrap",
+        },
       }}
     >
       {props.dropdown && (
-        <Dropdown
-          width={props.dropdown.width ?? 223}
-          dropdownItems={props.dropdown.dropdownItems}
-          dropdownSelected={props.dropdown.dropdownSelected}
-          handleDropdownChange={props.dropdown.handleDropdownChange}
-        />
+        <Box
+          sx={{
+            "@media (max-width: 767px)": {
+              width: "100%",
+              marginBottom: "10px",
+              "> button": {
+                minWidth: "calc(100vw - 32px)",
+              },
+            },
+          }}
+        >
+          <Dropdown
+            dropdownItems={props.dropdown.dropdownItems}
+            dropdownSelected={props.dropdown.dropdownSelected}
+            handleDropdownChange={props.dropdown.handleDropdownChange}
+            width={
+              !mobile ? props.dropdown.width ?? 223 : window.innerWidth - 32
+            }
+          />
+        </Box>
       )}
-      <Box gap="10px" display="flex">
+      <Box
+        gap="10px"
+        display="flex"
+        sx={{
+          "@media (max-width: 767px)": {
+            flexWrap: "wrap",
+          },
+        }}
+      >
         {props.tabs.map((tab) => (
           <ButtonTab
             key={tab.label}
