@@ -970,19 +970,16 @@ export const GrantImplementationPage: React.FC = () => {
   }, [cycles, budgetCycleDropdownSelected]);
 
   const budgetsTableDataTypeDropdown = React.useMemo(() => {
-    if (budgetsDropdownSelected === dropdownItemsBudgets[2].value) {
-      return (
-        <Box gap="10px" display="flex" flexDirection="row">
-          {budgetsCycleDropdown}
-          <Dropdown
-            dropdownSelected={budgetTableDataType}
-            dropdownItems={dropdownItemsBudgetsTableDataTypes}
-            handleDropdownChange={handleBudgetTableDataTypeChange}
-          />
-        </Box>
-      );
-    }
-    return budgetsCycleDropdown;
+    return (
+      <Box gap="10px" display="flex" flexDirection="row">
+        {budgetsCycleDropdown}
+        <Dropdown
+          dropdownSelected={budgetTableDataType}
+          dropdownItems={dropdownItemsBudgetsTableDataTypes}
+          handleDropdownChange={handleBudgetTableDataTypeChange}
+        />
+      </Box>
+    );
   }, [budgetsDropdownSelected, budgetTableDataType, budgetsCycleDropdown]);
 
   const financialMetricsCycleDropdown = React.useMemo(() => {
@@ -1911,6 +1908,15 @@ export const GrantImplementationPage: React.FC = () => {
     }
   }, [cycles]);
 
+  React.useEffect(() => {
+    if (
+      budgetTableDataType === dropdownItemsBudgetsTableDataTypes[1].value &&
+      budgetsDropdownSelected !== dropdownItemsBudgets[2].value
+    ) {
+      setBudgetsDropdownSelected(dropdownItemsBudgets[2].value);
+    }
+  }, [budgetTableDataType]);
+
   useUnmount(() => {
     fetchLocationFilterOptions({
       routeParams: {
@@ -2055,7 +2061,14 @@ export const GrantImplementationPage: React.FC = () => {
             subtitle={`${totalBudget} total budget.`}
             dropdownItems={dropdownItemsBudgets}
             dropdownSelected={budgetsDropdownSelected}
-            handleDropdownChange={(value) => setBudgetsDropdownSelected(value)}
+            handleDropdownChange={(value) => {
+              if (value !== dropdownItemsBudgets[2].value) {
+                setBudgetTableDataType(
+                  dropdownItemsBudgetsTableDataTypes[0].value
+                );
+              }
+              setBudgetsDropdownSelected(value);
+            }}
             loading={loadingBudget}
             disableCollapse={
               budgetsDropdownSelected === dropdownItemsBudgets[2].value

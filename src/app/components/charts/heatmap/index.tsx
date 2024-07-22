@@ -1,5 +1,6 @@
 import React from "react";
 import get from "lodash/get";
+import filter from "lodash/filter";
 import uniqBy from "lodash/uniqBy";
 import Box from "@mui/material/Box";
 import orderBy from "lodash/orderBy";
@@ -13,6 +14,7 @@ import {
   LEGENDS,
   ItemModel,
   HeatmapProps,
+  HeatmapDataItem,
 } from "app/components/charts/heatmap/data";
 import {
   Row,
@@ -50,9 +52,22 @@ export function Heatmap(props: HeatmapProps) {
   };
 
   React.useEffect(() => {
-    setExpandedRows([]);
-    setExpandedColumns([]);
-  }, [props.data, props.rowCategory, props.columnCategory]);
+    if (props.expandAll) {
+      setExpandedRows(
+        filter(props.data, (item: HeatmapDataItem) => !item.parentRow).map(
+          (item: HeatmapDataItem) => item.row
+        )
+      );
+      setExpandedColumns(
+        filter(props.data, (item: HeatmapDataItem) => !item.parentColumn).map(
+          (item: HeatmapDataItem) => item.column
+        )
+      );
+    } else {
+      setExpandedRows([]);
+      setExpandedColumns([]);
+    }
+  }, [props.data, props.rowCategory, props.columnCategory, props.expandAll]);
 
   React.useEffect(() => {
     setVisibleRows(
