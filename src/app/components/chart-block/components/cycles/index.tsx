@@ -77,7 +77,7 @@ export const ChartBlockCycles: React.FC<ChartBlockCyclesProps> = (
               : {}
           }
         >
-          {cycle.name.replace(/ /g, "")}
+          {cycle.name.replace(" - ", "-")}
         </Button>
       ))}
     </Box>
