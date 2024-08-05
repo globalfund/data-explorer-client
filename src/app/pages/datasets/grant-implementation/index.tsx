@@ -677,6 +677,9 @@ export const GrantImplementationPage: React.FC = () => {
           case "status":
             state.status = state.status.filter((item) => item !== value);
             break;
+          case "cycle":
+            state.cycles = state.cycles.filter((item) => item !== value);
+            break;
           default:
             break;
         }
@@ -1243,17 +1246,18 @@ export const GrantImplementationPage: React.FC = () => {
       appliedFiltersData.cycles.length > 0 &&
       location.search.includes("cycles=")
     ) {
-      const years = appliedFiltersData.cycles.map(
-        (cycle) => cycle.replace(/ /g, "").split("-")[0]
-      );
-      const yearsTo = appliedFiltersData.cycles.map(
-        (cycle) => cycle.replace(/ /g, "").split("-")[1]
-      );
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
-      }years=${encodeURIComponent(
-        years.join(",")
-      )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
+      // const years = appliedFiltersData.cycles.map(
+      //   (cycle) => cycle.replace(/ /g, "").split("-")[0]
+      // );
+      // const yearsTo = appliedFiltersData.cycles.map(
+      //   (cycle) => cycle.replace(/ /g, "").split("-")[1]
+      // );
+      // filterString += `${
+      //   filterString.length > 0 ? "&" : ""
+      // }years=${encodeURIComponent(
+      //   years.join(",")
+      // )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
+      filterString += `cycleNames=${appliedFiltersData.cycles.join(",")}`;
     }
     return filterString;
   }, [appliedFiltersData, location.search]);
@@ -1347,19 +1351,23 @@ export const GrantImplementationPage: React.FC = () => {
         location.search.includes("cycles=")) ||
       chart1AppliedFiltersData.cycles.length > 0
     ) {
-      const years = uniq([
+      // const years = uniq([
+      //   ...appliedFiltersData.cycles,
+      //   ...chart1AppliedFiltersData.cycles,
+      // ]).map((cycle) => cycle.replace(/ /g, "").split("-")[0]);
+      // const yearsTo = uniq([
+      //   ...appliedFiltersData.cycles,
+      //   ...chart1AppliedFiltersData.cycles,
+      // ]).map((cycle) => cycle.replace(/ /g, "").split("-")[1]);
+      // filterString += `${
+      //   filterString.length > 0 ? "&" : ""
+      // }years=${encodeURIComponent(
+      //   years.join(",")
+      // )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
+      filterString += `cycleNames=${uniq([
         ...appliedFiltersData.cycles,
         ...chart1AppliedFiltersData.cycles,
-      ]).map((cycle) => cycle.replace(/ /g, "").split("-")[0]);
-      const yearsTo = uniq([
-        ...appliedFiltersData.cycles,
-        ...chart1AppliedFiltersData.cycles,
-      ]).map((cycle) => cycle.replace(/ /g, "").split("-")[1]);
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
-      }years=${encodeURIComponent(
-        years.join(",")
-      )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
+      ]).join(",")}`;
     }
     return filterString;
   }, [appliedFiltersData, chart1AppliedFiltersData, location.search]);
@@ -1449,13 +1457,14 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (budgetCycleDropdownSelected) {
-      const year = budgetCycleDropdownSelected.replace(/ /g, "").split("-")[0];
-      const yearTo = budgetCycleDropdownSelected
-        .replace(/ /g, "")
-        .split("-")[1];
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
-      }years=${encodeURIComponent(year)}&yearsTo=${encodeURIComponent(yearTo)}`;
+      // const year = budgetCycleDropdownSelected.replace(/ /g, "").split("-")[0];
+      // const yearTo = budgetCycleDropdownSelected
+      //   .replace(/ /g, "")
+      //   .split("-")[1];
+      // filterString += `${
+      //   filterString.length > 0 ? "&" : ""
+      // }years=${encodeURIComponent(year)}&yearsTo=${encodeURIComponent(yearTo)}`;
+      filterString += `cycleNames=${budgetCycleDropdownSelected}`;
     }
     return filterString;
   }, [
@@ -1550,15 +1559,16 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (financialMetricsCycleDropdownSelected) {
-      const year = financialMetricsCycleDropdownSelected
-        .replace(/ /g, "")
-        .split("-")[0];
-      const yearTo = financialMetricsCycleDropdownSelected
-        .replace(/ /g, "")
-        .split("-")[1];
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
-      }years=${encodeURIComponent(year)}&yearsTo=${encodeURIComponent(yearTo)}`;
+      // const year = financialMetricsCycleDropdownSelected
+      //   .replace(/ /g, "")
+      //   .split("-")[0];
+      // const yearTo = financialMetricsCycleDropdownSelected
+      //   .replace(/ /g, "")
+      //   .split("-")[1];
+      // filterString += `${
+      //   filterString.length > 0 ? "&" : ""
+      // }years=${encodeURIComponent(year)}&yearsTo=${encodeURIComponent(yearTo)}`;
+      filterString += `cycleNames=${financialMetricsCycleDropdownSelected}`;
     }
     return filterString;
   }, [
@@ -1653,15 +1663,16 @@ export const GrantImplementationPage: React.FC = () => {
       )}`;
     }
     if (expendituresCycleDropdownSelected) {
-      const year = expendituresCycleDropdownSelected
-        .replace(/ /g, "")
-        .split("-")[0];
-      const yearTo = expendituresCycleDropdownSelected
-        .replace(/ /g, "")
-        .split("-")[1];
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
-      }years=${encodeURIComponent(year)}&yearsTo=${encodeURIComponent(yearTo)}`;
+      // const year = expendituresCycleDropdownSelected
+      //   .replace(/ /g, "")
+      //   .split("-")[0];
+      // const yearTo = expendituresCycleDropdownSelected
+      //   .replace(/ /g, "")
+      //   .split("-")[1];
+      // filterString += `${
+      //   filterString.length > 0 ? "&" : ""
+      // }years=${encodeURIComponent(year)}&yearsTo=${encodeURIComponent(yearTo)}`;
+      filterString += `cycleNames=${expendituresCycleDropdownSelected}`;
     }
     return filterString;
   }, [
@@ -1834,7 +1845,8 @@ export const GrantImplementationPage: React.FC = () => {
       fetchBudgetBreakdown({
         filterString,
         routeParams: {
-          year: budgetBreakdownDropdownSelected.replace(/ /g, ""),
+          year: budgetBreakdownDropdownSelected,
+          // year: budgetBreakdownDropdownSelected.replace(/ /g, ""),
           componentField:
             componentsGrouping === componentsGroupingOptions[0].value
               ? "activityAreaGroup"

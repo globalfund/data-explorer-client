@@ -209,21 +209,24 @@ export const GrantImplementation = () => {
   useUpdateEffect(() => {
     let filterString = `geographies=${paramsId}`;
     if (chart1Cycles.length > 0) {
-      const yearFrom: string[] = [];
-      const yearTo: string[] = [];
-      chart1Cycles.forEach((cycle) => {
-        const years = cycle.value.split(" - ");
-        yearFrom.push(years[0]);
-        yearTo.push(years[1]);
-      });
-      if (yearFrom.length > 0) {
-        filterString += `&years=${yearFrom.join(",")}`;
-      }
-      if (yearTo.length > 0) {
-        filterString += `${
-          filterString.length > 0 ? "&" : ""
-        }yearsTo=${yearTo.join(",")}`;
-      }
+      // const yearFrom: string[] = [];
+      // const yearTo: string[] = [];
+      // chart1Cycles.forEach((cycle) => {
+      //   const years = cycle.value.split(" - ");
+      //   yearFrom.push(years[0]);
+      //   yearTo.push(years[1]);
+      // });
+      // if (yearFrom.length > 0) {
+      //   filterString += `&years=${yearFrom.join(",")}`;
+      // }
+      // if (yearTo.length > 0) {
+      //   filterString += `${
+      //     filterString.length > 0 ? "&" : ""
+      //   }yearsTo=${yearTo.join(",")}`;
+      // }
+      filterString += `&cycleNames=${chart1Cycles
+        .map((c) => c.value)
+        .join(",")}`;
     }
     fetchDisbursementsLineChart({
       filterString,
@@ -239,17 +242,20 @@ export const GrantImplementation = () => {
   useUpdateEffect(() => {
     let filterString = `geographies=${paramsId}`;
     if (chart2Cycles.length > 0) {
-      const years = chart2Cycles.map(
-        (cycle) => cycle.value.replace(/ /g, "").split("-")[0]
-      );
-      const yearsTo = chart2Cycles.map(
-        (cycle) => cycle.value.replace(/ /g, "").split("-")[1]
-      );
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
-      }years=${encodeURIComponent(
-        years.join(",")
-      )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
+      // const years = chart2Cycles.map(
+      //   (cycle) => cycle.value.replace(/ /g, "").split("-")[0]
+      // );
+      // const yearsTo = chart2Cycles.map(
+      //   (cycle) => cycle.value.replace(/ /g, "").split("-")[1]
+      // );
+      // filterString += `${
+      //   filterString.length > 0 ? "&" : ""
+      // }years=${encodeURIComponent(
+      //   years.join(",")
+      // )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
+      filterString += `&cycleNames=${chart2Cycles
+        .map((c) => c.value)
+        .join(",")}`;
     }
     fetchBudgetSankeyChart({
       filterString,
@@ -263,7 +269,10 @@ export const GrantImplementation = () => {
   useUpdateEffect(() => {
     let filterString = `geographies=${paramsId}`;
     if (chart3Cycles.length > 0) {
-      filterString += `&periods=${chart3Cycles.map((c) => c.value).join(",")}`;
+      // filterString += `&periods=${chart3Cycles.map((c) => c.value).join(",")}`;
+      filterString += `&cycleNames=${chart3Cycles
+        .map((c) => c.value)
+        .join(",")}`;
     }
     fetchExpendituresHeatmap({
       filterString,

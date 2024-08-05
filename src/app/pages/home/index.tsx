@@ -325,21 +325,22 @@ export const Home: React.FC = () => {
   ) => {
     let filterString = "";
     if (cycles.length > 0) {
-      const yearFrom: string[] = [];
-      const yearTo: string[] = [];
-      cycles.forEach((cycle) => {
-        const years = cycle.value.split(" - ");
-        yearFrom.push(years[0]);
-        yearTo.push(years[1]);
-      });
-      if (yearFrom.length > 0) {
-        filterString = `years=${yearFrom.join(",")}`;
-      }
-      if (yearTo.length > 0) {
-        filterString += `${
-          filterString.length > 0 ? "&" : ""
-        }yearsTo=${yearTo.join(",")}`;
-      }
+      // const yearFrom: string[] = [];
+      // const yearTo: string[] = [];
+      // cycles.forEach((cycle) => {
+      //   const years = cycle.value.split(" - ");
+      //   yearFrom.push(years[0]);
+      //   yearTo.push(years[1]);
+      // });
+      // if (yearFrom.length > 0) {
+      //   filterString = `years=${yearFrom.join(",")}`;
+      // }
+      // if (yearTo.length > 0) {
+      //   filterString += `${
+      //     filterString.length > 0 ? "&" : ""
+      //   }yearsTo=${yearTo.join(",")}`;
+      // }
+      filterString = `cycleNames=${cycles.map((c) => c.value).join(",")}`;
     }
     fetchBudgetsTreemap({
       filterString,
@@ -362,21 +363,22 @@ export const Home: React.FC = () => {
   ) => {
     let filterString = "";
     if (cycles.length > 0) {
-      const yearFrom: string[] = [];
-      const yearTo: string[] = [];
-      cycles.forEach((cycle) => {
-        const years = cycle.value.split(" - ");
-        yearFrom.push(years[0]);
-        yearTo.push(years[1]);
-      });
-      if (yearFrom.length > 0) {
-        filterString = `years=${yearFrom.join(",")}`;
-      }
-      if (yearTo.length > 0) {
-        filterString += `${
-          filterString.length > 0 ? "&" : ""
-        }yearsTo=${yearTo.join(",")}`;
-      }
+      // const yearFrom: string[] = [];
+      // const yearTo: string[] = [];
+      // cycles.forEach((cycle) => {
+      //   const years = cycle.value.split(" - ");
+      //   yearFrom.push(years[0]);
+      //   yearTo.push(years[1]);
+      // });
+      // if (yearFrom.length > 0) {
+      //   filterString = `years=${yearFrom.join(",")}`;
+      // }
+      // if (yearTo.length > 0) {
+      //   filterString += `${
+      //     filterString.length > 0 ? "&" : ""
+      //   }yearsTo=${yearTo.join(",")}`;
+      // }
+      filterString = `cycleNames=${cycles.map((c) => c.value).join(",")}`;
     }
     fetchDisbursementsLineChart({
       filterString,
@@ -398,21 +400,22 @@ export const Home: React.FC = () => {
   ) => {
     let filterString = "";
     if (cycles.length > 0) {
-      const yearFrom: string[] = [];
-      const yearTo: string[] = [];
-      cycles.forEach((cycle) => {
-        const years = cycle.value.split(" - ");
-        yearFrom.push(years[0]);
-        yearTo.push(years[1]);
-      });
-      if (yearFrom.length > 0) {
-        filterString = `years=${yearFrom.join(",")}`;
-      }
-      if (yearTo.length > 0) {
-        filterString += `${
-          filterString.length > 0 ? "&" : ""
-        }yearsTo=${yearTo.join(",")}`;
-      }
+      // const yearFrom: string[] = [];
+      // const yearTo: string[] = [];
+      // cycles.forEach((cycle) => {
+      //   const years = cycle.value.split(" - ");
+      //   yearFrom.push(years[0]);
+      //   yearTo.push(years[1]);
+      // });
+      // if (yearFrom.length > 0) {
+      //   filterString = `years=${yearFrom.join(",")}`;
+      // }
+      // if (yearTo.length > 0) {
+      //   filterString += `${
+      //     filterString.length > 0 ? "&" : ""
+      //   }yearsTo=${yearTo.join(",")}`;
+      // }
+      filterString = `cycleNames=${cycles.map((c) => c.value).join(",")}`;
     }
     fetchExpendituresHeatmap({
       filterString,
