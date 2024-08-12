@@ -1257,7 +1257,9 @@ export const GrantImplementationPage: React.FC = () => {
       // }years=${encodeURIComponent(
       //   years.join(",")
       // )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
-      filterString += `cycleNames=${appliedFiltersData.cycles.join(",")}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }cycleNames=${appliedFiltersData.cycles.join(",")}`;
     }
     return filterString;
   }, [appliedFiltersData, location.search]);
@@ -1364,7 +1366,7 @@ export const GrantImplementationPage: React.FC = () => {
       // }years=${encodeURIComponent(
       //   years.join(",")
       // )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
-      filterString += `cycleNames=${uniq([
+      filterString += `${filterString.length > 0 ? "&" : ""}cycleNames=${uniq([
         ...appliedFiltersData.cycles,
         ...chart1AppliedFiltersData.cycles,
       ]).join(",")}`;
@@ -1464,7 +1466,9 @@ export const GrantImplementationPage: React.FC = () => {
       // filterString += `${
       //   filterString.length > 0 ? "&" : ""
       // }years=${encodeURIComponent(year)}&yearsTo=${encodeURIComponent(yearTo)}`;
-      filterString += `cycleNames=${budgetCycleDropdownSelected}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }cycleNames=${budgetCycleDropdownSelected}`;
     }
     return filterString;
   }, [
@@ -1568,7 +1572,9 @@ export const GrantImplementationPage: React.FC = () => {
       // filterString += `${
       //   filterString.length > 0 ? "&" : ""
       // }years=${encodeURIComponent(year)}&yearsTo=${encodeURIComponent(yearTo)}`;
-      filterString += `cycleNames=${financialMetricsCycleDropdownSelected}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }cycleNames=${financialMetricsCycleDropdownSelected}`;
     }
     return filterString;
   }, [
@@ -1672,7 +1678,9 @@ export const GrantImplementationPage: React.FC = () => {
       // filterString += `${
       //   filterString.length > 0 ? "&" : ""
       // }years=${encodeURIComponent(year)}&yearsTo=${encodeURIComponent(yearTo)}`;
-      filterString += `cycleNames=${expendituresCycleDropdownSelected}`;
+      filterString += `${
+        filterString.length > 0 ? "&" : ""
+      }cycleNames=${expendituresCycleDropdownSelected}`;
     }
     return filterString;
   }, [

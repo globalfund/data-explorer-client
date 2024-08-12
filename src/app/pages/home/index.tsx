@@ -340,7 +340,9 @@ export const Home: React.FC = () => {
       //     filterString.length > 0 ? "&" : ""
       //   }yearsTo=${yearTo.join(",")}`;
       // }
-      filterString = `cycleNames=${cycles.map((c) => c.value).join(",")}`;
+      filterString = `${filterString.length > 0 ? "&" : ""}cycleNames=${cycles
+        .map((c) => c.value)
+        .join(",")}`;
     }
     fetchBudgetsTreemap({
       filterString,
@@ -378,7 +380,9 @@ export const Home: React.FC = () => {
       //     filterString.length > 0 ? "&" : ""
       //   }yearsTo=${yearTo.join(",")}`;
       // }
-      filterString = `cycleNames=${cycles.map((c) => c.value).join(",")}`;
+      filterString = `${filterString.length > 0 ? "&" : ""}cycleNames=${cycles
+        .map((c) => c.value)
+        .join(",")}`;
     }
     fetchDisbursementsLineChart({
       filterString,
@@ -415,7 +419,9 @@ export const Home: React.FC = () => {
       //     filterString.length > 0 ? "&" : ""
       //   }yearsTo=${yearTo.join(",")}`;
       // }
-      filterString = `cycleNames=${cycles.map((c) => c.value).join(",")}`;
+      filterString = `${filterString.length > 0 ? "&" : ""}cycleNames=${cycles
+        .map((c) => c.value)
+        .join(",")}`;
     }
     fetchExpendituresHeatmap({
       filterString,
