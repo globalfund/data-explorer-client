@@ -402,7 +402,7 @@ export const GrantImplementation: React.FC = () => {
         title={disbursementsTotal}
         subtitle="Disbursements"
         empty={!showRadialChart}
-        infoType="global"
+        infoType="financials"
       >
         <RadialChart
           tooltipLabel="Amount"

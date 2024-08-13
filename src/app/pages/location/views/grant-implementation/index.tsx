@@ -481,7 +481,7 @@ export const GrantImplementation = () => {
           value: c.value,
           disabled: findIndex(disbursementsCycles, { value: c.value }) === -1,
         }))}
-        infoType="global"
+        infoType="financials"
       >
         <Box position="relative">
           <Typography

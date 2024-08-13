@@ -50,13 +50,13 @@ export const Home: React.FC = () => {
   const [chart5Cycles, setChart5Cycles] = React.useState<CycleProps[]>([]);
 
   const [chart3Dropdown, setChart3Dropdown] = React.useState(
-    CHART_3_DROPDOWN_ITEMS[0].value
+    CHART_3_DROPDOWN_ITEMS[1].value
   );
   const [chart4Dropdown, setChart4Dropdown] = React.useState(
     CHART_4_DROPDOWN_ITEMS[0].value
   );
   const [chart5Dropdown, setChart5Dropdown] = React.useState(
-    CHART_5_DROPDOWN_ITEMS[0].value
+    CHART_5_DROPDOWN_ITEMS[1].value
   );
 
   const [chart5Unit, setChart5Unit] = React.useState<"amount" | "percentage">(
@@ -698,7 +698,7 @@ export const Home: React.FC = () => {
         subtitle="Grant Budgets"
         selectedCycles={chart3Cycles}
         loading={loadingBudgetsTreemap}
-        dropdownSelected={chart3Dropdown}
+        // dropdownSelected={chart3Dropdown}
         dropdownItems={CHART_3_DROPDOWN_ITEMS}
         empty={dataBudgetsTreemap.length === 0}
         handleDropdownChange={setChart3Dropdown}
@@ -730,7 +730,7 @@ export const Home: React.FC = () => {
           name: c.value,
           value: c.value,
         }))}
-        infoType="global"
+        infoType="financials"
       >
         <Box position="relative">
           <Typography
@@ -770,7 +770,7 @@ export const Home: React.FC = () => {
         title={expendituresTotal}
         selectedCycles={chart5Cycles}
         unitButtons={chart5UnitButtons}
-        dropdownSelected={chart5Dropdown}
+        // dropdownSelected={chart5Dropdown}
         loading={loadingExpendituresHeatmap}
         dropdownItems={CHART_5_DROPDOWN_ITEMS}
         handleDropdownChange={setChart5Dropdown}

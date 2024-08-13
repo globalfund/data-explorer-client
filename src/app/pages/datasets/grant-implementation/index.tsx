@@ -65,7 +65,7 @@ export const GrantImplementationPage: React.FC = () => {
     geographyGroupingOptions[0].value
   );
   const [componentsGrouping, setComponentsGrouping] = React.useState(
-    componentsGroupingOptions[0].value
+    componentsGroupingOptions[1].value
   );
   const [disbursementsDropdownSelected, setDisbursementsDropdownSelected] =
     React.useState(dropdownItemsDisbursements[0].value);
@@ -1122,7 +1122,7 @@ export const GrantImplementationPage: React.FC = () => {
             handleDropdownChange={handleGeographyGroupingChange}
           />
         </Box>
-        <Box gap="10px" display="flex" flexDirection="row" alignItems="center">
+        {/* <Box gap="10px" display="flex" flexDirection="row" alignItems="center">
           <Typography variant="body2" fontWeight="700">
             Components grouping
           </Typography>
@@ -1132,7 +1132,7 @@ export const GrantImplementationPage: React.FC = () => {
             dropdownItems={componentsGroupingOptions}
             handleDropdownChange={handleComponentsGroupingChange}
           />
-        </Box>
+        </Box> */}
       </Box>
     );
   }, [componentsGrouping, geographyGrouping]);
@@ -2061,7 +2061,7 @@ export const GrantImplementationPage: React.FC = () => {
             removeFilter={handleRemoveChartFilter(1)}
             handleResetFilters={handleResetChartFilters(1)}
             appliedFiltersData={chart1AppliedFiltersData}
-            infoType="global"
+            infoType="financials"
           >
             {disbursementsChartContent}
           </DatasetChartBlock>
@@ -2216,7 +2216,7 @@ export const GrantImplementationPage: React.FC = () => {
             handleResetFilters={handleResetChartFilters(3)}
             appliedFiltersData={chart3AppliedFiltersData}
             extraDropdown={financialMetricsCycleDropdown}
-            infoType="global"
+            infoType="financials"
           >
             {financialMetricsContent}
           </DatasetChartBlock>

@@ -149,6 +149,8 @@ const InfoPanel: React.FC<InfoPanelProps> = (props: InfoPanelProps) => {
         return [NOTES_GLOBAL, NOTES_BUDGETS].join("<br/><br/>");
       case "pledges_contributions":
         return [NOTES_GLOBAL, NOTES_PLEDGES_CONTRIBUTIONS].join("<br/><br/>");
+      case "financials":
+        return [NOTES_GLOBAL, NOTES_EXPENDITURES].join("<br/><br/>");
       default:
         return NOTES_GLOBAL;
     }
