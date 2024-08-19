@@ -179,7 +179,7 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
                 </Box>
               );
             }
-            const html = ReactDOMServer.renderToString(
+            return ReactDOMServer.renderToString(
               <SankeyChartTooltip
                 name={data.name}
                 data={props.data}
@@ -187,7 +187,6 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
                 totalValue={totalValue}
               />
             );
-            return html;
           },
         },
       };
