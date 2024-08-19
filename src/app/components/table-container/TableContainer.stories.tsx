@@ -6,14 +6,6 @@ import { withRouter } from "storybook-addon-remix-react-router";
 import {
   TABLE_VARIATION_1_DATA,
   TABLE_VARIATION_1_COLUMNS,
-  TABLE_VARIATION_2_DATA,
-  TABLE_VARIATION_2_COLUMNS,
-  TABLE_VARIATION_3_DATA,
-  TABLE_VARIATION_3_COLUMNS,
-  TABLE_VARIATION_4_DATA,
-  TABLE_VARIATION_4_COLUMNS,
-  TABLE_VARIATION_5_DATA,
-  TABLE_VARIATION_5_COLUMNS,
 } from "app/components/table/data";
 
 const Variant2Wrapper = (args: any) => {

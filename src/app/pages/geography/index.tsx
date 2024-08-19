@@ -124,21 +124,17 @@ export const Geography: React.FC = () => {
   React.useEffect(() => {
     const updatedData = [...dataList];
     if (search.length > 0) {
-      for (let i = 0; i < updatedData.length; i++) {
-        for (let j = 0; j < updatedData[i].items.length; j++) {
-          for (let k = 0; k < updatedData[i].items[j].items.length; k++) {
-            const highlighted = updatedData[i].items[j].items[k].name
+      for (let item of updatedData) {
+        for (let subItem of item.items) {
+          for (let subItemItem of subItem.items) {
+            const highlighted = subItemItem.name
               .toLowerCase()
               .includes(search.toLowerCase());
-            updatedData[i].items[j].items[k].highlighted = highlighted;
+            subItemItem.highlighted = highlighted;
           }
-          updatedData[i].items[j].highlighted = updatedData[i].items[
-            j
-          ].items.some((item) => item.highlighted);
+          subItem.highlighted = subItem.items.some((i) => i.highlighted);
         }
-        updatedData[i].highlighted = updatedData[i].items.some(
-          (item) => item.highlighted
-        );
+        item.highlighted = item.items.some((i) => i.highlighted);
       }
     }
     setFilteredData(updatedData);

@@ -273,46 +273,44 @@ export const Grants: React.FC = () => {
   ]);
 
   const filterString = React.useMemo(() => {
-    let filterString = "";
+    let value = "";
     if (appliedFiltersData.locations.length > 0) {
-      filterString += `geographies=${encodeURIComponent(
+      value += `geographies=${encodeURIComponent(
         appliedFiltersData.locations.join(",")
       )}`;
     }
     if (appliedFiltersData.components.length > 0) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
-      }components=${encodeURIComponent(
+      value += `${value.length > 0 ? "&" : ""}components=${encodeURIComponent(
         appliedFiltersData.components.join(",")
       )}`;
     }
     if (appliedFiltersData.principalRecipientTypes.length > 0) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
+      value += `${
+        value.length > 0 ? "&" : ""
       }principalRecipientTypes=${encodeURIComponent(
         appliedFiltersData.principalRecipientTypes.join(",")
       )}`;
     }
     if (appliedFiltersData.principalRecipientSubTypes.length > 0) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
+      value += `${
+        value.length > 0 ? "&" : ""
       }principalRecipientSubTypes=${encodeURIComponent(
         appliedFiltersData.principalRecipientSubTypes.join(",")
       )}`;
     }
     if (appliedFiltersData.principalRecipients.length > 0) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
+      value += `${
+        value.length > 0 ? "&" : ""
       }principalRecipients=${encodeURIComponent(
         appliedFiltersData.principalRecipients.join(",")
       )}`;
     }
     if (appliedFiltersData.status.length > 0) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
-      }status=${encodeURIComponent(appliedFiltersData.status.join(","))}`;
+      value += `${value.length > 0 ? "&" : ""}status=${encodeURIComponent(
+        appliedFiltersData.status.join(",")
+      )}`;
     }
-    return filterString;
+    return value;
   }, [appliedFiltersData]);
 
   React.useEffect(() => {

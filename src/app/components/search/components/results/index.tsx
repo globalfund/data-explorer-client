@@ -71,7 +71,7 @@ export function SearchResults(props: SearchResultsProps) {
               key={result.value}
               scroll={(el) => {
                 const yCoordinate =
-                  el.getBoundingClientRect().top + window.pageYOffset;
+                  el.getBoundingClientRect().top + window.scrollY;
                 const yOffset = -130;
                 window.scrollTo({
                   top: yCoordinate + yOffset,

@@ -435,8 +435,7 @@ export const GrantImplementation = () => {
         values.push({ value });
       });
     });
-    const range = getRange(values, ["value"]);
-    return range;
+    return getRange(values, ["value"]);
   }, [dataDisbursementsLineChart.data]);
 
   const fullWidthDivider = (

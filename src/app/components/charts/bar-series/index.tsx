@@ -224,8 +224,7 @@ export const BarSeriesChart: React.FC<BarSeriesChartProps> = (
           show: true,
           ...chartTooltipCommonConfig(isTouch),
           formatter: (params: any) => {
-            const html = ReactDOMServer.renderToString(<Tooltip {...params} />);
-            return html;
+            return ReactDOMServer.renderToString(<Tooltip {...params} />);
           },
         },
       };

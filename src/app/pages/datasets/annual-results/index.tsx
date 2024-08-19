@@ -257,12 +257,12 @@ export const AnnualResultsPage: React.FC = () => {
   }, [dataLocationFilterOptions, dataComponentFilterOptions]);
 
   const filterString = React.useMemo(() => {
-    let filterString = "";
+    let value = "";
     if (
       appliedFiltersData.locations.length > 0 &&
       location.search.includes("locations=")
     ) {
-      filterString += `geographies=${encodeURIComponent(
+      value += `geographies=${encodeURIComponent(
         appliedFiltersData.locations.join(",")
       )}`;
     }
@@ -270,23 +270,21 @@ export const AnnualResultsPage: React.FC = () => {
       appliedFiltersData.components.length > 0 &&
       location.search.includes("components=")
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
-      }components=${encodeURIComponent(
+      value += `${value.length > 0 ? "&" : ""}components=${encodeURIComponent(
         appliedFiltersData.components.join(",")
       )}`;
     }
-    return filterString;
+    return value;
   }, [appliedFiltersData, location.search]);
 
   const chartFilterString = React.useMemo(() => {
-    let filterString = "";
+    let value = "";
     if (
       (appliedFiltersData.locations.length > 0 &&
         location.search.includes("locations=")) ||
       chartAppliedFiltersData.locations.length > 0
     ) {
-      filterString += `geographies=${encodeURIComponent(
+      value += `geographies=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.locations,
           ...chartAppliedFiltersData.locations,
@@ -298,16 +296,14 @@ export const AnnualResultsPage: React.FC = () => {
         location.search.includes("components=")) ||
       chartAppliedFiltersData.components.length > 0
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
-      }components=${encodeURIComponent(
+      value += `${value.length > 0 ? "&" : ""}components=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.components,
           ...chartAppliedFiltersData.components,
         ]).join(",")
       )}`;
     }
-    return filterString;
+    return value;
   }, [appliedFiltersData, chartAppliedFiltersData, location.search]);
 
   const toolbarRightContent = React.useMemo(() => {
@@ -370,14 +366,8 @@ export const AnnualResultsPage: React.FC = () => {
     if (location.hash) {
       const blockId = location.hash.slice(1).split("|")[0];
       const blockChartType = location.hash.slice(1).split("|")[1];
-      if (blockId && blockChartType) {
-        switch (blockId) {
-          case "disbursements":
-            setDropdownSelected(decodeURIComponent(blockChartType));
-            break;
-          default:
-            break;
-        }
+      if (blockId && blockChartType && blockId === "annual-results") {
+        setDropdownSelected(decodeURIComponent(blockChartType));
       }
     }
   }, [location.hash]);

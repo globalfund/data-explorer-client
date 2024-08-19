@@ -78,10 +78,10 @@ export function Heatmap(props: HeatmapProps) {
             props.data
               .filter((item) => item.parentRow === name)
               .map((item) => {
-                const name = item.row;
-                const children = uniqBy(
+                const subName = item.row;
+                const subChildren = uniqBy(
                   props.data
-                    .filter((subitem) => subitem.parentRow === name)
+                    .filter((subitem) => subitem.parentRow === subName)
                     .map((subitem) => ({
                       name: subitem.row,
                       expanded: false,
@@ -90,9 +90,9 @@ export function Heatmap(props: HeatmapProps) {
                   "name"
                 );
                 return {
-                  name,
-                  expanded: expandedRows.includes(name),
-                  children: children.length > 0 ? children : undefined,
+                  name: subName,
+                  expanded: expandedRows.includes(subName),
+                  children: subChildren.length > 0 ? subChildren : undefined,
                   level: 1,
                 };
               }),
@@ -125,10 +125,10 @@ export function Heatmap(props: HeatmapProps) {
             props.data
               .filter((item) => item.parentColumn === name)
               .map((item) => {
-                const name = item.column;
-                const children = uniqBy(
+                const subName = item.column;
+                const subChildren = uniqBy(
                   props.data
-                    .filter((subitem) => subitem.parentColumn === name)
+                    .filter((subitem) => subitem.parentColumn === subName)
                     .map((subitem) => ({
                       name: subitem.column,
                       expanded: false,
@@ -137,10 +137,10 @@ export function Heatmap(props: HeatmapProps) {
                   "name"
                 );
                 return {
-                  name,
                   level: 1,
-                  expanded: expandedColumns.includes(name),
-                  children: children.length > 0 ? children : undefined,
+                  name: subName,
+                  expanded: expandedColumns.includes(subName),
+                  children: subChildren.length > 0 ? subChildren : undefined,
                 };
               }),
             "name"

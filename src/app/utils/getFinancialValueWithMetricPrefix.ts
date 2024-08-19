@@ -37,8 +37,12 @@ export function getRange(
 
   data.forEach((item: any) => {
     let v = 0;
+    let accessor = "";
+    if (fieldPrefix) {
+      accessor = `${fieldPrefix}.`;
+    }
     fields.forEach((field: string) => {
-      v += get(item, `${fieldPrefix ? `${fieldPrefix}.` : ""}${field}`, 0);
+      v += get(item, `${accessor}${field}`, 0);
     });
     if (v >= ranges[0].divider) {
       rangesCount[0]++;

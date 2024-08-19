@@ -43,6 +43,7 @@ import {
   FinancialMetricExpandableItemProps,
 } from "app/components/charts/financial-metric/data";
 import {
+  TableDataItem,
   TABLE_VARIATION_14_COLUMNS as BUDGET_TABLE_COLUMNS,
   TABLE_VARIATION_15_COLUMNS as EXPENDITURES_TABLE_COLUMNS,
   TABLE_VARIATION_13_COLUMNS as DISBURSEMENTS_TABLE_COLUMNS,
@@ -64,7 +65,7 @@ export const GrantImplementationPage: React.FC = () => {
   const [geographyGrouping, setGeographyGrouping] = React.useState(
     geographyGroupingOptions[0].value
   );
-  const [componentsGrouping, setComponentsGrouping] = React.useState(
+  const [componentsGrouping] = React.useState(
     componentsGroupingOptions[1].value
   );
   const [disbursementsDropdownSelected, setDisbursementsDropdownSelected] =
@@ -149,13 +150,7 @@ export const GrantImplementationPage: React.FC = () => {
   const dataFinancialInsightsDisbursementsTable = useStoreState(
     (state) =>
       get(state.FinancialInsightsDisbursementsTable, "data.data", []) as {
-        [key: string]:
-          | string
-          | number
-          | boolean
-          | null
-          | object
-          | Array<object>;
+        [key: string]: TableDataItem;
       }[]
   );
   const fetchFinancialInsightsDisbursementsTable = useStoreActions(
@@ -266,13 +261,7 @@ export const GrantImplementationPage: React.FC = () => {
   const dataBudgetTable = useStoreState(
     (state) =>
       get(state.FinancialInsightsBudgetTable, "data.data", []) as {
-        [key: string]:
-          | string
-          | number
-          | boolean
-          | null
-          | object
-          | Array<object>;
+        [key: string]: TableDataItem;
       }[]
   );
   const fetchBudgetTable = useStoreActions(
@@ -327,13 +316,7 @@ export const GrantImplementationPage: React.FC = () => {
   const dataExpendituresTable = useStoreState(
     (state) =>
       get(state.FinancialInsightsExpendituresTable, "data.data", []) as {
-        [key: string]:
-          | string
-          | number
-          | boolean
-          | null
-          | object
-          | Array<object>;
+        [key: string]: TableDataItem;
       }[]
   );
   const fetchExpendituresTable = useStoreActions(
@@ -460,9 +443,9 @@ export const GrantImplementationPage: React.FC = () => {
     setGeographyGrouping(value);
   };
 
-  const handleComponentsGroupingChange = (value: string) => {
-    setComponentsGrouping(value);
-  };
+  // const handleComponentsGroupingChange = (value: string) => {
+  //   setComponentsGrouping(value);
+  // };
 
   const handleResetFilters = () => {
     appliedFiltersActions.setAll({
@@ -698,13 +681,9 @@ export const GrantImplementationPage: React.FC = () => {
 
   const disbursementsChartContent = React.useMemo(() => {
     let range;
-    let maxValue = 0;
     switch (disbursementsDropdownSelected) {
       case dropdownItemsDisbursements[0].value:
         range = getRange(dataFinancialInsightsDisbursementsBarChart, ["value"]);
-        maxValue =
-          maxBy(dataFinancialInsightsDisbursementsBarChart, "value")?.value ||
-          0;
         return (
           <Box position="relative">
             <Typography
@@ -760,7 +739,6 @@ export const GrantImplementationPage: React.FC = () => {
           });
         });
         range = getRange(values, ["value"]);
-        maxValue = maxBy(values, "value")?.value || 0;
         return (
           <Box position="relative">
             <Typography
@@ -1185,12 +1163,12 @@ export const GrantImplementationPage: React.FC = () => {
   ]);
 
   const filterString = React.useMemo(() => {
-    let filterString = "";
+    let value = "";
     if (
       appliedFiltersData.locations.length > 0 &&
       location.search.includes("locations=")
     ) {
-      filterString += `geographies=${encodeURIComponent(
+      value += `geographies=${encodeURIComponent(
         appliedFiltersData.locations.join(",")
       )}`;
     }
@@ -1198,9 +1176,7 @@ export const GrantImplementationPage: React.FC = () => {
       appliedFiltersData.components.length > 0 &&
       location.search.includes("components=")
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
-      }components=${encodeURIComponent(
+      value += `${value.length > 0 ? "&" : ""}components=${encodeURIComponent(
         appliedFiltersData.components.join(",")
       )}`;
     }
@@ -1208,8 +1184,8 @@ export const GrantImplementationPage: React.FC = () => {
       appliedFiltersData.principalRecipientTypes.length > 0 &&
       location.search.includes("principalRecipientTypes=")
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
+      value += `${
+        value.length > 0 ? "&" : ""
       }principalRecipientTypes=${encodeURIComponent(
         appliedFiltersData.principalRecipientTypes.join(",")
       )}`;
@@ -1218,8 +1194,8 @@ export const GrantImplementationPage: React.FC = () => {
       appliedFiltersData.principalRecipientSubTypes.length > 0 &&
       location.search.includes("principalRecipientSubTypes=")
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
+      value += `${
+        value.length > 0 ? "&" : ""
       }principalRecipientSubTypes=${encodeURIComponent(
         appliedFiltersData.principalRecipientSubTypes.join(",")
       )}`;
@@ -1228,8 +1204,8 @@ export const GrantImplementationPage: React.FC = () => {
       appliedFiltersData.principalRecipients.length > 0 &&
       location.search.includes("principalRecipients=")
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
+      value += `${
+        value.length > 0 ? "&" : ""
       }principalRecipients=${encodeURIComponent(
         appliedFiltersData.principalRecipients.join(",")
       )}`;
@@ -1238,9 +1214,9 @@ export const GrantImplementationPage: React.FC = () => {
       appliedFiltersData.status.length > 0 &&
       location.search.includes("status=")
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
-      }status=${encodeURIComponent(appliedFiltersData.status.join(","))}`;
+      value += `${value.length > 0 ? "&" : ""}status=${encodeURIComponent(
+        appliedFiltersData.status.join(",")
+      )}`;
     }
     if (
       appliedFiltersData.cycles.length > 0 &&
@@ -1252,26 +1228,26 @@ export const GrantImplementationPage: React.FC = () => {
       // const yearsTo = appliedFiltersData.cycles.map(
       //   (cycle) => cycle.replace(/ /g, "").split("-")[1]
       // );
-      // filterString += `${
-      //   filterString.length > 0 ? "&" : ""
+      // value += `${
+      //   value.length > 0 ? "&" : ""
       // }years=${encodeURIComponent(
       //   years.join(",")
       // )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
+      value += `${
+        value.length > 0 ? "&" : ""
       }cycleNames=${appliedFiltersData.cycles.join(",")}`;
     }
-    return filterString;
+    return value;
   }, [appliedFiltersData, location.search]);
 
   const chart1FilterString = React.useMemo(() => {
-    let filterString = "";
+    let value = "";
     if (
       (appliedFiltersData.locations.length > 0 &&
         location.search.includes("locations=")) ||
       chart1AppliedFiltersData.locations.length > 0
     ) {
-      filterString += `geographies=${encodeURIComponent(
+      value += `geographies=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.locations,
           ...chart1AppliedFiltersData.locations,
@@ -1283,9 +1259,7 @@ export const GrantImplementationPage: React.FC = () => {
         location.search.includes("components=")) ||
       chart1AppliedFiltersData.components.length > 0
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
-      }components=${encodeURIComponent(
+      value += `${value.length > 0 ? "&" : ""}components=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.components,
           ...chart1AppliedFiltersData.components,
@@ -1297,8 +1271,8 @@ export const GrantImplementationPage: React.FC = () => {
         location.search.includes("principalRecipients=")) ||
       chart1AppliedFiltersData.principalRecipients.length > 0
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
+      value += `${
+        value.length > 0 ? "&" : ""
       }principalRecipients=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.principalRecipients,
@@ -1311,8 +1285,8 @@ export const GrantImplementationPage: React.FC = () => {
         location.search.includes("principalRecipientSubTypes=")) ||
       chart1AppliedFiltersData.principalRecipientSubTypes.length > 0
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
+      value += `${
+        value.length > 0 ? "&" : ""
       }principalRecipientSubTypes=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.principalRecipientSubTypes,
@@ -1325,8 +1299,8 @@ export const GrantImplementationPage: React.FC = () => {
         location.search.includes("principalRecipientTypes=")) ||
       chart1AppliedFiltersData.principalRecipientTypes.length > 0
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
+      value += `${
+        value.length > 0 ? "&" : ""
       }principalRecipientTypes=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.principalRecipientTypes,
@@ -1339,9 +1313,7 @@ export const GrantImplementationPage: React.FC = () => {
         location.search.includes("status=")) ||
       chart1AppliedFiltersData.status.length > 0
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
-      }status=${encodeURIComponent(
+      value += `${value.length > 0 ? "&" : ""}status=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.status,
           ...chart1AppliedFiltersData.status,
@@ -1361,27 +1333,27 @@ export const GrantImplementationPage: React.FC = () => {
       //   ...appliedFiltersData.cycles,
       //   ...chart1AppliedFiltersData.cycles,
       // ]).map((cycle) => cycle.replace(/ /g, "").split("-")[1]);
-      // filterString += `${
-      //   filterString.length > 0 ? "&" : ""
+      // value += `${
+      //   value.length > 0 ? "&" : ""
       // }years=${encodeURIComponent(
       //   years.join(",")
       // )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
-      filterString += `${filterString.length > 0 ? "&" : ""}cycleNames=${uniq([
+      value += `${value.length > 0 ? "&" : ""}cycleNames=${uniq([
         ...appliedFiltersData.cycles,
         ...chart1AppliedFiltersData.cycles,
       ]).join(",")}`;
     }
-    return filterString;
+    return value;
   }, [appliedFiltersData, chart1AppliedFiltersData, location.search]);
 
   const chart2FilterString = React.useMemo(() => {
-    let filterString = "";
+    let value = "";
     if (
       (appliedFiltersData.locations.length > 0 &&
         location.search.includes("locations=")) ||
       chart2AppliedFiltersData.locations.length > 0
     ) {
-      filterString += `geographies=${encodeURIComponent(
+      value += `geographies=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.locations,
           ...chart2AppliedFiltersData.locations,
@@ -1393,9 +1365,7 @@ export const GrantImplementationPage: React.FC = () => {
         location.search.includes("components=")) ||
       chart2AppliedFiltersData.components.length > 0
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
-      }components=${encodeURIComponent(
+      value += `${value.length > 0 ? "&" : ""}components=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.components,
           ...chart2AppliedFiltersData.components,
@@ -1407,8 +1377,8 @@ export const GrantImplementationPage: React.FC = () => {
         location.search.includes("principalRecipients=")) ||
       chart2AppliedFiltersData.principalRecipients.length > 0
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
+      value += `${
+        value.length > 0 ? "&" : ""
       }principalRecipients=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.principalRecipients,
@@ -1421,8 +1391,8 @@ export const GrantImplementationPage: React.FC = () => {
         location.search.includes("principalRecipientSubTypes=")) ||
       chart2AppliedFiltersData.principalRecipientSubTypes.length > 0
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
+      value += `${
+        value.length > 0 ? "&" : ""
       }principalRecipientSubTypes=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.principalRecipientSubTypes,
@@ -1435,8 +1405,8 @@ export const GrantImplementationPage: React.FC = () => {
         location.search.includes("principalRecipientTypes=")) ||
       chart2AppliedFiltersData.principalRecipientTypes.length > 0
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
+      value += `${
+        value.length > 0 ? "&" : ""
       }principalRecipientTypes=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.principalRecipientTypes,
@@ -1449,9 +1419,7 @@ export const GrantImplementationPage: React.FC = () => {
         location.search.includes("status=")) ||
       chart2AppliedFiltersData.status.length > 0
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
-      }status=${encodeURIComponent(
+      value += `${value.length > 0 ? "&" : ""}status=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.status,
           ...chart2AppliedFiltersData.status,
@@ -1463,14 +1431,14 @@ export const GrantImplementationPage: React.FC = () => {
       // const yearTo = budgetCycleDropdownSelected
       //   .replace(/ /g, "")
       //   .split("-")[1];
-      // filterString += `${
-      //   filterString.length > 0 ? "&" : ""
+      // value += `${
+      //   value.length > 0 ? "&" : ""
       // }years=${encodeURIComponent(year)}&yearsTo=${encodeURIComponent(yearTo)}`;
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
+      value += `${
+        value.length > 0 ? "&" : ""
       }cycleNames=${budgetCycleDropdownSelected}`;
     }
-    return filterString;
+    return value;
   }, [
     location.search,
     appliedFiltersData,
@@ -1479,13 +1447,13 @@ export const GrantImplementationPage: React.FC = () => {
   ]);
 
   const chart3FilterString = React.useMemo(() => {
-    let filterString = "";
+    let value = "";
     if (
       (appliedFiltersData.locations.length > 0 &&
         location.search.includes("locations=")) ||
       chart3AppliedFiltersData.locations.length > 0
     ) {
-      filterString += `geographies=${encodeURIComponent(
+      value += `geographies=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.locations,
           ...chart3AppliedFiltersData.locations,
@@ -1497,9 +1465,7 @@ export const GrantImplementationPage: React.FC = () => {
         location.search.includes("components=")) ||
       chart3AppliedFiltersData.components.length > 0
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
-      }components=${encodeURIComponent(
+      value += `${value.length > 0 ? "&" : ""}components=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.components,
           ...chart3AppliedFiltersData.components,
@@ -1511,8 +1477,8 @@ export const GrantImplementationPage: React.FC = () => {
         location.search.includes("principalRecipients=")) ||
       chart3AppliedFiltersData.principalRecipients.length > 0
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
+      value += `${
+        value.length > 0 ? "&" : ""
       }principalRecipients=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.principalRecipients,
@@ -1539,8 +1505,8 @@ export const GrantImplementationPage: React.FC = () => {
         location.search.includes("principalRecipientTypes=")) ||
       chart3AppliedFiltersData.principalRecipientTypes.length > 0
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
+      value += `${
+        value.length > 0 ? "&" : ""
       }principalRecipientTypes=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.principalRecipientTypes,
@@ -1553,9 +1519,7 @@ export const GrantImplementationPage: React.FC = () => {
         location.search.includes("status=")) ||
       chart3AppliedFiltersData.status.length > 0
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
-      }status=${encodeURIComponent(
+      value += `${value.length > 0 ? "&" : ""}status=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.status,
           ...chart3AppliedFiltersData.status,
@@ -1572,11 +1536,11 @@ export const GrantImplementationPage: React.FC = () => {
       // filterString += `${
       //   filterString.length > 0 ? "&" : ""
       // }years=${encodeURIComponent(year)}&yearsTo=${encodeURIComponent(yearTo)}`;
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
+      value += `${
+        value.length > 0 ? "&" : ""
       }cycleNames=${financialMetricsCycleDropdownSelected}`;
     }
-    return filterString;
+    return value;
   }, [
     location.search,
     appliedFiltersData,
@@ -1585,13 +1549,13 @@ export const GrantImplementationPage: React.FC = () => {
   ]);
 
   const chart4FilterString = React.useMemo(() => {
-    let filterString = "";
+    let value = "";
     if (
       (appliedFiltersData.locations.length > 0 &&
         location.search.includes("locations=")) ||
       chart4AppliedFiltersData.locations.length > 0
     ) {
-      filterString += `geographies=${encodeURIComponent(
+      value += `geographies=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.locations,
           ...chart4AppliedFiltersData.locations,
@@ -1603,9 +1567,7 @@ export const GrantImplementationPage: React.FC = () => {
         location.search.includes("components=")) ||
       chart4AppliedFiltersData.components.length > 0
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
-      }components=${encodeURIComponent(
+      value += `${value.length > 0 ? "&" : ""}components=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.components,
           ...chart4AppliedFiltersData.components,
@@ -1617,8 +1579,8 @@ export const GrantImplementationPage: React.FC = () => {
         location.search.includes("principalRecipients=")) ||
       chart4AppliedFiltersData.principalRecipients.length > 0
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
+      value += `${
+        value.length > 0 ? "&" : ""
       }principalRecipients=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.principalRecipients,
@@ -1645,8 +1607,8 @@ export const GrantImplementationPage: React.FC = () => {
         location.search.includes("principalRecipientTypes=")) ||
       chart4AppliedFiltersData.principalRecipientTypes.length > 0
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
+      value += `${
+        value.length > 0 ? "&" : ""
       }principalRecipientTypes=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.principalRecipientTypes,
@@ -1659,9 +1621,7 @@ export const GrantImplementationPage: React.FC = () => {
         location.search.includes("status=")) ||
       chart4AppliedFiltersData.status.length > 0
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
-      }status=${encodeURIComponent(
+      value += `${value.length > 0 ? "&" : ""}status=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.status,
           ...chart4AppliedFiltersData.status,
@@ -1675,14 +1635,14 @@ export const GrantImplementationPage: React.FC = () => {
       // const yearTo = expendituresCycleDropdownSelected
       //   .replace(/ /g, "")
       //   .split("-")[1];
-      // filterString += `${
-      //   filterString.length > 0 ? "&" : ""
+      // value += `${
+      //   value.length > 0 ? "&" : ""
       // }years=${encodeURIComponent(year)}&yearsTo=${encodeURIComponent(yearTo)}`;
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
+      value += `${
+        value.length > 0 ? "&" : ""
       }cycleNames=${expendituresCycleDropdownSelected}`;
     }
-    return filterString;
+    return value;
   }, [
     location.search,
     appliedFiltersData,

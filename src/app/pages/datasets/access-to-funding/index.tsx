@@ -86,8 +86,8 @@ export const AccessToFundingPage: React.FC = () => {
           return {
             ...item,
             top: true,
-            _children: item._children.map((item: any) => ({
-              ...item,
+            _children: item._children.map((subItem: any) => ({
+              ...subItem,
               top: true,
             })),
           };
@@ -165,8 +165,8 @@ export const AccessToFundingPage: React.FC = () => {
           return {
             ...item,
             top: true,
-            _children: item._children.map((item: any) => ({
-              ...item,
+            _children: item._children.map((subItem: any) => ({
+              ...subItem,
               top: true,
             })),
           };
@@ -188,11 +188,11 @@ export const AccessToFundingPage: React.FC = () => {
           return {
             ...item,
             top: true,
-            _children: item._children.map((item: any) => ({
-              ...item,
+            _children: item._children.map((subItem: any) => ({
+              ...subItem,
               top: true,
-              _children: item._children.map((subitem: any) => ({
-                ...subitem,
+              _children: subItem._children.map((subSubItem: any) => ({
+                ...subSubItem,
                 top: true,
               })),
             })),
@@ -445,12 +445,12 @@ export const AccessToFundingPage: React.FC = () => {
   ]);
 
   const filterString = React.useMemo(() => {
-    let filterString = "";
+    let value = "";
     if (
       appliedFiltersData.locations.length > 0 &&
       location.search.includes("locations=")
     ) {
-      filterString += `geographies=${encodeURIComponent(
+      value += `geographies=${encodeURIComponent(
         appliedFiltersData.locations.join(",")
       )}`;
     }
@@ -458,23 +458,21 @@ export const AccessToFundingPage: React.FC = () => {
       appliedFiltersData.components.length > 0 &&
       location.search.includes("components=")
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
-      }components=${encodeURIComponent(
+      value += `${value.length > 0 ? "&" : ""}components=${encodeURIComponent(
         appliedFiltersData.components.join(",")
       )}`;
     }
-    return filterString;
+    return value;
   }, [appliedFiltersData, location.search]);
 
   const chart1FilterString = React.useMemo(() => {
-    let filterString = "";
+    let value = "";
     if (
       (appliedFiltersData.locations.length > 0 &&
         location.search.includes("locations=")) ||
       chart1AppliedFiltersData.locations.length > 0
     ) {
-      filterString += `geographies=${encodeURIComponent(
+      value += `geographies=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.locations,
           ...chart1AppliedFiltersData.locations,
@@ -486,9 +484,7 @@ export const AccessToFundingPage: React.FC = () => {
         location.search.includes("components=")) ||
       chart1AppliedFiltersData.components.length > 0
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
-      }components=${encodeURIComponent(
+      value += `${value.length > 0 ? "&" : ""}components=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.components,
           ...chart1AppliedFiltersData.components,
@@ -500,26 +496,24 @@ export const AccessToFundingPage: React.FC = () => {
         location.search.includes("cycles=")) ||
       chart1AppliedFiltersData.cycles.length > 0
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
-      }cycles=${encodeURIComponent(
+      value += `${value.length > 0 ? "&" : ""}cycles=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.cycles,
           ...chart1AppliedFiltersData.cycles,
         ]).join(",")
       )}`;
     }
-    return filterString;
+    return value;
   }, [appliedFiltersData, chart1AppliedFiltersData, location.search]);
 
   const chart2FilterString = React.useMemo(() => {
-    let filterString = "";
+    let value = "";
     if (
       (appliedFiltersData.locations.length > 0 &&
         location.search.includes("locations=")) ||
       chart2AppliedFiltersData.locations.length > 0
     ) {
-      filterString += `geographies=${encodeURIComponent(
+      value += `geographies=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.locations,
           ...chart2AppliedFiltersData.locations,
@@ -531,9 +525,7 @@ export const AccessToFundingPage: React.FC = () => {
         location.search.includes("components=")) ||
       chart2AppliedFiltersData.components.length > 0
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
-      }components=${encodeURIComponent(
+      value += `${value.length > 0 ? "&" : ""}components=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.components,
           ...chart2AppliedFiltersData.components,
@@ -541,11 +533,11 @@ export const AccessToFundingPage: React.FC = () => {
       )}`;
     }
     if (allocationCycleDropdownSelected) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
-      }cycles=${encodeURIComponent(allocationCycleDropdownSelected)}`;
+      value += `${value.length > 0 ? "&" : ""}cycles=${encodeURIComponent(
+        allocationCycleDropdownSelected
+      )}`;
     }
-    return filterString;
+    return value;
   }, [
     location.search,
     appliedFiltersData,
@@ -554,13 +546,13 @@ export const AccessToFundingPage: React.FC = () => {
   ]);
 
   const chart3FilterString = React.useMemo(() => {
-    let filterString = "";
+    let value = "";
     if (
       (appliedFiltersData.locations.length > 0 &&
         location.search.includes("locations=")) ||
       chart3AppliedFiltersData.locations.length > 0
     ) {
-      filterString += `geographies=${encodeURIComponent(
+      value += `geographies=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.locations,
           ...chart3AppliedFiltersData.locations,
@@ -572,9 +564,7 @@ export const AccessToFundingPage: React.FC = () => {
         location.search.includes("components=")) ||
       chart3AppliedFiltersData.components.length > 0
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
-      }components=${encodeURIComponent(
+      value += `${value.length > 0 ? "&" : ""}components=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.components,
           ...chart3AppliedFiltersData.components,
@@ -586,16 +576,14 @@ export const AccessToFundingPage: React.FC = () => {
         location.search.includes("cycles=")) ||
       chart3AppliedFiltersData.cycles.length > 0
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
-      }periods=${encodeURIComponent(
+      value += `${value.length > 0 ? "&" : ""}periods=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.cycles.map((c) => c.split("-")[0]),
           ...chart3AppliedFiltersData.cycles.map((c) => c.split("-")[0]),
         ]).join(",")
       )}`;
     }
-    return filterString;
+    return value;
   }, [appliedFiltersData, chart3AppliedFiltersData, location.search]);
 
   const range = React.useMemo(() => {
@@ -690,14 +678,9 @@ export const AccessToFundingPage: React.FC = () => {
     if (location.hash) {
       const blockId = location.hash.slice(1).split("|")[0];
       const blockChartType = location.hash.slice(1).split("|")[1];
-      if (blockId && blockChartType) {
-        switch (blockId) {
-          case "disbursements":
-            setDropdownSelected(decodeURIComponent(blockChartType));
-            break;
-          default:
-            break;
-        }
+      if (blockId && blockChartType && blockId === "allocation") {
+        setDropdownSelected(decodeURIComponent(blockChartType));
+        break;
       }
     }
   }, [location.hash]);

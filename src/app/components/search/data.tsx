@@ -1,11 +1,11 @@
 import {
   AllCategoriesIcon,
-  DocumentsIcon,
-  DonorsIcon,
+  // DocumentsIcon,
+  // DonorsIcon,
   GrantsIcon,
   LocationsIcon,
-  PartnersIcon,
-  ResultsIcon,
+  // PartnersIcon,
+  // ResultsIcon,
 } from "app/components/search/icons";
 
 export const categories = [

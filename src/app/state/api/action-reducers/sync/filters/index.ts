@@ -186,7 +186,7 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
       payload.portfolioCategories.length +
       payload.documentTypes.length;
   }),
-  actionDefaultNone: action((state, payload: string[]) => {
+  actionDefaultNone: action(() => {
     console.log("Incorrect filter type");
   }),
   appliedFiltersCount: 0,
