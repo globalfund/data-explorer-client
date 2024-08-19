@@ -1491,8 +1491,8 @@ export const GrantImplementationPage: React.FC = () => {
         location.search.includes("principalRecipientSubTypes=")) ||
       chart3AppliedFiltersData.principalRecipientSubTypes.length > 0
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
+      value += `${
+        value.length > 0 ? "&" : ""
       }principalRecipientSubTypes=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.principalRecipientSubTypes,
@@ -1533,8 +1533,8 @@ export const GrantImplementationPage: React.FC = () => {
       // const yearTo = financialMetricsCycleDropdownSelected
       //   .replace(/ /g, "")
       //   .split("-")[1];
-      // filterString += `${
-      //   filterString.length > 0 ? "&" : ""
+      // value += `${
+      //   value.length > 0 ? "&" : ""
       // }years=${encodeURIComponent(year)}&yearsTo=${encodeURIComponent(yearTo)}`;
       value += `${
         value.length > 0 ? "&" : ""
@@ -1593,8 +1593,8 @@ export const GrantImplementationPage: React.FC = () => {
         location.search.includes("principalRecipientSubTypes=")) ||
       chart4AppliedFiltersData.principalRecipientSubTypes.length > 0
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
+      value += `${
+        value.length > 0 ? "&" : ""
       }principalRecipientSubTypes=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.principalRecipientSubTypes,
@@ -1720,16 +1720,16 @@ export const GrantImplementationPage: React.FC = () => {
   }, [chart2FilterString, componentsGrouping, geographyGrouping]);
 
   React.useEffect(() => {
-    let filterString = chart2FilterString;
+    let value = chart2FilterString;
     if (budgetTableDataType === dropdownItemsBudgetsTableDataTypes[1].value) {
-      filterString += `${filterString.length > 0 ? "&" : ""}var2=${
+      value += `${value.length > 0 ? "&" : ""}var2=${
         componentsGrouping === componentsGroupingOptions[0].value
           ? "activityAreaGroup"
           : "activityArea"
       }`;
     }
     fetchBudgetTable({
-      filterString,
+      filterString: value,
       routeParams: {
         componentField:
           componentsGrouping === componentsGroupingOptions[0].value
@@ -1912,7 +1912,6 @@ export const GrantImplementationPage: React.FC = () => {
       appliedFilters={pageAppliedFilters}
       handleResetFilters={handleResetFilters}
       subtitle="See the disbursements, budgets and expenditures datasets and relating insights."
-      breadcrumbs={[{ label: "Datasets" }, { label: "Financial Insights" }]}
       toolbarRightContent={toolbarRightContent}
     >
       <Box width="100%" marginTop="50px">

@@ -680,7 +680,6 @@ export const AccessToFundingPage: React.FC = () => {
       const blockChartType = location.hash.slice(1).split("|")[1];
       if (blockId && blockChartType && blockId === "allocation") {
         setDropdownSelected(decodeURIComponent(blockChartType));
-        break;
       }
     }
   }, [location.hash]);
@@ -692,7 +691,6 @@ export const AccessToFundingPage: React.FC = () => {
       filterGroups={filterGroups}
       appliedFilters={pageAppliedFilters}
       handleResetFilters={handleResetFilters}
-      breadcrumbs={[{ label: "Datasets" }, { label: "Access to Funding" }]}
     >
       <Box width="100%" marginTop="50px">
         <Box>

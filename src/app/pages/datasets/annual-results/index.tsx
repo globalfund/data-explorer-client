@@ -380,7 +380,6 @@ export const AnnualResultsPage: React.FC = () => {
       handleResetFilters={handleResetFilters}
       toolbarRightContent={toolbarRightContent}
       subtitle="Indicator results reported as part of annual Results Report."
-      breadcrumbs={[{ label: "Datasets" }, { label: "Annual Results" }]}
     >
       <Box width="100%" marginTop="50px">
         <HomeResultsStats stats={dataStats} loading={loadingResults} />

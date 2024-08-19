@@ -354,7 +354,6 @@ export const ResourceMobilizationPage: React.FC = () => {
       filterGroups={filterGroups}
       appliedFilters={pageAppliedFilters}
       handleResetFilters={handleResetFilters}
-      breadcrumbs={[{ label: "Datasets" }, { label: "Resource Mobilization" }]}
       subtitle="Government, private sector, non-government and other donor pledges and contributions"
     >
       <Box width="100%" marginTop="50px">
