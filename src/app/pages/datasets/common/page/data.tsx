@@ -1,6 +1,5 @@
 import React from "react";
 import Typography from "@mui/material/Typography";
-import { BreadcrumbItem } from "app/components/breadcrumbs/data";
 import { FilterGroupModel } from "app/components/filters/list/data";
 import { useCMSData } from "app/hooks/useCMSData";
 import { get } from "lodash";
@@ -10,7 +9,6 @@ export interface DatasetPageProps {
   subtitle: string;
   appliedFilters: string[];
   children: React.ReactNode;
-  breadcrumbs: BreadcrumbItem[];
   handleResetFilters: () => void;
   filterGroups: FilterGroupModel[];
   toolbarRightContent?: React.ReactNode;

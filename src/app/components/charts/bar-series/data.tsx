@@ -1,5 +1,3 @@
-import { appColors } from "app/theme";
-
 export interface BarSeriesChartDataItem {
   name: string;
   values: number[];

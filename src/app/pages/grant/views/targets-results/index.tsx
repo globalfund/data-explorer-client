@@ -36,8 +36,8 @@ export const GrantTargetsResults: React.FC = () => {
     (actions) => actions.GrantTargetsResultsTable.fetch
   );
 
-  const handleTabChange = (tab: string) => {
-    setTab(TABS.find((t) => t.name === tab) || TABS[0]);
+  const handleTabChange = (value: string) => {
+    setTab(TABS.find((t) => t.name === value) || TABS[0]);
   };
 
   useUpdateEffect(() => {
@@ -59,7 +59,7 @@ export const GrantTargetsResults: React.FC = () => {
         title: year,
         field: year,
         formatter: (cell: CellComponent) => {
-          var tableEl = document.createElement("div");
+          const tableEl = document.createElement("div");
           cell.getElement().appendChild(tableEl);
           const data = cell.getValue();
 
@@ -92,7 +92,7 @@ export const GrantTargetsResults: React.FC = () => {
           title: date,
           field: date,
           formatter: (cell: CellComponent) => {
-            var tableEl = document.createElement("div");
+            const tableEl = document.createElement("div");
             cell.getElement().appendChild(tableEl);
             const data = cell.getValue();
 

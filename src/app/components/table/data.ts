@@ -7,10 +7,18 @@ import {
   TabulatorFull as Tabulator,
 } from "tabulator-tables";
 
+export type TableDataItem =
+  | string
+  | number
+  | boolean
+  | null
+  | object
+  | Array<object>;
+
 export interface TableProps {
   id: string;
   data: {
-    [key: string]: string | number | boolean | null | object | Array<object>;
+    [key: string]: TableDataItem;
   }[];
   columns: ColumnDefinition[];
   dataTree?: boolean;
@@ -56,7 +64,6 @@ export const cellBGColorFormatter = (cell: CellComponent) => {
         backgroundColor = appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[5];
         break;
       case "NA":
-        backgroundColor = "#FFFFFF";
         break;
       default:
         text = cellValue.toString();
@@ -103,7 +110,7 @@ export const TABLE_VARIATION_1_COLUMNS: ColumnDefinition[] = [
 ];
 
 export const TABLE_VARIATION_1_DATA: {
-  [key: string]: string | number | boolean | null | object | Array<object>;
+  [key: string]: TableDataItem;
 }[] = [
   {
     name: "Africa",
@@ -327,7 +334,7 @@ export const TABLE_VARIATION_2_COLUMNS: ColumnDefinition[] = [
 ];
 
 export const TABLE_VARIATION_2_DATA: {
-  [key: string]: string | number | boolean | null | object | Array<object>;
+  [key: string]: TableDataItem;
 }[] = [
   {
     components: "HIV",
@@ -497,7 +504,7 @@ export const TABLE_VARIATION_3_COLUMNS: ColumnDefinition[] = [
 ];
 
 export const TABLE_VARIATION_3_DATA: {
-  [key: string]: string | number | boolean | null | object | Array<object>;
+  [key: string]: TableDataItem;
 }[] = [
   {
     name: "Algeria",
@@ -600,7 +607,7 @@ export const TABLE_VARIATION_4_COLUMNS: ColumnDefinition[] = [
     title: "2020",
     field: "2020",
     formatter: (cell: CellComponent) => {
-      var tableEl = document.createElement("div");
+      const tableEl = document.createElement("div");
       cell.getElement().appendChild(tableEl);
       const data = cell.getValue();
 
@@ -629,7 +636,7 @@ export const TABLE_VARIATION_4_COLUMNS: ColumnDefinition[] = [
     title: "2021",
     field: "2021",
     formatter: (cell: CellComponent) => {
-      var tableEl = document.createElement("div");
+      const tableEl = document.createElement("div");
       cell.getElement().appendChild(tableEl);
       const data = cell.getValue();
 
@@ -657,7 +664,7 @@ export const TABLE_VARIATION_4_COLUMNS: ColumnDefinition[] = [
 ];
 
 export const TABLE_VARIATION_4_DATA: {
-  [key: string]: string | number | boolean | null | object | Array<object>;
+  [key: string]: TableDataItem;
 }[] = [
   {
     name: "TB CARE AND PREVENTION",
@@ -826,7 +833,7 @@ export const TABLE_VARIATION_5_COLUMNS: ColumnDefinition[] = [
 ];
 
 export const TABLE_VARIATION_5_DATA: {
-  [key: string]: string | number | boolean | null | object | Array<object>;
+  [key: string]: TableDataItem;
 }[] = [
   {
     grantId: "AFG-H-MOH001",
@@ -875,7 +882,7 @@ export const TABLE_VARIATION_6_COLUMNS: ColumnDefinition[] = [
 ];
 
 export const TABLE_VARIATION_6_DATA: {
-  [key: string]: string | number | boolean | null | object | Array<object>;
+  [key: string]: TableDataItem;
 }[] = [
   {
     name: "Kenya",
@@ -1017,7 +1024,7 @@ export const TABLE_VARIATION_7_COLUMNS: ColumnDefinition[] = [
 ];
 
 export const TABLE_VARIATION_7_DATA: {
-  [key: string]: string | number | boolean | null | object | Array<object>;
+  [key: string]: TableDataItem;
 }[] = [
   {
     description: "People on antiretroviral therapy for HIV",
@@ -1085,7 +1092,7 @@ export const TABLE_VARIATION_8_COLUMNS: ColumnDefinition[] = [
 ];
 
 export const TABLE_VARIATION_8_DATA: {
-  [key: string]: string | number | boolean | null | object | Array<object>;
+  [key: string]: TableDataItem;
 }[] = [
   {
     name: "Affordable Medicines Facility - malaria (AMFm)",
@@ -1926,7 +1933,7 @@ export const TABLE_VARIATION_9_COLUMNS: ColumnDefinition[] = [
 ];
 
 export const TABLE_VARIATION_9_DATA: {
-  [key: string]: string | number | boolean | null | object | Array<object>;
+  [key: string]: TableDataItem;
 }[] = [
   {
     name: "2022",
@@ -3495,7 +3502,7 @@ export const TABLE_VARIATION_10_COLUMNS: ColumnDefinition[] = [
 ];
 
 export const TABLE_VARIATION_10_DATA: {
-  [key: string]: string | number | boolean | null | object | Array<object>;
+  [key: string]: TableDataItem;
 }[] = [
   {
     name: "Algeria",
@@ -3805,7 +3812,7 @@ export const TABLE_VARIATION_11_COLUMNS: ColumnDefinition[] = [
 ];
 
 export const TABLE_VARIATION_11_DATA: {
-  [key: string]: string | number | boolean | null | object | Array<object>;
+  [key: string]: TableDataItem;
 }[] = [
   {
     name: "Afghanistan",
@@ -6400,7 +6407,7 @@ export const TABLE_VARIATION_12_COLUMNS: ColumnDefinition[] = [
 ];
 
 export const TABLE_VARIATION_12_DATA: {
-  [key: string]: string | number | boolean | null | object | Array<object>;
+  [key: string]: TableDataItem;
 }[] = [
   {
     components: "Afghanistan",
@@ -7434,7 +7441,7 @@ export const TABLE_VARIATION_13_COLUMNS: ColumnDefinition[] = [
 ];
 
 export const TABLE_VARIATION_13_DATA: {
-  [key: string]: string | number | boolean | null | object | Array<object>;
+  [key: string]: TableDataItem;
 }[] = [
   {
     component: "HIV/AIDS",
@@ -7502,7 +7509,7 @@ export const TABLE_VARIATION_14_COLUMNS: ColumnDefinition[] = [
 ];
 
 export const TABLE_VARIATION_14_DATA: {
-  [key: string]: string | number | boolean | null | object | Array<object>;
+  [key: string]: TableDataItem;
 }[] = [
   {
     name: "Capacity Building and Technical Assistance",
@@ -7637,7 +7644,7 @@ export const TABLE_VARIATION_15_COLUMNS: ColumnDefinition[] = [
 ];
 
 export const TABLE_VARIATION_15_DATA: {
-  [key: string]: string | number | boolean | null | object | Array<object>;
+  [key: string]: TableDataItem;
 }[] = [
   {
     name: "HIV/AIDS",

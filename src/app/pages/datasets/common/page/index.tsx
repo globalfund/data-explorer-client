@@ -143,7 +143,7 @@ export const DatasetPage: React.FC<DatasetPageProps> = (
             />
           </Popover>
         </Box>
-        {props.toolbarRightContent && props.toolbarRightContent}
+        {props.toolbarRightContent}
       </Box>
       <Divider
         sx={{

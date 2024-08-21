@@ -272,12 +272,12 @@ export const ResourceMobilizationPage: React.FC = () => {
   }, [dataDonorFilterOptions, dataReplenishmentPeriodFilterOptions]);
 
   const filterString = React.useMemo(() => {
-    let filterString = "";
+    let value = "";
     if (
       appliedFiltersData.donorTypes.length > 0 &&
       location.search.includes("donorTypes=")
     ) {
-      filterString += `donorTypes=${encodeURIComponent(
+      value += `donorTypes=${encodeURIComponent(
         appliedFiltersData.donorTypes.join(",")
       )}`;
     }
@@ -285,31 +285,29 @@ export const ResourceMobilizationPage: React.FC = () => {
       appliedFiltersData.donors.length > 0 &&
       location.search.includes("donors=")
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
-      }donors=${encodeURIComponent(appliedFiltersData.donors.join(","))}`;
+      value += `${value.length > 0 ? "&" : ""}donors=${encodeURIComponent(
+        appliedFiltersData.donors.join(",")
+      )}`;
     }
     if (
       appliedFiltersData.replenishmentPeriods.length > 0 &&
       location.search.includes("periods=")
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
-      }periods=${encodeURIComponent(
+      value += `${value.length > 0 ? "&" : ""}periods=${encodeURIComponent(
         appliedFiltersData.replenishmentPeriods.join(",")
       )}`;
     }
-    return filterString;
+    return value;
   }, [appliedFiltersData, location.search]);
 
   const chartFilterString = React.useMemo(() => {
-    let filterString = "";
+    let value = "";
     if (
       (appliedFiltersData.donorTypes.length > 0 &&
         location.search.includes("donorTypes=")) ||
       chartAppliedFiltersData.donorTypes.length > 0
     ) {
-      filterString += `donorTypes=${encodeURIComponent(
+      value += `donorTypes=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.donorTypes,
           ...chartAppliedFiltersData.donorTypes,
@@ -321,9 +319,7 @@ export const ResourceMobilizationPage: React.FC = () => {
         location.search.includes("donors=")) ||
       chartAppliedFiltersData.donors.length > 0
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
-      }donors=${encodeURIComponent(
+      value += `${value.length > 0 ? "&" : ""}donors=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.donors,
           ...chartAppliedFiltersData.donors,
@@ -335,16 +331,14 @@ export const ResourceMobilizationPage: React.FC = () => {
         location.search.includes("periods=")) ||
       chartAppliedFiltersData.replenishmentPeriods.length > 0
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
-      }periods=${encodeURIComponent(
+      value += `${value.length > 0 ? "&" : ""}periods=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.replenishmentPeriods,
           ...chartAppliedFiltersData.replenishmentPeriods,
         ]).join(",")
       )}`;
     }
-    return filterString;
+    return value;
   }, [appliedFiltersData, chartAppliedFiltersData, location.search]);
 
   React.useEffect(() => {
@@ -382,7 +376,6 @@ export const ResourceMobilizationPage: React.FC = () => {
       filterGroups={filterGroups}
       appliedFilters={pageAppliedFilters}
       handleResetFilters={handleResetFilters}
-      breadcrumbs={[{ label: "Datasets" }, { label: "Resource Mobilization" }]}
       subtitle={get(
         cmsData,
         "pagesDatasetsResourceMobilization.subtitle",

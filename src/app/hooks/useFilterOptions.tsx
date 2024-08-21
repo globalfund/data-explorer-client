@@ -1,7 +1,5 @@
 import React from "react";
 import get from "lodash/get";
-import find from "lodash/find";
-import { useLocation } from "react-router-dom";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 
 interface FilterGroupOptionModel {}
@@ -29,7 +27,6 @@ export interface UseFilterOptionsReturn {
 export function useFilterOptions(
   props: UseFilterOptionsProps
 ): null | UseFilterOptionsReturn {
-  const location = useLocation();
   const getLocations = useStoreActions(
     (store) => store.LocationFilterOptions.fetch
   );

@@ -205,7 +205,7 @@ export const AccessToFunding: React.FC = () => {
   }, [dataAllocationsRadialChart]);
 
   const raceBarData = React.useMemo(() => {
-    const res = [
+    return [
       {
         name: "Signed",
         value: dataFundingRequestStats.signed,
@@ -225,7 +225,6 @@ export const AccessToFunding: React.FC = () => {
         percentage: 100,
       },
     ];
-    return res;
   }, [dataFundingRequestStats]);
 
   const fullWidthDivider = (

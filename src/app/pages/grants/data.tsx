@@ -1,6 +1,25 @@
 import AppsIcon from "@mui/icons-material/Apps";
 import TableChartIcon from "@mui/icons-material/TableChart";
 
+export interface GrantsLayoutProps {
+  view: string;
+  anchorEl: any;
+  search: string;
+  loading: boolean;
+  filterGroups: any;
+  showSearch: boolean;
+  searchInputRef: any;
+  pageAppliedFilters: any;
+  viewResult: React.ReactNode;
+  pagination: React.ReactNode;
+  handleResetFilters: () => void;
+  handleFilterPanelClose: () => void;
+  handleViewChange: (view: string) => void;
+  handleSearchIconClick: (showSearch: boolean) => () => void;
+  handleSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleFilterButtonClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+}
+
 export const GRANTS_STORY_DATA = [
   {
     status: "Active",

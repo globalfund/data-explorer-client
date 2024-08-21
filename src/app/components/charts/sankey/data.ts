@@ -1,5 +1,3 @@
-import { appColors } from "app/theme";
-
 interface SankeyChartNode {
   name: string;
   level: number;
