@@ -6,8 +6,10 @@ import { useTitle } from "react-use";
 import { useParams } from "react-router-dom";
 import { CycleProps } from "app/pages/home/data";
 import Typography from "@mui/material/Typography";
+import { useCMSData } from "app/hooks/useCMSData";
 import { BarChart } from "app/components/charts/bar";
 import { ChartBlock } from "app/components/chart-block";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import useUpdateEffect from "react-use/lib/useUpdateEffect";
 import { BarChartDataItem } from "app/components/charts/bar/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -15,7 +17,6 @@ import {
   getFinancialValueWithMetricPrefix,
   getRange,
 } from "app/utils/getFinancialValueWithMetricPrefix";
-import { useCMSData } from "app/hooks/useCMSData";
 
 export const ResourceMobilization: React.FC = () => {
   const cmsData = useCMSData({ returnData: true });
@@ -98,7 +99,7 @@ export const ResourceMobilization: React.FC = () => {
         loading={loadingRMBarChart}
         title={`US$${totalPledge}`}
         selectedCycles={chart1Cycles}
-        subtitle={get(
+        subtitle={getCMSDataField(
           cmsData,
           "pagesLocationResourceMobilization.title",
           "Pledges & Contributions"
@@ -110,12 +111,12 @@ export const ResourceMobilization: React.FC = () => {
         <BarChart
           data={dataRMBarChart}
           valueLabels={{
-            value: get(
+            value: getCMSDataField(
               cmsData,
               "pagesLocationResourceMobilization.barchartLabel1",
               "Pledge"
             ),
-            value1: get(
+            value1: getCMSDataField(
               cmsData,
               "pagesLocationResourceMobilization.barchartLabel2",
               "Contribution"
@@ -149,7 +150,7 @@ export const ResourceMobilization: React.FC = () => {
             US${totalPledge}
           </Typography>
           <Typography variant="subtitle2">
-            {get(
+            {getCMSDataField(
               cmsData,
               "pagesLocationResourceMobilization.statsLabel1",
               "Total Pledge"
@@ -169,7 +170,7 @@ export const ResourceMobilization: React.FC = () => {
             US${totalContribution}
           </Typography>
           <Typography variant="subtitle2">
-            {get(
+            {getCMSDataField(
               cmsData,
               "pagesLocationResourceMobilization.statsLabel2",
               "Total Contribution"

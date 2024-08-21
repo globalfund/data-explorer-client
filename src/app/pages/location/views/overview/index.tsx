@@ -7,9 +7,10 @@ import Grid from "@mui/material/Grid";
 // import Link from "@mui/material/Link";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
+import { useCMSData } from "app/hooks/useCMSData";
 // import { Link as RouteLink } from "react-router-dom";
 import { useStoreState } from "app/state/store/hooks";
-import { useCMSData } from "app/hooks/useCMSData";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 
 export const LocationOverview: React.FC = () => {
   const cmsData = useCMSData({ returnData: true });
@@ -34,7 +35,7 @@ export const LocationOverview: React.FC = () => {
     <Box gap="24px" display="flex" flexDirection="column">
       {/* <Box>
         <Typography fontSize="18px" fontWeight="700">
-          {get(
+          {getCMSDataField(
             cmsData,
             "pagesLocationOverview.descriptionTitle",
             "Description"
@@ -81,7 +82,7 @@ export const LocationOverview: React.FC = () => {
               }}
             >
               <Typography variant="body2" fontWeight="700" marginBottom="10px">
-                {get(
+                {getCMSDataField(
                   cmsData,
                   "pagesLocationOverview.portfolioManagerTitle",
                   "Fund Portfolio Manager"
@@ -98,7 +99,7 @@ export const LocationOverview: React.FC = () => {
             <Divider sx={{ borderColor: "#000" }} />
             <Box>
               <Typography variant="body2" fontWeight="700" marginBottom="10px">
-                {get(
+                {getCMSDataField(
                   cmsData,
                   "pagesLocationOverview.coordinatingMechanismContactsTitle",
                   "Coordinating Mechanism Contacts"

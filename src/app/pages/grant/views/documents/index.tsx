@@ -1,8 +1,8 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import { get } from "lodash";
 import { useCMSData } from "app/hooks/useCMSData";
+import Typography from "@mui/material/Typography";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 // import { TableContainer } from "app/components/table-container";
 // import {
 //   TABLE_VARIATION_6_DATA,
@@ -22,7 +22,7 @@ export const GrantDocuments: React.FC = () => {
         justifyContent="center"
       >
         <Typography>
-          {get(
+          {getCMSDataField(
             cmsData,
             "pagesGrantDocuments.notAvailable",
             "No data available"

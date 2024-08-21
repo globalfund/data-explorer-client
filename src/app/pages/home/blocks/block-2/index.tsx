@@ -2,16 +2,17 @@ import React from "react";
 import get from "lodash/get";
 import sumBy from "lodash/sumBy";
 import Box from "@mui/material/Box";
+import { useCMSData } from "app/hooks/useCMSData";
 import { ChartBlock } from "app/components/chart-block";
 import { CYCLES, CycleProps } from "app/pages/home/data";
 import { RadialChart } from "app/components/charts/radial";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { RadialChartDataItem } from "app/components/charts/radial/data";
 import {
   getRange,
   getFinancialValueWithMetricPrefix,
 } from "app/utils/getFinancialValueWithMetricPrefix";
-import { useCMSData } from "app/hooks/useCMSData";
 
 export const HomeBlock2: React.FC = () => {
   const [chart2Cycles, setChart2Cycles] = React.useState<CycleProps[]>([]);
@@ -95,7 +96,11 @@ export const HomeBlock2: React.FC = () => {
   return (
     <ChartBlock
       id="allocations"
-      subtitle={get(cmsData, "pagesHome.allocationsSubtitle", "Allocations")}
+      subtitle={getCMSDataField(
+        cmsData,
+        "pagesHome.allocationsSubtitle",
+        "Allocations"
+      )}
       title={allocationsTotal}
       selectedCycles={chart2Cycles}
       loading={loadingAllocationsRadialChart}
@@ -105,7 +110,7 @@ export const HomeBlock2: React.FC = () => {
         name: c.value,
         value: c.value,
       }))}
-      text={get(
+      text={getCMSDataField(
         cmsData,
         "pagesHome.allocationsText",
         "The Global Fund is distinct from other organizations in that it gives countries (or groups of countries) an allocation and asks countries to describe how they will use those funds rather than asking for applications and then determining an amount per-country based on the merits of the various proposals received.<br/><br/>This provides greater predictability for countries and helps ensure that the programs being funded are not just the ones with the most capacity to write good applications."

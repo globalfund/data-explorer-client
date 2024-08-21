@@ -1,14 +1,14 @@
 import React from "react";
-import Typography from "@mui/material/Typography";
 import { useCMSData } from "app/hooks/useCMSData";
-import { get } from "lodash";
+import Typography from "@mui/material/Typography";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 
 export const HomeHero: React.FC = () => {
   const cmsData = useCMSData({ returnData: true });
   return (
     <React.Fragment>
       <Typography variant="h1" marginBottom="5px">
-        {get(cmsData, "pagesHome.title", "Data Explorer")}
+        {getCMSDataField(cmsData, "pagesHome.title", "Data Explorer")}
       </Typography>
       <Typography
         variant="h5"
@@ -23,7 +23,7 @@ export const HomeHero: React.FC = () => {
           },
         }}
       >
-        {get(
+        {getCMSDataField(
           cmsData,
           "pagesHome.subtitle",
           "The Global Fund invests US$5 billion a year to defeat HIV, tuberculosis and malaria and ensure a healthier, safer, equitable future for all."

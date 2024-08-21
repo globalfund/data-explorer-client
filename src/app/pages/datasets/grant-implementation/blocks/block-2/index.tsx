@@ -6,8 +6,10 @@ import { appColors } from "app/theme";
 import { Table } from "app/components/table";
 import { useLocation } from "react-router-dom";
 import Typography from "@mui/material/Typography";
+import { useCMSData } from "app/hooks/useCMSData";
 import { BarChart } from "app/components/charts/bar";
 import { LineChart } from "app/components/charts/line";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import { BarChartDataItem } from "app/components/charts/bar/data";
 import { LineChartDataItem } from "app/components/charts/line/data";
 import { FilterGroupModel } from "app/components/filters/list/data";
@@ -24,7 +26,6 @@ import {
   componentsGroupingOptions,
   dropdownItemsDisbursements,
 } from "app/pages/datasets/grant-implementation/data";
-import { useCMSData } from "app/hooks/useCMSData";
 
 interface GrantImplementationPageBlock2Props {
   filterString: string;
@@ -541,12 +542,12 @@ export const GrantImplementationPageBlock2: React.FC<
     >
       <DatasetChartBlock
         id="disbursements"
-        title={get(
+        title={getCMSDataField(
           cmsData,
           "pagesDatasetsGrantImplementation.disbursementsTitle",
           "Disbursements"
         )}
-        subtitle={get(
+        subtitle={getCMSDataField(
           cmsData,
           "pagesDatasetsGrantImplementation.disbursementsSubtitle",
           "Disbursement transactions for all grants across the porfolio."

@@ -4,8 +4,10 @@ import uniq from "lodash/uniq";
 import Box from "@mui/material/Box";
 import { Table } from "app/components/table";
 import { useLocation } from "react-router-dom";
+import { useCMSData } from "app/hooks/useCMSData";
 import { Dropdown } from "app/components/dropdown";
 import { Treemap } from "app/components/charts/treemap";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import { SunburstChart } from "app/components/charts/sunburst";
 import { FilterGroupModel } from "app/components/filters/list/data";
 import { TreemapDataItem } from "app/components/charts/treemap/data";
@@ -14,7 +16,6 @@ import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 import { dropdownItemsAllocations } from "app/pages/datasets/access-to-funding/data";
 import { TABLE_VARIATION_11_COLUMNS as ALLOCATIONS_TABLE_COLUMNS } from "app/components/table/data";
-import { useCMSData } from "app/hooks/useCMSData";
 
 interface AccessToFundingBlock3Props {
   filterString: string;
@@ -301,12 +302,12 @@ export const AccessToFundingBlock3: React.FC<AccessToFundingBlock3Props> = (
     >
       <DatasetChartBlock
         id="allocation"
-        title={get(
+        title={getCMSDataField(
           cmsData,
           "pagesDatasetsAccessToFunding.allocationTitle",
           "Allocation"
         )}
-        subtitle={get(
+        subtitle={getCMSDataField(
           cmsData,
           "pagesDatasetsAccessToFunding.allocationSubtitle",
           "Allocations amounts for countries."

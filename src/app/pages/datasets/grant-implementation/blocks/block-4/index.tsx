@@ -3,11 +3,12 @@ import get from "lodash/get";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
+import { useCMSData } from "app/hooks/useCMSData";
 import { Dropdown } from "app/components/dropdown";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { componentsGroupingOptions } from "app/pages/datasets/grant-implementation/data";
-import { useCMSData } from "app/hooks/useCMSData";
 
 interface GrantImplementationPageBlock4Props {
   filterString: string;
@@ -94,14 +95,14 @@ export const GrantImplementationPageBlock4: React.FC<
       >
         <Box>
           <Typography variant="h5">
-            {get(
+            {getCMSDataField(
               cmsData,
               "pagesDatasetsGrantImplementation.budgetBreakdownTitle",
               "Budget Breakdown"
             )}
           </Typography>
           <Typography fontSize="14px" fontWeight="700">
-            {get(
+            {getCMSDataField(
               cmsData,
               "pagesDatasetsGrantImplementation.budgetBreakdownSubtitle",
               "By grant component"

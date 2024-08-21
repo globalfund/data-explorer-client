@@ -4,8 +4,10 @@ import Box from "@mui/material/Box";
 import { useTitle } from "react-use";
 import Divider from "@mui/material/Divider";
 import { useParams } from "react-router-dom";
+import { useCMSData } from "app/hooks/useCMSData";
 import { useStoreState } from "app/state/store/hooks";
 import { ChartBlock } from "app/components/chart-block";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import { TableContainer } from "app/components/table-container";
 import { HomeResultsStats } from "app/pages/home/components/results-stats";
 import { StatCompProps } from "app/pages/home/components/results-stats/data";
@@ -17,7 +19,6 @@ import {
   TABLE_VARIATION_6_COLUMNS,
   TABLE_VARIATION_7_COLUMNS,
 } from "app/components/table/data";
-import { useCMSData } from "app/hooks/useCMSData";
 
 export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
   const cmsData = useCMSData({ returnData: true });
@@ -67,7 +68,11 @@ export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
       {showStats && fullWidthDivider}
       <ChartBlock
         id="results"
-        title={get(cmsData, "pagesLocationResults.title", "Annual Results")}
+        title={getCMSDataField(
+          cmsData,
+          "pagesLocationResults.title",
+          "Annual Results"
+        )}
         noBottomToolbar
         empty={!showResults}
         cycles={RESULT_YEARS}
@@ -88,7 +93,11 @@ export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
       <ChartBlock
         id="documents"
         noBottomToolbar
-        title={get(cmsData, "pagesLocationResults.documentTitle", "Documents")}
+        title={getCMSDataField(
+          cmsData,
+          "pagesLocationResults.documentTitle",
+          "Documents"
+        )}
         empty={!showDocuments}
         subtitle=""
         infoType="global"

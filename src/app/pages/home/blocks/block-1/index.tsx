@@ -2,14 +2,15 @@ import React from "react";
 import get from "lodash/get";
 import sumBy from "lodash/sumBy";
 import Box from "@mui/material/Box";
+import { useCMSData } from "app/hooks/useCMSData";
 import Typography from "@mui/material/Typography";
 import { BarChart } from "app/components/charts/bar";
 import { ChartBlock } from "app/components/chart-block";
 import { CYCLES, CycleProps } from "app/pages/home/data";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import { BarChartDataItem } from "app/components/charts/bar/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { applyResultValueFormula } from "app/utils/applyResultValueFormula";
-import { useCMSData } from "app/hooks/useCMSData";
 
 export const HomeBlock1: React.FC = () => {
   const [chart1Cycles, setChart1Cycles] = React.useState<CycleProps[]>([]);
@@ -96,7 +97,7 @@ export const HomeBlock1: React.FC = () => {
         id="pledges-contributions"
         selectedCycles={chart1Cycles}
         title={`${totalPledge}`}
-        subtitle={get(
+        subtitle={getCMSDataField(
           cmsData,
           "pagesHome.pledgesContributionsSubtitle",
           "Pledges & Contributions"
@@ -113,12 +114,12 @@ export const HomeBlock1: React.FC = () => {
         <BarChart
           data={dataPledgesContributionsBarChart}
           valueLabels={{
-            value: get(
+            value: getCMSDataField(
               cmsData,
               "pagesHome.pledgesContributionsLabel1",
               "Pledge"
             ),
-            value1: get(
+            value1: getCMSDataField(
               cmsData,
               "pagesHome.pledgesContributionsLabel2",
               "Contribution"
@@ -152,7 +153,11 @@ export const HomeBlock1: React.FC = () => {
             {totalPledge}
           </Typography>
           <Typography variant="subtitle2">
-            {get(cmsData, "pagesHome.pledgesContributionsLabel1", "Pledge")}
+            {getCMSDataField(
+              cmsData,
+              "pagesHome.pledgesContributionsLabel1",
+              "Pledge"
+            )}
           </Typography>
         </Box>
         <Box
@@ -165,7 +170,7 @@ export const HomeBlock1: React.FC = () => {
             {totalContribution}
           </Typography>
           <Typography variant="subtitle2">
-            {get(
+            {getCMSDataField(
               cmsData,
               "pagesHome.pledgesContributionsLabel2",
               "Contribution"

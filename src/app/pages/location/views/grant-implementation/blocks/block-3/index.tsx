@@ -7,10 +7,12 @@ import { appColors } from "app/theme";
 import findIndex from "lodash/findIndex";
 import { useParams } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
+import { useCMSData } from "app/hooks/useCMSData";
 import { ChartBlock } from "app/components/chart-block";
 import { Heatmap } from "app/components/charts/heatmap";
 import { CYCLES, CycleProps } from "app/pages/home/data";
 import useUpdateEffect from "react-use/lib/useUpdateEffect";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import {
   HeatmapDataItem,
@@ -20,7 +22,6 @@ import {
   getRange,
   getFinancialValueWithMetricPrefix,
 } from "app/utils/getFinancialValueWithMetricPrefix";
-import { useCMSData } from "app/hooks/useCMSData";
 
 export const LocationGrantImplementationBlock3 = () => {
   const cmsData = useCMSData({ returnData: true });
@@ -190,7 +191,7 @@ export const LocationGrantImplementationBlock3 = () => {
   return (
     <ChartBlock
       id="expenditures"
-      subtitle={get(
+      subtitle={getCMSDataField(
         cmsData,
         "pagesLocationGrantImplementation.expendituresSubtitle",
         "Expenditures"

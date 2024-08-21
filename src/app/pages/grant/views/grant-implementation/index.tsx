@@ -8,6 +8,7 @@ import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import { useParams } from "react-router-dom";
 import { CYCLES } from "app/pages/home/data";
+import { useCMSData } from "app/hooks/useCMSData";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import { Dropdown } from "app/components/dropdown";
@@ -16,6 +17,7 @@ import { ChartBlock } from "app/components/chart-block";
 import { Heatmap } from "app/components/charts/heatmap";
 import { RadialChart } from "app/components/charts/radial";
 import { SankeyChart } from "app/components/charts/sankey";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import { RaceBarChart } from "app/components/charts/race-bar";
 import { SankeyChartData } from "app/components/charts/sankey/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -29,7 +31,6 @@ import {
   getRange,
   getFinancialValueWithMetricPrefix,
 } from "app/utils/getFinancialValueWithMetricPrefix";
-import { useCMSData } from "app/hooks/useCMSData";
 
 export const GrantImplementation: React.FC = () => {
   const cmsData = useCMSData({ returnData: true });
@@ -355,7 +356,7 @@ export const GrantImplementation: React.FC = () => {
             flexDirection="column"
           >
             <Typography variant="body2" fontWeight="700">
-              {get(
+              {getCMSDataField(
                 cmsData,
                 "pagesGrantGrantImplementation.dateStat1",
                 "Board Approved Date"
@@ -374,7 +375,7 @@ export const GrantImplementation: React.FC = () => {
             flexDirection="column"
           >
             <Typography variant="body2" fontWeight="700">
-              {get(
+              {getCMSDataField(
                 cmsData,
                 "pagesGrantGrantImplementation.dateStat2",
                 "Program Start Date"
@@ -398,7 +399,7 @@ export const GrantImplementation: React.FC = () => {
             flexDirection="column"
           >
             <Typography variant="body2" fontWeight="700">
-              {get(
+              {getCMSDataField(
                 cmsData,
                 "pagesGrantGrantImplementation.dateStat3",
                 "Program End Date"
@@ -414,7 +415,7 @@ export const GrantImplementation: React.FC = () => {
       <ChartBlock
         id="radial-chart"
         title={disbursementsTotal}
-        subtitle={get(
+        subtitle={getCMSDataField(
           cmsData,
           "pagesGrantGrantImplementation.disbursementsSubtitle",
           "Disbursements"
@@ -423,7 +424,7 @@ export const GrantImplementation: React.FC = () => {
         infoType="financials"
       >
         <RadialChart
-          tooltipLabel={get(
+          tooltipLabel={getCMSDataField(
             cmsData,
             "pagesGrantGrantImplementation.disbursementsTooltipLabel",
             "Amount"
@@ -447,7 +448,7 @@ export const GrantImplementation: React.FC = () => {
             bgcolor={appColors.RADIAL_CHART.ITEM_COLORS[2]}
           />
           <Typography variant="body2" fontWeight="700">
-            {get(
+            {getCMSDataField(
               cmsData,
               "pagesGrantGrantImplementation.disbursementsRadialChartLabel",
               "Signed"
@@ -461,7 +462,7 @@ export const GrantImplementation: React.FC = () => {
       <ChartBlock
         id="budget"
         title={totalBudget}
-        subtitle={get(
+        subtitle={getCMSDataField(
           cmsData,
           "pagesGrantGrantImplementation.budgetsSubtitle",
           "Grant Budgets"
@@ -480,28 +481,28 @@ export const GrantImplementation: React.FC = () => {
           }}
         >
           <Grid item xs={3}>
-            {get(
+            {getCMSDataField(
               cmsData,
               "pagesDatasetsGrantImplementation.budgetsLabel1",
               "Total budget"
             )}
           </Grid>
           <Grid item xs={3}>
-            {get(
+            {getCMSDataField(
               cmsData,
               "pagesDatasetsGrantImplementation.budgetsLabel2",
               "Investement Landscape 1"
             )}
           </Grid>
           <Grid item xs={3}>
-            {get(
+            {getCMSDataField(
               cmsData,
               "pagesDatasetsGrantImplementation.budgetsLabel3",
               "Investement Landscape 2"
             )}
           </Grid>
           <Grid item xs={3}>
-            {get(
+            {getCMSDataField(
               cmsData,
               "pagesDatasetsGrantImplementation.budgetsLabel4",
               "Cost Category"
@@ -514,7 +515,7 @@ export const GrantImplementation: React.FC = () => {
       <ChartBlock
         cycles={CYCLES}
         id="expenditures"
-        subtitle={get(
+        subtitle={getCMSDataField(
           cmsData,
           "pagesGrantGrantImplementation.expendituresSubtitle",
           "Expenditures"

@@ -1,8 +1,8 @@
 import React from "react";
-import Typography from "@mui/material/Typography";
-import { FilterGroupModel } from "app/components/filters/list/data";
 import { useCMSData } from "app/hooks/useCMSData";
-import { get } from "lodash";
+import Typography from "@mui/material/Typography";
+import { getCMSDataField } from "app/utils/getCMSDataField";
+import { FilterGroupModel } from "app/components/filters/list/data";
 
 export interface DatasetPageProps {
   title: string;
@@ -20,13 +20,17 @@ export const TooltipTitle = () => {
   return (
     <React.Fragment>
       <Typography fontSize="12px" fontWeight="700">
-        {get(cmsData, "pagesDatasets.filtersTooltipTitle", "Global Filtering")}
+        {getCMSDataField(
+          cmsData,
+          "pagesDatasets.filtersTooltipTitle",
+          "Global Filtering"
+        )}
       </Typography>
       <Typography
         fontSize="12px"
         marginTop="8px"
         dangerouslySetInnerHTML={{
-          __html: get(
+          __html: getCMSDataField(
             cmsData,
             "pagesDatasets.filtersTooltipContent",
             `This filter will be affecting the datasets and indicators throughout the

@@ -4,46 +4,22 @@ import { CMSData } from "app/state/api/action-reducers/sync";
 import GlobalSearch from "app/state/api/action-reducers/search";
 import { GrantInfo } from "app/state/api/action-reducers/grant/info";
 import { GrantList } from "app/state/api/action-reducers/grants/list";
-import modulesAbout from "app/state/api/action-reducers/cms/modulesAbout";
-import modulesCommon from "app/state/api/action-reducers/cms/modulesCommon";
 import { HomeResultsStats } from "app/state/api/action-reducers/home/stats";
-import modulesGrants from "app/state/api/action-reducers/cms/modulesGrants";
 import { GeographyList } from "app/state/api/action-reducers/geography/list";
 import { GrantOverview } from "app/state/api/action-reducers/grant/overview";
-import countrySummary from "app/state/api/action-reducers/cms/countrySummary";
 import DonorFilterOptions from "app/state/api/action-reducers/filters/donors";
-import modulesLanding from "app/state/api/action-reducers/cms/modulesLanding";
 import StatusFilterOptions from "app/state/api/action-reducers/filters/status";
-import componentsTable from "app/state/api/action-reducers/cms/componentsTable";
-import modulesDatasets from "app/state/api/action-reducers/cms/modulesDatasets";
 import { AppliedFiltersState } from "app/state/api/action-reducers/sync/filters";
-import componentsAppBar from "app/state/api/action-reducers/cms/componentsAppBar";
 import componentsSearch from "app/state/api/action-reducers/cms/componentsSearch";
-import componentsMobile from "app/state/api/action-reducers/cms/componentsMobile";
 import LocationFilterOptions from "app/state/api/action-reducers/filters/locations";
-import componentsSidebar from "app/state/api/action-reducers/cms/componentsSidebar";
 import ResultsDocuments from "app/state/api/action-reducers/annual-results/documents";
-import modulesGrantDetail from "app/state/api/action-reducers/cms/modulesGrantDetail";
 import { AnnualResultsStats } from "app/state/api/action-reducers/annual-results/stats";
 import { AnnualResultsTable } from "app/state/api/action-reducers/annual-results/table";
 import { HomeBudgetsTreemap } from "app/state/api/action-reducers/home/budgets-treemap";
-import notesAndDisclaimers from "app/state/api/action-reducers/cms/notesAndDisclaimers";
-import componentsDialogBox from "app/state/api/action-reducers/cms/componentsDialogBox";
-import componentsPageHeader from "app/state/api/action-reducers/cms/componentsPageHeader";
-import modulesCountryDetail from "app/state/api/action-reducers/cms/modulesCountryDetail";
 import PartnerTypeFilterOptions from "app/state/api/action-reducers/filters/partnerTypes";
 import { GeographyResultStats } from "app/state/api/action-reducers/geography/results-stats";
 import { AccessToFundingStats } from "app/state/api/action-reducers/access-to-funding/stats";
-import componentsChartsCommon from "app/state/api/action-reducers/cms/componentsChartsCommon";
-import componentsChartsGeomap from "app/state/api/action-reducers/cms/componentsChartsGeomap";
-import componentsChartsGrants from "app/state/api/action-reducers/cms/componentsChartsGrants";
-import componentsCookieDialog from "app/state/api/action-reducers/cms/componentsCookieDialog";
 import { GeographyResultsTable } from "app/state/api/action-reducers/geography/results-table";
-import componentsSlideInPanel from "app/state/api/action-reducers/cms/componentsSlideInPanel";
-import modulesFundingRequests from "app/state/api/action-reducers/cms/modulesFundingRequests";
-import componentsChartsBudgets from "app/state/api/action-reducers/cms/componentsChartsBudgets";
-import componentsChartsNetwork from "app/state/api/action-reducers/cms/componentsChartsNetwork";
-import componentsChartsPledges from "app/state/api/action-reducers/cms/componentsChartsPledges";
 import { FundingRequestsTableGeneric } from "app/state/api/action-reducers/viz/fundingRequests";
 import { FinancialInsightsStats } from "app/state/api/action-reducers/financial-insights/stats";
 import AccessToFundingDocuments from "app/state/api/action-reducers/access-to-funding/documents";
@@ -51,17 +27,14 @@ import { GrantBudgetSankeyChart } from "app/state/api/action-reducers/grant/budg
 import { HomeExpendituresHeatmap } from "app/state/api/action-reducers/home/expenditures-heatmap";
 import { GeographyDocumentsTable } from "app/state/api/action-reducers/geography/documents-table";
 import { AnnualResultsPolyline } from "app/state/api/action-reducers/annual-results/polyline-tree";
-import componentsDatasetCarousel from "app/state/api/action-reducers/cms/componentsDatasetCarousel";
 import {
-  GrantExpendituresHeatmap,
   GrantHasExpenditures,
+  GrantExpendituresHeatmap,
 } from "app/state/api/action-reducers/grant/expenditures-heatmap";
 import { GrantTargetsResultsTable } from "app/state/api/action-reducers/grant/targets-results-table";
 import { GeographyEligibilityTable } from "app/state/api/action-reducers/geography/eligibility-table";
-import componentsInformationPanel from "app/state/api/action-reducers/cms/componentsInformationPanel";
 import { ResourceMobilizationStats } from "app/state/api/action-reducers/resource-mobilization/stats";
 import componentsChartsEligibility from "app/state/api/action-reducers/cms/componentsChartsEligibility";
-import componentsChartsInvestments from "app/state/api/action-reducers/cms/componentsChartsInvestments";
 import { GrantDisbursementsBarChart } from "app/state/api/action-reducers/grant/disbursements-bar-chart";
 import { HomeAllocationsRadialChart } from "app/state/api/action-reducers/home/allocations-radial-chart";
 import { HomeDisbursementsLineChart } from "app/state/api/action-reducers/home/disbursements-line-chart";
@@ -78,7 +51,6 @@ import { AccessToFundingAllocationTable } from "app/state/api/action-reducers/ac
 import { GeographyAllocationsRadialChart } from "app/state/api/action-reducers/geography/allocations-radial-chart";
 import { GeographyDisbursementsLineChart } from "app/state/api/action-reducers/geography/disbursements-line-chart";
 import { AccessToFundingEligibilityTable } from "app/state/api/action-reducers/access-to-funding/eligibility-table";
-import componentsChartsPerformanceRating from "app/state/api/action-reducers/cms/componentsChartsPerformanceRating";
 import { FinancialInsightsBudgetBreakdown } from "app/state/api/action-reducers/financial-insights/budget-breakdown";
 import { HomePledgesContributionsBarChart } from "app/state/api/action-reducers/home/pledges-contributions-bar-chart";
 import { AccessToFundingAllocationTreemap } from "app/state/api/action-reducers/access-to-funding/allocation-treemap";
@@ -94,7 +66,6 @@ import { FinancialInsightsExpendituresHeatmap } from "app/state/api/action-reduc
 import { GeographyResourceMobilizationBarChart } from "app/state/api/action-reducers/geography/resource-mobilization-bar-chart";
 import { FinancialInsightsExpendituresBarChart } from "app/state/api/action-reducers/financial-insights/expenditures-bar-chart";
 import { FinancialInsightsDisbursementsBarChart } from "app/state/api/action-reducers/financial-insights/disbursements-bar-chart";
-import componentsPerformanceFrameworkComponents from "app/state/api/action-reducers/cms/componentsPerformanceFrameworkComponents";
 import { FinancialInsightsDisbursementsLineChart } from "app/state/api/action-reducers/financial-insights/disbursements-line-chart";
 import { FinancialInsightsDisbursementUtilisation } from "app/state/api/action-reducers/financial-insights/disbursement-utilisation";
 import { ResourceMobilizationExpandableBarChart } from "app/state/api/action-reducers/resource-mobilization/pledges-contributions-expandable-bar-chart";
@@ -138,24 +109,24 @@ import pagesDatasets, {
   pagesDatasetsAnnualResults,
   pagesDatasetsGrantImplementation,
   pagesDatasetsResourceMobilization,
-} from "../api/action-reducers/cms/pagesDatasets";
+} from "app/state/api/action-reducers/cms/pagesDatasets";
 import pagesGeography from "../api/action-reducers/cms/pagesGeography";
 import pagesGrantDetail, {
   pagesGrantDocuments,
   pagesGrantGrantImplementation,
   pagesGrantOverview,
   pagesGrantTargetResults,
-} from "../api/action-reducers/cms/pagesGrantDetail";
-import pagesGrants from "../api/action-reducers/cms/pagesGrants";
-import pagesHome from "../api/action-reducers/cms/pagesHome";
+} from "app/state/api/action-reducers/cms/pagesGrantDetail";
+import pagesGrants from "app/state/api/action-reducers/cms/pagesGrants";
+import pagesHome from "app/state/api/action-reducers/cms/pagesHome";
 import pagesLocation, {
   pagesLocationAccessToFunding,
   pagesLocationGrantImplementation,
   pagesLocationOverview,
   pagesLocationResourceMobilization,
   pagesLocationResults,
-} from "../api/action-reducers/cms/pagesLocation";
-import general from "../api/action-reducers/cms/general";
+} from "app/state/api/action-reducers/cms/pagesLocation";
+import general from "app/state/api/action-reducers/cms/general";
 
 const storeContent: StoreModel = {
   // homepage
@@ -300,42 +271,8 @@ const storeContent: StoreModel = {
   // CMS API
   CMSData: persist(CMSData),
   cms: {
-    componentsAppBar: persist(componentsAppBar),
-    componentsTable: persist(componentsTable),
-    componentsDialogBox: persist(componentsDialogBox),
-
-    componentsChartsBudgets: persist(componentsChartsBudgets),
-    componentsChartsCommon: persist(componentsChartsCommon),
     componentsChartsEligibility: persist(componentsChartsEligibility),
-    componentsChartsGeomap: persist(componentsChartsGeomap),
-    componentsChartsGrants: persist(componentsChartsGrants),
-    componentsChartsInvestments: persist(componentsChartsInvestments),
-    componentsChartsNetwork: persist(componentsChartsNetwork),
-    componentsChartsPerformanceRating: persist(
-      componentsChartsPerformanceRating
-    ),
-    componentsChartsPledges: persist(componentsChartsPledges),
-    componentsCookieDialog: persist(componentsCookieDialog),
-    componentsDatasetCarousel: persist(componentsDatasetCarousel),
-    componentsInformationPanel: persist(componentsInformationPanel),
-    componentsMobile: persist(componentsMobile),
-    componentsPageHeader: persist(componentsPageHeader),
-    componentsPerformanceFrameworkComponents: persist(
-      componentsPerformanceFrameworkComponents
-    ),
     componentsSearch: persist(componentsSearch),
-    componentsSlideInPanel: persist(componentsSlideInPanel),
-    componentsSidebar: persist(componentsSidebar),
-    modulesLanding: persist(modulesLanding),
-    modulesAbout: persist(modulesAbout),
-    modulesCommon: persist(modulesCommon),
-    modulesCountryDetail: persist(modulesCountryDetail),
-    modulesDatasets: persist(modulesDatasets),
-    modulesGrantDetail: persist(modulesGrantDetail),
-    modulesGrants: persist(modulesGrants),
-    modulesFundingRequests: persist(modulesFundingRequests),
-    countrySummary: persist(countrySummary),
-    notesAndDisclaimers: persist(notesAndDisclaimers),
     pagesDatasets: persist(pagesDatasets),
     pagesGeography: persist(pagesGeography),
     pagesGrantDetail: persist(pagesGrantDetail),

@@ -1,12 +1,13 @@
 import React from "react";
 import get from "lodash/get";
 import Box from "@mui/material/Box";
+import { useCMSData } from "app/hooks/useCMSData";
 import Typography from "@mui/material/Typography";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import CircularProgress from "@mui/material/CircularProgress";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { componentsGroupingOptions } from "app/pages/datasets/grant-implementation/data";
-import { useCMSData } from "app/hooks/useCMSData";
 
 interface GrantImplementationPageBlock1Props {
   filterString: string;
@@ -104,7 +105,7 @@ export const GrantImplementationPageBlock1: React.FC<
           {formatFinancialValue(dataFinancialInsightsStats.signed)}
         </Typography>
         <Typography fontSize="14px" fontWeight="700">
-          {get(
+          {getCMSDataField(
             cmsData,
             "pagesDatasetsGrantImplementation.statsText1",
             "Total Signed Amount"
@@ -116,7 +117,7 @@ export const GrantImplementationPageBlock1: React.FC<
           {formatFinancialValue(dataFinancialInsightsStats.committed)}
         </Typography>
         <Typography fontSize="14px" fontWeight="700">
-          {get(
+          {getCMSDataField(
             cmsData,
             "pagesDatasetsGrantImplementation.statsText2",
             "Total Committed Amount"
@@ -128,7 +129,7 @@ export const GrantImplementationPageBlock1: React.FC<
           {formatFinancialValue(dataFinancialInsightsStats.disbursed)}
         </Typography>
         <Typography fontSize="14px" fontWeight="700">
-          {get(
+          {getCMSDataField(
             cmsData,
             "pagesDatasetsGrantImplementation.statsText3",
             "Total Disbursed Amount"

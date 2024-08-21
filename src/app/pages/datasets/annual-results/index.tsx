@@ -9,6 +9,7 @@ import { useLocation } from "react-router-dom";
 import { RowComponent } from "tabulator-tables";
 import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import { DatasetPage } from "app/pages/datasets/common/page";
 import CircularProgress from "@mui/material/CircularProgress";
 import { TableContainer } from "app/components/table-container";
@@ -313,7 +314,7 @@ export const AnnualResultsPage: React.FC = () => {
       <Box gap="20px" display="flex" flexDirection="row" alignItems="center">
         <Box gap="10px" display="flex" flexDirection="row" alignItems="center">
           <Typography variant="body2" fontWeight="700">
-            {get(
+            {getCMSDataField(
               cmsData,
               "pagesDatasetsAnnualResults.toolBarRightText",
               "Reporting Result Year"

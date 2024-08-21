@@ -6,9 +6,11 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { Table } from "app/components/table";
 import { useLocation } from "react-router-dom";
+import { useCMSData } from "app/hooks/useCMSData";
 import { Dropdown } from "app/components/dropdown";
 import { Treemap } from "app/components/charts/treemap";
 import { SankeyChart } from "app/components/charts/sankey";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import { FilterGroupModel } from "app/components/filters/list/data";
 import { TreemapDataItem } from "app/components/charts/treemap/data";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
@@ -24,7 +26,6 @@ import {
   componentsGroupingOptions,
   dropdownItemsBudgetsTableDataTypes,
 } from "app/pages/datasets/grant-implementation/data";
-import { useCMSData } from "app/hooks/useCMSData";
 
 interface GrantImplementationPageBlock3Props {
   filterString: string;
@@ -282,28 +283,28 @@ export const GrantImplementationPageBlock3: React.FC<
               }}
             >
               <Grid item xs={3}>
-                {get(
+                {getCMSDataField(
                   cmsData,
                   "pagesDatasetsGrantImplementation.budgetsLabel1",
                   "Total budget"
                 )}
               </Grid>
               <Grid item xs={3}>
-                {get(
+                {getCMSDataField(
                   cmsData,
                   "pagesDatasetsGrantImplementation.budgetsLabel2",
                   "Investement Landscape 1"
                 )}
               </Grid>
               <Grid item xs={3}>
-                {get(
+                {getCMSDataField(
                   cmsData,
                   "pagesDatasetsGrantImplementation.budgetsLabel3",
                   "Investement Landscape 2"
                 )}
               </Grid>
               <Grid item xs={3}>
-                {get(
+                {getCMSDataField(
                   cmsData,
                   "pagesDatasetsGrantImplementation.budgetsLabel4",
                   "Cost Category"
@@ -566,12 +567,12 @@ export const GrantImplementationPageBlock3: React.FC<
     >
       <DatasetChartBlock
         id="budgets"
-        title={get(
+        title={getCMSDataField(
           cmsData,
           "pagesDatasetsGrantImplementation.budgetsTitle",
           "Budgets"
         )}
-        subtitle={`${totalBudget} ${get(
+        subtitle={`${totalBudget} ${getCMSDataField(
           cmsData,
           "pagesDatasetsGrantImplementation.budgetsSubtitle",
           "total budget."

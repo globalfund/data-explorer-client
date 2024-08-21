@@ -2,34 +2,8 @@ import { Action, Thunk } from "easy-peasy";
 import { CMSDataModel } from "app/state/api/action-reducers/sync";
 import { AppliedFiltersStateModel } from "app/state/api/action-reducers/sync/filters";
 import {
-  CMSApiComponentsAppBar,
-  CMSApiComponentsChartsBudgets,
-  CMSApiComponentsChartsCommon,
   CMSApiComponentsChartsEligibility,
-  CMSApiComponentsChartsGeomap,
-  CMSApiComponentsChartsGrants,
-  CMSApiComponentsChartsInvestments,
-  CMSApiComponentsChartsNetwork,
-  CMSApiComponentsChartsPerformanceRating,
-  CMSApiComponentsChartsPledges,
-  CMSApiComponentsCookieDialog,
-  CMSApiComponentsDatasetCarousel,
-  CMSApiComponentsInformationPanel,
-  CMSApiComponentsMobile,
-  CMSApiComponentsPageHeader,
-  CMSApiComponentsPerformanceFrameworkComponents,
   CMSApiComponentsSearch,
-  CMSApiComponentsSlideInPanel,
-  CMSApiModulesLanding,
-  CMSApiModulesAbout,
-  CMSApiModulesCommon,
-  CMSApiModulesCountryDetail,
-  CMSApiModulesDatasets,
-  CMSApiModulesGrantDetail,
-  CMSApiModulesGrants,
-  CMSApiCountrySummary,
-  CMSApiNotesAndDisclaimers,
-  CMSApiModulesFundingRequests,
   CMSApiPagesDatasets,
   CMSApiPagesGeography,
   CMSApiPagesGrantDetail,
@@ -107,34 +81,8 @@ export type ApiCallModel = ApiModel<
 // CMS API Call model for
 export type CMSApiCallModel = ApiModel<
   CMSApiCallParams,
-  | CMSApiComponentsAppBar
-  | CMSApiComponentsChartsBudgets
-  | CMSApiComponentsChartsCommon
   | CMSApiComponentsChartsEligibility
-  | CMSApiComponentsChartsGeomap
-  | CMSApiComponentsChartsGrants
-  | CMSApiComponentsChartsInvestments
-  | CMSApiComponentsChartsNetwork
-  | CMSApiComponentsChartsPerformanceRating
-  | CMSApiComponentsChartsPledges
-  | CMSApiComponentsCookieDialog
-  | CMSApiComponentsDatasetCarousel
-  | CMSApiComponentsInformationPanel
-  | CMSApiComponentsMobile
-  | CMSApiComponentsPageHeader
-  | CMSApiComponentsPerformanceFrameworkComponents
   | CMSApiComponentsSearch
-  | CMSApiComponentsSlideInPanel
-  | CMSApiModulesLanding
-  | CMSApiModulesAbout
-  | CMSApiModulesCommon
-  | CMSApiModulesCountryDetail
-  | CMSApiModulesDatasets
-  | CMSApiModulesGrantDetail
-  | CMSApiModulesGrants
-  | CMSApiCountrySummary
-  | CMSApiNotesAndDisclaimers
-  | CMSApiModulesFundingRequests
   | CMSApiPagesDatasets
   | CMSApiPagesGeography
   | CMSApiPagesGrantDetail
@@ -270,37 +218,8 @@ export interface StoreModel {
   // CMS
   CMSData: CMSDataModel;
   cms: {
-    componentsAppBar: CMSApiCallModel;
-    componentsTable: CMSApiCallModel;
-    componentsDialogBox: CMSApiCallModel;
-    componentsChartsBudgets: CMSApiCallModel;
-    componentsChartsCommon: CMSApiCallModel;
     componentsChartsEligibility: CMSApiCallModel;
-    componentsChartsGeomap: CMSApiCallModel;
-    componentsChartsGrants: CMSApiCallModel;
-    componentsChartsInvestments: CMSApiCallModel;
-    componentsChartsNetwork: CMSApiCallModel;
-    componentsChartsPerformanceRating: CMSApiCallModel;
-    componentsChartsPledges: CMSApiCallModel;
-    componentsCookieDialog: CMSApiCallModel;
-    componentsDatasetCarousel: CMSApiCallModel;
-    componentsInformationPanel: CMSApiCallModel;
-    componentsMobile: CMSApiCallModel;
-    componentsPageHeader: CMSApiCallModel;
-    componentsPerformanceFrameworkComponents: CMSApiCallModel;
     componentsSearch: CMSApiCallModel;
-    componentsSlideInPanel: CMSApiCallModel;
-    componentsSidebar: CMSApiCallModel;
-    modulesLanding: CMSApiCallModel;
-    modulesAbout: CMSApiCallModel;
-    modulesCommon: CMSApiCallModel;
-    modulesCountryDetail: CMSApiCallModel;
-    modulesDatasets: CMSApiCallModel;
-    modulesGrantDetail: CMSApiCallModel;
-    modulesGrants: CMSApiCallModel;
-    modulesFundingRequests: CMSApiCallModel;
-    countrySummary: CMSApiCallModel;
-    notesAndDisclaimers: CMSApiCallModel;
     pagesDatasets: CMSApiCallModel;
     pagesGeography: CMSApiCallModel;
     pagesGrantDetail: CMSApiCallModel;

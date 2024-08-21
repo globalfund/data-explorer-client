@@ -3,13 +3,14 @@ import get from "lodash/get";
 import uniq from "lodash/uniq";
 import Box from "@mui/material/Box";
 import { useLocation } from "react-router-dom";
+import { useCMSData } from "app/hooks/useCMSData";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import { TableContainer } from "app/components/table-container";
 import { FilterGroupModel } from "app/components/filters/list/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 import { TABLE_VARIATION_12_COLUMNS as FUNDING_REQUESTS_TABLE_COLUMNS } from "app/components/table/data";
-import { useCMSData } from "app/hooks/useCMSData";
 
 interface AccessToFundingBlock5Props {
   filterString: string;
@@ -175,12 +176,12 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
     >
       <DatasetChartBlock
         id="funding-requests"
-        title={get(
+        title={getCMSDataField(
           cmsData,
           "pagesDatasetsAccessToFunding.fundingRequestsTitle",
           "Funding Requests"
         )}
-        subtitle={get(
+        subtitle={getCMSDataField(
           cmsData,
           "pagesDatasetsAccessToFunding.fundingRequestsSubtitle",
           "Funding request applications by countries."

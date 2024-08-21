@@ -3,7 +3,9 @@ import get from "lodash/get";
 import uniq from "lodash/uniq";
 import Box from "@mui/material/Box";
 import { useLocation } from "react-router-dom";
+import { useCMSData } from "app/hooks/useCMSData";
 import { Dropdown } from "app/components/dropdown";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import { FilterGroupModel } from "app/components/filters/list/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { FinancialMetric } from "app/components/charts/financial-metric";
@@ -16,7 +18,6 @@ import {
   STORY_DATA_VARIANT_2 as FINANCIAL_METRICS_DATA_2,
   STORY_DATA_VARIANT_3 as FINANCIAL_METRICS_DATA_3,
 } from "app/components/charts/financial-metric/data";
-import { useCMSData } from "app/hooks/useCMSData";
 
 interface GrantImplementationPageBlock5Props {
   filterString: string;
@@ -464,7 +465,7 @@ export const GrantImplementationPageBlock5: React.FC<
     >
       <DatasetChartBlock
         id="financial-metrics"
-        title={get(
+        title={getCMSDataField(
           cmsData,
           "pagesDatasetsGrantImplementation.financialMetricsTitle",
           "Financial Metrics"

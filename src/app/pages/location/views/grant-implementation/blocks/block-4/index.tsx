@@ -1,16 +1,17 @@
 import React from "react";
 import get from "lodash/get";
 import Box from "@mui/material/Box";
+import { useCMSData } from "app/hooks/useCMSData";
 import Typography from "@mui/material/Typography";
 import { PieChart } from "app/components/charts/pie";
+import { useStoreState } from "app/state/store/hooks";
 import { ChartBlock } from "app/components/chart-block";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import { TableContainer } from "app/components/table-container";
 import { GrantCardProps } from "app/components/grant-card/data";
 import { getMonthFromNumber } from "app/utils/getMonthFromNumber";
 import { PieChartDataItem } from "app/components/charts/pie/data";
 import { TABLE_VARIATION_5_COLUMNS } from "app/components/table/data";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { useCMSData } from "app/hooks/useCMSData";
 
 export const LocationGrantImplementationBlock4 = () => {
   const cmsData = useCMSData({ returnData: true });
@@ -77,7 +78,7 @@ export const LocationGrantImplementationBlock4 = () => {
   return (
     <ChartBlock
       id="grants"
-      title={`${countGrantsTable} ${get(
+      title={`${countGrantsTable} ${getCMSDataField(
         cmsData,
         "pagesLocationGrantImplementation.grantsTitle",
         "Grants"
@@ -127,7 +128,7 @@ export const LocationGrantImplementationBlock4 = () => {
           flexDirection="column"
         >
           <Typography color="#000" fontSize="18px" fontWeight="700">
-            {get(
+            {getCMSDataField(
               cmsData,
               "pagesLocationGrantImplementation.grantsPieChart1Title",
               "Components"
@@ -143,7 +144,7 @@ export const LocationGrantImplementationBlock4 = () => {
           flexDirection="column"
         >
           <Typography color="#000" fontSize="18px" fontWeight="700">
-            {get(
+            {getCMSDataField(
               cmsData,
               "pagesLocationGrantImplementation.grantsPieChart2Title",
               "Principal Recipients"
@@ -159,7 +160,7 @@ export const LocationGrantImplementationBlock4 = () => {
           flexDirection="column"
         >
           <Typography color="#000" fontSize="18px" fontWeight="700">
-            {get(
+            {getCMSDataField(
               cmsData,
               "pagesLocationGrantImplementation.grantsPieChart3Title",
               "Investments"

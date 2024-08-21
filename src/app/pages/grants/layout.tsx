@@ -5,16 +5,16 @@ import Add from "@mui/icons-material/Add";
 import Popover from "@mui/material/Popover";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
+import { useCMSData } from "app/hooks/useCMSData";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { Dropdown } from "app/components/dropdown";
 import SearchIcon from "@mui/icons-material/Search";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { FilterPanel } from "app/components/filters/panel";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import CircularProgress from "@mui/material/CircularProgress";
 import { GrantsLayoutProps, DROPDOWN_ITEMS } from "app/pages/grants/data";
-import { get } from "lodash";
-import { useCMSData } from "app/hooks/useCMSData";
 
 export const GrantsLayout: React.FC<GrantsLayoutProps> = (
   props: GrantsLayoutProps
@@ -58,7 +58,7 @@ export const GrantsLayout: React.FC<GrantsLayoutProps> = (
   return (
     <Box padding="50px 0">
       <Typography variant="h1">
-        {get(cmsData, "pagesGrants.title", "Grants")}
+        {getCMSDataField(cmsData, "pagesGrants.title", "Grants")}
       </Typography>
       <Box
         height="50px"

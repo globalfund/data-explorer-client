@@ -3,8 +3,10 @@ import get from "lodash/get";
 import sumBy from "lodash/sumBy";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import { useCMSData } from "app/hooks/useCMSData";
 import { LineChart } from "app/components/charts/line";
 import { ChartBlock } from "app/components/chart-block";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import { LineChartProps } from "app/components/charts/line/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import {
@@ -16,7 +18,6 @@ import {
   getRange,
   getFinancialValueWithMetricPrefix,
 } from "app/utils/getFinancialValueWithMetricPrefix";
-import { useCMSData } from "app/hooks/useCMSData";
 
 export const HomeBlock4: React.FC = () => {
   const cmsData = useCMSData({ returnData: true });
@@ -135,7 +136,7 @@ export const HomeBlock4: React.FC = () => {
     <ChartBlock
       showCycleAll
       id="disbursements"
-      subtitle={get(
+      subtitle={getCMSDataField(
         cmsData,
         "pagesHome.disbursementsSubtitle",
         "Disbursements"

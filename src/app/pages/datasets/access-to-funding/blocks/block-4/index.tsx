@@ -2,13 +2,14 @@ import React from "react";
 import get from "lodash/get";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import { useCMSData } from "app/hooks/useCMSData";
 import Info from "@mui/icons-material/InfoOutlined";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import CircularProgress from "@mui/material/CircularProgress";
 import { BarSeriesChart } from "app/components/charts/bar-series";
 import { getRange } from "app/utils/getFinancialValueWithMetricPrefix";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { BarSeriesChartDataItem } from "app/components/charts/bar-series/data";
-import { useCMSData } from "app/hooks/useCMSData";
 
 interface AccessToFundingBlock4Props {
   filterString: string;
@@ -63,15 +64,14 @@ export const AccessToFundingBlock4: React.FC<AccessToFundingBlock4Props> = (
       }}
     >
       <Typography variant="h5">
-        {" "}
-        {get(
+        {getCMSDataField(
           cmsData,
           "pagesDatasetsAccessToFunding.cumulativeAllocationTitle",
           "Cumulative Allocation by Cycles"
         )}
       </Typography>
       <Typography fontSize="14px" fontWeight="700">
-        {get(
+        {getCMSDataField(
           cmsData,
           "pagesDatasetsAccessToFunding.cumulativeAllocationSubtitle",
           "Accompanied by the Component Breakdown."
