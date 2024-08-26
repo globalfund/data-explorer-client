@@ -3,7 +3,9 @@ import get from "lodash/get";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
+import { useCMSData } from "app/hooks/useCMSData";
 import { Dropdown } from "app/components/dropdown";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { componentsGroupingOptions } from "app/pages/datasets/grant-implementation/data";
@@ -17,6 +19,7 @@ interface GrantImplementationPageBlock4Props {
 export const GrantImplementationPageBlock4: React.FC<
   GrantImplementationPageBlock4Props
 > = (props: GrantImplementationPageBlock4Props) => {
+  const cmsData = useCMSData({ returnData: true });
   const dataBudgetBreakdown = useStoreState(
     (state) =>
       get(state.FinancialInsightsBudgetBreakdown, "data.data", []) as {
@@ -91,9 +94,19 @@ export const GrantImplementationPageBlock4: React.FC<
         justifyContent="space-between"
       >
         <Box>
-          <Typography variant="h5">Budget Breakdown</Typography>
+          <Typography variant="h5">
+            {getCMSDataField(
+              cmsData,
+              "pagesDatasetsGrantImplementation.budgetBreakdownTitle",
+              "Budget Breakdown"
+            )}
+          </Typography>
           <Typography fontSize="14px" fontWeight="700">
-            By grant component
+            {getCMSDataField(
+              cmsData,
+              "pagesDatasetsGrantImplementation.budgetBreakdownSubtitle",
+              "By grant component"
+            )}
           </Typography>
         </Box>
         <Box>

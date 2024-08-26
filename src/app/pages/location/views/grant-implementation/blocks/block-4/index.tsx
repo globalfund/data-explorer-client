@@ -1,17 +1,21 @@
 import React from "react";
 import get from "lodash/get";
 import Box from "@mui/material/Box";
+import { useCMSData } from "app/hooks/useCMSData";
 import Typography from "@mui/material/Typography";
 import { PieChart } from "app/components/charts/pie";
+import { useStoreState } from "app/state/store/hooks";
 import { ChartBlock } from "app/components/chart-block";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import { TableContainer } from "app/components/table-container";
 import { GrantCardProps } from "app/components/grant-card/data";
 import { getMonthFromNumber } from "app/utils/getMonthFromNumber";
 import { PieChartDataItem } from "app/components/charts/pie/data";
 import { TABLE_VARIATION_5_COLUMNS } from "app/components/table/data";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
 
 export const LocationGrantImplementationBlock4 = () => {
+  const cmsData = useCMSData({ returnData: true });
+
   const dataGrantsPieCharts = useStoreState(
     (state) =>
       get(state.GeographyGrantsPieCharts, "data.data", {
@@ -74,7 +78,11 @@ export const LocationGrantImplementationBlock4 = () => {
   return (
     <ChartBlock
       id="grants"
-      title={`${countGrantsTable} Grants`}
+      title={`${countGrantsTable} ${getCMSDataField(
+        cmsData,
+        "pagesLocationGrantImplementation.grantsTitle",
+        "Grants"
+      )}`}
       subtitle=""
       empty={!showGrantsTable}
       infoType="global"
@@ -120,7 +128,11 @@ export const LocationGrantImplementationBlock4 = () => {
           flexDirection="column"
         >
           <Typography color="#000" fontSize="18px" fontWeight="700">
-            Components
+            {getCMSDataField(
+              cmsData,
+              "pagesLocationGrantImplementation.grantsPieChart1Title",
+              "Components"
+            )}
           </Typography>
           <PieChart data={dataGrantsPieCharts.pie1} />
         </Box>
@@ -132,7 +144,11 @@ export const LocationGrantImplementationBlock4 = () => {
           flexDirection="column"
         >
           <Typography color="#000" fontSize="18px" fontWeight="700">
-            Principal Recipients
+            {getCMSDataField(
+              cmsData,
+              "pagesLocationGrantImplementation.grantsPieChart2Title",
+              "Principal Recipients"
+            )}
           </Typography>
           <PieChart data={dataGrantsPieCharts.pie2} />
         </Box>
@@ -144,7 +160,11 @@ export const LocationGrantImplementationBlock4 = () => {
           flexDirection="column"
         >
           <Typography color="#000" fontSize="18px" fontWeight="700">
-            Investments
+            {getCMSDataField(
+              cmsData,
+              "pagesLocationGrantImplementation.grantsPieChart3Title",
+              "Investments"
+            )}
           </Typography>
           <PieChart data={dataGrantsPieCharts.pie3} />
         </Box>

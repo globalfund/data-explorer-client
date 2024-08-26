@@ -6,7 +6,9 @@ import { appColors } from "app/theme";
 import Tooltip from "@mui/material/Tooltip";
 import { useLocation } from "react-router-dom";
 import Typography from "@mui/material/Typography";
+import { useCMSData } from "app/hooks/useCMSData";
 import Info from "@mui/icons-material/InfoOutlined";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import { TableContainer } from "app/components/table-container";
 import { FilterGroupModel } from "app/components/filters/list/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -26,6 +28,7 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
   props: AccessToFundingBlock2Props
 ) => {
   const location = useLocation();
+  const cmsData = useCMSData({ returnData: true });
 
   const [chart1AppliedFilters, setChart1AppliedFilters] = React.useState<
     string[]
@@ -196,8 +199,16 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
     >
       <DatasetChartBlock
         id="eligibility"
-        title="Eligibility"
-        subtitle="Country eligibility for funding over time."
+        title={getCMSDataField(
+          cmsData,
+          "pagesDatasetsAccessToFunding.eligibilityTitle",
+          "Eligibility"
+        )}
+        subtitle={getCMSDataField(
+          cmsData,
+          "pagesDatasetsAccessToFunding.eligibilitySubtitle",
+          "Country eligibility for funding over time."
+        )}
         dropdownItems={[]}
         disableCollapse
         loading={loadingEligibilityTable}
@@ -247,7 +258,11 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
         >
           <Box>
             <Typography fontSize="12px" fontWeight="700">
-              Disease Burden
+              {getCMSDataField(
+                cmsData,
+                "componentsChartsEligibility.diseaseBurdenTitle",
+                "Disease Burden"
+              )}
             </Typography>
             <Box>
               <Box>
@@ -255,65 +270,129 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
                   id="rectangle"
                   bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[0]}
                 />
-                <Typography fontSize="12px">Extreme</Typography>
+                <Typography fontSize="12px">
+                  {getCMSDataField(
+                    cmsData,
+                    "componentsChartsEligibility.diseaseBurdenExtreme",
+                    "Extreme"
+                  )}
+                </Typography>
               </Box>
               <Box>
                 <Box
                   id="rectangle"
                   bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[1]}
                 />
-                <Typography fontSize="12px">Severe</Typography>
+                <Typography fontSize="12px">
+                  {getCMSDataField(
+                    cmsData,
+                    "componentsChartsEligibility.diseaseBurdenSevere",
+                    "Severe"
+                  )}
+                </Typography>
               </Box>
               <Box>
                 <Box
                   id="rectangle"
                   bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[2]}
                 />
-                <Typography fontSize="12px">High</Typography>
+                <Typography fontSize="12px">
+                  {getCMSDataField(
+                    cmsData,
+                    "componentsChartsEligibility.diseaseBurdenHigh",
+                    "High"
+                  )}
+                </Typography>
               </Box>
               <Box>
                 <Box
                   id="rectangle"
                   bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[3]}
                 />
-                <Typography fontSize="12px">Moderate</Typography>
+                <Typography fontSize="12px">
+                  {getCMSDataField(
+                    cmsData,
+                    "componentsChartsEligibility.diseaseBurdenModerate",
+                    "Moderate"
+                  )}
+                </Typography>
               </Box>
               <Box>
                 <Box
                   id="rectangle"
                   bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[4]}
                 />
-                <Typography fontSize="12px">Not High</Typography>
+                <Typography fontSize="12px">
+                  {getCMSDataField(
+                    cmsData,
+                    "componentsChartsEligibility.diseaseBurdenNotHigh",
+                    "Not High"
+                  )}
+                </Typography>
               </Box>
               <Box>
                 <Box
                   id="rectangle"
                   bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[5]}
                 />
-                <Typography fontSize="12px">Low</Typography>
+                <Typography fontSize="12px">
+                  {getCMSDataField(
+                    cmsData,
+                    "componentsChartsEligibility.diseaseBurdenLow",
+                    "Low"
+                  )}
+                </Typography>
               </Box>
               <Box>
                 <Box id="rectangle" bgcolor="#FFFFFF" border="1px solid #ccc" />
-                <Typography fontSize="12px">NA</Typography>
+                <Typography fontSize="12px">
+                  {getCMSDataField(
+                    cmsData,
+                    "componentsChartsEligibility.diseaseBurdenNA",
+                    "NA"
+                  )}
+                </Typography>
               </Box>
             </Box>
           </Box>
           <Box>
             <Typography fontSize="12px" fontWeight="700">
-              Eligibility Status
+              {getCMSDataField(
+                cmsData,
+                "componentsChartsEligibility.statusTitle",
+                "Eligibility Status"
+              )}
             </Typography>
             <Box>
               <Box>
                 <Box id="rectangle" bgcolor="#013E77" />
-                <Typography fontSize="12px">Eligible</Typography>
+                <Typography fontSize="12px">
+                  {getCMSDataField(
+                    cmsData,
+                    "componentsChartsEligibility.statusEligible",
+                    "Eligible"
+                  )}
+                </Typography>
               </Box>
               <Box>
                 <Box id="rectangle" bgcolor="#00B5AE" />
-                <Typography fontSize="12px">Transition Funding</Typography>
+                <Typography fontSize="12px">
+                  {getCMSDataField(
+                    cmsData,
+                    "componentsChartsEligibility.statusTransitionFunding",
+                    "Transition Funding"
+                  )}
+                </Typography>
               </Box>
               <Box>
                 <Box id="rectangle" bgcolor="#D9D9D9" />
-                <Typography fontSize="12px">Not Eligible</Typography>
+                <Typography fontSize="12px">
+                  {getCMSDataField(
+                    cmsData,
+                    "componentsChartsEligibility.statusNotEligible",
+                    "Not Eligible"
+                  )}
+                </Typography>
               </Box>
             </Box>
           </Box>

@@ -2,8 +2,10 @@ import React from "react";
 import get from "lodash/get";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
+import { useCMSData } from "app/hooks/useCMSData";
 import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 
@@ -14,6 +16,8 @@ interface AccessToFundingBlock1Props {
 export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
   props: AccessToFundingBlock1Props
 ) => {
+  const cmsData = useCMSData({ returnData: true });
+
   const eligibilityYears = useStoreState(
     (state) =>
       get(state.EligibilityCycles, "data.data", []).map((item) => ({
@@ -69,9 +73,19 @@ export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
         }}
       >
         <Box>
-          <Typography variant="h5">Eligible Countries by Numbers</Typography>
+          <Typography variant="h5">
+            {getCMSDataField(
+              cmsData,
+              "pagesDatasetsAccessToFunding.statsTitle",
+              "Eligible Countries by Numbers"
+            )}
+          </Typography>
           <Typography variant="body2" fontWeight="700">
-            Segmented by Components.
+            {getCMSDataField(
+              cmsData,
+              "pagesDatasetsAccessToFunding.statsSubtitle",
+              "Segmented by Components."
+            )}
           </Typography>
         </Box>
         <Box
@@ -87,7 +101,11 @@ export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
           }}
         >
           <Typography fontSize="12px" fontWeight="700">
-            Eligibility Year
+            {getCMSDataField(
+              cmsData,
+              "pagesDatasetsAccessToFunding.statsDropDownLabel",
+              "Eligibility Year"
+            )}
           </Typography>
           <Dropdown
             width={100}

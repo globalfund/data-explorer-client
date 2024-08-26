@@ -8,6 +8,7 @@ import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import { useParams } from "react-router-dom";
 import { CYCLES } from "app/pages/home/data";
+import { useCMSData } from "app/hooks/useCMSData";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import { Dropdown } from "app/components/dropdown";
@@ -16,6 +17,7 @@ import { ChartBlock } from "app/components/chart-block";
 import { Heatmap } from "app/components/charts/heatmap";
 import { RadialChart } from "app/components/charts/radial";
 import { SankeyChart } from "app/components/charts/sankey";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import { RaceBarChart } from "app/components/charts/race-bar";
 import { SankeyChartData } from "app/components/charts/sankey/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -31,6 +33,7 @@ import {
 } from "app/utils/getFinancialValueWithMetricPrefix";
 
 export const GrantImplementation: React.FC = () => {
+  const cmsData = useCMSData({ returnData: true });
   const params = useParams<{ id: string; ip: string; tab: string }>();
 
   useTitle(`The Data Explorer - ${params.id} Financial Insights`);
@@ -353,7 +356,11 @@ export const GrantImplementation: React.FC = () => {
             flexDirection="column"
           >
             <Typography variant="body2" fontWeight="700">
-              Board Approved Date
+              {getCMSDataField(
+                cmsData,
+                "pagesGrantGrantImplementation.dateStat1",
+                "Board Approved Date"
+              )}
             </Typography>
             <Typography variant="overline">
               {dataProgrameDates.boardApprovedDate}
@@ -368,7 +375,11 @@ export const GrantImplementation: React.FC = () => {
             flexDirection="column"
           >
             <Typography variant="body2" fontWeight="700">
-              Program Start Date
+              {getCMSDataField(
+                cmsData,
+                "pagesGrantGrantImplementation.dateStat2",
+                "Program Start Date"
+              )}
             </Typography>
             <Typography
               gap="4px"
@@ -388,7 +399,11 @@ export const GrantImplementation: React.FC = () => {
             flexDirection="column"
           >
             <Typography variant="body2" fontWeight="700">
-              Program End Date
+              {getCMSDataField(
+                cmsData,
+                "pagesGrantGrantImplementation.dateStat3",
+                "Program End Date"
+              )}
             </Typography>
             <Typography variant="overline">
               {dataProgrameDates.programEndDate}
@@ -400,12 +415,20 @@ export const GrantImplementation: React.FC = () => {
       <ChartBlock
         id="radial-chart"
         title={disbursementsTotal}
-        subtitle="Disbursements"
+        subtitle={getCMSDataField(
+          cmsData,
+          "pagesGrantGrantImplementation.disbursementsSubtitle",
+          "Disbursements"
+        )}
         empty={!showRadialChart}
         infoType="financials"
       >
         <RadialChart
-          tooltipLabel="Amount"
+          tooltipLabel={getCMSDataField(
+            cmsData,
+            "pagesGrantGrantImplementation.disbursementsTooltipLabel",
+            "Amount"
+          )}
           data={radialChartData}
           itemLabelFormatterType="name-value-percent"
         />
@@ -425,7 +448,11 @@ export const GrantImplementation: React.FC = () => {
             bgcolor={appColors.RADIAL_CHART.ITEM_COLORS[2]}
           />
           <Typography variant="body2" fontWeight="700">
-            Signed
+            {getCMSDataField(
+              cmsData,
+              "pagesGrantGrantImplementation.disbursementsRadialChartLabel",
+              "Signed"
+            )}
           </Typography>
           <Typography variant="body2">{signedFormatted}</Typography>
         </Box>
@@ -435,7 +462,11 @@ export const GrantImplementation: React.FC = () => {
       <ChartBlock
         id="budget"
         title={totalBudget}
-        subtitle="Grant Budgets"
+        subtitle={getCMSDataField(
+          cmsData,
+          "pagesGrantGrantImplementation.budgetsSubtitle",
+          "Grant Budgets"
+        )}
         empty={!showBudgetSankeyChart}
         infoType="budgets"
       >
@@ -450,16 +481,32 @@ export const GrantImplementation: React.FC = () => {
           }}
         >
           <Grid item xs={3}>
-            Total Budgets
+            {getCMSDataField(
+              cmsData,
+              "pagesDatasetsGrantImplementation.budgetsLabel1",
+              "Total budget"
+            )}
           </Grid>
           <Grid item xs={3}>
-            Landscape 1
+            {getCMSDataField(
+              cmsData,
+              "pagesDatasetsGrantImplementation.budgetsLabel2",
+              "Investement Landscape 1"
+            )}
           </Grid>
           <Grid item xs={3}>
-            Landscape 2
+            {getCMSDataField(
+              cmsData,
+              "pagesDatasetsGrantImplementation.budgetsLabel3",
+              "Investement Landscape 2"
+            )}
           </Grid>
           <Grid item xs={3}>
-            Cost Category
+            {getCMSDataField(
+              cmsData,
+              "pagesDatasetsGrantImplementation.budgetsLabel4",
+              "Cost Category"
+            )}
           </Grid>
         </Grid>
         <SankeyChart data={dataBudgetSankeyChart} />
@@ -468,7 +515,11 @@ export const GrantImplementation: React.FC = () => {
       <ChartBlock
         cycles={CYCLES}
         id="expenditures"
-        subtitle="Expenditures"
+        subtitle={getCMSDataField(
+          cmsData,
+          "pagesGrantGrantImplementation.expendituresSubtitle",
+          "Expenditures"
+        )}
         title={expendituresTotal}
         empty={!showExpendituresHeatmap}
         dropdownSelected={chart2Dropdown}

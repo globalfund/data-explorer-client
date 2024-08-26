@@ -9,10 +9,12 @@ import findIndex from "lodash/findIndex";
 import Divider from "@mui/material/Divider";
 import { Table } from "app/components/table";
 import { useParams } from "react-router-dom";
+import { CycleProps } from "app/pages/home/data";
+import { useCMSData } from "app/hooks/useCMSData";
 import Typography from "@mui/material/Typography";
 import { ChartBlock } from "app/components/chart-block";
-import { CycleProps } from "app/pages/home/data";
 import { RadialChart } from "app/components/charts/radial";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import useUpdateEffect from "react-use/lib/useUpdateEffect";
 import { RaceBarChart } from "app/components/charts/race-bar";
 import { TableContainer } from "app/components/table-container";
@@ -29,6 +31,7 @@ import {
 } from "app/components/table/data";
 
 export const AccessToFunding: React.FC = () => {
+  const cmsData = useCMSData({ returnData: true });
   const params = useParams<{ id: string; tab: string }>();
   const paramsId = params.id?.replace("|", "%2F");
 
@@ -257,21 +260,30 @@ export const AccessToFunding: React.FC = () => {
         selectedCycles={chart1Cycles}
         loading={loadingAllocationsRadialChart}
         handleCycleChange={(value) => handleChartCycleChange(value, 1)}
-        subtitle={`Funds Allocated ${get(chart1Cycles, "[0].value", "").replace(
-          " - ",
-          "-"
-        )}`}
+        subtitle={`${getCMSDataField(
+          cmsData,
+          "pagesLocationAccessToFunding.allocationSubtitle",
+          "Funds Allocated"
+        )} ${get(chart1Cycles, "[0].value", "").replace(" - ", "-")}`}
         empty={!showAllocationRadialChart}
         cycles={allocationsCyclesAll.map((c) => ({
           ...c,
           disabled: findIndex(allocationsCycles, { value: c.value }) === -1,
         }))}
-        text="The Global Fund is distinct from other organizations in that it gives countries (or groups of countries) an allocation and asks countries to describe how they will use those funds rather than asking for applications and then determining an amount per-country based on the merits of the various proposals received.<br/><br/>This provides greater predictability for countries and helps ensure that the programs being funded are not just the ones with the most capacity to write good applications."
+        text={getCMSDataField(
+          cmsData,
+          "pagesLocationAccessToFunding.allocationText",
+          "The Global Fund is distinct from other organizations in that it gives countries (or groups of countries) an allocation and asks countries to describe how they will use those funds rather than asking for applications and then determining an amount per-country based on the merits of the various proposals received.<br/><br/>This provides greater predictability for countries and helps ensure that the programs being funded are not just the ones with the most capacity to write good applications."
+        )}
         infoType="global"
       >
         <Box marginTop="-100px" marginBottom="-100px">
           <RadialChart
-            tooltipLabel="Allocation"
+            tooltipLabel={getCMSDataField(
+              cmsData,
+              "pagesLocationAccessToFunding.allocationTooltipLabel",
+              "Allocation"
+            )}
             data={dataAllocationsRadialChart}
             itemLabelFormatterType="name"
           />
@@ -287,7 +299,12 @@ export const AccessToFunding: React.FC = () => {
               US${totalAllocationAmount}
             </Typography>
             <Typography variant="subtitle2">
-              Total Allocation {get(chart1Cycles, "[0].value", "")}
+              {getCMSDataField(
+                cmsData,
+                "pagesLocationAccessToFunding.allocationRadialChartSubtitle",
+                "Total Allocation"
+              )}{" "}
+              {get(chart1Cycles, "[0].value", "")}
             </Typography>
           </Box>
         </Box>
@@ -299,18 +316,27 @@ export const AccessToFunding: React.FC = () => {
         id="funding-requests"
         selectedCycles={chart2Cycles}
         loading={loadingFundingRequestsTable}
-        title={`${dataFundingRequestsTable._children.length} Funding Requests`}
-        subtitle={`Submitted for ${get(chart2Cycles, "[0].value", "").replace(
-          " - ",
-          "-"
+        title={`${dataFundingRequestsTable._children.length} ${getCMSDataField(
+          cmsData,
+          "pagesLocationAccessToFunding.fundingRequestsTitle",
+          "Funding Requests"
         )}`}
+        subtitle={`${getCMSDataField(
+          cmsData,
+          "pagesLocationAccessToFunding.fundingRequestsSubtitle",
+          "Submitted for"
+        )} ${get(chart2Cycles, "[0].value", "").replace(" - ", "-")}`}
         empty={!showFundingRequestsTable}
         handleCycleChange={(value) => handleChartCycleChange(value, 2)}
         cycles={fundingRequestsCyclesAll.map((c) => ({
           ...c,
           disabled: findIndex(fundingRequestsCycles, { value: c.value }) === -1,
         }))}
-        text="The Funding Request explains how the applicant would use Global Fund allocated funds, if approved. Funding Requests are reviewed by the Global Fund’s Technical Review Panel (TRP). Once approved by the TRP, the Funding Request is turned into one or more grants through the grant-making negotiation. The Grant Approvals Committee (GAC) reviews the final version of each grant and recommends implementation-ready grants to the Global Fund Board for approval. Funding Requests are submitted for internal Global Fund review, but the final grant is the legally-binding agreement.<br/><br/>Documents for a specific funding request can be downloaded by clicking the cloud icon. Documents from the 2017-2019 Allocation Period and earlier can be found by clicking on the “Documents’ section below. If a Funding Request is not visible for the 2023-2025 Allocation Period and the country received an Allocation, it likely means that the applicant has not yet registered for a TRP Window."
+        text={getCMSDataField(
+          cmsData,
+          "pagesLocationAccessToFunding.fundingRequestsText",
+          "The Funding Request explains how the applicant would use Global Fund allocated funds, if approved. Funding Requests are reviewed by the Global Fund’s Technical Review Panel (TRP). Once approved by the TRP, the Funding Request is turned into one or more grants through the grant-making negotiation. The Grant Approvals Committee (GAC) reviews the final version of each grant and recommends implementation-ready grants to the Global Fund Board for approval. Funding Requests are submitted for internal Global Fund review, but the final grant is the legally-binding agreement.<br/><br/>Documents for a specific funding request can be downloaded by clicking the cloud icon. Documents from the 2017-2019 Allocation Period and earlier can be found by clicking on the “Documents’ tab above. If a Funding Request is not visible for the 2023-2025 Allocation Period and the country received an Allocation, it likely means that the applicant has not yet registered for a TRP Window."
+        )}
         infoType="global"
       >
         <TableContainer
@@ -328,10 +354,18 @@ export const AccessToFunding: React.FC = () => {
       <ChartBlock
         noSplitText
         id="eligibility"
-        title="Eligibility"
+        title={getCMSDataField(
+          cmsData,
+          "pagesLocationAccessToFunding.eligibilityTitle",
+          "Eligibility"
+        )}
         subtitle=""
         empty={!showEligibilityHeatmap}
-        text="Eligibility for funding from the Global Fund is determined by country income classification and disease burden for HIV, tuberculosis and malaria. Below are the components which are eligible for an allocation for the selected allocation period, according to the Global Fund Eligibility Policy.<br/><br/>Eligibility for the 2023-2025 Allocation Period was determined in 2022 and documented in the 2023 Eligibility List. Eligibility does not guarantee a funding allocation. Learn more about Eligibility <a target='_blank' href='https://www.theglobalfund.org/en/applying-for-funding/understand-and-prepare/eligibility/'>here</a>."
+        text={getCMSDataField(
+          cmsData,
+          "pagesLocationAccessToFunding.eligibilityText",
+          "Eligibility for funding from the Global Fund is determined by country income classification and disease burden for HIV, tuberculosis and malaria. Below are the components which are eligible for an allocation for the selected allocation period, according to the Global Fund Eligibility Policy.<br/><br/>Eligibility for the 2023-2025 Allocation Period was determined in 2022 and documented in the 2023 Eligibility List. Eligibility does not guarantee a funding allocation. Learn more about Eligibility <a target='_blank' href='https://www.theglobalfund.org/en/applying-for-funding/understand-and-prepare/eligibility/'>here</a> or <a>see the full history of eligibility for this country</a>."
+        )}
         infoType="global"
       >
         <Box
@@ -382,7 +416,11 @@ export const AccessToFunding: React.FC = () => {
         >
           <Box>
             <Typography fontSize="12px" fontWeight="700">
-              Disease Burden
+              {getCMSDataField(
+                cmsData,
+                "componentsChartsEligibility.diseaseBurdenTitle",
+                "Disease Burden"
+              )}
             </Typography>
             <Box>
               <Box>
@@ -390,65 +428,129 @@ export const AccessToFunding: React.FC = () => {
                   id="rectangle"
                   bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[0]}
                 />
-                <Typography fontSize="12px">Extreme</Typography>
+                <Typography fontSize="12px">
+                  {getCMSDataField(
+                    cmsData,
+                    "componentsChartsEligibility.diseaseBurdenExtreme",
+                    "Extreme"
+                  )}
+                </Typography>
               </Box>
               <Box>
                 <Box
                   id="rectangle"
                   bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[1]}
                 />
-                <Typography fontSize="12px">Severe</Typography>
+                <Typography fontSize="12px">
+                  {getCMSDataField(
+                    cmsData,
+                    "componentsChartsEligibility.diseaseBurdenSevere",
+                    "Severe"
+                  )}
+                </Typography>
               </Box>
               <Box>
                 <Box
                   id="rectangle"
                   bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[2]}
                 />
-                <Typography fontSize="12px">High</Typography>
+                <Typography fontSize="12px">
+                  {getCMSDataField(
+                    cmsData,
+                    "componentsChartsEligibility.diseaseBurdenHigh",
+                    "High"
+                  )}
+                </Typography>
               </Box>
               <Box>
                 <Box
                   id="rectangle"
                   bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[3]}
                 />
-                <Typography fontSize="12px">Moderate</Typography>
+                <Typography fontSize="12px">
+                  {getCMSDataField(
+                    cmsData,
+                    "componentsChartsEligibility.diseaseBurdenModerate",
+                    "Moderate"
+                  )}
+                </Typography>
               </Box>
               <Box>
                 <Box
                   id="rectangle"
                   bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[4]}
                 />
-                <Typography fontSize="12px">Not High</Typography>
+                <Typography fontSize="12px">
+                  {getCMSDataField(
+                    cmsData,
+                    "componentsChartsEligibility.diseaseBurdenNotHigh",
+                    "Not High"
+                  )}
+                </Typography>
               </Box>
               <Box>
                 <Box
                   id="rectangle"
                   bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[5]}
                 />
-                <Typography fontSize="12px">Low</Typography>
+                <Typography fontSize="12px">
+                  {getCMSDataField(
+                    cmsData,
+                    "componentsChartsEligibility.diseaseBurdenLow",
+                    "Low"
+                  )}
+                </Typography>
               </Box>
               <Box>
                 <Box id="rectangle" bgcolor="#FFFFFF" border="1px solid #ccc" />
-                <Typography fontSize="12px">NA</Typography>
+                <Typography fontSize="12px">
+                  {getCMSDataField(
+                    cmsData,
+                    "componentsChartsEligibility.diseaseBurdenNA",
+                    "NA"
+                  )}
+                </Typography>
               </Box>
             </Box>
           </Box>
           <Box>
             <Typography fontSize="12px" fontWeight="700">
-              Eligibility Status
+              {getCMSDataField(
+                cmsData,
+                "componentsChartsEligibility.statusTitle",
+                "Eligibility Status"
+              )}
             </Typography>
             <Box>
               <Box>
                 <Box id="rectangle" bgcolor="#013E77" />
-                <Typography fontSize="12px">Eligible</Typography>
+                <Typography fontSize="12px">
+                  {getCMSDataField(
+                    cmsData,
+                    "componentsChartsEligibility.statusEligible",
+                    "Eligible"
+                  )}
+                </Typography>
               </Box>
               <Box>
                 <Box id="rectangle" bgcolor="#00B5AE" />
-                <Typography fontSize="12px">Transition Funding</Typography>
+                <Typography fontSize="12px">
+                  {getCMSDataField(
+                    cmsData,
+                    "componentsChartsEligibility.statusTransitionFunding",
+                    "Transition Funding"
+                  )}
+                </Typography>
               </Box>
               <Box>
                 <Box id="rectangle" bgcolor="#D9D9D9" />
-                <Typography fontSize="12px">Not Eligible</Typography>
+                <Typography fontSize="12px">
+                  {getCMSDataField(
+                    cmsData,
+                    "componentsChartsEligibility.statusNotEligible",
+                    "Not Eligible"
+                  )}
+                </Typography>
               </Box>
             </Box>
           </Box>
@@ -465,7 +567,11 @@ export const AccessToFunding: React.FC = () => {
       <ChartBlock
         id="documents"
         noBottomToolbar
-        title="Documents"
+        title={getCMSDataField(
+          cmsData,
+          "pagesLocationAccessToFunding.documentsTitle",
+          "Documents"
+        )}
         subtitle=""
         empty={!showDocumentsTable}
         infoType="global"

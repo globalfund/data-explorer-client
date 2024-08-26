@@ -1,7 +1,9 @@
 import React from "react";
 import get from "lodash/get";
 import Box from "@mui/material/Box";
+import { useCMSData } from "app/hooks/useCMSData";
 import Typography from "@mui/material/Typography";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import CircularProgress from "@mui/material/CircularProgress";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -16,6 +18,8 @@ interface GrantImplementationPageBlock1Props {
 export const GrantImplementationPageBlock1: React.FC<
   GrantImplementationPageBlock1Props
 > = (props: GrantImplementationPageBlock1Props) => {
+  const cmsData = useCMSData({ returnData: true });
+
   const dataFinancialInsightsStats = useStoreState((state) =>
     get(state.FinancialInsightsStats, "data.data[0]", {
       signed: 0,
@@ -101,7 +105,11 @@ export const GrantImplementationPageBlock1: React.FC<
           {formatFinancialValue(dataFinancialInsightsStats.signed)}
         </Typography>
         <Typography fontSize="14px" fontWeight="700">
-          Total Signed Amount
+          {getCMSDataField(
+            cmsData,
+            "pagesDatasetsGrantImplementation.statsText1",
+            "Total Signed Amount"
+          )}
         </Typography>
       </Box>
       <Box>
@@ -109,7 +117,11 @@ export const GrantImplementationPageBlock1: React.FC<
           {formatFinancialValue(dataFinancialInsightsStats.committed)}
         </Typography>
         <Typography fontSize="14px" fontWeight="700">
-          Total Committed Amount
+          {getCMSDataField(
+            cmsData,
+            "pagesDatasetsGrantImplementation.statsText2",
+            "Total Committed Amount"
+          )}
         </Typography>
       </Box>
       <Box>
@@ -117,7 +129,11 @@ export const GrantImplementationPageBlock1: React.FC<
           {formatFinancialValue(dataFinancialInsightsStats.disbursed)}
         </Typography>
         <Typography fontSize="14px" fontWeight="700">
-          Total Disbursed Amount
+          {getCMSDataField(
+            cmsData,
+            "pagesDatasetsGrantImplementation.statsText3",
+            "Total Disbursed Amount"
+          )}
         </Typography>
       </Box>
     </Box>

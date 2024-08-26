@@ -3,6 +3,8 @@ import get from "lodash/get";
 import Box from "@mui/material/Box";
 import { useTitle } from "react-use";
 import { useLocation } from "react-router-dom";
+import { useCMSData } from "app/hooks/useCMSData";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import { DatasetPage } from "app/pages/datasets/common/page";
 import { FilterGroupModel } from "app/components/filters/list/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -15,6 +17,7 @@ import { AccessToFundingBlock5 } from "app/pages/datasets/access-to-funding/bloc
 import { AccessToFundingBlock6 } from "app/pages/datasets/access-to-funding/blocks/block-6";
 
 export const AccessToFundingPage: React.FC = () => {
+  const cmsData = useCMSData({ returnData: true });
   useTitle("The Data Explorer - Access to Funding");
   const location = useLocation();
 
@@ -90,7 +93,11 @@ export const AccessToFundingPage: React.FC = () => {
 
   return (
     <DatasetPage
-      title="Access to Funding"
+      title={getCMSDataField(
+        cmsData,
+        "pagesDatasetsAccessToFunding.title",
+        "Access to Funding"
+      )}
       subtitle=""
       filterGroups={filterGroups}
       appliedFilters={pageAppliedFilters}

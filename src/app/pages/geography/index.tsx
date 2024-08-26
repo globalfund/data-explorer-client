@@ -5,10 +5,12 @@ import { useTitle } from "react-use";
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import { NavLink } from "react-router-dom";
+import { useCMSData } from "app/hooks/useCMSData";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import {
@@ -102,6 +104,8 @@ const GeoSubCategory: React.FC<GeoSubCategoryProps> = (
 };
 
 export const Geography: React.FC = () => {
+  const cmsData = useCMSData({ returnData: true });
+
   useTitle("The Data Explorer - Geography");
   const [search, setSearch] = React.useState("");
 
@@ -161,7 +165,7 @@ export const Geography: React.FC = () => {
           },
         }}
       >
-        Geography
+        {get(cmsData, "pagesGeography.title", "Geography")}
       </Typography>
       <Box
         height="56px"
@@ -207,7 +211,11 @@ export const Geography: React.FC = () => {
             type="text"
             value={search}
             onChange={handleSearch}
-            placeholder="e.g. Kenya"
+            placeholder={getCMSDataField(
+              cmsData,
+              "componentsSearch.placeholder",
+              "e.g. Kenya"
+            )}
           />
           {search.length > 0 && (
             <IconButton

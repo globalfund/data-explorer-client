@@ -6,8 +6,10 @@ import { useTitle } from "react-use";
 import { useParams } from "react-router-dom";
 import { CycleProps } from "app/pages/home/data";
 import Typography from "@mui/material/Typography";
+import { useCMSData } from "app/hooks/useCMSData";
 import { BarChart } from "app/components/charts/bar";
 import { ChartBlock } from "app/components/chart-block";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import useUpdateEffect from "react-use/lib/useUpdateEffect";
 import { BarChartDataItem } from "app/components/charts/bar/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -17,6 +19,7 @@ import {
 } from "app/utils/getFinancialValueWithMetricPrefix";
 
 export const ResourceMobilization: React.FC = () => {
+  const cmsData = useCMSData({ returnData: true });
   const params = useParams<{ id: string; tab: string }>();
   const paramsId = params.id?.replace("|", "%2F");
 
@@ -96,7 +99,11 @@ export const ResourceMobilization: React.FC = () => {
         loading={loadingRMBarChart}
         title={`US$${totalPledge}`}
         selectedCycles={chart1Cycles}
-        subtitle="Pledges & Contributions"
+        subtitle={getCMSDataField(
+          cmsData,
+          "pagesLocationResourceMobilization.title",
+          "Pledges & Contributions"
+        )}
         handleCycleChange={handleChartCycleChange}
         empty={dataRMBarChart.length === 0 && chart1Cycles.length === 0}
         infoType="pledges_contributions"
@@ -104,8 +111,16 @@ export const ResourceMobilization: React.FC = () => {
         <BarChart
           data={dataRMBarChart}
           valueLabels={{
-            value: "Pledge",
-            value1: "Contribution",
+            value: getCMSDataField(
+              cmsData,
+              "pagesLocationResourceMobilization.barchartLabel1",
+              "Pledge"
+            ),
+            value1: getCMSDataField(
+              cmsData,
+              "pagesLocationResourceMobilization.barchartLabel2",
+              "Contribution"
+            ),
           }}
         />
       </ChartBlock>
@@ -135,7 +150,11 @@ export const ResourceMobilization: React.FC = () => {
             US${totalPledge}
           </Typography>
           <Typography variant="subtitle2">
-            Total Pledge
+            {getCMSDataField(
+              cmsData,
+              "pagesLocationResourceMobilization.statsLabel1",
+              "Total Pledge"
+            )}
             {chart1Cycles.length > 0
               ? ` ${chart1Cycles.map((c) => c.name).join(",")}`
               : ""}
@@ -151,7 +170,11 @@ export const ResourceMobilization: React.FC = () => {
             US${totalContribution}
           </Typography>
           <Typography variant="subtitle2">
-            Total Contribution
+            {getCMSDataField(
+              cmsData,
+              "pagesLocationResourceMobilization.statsLabel2",
+              "Total Contribution"
+            )}
             {chart1Cycles.length > 0
               ? ` ${chart1Cycles.map((c) => c.name).join(",")}`
               : ""}

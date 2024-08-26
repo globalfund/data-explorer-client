@@ -3,8 +3,10 @@ import get from "lodash/get";
 import Box from "@mui/material/Box";
 import { useLocation } from "react-router-dom";
 import { useTitle, useUnmount } from "react-use";
+import { useCMSData } from "app/hooks/useCMSData";
 import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import { DatasetPage } from "app/pages/datasets/common/page";
 import { FilterGroupModel } from "app/components/filters/list/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -21,6 +23,7 @@ import {
 } from "app/pages/datasets/grant-implementation/data";
 
 export const GrantImplementationPage: React.FC = () => {
+  const cmsData = useCMSData({ returnData: true });
   useTitle("The Data Explorer - Financial Insights");
   const location = useLocation();
 
@@ -131,7 +134,11 @@ export const GrantImplementationPage: React.FC = () => {
       >
         <Box gap="10px" display="flex" flexDirection="row" alignItems="center">
           <Typography variant="body2" fontWeight="700">
-            Geography grouping
+            {getCMSDataField(
+              cmsData,
+              "pagesDatasetsGrantImplementation.toolbarRightText1",
+              "Geography grouping"
+            )}
           </Typography>
           <Dropdown
             width={150}
@@ -142,7 +149,11 @@ export const GrantImplementationPage: React.FC = () => {
         </Box>
         {/* <Box gap="10px" display="flex" flexDirection="row" alignItems="center">
           <Typography variant="body2" fontWeight="700">
-            Components grouping
+            {getCMSDataField(
+              cmsData,
+              "pagesDatasetsGrantImplementation.toolbarRightText2",
+              "Components grouping"
+            )}
           </Typography>
           <Dropdown
             width={120}
@@ -293,11 +304,19 @@ export const GrantImplementationPage: React.FC = () => {
 
   return (
     <DatasetPage
-      title="Financial Insights"
+      title={getCMSDataField(
+        cmsData,
+        "pagesDatasetsGrantImplementation.title",
+        "Financial Insights"
+      )}
       filterGroups={filterGroups}
       appliedFilters={pageAppliedFilters}
       handleResetFilters={handleResetFilters}
-      subtitle="See the disbursements, budgets and expenditures datasets and relating insights."
+      subtitle={getCMSDataField(
+        cmsData,
+        "pagesDatasetsGrantImplementation.subtitle",
+        "See the disbursements, budgets and expenditures datasets and relating insights."
+      )}
       toolbarRightContent={toolbarRightContent}
     >
       <Box width="100%" marginTop="50px">

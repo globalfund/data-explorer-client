@@ -2,7 +2,9 @@ import React from "react";
 import get from "lodash/get";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import { useCMSData } from "app/hooks/useCMSData";
 import Info from "@mui/icons-material/InfoOutlined";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import CircularProgress from "@mui/material/CircularProgress";
 import { BarSeriesChart } from "app/components/charts/bar-series";
 import { getRange } from "app/utils/getFinancialValueWithMetricPrefix";
@@ -16,6 +18,7 @@ interface AccessToFundingBlock4Props {
 export const AccessToFundingBlock4: React.FC<AccessToFundingBlock4Props> = (
   props: AccessToFundingBlock4Props
 ) => {
+  const cmsData = useCMSData({ returnData: true });
   const keysAllocationsBarSeries = useStoreState(
     (state) =>
       get(state.AccessToFundingAllocationBarSeries, "data.keys", []) as string[]
@@ -60,9 +63,19 @@ export const AccessToFundingBlock4: React.FC<AccessToFundingBlock4Props> = (
         },
       }}
     >
-      <Typography variant="h5">Cumulative Allocation by Cycles</Typography>
+      <Typography variant="h5">
+        {getCMSDataField(
+          cmsData,
+          "pagesDatasetsAccessToFunding.cumulativeAllocationTitle",
+          "Cumulative Allocation by Cycles"
+        )}
+      </Typography>
       <Typography fontSize="14px" fontWeight="700">
-        Accompanied by the Component Breakdown.
+        {getCMSDataField(
+          cmsData,
+          "pagesDatasetsAccessToFunding.cumulativeAllocationSubtitle",
+          "Accompanied by the Component Breakdown."
+        )}
       </Typography>
       <Box marginTop="25px" position="relative">
         {!loadingAllocationsBarSeries ? (

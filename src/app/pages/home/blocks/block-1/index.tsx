@@ -2,16 +2,19 @@ import React from "react";
 import get from "lodash/get";
 import sumBy from "lodash/sumBy";
 import Box from "@mui/material/Box";
+import { useCMSData } from "app/hooks/useCMSData";
 import Typography from "@mui/material/Typography";
 import { BarChart } from "app/components/charts/bar";
 import { ChartBlock } from "app/components/chart-block";
 import { CYCLES, CycleProps } from "app/pages/home/data";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import { BarChartDataItem } from "app/components/charts/bar/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { applyResultValueFormula } from "app/utils/applyResultValueFormula";
 
 export const HomeBlock1: React.FC = () => {
   const [chart1Cycles, setChart1Cycles] = React.useState<CycleProps[]>([]);
+  const cmsData = useCMSData({ returnData: true });
 
   const dataPledgesContributionsBarChart = useStoreState(
     (state) =>
@@ -94,7 +97,11 @@ export const HomeBlock1: React.FC = () => {
         id="pledges-contributions"
         selectedCycles={chart1Cycles}
         title={`${totalPledge}`}
-        subtitle="Pledges & Contributions"
+        subtitle={getCMSDataField(
+          cmsData,
+          "pagesHome.pledgesContributionsSubtitle",
+          "Pledges & Contributions"
+        )}
         loading={loadingPledgesContributionsBarChart}
         empty={dataPledgesContributionsBarChart.length === 0}
         handleCycleChange={(value) => handleChartCycleChange(value)}
@@ -107,8 +114,16 @@ export const HomeBlock1: React.FC = () => {
         <BarChart
           data={dataPledgesContributionsBarChart}
           valueLabels={{
-            value: "Pledge",
-            value1: "Contribution",
+            value: getCMSDataField(
+              cmsData,
+              "pagesHome.pledgesContributionsLabel1",
+              "Pledge"
+            ),
+            value1: getCMSDataField(
+              cmsData,
+              "pagesHome.pledgesContributionsLabel2",
+              "Contribution"
+            ),
           }}
         />
       </ChartBlock>
@@ -137,7 +152,13 @@ export const HomeBlock1: React.FC = () => {
           <Typography variant="h3" fontWeight="900">
             {totalPledge}
           </Typography>
-          <Typography variant="subtitle2">Pledge</Typography>
+          <Typography variant="subtitle2">
+            {getCMSDataField(
+              cmsData,
+              "pagesHome.pledgesContributionsLabel1",
+              "Pledge"
+            )}
+          </Typography>
         </Box>
         <Box
           width="50%"
@@ -148,7 +169,13 @@ export const HomeBlock1: React.FC = () => {
           <Typography variant="h3" fontWeight="900">
             {totalContribution}
           </Typography>
-          <Typography variant="subtitle2">Contribution</Typography>
+          <Typography variant="subtitle2">
+            {getCMSDataField(
+              cmsData,
+              "pagesHome.pledgesContributionsLabel2",
+              "Contribution"
+            )}
+          </Typography>
         </Box>
       </Box>
     </React.Fragment>

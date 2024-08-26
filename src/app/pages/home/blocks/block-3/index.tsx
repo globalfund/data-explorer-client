@@ -1,8 +1,10 @@
 import React from "react";
 import get from "lodash/get";
 import sumBy from "lodash/sumBy";
+import { useCMSData } from "app/hooks/useCMSData";
 import { ChartBlock } from "app/components/chart-block";
 import { Treemap } from "app/components/charts/treemap";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import { TreemapDataItem } from "app/components/charts/treemap/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import {
@@ -16,6 +18,8 @@ import {
 } from "app/utils/getFinancialValueWithMetricPrefix";
 
 export const HomeBlock3: React.FC = () => {
+  const cmsData = useCMSData({ returnData: true });
+
   const [chart3Cycles, setChart3Cycles] = React.useState<CycleProps[]>([]);
 
   const [chart3Dropdown, setChart3Dropdown] = React.useState(
@@ -119,7 +123,11 @@ export const HomeBlock3: React.FC = () => {
     <ChartBlock
       id="budgets"
       title={totalBudget}
-      subtitle="Grant Budgets"
+      subtitle={getCMSDataField(
+        cmsData,
+        "pagesHome.grantBudgetsSubtitle",
+        "Grant Budgets"
+      )}
       selectedCycles={chart3Cycles}
       loading={loadingBudgetsTreemap}
       // dropdownSelected={chart3Dropdown}

@@ -77,6 +77,26 @@ export interface CMSDataValueModel {
   modulesGrants: {
     [key: string]: any;
   };
+  pagesDatasets: { [key: string]: any };
+  pagesGeography: { [key: string]: any };
+  pagesGrantDetail: { [key: string]: any };
+  pagesGrants: { [key: string]: any };
+  pagesHome: { [key: string]: any };
+  pagesLocation: { [key: string]: any };
+  general: { [key: string]: any };
+  pagesDatasetsAccessToFunding: { [key: string]: any };
+  pagesDatasetsGrantImplementation: { [key: string]: any };
+  pagesDatasetsAnnualResults: { [key: string]: any };
+  pagesDatasetsResourceMobilization: { [key: string]: any };
+  pagesLocationAccessToFunding: { [key: string]: any };
+  pagesLocationGrantImplementation: { [key: string]: any };
+  pagesLocationOverview: { [key: string]: any };
+  pagesLocationResourceMobilization: { [key: string]: any };
+  pagesLocationResults: { [key: string]: any };
+  pagesGrantDocuments: { [key: string]: any };
+  pagesGrantGrantImplementation: { [key: string]: any };
+  pagesGrantOverview: { [key: string]: any };
+  pagesGrantTargetResults: { [key: string]: any };
 }
 
 export interface CMSDataModel {
@@ -111,6 +131,26 @@ export const CMSData: CMSDataModel = {
     modulesDatasets: {},
     modulesGrantDetail: {},
     modulesGrants: {},
+    pagesDatasets: {},
+    pagesGeography: {},
+    pagesGrantDetail: {},
+    pagesGrants: {},
+    pagesHome: {},
+    pagesLocation: {},
+    general: {},
+    pagesDatasetsAccessToFunding: {},
+    pagesDatasetsGrantImplementation: {},
+    pagesDatasetsAnnualResults: {},
+    pagesDatasetsResourceMobilization: {},
+    pagesLocationAccessToFunding: {},
+    pagesLocationGrantImplementation: {},
+    pagesLocationOverview: {},
+    pagesLocationResourceMobilization: {},
+    pagesLocationResults: {},
+    pagesGrantDocuments: {},
+    pagesGrantGrantImplementation: {},
+    pagesGrantOverview: {},
+    pagesGrantTargetResults: {},
   },
   setValue: action((state, payload: CMSDataValueModel) => {
     state.value = payload;

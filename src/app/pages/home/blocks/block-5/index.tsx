@@ -5,8 +5,10 @@ import filter from "lodash/filter";
 import Box from "@mui/material/Box";
 import { appColors } from "app/theme";
 import IconButton from "@mui/material/IconButton";
+import { useCMSData } from "app/hooks/useCMSData";
 import { ChartBlock } from "app/components/chart-block";
 import { Heatmap } from "app/components/charts/heatmap";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import {
   CYCLES,
@@ -23,6 +25,8 @@ import {
 } from "app/utils/getFinancialValueWithMetricPrefix";
 
 export const HomeBlock5: React.FC = () => {
+  const cmsData = useCMSData({ returnData: true });
+
   const [chart5Cycles, setChart5Cycles] = React.useState<CycleProps[]>([]);
 
   const [chart5Dropdown, setChart5Dropdown] = React.useState(
@@ -208,7 +212,11 @@ export const HomeBlock5: React.FC = () => {
   return (
     <ChartBlock
       id="expenditures"
-      subtitle="Expenditures"
+      subtitle={getCMSDataField(
+        cmsData,
+        "pagesHome.expendituresSubtitle",
+        "Expenditures"
+      )}
       title={expendituresTotal}
       selectedCycles={chart5Cycles}
       unitButtons={chart5UnitButtons}

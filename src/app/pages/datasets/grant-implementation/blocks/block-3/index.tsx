@@ -6,9 +6,11 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { Table } from "app/components/table";
 import { useLocation } from "react-router-dom";
+import { useCMSData } from "app/hooks/useCMSData";
 import { Dropdown } from "app/components/dropdown";
 import { Treemap } from "app/components/charts/treemap";
 import { SankeyChart } from "app/components/charts/sankey";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import { FilterGroupModel } from "app/components/filters/list/data";
 import { TreemapDataItem } from "app/components/charts/treemap/data";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
@@ -36,6 +38,7 @@ export const GrantImplementationPageBlock3: React.FC<
   GrantImplementationPageBlock3Props
 > = (props: GrantImplementationPageBlock3Props) => {
   const location = useLocation();
+  const cmsData = useCMSData({ returnData: true });
 
   const [budgetsDropdownSelected, setBudgetsDropdownSelected] = React.useState(
     dropdownItemsBudgets[0].value
@@ -280,16 +283,32 @@ export const GrantImplementationPageBlock3: React.FC<
               }}
             >
               <Grid item xs={3}>
-                Total budget
+                {getCMSDataField(
+                  cmsData,
+                  "pagesDatasetsGrantImplementation.budgetsLabel1",
+                  "Total budget"
+                )}
               </Grid>
               <Grid item xs={3}>
-                Investement Landscape 1
+                {getCMSDataField(
+                  cmsData,
+                  "pagesDatasetsGrantImplementation.budgetsLabel2",
+                  "Investement Landscape 1"
+                )}
               </Grid>
               <Grid item xs={3}>
-                Investement Landscape 2
+                {getCMSDataField(
+                  cmsData,
+                  "pagesDatasetsGrantImplementation.budgetsLabel3",
+                  "Investement Landscape 2"
+                )}
               </Grid>
               <Grid item xs={3}>
-                Cost Category
+                {getCMSDataField(
+                  cmsData,
+                  "pagesDatasetsGrantImplementation.budgetsLabel4",
+                  "Cost Category"
+                )}
               </Grid>
             </Grid>
             <SankeyChart data={dataBudgetSankey} />
@@ -548,8 +567,16 @@ export const GrantImplementationPageBlock3: React.FC<
     >
       <DatasetChartBlock
         id="budgets"
-        title="Budgets"
-        subtitle={`${totalBudget} total budget.`}
+        title={getCMSDataField(
+          cmsData,
+          "pagesDatasetsGrantImplementation.budgetsTitle",
+          "Budgets"
+        )}
+        subtitle={`${totalBudget} ${getCMSDataField(
+          cmsData,
+          "pagesDatasetsGrantImplementation.budgetsSubtitle",
+          "total budget."
+        )}`}
         dropdownItems={dropdownItemsBudgets}
         dropdownSelected={budgetsDropdownSelected}
         handleDropdownChange={(value) => {

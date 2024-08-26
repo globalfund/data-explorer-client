@@ -4,9 +4,11 @@ import filter from "lodash/filter";
 import Grid from "@mui/material/Grid";
 import findIndex from "lodash/findIndex";
 import { useParams } from "react-router-dom";
+import { useCMSData } from "app/hooks/useCMSData";
 import { ChartBlock } from "app/components/chart-block";
 import { CYCLES, CycleProps } from "app/pages/home/data";
 import { SankeyChart } from "app/components/charts/sankey";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import useUpdateEffect from "react-use/lib/useUpdateEffect";
 import { SankeyChartData } from "app/components/charts/sankey/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -16,6 +18,7 @@ import {
 } from "app/utils/getFinancialValueWithMetricPrefix";
 
 export const LocationGrantImplementationBlock2 = () => {
+  const cmsData = useCMSData({ returnData: true });
   const params = useParams<{ id: string; tab: string }>();
   const paramsId = params.id?.replace("|", "%2F");
 
@@ -126,7 +129,11 @@ export const LocationGrantImplementationBlock2 = () => {
     <ChartBlock
       id="budget"
       title={totalBudget}
-      subtitle="Grant Budgets"
+      subtitle={getCMSDataField(
+        cmsData,
+        "pagesLocationGrantImplementation.budgetsSubtitle",
+        "Grant Budgets"
+      )}
       selectedCycles={chart2Cycles}
       // dropdownSelected={chart2Dropdown}
       loading={loadingBudgetSankeyChart}
@@ -151,16 +158,32 @@ export const LocationGrantImplementationBlock2 = () => {
         }}
       >
         <Grid item xs={3}>
-          Total Budgets
+          {getCMSDataField(
+            cmsData,
+            "pagesLocationGrantImplementation.budgetsLabel1",
+            "Total budgets"
+          )}
         </Grid>
         <Grid item xs={3}>
-          Landscape 1
+          {getCMSDataField(
+            cmsData,
+            "pagesLocationGrantImplementation.budgetsLabel2",
+            "Landscape 1"
+          )}
         </Grid>
         <Grid item xs={3}>
-          Landscape 2
+          {getCMSDataField(
+            cmsData,
+            "pagesLocationGrantImplementation.budgetsLabel3",
+            "Landscape 2"
+          )}
         </Grid>
         <Grid item xs={3}>
-          Cost Category
+          {getCMSDataField(
+            cmsData,
+            "pagesLocationGrantImplementation.budgetsLabel4",
+            "Cost Category"
+          )}
         </Grid>
       </Grid>
       <SankeyChart data={dataBudgetSankeyChart} />

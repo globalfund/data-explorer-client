@@ -4,6 +4,7 @@ import { useCMSData } from "app/hooks/useCMSData";
 import { useStoreState } from "app/state/store/hooks";
 import { getIcon } from "app/components/search/icons";
 import LinearProgress from "@mui/material/LinearProgress";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import { SearchResultModel } from "app/components/search/components/results/data";
 import {
   ResultA,
@@ -86,12 +87,16 @@ export function SearchResults(props: SearchResultsProps) {
         })}
         {props.results.length === 0 && !props.loading && hasLoaded && (
           <NoResults>
-            {get(cmsData, "componentsSearch.noResults", "No results found.")}
+            {getCMSDataField(
+              cmsData,
+              "componentsSearch.noResults",
+              "No results found."
+            )}
           </NoResults>
         )}
         {props.loading && (
           <NoResults>
-            {get(cmsData, "componentsSearch.loading", "Loading...")}
+            {getCMSDataField(cmsData, "componentsSearch.loading", "Loading...")}
           </NoResults>
         )}
       </Results>

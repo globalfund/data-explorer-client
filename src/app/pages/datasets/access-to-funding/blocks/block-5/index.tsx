@@ -3,6 +3,8 @@ import get from "lodash/get";
 import uniq from "lodash/uniq";
 import Box from "@mui/material/Box";
 import { useLocation } from "react-router-dom";
+import { useCMSData } from "app/hooks/useCMSData";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import { TableContainer } from "app/components/table-container";
 import { FilterGroupModel } from "app/components/filters/list/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -19,6 +21,7 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
   props: AccessToFundingBlock5Props
 ) => {
   const location = useLocation();
+  const cmsData = useCMSData({ returnData: true });
 
   const [chart3AppliedFilters, setChart3AppliedFilters] = React.useState<
     string[]
@@ -173,8 +176,16 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
     >
       <DatasetChartBlock
         id="funding-requests"
-        title="Funding Requests"
-        subtitle="Funding request applications by countries."
+        title={getCMSDataField(
+          cmsData,
+          "pagesDatasetsAccessToFunding.fundingRequestsTitle",
+          "Funding Requests"
+        )}
+        subtitle={getCMSDataField(
+          cmsData,
+          "pagesDatasetsAccessToFunding.fundingRequestsSubtitle",
+          "Funding request applications by countries."
+        )}
         disableCollapse
         dropdownItems={[]}
         loading={loadingFundingRequestsTable}

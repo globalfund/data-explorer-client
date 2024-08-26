@@ -6,8 +6,10 @@ import { appColors } from "app/theme";
 import { Table } from "app/components/table";
 import { useLocation } from "react-router-dom";
 import Typography from "@mui/material/Typography";
+import { useCMSData } from "app/hooks/useCMSData";
 import { BarChart } from "app/components/charts/bar";
 import { LineChart } from "app/components/charts/line";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import { BarChartDataItem } from "app/components/charts/bar/data";
 import { LineChartDataItem } from "app/components/charts/line/data";
 import { FilterGroupModel } from "app/components/filters/list/data";
@@ -36,6 +38,7 @@ export const GrantImplementationPageBlock2: React.FC<
   GrantImplementationPageBlock2Props
 > = (props: GrantImplementationPageBlock2Props) => {
   const location = useLocation();
+  const cmsData = useCMSData({ returnData: true });
 
   const [disbursementsDropdownSelected, setDisbursementsDropdownSelected] =
     React.useState(dropdownItemsDisbursements[0].value);
@@ -539,8 +542,16 @@ export const GrantImplementationPageBlock2: React.FC<
     >
       <DatasetChartBlock
         id="disbursements"
-        title="Disbursements"
-        subtitle="Disbursement transactions for all grants across the porfolio."
+        title={getCMSDataField(
+          cmsData,
+          "pagesDatasetsGrantImplementation.disbursementsTitle",
+          "Disbursements"
+        )}
+        subtitle={getCMSDataField(
+          cmsData,
+          "pagesDatasetsGrantImplementation.disbursementsSubtitle",
+          "Disbursement transactions for all grants across the porfolio."
+        )}
         dropdownItems={dropdownItemsDisbursements}
         dropdownSelected={disbursementsDropdownSelected}
         handleDropdownChange={handleDisbursementsSelectionChange}

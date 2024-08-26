@@ -5,29 +5,16 @@ import maxBy from "lodash/maxBy";
 import sumBy from "lodash/sumBy";
 import filter from "lodash/filter";
 import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
 import { appColors } from "app/theme";
-import Divider from "@mui/material/Divider";
 import { Table } from "app/components/table";
 import { useLocation } from "react-router-dom";
-import { useTitle, useUnmount } from "react-use";
-import Typography from "@mui/material/Typography";
+import { useCMSData } from "app/hooks/useCMSData";
 import { Dropdown } from "app/components/dropdown";
-import { BarChart } from "app/components/charts/bar";
-import { LineChart } from "app/components/charts/line";
-import { Treemap } from "app/components/charts/treemap";
 import { Heatmap } from "app/components/charts/heatmap";
-import { SankeyChart } from "app/components/charts/sankey";
-import { DatasetPage } from "app/pages/datasets/common/page";
-import CircularProgress from "@mui/material/CircularProgress";
-import { BarChartDataItem } from "app/components/charts/bar/data";
-import { LineChartDataItem } from "app/components/charts/line/data";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import { FilterGroupModel } from "app/components/filters/list/data";
-import { TreemapDataItem } from "app/components/charts/treemap/data";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { getRange } from "app/utils/getFinancialValueWithMetricPrefix";
-import { FinancialMetric } from "app/components/charts/financial-metric";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 import { ExpandableHorizontalBar } from "app/components/charts/expandable-horizontal-bar";
@@ -37,25 +24,12 @@ import {
   getPercentageColor,
 } from "app/components/charts/heatmap/data";
 import {
-  STORY_DATA_VARIANT_1 as FINANCIAL_METRICS_DATA_1,
-  STORY_DATA_VARIANT_2 as FINANCIAL_METRICS_DATA_2,
-  STORY_DATA_VARIANT_3 as FINANCIAL_METRICS_DATA_3,
-  FinancialMetricExpandableItemProps,
-} from "app/components/charts/financial-metric/data";
-import {
   TableDataItem,
-  TABLE_VARIATION_14_COLUMNS as BUDGET_TABLE_COLUMNS,
   TABLE_VARIATION_15_COLUMNS as EXPENDITURES_TABLE_COLUMNS,
-  TABLE_VARIATION_13_COLUMNS as DISBURSEMENTS_TABLE_COLUMNS,
 } from "app/components/table/data";
 import {
-  FullWidthDivider,
-  dropdownItemsBudgets,
-  geographyGroupingOptions,
   componentsGroupingOptions,
-  dropdownItemsDisbursements,
   dropdownItemsExpenditures,
-  dropdownItemsBudgetsTableDataTypes,
 } from "app/pages/datasets/grant-implementation/data";
 
 interface GrantImplementationPageBlock6Props {
@@ -69,6 +43,7 @@ export const GrantImplementationPageBlock6: React.FC<
   GrantImplementationPageBlock6Props
 > = (props: GrantImplementationPageBlock6Props) => {
   const location = useLocation();
+  const cmsData = useCMSData({ returnData: true });
 
   const [expendituresDropdownSelected, setExpendituresDropdownSelected] =
     React.useState(dropdownItemsExpenditures[0].value);
@@ -307,16 +282,32 @@ export const GrantImplementationPageBlock6: React.FC<
             rowCategory="component"
             data={dataExpendituresHeatmap}
             getItemColor={getPercentageColor}
-            columnHeader="Principal Recipients"
-            rowHeader="Components"
+            columnHeader={getCMSDataField(
+              cmsData,
+              "pagesDatasetsGrantImplementation.expendituresHeatmapColumnHeader",
+              "Principal Recipients"
+            )}
+            rowHeader={getCMSDataField(
+              cmsData,
+              "pagesDatasetsGrantImplementation.expendituresHeatmapRowHeader",
+              "Components"
+            )}
           />
         );
       case dropdownItemsExpenditures[1].value:
         return (
           <ExpandableHorizontalBar
             data={dataExpendituresBarChart}
-            yAxisLabel="Modules & Interventions"
-            xAxisLabel="Expenditure"
+            yAxisLabel={getCMSDataField(
+              cmsData,
+              "pagesDatasetsGrantImplementation.expendituresBarchartYLabel",
+              "Modules & Interventions"
+            )}
+            xAxisLabel={getCMSDataField(
+              cmsData,
+              "pagesDatasetsGrantImplementation.expendituresBarchartXLabel",
+              "Expenditure"
+            )}
             valueLabels={{
               value: "amount",
             }}
@@ -532,7 +523,11 @@ export const GrantImplementationPageBlock6: React.FC<
     >
       <DatasetChartBlock
         id="expenditures"
-        title="Expenditures"
+        title={getCMSDataField(
+          cmsData,
+          "pagesDatasetsGrantImplementation.expendituresTitle",
+          "Expenditures"
+        )}
         subtitle={`${totalExpenditure} reported expenditure.`}
         dropdownItems={dropdownItemsExpenditures}
         dropdownSelected={expendituresDropdownSelected}
