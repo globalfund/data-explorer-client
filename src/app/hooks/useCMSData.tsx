@@ -44,12 +44,12 @@ export function useCMSData(props: UseCMSDataProps) {
     (state) => state.cms.pagesGeography.data
   );
 
-  const pagesGrantDetailCMSAction = useStoreActions(
-    (actions) => actions.cms.pagesGrantDetail.fetch
-  );
-  const pagesGrantDetailCMSData = useStoreState(
-    (state) => state.cms.pagesGrantDetail.data
-  );
+  // const pagesGrantDetailCMSAction = useStoreActions(
+  //   (actions) => actions.cms.pagesGrantDetail.fetch
+  // );
+  // const pagesGrantDetailCMSData = useStoreState(
+  //   (state) => state.cms.pagesGrantDetail.data
+  // );
 
   const pagesGrantsCMSAction = useStoreActions(
     (actions) => actions.cms.pagesGrants.fetch
@@ -63,12 +63,12 @@ export function useCMSData(props: UseCMSDataProps) {
   );
   const pagesHomeCMSData = useStoreState((state) => state.cms.pagesHome.data);
 
-  const pagesLocationCMSAction = useStoreActions(
-    (actions) => actions.cms.pagesLocation.fetch
-  );
-  const pagesLocationCMSData = useStoreState(
-    (state) => state.cms.pagesLocation.data
-  );
+  // const pagesLocationCMSAction = useStoreActions(
+  //   (actions) => actions.cms.pagesLocation.fetch
+  // );
+  // const pagesLocationCMSData = useStoreState(
+  //   (state) => state.cms.pagesLocation.data
+  // );
 
   const pagesDatasetsAccessToFundingCMSAction = useStoreActions(
     (actions) => actions.cms.pagesDatasetsAccessToFunding.fetch
@@ -176,10 +176,10 @@ export function useCMSData(props: UseCMSDataProps) {
       // PAGES
       pagesDatasetsCMSAction({ isCMSfetch: true });
       pagesGeographyCMSAction({ isCMSfetch: true });
-      pagesGrantDetailCMSAction({ isCMSfetch: true });
+      // pagesGrantDetailCMSAction({ isCMSfetch: true });
       pagesGrantsCMSAction({ isCMSfetch: true });
       pagesHomeCMSAction({ isCMSfetch: true });
-      pagesLocationCMSAction({ isCMSfetch: true });
+      // pagesLocationCMSAction({ isCMSfetch: true });
       pagesDatasetsAccessToFundingCMSAction({ isCMSfetch: true });
       pagesDatasetsAnnualResultsCMSAction({ isCMSfetch: true });
       pagesDatasetsGrantImplementationCMSAction({ isCMSfetch: true });
@@ -220,10 +220,10 @@ export function useCMSData(props: UseCMSDataProps) {
         key: "pagesGeography",
         data: pagesGeographyCMSData || {},
       },
-      {
-        key: "pagesGrantDetail",
-        data: pagesGrantDetailCMSData || {},
-      },
+      // {
+      //   key: "pagesGrantDetail",
+      //   data: pagesGrantDetailCMSData || {},
+      // },
       {
         key: "pagesGrants",
         data: pagesGrantsCMSData || {},
@@ -232,10 +232,10 @@ export function useCMSData(props: UseCMSDataProps) {
         key: "pagesHome",
         data: pagesHomeCMSData || {},
       },
-      {
-        key: "pagesLocation",
-        data: pagesLocationCMSData || {},
-      },
+      // {
+      //   key: "pagesLocation",
+      //   data: pagesLocationCMSData || {},
+      // },
       {
         key: "pagesDatasetsAccessToFunding",
         data: pagesDatasetsAccessToFundingCMSData || {},
@@ -321,10 +321,10 @@ export function useCMSData(props: UseCMSDataProps) {
     // PAGES
     pagesDatasetsCMSData,
     pagesGeographyCMSData,
-    pagesGrantDetailCMSData,
+    // pagesGrantDetailCMSData,
     pagesGrantsCMSData,
     pagesHomeCMSData,
-    pagesLocationCMSData,
+    // pagesLocationCMSData,
     pagesDatasetsAccessToFundingCMSData,
     pagesDatasetsAnnualResultsCMSData,
     pagesDatasetsGrantImplementationCMSData,
