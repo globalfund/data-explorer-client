@@ -9,6 +9,7 @@ import { useLocation } from "react-router-dom";
 import { RowComponent } from "tabulator-tables";
 import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import { DatasetPage } from "app/pages/datasets/common/page";
 import CircularProgress from "@mui/material/CircularProgress";
 import { TableContainer } from "app/components/table-container";
@@ -21,6 +22,7 @@ import { PolylineTreeDataItem } from "app/components/charts/polyline-tree/data";
 import { ReactComponent as TableIcon } from "app/assets/vectors/Select_Table.svg";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 import { ReactComponent as BarChartIcon } from "app/assets/vectors/Select_BarChart.svg";
+import { useCMSData } from "app/hooks/useCMSData";
 import {
   TABLE_VARIATION_9_COLUMNS,
   TABLE_VARIATION_6_COLUMNS as DOCUMENTS_TABLE_COLUMNS,
@@ -32,6 +34,7 @@ const dropdownItems = [
 ];
 
 export const AnnualResultsPage: React.FC = () => {
+  const cmsData = useCMSData({ returnData: true });
   useTitle("The Data Explorer - Annual Results");
   const location = useLocation();
 
@@ -257,12 +260,12 @@ export const AnnualResultsPage: React.FC = () => {
   }, [dataLocationFilterOptions, dataComponentFilterOptions]);
 
   const filterString = React.useMemo(() => {
-    let filterString = "";
+    let value = "";
     if (
       appliedFiltersData.locations.length > 0 &&
       location.search.includes("locations=")
     ) {
-      filterString += `geographies=${encodeURIComponent(
+      value += `geographies=${encodeURIComponent(
         appliedFiltersData.locations.join(",")
       )}`;
     }
@@ -270,23 +273,21 @@ export const AnnualResultsPage: React.FC = () => {
       appliedFiltersData.components.length > 0 &&
       location.search.includes("components=")
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
-      }components=${encodeURIComponent(
+      value += `${value.length > 0 ? "&" : ""}components=${encodeURIComponent(
         appliedFiltersData.components.join(",")
       )}`;
     }
-    return filterString;
+    return value;
   }, [appliedFiltersData, location.search]);
 
   const chartFilterString = React.useMemo(() => {
-    let filterString = "";
+    let value = "";
     if (
       (appliedFiltersData.locations.length > 0 &&
         location.search.includes("locations=")) ||
       chartAppliedFiltersData.locations.length > 0
     ) {
-      filterString += `geographies=${encodeURIComponent(
+      value += `geographies=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.locations,
           ...chartAppliedFiltersData.locations,
@@ -298,16 +299,14 @@ export const AnnualResultsPage: React.FC = () => {
         location.search.includes("components=")) ||
       chartAppliedFiltersData.components.length > 0
     ) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
-      }components=${encodeURIComponent(
+      value += `${value.length > 0 ? "&" : ""}components=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.components,
           ...chartAppliedFiltersData.components,
         ]).join(",")
       )}`;
     }
-    return filterString;
+    return value;
   }, [appliedFiltersData, chartAppliedFiltersData, location.search]);
 
   const toolbarRightContent = React.useMemo(() => {
@@ -321,7 +320,11 @@ export const AnnualResultsPage: React.FC = () => {
       >
         <Box gap="10px" display="flex" flexDirection="row" alignItems="center">
           <Typography variant="body2" fontWeight="700">
-            Reporting Result Year
+            {getCMSDataField(
+              cmsData,
+              "pagesDatasetsAnnualResults.toolBarRightText",
+              "Reporting Result Year"
+            )}
           </Typography>
           <Dropdown
             width={100}
@@ -376,27 +379,24 @@ export const AnnualResultsPage: React.FC = () => {
     if (location.hash) {
       const blockId = location.hash.slice(1).split("|")[0];
       const blockChartType = location.hash.slice(1).split("|")[1];
-      if (blockId && blockChartType) {
-        switch (blockId) {
-          case "disbursements":
-            setDropdownSelected(decodeURIComponent(blockChartType));
-            break;
-          default:
-            break;
-        }
+      if (blockId && blockChartType && blockId === "annual-results") {
+        setDropdownSelected(decodeURIComponent(blockChartType));
       }
     }
   }, [location.hash]);
 
   return (
     <DatasetPage
-      title="Annual Results"
+      title={get(cmsData, "pagesDatasetsAnnualResults.title", "Annual Results")}
       filterGroups={filterGroups}
       appliedFilters={pageAppliedFilters}
       handleResetFilters={handleResetFilters}
       toolbarRightContent={toolbarRightContent}
-      subtitle="Indicator results reported as part of annual Results Report."
-      breadcrumbs={[{ label: "Datasets" }, { label: "Annual Results" }]}
+      subtitle={get(
+        cmsData,
+        "pagesDatasetsAnnualResults.subtitle",
+        "Indicator results reported as part of annual Results Report."
+      )}
     >
       <Box width="100%" marginTop="50px">
         <HomeResultsStats stats={dataStats} loading={loadingResults} />
@@ -422,7 +422,11 @@ export const AnnualResultsPage: React.FC = () => {
         >
           <DatasetChartBlock
             id="annual-results"
-            title="Annual Results"
+            title={get(
+              cmsData,
+              "pagesDatasetsAnnualResults.chartTitle",
+              "Annual Results"
+            )}
             subtitle=""
             loading={loadingResults}
             dropdownItems={dropdownItems}

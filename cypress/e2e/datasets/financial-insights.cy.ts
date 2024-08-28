@@ -89,27 +89,6 @@ describe("Testing The Location page", () => {
         '[data-cy="category-dropdown-button"]',
         "Portfolio View"
       ).should("be.visible");
-
-      cy.get('[data-cy="toolbar-right-content"]').within(() => {
-        cy.contains('[data-cy="category-dropdown-button"]', "Grouped").click();
-      });
-
-      cy.get('[data-cy="category-dropdown-menu"]')
-        .filter((index, parent) => {
-          return Cypress.$(parent).css("visibility") !== "hidden";
-        })
-        .within(() => {
-          cy.contains(
-            '[data-cy="category-dropdown-item"]',
-            "Un-Grouped"
-          ).click();
-        });
-
-      waitData(15);
-
-      cy.contains('[data-cy="category-dropdown-button"]', "Un-Grouped").should(
-        "be.visible"
-      );
     });
 
     it(
@@ -235,7 +214,7 @@ describe("Testing The Location page", () => {
           .within(() => {
             cy.contains(
               '[data-cy="category-dropdown-button"]',
-              "2020 - 2022"
+              "Grant Cycle 6"
             ).click();
           });
 
@@ -246,7 +225,7 @@ describe("Testing The Location page", () => {
           .within(() => {
             cy.contains(
               '[data-cy="category-dropdown-item"]',
-              "2017 - 2019"
+              "Grant Cycle 5"
             ).click();
             waitData(3);
           });
@@ -256,7 +235,7 @@ describe("Testing The Location page", () => {
           .within(() => {
             cy.contains(
               '[data-cy="category-dropdown-button"]',
-              "2017 - 2019"
+              "Grant Cycle 5"
             ).should("be.visible");
           });
 

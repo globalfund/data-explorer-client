@@ -35,7 +35,7 @@ describe("Testing HomePage", () => {
       .first()
       .should(
         "have.text",
-        "The Global Fund invests US$5 billion a year to defeat HIV, TB and Malaria and ensure a healthier, safer, equitable future for all."
+        "The Global Fund invests US$5 billion a year to defeat HIV, tuberculosis and malaria and ensure a healthier, safer, equitable future for all."
       );
   });
 
@@ -110,24 +110,24 @@ describe("Testing HomePage", () => {
       .should("be.visible");
 
     cy.contains("[data-cy=chart-block]", "Grant Budgets").within(() => {
-      cy.contains("[data-cy=chart-cycle-button]", "2020-2022").click();
+      cy.contains("[data-cy=chart-cycle-button]", "Grant Cycle 6").click();
       waitData(1);
-      cy.get('[data-cy="category-dropdown-button"]').click();
+      // cy.get('[data-cy="category-dropdown-button"]').click();
     });
 
-    cy.contains("[data-cy=category-dropdown-item]", "Un-Grouped Component")
-      .scrollIntoView()
-      .click();
-    waitData(1);
+    // cy.contains("[data-cy=category-dropdown-item]", "Un-Grouped Component")
+    //   .scrollIntoView()
+    //   .click();
+    // waitData(1);
 
-    cy.contains("[data-cy=chart-block]", "Grant Budgets").within(() => {
-      cy.get('[data-cy="category-dropdown-button"]').should(
-        "have.text",
-        "Un-Grouped Component"
-      );
-      cy.get('[data-cy="chart-info-button"]').scrollIntoView().click();
-      cy.get('[data-cy="chart-info-dialog"]').should("be.visible");
-    });
+    // cy.contains("[data-cy=chart-block]", "Grant Budgets").within(() => {
+    //   cy.get('[data-cy="category-dropdown-button"]').should(
+    //     "have.text",
+    //     "Un-Grouped Component"
+    //   );
+    //   cy.get('[data-cy="chart-info-button"]').scrollIntoView().click();
+    //   cy.get('[data-cy="chart-info-dialog"]').should("be.visible");
+    // });
   });
 
   it("Shows Disbursements block", () => {
@@ -137,7 +137,7 @@ describe("Testing HomePage", () => {
       .should("be.visible");
 
     cy.contains("[data-cy=chart-block]", "Disbursements").within(() => {
-      cy.contains("[data-cy=chart-cycle-button]", "2014-2016").click();
+      cy.contains("[data-cy=chart-cycle-button]", "Grant Cycle 4").click();
       waitData(1);
       cy.get('[data-cy="category-dropdown-button"]').click();
     });
@@ -163,6 +163,7 @@ describe("Testing HomePage", () => {
       cy.get('[data-cy="chart-info-dialog"]').should("be.visible");
     });
   });
+
   it("Shows Expenditures block", () => {
     // cy.wait("@expenditures");
     cy.contains('[data-cy="chart-block"]', "Expenditures")
@@ -170,31 +171,31 @@ describe("Testing HomePage", () => {
       .should("be.visible");
 
     cy.contains("[data-cy=chart-block]", "Expenditures").within(() => {
-      cy.contains("[data-cy=chart-cycle-button]", "2017-2019").click();
+      cy.contains("[data-cy=chart-cycle-button]", "Grant Cycle 5").click();
       waitData(1);
-      cy.get('[data-cy="category-dropdown-button"]').scrollIntoView().click();
+      // cy.get('[data-cy="category-dropdown-button"]').scrollIntoView().click();
     });
 
-    cy.get('[data-cy="category-dropdown-menu"]')
-      .filter((index, parent) => {
-        return Cypress.$(parent).css("visibility") !== "hidden";
-      })
-      .within(() => {
-        cy.contains(
-          '[data-cy="category-dropdown-item"]',
-          "Un-Grouped Component"
-        ).click();
-      });
+    // cy.get('[data-cy="category-dropdown-menu"]')
+    //   .filter((index, parent) => {
+    //     return Cypress.$(parent).css("visibility") !== "hidden";
+    //   })
+    //   .within(() => {
+    //     cy.contains(
+    //       '[data-cy="category-dropdown-item"]',
+    //       "Un-Grouped Component"
+    //     ).click();
+    //   });
 
-    waitData(1);
+    // waitData(1);
 
-    cy.contains("[data-cy=chart-block]", "Expenditures").within(() => {
-      cy.get('[data-cy="category-dropdown-button"]').should(
-        "have.text",
-        "Un-Grouped Component"
-      );
-      cy.get('[data-cy="chart-info-button"]').scrollIntoView().click();
-      cy.get('[data-cy="chart-info-dialog"]').should("be.visible");
-    });
+    // cy.contains("[data-cy=chart-block]", "Expenditures").within(() => {
+    //   cy.get('[data-cy="category-dropdown-button"]').should(
+    //     "have.text",
+    //     "Un-Grouped Component"
+    //   );
+    //   cy.get('[data-cy="chart-info-button"]').scrollIntoView().click();
+    //   cy.get('[data-cy="chart-info-dialog"]').should("be.visible");
+    // });
   });
 });

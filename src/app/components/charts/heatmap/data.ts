@@ -31,6 +31,7 @@ export interface HeatmapProps {
   columnHeader?: string;
   rowHeader?: string;
   noLegend?: boolean;
+  expandAll?: boolean;
 }
 
 export function getPercentageColor(item?: HeatmapDataItem) {

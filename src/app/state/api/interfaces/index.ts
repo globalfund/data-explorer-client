@@ -2,34 +2,28 @@ import { Action, Thunk } from "easy-peasy";
 import { CMSDataModel } from "app/state/api/action-reducers/sync";
 import { AppliedFiltersStateModel } from "app/state/api/action-reducers/sync/filters";
 import {
-  CMSApiComponentsAppBar,
-  CMSApiComponentsChartsBudgets,
-  CMSApiComponentsChartsCommon,
   CMSApiComponentsChartsEligibility,
-  CMSApiComponentsChartsGeomap,
-  CMSApiComponentsChartsGrants,
-  CMSApiComponentsChartsInvestments,
-  CMSApiComponentsChartsNetwork,
-  CMSApiComponentsChartsPerformanceRating,
-  CMSApiComponentsChartsPledges,
-  CMSApiComponentsCookieDialog,
-  CMSApiComponentsDatasetCarousel,
-  CMSApiComponentsInformationPanel,
-  CMSApiComponentsMobile,
-  CMSApiComponentsPageHeader,
-  CMSApiComponentsPerformanceFrameworkComponents,
   CMSApiComponentsSearch,
-  CMSApiComponentsSlideInPanel,
-  CMSApiModulesLanding,
-  CMSApiModulesAbout,
-  CMSApiModulesCommon,
-  CMSApiModulesCountryDetail,
-  CMSApiModulesDatasets,
-  CMSApiModulesGrantDetail,
-  CMSApiModulesGrants,
-  CMSApiCountrySummary,
-  CMSApiNotesAndDisclaimers,
-  CMSApiModulesFundingRequests,
+  CMSApiPagesDatasets,
+  CMSApiPagesGeography,
+  CMSApiPagesGrantDetail,
+  CMSApiPagesGrants,
+  CMSApiPagesHome,
+  CMSApiPagesLocation,
+  CMSApiGeneral,
+  CMSApiPagesDatatsetsAccessToFunding,
+  CMSApiPagesDatatsetsAnnualResults,
+  CMSApiPagesDatatsetsGrantImplementation,
+  CMSApiPagesDatatsetsResourceMobilization,
+  CMSApiPagesLocationAccessToFunding,
+  CMSApiPagesLocationGrantImplementation,
+  CMSApiPagesLocationOverview,
+  CMSApiPagesLocationResults,
+  CMSApiPagesLocationResourceMobilization,
+  CMSApiPagesGrantDocuments,
+  CMSApiPagesGrantGrantImplementation,
+  CMSApiPagesGrantOverview,
+  CMSApiPagesGrantTargetResults,
 } from "app/state/api/interfaces/cms";
 
 export interface RequestValues<T> {
@@ -87,34 +81,28 @@ export type ApiCallModel = ApiModel<
 // CMS API Call model for
 export type CMSApiCallModel = ApiModel<
   CMSApiCallParams,
-  | CMSApiComponentsAppBar
-  | CMSApiComponentsChartsBudgets
-  | CMSApiComponentsChartsCommon
   | CMSApiComponentsChartsEligibility
-  | CMSApiComponentsChartsGeomap
-  | CMSApiComponentsChartsGrants
-  | CMSApiComponentsChartsInvestments
-  | CMSApiComponentsChartsNetwork
-  | CMSApiComponentsChartsPerformanceRating
-  | CMSApiComponentsChartsPledges
-  | CMSApiComponentsCookieDialog
-  | CMSApiComponentsDatasetCarousel
-  | CMSApiComponentsInformationPanel
-  | CMSApiComponentsMobile
-  | CMSApiComponentsPageHeader
-  | CMSApiComponentsPerformanceFrameworkComponents
   | CMSApiComponentsSearch
-  | CMSApiComponentsSlideInPanel
-  | CMSApiModulesLanding
-  | CMSApiModulesAbout
-  | CMSApiModulesCommon
-  | CMSApiModulesCountryDetail
-  | CMSApiModulesDatasets
-  | CMSApiModulesGrantDetail
-  | CMSApiModulesGrants
-  | CMSApiCountrySummary
-  | CMSApiNotesAndDisclaimers
-  | CMSApiModulesFundingRequests
+  | CMSApiPagesDatasets
+  | CMSApiPagesGeography
+  | CMSApiPagesGrantDetail
+  | CMSApiPagesGrants
+  | CMSApiPagesHome
+  | CMSApiPagesLocation
+  | CMSApiGeneral
+  | CMSApiPagesDatatsetsAccessToFunding
+  | CMSApiPagesDatatsetsAnnualResults
+  | CMSApiPagesDatatsetsGrantImplementation
+  | CMSApiPagesDatatsetsResourceMobilization
+  | CMSApiPagesLocationAccessToFunding
+  | CMSApiPagesLocationGrantImplementation
+  | CMSApiPagesLocationOverview
+  | CMSApiPagesLocationResults
+  | CMSApiPagesLocationResourceMobilization
+  | CMSApiPagesGrantDocuments
+  | CMSApiPagesGrantGrantImplementation
+  | CMSApiPagesGrantOverview
+  | CMSApiPagesGrantTargetResults
 >;
 
 export interface CMSApiCallParams {}
@@ -230,36 +218,27 @@ export interface StoreModel {
   // CMS
   CMSData: CMSDataModel;
   cms: {
-    componentsAppBar: CMSApiCallModel;
-    componentsTable: CMSApiCallModel;
-    componentsDialogBox: CMSApiCallModel;
-    componentsChartsBudgets: CMSApiCallModel;
-    componentsChartsCommon: CMSApiCallModel;
     componentsChartsEligibility: CMSApiCallModel;
-    componentsChartsGeomap: CMSApiCallModel;
-    componentsChartsGrants: CMSApiCallModel;
-    componentsChartsInvestments: CMSApiCallModel;
-    componentsChartsNetwork: CMSApiCallModel;
-    componentsChartsPerformanceRating: CMSApiCallModel;
-    componentsChartsPledges: CMSApiCallModel;
-    componentsCookieDialog: CMSApiCallModel;
-    componentsDatasetCarousel: CMSApiCallModel;
-    componentsInformationPanel: CMSApiCallModel;
-    componentsMobile: CMSApiCallModel;
-    componentsPageHeader: CMSApiCallModel;
-    componentsPerformanceFrameworkComponents: CMSApiCallModel;
     componentsSearch: CMSApiCallModel;
-    componentsSlideInPanel: CMSApiCallModel;
-    componentsSidebar: CMSApiCallModel;
-    modulesLanding: CMSApiCallModel;
-    modulesAbout: CMSApiCallModel;
-    modulesCommon: CMSApiCallModel;
-    modulesCountryDetail: CMSApiCallModel;
-    modulesDatasets: CMSApiCallModel;
-    modulesGrantDetail: CMSApiCallModel;
-    modulesGrants: CMSApiCallModel;
-    modulesFundingRequests: CMSApiCallModel;
-    countrySummary: CMSApiCallModel;
-    notesAndDisclaimers: CMSApiCallModel;
+    pagesDatasets: CMSApiCallModel;
+    pagesGeography: CMSApiCallModel;
+    pagesGrantDetail: CMSApiCallModel;
+    pagesGrants: CMSApiCallModel;
+    pagesHome: CMSApiCallModel;
+    pagesLocation: CMSApiCallModel;
+    general: CMSApiCallModel;
+    pagesDatasetsAccessToFunding: CMSApiCallModel;
+    pagesDatasetsGrantImplementation: CMSApiCallModel;
+    pagesDatasetsAnnualResults: CMSApiCallModel;
+    pagesDatasetsResourceMobilization: CMSApiCallModel;
+    pagesLocationAccessToFunding: CMSApiCallModel;
+    pagesLocationGrantImplementation: CMSApiCallModel;
+    pagesLocationOverview: CMSApiCallModel;
+    pagesLocationResourceMobilization: CMSApiCallModel;
+    pagesLocationResults: CMSApiCallModel;
+    pagesGrantDocuments: CMSApiCallModel;
+    pagesGrantGrantImplementation: CMSApiCallModel;
+    pagesGrantOverview: CMSApiCallModel;
+    pagesGrantTargetResults: CMSApiCallModel;
   };
 }

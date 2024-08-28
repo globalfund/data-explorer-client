@@ -204,10 +204,9 @@ export const LineChart: React.FC<LineChartProps> = (props: LineChartProps) => {
               .forEach((value: number) => {
                 cumulative += value;
               });
-            const html = ReactDOMServer.renderToString(
+            return ReactDOMServer.renderToString(
               <Tooltip {...params} cumulative={cumulative} />
             );
-            return html;
           },
         },
       };

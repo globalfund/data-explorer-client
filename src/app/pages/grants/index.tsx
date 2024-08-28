@@ -4,24 +4,15 @@ import Box from "@mui/material/Box";
 import { useTitle } from "react-use";
 import Grid from "@mui/material/Grid";
 import { Link } from "react-router-dom";
-import Button from "@mui/material/Button";
-import Add from "@mui/icons-material/Add";
-import Popover from "@mui/material/Popover";
-import Divider from "@mui/material/Divider";
 import { Table } from "app/components/table";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
-import { Dropdown } from "app/components/dropdown";
 import useDebounce from "react-use/lib/useDebounce";
-import SearchIcon from "@mui/icons-material/Search";
 import { GrantCard } from "app/components/grant-card";
+import { GrantsLayout } from "app/pages/grants/layout";
 import { DROPDOWN_ITEMS } from "app/pages/grants/data";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import ArrowBack from "@mui/icons-material/ArrowBackIos";
-import { FilterPanel } from "app/components/filters/panel";
 import useUpdateEffect from "react-use/lib/useUpdateEffect";
-import CircularProgress from "@mui/material/CircularProgress";
 import ArrowForward from "@mui/icons-material/ArrowForwardIos";
 import { GrantCardProps } from "app/components/grant-card/data";
 import { getMonthFromNumber } from "app/utils/getMonthFromNumber";
@@ -31,8 +22,6 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 
 export const Grants: React.FC = () => {
   useTitle("The Data Explorer - Grants");
-
-  const mobile = useMediaQuery("(max-width: 767px)");
 
   const [page, setPage] = React.useState(1);
   const [search, setSearch] = React.useState("");
@@ -273,46 +262,44 @@ export const Grants: React.FC = () => {
   ]);
 
   const filterString = React.useMemo(() => {
-    let filterString = "";
+    let value = "";
     if (appliedFiltersData.locations.length > 0) {
-      filterString += `geographies=${encodeURIComponent(
+      value += `geographies=${encodeURIComponent(
         appliedFiltersData.locations.join(",")
       )}`;
     }
     if (appliedFiltersData.components.length > 0) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
-      }components=${encodeURIComponent(
+      value += `${value.length > 0 ? "&" : ""}components=${encodeURIComponent(
         appliedFiltersData.components.join(",")
       )}`;
     }
     if (appliedFiltersData.principalRecipientTypes.length > 0) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
+      value += `${
+        value.length > 0 ? "&" : ""
       }principalRecipientTypes=${encodeURIComponent(
         appliedFiltersData.principalRecipientTypes.join(",")
       )}`;
     }
     if (appliedFiltersData.principalRecipientSubTypes.length > 0) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
+      value += `${
+        value.length > 0 ? "&" : ""
       }principalRecipientSubTypes=${encodeURIComponent(
         appliedFiltersData.principalRecipientSubTypes.join(",")
       )}`;
     }
     if (appliedFiltersData.principalRecipients.length > 0) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
+      value += `${
+        value.length > 0 ? "&" : ""
       }principalRecipients=${encodeURIComponent(
         appliedFiltersData.principalRecipients.join(",")
       )}`;
     }
     if (appliedFiltersData.status.length > 0) {
-      filterString += `${
-        filterString.length > 0 ? "&" : ""
-      }status=${encodeURIComponent(appliedFiltersData.status.join(","))}`;
+      value += `${value.length > 0 ? "&" : ""}status=${encodeURIComponent(
+        appliedFiltersData.status.join(",")
+      )}`;
     }
-    return filterString;
+    return value;
   }, [appliedFiltersData]);
 
   React.useEffect(() => {
@@ -354,204 +341,24 @@ export const Grants: React.FC = () => {
     }
   }, [search]);
 
-  const fullWidthDivider = (
-    <Divider
-      sx={{
-        left: "-50vw",
-        width: "200vw",
-        position: "relative",
-        borderTopColor: "#868E96",
-        "@media (max-width: 767px)": {
-          display: "none",
-        },
-      }}
-    />
-  );
-
   return (
-    <Box padding="50px 0">
-      <Typography variant="h1">Grants</Typography>
-      <Box
-        height="50px"
-        sx={{
-          "@media (max-width: 767px)": {
-            display: "none",
-          },
-        }}
-      />
-      {fullWidthDivider}
-      <Box
-        gap="16px"
-        display="flex"
-        padding="20px 0"
-        position="relative"
-        flexDirection="column"
-      >
-        <Box
-          display="flex"
-          paddingBottom="4px"
-          alignItems="center"
-          justifyContent="space-between"
-          sx={
-            mobile && showSearch
-              ? {
-                  "> button": {
-                    display: "none",
-                  },
-                  "> div > button:nth-of-type(2)": {
-                    display: "none",
-                  },
-                  "> div": {
-                    width: "100%",
-                    " > input": {
-                      width: "100%",
-                    },
-                  },
-                }
-              : {}
-          }
-        >
-          <Button
-            variant="outlined"
-            startIcon={<Add />}
-            onClick={handleFilterButtonClick}
-            sx={
-              pageAppliedFilters.length > 0
-                ? {
-                    "&:after": {
-                      top: "-3px",
-                      right: "8px",
-                      width: "6px",
-                      height: "6px",
-                      content: "''",
-                      borderRadius: "50%",
-                      position: "absolute",
-                      background: "#FF9800",
-                    },
-                  }
-                : {}
-            }
-            data-cy="grants-filter-btn"
-          >
-            Filters
-          </Button>
-          <Popover
-            disableScrollLock
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleFilterPanelClose}
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "left",
-            }}
-          >
-            <FilterPanel
-              filterGroups={filterGroups}
-              onClose={handleFilterPanelClose}
-              appliedFilters={pageAppliedFilters}
-              handleResetFilters={handleResetFilters}
-              appliedFilterBgColors={{
-                hover: "#FF9800",
-                normal: "rgba(255, 152, 0, 0.2)",
-              }}
-            />
-          </Popover>
-          <Box
-            gap="8px"
-            display="flex"
-            sx={{
-              input: {
-                color: "#000",
-                width: "200px",
-                height: "32px",
-                outline: "none",
-                padding: "0 8px",
-                fontSize: "12px",
-                borderStyle: "none",
-                borderRadius: "8px",
-                background: "#F1F3F4",
-                "::placeholder": {
-                  color: "#CFD4DA",
-                },
-              },
-            }}
-          >
-            <React.Fragment>
-              {showSearch && (
-                <input
-                  type="text"
-                  value={search}
-                  ref={searchInputRef}
-                  onChange={handleSearch}
-                  placeholder="e.g. Kenya"
-                  data-cy="grants-search-input"
-                />
-              )}
-              <IconButton
-                sx={{
-                  height: "30px",
-                  display: "flex",
-                  padding: "8px 12px",
-                  borderRadius: "4px",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  background: showSearch ? "#000" : "transparent",
-                  border: `1px solid ${showSearch ? "#000" : "#DFE3E5"}`,
-                  svg: {
-                    color: showSearch ? "#fff" : "#000",
-                  },
-                  ":hover": {
-                    background: "#000",
-                    borderColor: "#000",
-                    svg: {
-                      color: "#fff",
-                    },
-                  },
-                }}
-                data-cy="grants-search-btn"
-                onClick={handleSearchIconClick(!showSearch)}
-              >
-                {showSearch ? (
-                  <CloseIcon htmlColor="#000" fontSize="small" />
-                ) : (
-                  <SearchIcon htmlColor="#000" fontSize="small" />
-                )}
-              </IconButton>
-            </React.Fragment>
-            <Dropdown
-              dropdownSelected={view}
-              dropdownItems={DROPDOWN_ITEMS}
-              handleDropdownChange={handleViewChange}
-            />
-          </Box>
-        </Box>
-        {fullWidthDivider}
-        <Box
-          height="18px"
-          sx={{
-            "@media (max-width: 767px)": {
-              display: "none",
-            },
-          }}
-        />
-        {loading && (
-          <Box
-            top="0"
-            zIndex="1"
-            width="100%"
-            height="100%"
-            display="flex"
-            position="absolute"
-            alignItems="center"
-            justifyContent="center"
-            bgcolor="rgba(255, 255, 255, 0.5)"
-          >
-            <CircularProgress />
-          </Box>
-        )}
-        {viewResult}
-        {pagination}
-      </Box>
-    </Box>
+    <GrantsLayout
+      view={view}
+      viewResult={viewResult}
+      pagination={pagination}
+      handleViewChange={handleViewChange}
+      search={search}
+      showSearch={showSearch}
+      handleSearch={handleSearch}
+      handleSearchIconClick={handleSearchIconClick}
+      handleFilterButtonClick={handleFilterButtonClick}
+      handleFilterPanelClose={handleFilterPanelClose}
+      filterGroups={filterGroups}
+      pageAppliedFilters={pageAppliedFilters}
+      handleResetFilters={handleResetFilters}
+      anchorEl={anchorEl}
+      loading={loading}
+      searchInputRef={searchInputRef}
+    />
   );
 };

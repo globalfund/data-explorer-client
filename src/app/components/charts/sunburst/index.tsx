@@ -133,10 +133,9 @@ export const SunburstChart: React.FC<SunburstProps> = (
           show: true,
           ...chartTooltipCommonConfig(isTouch),
           formatter: (params: any) => {
-            const html = ReactDOMServer.renderToString(
+            return ReactDOMServer.renderToString(
               <Tooltip {...params} label={props.tooltipLabel} />
             );
-            return html;
           },
         },
       };

@@ -3,8 +3,10 @@ import get from "lodash/get";
 import Box from "@mui/material/Box";
 import { useTitle } from "react-use";
 import { useParams } from "react-router-dom";
+import { useCMSData } from "app/hooks/useCMSData";
 import { ChartBlock } from "app/components/chart-block";
 import useUpdateEffect from "react-use/lib/useUpdateEffect";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import { CellComponent, Tabulator } from "tabulator-tables";
 import { TableContainer } from "app/components/table-container";
 import { TABS } from "app/pages/grant/views/targets-results/data";
@@ -12,6 +14,7 @@ import { TABLE_VARIATION_4_COLUMNS } from "app/components/table/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 
 export const GrantTargetsResults: React.FC = () => {
+  const cmsData = useCMSData({ returnData: true });
   const params = useParams<{ id: string; ip: string }>();
 
   useTitle(`The Data Explorer - ${params.id} Targets & Results`);
@@ -34,8 +37,8 @@ export const GrantTargetsResults: React.FC = () => {
     (actions) => actions.GrantTargetsResultsTable.fetch
   );
 
-  const handleTabChange = (tab: string) => {
-    setTab(TABS.find((t) => t.name === tab) || TABS[0]);
+  const handleTabChange = (value: string) => {
+    setTab(TABS.find((t) => t.name === value) || TABS[0]);
   };
 
   useUpdateEffect(() => {
@@ -57,7 +60,7 @@ export const GrantTargetsResults: React.FC = () => {
         title: year,
         field: year,
         formatter: (cell: CellComponent) => {
-          var tableEl = document.createElement("div");
+          const tableEl = document.createElement("div");
           cell.getElement().appendChild(tableEl);
           const data = cell.getValue();
 
@@ -90,7 +93,7 @@ export const GrantTargetsResults: React.FC = () => {
           title: date,
           field: date,
           formatter: (cell: CellComponent) => {
-            var tableEl = document.createElement("div");
+            const tableEl = document.createElement("div");
             cell.getElement().appendChild(tableEl);
             const data = cell.getValue();
 
@@ -126,10 +129,22 @@ export const GrantTargetsResults: React.FC = () => {
     <Box marginTop="24px">
       <ChartBlock
         loading={loading}
-        title="Indicators"
+        title={getCMSDataField(
+          cmsData,
+          "pagesGrantTargetResults.title",
+          "Indicators"
+        )}
         id="grant-targets-results"
-        subtitle="Targets & Results"
-        text="Description of Impact indicators: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
+        subtitle={getCMSDataField(
+          cmsData,
+          "pagesGrantTargetResults.subtitle",
+          "Targets & Results"
+        )}
+        text={getCMSDataField(
+          cmsData,
+          "pagesGrantTargetResults.text",
+          "Description of Impact indicators: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
+        )}
         infoType="global"
       >
         <Box width="100%" height="32px" />

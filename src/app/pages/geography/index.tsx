@@ -5,10 +5,12 @@ import { useTitle } from "react-use";
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import { NavLink } from "react-router-dom";
+import { useCMSData } from "app/hooks/useCMSData";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import {
@@ -102,6 +104,8 @@ const GeoSubCategory: React.FC<GeoSubCategoryProps> = (
 };
 
 export const Geography: React.FC = () => {
+  const cmsData = useCMSData({ returnData: true });
+
   useTitle("The Data Explorer - Geography");
   const [search, setSearch] = React.useState("");
 
@@ -124,21 +128,17 @@ export const Geography: React.FC = () => {
   React.useEffect(() => {
     const updatedData = [...dataList];
     if (search.length > 0) {
-      for (let i = 0; i < updatedData.length; i++) {
-        for (let j = 0; j < updatedData[i].items.length; j++) {
-          for (let k = 0; k < updatedData[i].items[j].items.length; k++) {
-            const highlighted = updatedData[i].items[j].items[k].name
+      for (let item of updatedData) {
+        for (let subItem of item.items) {
+          for (let subItemItem of subItem.items) {
+            const highlighted = subItemItem.name
               .toLowerCase()
               .includes(search.toLowerCase());
-            updatedData[i].items[j].items[k].highlighted = highlighted;
+            subItemItem.highlighted = highlighted;
           }
-          updatedData[i].items[j].highlighted = updatedData[i].items[
-            j
-          ].items.some((item) => item.highlighted);
+          subItem.highlighted = subItem.items.some((i) => i.highlighted);
         }
-        updatedData[i].highlighted = updatedData[i].items.some(
-          (item) => item.highlighted
-        );
+        item.highlighted = item.items.some((i) => i.highlighted);
       }
     }
     setFilteredData(updatedData);
@@ -165,7 +165,7 @@ export const Geography: React.FC = () => {
           },
         }}
       >
-        Geography
+        {get(cmsData, "pagesGeography.title", "Geography")}
       </Typography>
       <Box
         height="56px"
@@ -211,8 +211,12 @@ export const Geography: React.FC = () => {
             type="text"
             value={search}
             onChange={handleSearch}
-            placeholder="e.g. Kenya"
             data-cy="geography-search-input"
+            placeholder={getCMSDataField(
+              cmsData,
+              "componentsSearch.placeholder",
+              "e.g. Kenya"
+            )}
           />
           {search.length > 0 && (
             <IconButton

@@ -167,14 +167,13 @@ export const RadialChart: React.FC<RadialChartProps> = (
           show: true,
           ...chartTooltipCommonConfig(isTouch),
           formatter: (params: any) => {
-            const html = ReactDOMServer.renderToString(
+            return ReactDOMServer.renderToString(
               <Tooltip
                 {...params}
                 totalValue={totalValue}
                 label={props.tooltipLabel}
               />
             );
-            return html;
           },
         },
       };

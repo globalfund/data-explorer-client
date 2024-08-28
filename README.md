@@ -30,8 +30,8 @@ In order to be able to successfully run or build the app you need to create an e
 REACT_APP_API=<data middleware api url>
 REACT_APP_MAPBOX_TOKEN=<mapbox account token>
 REACT_APP_GOOGLE_ANALYTICS_ID=<google analytics app id>
-REACT_APP_CMS_API=<cockpit cms api url>
-REACT_APP_CMS_TOKEN=<cockpit cms api token>
+REACT_APP_CMS_API=<strapi cms api url>
+REACT_APP_CMS_TOKEN=<strapi cms api token>
 ```
 
 `REACT_APP_API`: is the url where the data middleware API runs on. If running [Data API Middleware](https://github.com/globalfund/data-explorer-server/) locally then you can use `http://localhost:4200`.
@@ -40,9 +40,9 @@ REACT_APP_CMS_TOKEN=<cockpit cms api token>
 
 `REACT_APP_GOOGLE_ANALYTICS_ID`(optional): Google Analytics ID in order to be able to make use of Google Analytics services.
 
-`REACT_APP_CMS_API`: is the url where the [Cockpit CMS API](https://github.com/zimmerman-team/the-data-explorer-cms/) runs on.
+`REACT_APP_CMS_API`: is the url where the [Strapi CMS API](https://github.com/zimmerman-team/CMS/) runs on. The project/de branch.
 
-`REACT_APP_CMS_TOKEN`: is the API token retrieved from the Cockpit CMS interface.
+`REACT_APP_CMS_TOKEN`: is the API token retrieved from the Strapi CMS interface.
 
 ---
 
