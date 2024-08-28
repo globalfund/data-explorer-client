@@ -77,7 +77,9 @@
     "docker-test": "cp -r /app/client/build /app/client/test && tail -f /dev/null",
     "docker-prod": "cp -r /app/client/build /app/client/prod && tail -f /dev/null",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "e2e-ui": "npx cypress open",
+    "e2e": "npx cypress run"
   },
   "eslintConfig": {
     "extends": [

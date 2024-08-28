@@ -2,7 +2,6 @@
 
 // @ts-ignore
 const interceptRequests = () => {
-  const apiUrl = Cypress.env("apiUrl");
   cy.intercept(/KEN/).as("locationData");
 };
 // @ts-ignore

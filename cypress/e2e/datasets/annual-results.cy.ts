@@ -14,8 +14,6 @@ const waitData = (requestCount: number) => {
 };
 
 describe("Testing The Location page", () => {
-  const apiUrl = Cypress.env("api_url");
-
   describe("Testing The Datasets/Annual Results Page", () => {
     beforeEach(() => {
       interceptAllRequests();
@@ -72,7 +70,7 @@ describe("Testing The Location page", () => {
       });
 
       cy.get('[data-cy="category-dropdown-menu"]')
-        .filter((index, parent) => {
+        .filter((_index, parent) => {
           return Cypress.$(parent).css("visibility") !== "hidden";
         })
         .within(() => {
@@ -106,7 +104,7 @@ describe("Testing The Location page", () => {
           });
 
         cy.get('[data-cy="category-dropdown-menu"]')
-          .filter((index, parent) => {
+          .filter((_index, parent) => {
             return Cypress.$(parent).css("visibility") !== "hidden";
           })
           .within(() => {

@@ -81,7 +81,7 @@ describe("Testing The Datasets/Resource Mobilization Page", () => {
     });
 
     cy.get('[data-cy="category-dropdown-menu"]')
-      .filter((index, parent) => {
+      .filter((_index, parent) => {
         return Cypress.$(parent).css("visibility") !== "hidden";
       })
       .within(() => {

@@ -40,7 +40,7 @@ describe(
       cy.contains('[data-cy="category-dropdown-button"]', "2023").click();
 
       cy.get('[data-cy="category-dropdown-menu"]')
-        .filter((index, parent) => {
+        .filter((_index, parent) => {
           return Cypress.$(parent).css("visibility") !== "hidden";
         })
         .within(() => {
@@ -84,7 +84,7 @@ describe(
           });
 
         cy.get('[data-cy="category-dropdown-menu"]')
-          .filter((index, parent) => {
+          .filter((_index, parent) => {
             return Cypress.$(parent).css("visibility") !== "hidden";
           })
           .within(() => {
@@ -105,7 +105,7 @@ describe(
         );
 
         cy.get('[data-cy="category-dropdown-menu"]')
-          .filter((index, parent) => {
+          .filter((_index, parent) => {
             return Cypress.$(parent).css("visibility") !== "hidden";
           })
           .within(() => {
