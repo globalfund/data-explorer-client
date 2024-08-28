@@ -120,6 +120,7 @@ export const GrantsLayout: React.FC<GrantsLayoutProps> = (
                   }
                 : {}
             }
+            data-cy="grants-filter-btn"
           >
             Filters
           </Button>
@@ -172,6 +173,7 @@ export const GrantsLayout: React.FC<GrantsLayoutProps> = (
                   ref={searchInputRef}
                   onChange={handleSearch}
                   placeholder="e.g. Kenya"
+                  data-cy="grants-search-input"
                 />
               )}
               <IconButton
@@ -195,6 +197,7 @@ export const GrantsLayout: React.FC<GrantsLayoutProps> = (
                     },
                   },
                 }}
+                data-cy="grants-search-btn"
                 onClick={handleSearchIconClick(!showSearch)}
               >
                 {showSearch ? (

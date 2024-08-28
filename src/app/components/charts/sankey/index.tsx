@@ -200,6 +200,7 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
     <React.Fragment>
       <Box
         id="sankey-chart"
+        data-cy="sankey-chart"
         ref={containerRef}
         width="100%"
         minHeight="500px"

@@ -15,7 +15,13 @@ export const FinancialMetric: React.FC<FinancialMetricProps> = (
   props: FinancialMetricProps
 ) => {
   return (
-    <Box gap="10px" width="100%" display="flex" flexDirection="column">
+    <Box
+      gap="10px"
+      width="100%"
+      display="flex"
+      flexDirection="column"
+      data-cy="financial-metric"
+    >
       <Typography variant="h5">{props.title}</Typography>
       <Box
         gap="13px"
@@ -113,6 +119,7 @@ const ExpandableItem: React.FC<FinancialMetricExpandableItemProps> = (
             flexDirection: "column",
           },
         }}
+        data-cy="financial-metric-expandable-item"
       >
         <Box gap="10px" display="flex" flexDirection="row">
           <Typography fontSize="12px" minWidth="50px">

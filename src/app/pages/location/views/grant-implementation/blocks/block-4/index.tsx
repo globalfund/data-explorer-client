@@ -119,6 +119,7 @@ export const LocationGrantImplementationBlock4 = () => {
             },
           },
         }}
+        data-cy="location-pie-charts"
       >
         <Box
           gap="16px"

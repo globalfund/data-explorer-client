@@ -341,6 +341,7 @@ export const BarChart: React.FC<BarChartProps> = (props: BarChartProps) => {
     <React.Fragment>
       <Box
         id="bar-chart"
+        data-cy="bar-chart"
         ref={containerRef}
         width="100%"
         height="450px"

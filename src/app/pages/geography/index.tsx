@@ -211,6 +211,7 @@ export const Geography: React.FC = () => {
             type="text"
             value={search}
             onChange={handleSearch}
+            data-cy="geography-search-input"
             placeholder={getCMSDataField(
               cmsData,
               "componentsSearch.placeholder",

@@ -220,6 +220,7 @@ export const LineChart: React.FC<LineChartProps> = (props: LineChartProps) => {
     <React.Fragment>
       <Box
         id="line-chart"
+        data-cy="line-chart"
         ref={containerRef}
         width="100%"
         height="480px"

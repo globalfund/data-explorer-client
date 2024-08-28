@@ -139,12 +139,14 @@ export const Header: React.FC = () => {
                 width: "100%",
               },
             }}
+            data-cy="header-search-container"
           >
             <Search hocClose={() => setSearchOpen(false)} />
           </Box>
         )}
         <Tooltip title={!searchOpen ? "Search" : "Close"}>
           <IconButton
+            data-cy="header-search-btn"
             onClick={onSearchBtnClick}
             sx={{
               padding: 0,

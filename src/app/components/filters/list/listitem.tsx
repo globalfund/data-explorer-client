@@ -190,6 +190,7 @@ export const FilterListItemContent: React.FC<FilterListItemContentProps> = (
             placeholder="Search"
             style={{ marginBottom: "10px" }}
             onChange={(e) => setValue(e.target.value)}
+            data-cy="filter-panel-search-input"
           />
         </React.Fragment>
       )}
@@ -221,6 +222,7 @@ export const FilterListItemContent: React.FC<FilterListItemContentProps> = (
                   flexGrow: 0,
                 },
               }}
+              data-cy="filter-list-content-accordion-summary"
             >
               <FormControlLabel
                 control={
@@ -231,6 +233,7 @@ export const FilterListItemContent: React.FC<FilterListItemContentProps> = (
                     onChange={onCheckboxChange}
                     checkedIcon={<CheckboxCheckedIcon />}
                     checked={appliedFilters.indexOf(option.name) > -1}
+                    data-cy="filter-list-content-checkbox"
                   />
                 }
                 label={option.name}

@@ -86,6 +86,7 @@ export const GrantImplementationPageBlock4: React.FC<
       padding="50px 0"
       position="relative"
       flexDirection="column"
+      data-cy="budgets-block-2"
     >
       <Box
         width="100%"

@@ -124,6 +124,7 @@ export function SearchLayout(props: SearchLayoutProps) {
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             props.setValue(e.target.value)
           }
+          data-cy="search-input"
         />
         {props.value.length > 0 && (
           <IconButton

@@ -195,6 +195,7 @@ export const Treemap: React.FC<TreemapProps> = (props: TreemapProps) => {
     <React.Fragment>
       <Box
         id="treemap-chart"
+        data-cy="treemap-chart"
         ref={containerRef}
         width="100%"
         height="400px"

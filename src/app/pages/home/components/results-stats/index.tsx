@@ -88,6 +88,7 @@ export const HomeResultsStats: React.FC<HomeResultsStatsProps> = (
           },
         },
       }}
+      data-cy="home-results-stats"
     >
       {props.loading && props.stats.length === 0 && (
         <Box

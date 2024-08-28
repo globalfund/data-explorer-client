@@ -184,6 +184,7 @@ export const InfoPanel: React.FC<InfoPanelProps> = (props: InfoPanelProps) => {
       bgcolor="#F5F5F7"
       borderRadius="16px"
       position="absolute"
+      data-cy="chart-info-dialog"
     >
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Typography

@@ -99,6 +99,7 @@ export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
           width: props.width ?? 200,
           maxHeight: props.height ?? 32,
         }}
+        data-cy="category-dropdown-button"
       >
         {dropdownSelectedIcon}
         <span style={{ letterSpacing: "0" }}>{props.dropdownSelected}</span>
@@ -110,6 +111,7 @@ export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
         anchorEl={anchorEl}
         onClose={handleClose}
         open={Boolean(anchorEl)}
+        data-cy="category-dropdown-menu"
         anchorOrigin={{
           vertical: (props.height ?? 32) + 8,
           horizontal: "left",
@@ -129,6 +131,7 @@ export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
             key={item.label}
             disableTouchRipple
             onClick={handleItemClick(item.label)}
+            data-cy={`category-dropdown-item`}
             sx={
               props.dropdownSelected === item.label
                 ? {

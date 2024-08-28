@@ -62,6 +62,7 @@ export const AccessToFundingBlock4: React.FC<AccessToFundingBlock4Props> = (
           padding: "20px 0",
         },
       }}
+      data-cy="allocation-block-2"
     >
       <Typography variant="h5">
         {getCMSDataField(

@@ -32,8 +32,12 @@ export const FilterList: React.FC<FilterListProps> = (
           key={group.name}
           expanded={expanded === group.name}
           onChange={handleChange(group.name)}
+          data-cy="filter-list-accordion"
         >
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            data-cy="filter-list-accordion-summary"
+          >
             <Typography fontSize="12px" fontWeight="700">
               {group.name}
             </Typography>

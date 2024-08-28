@@ -24,7 +24,7 @@ export function SearchResults(props: SearchResultsProps) {
   const hasLoaded = useStoreState((state) => state.GlobalSearch.success);
 
   return (
-    <Container id="search-results-container">
+    <Container id="search-results-container" data-cy="search-results-container">
       {props.loading && (
         <LinearProgress
           sx={{
@@ -43,6 +43,7 @@ export function SearchResults(props: SearchResultsProps) {
       )}
       <Results>
         {props.results.map((result: SearchResultModel) => {
+          console.log(result, "result");
           if (!result.link) {
             return (
               <ResultA
@@ -70,6 +71,7 @@ export function SearchResults(props: SearchResultsProps) {
               smooth
               to={result.link}
               key={result.value}
+              data-cy="search-result-item-link"
               scroll={(el) => {
                 const yCoordinate =
                   el.getBoundingClientRect().top + window.scrollY;

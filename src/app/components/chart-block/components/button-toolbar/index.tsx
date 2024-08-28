@@ -146,7 +146,11 @@ export const ChartBlockButtonToolbar: React.FC<ChartBlockButtonToolbarProps> = (
               />
             </React.Fragment>
           )}
-          <Tooltip title="Info" onClick={handleButtonClick("info")}>
+          <Tooltip
+            title="Info"
+            data-cy="chart-info-button"
+            onClick={handleButtonClick("info")}
+          >
             <IconButton id={active === "info" ? "active" : ""}>
               <InfoIcon />
             </IconButton>

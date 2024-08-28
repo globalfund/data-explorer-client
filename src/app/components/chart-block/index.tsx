@@ -62,7 +62,7 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
   }
 
   return (
-    <Box id={props.id}>
+    <Box id={props.id} data-cy="chart-block">
       <Typography variant="h2" lineHeight={1}>
         {props.title}
       </Typography>

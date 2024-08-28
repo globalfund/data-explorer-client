@@ -96,6 +96,7 @@ export const Table: React.FC<TableProps> = (props: TableProps) => {
       ref={ref}
       id={props.id}
       border="1px solid #CFD4DA"
+      data-cy="table"
       sx={{
         ".tabulator-col-title, .tabulator-cell": {
           color: "#373D43",
