@@ -70,6 +70,42 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
+## Tests - Cypress
+
+Cypress is used for end-to-end testing to ensure that the application functions as expected in the browser. To run the Cypress tests, follow these steps:
+
+In addition to the env variables above the following is also needed for cypress tests to run successfully:
+
+```
+REACT_APP_BASE_URL
+```
+
+`REACT_APP_BASE_URL`: This is the url your application runs on locally it's usually `http://localhost:3000`
+
+### Install Cypress dependencies
+
+If you haven't already installed Cypress, ensure all dependencies are installed by running:
+
+#### `yarn install`
+
+### Start the Application
+
+Ensure your application is running before starting the Cypress tests. You can do this by running:
+
+#### `yarn start`
+
+### Open Cypress Test Runner
+
+Open the Cypress Test Runner by running:
+
+#### `yarn cypress open`
+
+### Run Cypress Tests in Headless Mode
+
+Alternatively, you can run all Cypress tests in headless mode (without the GUI) directly from the command line using:
+
+#### `yarn cypress run`
+
 ## Learn More
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
