@@ -115,10 +115,11 @@ export const DatasetPage: React.FC<DatasetPageProps> = (
                   }
                 : {}
             }
+            data-cy="datasets-filter-btn"
           >
             Filters
           </Button>
-          <Tooltip title={TooltipTitle} arrow>
+          <Tooltip title={<TooltipTitle />} arrow>
             <InfoOutlined fontSize="small" />
           </Tooltip>
           <Popover
@@ -143,7 +144,7 @@ export const DatasetPage: React.FC<DatasetPageProps> = (
             />
           </Popover>
         </Box>
-        {props.toolbarRightContent && props.toolbarRightContent}
+        {props.toolbarRightContent}
       </Box>
       <Divider
         sx={{

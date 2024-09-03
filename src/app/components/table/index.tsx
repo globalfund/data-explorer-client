@@ -2,7 +2,7 @@ import React from "react";
 import Box from "@mui/material/Box";
 import { TableProps } from "app/components/table/data";
 import "tabulator-tables/dist/css/tabulator_simple.min.css";
-import { TabulatorFull as Tabulator } from "tabulator-tables";
+import { RowComponent, TabulatorFull as Tabulator } from "tabulator-tables";
 
 const ExpandElement = `<svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin:0 4px -4px 0;position:absolute;right:0;"><path d="M3.88754 5L2.75 6.13754L8.43766 11.8252L14.1253 6.13756L12.9878 5.00002L8.43768 9.55015L3.88754 5Z" fill="#373D43"/></svg>`;
 const CollapseElement = `<svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin:0 4px -4px 0;position:absolute;right:0;"><path d="M13.348 11.3986L14.4144 10.3322L9.08223 5L3.75 10.3322L4.81644 11.3987L9.08223 7.13287L13.348 11.3986Z" fill="#373D43"/></svg>`;
@@ -14,6 +14,16 @@ export const Table: React.FC<TableProps> = (props: TableProps) => {
 
   React.useEffect(() => {
     if (ref.current) {
+      let dataTreeStartExpanded:
+        | boolean
+        | boolean[]
+        | ((row: RowComponent, level: number) => boolean)
+        | undefined = false;
+      if (props.dataTreeStartExpanded) {
+        dataTreeStartExpanded = Boolean(props.dataTreeStartExpanded);
+      } else if (props.dataTreeStartExpandedFn) {
+        dataTreeStartExpanded = props.dataTreeStartExpandedFn;
+      }
       const table = new Tabulator(ref.current, {
         height: props.data.length > 20 ? "500px" : "auto",
         data: props.data,
@@ -28,11 +38,7 @@ export const Table: React.FC<TableProps> = (props: TableProps) => {
         dataTreeExpandElement: ExpandElement,
         dataTreeCollapseElement: CollapseElement,
         dataTreeBranchElement: props.dataTreeBranchElement,
-        dataTreeStartExpanded: props.dataTreeStartExpanded
-          ? Boolean(props.dataTreeStartExpanded)
-          : props.dataTreeStartExpandedFn
-          ? props.dataTreeStartExpandedFn
-          : false,
+        dataTreeStartExpanded,
       });
 
       table.on("dataTreeRowExpanded", (_, level) => {
@@ -90,6 +96,7 @@ export const Table: React.FC<TableProps> = (props: TableProps) => {
       ref={ref}
       id={props.id}
       border="1px solid #CFD4DA"
+      data-cy="table"
       sx={{
         ".tabulator-col-title, .tabulator-cell": {
           color: "#373D43",

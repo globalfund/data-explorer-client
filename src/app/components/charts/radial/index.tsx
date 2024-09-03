@@ -25,6 +25,7 @@ const Tooltip = (props: any) => {
 
   return (
     <div
+      className="chart-tooltip"
       style={{
         gap: "10px",
         width: "400px",
@@ -47,7 +48,9 @@ const Tooltip = (props: any) => {
         <div className="chart-tooltip-text">
           {showList
             ? ""
-            : `${((props.value / props.totalValue) * 100).toFixed(2).replace(".00", "")}% - `}
+            : `${((props.value / props.totalValue) * 100)
+                .toFixed(2)
+                .replace(".00", "")}% - `}
           {formatFinancialValue(props.value)}
         </div>
       </div>
@@ -164,14 +167,13 @@ export const RadialChart: React.FC<RadialChartProps> = (
           show: true,
           ...chartTooltipCommonConfig(isTouch),
           formatter: (params: any) => {
-            const html = ReactDOMServer.renderToString(
+            return ReactDOMServer.renderToString(
               <Tooltip
                 {...params}
                 totalValue={totalValue}
                 label={props.tooltipLabel}
               />
             );
-            return html;
           },
         },
       };
@@ -185,6 +187,7 @@ export const RadialChart: React.FC<RadialChartProps> = (
     <React.Fragment>
       <Box
         id="radial-chart"
+        data-cy="radial-chart"
         ref={containerRef}
         width="100%"
         height={props.height ?? "480px"}

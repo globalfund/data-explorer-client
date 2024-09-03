@@ -21,7 +21,7 @@ import { ReactComponent as FullscreenIcon } from "app/assets/vectors/TableToolba
 export const TableContainer: React.FC<TableContainerProps> = (
   props: TableContainerProps
 ) => {
-  const [table, setTable] = React.useState<any>(null);
+  // const [table, setTable] = React.useState<any>(null);
   const [columns, setColumns] = React.useState(
     props.columns.map((column) => ({
       ...column,
@@ -42,15 +42,15 @@ export const TableContainer: React.FC<TableContainerProps> = (
 
   const fullscreenRef = React.useRef<HTMLDivElement>(null);
 
-  React.useEffect(() => {
-    const element = document.getElementById("table");
-    if (element) {
-      const tabulatorTables = Tabulator.findTable("#table");
-      if (tabulatorTables.length > 0 && tabulatorTables[0]) {
-        setTable(tabulatorTables[0]);
-      }
-    }
-  }, []);
+  // React.useEffect(() => {
+  //   const element = document.getElementById("table");
+  //   if (element) {
+  //     const tabulatorTables = Tabulator.findTable("#table");
+  //     if (tabulatorTables.length > 0 && tabulatorTables[0]) {
+  //       setTable(tabulatorTables[0]);
+  //     }
+  //   }
+  // }, []);
 
   // const download = () => {
   //   if (table) {
@@ -95,6 +95,7 @@ export const TableContainer: React.FC<TableContainerProps> = (
       borderRadius="32px"
       ref={fullscreenRef}
       flexDirection="column"
+      data-cy="table-container"
       sx={{
         "&:fullscreen": {
           padding: "32px",
@@ -142,6 +143,7 @@ export const TableContainer: React.FC<TableContainerProps> = (
                   background:
                     props.tabsView?.selectedTab === tab ? "#000" : "#fff",
                 }}
+                data-cy="table-tab-button"
               >
                 {tab}
               </Button>

@@ -60,6 +60,13 @@ input[type="text"] {
   -webkit-appearance: none;
 }
 
+
+@media (max-width: 767px) {
+  .chart-tooltip {
+    width: 250px !important;
+  }
+}
+
 .chart-tooltip-title {
   max-width: 100%;
   font-size: 18px;

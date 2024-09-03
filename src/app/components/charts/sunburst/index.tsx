@@ -24,6 +24,7 @@ echarts.use([EChartsSunburst, TooltipComponent, SVGRenderer]);
 const Tooltip = (props: any) => {
   return (
     <div
+      className="chart-tooltip"
       style={{
         gap: "10px",
         width: "400px",
@@ -132,10 +133,9 @@ export const SunburstChart: React.FC<SunburstProps> = (
           show: true,
           ...chartTooltipCommonConfig(isTouch),
           formatter: (params: any) => {
-            const html = ReactDOMServer.renderToString(
+            return ReactDOMServer.renderToString(
               <Tooltip {...params} label={props.tooltipLabel} />
             );
-            return html;
           },
         },
       };
@@ -177,6 +177,7 @@ export const SunburstChart: React.FC<SunburstProps> = (
       >
         <Box
           id="sunburst-chart"
+          data-cy="sunburst-chart"
           ref={containerRef}
           width="600px"
           height="600px"

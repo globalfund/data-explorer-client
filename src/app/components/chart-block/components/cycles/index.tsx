@@ -64,6 +64,7 @@ export const ChartBlockCycles: React.FC<ChartBlockCyclesProps> = (
           key={cycle.name}
           disabled={cycle.disabled}
           onClick={handleCycleClick(cycle)}
+          data-cy={`chart-cycle-button`}
           style={
             find(props.selectedCycles, { value: cycle.value })
               ? {
@@ -77,7 +78,7 @@ export const ChartBlockCycles: React.FC<ChartBlockCyclesProps> = (
               : {}
           }
         >
-          {cycle.name.replace(/ /g, "")}
+          {cycle.name.replace(" - ", "-")}
         </Button>
       ))}
     </Box>

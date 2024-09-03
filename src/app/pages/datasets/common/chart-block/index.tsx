@@ -8,11 +8,11 @@ import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
 import { FilterPanel } from "app/components/filters/panel";
-import UnfoldMoreIcon from "@mui/icons-material/UnfoldMore";
+// import UnfoldMoreIcon from "@mui/icons-material/UnfoldMore";
 import CircularProgress from "@mui/material/CircularProgress";
 import { DatasetChartBlockProps } from "app/pages/datasets/common/chart-block/data";
-import { ReactComponent as CollapseIcon } from "app/assets/vectors/Collapse_ButtonIcon.svg";
-import { ReactComponent as SettingsIcon } from "app/assets/vectors/Settings_ButtonIcon.svg";
+// import { ReactComponent as CollapseIcon } from "app/assets/vectors/Collapse_ButtonIcon.svg";
+// import { ReactComponent as SettingsIcon } from "app/assets/vectors/Settings_ButtonIcon.svg";
 import { ChartBlockButtonToolbar } from "app/components/chart-block/components/button-toolbar";
 
 export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
@@ -118,7 +118,7 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
   ]);
 
   return (
-    <Box id={props.id}>
+    <Box id={props.id} data-cy="dataset-chart-block">
       <Typography variant="h3" lineHeight={1.2}>
         {props.title}
       </Typography>
@@ -190,7 +190,7 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
           </Button> */}
         </Box>
         <Box gap="10px" display="flex" flexDirection="row">
-          {props.extraDropdown && props.extraDropdown}
+          {props.extraDropdown}
           {props.dropdownItems &&
             props.dropdownSelected &&
             props.handleDropdownChange && (

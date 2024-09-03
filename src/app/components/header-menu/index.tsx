@@ -200,6 +200,7 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (
                 }
               : {}
           }
+          data-cy="header-menu-button"
         >
           {page.label}
         </HeaderMenuButton>
@@ -268,6 +269,7 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (
                       padding: "0 30px",
                     },
                   }}
+                  data-cy="header-menu-button"
                 >
                   {subPage.label}
                 </HeaderMenuButton>
@@ -282,6 +284,7 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (
                         padding: "0 60px",
                         width: "fit-content",
                       }}
+                      data-cy="header-menu-button"
                     >
                       {subSubPage.label}
                     </HeaderMenuButton>

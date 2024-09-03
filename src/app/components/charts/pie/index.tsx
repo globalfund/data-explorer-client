@@ -18,6 +18,7 @@ echarts.use([EChartsPie, TooltipComponent, SVGRenderer]);
 const Tooltip = (props: any) => {
   return (
     <div
+      className="chart-tooltip"
       style={{
         gap: "10px",
         width: "400px",
@@ -112,8 +113,7 @@ export const PieChart: React.FC<PieChartProps> = (props: PieChartProps) => {
           show: true,
           ...chartTooltipCommonConfig(isTouch),
           formatter: (params: any) => {
-            const html = ReactDOMServer.renderToString(<Tooltip {...params} />);
-            return html;
+            return ReactDOMServer.renderToString(<Tooltip {...params} />);
           },
         },
       };

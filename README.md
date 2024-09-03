@@ -30,8 +30,8 @@ In order to be able to successfully run or build the app you need to create an e
 REACT_APP_API=<data middleware api url>
 REACT_APP_MAPBOX_TOKEN=<mapbox account token>
 REACT_APP_GOOGLE_ANALYTICS_ID=<google analytics app id>
-REACT_APP_CMS_API=<cockpit cms api url>
-REACT_APP_CMS_TOKEN=<cockpit cms api token>
+REACT_APP_CMS_API=<strapi cms api url>
+REACT_APP_CMS_TOKEN=<strapi cms api token>
 ```
 
 `REACT_APP_API`: is the url where the data middleware API runs on. If running [Data API Middleware](https://github.com/globalfund/data-explorer-server/) locally then you can use `http://localhost:4200`.
@@ -40,9 +40,9 @@ REACT_APP_CMS_TOKEN=<cockpit cms api token>
 
 `REACT_APP_GOOGLE_ANALYTICS_ID`(optional): Google Analytics ID in order to be able to make use of Google Analytics services.
 
-`REACT_APP_CMS_API`: is the url where the [Cockpit CMS API](https://github.com/zimmerman-team/the-data-explorer-cms/) runs on.
+`REACT_APP_CMS_API`: is the url where the [Strapi CMS API](https://github.com/zimmerman-team/CMS/) runs on. The project/de branch.
 
-`REACT_APP_CMS_TOKEN`: is the API token retrieved from the Cockpit CMS interface.
+`REACT_APP_CMS_TOKEN`: is the API token retrieved from the Strapi CMS interface.
 
 ---
 
@@ -69,6 +69,42 @@ The build is minified and the filenames include the hashes.<br />
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+## Tests - Cypress
+
+Cypress is used for end-to-end testing to ensure that the application functions as expected in the browser. To run the Cypress tests, follow these steps:
+
+In addition to the env variables above the following is also needed for cypress tests to run successfully:
+
+```
+REACT_APP_BASE_URL
+```
+
+`REACT_APP_BASE_URL`: This is the url your application runs on locally it's usually `http://localhost:3000`
+
+### Install Cypress dependencies
+
+If you haven't already installed Cypress, ensure all dependencies are installed by running:
+
+#### `yarn install`
+
+### Start the Application
+
+Ensure your application is running before starting the Cypress tests. You can do this by running:
+
+#### `yarn start`
+
+### Open Cypress Test Runner
+
+Open the Cypress Test Runner by running:
+
+#### `yarn cypress open`
+
+### Run Cypress Tests in Headless Mode
+
+Alternatively, you can run all Cypress tests in headless mode (without the GUI) directly from the command line using:
+
+#### `yarn cypress run`
 
 ## Learn More
 

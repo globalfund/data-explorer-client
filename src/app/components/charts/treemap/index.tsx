@@ -24,6 +24,7 @@ echarts.use([EchartsTreemap, TooltipComponent, SVGRenderer]);
 const Tooltip = (props: any) => {
   return (
     <div
+      className="chart-tooltip"
       style={{
         gap: "10px",
         width: "250px",
@@ -161,10 +162,9 @@ export const Treemap: React.FC<TreemapProps> = (props: TreemapProps) => {
           show: true,
           ...chartTooltipCommonConfig(isTouch),
           formatter: (params: any) => {
-            const html = ReactDOMServer.renderToString(
+            return ReactDOMServer.renderToString(
               <Tooltip {...params} total={total} />
             );
-            return html;
           },
         },
       };
@@ -182,10 +182,9 @@ export const Treemap: React.FC<TreemapProps> = (props: TreemapProps) => {
         },
         tooltip: {
           formatter: (params: any) => {
-            const html = ReactDOMServer.renderToString(
+            return ReactDOMServer.renderToString(
               <Tooltip {...params} total={total} />
             );
-            return html;
           },
         },
       });
@@ -196,6 +195,7 @@ export const Treemap: React.FC<TreemapProps> = (props: TreemapProps) => {
     <React.Fragment>
       <Box
         id="treemap-chart"
+        data-cy="treemap-chart"
         ref={containerRef}
         width="100%"
         height="400px"

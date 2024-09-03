@@ -23,6 +23,11 @@ export const Header: React.FC = () => {
 
   const onSearchBtnClick = () => {
     setSearchOpen(!searchOpen);
+    if (!searchOpen)
+      setTimeout(() => {
+        const input = document.getElementById("general-search");
+        if (input) input.focus();
+      }, 100);
   };
 
   const handleKeyPress = (e: KeyboardEvent) => {
@@ -134,12 +139,14 @@ export const Header: React.FC = () => {
                 width: "100%",
               },
             }}
+            data-cy="header-search-container"
           >
             <Search hocClose={() => setSearchOpen(false)} />
           </Box>
         )}
         <Tooltip title={!searchOpen ? "Search" : "Close"}>
           <IconButton
+            data-cy="header-search-btn"
             onClick={onSearchBtnClick}
             sx={{
               padding: 0,

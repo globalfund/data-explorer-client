@@ -45,6 +45,7 @@ echarts.use([
 const Tooltip = (props: any) => {
   return (
     <div
+      className="chart-tooltip"
       style={{
         gap: "10px",
         width: "400px",
@@ -307,8 +308,7 @@ export const ExpandableHorizontalBar: React.FC<
           show: true,
           ...chartTooltipCommonConfig(isTouch),
           formatter: (params: any) => {
-            const html = ReactDOMServer.renderToString(<Tooltip {...params} />);
-            return html;
+            return ReactDOMServer.renderToString(<Tooltip {...params} />);
           },
         },
       };
@@ -337,11 +337,11 @@ export const ExpandableHorizontalBar: React.FC<
           item.items &&
           item.items.length > 0
         ) {
-          item.items.forEach((item) => {
-            newData.push(item);
-            if (expandedBars.includes(item.name) && item.items) {
-              item.items.forEach((item) => {
-                newData.push(item);
+          item.items.forEach((subItem) => {
+            newData.push(subItem);
+            if (expandedBars.includes(subItem.name) && subItem.items) {
+              subItem.items.forEach((subSubItem) => {
+                newData.push(subSubItem);
               });
             }
           });
@@ -389,7 +389,7 @@ export const ExpandableHorizontalBar: React.FC<
         yAxis: {
           data: xAxisKeys,
         },
-        series: seriesData.map((values, index) => ({
+        series: seriesData.map((values) => ({
           data: values,
         })),
       });
@@ -422,6 +422,7 @@ export const ExpandableHorizontalBar: React.FC<
       </Typography>
       <Box
         id="expandable-horizontal-bar-chart"
+        data-cy="expandable-horizontal-bar-chart"
         ref={containerRef}
         width="100%"
         height={data.length * 40 + 100}

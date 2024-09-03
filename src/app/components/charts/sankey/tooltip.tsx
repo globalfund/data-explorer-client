@@ -26,12 +26,12 @@ export const SankeyChartTooltip: React.FC<SankeyChartTooltipProps> = (
     }[] = [];
     const items = props.data.links.filter((link) => link.source === props.name);
     items.forEach((item) => {
-      const node = props.data.nodes.find((node) => node.name === item.target);
+      const node = props.data.nodes.find((n) => n.name === item.target);
       const itemValue = props.data.links
         .filter(
           (link) => link.target === item.target && link.source === props.name
         )
-        .reduce((acc, item) => acc + item.value, 0);
+        .reduce((acc, item2) => acc + item2.value, 0);
       returnItems.push({
         value: itemValue,
         name: item.target,

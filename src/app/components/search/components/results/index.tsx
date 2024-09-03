@@ -4,6 +4,7 @@ import { useCMSData } from "app/hooks/useCMSData";
 import { useStoreState } from "app/state/store/hooks";
 import { getIcon } from "app/components/search/icons";
 import LinearProgress from "@mui/material/LinearProgress";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import { SearchResultModel } from "app/components/search/components/results/data";
 import {
   ResultA,
@@ -23,7 +24,7 @@ export function SearchResults(props: SearchResultsProps) {
   const hasLoaded = useStoreState((state) => state.GlobalSearch.success);
 
   return (
-    <Container id="search-results-container">
+    <Container id="search-results-container" data-cy="search-results-container">
       {props.loading && (
         <LinearProgress
           sx={{
@@ -42,6 +43,7 @@ export function SearchResults(props: SearchResultsProps) {
       )}
       <Results>
         {props.results.map((result: SearchResultModel) => {
+          console.log(result, "result");
           if (!result.link) {
             return (
               <ResultA
@@ -69,9 +71,10 @@ export function SearchResults(props: SearchResultsProps) {
               smooth
               to={result.link}
               key={result.value}
+              data-cy="search-result-item-link"
               scroll={(el) => {
                 const yCoordinate =
-                  el.getBoundingClientRect().top + window.pageYOffset;
+                  el.getBoundingClientRect().top + window.scrollY;
                 const yOffset = -130;
                 window.scrollTo({
                   top: yCoordinate + yOffset,
@@ -86,11 +89,17 @@ export function SearchResults(props: SearchResultsProps) {
         })}
         {props.results.length === 0 && !props.loading && hasLoaded && (
           <NoResults>
-            {get(cmsData, "componentsSearch.noResults", "")}
+            {getCMSDataField(
+              cmsData,
+              "componentsSearch.noResults",
+              "No results found."
+            )}
           </NoResults>
         )}
         {props.loading && (
-          <NoResults>{get(cmsData, "componentsSearch.loading", "")}</NoResults>
+          <NoResults>
+            {getCMSDataField(cmsData, "componentsSearch.loading", "Loading...")}
+          </NoResults>
         )}
       </Results>
     </Container>

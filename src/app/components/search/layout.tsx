@@ -12,6 +12,7 @@ import { Dropdown } from "app/components/dropdown";
 import SearchIcon from "@mui/icons-material/Search";
 import { categories } from "app/components/search/data";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import { SearchResults } from "app/components/search/components/results";
 import {
@@ -115,7 +116,7 @@ export function SearchLayout(props: SearchLayoutProps) {
           ref={inputRef}
           value={props.value}
           id="general-search"
-          placeholder={get(
+          placeholder={getCMSDataField(
             cmsData,
             "componentsSearch.placeholder",
             "e.g. Kenya"
@@ -123,6 +124,7 @@ export function SearchLayout(props: SearchLayoutProps) {
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             props.setValue(e.target.value)
           }
+          data-cy="search-input"
         />
         {props.value.length > 0 && (
           <IconButton

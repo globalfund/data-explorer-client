@@ -29,6 +29,7 @@ echarts.use([EChartsLine, GridComponent, TooltipComponent, SVGRenderer]);
 const Tooltip = (props: any) => {
   return (
     <div
+      className="chart-tooltip"
       style={{
         gap: "10px",
         width: "400px",
@@ -203,10 +204,9 @@ export const LineChart: React.FC<LineChartProps> = (props: LineChartProps) => {
               .forEach((value: number) => {
                 cumulative += value;
               });
-            const html = ReactDOMServer.renderToString(
+            return ReactDOMServer.renderToString(
               <Tooltip {...params} cumulative={cumulative} />
             );
-            return html;
           },
         },
       };
@@ -220,6 +220,7 @@ export const LineChart: React.FC<LineChartProps> = (props: LineChartProps) => {
     <React.Fragment>
       <Box
         id="line-chart"
+        data-cy="line-chart"
         ref={containerRef}
         width="100%"
         height="480px"

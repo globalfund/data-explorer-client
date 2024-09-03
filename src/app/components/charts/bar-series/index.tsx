@@ -42,6 +42,7 @@ echarts.use([
 const Tooltip = (props: any) => {
   return (
     <div
+      className="chart-tooltip"
       style={{
         gap: "10px",
         width: "400px",
@@ -223,8 +224,7 @@ export const BarSeriesChart: React.FC<BarSeriesChartProps> = (
           show: true,
           ...chartTooltipCommonConfig(isTouch),
           formatter: (params: any) => {
-            const html = ReactDOMServer.renderToString(<Tooltip {...params} />);
-            return html;
+            return ReactDOMServer.renderToString(<Tooltip {...params} />);
           },
         },
       };
@@ -238,6 +238,7 @@ export const BarSeriesChart: React.FC<BarSeriesChartProps> = (
     <React.Fragment>
       <Box
         id="bar-chart"
+        data-cy="bar-series-chart"
         ref={containerRef}
         width="100%"
         height="300px"

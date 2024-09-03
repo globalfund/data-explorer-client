@@ -27,6 +27,5 @@ export const Primary: StoryType = {
     children: <div>Content</div>,
     subtitle:
       "Government, private sector, non-government and other donor pledges and contributions.",
-    breadcrumbs: [{ label: "Datasets" }, { label: "Resource Mobilization" }],
   },
 };
