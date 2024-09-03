@@ -1,10 +1,10 @@
 import React from "react";
 import get from "lodash/get";
 import Box from "@mui/material/Box";
+import { useParams } from "react-router-dom";
 import { useCMSData } from "app/hooks/useCMSData";
 import Typography from "@mui/material/Typography";
 import { PieChart } from "app/components/charts/pie";
-import { useStoreState } from "app/state/store/hooks";
 import { ChartBlock } from "app/components/chart-block";
 import { getCMSDataField } from "app/utils/getCMSDataField";
 import { TableContainer } from "app/components/table-container";
@@ -12,9 +12,14 @@ import { GrantCardProps } from "app/components/grant-card/data";
 import { getMonthFromNumber } from "app/utils/getMonthFromNumber";
 import { PieChartDataItem } from "app/components/charts/pie/data";
 import { TABLE_VARIATION_5_COLUMNS } from "app/components/table/data";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 
 export const LocationGrantImplementationBlock4 = () => {
+  const params = useParams<{ id: string; tab: string }>();
+  const paramsId = params.id?.replace("|", "%2F");
   const cmsData = useCMSData({ returnData: true });
+
+  const [tableSearch, setTableSearch] = React.useState("");
 
   const dataGrantsPieCharts = useStoreState(
     (state) =>
@@ -41,6 +46,24 @@ export const LocationGrantImplementationBlock4 = () => {
   const loadingGrantsTable = useStoreState(
     (state) => state.GeographyGrantsTable.loading
   );
+  const fetchGrantsTable = useStoreActions(
+    (actions) => actions.GeographyGrantsTable.fetch
+  );
+
+  const onSearchChange = (search: string) => {
+    setTableSearch(search);
+    if (paramsId) {
+      fetchGrantsTable({
+        filterString: `geographies=${paramsId}${
+          search.length > 0 ? `&q=${search}` : ""
+        }`,
+        routeParams: {
+          page: "1",
+          pageSize: "all",
+        },
+      });
+    }
+  };
 
   const dataGrantsTableFormatted = React.useMemo(() => {
     return dataGrantsTable.map((item) => {
@@ -71,9 +94,10 @@ export const LocationGrantImplementationBlock4 = () => {
   }, [dataGrantsTable]);
 
   const showGrantsTable =
-    dataGrantsTable.length > 0 &&
-    !loadingGrantsTable &&
-    !loadingGrantsPieCharts;
+    (dataGrantsTable.length > 0 &&
+      !loadingGrantsTable &&
+      !loadingGrantsPieCharts) ||
+    tableSearch.length > 0;
 
   return (
     <ChartBlock
@@ -90,8 +114,10 @@ export const LocationGrantImplementationBlock4 = () => {
       <Box height="16px" />
       <TableContainer
         withCycles
+        search={tableSearch}
         id="financial-insights-table"
         data={dataGrantsTableFormatted}
+        onSearchChange={onSearchChange}
         columns={TABLE_VARIATION_5_COLUMNS}
       />
       <Box

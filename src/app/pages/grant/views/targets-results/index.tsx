@@ -20,6 +20,7 @@ export const GrantTargetsResults: React.FC = () => {
   useTitle(`The Data Explorer - ${params.id} Targets & Results`);
 
   const [tab, setTab] = React.useState(TABS[0]);
+  const [tableSearch, setTableSearch] = React.useState("");
 
   const dataTable = useStoreState((state) =>
     get(state.GrantTargetsResultsTable, "data.data", [])
@@ -41,16 +42,27 @@ export const GrantTargetsResults: React.FC = () => {
     setTab(TABS.find((t) => t.name === value) || TABS[0]);
   };
 
-  useUpdateEffect(() => {
+  const reloadTable = (search: string) => {
     if (params.id && params.ip) {
       fetchTable({
         routeParams: {
           code: params.id,
           ip: params.ip.toString(),
         },
-        filterString: `type=${tab.value}`,
+        filterString: `type=${tab.value}${
+          search.length > 0 ? `&q=${search}` : ""
+        }`,
       });
     }
+  };
+
+  const onSearchChange = (search: string) => {
+    setTableSearch(search);
+    reloadTable(search);
+  };
+
+  useUpdateEffect(() => {
+    reloadTable(tableSearch);
   }, [params.id, params.ip, tab]);
 
   const columns = React.useMemo(() => {
@@ -152,8 +164,10 @@ export const GrantTargetsResults: React.FC = () => {
           dataTree
           data={dataTable}
           columns={columns}
+          search={tableSearch}
           dataTreeStartExpanded
           noColumnVisibilitySelection
+          onSearchChange={onSearchChange}
           id="grant-targets-results-table"
           tabsView={{
             tabs: TABS.map((t) => t.name),

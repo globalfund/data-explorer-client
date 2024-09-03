@@ -4,13 +4,13 @@ import uniq from "lodash/uniq";
 import sumBy from "lodash/sumBy";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import { Table } from "app/components/table";
 import { useLocation } from "react-router-dom";
 import { useCMSData } from "app/hooks/useCMSData";
 import { Dropdown } from "app/components/dropdown";
 import { Treemap } from "app/components/charts/treemap";
 import { SankeyChart } from "app/components/charts/sankey";
 import { getCMSDataField } from "app/utils/getCMSDataField";
+import { TableContainer } from "app/components/table-container";
 import { FilterGroupModel } from "app/components/filters/list/data";
 import { TreemapDataItem } from "app/components/charts/treemap/data";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
@@ -50,6 +50,8 @@ export const GrantImplementationPageBlock3: React.FC<
     React.useState({
       ...defaultAppliedFilters,
     });
+
+  const [tableSearch, setTableSearch] = React.useState("");
 
   const dataBudgetSankey = useStoreState((state) => {
     const nodes = get(
@@ -265,85 +267,6 @@ export const GrantImplementationPageBlock3: React.FC<
     ]);
   };
 
-  const budgetsChartContent = React.useMemo(() => {
-    switch (budgetsDropdownSelected) {
-      case dropdownItemsBudgets[0].value:
-        return (
-          <React.Fragment>
-            <Grid
-              container
-              spacing={4}
-              sx={{
-                color: "#464646",
-                fontSize: "10px",
-                fontWeight: "700",
-                "@media (max-width: 767px)": {
-                  marginTop: "16px",
-                },
-              }}
-            >
-              <Grid item xs={3}>
-                {getCMSDataField(
-                  cmsData,
-                  "pagesDatasetsGrantImplementation.budgetsLabel1",
-                  "Total budget"
-                )}
-              </Grid>
-              <Grid item xs={3}>
-                {getCMSDataField(
-                  cmsData,
-                  "pagesDatasetsGrantImplementation.budgetsLabel2",
-                  "Investement Landscape 1"
-                )}
-              </Grid>
-              <Grid item xs={3}>
-                {getCMSDataField(
-                  cmsData,
-                  "pagesDatasetsGrantImplementation.budgetsLabel3",
-                  "Investement Landscape 2"
-                )}
-              </Grid>
-              <Grid item xs={3}>
-                {getCMSDataField(
-                  cmsData,
-                  "pagesDatasetsGrantImplementation.budgetsLabel4",
-                  "Cost Category"
-                )}
-              </Grid>
-            </Grid>
-            <SankeyChart data={dataBudgetSankey} />
-          </React.Fragment>
-        );
-      case dropdownItemsBudgets[1].value:
-        return <Treemap data={dataBudgetTreemap} />;
-      case dropdownItemsBudgets[2].value:
-        const columns = [...BUDGET_TABLE_COLUMNS];
-        if (
-          budgetTableDataType === dropdownItemsBudgetsTableDataTypes[1].value
-        ) {
-          columns[0].title = "Modules & Interventions";
-        } else {
-          columns[0].title = "Investment Landscapes & Cost Category";
-        }
-        return (
-          <Table
-            dataTree
-            id="budgets-table"
-            data={dataBudgetTable}
-            columns={BUDGET_TABLE_COLUMNS}
-          />
-        );
-      default:
-        return null;
-    }
-  }, [
-    budgetsDropdownSelected,
-    dataBudgetSankey,
-    dataBudgetTreemap,
-    dataBudgetTable,
-    budgetTableDataType,
-  ]);
-
   const budgetsCycleDropdown = React.useMemo(() => {
     if (!budgetCycleDropdownSelected) {
       return <React.Fragment />;
@@ -377,11 +300,12 @@ export const GrantImplementationPageBlock3: React.FC<
       case dropdownItemsBudgets[1].value:
         return !dataBudgetTreemap.length;
       case dropdownItemsBudgets[2].value:
-        return !dataBudgetTable.length;
+        return !dataBudgetTable.length && !tableSearch.length;
       default:
         return false;
     }
   }, [
+    tableSearch,
     budgetsDropdownSelected,
     dataBudgetSankey,
     dataBudgetTreemap,
@@ -490,6 +414,106 @@ export const GrantImplementationPageBlock3: React.FC<
     appliedFiltersData,
     chart2AppliedFiltersData,
     budgetCycleDropdownSelected,
+  ]);
+
+  const onSearchChange = (search: string) => {
+    setTableSearch(search);
+    let filterString = chart2FilterString;
+    if (search) {
+      filterString += `${filterString.length > 0 ? "&" : ""}q=${search}`;
+    }
+    fetchBudgetTable({
+      filterString,
+      routeParams: {
+        componentField:
+          props.componentsGrouping === componentsGroupingOptions[0].value
+            ? "activityAreaGroup"
+            : "activityArea",
+        geographyGrouping: props.geographyGrouping,
+      },
+    });
+  };
+
+  const budgetsChartContent = React.useMemo(() => {
+    switch (budgetsDropdownSelected) {
+      case dropdownItemsBudgets[0].value:
+        return (
+          <React.Fragment>
+            <Grid
+              container
+              spacing={4}
+              sx={{
+                color: "#464646",
+                fontSize: "10px",
+                fontWeight: "700",
+                "@media (max-width: 767px)": {
+                  marginTop: "16px",
+                },
+              }}
+            >
+              <Grid item xs={3}>
+                {getCMSDataField(
+                  cmsData,
+                  "pagesDatasetsGrantImplementation.budgetsLabel1",
+                  "Total budget"
+                )}
+              </Grid>
+              <Grid item xs={3}>
+                {getCMSDataField(
+                  cmsData,
+                  "pagesDatasetsGrantImplementation.budgetsLabel2",
+                  "Investement Landscape 1"
+                )}
+              </Grid>
+              <Grid item xs={3}>
+                {getCMSDataField(
+                  cmsData,
+                  "pagesDatasetsGrantImplementation.budgetsLabel3",
+                  "Investement Landscape 2"
+                )}
+              </Grid>
+              <Grid item xs={3}>
+                {getCMSDataField(
+                  cmsData,
+                  "pagesDatasetsGrantImplementation.budgetsLabel4",
+                  "Cost Category"
+                )}
+              </Grid>
+            </Grid>
+            <SankeyChart data={dataBudgetSankey} />
+          </React.Fragment>
+        );
+      case dropdownItemsBudgets[1].value:
+        return <Treemap data={dataBudgetTreemap} />;
+      case dropdownItemsBudgets[2].value:
+        const columns = [...BUDGET_TABLE_COLUMNS];
+        if (
+          budgetTableDataType === dropdownItemsBudgetsTableDataTypes[1].value
+        ) {
+          columns[0].title = "Modules & Interventions";
+        } else {
+          columns[0].title = "Investment Landscapes & Cost Category";
+        }
+        return (
+          <TableContainer
+            dataTree
+            id="budgets-table"
+            search={tableSearch}
+            data={dataBudgetTable}
+            columns={BUDGET_TABLE_COLUMNS}
+            onSearchChange={onSearchChange}
+          />
+        );
+      default:
+        return null;
+    }
+  }, [
+    tableSearch,
+    budgetsDropdownSelected,
+    dataBudgetSankey,
+    dataBudgetTreemap,
+    dataBudgetTable,
+    budgetTableDataType,
   ]);
 
   React.useEffect(() => {

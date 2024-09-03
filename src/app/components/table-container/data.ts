@@ -8,6 +8,7 @@ export interface TableContainerProps extends TableProps {
     selectedTab: string;
     onTabChange: (tab: string) => void;
   };
+  onSearchChange?: (search: string) => void;
 }
 
 export const TABLE_CONTAINER_TABS = [

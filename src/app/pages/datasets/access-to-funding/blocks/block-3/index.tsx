@@ -2,20 +2,23 @@ import React from "react";
 import get from "lodash/get";
 import uniq from "lodash/uniq";
 import Box from "@mui/material/Box";
-import { Table } from "app/components/table";
 import { useLocation } from "react-router-dom";
 import { useCMSData } from "app/hooks/useCMSData";
 import { Dropdown } from "app/components/dropdown";
 import { Treemap } from "app/components/charts/treemap";
 import { getCMSDataField } from "app/utils/getCMSDataField";
 import { SunburstChart } from "app/components/charts/sunburst";
+import { TableContainer } from "app/components/table-container";
 import { FilterGroupModel } from "app/components/filters/list/data";
 import { TreemapDataItem } from "app/components/charts/treemap/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 import { dropdownItemsAllocations } from "app/pages/datasets/access-to-funding/data";
-import { TABLE_VARIATION_11_COLUMNS as ALLOCATIONS_TABLE_COLUMNS } from "app/components/table/data";
+import {
+  financialFormatter,
+  cellBGColorFormatter,
+} from "app/components/table/data";
 
 interface AccessToFundingBlock3Props {
   filterString: string;
@@ -40,6 +43,8 @@ export const AccessToFundingBlock3: React.FC<AccessToFundingBlock3Props> = (
     React.useState({
       ...defaultAppliedFilters,
     });
+
+  const [tableSearch, setTableSearch] = React.useState("");
 
   const dataAllocationsSunburst = useStoreState((state) =>
     get(state.AccessToFundingAllocationSunburst, "data.data", [])
@@ -145,6 +150,15 @@ export const AccessToFundingBlock3: React.FC<AccessToFundingBlock3Props> = (
     );
   }, [dataCycleFilterOptions, allocationCycleDropdownSelected]);
 
+  const onSearchChange = (search: string) => {
+    setTableSearch(search);
+    let filterString = chart2FilterString;
+    if (search) {
+      filterString += `${filterString.length > 0 ? "&" : ""}q=${search}`;
+    }
+    fetchAllocationsTable({ filterString });
+  };
+
   const chartContent = React.useMemo(() => {
     switch (dropdownSelected) {
       case dropdownItemsAllocations[0].value:
@@ -159,17 +173,33 @@ export const AccessToFundingBlock3: React.FC<AccessToFundingBlock3Props> = (
         return <Treemap data={dataAllocationsTreemap} />;
       case dropdownItemsAllocations[2].value:
         return (
-          <Table
+          <TableContainer
             dataTree
+            search={tableSearch}
             id="allocations-table"
             data={dataAllocationsTable}
-            columns={ALLOCATIONS_TABLE_COLUMNS}
+            onSearchChange={onSearchChange}
+            columns={[
+              {
+                title: "Geography",
+                field: "name",
+                formatter: cellBGColorFormatter,
+                width: "33%",
+              },
+              {
+                title: "Amount ($US)",
+                field: allocationCycleDropdownSelected ?? "",
+                formatter: financialFormatter,
+                width: "66%",
+              },
+            ]}
           />
         );
       default:
         return null;
     }
   }, [
+    tableSearch,
     dropdownSelected,
     dataAllocationsSunburst,
     dataAllocationsTreemap,
@@ -183,11 +213,12 @@ export const AccessToFundingBlock3: React.FC<AccessToFundingBlock3Props> = (
       case dropdownItemsAllocations[1].value:
         return dataAllocationsTreemap.length === 0;
       case dropdownItemsAllocations[2].value:
-        return dataAllocationsTable.length === 0;
+        return dataAllocationsTable.length === 0 && tableSearch.length === 0;
       default:
         return false;
     }
   }, [
+    tableSearch,
     dropdownSelected,
     dataAllocationsSunburst,
     dataAllocationsTreemap,

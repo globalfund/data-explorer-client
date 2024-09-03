@@ -3,13 +3,13 @@ import get from "lodash/get";
 import uniq from "lodash/uniq";
 import Box from "@mui/material/Box";
 import { appColors } from "app/theme";
-import { Table } from "app/components/table";
 import { useLocation } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import { useCMSData } from "app/hooks/useCMSData";
 import { BarChart } from "app/components/charts/bar";
 import { LineChart } from "app/components/charts/line";
 import { getCMSDataField } from "app/utils/getCMSDataField";
+import { TableContainer } from "app/components/table-container";
 import { BarChartDataItem } from "app/components/charts/bar/data";
 import { LineChartDataItem } from "app/components/charts/line/data";
 import { FilterGroupModel } from "app/components/filters/list/data";
@@ -49,6 +49,8 @@ export const GrantImplementationPageBlock2: React.FC<
     React.useState({
       ...defaultAppliedFilters,
     });
+
+  const [tableSearch, setTableSearch] = React.useState("");
 
   const dataFinancialInsightsDisbursementsBarChart = useStoreState(
     (state) =>
@@ -250,120 +252,6 @@ export const GrantImplementationPageBlock2: React.FC<
     ]);
   };
 
-  const disbursementsChartContent = React.useMemo(() => {
-    let range;
-    switch (disbursementsDropdownSelected) {
-      case dropdownItemsDisbursements[0].value:
-        range = getRange(dataFinancialInsightsDisbursementsBarChart, ["value"]);
-        return (
-          <Box position="relative">
-            <Typography
-              left="-15px"
-              bottom="20px"
-              fontSize="10px"
-              padding="7px 12px"
-              borderRadius="4px"
-              position="absolute"
-              border="1px solid #DFE3E5"
-              sx={{
-                transformOrigin: "left",
-                transform: "rotate(-90deg)",
-                "@media (max-width: 767px)": {
-                  left: 0,
-                },
-              }}
-            >
-              Y Axis/<b>Disbursed Amount (US$ {range.abbr})</b>
-            </Typography>
-            <BarChart
-              data={dataFinancialInsightsDisbursementsBarChart}
-              valueLabels={{
-                value: "disbursement",
-              }}
-              itemStyle={{
-                color: () => appColors.TIME_CYCLE.BAR_COLOR_2,
-              }}
-            />
-            <Typography
-              left="40px"
-              bottom="-20px"
-              fontSize="10px"
-              padding="7px 12px"
-              borderRadius="4px"
-              position="absolute"
-              border="1px solid #DFE3E5"
-              sx={{
-                "@media (max-width: 767px)": {
-                  bottom: 0,
-                },
-              }}
-            >
-              X Axis/<b>Components</b>
-            </Typography>
-          </Box>
-        );
-      case dropdownItemsDisbursements[1].value:
-        const values: { value: number }[] = [];
-        dataFinancialInsightsDisbursementsLineChart.forEach((item) => {
-          item.data.forEach((value) => {
-            values.push({ value });
-          });
-        });
-        range = getRange(values, ["value"]);
-        return (
-          <Box position="relative">
-            <Typography
-              left="-5px"
-              bottom="20px"
-              fontSize="10px"
-              padding="7px 12px"
-              borderRadius="4px"
-              position="absolute"
-              border="1px solid #DFE3E5"
-              sx={{
-                transformOrigin: "left",
-                transform: "rotate(-90deg)",
-              }}
-            >
-              Y Axis/<b>Disbursed Amount (US$ {range.abbr})</b>
-            </Typography>
-            <LineChart
-              data={dataFinancialInsightsDisbursementsLineChart}
-              xAxisKeys={keysFinancialInsightsDisbursementsLineChart}
-            />
-            <Typography
-              left="40px"
-              bottom="-20px"
-              fontSize="10px"
-              padding="7px 12px"
-              borderRadius="4px"
-              position="absolute"
-              border="1px solid #DFE3E5"
-            >
-              X Axis/<b>Years</b>
-            </Typography>
-          </Box>
-        );
-      case dropdownItemsDisbursements[2].value:
-        return (
-          <Table
-            dataTree
-            id="disbursements-table"
-            columns={DISBURSEMENTS_TABLE_COLUMNS}
-            data={dataFinancialInsightsDisbursementsTable}
-          />
-        );
-      default:
-        return null;
-    }
-  }, [
-    disbursementsDropdownSelected,
-    dataFinancialInsightsDisbursementsBarChart,
-    dataFinancialInsightsDisbursementsLineChart,
-    keysFinancialInsightsDisbursementsLineChart,
-    dataFinancialInsightsDisbursementsTable,
-  ]);
-
   const disbursementsChartEmpty = React.useMemo(() => {
     switch (disbursementsDropdownSelected) {
       case dropdownItemsDisbursements[0].value:
@@ -371,11 +259,14 @@ export const GrantImplementationPageBlock2: React.FC<
       case dropdownItemsDisbursements[1].value:
         return !dataFinancialInsightsDisbursementsLineChart.length;
       case dropdownItemsDisbursements[2].value:
-        return !dataFinancialInsightsDisbursementsTable.length;
+        return (
+          !dataFinancialInsightsDisbursementsTable.length && !tableSearch.length
+        );
       default:
         return false;
     }
   }, [
+    tableSearch,
     disbursementsDropdownSelected,
     dataFinancialInsightsDisbursementsBarChart,
     dataFinancialInsightsDisbursementsLineChart,
@@ -487,6 +378,141 @@ export const GrantImplementationPageBlock2: React.FC<
     }
     return value;
   }, [appliedFiltersData, chart1AppliedFiltersData, location.search]);
+
+  const onSearchChange = (search: string) => {
+    setTableSearch(search);
+    let filterString = chart1FilterString;
+    if (search) {
+      filterString += `${filterString.length > 0 ? "&" : ""}q=${search}`;
+    }
+    fetchFinancialInsightsDisbursementsTable({
+      filterString,
+      routeParams: {
+        componentField:
+          props.componentsGrouping === componentsGroupingOptions[0].value
+            ? "activityAreaGroup"
+            : "activityArea",
+        geographyGrouping: props.geographyGrouping,
+      },
+    });
+  };
+
+  const disbursementsChartContent = React.useMemo(() => {
+    let range;
+    switch (disbursementsDropdownSelected) {
+      case dropdownItemsDisbursements[0].value:
+        range = getRange(dataFinancialInsightsDisbursementsBarChart, ["value"]);
+        return (
+          <Box position="relative">
+            <Typography
+              left="-15px"
+              bottom="20px"
+              fontSize="10px"
+              padding="7px 12px"
+              borderRadius="4px"
+              position="absolute"
+              border="1px solid #DFE3E5"
+              sx={{
+                transformOrigin: "left",
+                transform: "rotate(-90deg)",
+                "@media (max-width: 767px)": {
+                  left: 0,
+                },
+              }}
+            >
+              Y Axis/<b>Disbursed Amount (US$ {range.abbr})</b>
+            </Typography>
+            <BarChart
+              data={dataFinancialInsightsDisbursementsBarChart}
+              valueLabels={{
+                value: "disbursement",
+              }}
+              itemStyle={{
+                color: () => appColors.TIME_CYCLE.BAR_COLOR_2,
+              }}
+            />
+            <Typography
+              left="40px"
+              bottom="-20px"
+              fontSize="10px"
+              padding="7px 12px"
+              borderRadius="4px"
+              position="absolute"
+              border="1px solid #DFE3E5"
+              sx={{
+                "@media (max-width: 767px)": {
+                  bottom: 0,
+                },
+              }}
+            >
+              X Axis/<b>Components</b>
+            </Typography>
+          </Box>
+        );
+      case dropdownItemsDisbursements[1].value:
+        const values: { value: number }[] = [];
+        dataFinancialInsightsDisbursementsLineChart.forEach((item) => {
+          item.data.forEach((value) => {
+            values.push({ value });
+          });
+        });
+        range = getRange(values, ["value"]);
+        return (
+          <Box position="relative">
+            <Typography
+              left="-5px"
+              bottom="20px"
+              fontSize="10px"
+              padding="7px 12px"
+              borderRadius="4px"
+              position="absolute"
+              border="1px solid #DFE3E5"
+              sx={{
+                transformOrigin: "left",
+                transform: "rotate(-90deg)",
+              }}
+            >
+              Y Axis/<b>Disbursed Amount (US$ {range.abbr})</b>
+            </Typography>
+            <LineChart
+              data={dataFinancialInsightsDisbursementsLineChart}
+              xAxisKeys={keysFinancialInsightsDisbursementsLineChart}
+            />
+            <Typography
+              left="40px"
+              bottom="-20px"
+              fontSize="10px"
+              padding="7px 12px"
+              borderRadius="4px"
+              position="absolute"
+              border="1px solid #DFE3E5"
+            >
+              X Axis/<b>Years</b>
+            </Typography>
+          </Box>
+        );
+      case dropdownItemsDisbursements[2].value:
+        return (
+          <TableContainer
+            dataTree
+            search={tableSearch}
+            id="disbursements-table"
+            onSearchChange={onSearchChange}
+            columns={DISBURSEMENTS_TABLE_COLUMNS}
+            data={dataFinancialInsightsDisbursementsTable}
+          />
+        );
+      default:
+        return null;
+    }
+  }, [
+    tableSearch,
+    disbursementsDropdownSelected,
+    dataFinancialInsightsDisbursementsBarChart,
+    dataFinancialInsightsDisbursementsLineChart,
+    keysFinancialInsightsDisbursementsLineChart,
+    dataFinancialInsightsDisbursementsTable,
+  ]);
 
   React.useEffect(() => {
     fetchFinancialInsightsDisbursementsBarChart({

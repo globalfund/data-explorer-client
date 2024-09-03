@@ -15,6 +15,8 @@ interface AccessToFundingBlock6Props {
 export const AccessToFundingBlock6: React.FC<AccessToFundingBlock6Props> = (
   props: AccessToFundingBlock6Props
 ) => {
+  const [tableSearch, setTableSearch] = React.useState("");
+
   const dataDocumentsTable = useStoreState((state) =>
     get(state.AccessToFundingDocumentsTable, "data.data", []).map(
       (item: any, index) => {
@@ -42,6 +44,17 @@ export const AccessToFundingBlock6: React.FC<AccessToFundingBlock6Props> = (
   const fetchDocumentsTable = useStoreActions(
     (actions) => actions.AccessToFundingDocumentsTable.fetch
   );
+
+  const onSearchChange = (search: string) => {
+    setTableSearch(search);
+    let filterString = `types=Application${
+      props.filterString.length > 0 ? `&${props.filterString}` : ""
+    }`;
+    if (search) {
+      filterString += `&q=${search}`;
+    }
+    fetchDocumentsTable({ filterString });
+  };
 
   React.useEffect(() => {
     fetchDocumentsTable({
@@ -83,7 +96,18 @@ export const AccessToFundingBlock6: React.FC<AccessToFundingBlock6Props> = (
           <CircularProgress />
         </Box>
       )}
-      {!loadingDocumentsTable && dataDocumentsTable.length > 0 ? (
+      {dataDocumentsTable.length === 0 && tableSearch.length === 0 ? (
+        <Box
+          width="100%"
+          height="100%"
+          minHeight="250px"
+          alignItems="center"
+          justifyContent="center"
+          display={!loadingDocumentsTable ? "flex" : "none"}
+        >
+          <Typography>No data available</Typography>
+        </Box>
+      ) : (
         <React.Fragment>
           <Box
             height="40px"
@@ -95,23 +119,14 @@ export const AccessToFundingBlock6: React.FC<AccessToFundingBlock6Props> = (
           />
           <TableContainer
             dataTree
+            search={tableSearch}
             id="documents-table"
             data={dataDocumentsTable}
+            onSearchChange={onSearchChange}
             columns={DOCUMENTS_TABLE_COLUMNS}
             dataTreeStartExpandedFn={(row) => row.getData().top}
           />
         </React.Fragment>
-      ) : (
-        <Box
-          width="100%"
-          height="100%"
-          minHeight="250px"
-          alignItems="center"
-          justifyContent="center"
-          display={!loadingDocumentsTable ? "flex" : "none"}
-        >
-          <Typography>No data available</Typography>
-        </Box>
       )}
     </Box>
   );

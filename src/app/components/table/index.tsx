@@ -60,6 +60,10 @@ export const Table: React.FC<TableProps> = (props: TableProps) => {
           table.redraw();
         }, 500);
       }
+
+      if (props.setTable) {
+        props.setTable(table);
+      }
     }
   }, []);
 

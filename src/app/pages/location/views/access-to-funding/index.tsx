@@ -43,6 +43,9 @@ export const AccessToFunding: React.FC = () => {
   const [chart1Cycles, setChart1Cycles] = React.useState<CycleProps[]>([]);
   const [chart2Cycles, setChart2Cycles] = React.useState<CycleProps[]>([]);
 
+  const [tableSearch, setTableSearch] = React.useState("");
+  const [tableSearch2, setTableSearch2] = React.useState("");
+
   const dataAllocationsRadialChart = useStoreState(
     (state) =>
       get(
@@ -85,6 +88,9 @@ export const AccessToFunding: React.FC = () => {
   );
   const dataDocumentsTable = useStoreState((state) =>
     get(state.GeographyDocumentsTable, "data.data", [])
+  );
+  const fetchDocumentsTable = useStoreActions(
+    (actions) => actions.GeographyDocumentsTable.fetch
   );
   const allocationsCycles = useStoreState(
     (state) =>
@@ -151,6 +157,36 @@ export const AccessToFunding: React.FC = () => {
     }
   };
 
+  const loadFundingRequestsTable = () => {
+    if (paramsId && chart2Cycles.length > 0) {
+      let filterString = "";
+      filterString += `&periods=${chart2Cycles[0].value.split("-")[0]}`;
+      if (tableSearch) {
+        filterString += `${filterString.length > 0 ? "&" : ""}q=${tableSearch}`;
+      }
+      fetchFundingRequestsTable({
+        filterString,
+        routeParams: {
+          code: paramsId,
+        },
+      });
+    }
+  };
+
+  const onSearchChange = (search: string) => {
+    setTableSearch(search);
+    loadFundingRequestsTable();
+  };
+
+  const onSearchChange2 = (search: string) => {
+    setTableSearch2(search);
+    fetchDocumentsTable({
+      filterString: `types=Application&geographies=${paramsId}${
+        search.length > 0 ? `&q=${search}` : ""
+      }`,
+    });
+  };
+
   useUpdateEffect(() => {
     if (paramsId && chart1Cycles.length > 0) {
       let filterString = "";
@@ -163,16 +199,7 @@ export const AccessToFunding: React.FC = () => {
   }, [chart1Cycles]);
 
   useUpdateEffect(() => {
-    if (paramsId && chart2Cycles.length > 0) {
-      let filterString = "";
-      filterString += `&periods=${chart2Cycles[0].value.split("-")[0]}`;
-      fetchFundingRequestsTable({
-        filterString,
-        routeParams: {
-          code: paramsId,
-        },
-      });
-    }
+    loadFundingRequestsTable();
   }, [chart2Cycles]);
 
   React.useEffect(() => {
@@ -248,9 +275,10 @@ export const AccessToFunding: React.FC = () => {
 
   const showAllocationRadialChart = dataAllocationsRadialChart.length > 0;
   const showFundingRequestsTable =
-    dataFundingRequestsTable._children.length > 0;
+    dataFundingRequestsTable._children.length > 0 || tableSearch.length > 0;
   const showEligibilityHeatmap = dataEligibilityTable.length > 0;
-  const showDocumentsTable = dataDocumentsTable.length > 0;
+  const showDocumentsTable =
+    dataDocumentsTable.length > 0 || tableSearch2.length > 0;
 
   return (
     <Box gap="24px" display="flex" flexDirection="column">
@@ -342,8 +370,10 @@ export const AccessToFunding: React.FC = () => {
         <TableContainer
           dataTree
           withCycles
+          search={tableSearch}
           dataTreeStartExpanded
           id="funding-requests-table"
+          onSearchChange={onSearchChange}
           columns={TABLE_VARIATION_2_COLUMNS}
           data={dataFundingRequestsTable._children}
         />
@@ -588,7 +618,9 @@ export const AccessToFunding: React.FC = () => {
           dataTree
           id="documents-table"
           dataTreeStartExpanded
+          search={tableSearch2}
           data={dataDocumentsTable}
+          onSearchChange={onSearchChange2}
           columns={TABLE_VARIATION_6_COLUMNS}
         />
       </ChartBlock>

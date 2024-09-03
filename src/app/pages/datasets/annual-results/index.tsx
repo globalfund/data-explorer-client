@@ -61,6 +61,9 @@ export const AnnualResultsPage: React.FC = () => {
       : null
   );
 
+  const [tableSearch, setTableSearch] = React.useState("");
+  const [tableSearch2, setTableSearch2] = React.useState("");
+
   const dataStats = useStoreState(
     (state) =>
       get(state.AnnualResultsStats, "data.stats", []) as {
@@ -212,34 +215,6 @@ export const AnnualResultsPage: React.FC = () => {
     setChartAppliedFilters([...state.locations, ...state.components]);
   };
 
-  const chartContent = React.useMemo(() => {
-    switch (dropdownSelected) {
-      case dropdownItems[0].value:
-        return <PolylineTree data={dataPolyline} />;
-      case dropdownItems[1].value:
-        return (
-          <Table
-            dataTree
-            data={dataTable}
-            id="annual-results-table"
-            columns={TABLE_VARIATION_9_COLUMNS}
-            dataTreeStartExpandedFn={(row: RowComponent, level: number) => {
-              if (level === 0) return row.getData().name === yearSelected;
-              if (level === 1) {
-                const parent = row.getTreeParent();
-                if (parent) {
-                  return parent.getData().name === yearSelected;
-                }
-              }
-              return false;
-            }}
-          />
-        );
-      default:
-        return null;
-    }
-  }, [dropdownSelected, dataPolyline, dataTable, yearSelected]);
-
   const chartEmpty = React.useMemo(() => {
     switch (dropdownSelected) {
       case dropdownItems[0].value:
@@ -249,11 +224,11 @@ export const AnnualResultsPage: React.FC = () => {
           !dataPolyline.children.length
         );
       case dropdownItems[1].value:
-        return !dataTable || !dataTable.length;
+        return (!dataTable || !dataTable.length) && tableSearch.length === 0;
       default:
         return false;
     }
-  }, [dropdownSelected, dataPolyline, dataTable]);
+  }, [tableSearch, dropdownSelected, dataPolyline, dataTable]);
 
   const filterGroups = React.useMemo(() => {
     return [dataLocationFilterOptions, dataComponentFilterOptions];
@@ -341,6 +316,56 @@ export const AnnualResultsPage: React.FC = () => {
       </Box>
     );
   }, [yearSelected]);
+
+  const onSearchChange = (search: string) => {
+    setTableSearch(search);
+    let filterString = chartFilterString;
+    if (search) {
+      filterString += `${filterString.length > 0 ? "&" : ""}q=${search}`;
+    }
+    fetchTable({ filterString });
+  };
+
+  const onSearchChange2 = (search: string) => {
+    setTableSearch2(search);
+    let filterString2 = `types=Profile&${filterString}${
+      filterString.length ? "&" : ""
+    }cycle=${yearSelected}`;
+    if (search) {
+      filterString2 += `&q=${search}`;
+    }
+    fetchDocumentsTable({ filterString: filterString2 });
+  };
+
+  const chartContent = React.useMemo(() => {
+    switch (dropdownSelected) {
+      case dropdownItems[0].value:
+        return <PolylineTree data={dataPolyline} />;
+      case dropdownItems[1].value:
+        return (
+          <TableContainer
+            dataTree
+            data={dataTable}
+            search={tableSearch}
+            id="annual-results-table"
+            onSearchChange={onSearchChange}
+            columns={TABLE_VARIATION_9_COLUMNS}
+            dataTreeStartExpandedFn={(row: RowComponent, level: number) => {
+              if (level === 0) return row.getData().name === yearSelected;
+              if (level === 1) {
+                const parent = row.getTreeParent();
+                if (parent) {
+                  return parent.getData().name === yearSelected;
+                }
+              }
+              return false;
+            }}
+          />
+        );
+      default:
+        return null;
+    }
+  }, [dropdownSelected, dataPolyline, dataTable, yearSelected]);
 
   React.useEffect(() => {
     if (annualResultsCycles.length > 0) {
@@ -488,18 +513,7 @@ export const AnnualResultsPage: React.FC = () => {
                 <CircularProgress />
               </Box>
             )}
-            {!loadingDocumentsTable && dataDocumentsTable.length > 0 ? (
-              <React.Fragment>
-                <Box height="40px" />
-                <TableContainer
-                  dataTree
-                  id="documents-table"
-                  dataTreeStartExpanded
-                  data={dataDocumentsTable}
-                  columns={DOCUMENTS_TABLE_COLUMNS}
-                />
-              </React.Fragment>
-            ) : (
+            {dataDocumentsTable.length === 0 && tableSearch2.length === 0 ? (
               <Box
                 width="100%"
                 height="100%"
@@ -510,6 +524,19 @@ export const AnnualResultsPage: React.FC = () => {
               >
                 <Typography>No data available</Typography>
               </Box>
+            ) : (
+              <React.Fragment>
+                <Box height="40px" />
+                <TableContainer
+                  dataTree
+                  id="documents-table"
+                  search={tableSearch2}
+                  dataTreeStartExpanded
+                  data={dataDocumentsTable}
+                  onSearchChange={onSearchChange2}
+                  columns={DOCUMENTS_TABLE_COLUMNS}
+                />
+              </React.Fragment>
             )}
           </Box>
         </Box>

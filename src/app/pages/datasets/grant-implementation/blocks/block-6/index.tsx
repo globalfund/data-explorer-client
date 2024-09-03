@@ -31,6 +31,7 @@ import {
   componentsGroupingOptions,
   dropdownItemsExpenditures,
 } from "app/pages/datasets/grant-implementation/data";
+import { TableContainer } from "app/components/table-container";
 
 interface GrantImplementationPageBlock6Props {
   filterString: string;
@@ -54,6 +55,8 @@ export const GrantImplementationPageBlock6: React.FC<
   const [chart4AppliedFilters, setChart4AppliedFilters] = React.useState<
     string[]
   >([]);
+
+  const [tableSearch, setTableSearch] = React.useState("");
 
   const dataExpendituresHeatmap = useStoreState(
     (state) =>
@@ -270,71 +273,6 @@ export const GrantImplementationPageBlock6: React.FC<
     );
   }, [expenditureCycles, expendituresCycleDropdownSelected]);
 
-  const expendituresChartContent = React.useMemo(() => {
-    switch (expendituresDropdownSelected) {
-      case dropdownItemsExpenditures[0].value:
-        return (
-          <Heatmap
-            valueType="amount"
-            contentProp="value"
-            hoveredLegend={null}
-            columnCategory="cycle"
-            rowCategory="component"
-            data={dataExpendituresHeatmap}
-            getItemColor={getPercentageColor}
-            columnHeader={getCMSDataField(
-              cmsData,
-              "pagesDatasetsGrantImplementation.expendituresHeatmapColumnHeader",
-              "Principal Recipients"
-            )}
-            rowHeader={getCMSDataField(
-              cmsData,
-              "pagesDatasetsGrantImplementation.expendituresHeatmapRowHeader",
-              "Components"
-            )}
-          />
-        );
-      case dropdownItemsExpenditures[1].value:
-        return (
-          <ExpandableHorizontalBar
-            data={dataExpendituresBarChart}
-            yAxisLabel={getCMSDataField(
-              cmsData,
-              "pagesDatasetsGrantImplementation.expendituresBarchartYLabel",
-              "Modules & Interventions"
-            )}
-            xAxisLabel={getCMSDataField(
-              cmsData,
-              "pagesDatasetsGrantImplementation.expendituresBarchartXLabel",
-              "Expenditure"
-            )}
-            valueLabels={{
-              value: "amount",
-            }}
-            itemStyle={{
-              color: () => appColors.TIME_CYCLE.BAR_COLOR_1,
-            }}
-          />
-        );
-      case dropdownItemsExpenditures[2].value:
-        return (
-          <Table
-            dataTree
-            id="expenditures-table"
-            data={dataExpendituresTable}
-            columns={EXPENDITURES_TABLE_COLUMNS}
-          />
-        );
-      default:
-        return null;
-    }
-  }, [
-    expendituresDropdownSelected,
-    dataExpendituresHeatmap,
-    dataExpendituresBarChart,
-    dataExpendituresTable,
-  ]);
-
   const expendituresChartEmpty = React.useMemo(() => {
     switch (expendituresDropdownSelected) {
       case dropdownItemsExpenditures[0].value:
@@ -342,11 +280,12 @@ export const GrantImplementationPageBlock6: React.FC<
       case dropdownItemsExpenditures[1].value:
         return !dataExpendituresBarChart.length;
       case dropdownItemsExpenditures[2].value:
-        return !dataExpendituresTable.length;
+        return !dataExpendituresTable.length && !tableSearch.length;
       default:
         return false;
     }
   }, [
+    tableSearch,
     expendituresDropdownSelected,
     dataExpendituresHeatmap,
     dataExpendituresBarChart,
@@ -465,6 +404,92 @@ export const GrantImplementationPageBlock6: React.FC<
     appliedFiltersData,
     chart4AppliedFiltersData,
     expendituresCycleDropdownSelected,
+  ]);
+
+  const onSearchChange = (search: string) => {
+    setTableSearch(search);
+    let filterString = chart4FilterString;
+    if (search) {
+      filterString += `${filterString.length > 0 ? "&" : ""}q=${search}`;
+    }
+    fetchExpendituresTable({
+      filterString,
+      routeParams: {
+        componentField:
+          props.componentsGrouping === componentsGroupingOptions[0].value
+            ? "activityAreaGroup"
+            : "activityArea",
+        geographyGrouping: props.geographyGrouping,
+      },
+    });
+  };
+
+  const expendituresChartContent = React.useMemo(() => {
+    switch (expendituresDropdownSelected) {
+      case dropdownItemsExpenditures[0].value:
+        return (
+          <Heatmap
+            valueType="amount"
+            contentProp="value"
+            hoveredLegend={null}
+            columnCategory="cycle"
+            rowCategory="component"
+            data={dataExpendituresHeatmap}
+            getItemColor={getPercentageColor}
+            columnHeader={getCMSDataField(
+              cmsData,
+              "pagesDatasetsGrantImplementation.expendituresHeatmapColumnHeader",
+              "Principal Recipients"
+            )}
+            rowHeader={getCMSDataField(
+              cmsData,
+              "pagesDatasetsGrantImplementation.expendituresHeatmapRowHeader",
+              "Components"
+            )}
+          />
+        );
+      case dropdownItemsExpenditures[1].value:
+        return (
+          <ExpandableHorizontalBar
+            data={dataExpendituresBarChart}
+            yAxisLabel={getCMSDataField(
+              cmsData,
+              "pagesDatasetsGrantImplementation.expendituresBarchartYLabel",
+              "Modules & Interventions"
+            )}
+            xAxisLabel={getCMSDataField(
+              cmsData,
+              "pagesDatasetsGrantImplementation.expendituresBarchartXLabel",
+              "Expenditure"
+            )}
+            valueLabels={{
+              value: "amount",
+            }}
+            itemStyle={{
+              color: () => appColors.TIME_CYCLE.BAR_COLOR_1,
+            }}
+          />
+        );
+      case dropdownItemsExpenditures[2].value:
+        return (
+          <TableContainer
+            dataTree
+            search={tableSearch}
+            id="expenditures-table"
+            data={dataExpendituresTable}
+            onSearchChange={onSearchChange}
+            columns={EXPENDITURES_TABLE_COLUMNS}
+          />
+        );
+      default:
+        return null;
+    }
+  }, [
+    tableSearch,
+    expendituresDropdownSelected,
+    dataExpendituresHeatmap,
+    dataExpendituresBarChart,
+    dataExpendituresTable,
   ]);
 
   React.useEffect(() => {

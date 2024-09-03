@@ -22,6 +22,8 @@ export interface TableProps {
   }[];
   columns: ColumnDefinition[];
   dataTree?: boolean;
+  search?: string;
+  setTable?: (table: Tabulator) => void;
   dataTreeBranchElement?: boolean;
   dataTreeStartExpanded?: boolean;
   extraColumns?: ColumnDefinition[];
@@ -79,7 +81,7 @@ export const cellBGColorFormatter = (cell: CellComponent) => {
   return text;
 };
 
-const financialFormatter = (cell: CellComponent) => {
+export const financialFormatter = (cell: CellComponent) => {
   if (!cell.getValue()) {
     return cellBGColorFormatter(cell);
   }

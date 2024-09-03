@@ -31,6 +31,8 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
       ...defaultAppliedFilters,
     });
 
+  const [tableSearch, setTableSearch] = React.useState("");
+
   const dataFundingRequestsTable = useStoreState((state) =>
     get(state.AccessToFundingFundingRequestsTable, "data.data", []).map(
       (item: any, index) => {
@@ -158,6 +160,15 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
     return value;
   }, [appliedFiltersData, chart3AppliedFiltersData, location.search]);
 
+  const onSearchChange = (search: string) => {
+    setTableSearch(search);
+    let filterString = chart3FilterString;
+    if (search) {
+      filterString += `${filterString.length > 0 ? "&" : ""}q=${search}`;
+    }
+    fetchFundingRequestsTable({ filterString });
+  };
+
   React.useEffect(() => {
     fetchFundingRequestsTable({ filterString: chart3FilterString });
   }, [chart3FilterString]);
@@ -175,6 +186,7 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
       }}
     >
       <DatasetChartBlock
+        infoType="global"
         id="funding-requests"
         title={getCMSDataField(
           cmsData,
@@ -189,19 +201,22 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
         disableCollapse
         dropdownItems={[]}
         loading={loadingFundingRequestsTable}
-        empty={dataFundingRequestsTable.length === 0}
         filterGroups={props.filterGroups}
         appliedFilters={chart3AppliedFilters}
         toggleFilter={handleToggleChartFilter}
         removeFilter={handleRemoveChartFilter}
         handleResetFilters={handleResetChartFilters}
         appliedFiltersData={chart3AppliedFiltersData}
-        infoType="global"
+        empty={
+          dataFundingRequestsTable.length === 0 && tableSearch.length === 0
+        }
       >
         <TableContainer
           dataTree
+          search={tableSearch}
           id="funding-requests-table"
           data={dataFundingRequestsTable}
+          onSearchChange={onSearchChange}
           columns={FUNDING_REQUESTS_TABLE_COLUMNS}
           dataTreeStartExpandedFn={(row) => row.getData().top}
         />

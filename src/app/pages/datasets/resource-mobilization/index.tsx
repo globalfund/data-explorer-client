@@ -6,7 +6,6 @@ import Box from "@mui/material/Box";
 import { useTitle } from "react-use";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
-import { Table } from "app/components/table";
 import { useLocation } from "react-router-dom";
 import { useCMSData } from "app/hooks/useCMSData";
 import Typography from "@mui/material/Typography";
@@ -14,6 +13,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { getCMSDataField } from "app/utils/getCMSDataField";
 import { DatasetPage } from "app/pages/datasets/common/page";
 import CircularProgress from "@mui/material/CircularProgress";
+import { TableContainer } from "app/components/table-container";
 import { FilterGroupModel } from "app/components/filters/list/data";
 import { TABLE_VARIATION_8_COLUMNS } from "app/components/table/data";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
@@ -47,6 +47,8 @@ export const ResourceMobilizationPage: React.FC = () => {
   const [chartAppliedFiltersData, setChartAppliedFiltersData] = React.useState({
     ...defaultAppliedFilters,
   });
+
+  const [tableSearch, setTableSearch] = React.useState("");
 
   const dataStats = useStoreState(
     (state) =>
@@ -213,60 +215,16 @@ export const ResourceMobilizationPage: React.FC = () => {
     ]);
   };
 
-  const chartContent = React.useMemo(() => {
-    switch (dropdownSelected) {
-      case dropdownItems[0].value:
-        return (
-          <ExpandableHorizontalBar
-            data={dataBarChart}
-            yAxisLabel={getCMSDataField(
-              cmsData,
-              "pagesDatasetsResourceMobilization.barchartYLabel",
-              "Donor Types & Donors"
-            )}
-            xAxisLabel={getCMSDataField(
-              cmsData,
-              "pagesDatasetsResourceMobilization.barchartXLabel",
-              "Amount"
-            )}
-            valueLabels={{
-              value: getCMSDataField(
-                cmsData,
-                "pagesDatasetsResourceMobilization.barchartValueLabel1",
-                "Pledge"
-              ),
-              value1: getCMSDataField(
-                cmsData,
-                "pagesDatasetsResourceMobilization.barchartValueLabel2",
-                "Contribution"
-              ),
-            }}
-          />
-        );
-      case dropdownItems[1].value:
-        return (
-          <Table
-            dataTree
-            data={dataTable}
-            id="pledges-contributions-table"
-            columns={TABLE_VARIATION_8_COLUMNS}
-          />
-        );
-      default:
-        return null;
-    }
-  }, [dropdownSelected, dataBarChart, dataTable]);
-
   const chartEmpty = React.useMemo(() => {
     switch (dropdownSelected) {
       case dropdownItems[0].value:
         return !dataBarChart || !dataBarChart.length;
       case dropdownItems[1].value:
-        return !dataTable || !dataTable.length;
+        return (!dataTable || !dataTable.length) && !tableSearch.length;
       default:
         return false;
     }
-  }, [dropdownSelected, dataBarChart, dataTable]);
+  }, [dropdownSelected, dataBarChart, dataTable, tableSearch]);
 
   const filterGroups = React.useMemo(() => {
     return [dataDonorFilterOptions, dataReplenishmentPeriodFilterOptions];
@@ -341,6 +299,61 @@ export const ResourceMobilizationPage: React.FC = () => {
     }
     return value;
   }, [appliedFiltersData, chartAppliedFiltersData, location.search]);
+
+  const onSearchChange = (search: string) => {
+    setTableSearch(search);
+    let filterString = chartFilterString;
+    if (search) {
+      filterString += `${filterString.length > 0 ? "&" : ""}q=${search}`;
+    }
+    fetchTable({ filterString });
+  };
+
+  const chartContent = React.useMemo(() => {
+    switch (dropdownSelected) {
+      case dropdownItems[0].value:
+        return (
+          <ExpandableHorizontalBar
+            data={dataBarChart}
+            yAxisLabel={getCMSDataField(
+              cmsData,
+              "pagesDatasetsResourceMobilization.barchartYLabel",
+              "Donor Types & Donors"
+            )}
+            xAxisLabel={getCMSDataField(
+              cmsData,
+              "pagesDatasetsResourceMobilization.barchartXLabel",
+              "Amount"
+            )}
+            valueLabels={{
+              value: getCMSDataField(
+                cmsData,
+                "pagesDatasetsResourceMobilization.barchartValueLabel1",
+                "Pledge"
+              ),
+              value1: getCMSDataField(
+                cmsData,
+                "pagesDatasetsResourceMobilization.barchartValueLabel2",
+                "Contribution"
+              ),
+            }}
+          />
+        );
+      case dropdownItems[1].value:
+        return (
+          <TableContainer
+            dataTree
+            data={dataTable}
+            search={tableSearch}
+            onSearchChange={onSearchChange}
+            id="pledges-contributions-table"
+            columns={TABLE_VARIATION_8_COLUMNS}
+          />
+        );
+      default:
+        return null;
+    }
+  }, [dropdownSelected, dataBarChart, dataTable, tableSearch]);
 
   React.useEffect(() => {
     fetchStats({ filterString });

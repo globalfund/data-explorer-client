@@ -38,6 +38,8 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
       ...defaultAppliedFilters,
     });
 
+  const [tableSearch, setTableSearch] = React.useState("");
+
   const dataEligibilityTable = useStoreState((state) =>
     get(state.AccessToFundingEligibilityTable, "data.data", []).map(
       (item: any, index) => {
@@ -181,6 +183,15 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
     setChart1AppliedFilters([]);
   };
 
+  const onSearchChange = (search: string) => {
+    setTableSearch(search);
+    let filterString = chart1FilterString;
+    if (search) {
+      filterString += `${filterString.length > 0 ? "&" : ""}q=${search}`;
+    }
+    fetchEligibilityTable({ filterString });
+  };
+
   React.useEffect(() => {
     fetchEligibilityTable({ filterString: chart1FilterString });
   }, [chart1FilterString]);
@@ -199,6 +210,7 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
     >
       <DatasetChartBlock
         id="eligibility"
+        infoType="global"
         title={getCMSDataField(
           cmsData,
           "pagesDatasetsAccessToFunding.eligibilityTitle",
@@ -212,14 +224,13 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
         dropdownItems={[]}
         disableCollapse
         loading={loadingEligibilityTable}
-        empty={dataEligibilityTable.length === 0}
         filterGroups={props.filterGroups}
         appliedFilters={chart1AppliedFilters}
         toggleFilter={handleToggleChartFilter}
         removeFilter={handleRemoveChartFilter}
         handleResetFilters={handleResetChartFilters}
         appliedFiltersData={chart1AppliedFiltersData}
-        infoType="global"
+        empty={dataEligibilityTable.length === 0 && tableSearch.length === 0}
       >
         <Box
           gap="20px"
@@ -409,8 +420,10 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
         </Box>
         <TableContainer
           dataTree
+          search={tableSearch}
           id="eligibility-table"
           data={dataEligibilityTable}
+          onSearchChange={onSearchChange}
           columns={eligibilityTableColumns}
           dataTreeStartExpandedFn={(row) => row.getData().top}
         />
