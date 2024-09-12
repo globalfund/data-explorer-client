@@ -127,6 +127,8 @@ import pagesLocation, {
   pagesLocationResults,
 } from "app/state/api/action-reducers/cms/pagesLocation";
 import general from "app/state/api/action-reducers/cms/general";
+import { FinancialInsightsHGISankey } from "../api/action-reducers/financial-insights/hgi-sankey";
+import { FinancialInsightsHGITable } from "../api/action-reducers/financial-insights/hgi-table";
 
 const storeContent: StoreModel = {
   // homepage
@@ -168,6 +170,8 @@ const storeContent: StoreModel = {
   FinancialInsightsDisbursementsTable: persist(
     FinancialInsightsDisbursementsTable
   ),
+  FinancialInsightsHGISankey: persist(FinancialInsightsHGISankey),
+  FinancialInsightsHGITable: persist(FinancialInsightsHGITable),
   FinancialInsightsBudgetBreakdown: persist(FinancialInsightsBudgetBreakdown),
   FinancialInsightsBudgetUtilisation: persist(
     FinancialInsightsBudgetUtilisation

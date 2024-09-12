@@ -7891,3 +7891,18 @@ export const TABLE_VARIATION_15_DATA: {
     ],
   },
 ];
+
+export const TABLE_VARIATION_16_COLUMNS: ColumnDefinition[] = [
+  {
+    title: "Disbursement Area",
+    field: "name",
+    width: "50%",
+    formatter: cellBGColorFormatter,
+  },
+  {
+    title: "Amount (US$)",
+    field: "amount",
+    width: "50%",
+    formatter: financialFormatter,
+  },
+];

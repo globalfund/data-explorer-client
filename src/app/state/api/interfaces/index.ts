@@ -135,6 +135,8 @@ export interface StoreModel {
   FinancialInsightsDisbursementsBarChart: ApiCallModel;
   FinancialInsightsDisbursementsLineChart: ApiCallModel;
   FinancialInsightsDisbursementsTable: ApiCallModel;
+  FinancialInsightsHGISankey: ApiCallModel;
+  FinancialInsightsHGITable: ApiCallModel;
   FinancialInsightsBudgetBreakdown: ApiCallModel;
   FinancialInsightsBudgetUtilisation: ApiCallModel;
   FinancialInsightsCountryAbsorption: ApiCallModel;

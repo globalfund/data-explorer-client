@@ -1,0 +1,273 @@
+import React from "react";
+import get from "lodash/get";
+import Box from "@mui/material/Box";
+import { useLocation } from "react-router-dom";
+import { Dropdown } from "app/components/dropdown";
+import { useCMSData } from "app/hooks/useCMSData";
+import { SankeyChart } from "app/components/charts/sankey";
+import { getCMSDataField } from "app/utils/getCMSDataField";
+import { TableContainer } from "app/components/table-container";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
+import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
+import { dropdownItemsHolisticGrantInvestments } from "app/pages/datasets/grant-implementation/data";
+import {
+  TableDataItem,
+  TABLE_VARIATION_16_COLUMNS as HGI_TABLE_COLUMNS,
+} from "app/components/table/data";
+
+export const GrantImplementationPageBlock21: React.FC = () => {
+  const location = useLocation();
+  const cmsData = useCMSData({ returnData: true });
+
+  const [dropdownSelected, setDropdownSelected] = React.useState(
+    dropdownItemsHolisticGrantInvestments[0].value
+  );
+
+  const [tableSearch, setTableSearch] = React.useState("");
+
+  const dataSankey = useStoreState((state) => {
+    const nodes = get(state.FinancialInsightsHGISankey, "data.data.nodes", []);
+    const links = get(state.FinancialInsightsHGISankey, "data.data.links", []);
+    return {
+      nodes,
+      links,
+    };
+  });
+  const fetchSankey = useStoreActions(
+    (actions) => actions.FinancialInsightsHGISankey.fetch
+  );
+  const dataTable = useStoreState(
+    (state) =>
+      get(state.FinancialInsightsHGITable, "data.data", []) as {
+        [key: string]: TableDataItem;
+      }[]
+  );
+  const fetchTable = useStoreActions(
+    (actions) => actions.FinancialInsightsHGITable.fetch
+  );
+  const loading = useStoreState((state) => {
+    switch (dropdownSelected) {
+      case dropdownItemsHolisticGrantInvestments[0].value:
+        return state.FinancialInsightsHGISankey.loading;
+      case dropdownItemsHolisticGrantInvestments[1].value:
+        return state.FinancialInsightsHGITable.loading;
+      default:
+        return false;
+    }
+  });
+  const cycles = useStoreState((state) =>
+    get(state.DisbursementsCycles, "data.data", [])
+      .map((cycle: any) => ({
+        label: cycle.value,
+        value: cycle.value,
+      }))
+      .reverse()
+      .slice(0, 3)
+  );
+  const appliedFiltersData = useStoreState(
+    (state) => state.AppliedFiltersState
+  );
+
+  const [cycleDropdownSelected, setCycleDropdownSelected] = React.useState(
+    cycles.length > 0 ? cycles[0].value : null
+  );
+
+  const handleDropdownSelectionChange = (value: string) => {
+    setDropdownSelected(value);
+  };
+
+  const cycleDropdown = React.useMemo(() => {
+    if (!cycleDropdownSelected) {
+      return <React.Fragment />;
+    }
+    return (
+      <Dropdown
+        dropdownItems={cycles}
+        dropdownSelected={cycleDropdownSelected}
+        handleDropdownChange={setCycleDropdownSelected}
+      />
+    );
+  }, [cycles, cycleDropdownSelected]);
+
+  const chartEmpty = React.useMemo(() => {
+    switch (dropdownSelected) {
+      case dropdownItemsHolisticGrantInvestments[0].value:
+        return !dataSankey.nodes.length;
+      case dropdownItemsHolisticGrantInvestments[1].value:
+        return !dataTable.length;
+      default:
+        return false;
+    }
+  }, [tableSearch, dropdownSelected, dataSankey.nodes, dataTable]);
+
+  const chartFilterString = React.useMemo(() => {
+    let value = "";
+    if (
+      appliedFiltersData.locations.length > 0 &&
+      location.search.includes("locations=")
+    ) {
+      value += `geographies=${encodeURIComponent(
+        appliedFiltersData.locations.join(",")
+      )}`;
+    }
+    if (
+      appliedFiltersData.components.length > 0 &&
+      location.search.includes("components=")
+    ) {
+      value += `${value.length > 0 ? "&" : ""}components=${encodeURIComponent(
+        appliedFiltersData.components.join(",")
+      )}`;
+    }
+    if (
+      appliedFiltersData.principalRecipients.length > 0 &&
+      location.search.includes("principalRecipients=")
+    ) {
+      value += `${
+        value.length > 0 ? "&" : ""
+      }principalRecipients=${encodeURIComponent(
+        appliedFiltersData.principalRecipients.join(",")
+      )}`;
+    }
+    if (
+      appliedFiltersData.principalRecipientSubTypes.length > 0 &&
+      location.search.includes("principalRecipientSubTypes=")
+    ) {
+      value += `${
+        value.length > 0 ? "&" : ""
+      }principalRecipientSubTypes=${encodeURIComponent(
+        appliedFiltersData.principalRecipientSubTypes.join(",")
+      )}`;
+    }
+    if (
+      appliedFiltersData.principalRecipientTypes.length > 0 &&
+      location.search.includes("principalRecipientTypes=")
+    ) {
+      value += `${
+        value.length > 0 ? "&" : ""
+      }principalRecipientTypes=${encodeURIComponent(
+        appliedFiltersData.principalRecipientTypes.join(",")
+      )}`;
+    }
+    if (
+      appliedFiltersData.status.length > 0 &&
+      location.search.includes("status=")
+    ) {
+      value += `${value.length > 0 ? "&" : ""}status=${encodeURIComponent(
+        appliedFiltersData.status.join(",")
+      )}`;
+    }
+    if (cycleDropdownSelected) {
+      value += `${
+        value.length > 0 ? "&" : ""
+      }cycleNames=${cycleDropdownSelected}`;
+    }
+    return value;
+  }, [cycleDropdownSelected]);
+
+  const onSearchChange = (search: string) => {
+    setTableSearch(search);
+    let filterString = chartFilterString;
+    if (search) {
+      filterString += `${filterString.length > 0 ? "&" : ""}q=${search}`;
+    }
+    fetchTable({ filterString });
+  };
+
+  const chartContent = React.useMemo(() => {
+    switch (dropdownSelected) {
+      case dropdownItemsHolisticGrantInvestments[0].value:
+        return <SankeyChart formatLabel data={dataSankey} />;
+      case dropdownItemsHolisticGrantInvestments[1].value:
+        return (
+          <TableContainer
+            dataTree
+            id="hgi-table"
+            data={dataTable}
+            search={tableSearch}
+            dataTreeStartExpanded
+            columns={HGI_TABLE_COLUMNS}
+            onSearchChange={onSearchChange}
+          />
+        );
+      default:
+        return null;
+    }
+  }, [
+    tableSearch,
+    dropdownSelected,
+    dataSankey,
+    dataTable,
+    cmsData,
+    cycleDropdownSelected,
+  ]);
+
+  React.useEffect(() => {
+    if (!cycleDropdownSelected) return;
+    fetchSankey({ filterString: chartFilterString });
+    fetchTable({ filterString: chartFilterString });
+  }, [chartFilterString]);
+
+  React.useEffect(() => {
+    if (!cycleDropdownSelected && cycles.length > 0) {
+      setCycleDropdownSelected(cycles[0].value);
+    }
+  }, [cycles]);
+
+  React.useEffect(() => {
+    if (location.hash) {
+      const blockId = location.hash.slice(1).split("|")[0];
+      const blockChartType = location.hash.slice(1).split("|")[1];
+      if (blockId && blockChartType && blockId === "hgi") {
+        setDropdownSelected(decodeURIComponent(blockChartType));
+      }
+    }
+  }, [location.hash]);
+
+  return (
+    <Box
+      padding="50px 0"
+      sx={{
+        "#content": {
+          padding: 0,
+        },
+        hr: {
+          display: "none",
+        },
+      }}
+    >
+      <DatasetChartBlock
+        id="hgi"
+        titleVariant="h5"
+        loading={loading}
+        empty={chartEmpty}
+        title={getCMSDataField(
+          cmsData,
+          "pagesDatasetsGrantImplementation.hgiTitle",
+          "Investments by Disbursement Area"
+        )}
+        subtitle={getCMSDataField(
+          cmsData,
+          "pagesDatasetsGrantImplementation.hgiSubtitle",
+          "HTM + C19RM (incl. RSSH), US$ Millions"
+        )}
+        extraDropdown={cycleDropdown}
+        dropdownSelected={dropdownSelected}
+        dropdownItems={dropdownItemsHolisticGrantInvestments}
+        handleDropdownChange={handleDropdownSelectionChange}
+        disableCollapse={
+          dropdownSelected === dropdownItemsHolisticGrantInvestments[1].value
+        }
+        handleResetFilters={() => {}}
+        filterGroups={[]}
+        appliedFilters={[]}
+        appliedFiltersData={defaultAppliedFilters}
+        removeFilter={() => {}}
+        toggleFilter={() => {}}
+        infoType="financials"
+      >
+        {chartContent}
+      </DatasetChartBlock>
+    </Box>
+  );
+};

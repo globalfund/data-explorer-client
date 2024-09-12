@@ -119,10 +119,12 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
 
   return (
     <Box id={props.id} data-cy="dataset-chart-block">
-      <Typography variant="h3" lineHeight={1.2}>
+      <Typography variant={props.titleVariant ?? "h3"} lineHeight={1.2}>
         {props.title}
       </Typography>
-      <Typography variant="body2">{props.subtitle}</Typography>
+      <Typography variant={props.subtitleVariant ?? "body2"}>
+        {props.subtitle}
+      </Typography>
       <Divider
         sx={{
           margin: "20px 0",
@@ -149,29 +151,31 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
         }}
       >
         <Box gap="10px" display="flex" flexDirection="row">
-          <Button
-            variant="outlined"
-            startIcon={<Add fontSize="small" />}
-            onClick={handleFilterButtonClick}
-            sx={
-              props.appliedFilters.length > 0
-                ? {
-                    "&:after": {
-                      top: "-3px",
-                      right: "8px",
-                      width: "6px",
-                      height: "6px",
-                      content: "''",
-                      borderRadius: "50%",
-                      position: "absolute",
-                      background: "#2196F3",
-                    },
-                  }
-                : {}
-            }
-          >
-            Filters
-          </Button>
+          {props.filterGroups.length > 0 && (
+            <Button
+              variant="outlined"
+              startIcon={<Add fontSize="small" />}
+              onClick={handleFilterButtonClick}
+              sx={
+                props.appliedFilters.length > 0
+                  ? {
+                      "&:after": {
+                        top: "-3px",
+                        right: "8px",
+                        width: "6px",
+                        height: "6px",
+                        content: "''",
+                        borderRadius: "50%",
+                        position: "absolute",
+                        background: "#2196F3",
+                      },
+                    }
+                  : {}
+              }
+            >
+              Filters
+            </Button>
+          )}
           {filterPopover}
           {/* <Button variant="outlined" startIcon={<SettingsIcon />}>
             Settings

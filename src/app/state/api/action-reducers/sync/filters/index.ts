@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
 import { action, Action } from "easy-peasy";
-import { FilterModel } from "app/components/filters/list/data";
 
 export const defaultAppliedFilters: AppliedFiltersModel = {
   locations: [] as string[],

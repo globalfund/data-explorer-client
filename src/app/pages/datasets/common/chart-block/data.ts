@@ -20,5 +20,7 @@ export interface DatasetChartBlockProps {
   handleDropdownChange?: (value: string) => void;
   removeFilter: (value: string, types: string[]) => void;
   toggleFilter: (checked: boolean, value: string, type: string) => void;
+  titleVariant?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "body1" | "body2";
   dropdownItems: { value: string; label: string; icon?: React.ReactElement }[];
+  subtitleVariant?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "body1" | "body2";
 }
