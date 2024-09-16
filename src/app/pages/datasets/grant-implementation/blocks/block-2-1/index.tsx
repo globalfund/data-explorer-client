@@ -1,6 +1,7 @@
 import React from "react";
 import get from "lodash/get";
 import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
 import { useLocation } from "react-router-dom";
 import { Dropdown } from "app/components/dropdown";
 import { useCMSData } from "app/hooks/useCMSData";
@@ -163,7 +164,7 @@ export const GrantImplementationPageBlock21: React.FC = () => {
       }cycleNames=${cycleDropdownSelected}`;
     }
     return value;
-  }, [cycleDropdownSelected]);
+  }, [appliedFiltersData, location.search, cycleDropdownSelected]);
 
   const onSearchChange = (search: string) => {
     setTableSearch(search);
@@ -177,7 +178,57 @@ export const GrantImplementationPageBlock21: React.FC = () => {
   const chartContent = React.useMemo(() => {
     switch (dropdownSelected) {
       case dropdownItemsHolisticGrantInvestments[0].value:
-        return <SankeyChart formatLabel data={dataSankey} />;
+        return (
+          <React.Fragment>
+            <Grid
+              container
+              spacing={4}
+              sx={{
+                color: "#464646",
+                fontSize: "10px",
+                marginTop: "8px",
+                fontWeight: "700",
+              }}
+            >
+              <Grid item xs={4}>
+                {getCMSDataField(
+                  cmsData,
+                  "pagesDatasetsGrantImplementation.hgiSankeyLabel1",
+                  "Total Disbursed"
+                )}
+              </Grid>
+              <Grid
+                item
+                xs={4}
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                {getCMSDataField(
+                  cmsData,
+                  "pagesDatasetsGrantImplementation.hgiSankeyLabel2",
+                  "Disbursement Area"
+                )}
+              </Grid>
+              <Grid
+                item
+                xs={4}
+                sx={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                }}
+              >
+                {getCMSDataField(
+                  cmsData,
+                  "pagesDatasetsGrantImplementation.hgiSankeyLabel3",
+                  "Disbursement Sub-Area"
+                )}
+              </Grid>
+            </Grid>
+            <SankeyChart formatLabel data={dataSankey} />
+          </React.Fragment>
+        );
       case dropdownItemsHolisticGrantInvestments[1].value:
         return (
           <TableContainer
@@ -249,7 +300,7 @@ export const GrantImplementationPageBlock21: React.FC = () => {
         subtitle={getCMSDataField(
           cmsData,
           "pagesDatasetsGrantImplementation.hgiSubtitle",
-          "HTM + C19RM (incl. RSSH), US$ Millions"
+          "Cumulative disbursements by disbursement area"
         )}
         extraDropdown={cycleDropdown}
         dropdownSelected={dropdownSelected}
