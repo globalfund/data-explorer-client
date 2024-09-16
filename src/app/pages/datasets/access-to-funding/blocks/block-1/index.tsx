@@ -27,7 +27,7 @@ export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
   );
 
   const [eligibilityYear, setEligibilityYear] = React.useState(
-    eligibilityYears[0].value
+    eligibilityYears.length > 0 ? eligibilityYears[0].value : ""
   );
 
   const dataStats = useStoreState(
@@ -49,12 +49,20 @@ export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
   };
 
   React.useEffect(() => {
-    fetchStats({
-      filterString: props.filterString,
-      routeParams: {
-        year: eligibilityYear,
-      },
-    });
+    if (eligibilityYears.length > 0 && eligibilityYear === "") {
+      setEligibilityYear(eligibilityYears[0].value);
+    }
+  }, [eligibilityYears]);
+
+  React.useEffect(() => {
+    if (eligibilityYears.length > 0) {
+      fetchStats({
+        filterString: props.filterString,
+        routeParams: {
+          year: eligibilityYear,
+        },
+      });
+    }
   }, [props.filterString, eligibilityYear]);
 
   return (
