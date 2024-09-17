@@ -11,10 +11,15 @@ import { getCMSDataField } from "app/utils/getCMSDataField";
 import { BarChartDataItem } from "app/components/charts/bar/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { applyResultValueFormula } from "app/utils/applyResultValueFormula";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 
 export const HomeBlock1: React.FC = () => {
-  const [chart1Cycles, setChart1Cycles] = React.useState<CycleProps[]>([]);
   const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "pledges-contributions",
+  });
+
+  const [chart1Cycles, setChart1Cycles] = React.useState<CycleProps[]>([]);
 
   const dataPledgesContributionsBarChart = useStoreState(
     (state) =>
@@ -97,6 +102,7 @@ export const HomeBlock1: React.FC = () => {
         id="pledges-contributions"
         selectedCycles={chart1Cycles}
         title={`${totalPledge}`}
+        latestUpdate={latestUpdateDate}
         subtitle={getCMSDataField(
           cmsData,
           "pagesHome.pledgesContributionsSubtitle",

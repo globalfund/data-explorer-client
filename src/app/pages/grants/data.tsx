@@ -10,6 +10,7 @@ export interface GrantsLayoutProps {
   showSearch: boolean;
   searchInputRef: any;
   pageAppliedFilters: any;
+  latestUpdateDate?: string;
   viewResult: React.ReactNode;
   pagination: React.ReactNode;
   handleResetFilters: () => void;

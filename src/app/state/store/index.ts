@@ -127,6 +127,7 @@ import pagesLocation, {
   pagesLocationResults,
 } from "app/state/api/action-reducers/cms/pagesLocation";
 import general from "app/state/api/action-reducers/cms/general";
+import { DatasetsLatestUpdate } from "../api/action-reducers/latest-update";
 
 const storeContent: StoreModel = {
   // homepage
@@ -266,6 +267,8 @@ const storeContent: StoreModel = {
   ExpendituresCycles: persist(ExpendituresCycles),
   EligibilityCycles: persist(EligibilityCycles),
   ResultsComponentFilterOptions: persist(ResultsComponentFilterOptions),
+  // general
+  datasetsLatestUpdate: persist(DatasetsLatestUpdate),
   // sync state variables
   AppliedFiltersState: persist(AppliedFiltersState),
   // CMS API

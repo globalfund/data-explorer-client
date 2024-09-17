@@ -13,6 +13,7 @@ import { FilterGroupModel } from "app/components/filters/list/data";
 import { TreemapDataItem } from "app/components/charts/treemap/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 import { dropdownItemsAllocations } from "app/pages/datasets/access-to-funding/data";
 import {
@@ -30,6 +31,9 @@ export const AccessToFundingBlock3: React.FC<AccessToFundingBlock3Props> = (
 ) => {
   const location = useLocation();
   const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "allocations",
+  });
 
   const [dropdownSelected, setDropdownSelected] = React.useState(
     dropdownItemsAllocations[0].value
@@ -344,6 +348,7 @@ export const AccessToFundingBlock3: React.FC<AccessToFundingBlock3Props> = (
           "Allocations amounts for countries."
         )}
         dropdownItems={dropdownItemsAllocations}
+        latestUpdate={latestUpdateDate}
         dropdownSelected={dropdownSelected}
         handleDropdownChange={handleSelectionChange}
         loading={loadingAllocations}

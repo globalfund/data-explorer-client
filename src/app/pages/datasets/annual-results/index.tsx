@@ -4,10 +4,10 @@ import uniq from "lodash/uniq";
 import Box from "@mui/material/Box";
 import { useTitle } from "react-use";
 import Divider from "@mui/material/Divider";
-import { Table } from "app/components/table";
 import { useLocation } from "react-router-dom";
 import { RowComponent } from "tabulator-tables";
 import Typography from "@mui/material/Typography";
+import { useCMSData } from "app/hooks/useCMSData";
 import { Dropdown } from "app/components/dropdown";
 import { getCMSDataField } from "app/utils/getCMSDataField";
 import { DatasetPage } from "app/pages/datasets/common/page";
@@ -18,11 +18,11 @@ import { FilterGroupModel } from "app/components/filters/list/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { HomeResultsStats } from "app/pages/home/components/results-stats";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import { PolylineTreeDataItem } from "app/components/charts/polyline-tree/data";
 import { ReactComponent as TableIcon } from "app/assets/vectors/Select_Table.svg";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 import { ReactComponent as BarChartIcon } from "app/assets/vectors/Select_BarChart.svg";
-import { useCMSData } from "app/hooks/useCMSData";
 import {
   TABLE_VARIATION_9_COLUMNS,
   TABLE_VARIATION_6_COLUMNS as DOCUMENTS_TABLE_COLUMNS,
@@ -34,9 +34,13 @@ const dropdownItems = [
 ];
 
 export const AnnualResultsPage: React.FC = () => {
-  const cmsData = useCMSData({ returnData: true });
   useTitle("The Data Explorer - Annual Results");
+
   const location = useLocation();
+  const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "results",
+  });
 
   const [dropdownSelected, setDropdownSelected] = React.useState(
     dropdownItems[0].value
@@ -455,6 +459,7 @@ export const AnnualResultsPage: React.FC = () => {
             subtitle=""
             loading={loadingResults}
             dropdownItems={dropdownItems}
+            latestUpdate={latestUpdateDate}
             dropdownSelected={dropdownSelected}
             handleDropdownChange={handleSelectionChange}
             disableCollapse={dropdownSelected === dropdownItems[1].value}

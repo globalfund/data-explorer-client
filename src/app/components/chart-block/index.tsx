@@ -160,16 +160,27 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
       >
         {content}
       </Box>
-      {!props.noBottomToolbar && (
-        <Box width="100%">
+      <Box
+        width="100%"
+        display="flex"
+        marginTop="40px"
+        alignItems="center"
+        justifyContent={props.latestUpdate ? "space-between" : "flex-end"}
+      >
+        {props.latestUpdate && (
+          <Typography variant="overline">
+            Latest Update: <b>{props.latestUpdate}</b>
+          </Typography>
+        )}
+        {!props.noBottomToolbar && (
           <ChartBlockButtonToolbar
             blockId={id}
             hashId={props.id}
             infoType={props.infoType}
             chartType={props.dropdownSelected}
           />
-        </Box>
-      )}
+        )}
+      </Box>
     </Box>
   );
 };

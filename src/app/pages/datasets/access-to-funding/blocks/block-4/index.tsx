@@ -10,6 +10,7 @@ import { BarSeriesChart } from "app/components/charts/bar-series";
 import { getRange } from "app/utils/getFinancialValueWithMetricPrefix";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { BarSeriesChartDataItem } from "app/components/charts/bar-series/data";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 
 interface AccessToFundingBlock4Props {
   filterString: string;
@@ -19,6 +20,10 @@ export const AccessToFundingBlock4: React.FC<AccessToFundingBlock4Props> = (
   props: AccessToFundingBlock4Props
 ) => {
   const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "allocations",
+  });
+
   const keysAllocationsBarSeries = useStoreState(
     (state) =>
       get(state.AccessToFundingAllocationBarSeries, "data.keys", []) as string[]
@@ -123,6 +128,9 @@ export const AccessToFundingBlock4: React.FC<AccessToFundingBlock4Props> = (
           </Box>
         )}
       </Box>
+      <Typography variant="overline">
+        Latest Update: <b>{latestUpdateDate}</b>
+      </Typography>
     </Box>
   );
 };

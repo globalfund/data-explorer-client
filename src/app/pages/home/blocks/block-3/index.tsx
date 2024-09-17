@@ -7,6 +7,7 @@ import { Treemap } from "app/components/charts/treemap";
 import { getCMSDataField } from "app/utils/getCMSDataField";
 import { TreemapDataItem } from "app/components/charts/treemap/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import {
   CYCLES,
   CycleProps,
@@ -19,6 +20,9 @@ import {
 
 export const HomeBlock3: React.FC = () => {
   const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "budgets",
+  });
 
   const [chart3Cycles, setChart3Cycles] = React.useState<CycleProps[]>([]);
 
@@ -129,6 +133,7 @@ export const HomeBlock3: React.FC = () => {
         "Grant Budgets"
       )}
       selectedCycles={chart3Cycles}
+      latestUpdate={latestUpdateDate}
       loading={loadingBudgetsTreemap}
       // dropdownSelected={chart3Dropdown}
       dropdownItems={CHART_3_DROPDOWN_ITEMS}

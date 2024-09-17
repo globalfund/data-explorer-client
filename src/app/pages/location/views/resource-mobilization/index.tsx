@@ -13,13 +13,17 @@ import { getCMSDataField } from "app/utils/getCMSDataField";
 import useUpdateEffect from "react-use/lib/useUpdateEffect";
 import { BarChartDataItem } from "app/components/charts/bar/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import {
-  getFinancialValueWithMetricPrefix,
   getRange,
+  getFinancialValueWithMetricPrefix,
 } from "app/utils/getFinancialValueWithMetricPrefix";
 
 export const ResourceMobilization: React.FC = () => {
   const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "pledges-contributions",
+  });
   const params = useParams<{ id: string; tab: string }>();
   const paramsId = params.id?.replace("|", "%2F");
 
@@ -99,6 +103,7 @@ export const ResourceMobilization: React.FC = () => {
         loading={loadingRMBarChart}
         title={`US$${totalPledge}`}
         selectedCycles={chart1Cycles}
+        latestUpdate={latestUpdateDate}
         subtitle={getCMSDataField(
           cmsData,
           "pagesLocationResourceMobilization.title",

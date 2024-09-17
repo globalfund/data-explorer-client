@@ -241,6 +241,11 @@ export const GrantsLayout: React.FC<GrantsLayoutProps> = (
         {viewResult}
         {pagination}
       </Box>
+      <Box>
+        <Typography variant="overline">
+          Latest Update: <b>{props.latestUpdateDate}</b>
+        </Typography>
+      </Box>
     </Box>
   );
 };

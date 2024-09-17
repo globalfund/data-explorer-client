@@ -11,6 +11,7 @@ import { CYCLES, CycleProps } from "app/pages/home/data";
 import useUpdateEffect from "react-use/lib/useUpdateEffect";
 import { LineChartProps } from "app/components/charts/line/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import { CHART_1_DROPDOWN_ITEMS } from "app/pages/location/views/grant-implementation/data";
 import {
   getRange,
@@ -18,6 +19,10 @@ import {
 } from "app/utils/getFinancialValueWithMetricPrefix";
 
 export const LocationGrantImplementationBlock1 = () => {
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "disbursements",
+  });
+
   const params = useParams<{ id: string; tab: string }>();
   const paramsId = params.id?.replace("|", "%2F");
 
@@ -148,6 +153,7 @@ export const LocationGrantImplementationBlock1 = () => {
         value: c.value,
         disabled: findIndex(disbursementsCycles, { value: c.value }) === -1,
       }))}
+      latestUpdate={latestUpdateDate}
       infoType="financials"
     >
       <Box position="relative">

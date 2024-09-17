@@ -13,6 +13,7 @@ import { TableContainer } from "app/components/table-container";
 import { FilterGroupModel } from "app/components/filters/list/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 import {
   cellBGColorFormatter,
@@ -29,6 +30,9 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
 ) => {
   const location = useLocation();
   const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "eligibility",
+  });
 
   const [chart1AppliedFilters, setChart1AppliedFilters] = React.useState<
     string[]
@@ -223,6 +227,7 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
         )}
         dropdownItems={[]}
         disableCollapse
+        latestUpdate={latestUpdateDate}
         loading={loadingEligibilityTable}
         filterGroups={props.filterGroups}
         appliedFilters={chart1AppliedFilters}
