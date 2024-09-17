@@ -14,6 +14,7 @@ import { CYCLES, CycleProps } from "app/pages/home/data";
 import useUpdateEffect from "react-use/lib/useUpdateEffect";
 import { getCMSDataField } from "app/utils/getCMSDataField";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import {
   HeatmapDataItem,
   getPercentageColor,
@@ -25,6 +26,9 @@ import {
 
 export const LocationGrantImplementationBlock3 = () => {
   const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "expenditures",
+  });
   const params = useParams<{ id: string; tab: string }>();
   const paramsId = params.id?.replace("|", "%2F");
 
@@ -207,6 +211,7 @@ export const LocationGrantImplementationBlock3 = () => {
         disabled: findIndex(expendituresCycles, { value: c.value }) === -1,
       }))}
       unitButtons={chart2UnitButtons}
+      latestUpdate={latestUpdateDate}
       infoType="expenditures"
     >
       <Heatmap

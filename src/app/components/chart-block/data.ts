@@ -7,6 +7,7 @@ export interface ChartBlockProps {
   empty?: boolean;
   subtitle: string;
   loading?: boolean;
+  latestUpdate?: string;
   noSplitText?: boolean;
   showCycleAll?: boolean;
   infoType: InfoPanelType;

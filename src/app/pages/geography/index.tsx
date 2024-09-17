@@ -13,6 +13,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { getCMSDataField } from "app/utils/getCMSDataField";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import {
   GeoCategoryProps,
   GeoSubCategoryProps,
@@ -105,6 +106,9 @@ const GeoSubCategory: React.FC<GeoSubCategoryProps> = (
 
 export const Geography: React.FC = () => {
   const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "geographies",
+  });
 
   useTitle("The Data Explorer - Geography");
   const [search, setSearch] = React.useState("");
@@ -267,6 +271,11 @@ export const Geography: React.FC = () => {
             <GeoCategory key={item.name} search={search.length > 0} {...item} />
           ))}
         </Box>
+      </Box>
+      <Box>
+        <Typography variant="overline">
+          Latest Update: <b>{latestUpdateDate}</b>
+        </Typography>
       </Box>
     </Box>
   );

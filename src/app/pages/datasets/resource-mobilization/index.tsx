@@ -19,6 +19,7 @@ import { TABLE_VARIATION_8_COLUMNS } from "app/components/table/data";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import { ReactComponent as TableIcon } from "app/assets/vectors/Select_Table.svg";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 import { ReactComponent as BarChartIcon } from "app/assets/vectors/Select_BarChart.svg";
@@ -31,9 +32,13 @@ const dropdownItems = [
 ];
 
 export const ResourceMobilizationPage: React.FC = () => {
-  const cmsData = useCMSData({ returnData: true });
   useTitle("The Data Explorer - Resource Mobilization");
+
   const location = useLocation();
+  const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "pledges-contributions",
+  });
   const tabletScreen = useMediaQuery(
     "(min-width: 768px) and (max-width:920px)"
   );
@@ -582,6 +587,11 @@ export const ResourceMobilizationPage: React.FC = () => {
               </Grid>
             </Grid>
           </Grid>
+          <Grid item xs={12}>
+            <Typography variant="overline">
+              Latest Update: <b>{latestUpdateDate}</b>
+            </Typography>
+          </Grid>
         </Grid>
         <Divider
           sx={{
@@ -625,6 +635,7 @@ export const ResourceMobilizationPage: React.FC = () => {
             loading={dataChartLoading}
             empty={chartEmpty}
             filterGroups={filterGroups}
+            latestUpdate={latestUpdateDate}
             appliedFilters={chartAppliedFilters}
             toggleFilter={handleToggleChartFilter}
             removeFilter={handleRemoveChartFilter}

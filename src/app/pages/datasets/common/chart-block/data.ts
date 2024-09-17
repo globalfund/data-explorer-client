@@ -8,6 +8,7 @@ export interface DatasetChartBlockProps {
   empty?: boolean;
   subtitle: string;
   loading?: boolean;
+  latestUpdate?: string;
   infoType: InfoPanelType;
   appliedFilters: string[];
   children: React.ReactNode;

@@ -9,6 +9,7 @@ import { ChartBlock } from "app/components/chart-block";
 import { getCMSDataField } from "app/utils/getCMSDataField";
 import { LineChartProps } from "app/components/charts/line/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import {
   CYCLES,
   CycleProps,
@@ -21,6 +22,10 @@ import {
 
 export const HomeBlock4: React.FC = () => {
   const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "disbursements",
+  });
+
   const [chart4Cycles, setChart4Cycles] = React.useState<CycleProps[]>([]);
 
   const [chart4Dropdown, setChart4Dropdown] = React.useState(
@@ -143,6 +148,7 @@ export const HomeBlock4: React.FC = () => {
       )}
       title={disbursementsTotal}
       selectedCycles={chart4Cycles}
+      latestUpdate={latestUpdateDate}
       dropdownSelected={chart4Dropdown}
       dropdownItems={CHART_4_DROPDOWN_ITEMS}
       loading={loadingDisbursementsLineChart}

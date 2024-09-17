@@ -213,6 +213,8 @@ export interface StoreModel {
   ExpendituresCycles: ApiCallModel;
   EligibilityCycles: ApiCallModel;
   ResultsComponentFilterOptions: ApiCallModel;
+  // general
+  datasetsLatestUpdate: ApiCallModel;
   // sync state variables
   AppliedFiltersState: AppliedFiltersStateModel;
   // CMS

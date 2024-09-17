@@ -8,6 +8,7 @@ import { Dropdown } from "app/components/dropdown";
 import { getCMSDataField } from "app/utils/getCMSDataField";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 
 interface AccessToFundingBlock1Props {
   filterString: string;
@@ -17,6 +18,9 @@ export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
   props: AccessToFundingBlock1Props
 ) => {
   const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "eligibility",
+  });
 
   const eligibilityYears = useStoreState(
     (state) =>
@@ -155,6 +159,11 @@ export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
             </Box>
           </Grid>
         ))}
+        <Grid item xs={12}>
+          <Typography variant="overline">
+            Latest Update: <b>{latestUpdateDate}</b>
+          </Typography>
+        </Grid>
       </Grid>
     </Box>
   );

@@ -21,6 +21,7 @@ import { getCMSDataField } from "app/utils/getCMSDataField";
 import { RaceBarChart } from "app/components/charts/race-bar";
 import { SankeyChartData } from "app/components/charts/sankey/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import { CHART_2_DROPDOWN_ITEMS } from "app/pages/grant/views/grant-implementation/data";
 import { componentsGroupingOptions } from "app/pages/datasets/grant-implementation/data";
 import {
@@ -34,6 +35,15 @@ import {
 
 export const GrantImplementation: React.FC = () => {
   const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDateChart1 = useGetDatasetLatestUpdate({
+    dataset: "disbursements",
+  });
+  const latestUpdateDateChart2 = useGetDatasetLatestUpdate({
+    dataset: "budgets",
+  });
+  const latestUpdateDateChart3 = useGetDatasetLatestUpdate({
+    dataset: "expenditures",
+  });
   const params = useParams<{ id: string; ip: string; tab: string }>();
 
   useTitle(`The Data Explorer - ${params.id} Financial Insights`);
@@ -421,6 +431,7 @@ export const GrantImplementation: React.FC = () => {
           "Disbursements"
         )}
         empty={!showRadialChart}
+        latestUpdate={latestUpdateDateChart1}
         infoType="financials"
       >
         <RadialChart
@@ -468,6 +479,7 @@ export const GrantImplementation: React.FC = () => {
           "Grant Budgets"
         )}
         empty={!showBudgetSankeyChart}
+        latestUpdate={latestUpdateDateChart2}
         infoType="budgets"
       >
         <Grid
@@ -526,6 +538,7 @@ export const GrantImplementation: React.FC = () => {
         dropdownItems={CHART_2_DROPDOWN_ITEMS}
         handleDropdownChange={setChart2Dropdown}
         unitButtons={chart2UnitButtons}
+        latestUpdate={latestUpdateDateChart3}
         infoType="expenditures"
         extraDropdown={expendituresComponentGroupingDropdown}
       >

@@ -69,9 +69,7 @@ export const ChartBlockButtonToolbar: React.FC<ChartBlockButtonToolbarProps> = (
       <ClickAwayListener onClickAway={handleClose}>
         <Box
           gap="8px"
-          width="100%"
           display="flex"
-          marginTop="40px"
           position="relative"
           flexDirection="row"
           justifyContent="flex-end"

@@ -9,14 +9,19 @@ import { RadialChart } from "app/components/charts/radial";
 import { getCMSDataField } from "app/utils/getCMSDataField";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { RadialChartDataItem } from "app/components/charts/radial/data";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import {
   getRange,
   getFinancialValueWithMetricPrefix,
 } from "app/utils/getFinancialValueWithMetricPrefix";
 
 export const HomeBlock2: React.FC = () => {
-  const [chart2Cycles, setChart2Cycles] = React.useState<CycleProps[]>([]);
   const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "allocations",
+  });
+
+  const [chart2Cycles, setChart2Cycles] = React.useState<CycleProps[]>([]);
 
   const dataAllocationsRadialChart = useStoreState(
     (state) =>
@@ -103,6 +108,7 @@ export const HomeBlock2: React.FC = () => {
       )}
       title={allocationsTotal}
       selectedCycles={chart2Cycles}
+      latestUpdate={latestUpdateDate}
       loading={loadingAllocationsRadialChart}
       empty={dataAllocationsRadialChart.length === 0}
       handleCycleChange={(value) => handleChartCycleChange(value)}

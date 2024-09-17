@@ -9,6 +9,7 @@ import { TableContainer } from "app/components/table-container";
 import { FilterGroupModel } from "app/components/filters/list/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 import { TABLE_VARIATION_12_COLUMNS as FUNDING_REQUESTS_TABLE_COLUMNS } from "app/components/table/data";
 
@@ -22,6 +23,9 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
 ) => {
   const location = useLocation();
   const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "funding_requests",
+  });
 
   const [chart3AppliedFilters, setChart3AppliedFilters] = React.useState<
     string[]
@@ -200,6 +204,7 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
         )}
         disableCollapse
         dropdownItems={[]}
+        latestUpdate={latestUpdateDate}
         loading={loadingFundingRequestsTable}
         filterGroups={props.filterGroups}
         appliedFilters={chart3AppliedFilters}
