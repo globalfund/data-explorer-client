@@ -47,6 +47,9 @@ export const useInitialLoad = () => {
   const fetchStatusFilterOptions = useStoreActions(
     (actions) => actions.StatusFilterOptions.fetch
   );
+  const datasetsLatestUpdate = useStoreActions(
+    (actions) => actions.datasetsLatestUpdate.fetch
+  );
 
   React.useEffect(() => {
     fetchAllocationsCycles({});
@@ -72,6 +75,7 @@ export const useInitialLoad = () => {
     });
     fetchPartnerTypeFilterOptions({});
     fetchStatusFilterOptions({});
+    datasetsLatestUpdate({});
   }, []);
 
   return null;

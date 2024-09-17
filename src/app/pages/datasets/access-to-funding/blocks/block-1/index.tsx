@@ -8,6 +8,7 @@ import { Dropdown } from "app/components/dropdown";
 import { getCMSDataField } from "app/utils/getCMSDataField";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 
 interface AccessToFundingBlock1Props {
   filterString: string;
@@ -17,6 +18,9 @@ export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
   props: AccessToFundingBlock1Props
 ) => {
   const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "eligibility",
+  });
 
   const eligibilityYears = useStoreState(
     (state) =>
@@ -27,7 +31,7 @@ export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
   );
 
   const [eligibilityYear, setEligibilityYear] = React.useState(
-    eligibilityYears[0].value
+    eligibilityYears.length > 0 ? eligibilityYears[0].value : ""
   );
 
   const dataStats = useStoreState(
@@ -49,12 +53,20 @@ export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
   };
 
   React.useEffect(() => {
-    fetchStats({
-      filterString: props.filterString,
-      routeParams: {
-        year: eligibilityYear,
-      },
-    });
+    if (eligibilityYears.length > 0 && eligibilityYear === "") {
+      setEligibilityYear(eligibilityYears[0].value);
+    }
+  }, [eligibilityYears]);
+
+  React.useEffect(() => {
+    if (eligibilityYears.length > 0) {
+      fetchStats({
+        filterString: props.filterString,
+        routeParams: {
+          year: eligibilityYear,
+        },
+      });
+    }
   }, [props.filterString, eligibilityYear]);
 
   return (
@@ -147,6 +159,11 @@ export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
             </Box>
           </Grid>
         ))}
+        <Grid item xs={12}>
+          <Typography variant="overline">
+            Latest Update: <b>{latestUpdateDate}</b>
+          </Typography>
+        </Grid>
       </Grid>
     </Box>
   );

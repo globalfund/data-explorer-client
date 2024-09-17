@@ -16,6 +16,7 @@ import { TreemapDataItem } from "app/components/charts/treemap/data";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 import {
   TableDataItem,
@@ -39,6 +40,9 @@ export const GrantImplementationPageBlock3: React.FC<
 > = (props: GrantImplementationPageBlock3Props) => {
   const location = useLocation();
   const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "budgets",
+  });
 
   const [budgetsDropdownSelected, setBudgetsDropdownSelected] = React.useState(
     dropdownItemsBudgets[0].value
@@ -610,6 +614,7 @@ export const GrantImplementationPageBlock3: React.FC<
           setBudgetsDropdownSelected(value);
         }}
         loading={loadingBudget}
+        latestUpdate={latestUpdateDate}
         disableCollapse={
           budgetsDropdownSelected === dropdownItemsBudgets[2].value
         }

@@ -5,12 +5,13 @@ import { useTitle } from "react-use";
 import Divider from "@mui/material/Divider";
 import { useParams } from "react-router-dom";
 import { useCMSData } from "app/hooks/useCMSData";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { ChartBlock } from "app/components/chart-block";
 import { getCMSDataField } from "app/utils/getCMSDataField";
 import { TableContainer } from "app/components/table-container";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { HomeResultsStats } from "app/pages/home/components/results-stats";
 import { StatCompProps } from "app/pages/home/components/results-stats/data";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import {
   RESULT_YEARS,
   ResultsProps,
@@ -22,6 +23,10 @@ import {
 
 export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
   const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "results",
+  });
+
   const params = useParams<{ id: string; tab: string }>();
   const paramsId = params.id?.replace("|", "%2F");
 
@@ -119,6 +124,7 @@ export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
         subtitle=""
         selectedCycles={[props.resultsYear]}
         handleCycleChange={props.setResultsYear}
+        latestUpdate={latestUpdateDate}
         infoType="global"
       >
         <TableContainer

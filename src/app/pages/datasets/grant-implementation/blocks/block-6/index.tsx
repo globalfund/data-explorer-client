@@ -1,21 +1,21 @@
 import React from "react";
 import get from "lodash/get";
 import uniq from "lodash/uniq";
-import maxBy from "lodash/maxBy";
 import sumBy from "lodash/sumBy";
 import filter from "lodash/filter";
 import Box from "@mui/material/Box";
 import { appColors } from "app/theme";
-import { Table } from "app/components/table";
 import { useLocation } from "react-router-dom";
 import { useCMSData } from "app/hooks/useCMSData";
 import { Dropdown } from "app/components/dropdown";
 import { Heatmap } from "app/components/charts/heatmap";
 import { getCMSDataField } from "app/utils/getCMSDataField";
+import { TableContainer } from "app/components/table-container";
 import { FilterGroupModel } from "app/components/filters/list/data";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 import { ExpandableHorizontalBar } from "app/components/charts/expandable-horizontal-bar";
 import { ExpandableHorizontalBarChartDataItem } from "app/components/charts/expandable-horizontal-bar/data";
@@ -31,7 +31,6 @@ import {
   componentsGroupingOptions,
   dropdownItemsExpenditures,
 } from "app/pages/datasets/grant-implementation/data";
-import { TableContainer } from "app/components/table-container";
 
 interface GrantImplementationPageBlock6Props {
   filterString: string;
@@ -45,6 +44,9 @@ export const GrantImplementationPageBlock6: React.FC<
 > = (props: GrantImplementationPageBlock6Props) => {
   const location = useLocation();
   const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "expenditures",
+  });
 
   const [expendituresDropdownSelected, setExpendituresDropdownSelected] =
     React.useState(dropdownItemsExpenditures[0].value);
@@ -557,6 +559,7 @@ export const GrantImplementationPageBlock6: React.FC<
         dropdownItems={dropdownItemsExpenditures}
         dropdownSelected={expendituresDropdownSelected}
         loading={loadingExpenditures}
+        latestUpdate={latestUpdateDate}
         handleDropdownChange={(value) => setExpendituresDropdownSelected(value)}
         disableCollapse={
           expendituresDropdownSelected === dropdownItemsExpenditures[2].value

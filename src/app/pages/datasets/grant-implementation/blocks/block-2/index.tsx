@@ -16,6 +16,7 @@ import { FilterGroupModel } from "app/components/filters/list/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { getRange } from "app/utils/getFinancialValueWithMetricPrefix";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 import {
   TableDataItem,
@@ -38,6 +39,9 @@ export const GrantImplementationPageBlock2: React.FC<
 > = (props: GrantImplementationPageBlock2Props) => {
   const location = useLocation();
   const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "disbursements",
+  });
 
   const [disbursementsDropdownSelected, setDisbursementsDropdownSelected] =
     React.useState(dropdownItemsDisbursements[0].value);
@@ -581,6 +585,7 @@ export const GrantImplementationPageBlock2: React.FC<
         dropdownSelected={disbursementsDropdownSelected}
         handleDropdownChange={handleDisbursementsSelectionChange}
         loading={loadingFinancialInsightsDisbursements}
+        latestUpdate={latestUpdateDate}
         disableCollapse={
           disbursementsDropdownSelected === dropdownItemsDisbursements[2].value
         }

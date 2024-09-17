@@ -164,6 +164,18 @@ export const Grant: React.FC = () => {
   }, [params.ip]);
 
   React.useEffect(() => {
+    if (!dropdownSelected && dataGrant.periods.length > 0) {
+      setDropdownSelected(
+        get(
+          dataGrant.periods,
+          `[${params.ip !== undefined ? parseInt(params.ip) - 1 : 0}]`,
+          null
+        )
+      );
+    }
+  }, [dataGrant.periods]);
+
+  React.useEffect(() => {
     if (params.id && dropdownSelected) {
       fetchOverview({
         routeParams: {

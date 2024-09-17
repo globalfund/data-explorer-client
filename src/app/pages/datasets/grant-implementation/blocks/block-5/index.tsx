@@ -10,6 +10,7 @@ import { FilterGroupModel } from "app/components/filters/list/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { FinancialMetric } from "app/components/charts/financial-metric";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 import { componentsGroupingOptions } from "app/pages/datasets/grant-implementation/data";
 import {
@@ -31,6 +32,9 @@ export const GrantImplementationPageBlock5: React.FC<
 > = (props: GrantImplementationPageBlock5Props) => {
   const location = useLocation();
   const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "budgets",
+  });
 
   const [chart3AppliedFilters, setChart3AppliedFilters] = React.useState<
     string[]
@@ -473,6 +477,7 @@ export const GrantImplementationPageBlock5: React.FC<
         subtitle=""
         dropdownItems={[]}
         empty={financialMetricsEmpty}
+        latestUpdate={latestUpdateDate}
         loading={loadingFinancialMetrics}
         filterGroups={props.filterGroups}
         appliedFilters={chart3AppliedFilters}

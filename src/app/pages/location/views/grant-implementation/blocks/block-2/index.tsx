@@ -12,6 +12,7 @@ import { getCMSDataField } from "app/utils/getCMSDataField";
 import useUpdateEffect from "react-use/lib/useUpdateEffect";
 import { SankeyChartData } from "app/components/charts/sankey/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import {
   getRange,
   getFinancialValueWithMetricPrefix,
@@ -19,6 +20,9 @@ import {
 
 export const LocationGrantImplementationBlock2 = () => {
   const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "budgets",
+  });
   const params = useParams<{ id: string; tab: string }>();
   const paramsId = params.id?.replace("|", "%2F");
 
@@ -146,6 +150,7 @@ export const LocationGrantImplementationBlock2 = () => {
         value: c.value,
         disabled: findIndex(budgetsCycles, { value: c.value }) === -1,
       }))}
+      latestUpdate={latestUpdateDate}
       infoType="budgets"
     >
       <Grid

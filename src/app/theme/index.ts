@@ -901,7 +901,7 @@ export const appColors = {
   },
   SANKEY_CHART: {
     NODE_COLOR: "#252C34",
-    LINK_COLORS: ["#3B5366", "#013E77", "#33C4BE"],
+    LINK_COLORS: ["#0A2840", "#013E77", "#00B5AE"],
   },
   TOOLTIP: {
     TEXT_COLOR: "#262C34",

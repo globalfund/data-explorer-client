@@ -10,6 +10,7 @@ import { ChartBlock } from "app/components/chart-block";
 import { Heatmap } from "app/components/charts/heatmap";
 import { getCMSDataField } from "app/utils/getCMSDataField";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import {
   CYCLES,
   CycleProps,
@@ -26,6 +27,9 @@ import {
 
 export const HomeBlock5: React.FC = () => {
   const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "expenditures",
+  });
 
   const [chart5Cycles, setChart5Cycles] = React.useState<CycleProps[]>([]);
 
@@ -220,6 +224,7 @@ export const HomeBlock5: React.FC = () => {
       title={expendituresTotal}
       selectedCycles={chart5Cycles}
       unitButtons={chart5UnitButtons}
+      latestUpdate={latestUpdateDate}
       // dropdownSelected={chart5Dropdown}
       loading={loadingExpendituresHeatmap}
       dropdownItems={CHART_5_DROPDOWN_ITEMS}

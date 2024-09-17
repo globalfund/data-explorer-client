@@ -19,9 +19,13 @@ import { getMonthFromNumber } from "app/utils/getMonthFromNumber";
 import { FilterGroupModel } from "app/components/filters/list/data";
 import { TABLE_VARIATION_5_COLUMNS } from "app/components/table/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 
 export const Grants: React.FC = () => {
   useTitle("The Data Explorer - Grants");
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "grants",
+  });
 
   const [page, setPage] = React.useState(1);
   const [search, setSearch] = React.useState("");
@@ -359,6 +363,7 @@ export const Grants: React.FC = () => {
       anchorEl={anchorEl}
       loading={loading}
       searchInputRef={searchInputRef}
+      latestUpdateDate={latestUpdateDate}
     />
   );
 };

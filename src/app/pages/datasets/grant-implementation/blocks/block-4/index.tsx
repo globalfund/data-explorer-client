@@ -8,6 +8,7 @@ import { Dropdown } from "app/components/dropdown";
 import { getCMSDataField } from "app/utils/getCMSDataField";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import { componentsGroupingOptions } from "app/pages/datasets/grant-implementation/data";
 
 interface GrantImplementationPageBlock4Props {
@@ -20,6 +21,10 @@ export const GrantImplementationPageBlock4: React.FC<
   GrantImplementationPageBlock4Props
 > = (props: GrantImplementationPageBlock4Props) => {
   const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "budgets",
+  });
+
   const dataBudgetBreakdown = useStoreState(
     (state) =>
       get(state.FinancialInsightsBudgetBreakdown, "data.data", []) as {
@@ -161,6 +166,11 @@ export const GrantImplementationPageBlock4: React.FC<
             />
           </Box>
         ))}
+      </Box>
+      <Box>
+        <Typography variant="overline">
+          Latest Update: <b>{latestUpdateDate}</b>
+        </Typography>
       </Box>
       {loadingBudgetBreakdown && (
         <Box

@@ -7,6 +7,7 @@ import { getCMSDataField } from "app/utils/getCMSDataField";
 import CircularProgress from "@mui/material/CircularProgress";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import { componentsGroupingOptions } from "app/pages/datasets/grant-implementation/data";
 
 interface GrantImplementationPageBlock1Props {
@@ -19,6 +20,9 @@ export const GrantImplementationPageBlock1: React.FC<
   GrantImplementationPageBlock1Props
 > = (props: GrantImplementationPageBlock1Props) => {
   const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "disbursements",
+  });
 
   const dataFinancialInsightsStats = useStoreState((state) =>
     get(state.FinancialInsightsStats, "data.data[0]", {
@@ -48,94 +52,101 @@ export const GrantImplementationPageBlock1: React.FC<
   }, [props.filterString, props.componentsGrouping, props.geographyGrouping]);
 
   return (
-    <Box
-      width="100%"
-      display="flex"
-      flexDirection="row"
-      marginBottom="50px"
-      position="relative"
-      sx={{
-        "> div": {
-          width: "calc(100% / 3)",
-          padding: "0 20px",
-          "&:not(:last-child)": {
-            borderRight: "1px solid #DFE3E5",
-          },
-          "&:first-of-type": {
-            paddingLeft: 0,
-          },
-          "@media (max-width: 920px)": {
-            padding: "0 15px",
-            h5: {
-              fontSize: "20px",
+    <React.Fragment>
+      <Box
+        width="100%"
+        display="flex"
+        flexDirection="row"
+        marginBottom="20px"
+        position="relative"
+        sx={{
+          "> div": {
+            width: "calc(100% / 3)",
+            padding: "0 20px",
+            "&:not(:last-child)": {
+              borderRight: "1px solid #DFE3E5",
+            },
+            "&:first-of-type": {
+              paddingLeft: 0,
+            },
+            "@media (max-width: 920px)": {
+              padding: "0 15px",
+              h5: {
+                fontSize: "20px",
+              },
+            },
+            "@media (max-width: 767px)": {
+              width: "100%",
+              padding: "16px 0",
+              "&:not(:last-child)": {
+                borderRightStyle: "none",
+                borderBottom: "1px solid #DFE3E5",
+              },
             },
           },
           "@media (max-width: 767px)": {
-            width: "100%",
-            padding: "16px 0",
-            "&:not(:last-child)": {
-              borderRightStyle: "none",
-              borderBottom: "1px solid #DFE3E5",
-            },
+            marginBottom: 0,
+            flexDirection: "column",
           },
-        },
-        "@media (max-width: 767px)": {
-          marginBottom: 0,
-          flexDirection: "column",
-        },
-      }}
-    >
-      {loadingStats && (
-        <Box
-          height="100%"
-          display="flex"
-          position="absolute"
-          alignItems="center"
-          justifyContent="center"
-          bgcolor="rgba(255, 255, 255, 0.8)"
-          sx={{
-            width: "100% !important",
-          }}
-        >
-          <CircularProgress />
+        }}
+      >
+        {loadingStats && (
+          <Box
+            height="100%"
+            display="flex"
+            position="absolute"
+            alignItems="center"
+            justifyContent="center"
+            bgcolor="rgba(255, 255, 255, 0.8)"
+            sx={{
+              width: "100% !important",
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        )}
+        <Box>
+          <Typography variant="h5">
+            {formatFinancialValue(dataFinancialInsightsStats.signed)}
+          </Typography>
+          <Typography fontSize="14px" fontWeight="700">
+            {getCMSDataField(
+              cmsData,
+              "pagesDatasetsGrantImplementation.statsText1",
+              "Total Signed Amount"
+            )}
+          </Typography>
         </Box>
-      )}
-      <Box>
-        <Typography variant="h5">
-          {formatFinancialValue(dataFinancialInsightsStats.signed)}
-        </Typography>
-        <Typography fontSize="14px" fontWeight="700">
-          {getCMSDataField(
-            cmsData,
-            "pagesDatasetsGrantImplementation.statsText1",
-            "Total Signed Amount"
-          )}
+        <Box>
+          <Typography variant="h5">
+            {formatFinancialValue(dataFinancialInsightsStats.committed)}
+          </Typography>
+          <Typography fontSize="14px" fontWeight="700">
+            {getCMSDataField(
+              cmsData,
+              "pagesDatasetsGrantImplementation.statsText2",
+              "Total Committed Amount"
+            )}
+          </Typography>
+        </Box>
+        <Box>
+          <Typography variant="h5">
+            {formatFinancialValue(dataFinancialInsightsStats.disbursed)}
+          </Typography>
+          <Typography fontSize="14px" fontWeight="700">
+            {getCMSDataField(
+              cmsData,
+              "pagesDatasetsGrantImplementation.statsText3",
+              "Total Disbursed Amount"
+            )}
+          </Typography>
+        </Box>
+      </Box>
+      <Box marginBottom="25px">
+        <Typography variant="overline">
+          Latest Update: <b>{latestUpdateDate}</b>
         </Typography>
       </Box>
-      <Box>
-        <Typography variant="h5">
-          {formatFinancialValue(dataFinancialInsightsStats.committed)}
-        </Typography>
-        <Typography fontSize="14px" fontWeight="700">
-          {getCMSDataField(
-            cmsData,
-            "pagesDatasetsGrantImplementation.statsText2",
-            "Total Committed Amount"
-          )}
-        </Typography>
-      </Box>
-      <Box>
-        <Typography variant="h5">
-          {formatFinancialValue(dataFinancialInsightsStats.disbursed)}
-        </Typography>
-        <Typography fontSize="14px" fontWeight="700">
-          {getCMSDataField(
-            cmsData,
-            "pagesDatasetsGrantImplementation.statsText3",
-            "Total Disbursed Amount"
-          )}
-        </Typography>
-      </Box>
-    </Box>
+    </React.Fragment>
   );
 };

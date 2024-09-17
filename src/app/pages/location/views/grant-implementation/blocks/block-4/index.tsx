@@ -13,11 +13,16 @@ import { getMonthFromNumber } from "app/utils/getMonthFromNumber";
 import { PieChartDataItem } from "app/components/charts/pie/data";
 import { TABLE_VARIATION_5_COLUMNS } from "app/components/table/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 
 export const LocationGrantImplementationBlock4 = () => {
+  const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "pledges-contributions",
+  });
+
   const params = useParams<{ id: string; tab: string }>();
   const paramsId = params.id?.replace("|", "%2F");
-  const cmsData = useCMSData({ returnData: true });
 
   const [tableSearch, setTableSearch] = React.useState("");
 
@@ -109,6 +114,7 @@ export const LocationGrantImplementationBlock4 = () => {
       )}`}
       subtitle=""
       empty={!showGrantsTable}
+      latestUpdate={latestUpdateDate}
       infoType="global"
     >
       <Box height="16px" />
