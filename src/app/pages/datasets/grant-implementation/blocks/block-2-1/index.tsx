@@ -10,6 +10,7 @@ import { getCMSDataField } from "app/utils/getCMSDataField";
 import { TableContainer } from "app/components/table-container";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 import { dropdownItemsHolisticGrantInvestments } from "app/pages/datasets/grant-implementation/data";
 import {
@@ -20,6 +21,9 @@ import {
 export const GrantImplementationPageBlock21: React.FC = () => {
   const location = useLocation();
   const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "disbursements",
+  });
 
   const [dropdownSelected, setDropdownSelected] = React.useState(
     dropdownItemsHolisticGrantInvestments[0].value
@@ -315,6 +319,7 @@ export const GrantImplementationPageBlock21: React.FC = () => {
         appliedFiltersData={defaultAppliedFilters}
         removeFilter={() => {}}
         toggleFilter={() => {}}
+        latestUpdate={latestUpdateDate}
         infoType="financials"
       >
         {chartContent}
