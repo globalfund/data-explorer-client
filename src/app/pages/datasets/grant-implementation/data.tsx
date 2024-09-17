@@ -45,6 +45,15 @@ export const dropdownItemsDisbursements = [
   { label: "Table View", value: "Table View", icon: <TableIcon /> },
 ];
 
+export const dropdownItemsHolisticGrantInvestments = [
+  {
+    label: "Sankey Chart",
+    value: "Sankey Chart",
+    icon: <SankeyChartIcon />,
+  },
+  { label: "Table View", value: "Table View", icon: <TableIcon /> },
+];
+
 export const dropdownItemsBudgets = [
   {
     label: "Sankey Chart",

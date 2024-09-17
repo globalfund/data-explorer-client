@@ -12,6 +12,7 @@ import { FilterGroupModel } from "app/components/filters/list/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { GrantImplementationPageBlock1 } from "app/pages/datasets/grant-implementation/blocks/block-1";
 import { GrantImplementationPageBlock2 } from "app/pages/datasets/grant-implementation/blocks/block-2";
+import { GrantImplementationPageBlock21 } from "app/pages/datasets/grant-implementation/blocks/block-2-1";
 import { GrantImplementationPageBlock3 } from "app/pages/datasets/grant-implementation/blocks/block-3";
 import { GrantImplementationPageBlock4 } from "app/pages/datasets/grant-implementation/blocks/block-4";
 import { GrantImplementationPageBlock5 } from "app/pages/datasets/grant-implementation/blocks/block-5";
@@ -333,6 +334,8 @@ export const GrantImplementationPage: React.FC = () => {
           componentsGrouping={componentsGrouping}
           filterGroups={filterGroupsDisbursements}
         />
+        <FullWidthDivider />
+        <GrantImplementationPageBlock21 />
         <FullWidthDivider />
         <GrantImplementationPageBlock3
           filterString={filterString}

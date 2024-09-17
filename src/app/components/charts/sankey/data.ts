@@ -19,6 +19,7 @@ export interface SankeyChartData {
 
 export interface SankeyChartProps {
   data: SankeyChartData;
+  formatLabel?: boolean;
 }
 
 export interface SankeyChartTooltipProps extends SankeyChartNode {

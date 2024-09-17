@@ -110,7 +110,7 @@ import pagesDatasets, {
   pagesDatasetsGrantImplementation,
   pagesDatasetsResourceMobilization,
 } from "app/state/api/action-reducers/cms/pagesDatasets";
-import pagesGeography from "../api/action-reducers/cms/pagesGeography";
+import pagesGeography from "app/state/api/action-reducers/cms/pagesGeography";
 import pagesGrantDetail, {
   pagesGrantDocuments,
   pagesGrantGrantImplementation,
@@ -127,7 +127,9 @@ import pagesLocation, {
   pagesLocationResults,
 } from "app/state/api/action-reducers/cms/pagesLocation";
 import general from "app/state/api/action-reducers/cms/general";
-import { DatasetsLatestUpdate } from "../api/action-reducers/latest-update";
+import { FinancialInsightsHGISankey } from "app/state/api/action-reducers/financial-insights/hgi-sankey";
+import { FinancialInsightsHGITable } from "app/state/api/action-reducers/financial-insights/hgi-table";
+import { DatasetsLatestUpdate } from "app/state/api/action-reducers/latest-update";
 
 const storeContent: StoreModel = {
   // homepage
@@ -169,6 +171,8 @@ const storeContent: StoreModel = {
   FinancialInsightsDisbursementsTable: persist(
     FinancialInsightsDisbursementsTable
   ),
+  FinancialInsightsHGISankey: persist(FinancialInsightsHGISankey),
+  FinancialInsightsHGITable: persist(FinancialInsightsHGITable),
   FinancialInsightsBudgetBreakdown: persist(FinancialInsightsBudgetBreakdown),
   FinancialInsightsBudgetUtilisation: persist(
     FinancialInsightsBudgetUtilisation
