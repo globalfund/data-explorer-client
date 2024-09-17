@@ -39,6 +39,10 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
       .reduce((acc, item) => acc + item.value, 0);
   }, [props.data.links]);
 
+  const maxLevel = React.useMemo(() => {
+    return Math.max(...props.data.nodes.map((node) => node.level));
+  }, [props.data.nodes]);
+
   React.useEffect(() => {
     if (containerRef.current) {
       const chart = echarts.init(containerRef.current, undefined, {
@@ -86,7 +90,8 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
                 color: appColors.COMMON.WHITE,
               },
               lineStyle: {
-                color: appColors.SANKEY_CHART.LINK_COLORS[1],
+                color:
+                  appColors.SANKEY_CHART.LINK_COLORS[maxLevel === 3 ? 0 : 1],
               },
               itemStyle: {
                 color: appColors.SANKEY_CHART.NODE_COLOR,
@@ -100,7 +105,8 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
                 color: appColors.COMMON.WHITE,
               },
               lineStyle: {
-                color: appColors.SANKEY_CHART.LINK_COLORS[2],
+                color:
+                  appColors.SANKEY_CHART.LINK_COLORS[maxLevel === 3 ? 1 : 2],
               },
             },
             {
