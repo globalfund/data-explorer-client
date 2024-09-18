@@ -232,13 +232,14 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
           display="flex"
           marginTop="40px"
           alignItems="center"
-          justifyContent={props.latestUpdate ? "space-between" : "flex-end"}
+          // justifyContent={props.latestUpdate ? "space-between" : "flex-end"}
+          justifyContent="flex-end"
         >
-          {props.latestUpdate && (
+          {/* {props.latestUpdate && (
             <Typography variant="overline">
               Latest Update: <b>{props.latestUpdate}</b>
             </Typography>
-          )}
+          )} */}
           <ChartBlockButtonToolbar
             blockId={id}
             hashId={props.id}

@@ -128,9 +128,9 @@ export const AccessToFundingBlock4: React.FC<AccessToFundingBlock4Props> = (
           </Box>
         )}
       </Box>
-      <Typography variant="overline">
+      {/* <Typography variant="overline">
         Latest Update: <b>{latestUpdateDate}</b>
-      </Typography>
+      </Typography> */}
     </Box>
   );
 };
