@@ -3,6 +3,7 @@ import { AppliedFiltersModel } from "app/state/api/action-reducers/sync/filters"
 import { InfoPanelType } from "app/components/chart-block/components/button-toolbar/data";
 
 export interface DatasetChartBlockProps {
+  data: any;
   id: string;
   title: string;
   empty?: boolean;

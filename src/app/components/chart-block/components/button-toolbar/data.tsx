@@ -18,6 +18,10 @@ export interface ChartBlockButtonToolbarProps {
   blockId: string;
   infoType: InfoPanelType;
   chartType?: string;
+  chartData: {
+    headers: string[];
+    data: (string | number)[][];
+  };
 }
 
 export interface InfoPanelProps {
@@ -47,12 +51,12 @@ export const DownloadPanel: React.FC<ChartBlockButtonToolbarProps> = (
     null
   );
 
-  const handleButtonClick = (type: "pdf" | "png") => () => {
-    exportChart(props.blockId || "", type)
+  const handleButtonClick = (type: "csv" | "pdf" | "png") => () => {
+    exportChart(props.blockId || "", type, props.chartData)
       .then(() => {
         setFeedbackMessage(`Asset downloaded as ${type.toUpperCase()}.`);
       })
-      .catch(() => {
+      .catch((e) => {
         setFeedbackMessage("Oops, something went wrong.");
       });
   };
@@ -78,6 +82,7 @@ export const DownloadPanel: React.FC<ChartBlockButtonToolbarProps> = (
       )}
       {!feedbackMessage && (
         <React.Fragment>
+          <Button onClick={handleButtonClick("csv")}>CSV.</Button>
           <Button onClick={handleButtonClick("pdf")}>PDF.</Button>
           <Button onClick={handleButtonClick("png")}>PNG.</Button>
         </React.Fragment>

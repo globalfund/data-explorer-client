@@ -176,6 +176,7 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
           <ChartBlockButtonToolbar
             blockId={id}
             hashId={props.id}
+            chartData={props.data}
             infoType={props.infoType}
             chartType={props.dropdownSelected}
           />

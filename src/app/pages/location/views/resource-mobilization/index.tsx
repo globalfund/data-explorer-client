@@ -109,6 +109,7 @@ export const ResourceMobilization: React.FC = () => {
           "pagesLocationResourceMobilization.title",
           "Pledges & Contributions"
         )}
+        data={dataRMBarChart}
         handleCycleChange={handleChartCycleChange}
         empty={dataRMBarChart.length === 0 && chart1Cycles.length === 0}
         infoType="pledges_contributions"

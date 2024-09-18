@@ -486,6 +486,7 @@ export const GrantImplementationPageBlock5: React.FC<
         handleResetFilters={handleResetChartFilters}
         appliedFiltersData={chart3AppliedFiltersData}
         extraDropdown={financialMetricsCycleDropdown}
+        data={[]}
         infoType="financials"
       >
         {financialMetricsContent}

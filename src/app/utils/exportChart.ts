@@ -5,8 +5,12 @@ import domtoimage from "dom-to-image";
 export async function exportChart(
   id: string,
   type: string,
-  bgcolor = "#ffffff"
+  data: {
+    headers: string[];
+    data: (string | number)[][];
+  }
 ) {
+  const bgcolor = "#ffffff";
   return new Promise((resolve, reject) => {
     const node = document.getElementById(id);
     const filter = (n: any) =>
@@ -74,6 +78,19 @@ export async function exportChart(
           console.error("oops, something went wrong!", error);
           reject("oops, something went wrong!");
         });
+    } else if (type === "csv") {
+      const csv = [];
+      csv.push(data.headers.join(","));
+      const rows = data.data;
+      for (let i = 0; i < rows.length; i++) {
+        csv.push(Object.values(rows[i]).join(","));
+      }
+      const csvString = csv.join("\n");
+      const link = document.createElement("a");
+      link.download = "download.csv";
+      link.href = `data:text/csv;charset=utf-8,${csvString}`;
+      link.click();
+      resolve({});
     } else {
       domtoimage
         .toPng(node, {

@@ -154,6 +154,7 @@ export const LocationGrantImplementationBlock1 = () => {
         disabled: findIndex(disbursementsCycles, { value: c.value }) === -1,
       }))}
       latestUpdate={latestUpdateDate}
+      data={dataDisbursementsLineChart.data}
       infoType="financials"
     >
       <Box position="relative">

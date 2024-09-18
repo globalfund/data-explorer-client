@@ -205,6 +205,7 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
         disableCollapse
         dropdownItems={[]}
         latestUpdate={latestUpdateDate}
+        data={dataFundingRequestsTable}
         loading={loadingFundingRequestsTable}
         filterGroups={props.filterGroups}
         appliedFilters={chart3AppliedFilters}

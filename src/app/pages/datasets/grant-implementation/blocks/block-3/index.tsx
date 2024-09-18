@@ -520,6 +520,24 @@ export const GrantImplementationPageBlock3: React.FC<
     budgetTableDataType,
   ]);
 
+  const chartData = React.useMemo(() => {
+    switch (budgetsDropdownSelected) {
+      case dropdownItemsBudgets[0].value:
+        return dataBudgetSankey;
+      case dropdownItemsBudgets[1].value:
+        return dataBudgetTreemap;
+      case dropdownItemsBudgets[2].value:
+        return dataBudgetTable;
+      default:
+        return [];
+    }
+  }, [
+    budgetsDropdownSelected,
+    dataBudgetSankey,
+    dataBudgetTreemap,
+    dataBudgetTable,
+  ]);
+
   React.useEffect(() => {
     fetchBudgetSankey({
       filterString: chart2FilterString,
@@ -626,6 +644,7 @@ export const GrantImplementationPageBlock3: React.FC<
         handleResetFilters={handleResetChartFilters}
         appliedFiltersData={chart2AppliedFiltersData}
         extraDropdown={budgetsTableDataTypeDropdown}
+        data={chartData}
         infoType="budgets"
       >
         {budgetsChartContent}

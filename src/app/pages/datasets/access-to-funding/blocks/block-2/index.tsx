@@ -227,6 +227,7 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
         )}
         dropdownItems={[]}
         disableCollapse
+        data={dataEligibilityTable}
         latestUpdate={latestUpdateDate}
         loading={loadingEligibilityTable}
         filterGroups={props.filterGroups}

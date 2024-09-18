@@ -212,6 +212,7 @@ export const LocationGrantImplementationBlock3 = () => {
       }))}
       unitButtons={chart2UnitButtons}
       latestUpdate={latestUpdateDate}
+      data={dataExpendituresHeatmap}
       infoType="expenditures"
     >
       <Heatmap

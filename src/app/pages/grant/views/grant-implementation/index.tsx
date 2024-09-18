@@ -430,6 +430,7 @@ export const GrantImplementation: React.FC = () => {
           "pagesGrantGrantImplementation.disbursementsSubtitle",
           "Disbursements"
         )}
+        data={radialChartData}
         empty={!showRadialChart}
         latestUpdate={latestUpdateDateChart1}
         infoType="financials"
@@ -478,6 +479,7 @@ export const GrantImplementation: React.FC = () => {
           "pagesGrantGrantImplementation.budgetsSubtitle",
           "Grant Budgets"
         )}
+        data={dataBudgetSankeyChart}
         empty={!showBudgetSankeyChart}
         latestUpdate={latestUpdateDateChart2}
         infoType="budgets"
@@ -533,6 +535,7 @@ export const GrantImplementation: React.FC = () => {
           "Expenditures"
         )}
         title={expendituresTotal}
+        data={dataExpendituresHeatmap}
         empty={!showExpendituresHeatmap}
         dropdownSelected={chart2Dropdown}
         dropdownItems={CHART_2_DROPDOWN_ITEMS}

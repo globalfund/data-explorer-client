@@ -371,6 +371,17 @@ export const AnnualResultsPage: React.FC = () => {
     }
   }, [dropdownSelected, dataPolyline, dataTable, yearSelected]);
 
+  const chartData = React.useMemo(() => {
+    switch (dropdownSelected) {
+      case dropdownItems[0].value:
+        return dataPolyline;
+      case dropdownItems[1].value:
+        return dataTable;
+      default:
+        return [];
+    }
+  }, [dropdownSelected, dataPolyline, dataTable]);
+
   React.useEffect(() => {
     if (annualResultsCycles.length > 0) {
       setYearSelected(annualResultsCycles[0].value.toString());
@@ -457,6 +468,7 @@ export const AnnualResultsPage: React.FC = () => {
               "Annual Results"
             )}
             subtitle=""
+            data={chartData}
             loading={loadingResults}
             dropdownItems={dropdownItems}
             latestUpdate={latestUpdateDate}

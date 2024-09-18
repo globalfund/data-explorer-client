@@ -360,6 +360,17 @@ export const ResourceMobilizationPage: React.FC = () => {
     }
   }, [dropdownSelected, dataBarChart, dataTable, tableSearch]);
 
+  const chartData = React.useMemo(() => {
+    switch (dropdownSelected) {
+      case dropdownItems[0].value:
+        return dataBarChart;
+      case dropdownItems[1].value:
+        return dataTable;
+      default:
+        return [];
+    }
+  }, [dropdownSelected, dataBarChart, dataTable]);
+
   React.useEffect(() => {
     fetchStats({ filterString });
   }, [filterString]);
@@ -641,6 +652,7 @@ export const ResourceMobilizationPage: React.FC = () => {
             removeFilter={handleRemoveChartFilter}
             handleResetFilters={handleResetChartFilters}
             appliedFiltersData={chartAppliedFiltersData}
+            data={chartData}
             infoType="pledges_contributions"
           >
             {chartContent}

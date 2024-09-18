@@ -102,6 +102,21 @@ export const GrantOverview: React.FC = () => {
     ];
   }, [dataOverview.disbursement, dataOverview.commitment, dataOverview.signed]);
 
+  const exportChartData = React.useMemo(() => {
+    const disbursementPercentage =
+      (dataOverview.disbursement / dataOverview.commitment) * 100;
+    const commitmentPercentage =
+      (dataOverview.commitment / dataOverview.signed) * 100;
+    return {
+      headers: ["Type", "Amount", "Percentage"],
+      data: [
+        ["Disbursed", dataOverview.disbursement, disbursementPercentage],
+        ["Committed", dataOverview.commitment, commitmentPercentage],
+        ["Signed", dataOverview.signed, 100],
+      ],
+    };
+  }, [dataOverview.disbursement, dataOverview.commitment, dataOverview.signed]);
+
   const fullWidthDivider = (
     <Divider
       sx={{
@@ -250,6 +265,7 @@ export const GrantOverview: React.FC = () => {
         </Box>
         <ChartBlockButtonToolbar
           infoType="global"
+          chartData={exportChartData}
           hashId="grant-overview-race-bar-chart"
           blockId="grant-overview-race-bar-chart"
         />

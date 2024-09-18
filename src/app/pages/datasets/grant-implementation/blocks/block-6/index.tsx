@@ -494,6 +494,24 @@ export const GrantImplementationPageBlock6: React.FC<
     dataExpendituresTable,
   ]);
 
+  const chartData = React.useMemo(() => {
+    switch (expendituresDropdownSelected) {
+      case dropdownItemsExpenditures[0].value:
+        return dataExpendituresHeatmap;
+      case dropdownItemsExpenditures[1].value:
+        return dataExpendituresBarChart;
+      case dropdownItemsExpenditures[2].value:
+        return dataExpendituresTable;
+      default:
+        return [];
+    }
+  }, [
+    expendituresDropdownSelected,
+    dataExpendituresHeatmap,
+    dataExpendituresBarChart,
+    dataExpendituresTable,
+  ]);
+
   React.useEffect(() => {
     fetchExpendituresHeatmap({
       filterString: chart4FilterString,
@@ -572,6 +590,7 @@ export const GrantImplementationPageBlock6: React.FC<
         handleResetFilters={handleResetChartFilters}
         appliedFiltersData={chart4AppliedFiltersData}
         extraDropdown={expendituresCycleDropdown}
+        data={chartData}
         infoType="expenditures"
       >
         <Box

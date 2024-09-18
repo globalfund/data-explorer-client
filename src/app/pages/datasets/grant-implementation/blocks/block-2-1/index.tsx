@@ -257,6 +257,17 @@ export const GrantImplementationPageBlock21: React.FC = () => {
     cycleDropdownSelected,
   ]);
 
+  const chartData = React.useMemo(() => {
+    switch (dropdownSelected) {
+      case dropdownItemsHolisticGrantInvestments[0].value:
+        return dataSankey;
+      case dropdownItemsHolisticGrantInvestments[1].value:
+        return dataTable;
+      default:
+        return null;
+    }
+  }, [dropdownSelected, dataSankey, dataTable]);
+
   React.useEffect(() => {
     if (!cycleDropdownSelected) return;
     fetchSankey({ filterString: chartFilterString });
@@ -320,6 +331,7 @@ export const GrantImplementationPageBlock21: React.FC = () => {
         removeFilter={() => {}}
         toggleFilter={() => {}}
         latestUpdate={latestUpdateDate}
+        data={chartData}
         infoType="financials"
       >
         {chartContent}

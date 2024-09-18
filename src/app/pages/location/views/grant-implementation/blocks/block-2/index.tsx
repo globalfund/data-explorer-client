@@ -151,6 +151,7 @@ export const LocationGrantImplementationBlock2 = () => {
         disabled: findIndex(budgetsCycles, { value: c.value }) === -1,
       }))}
       latestUpdate={latestUpdateDate}
+      data={dataBudgetSankeyChart}
       infoType="budgets"
     >
       <Grid

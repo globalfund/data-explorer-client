@@ -314,6 +314,7 @@ export const AccessToFunding: React.FC = () => {
           "pagesLocationAccessToFunding.allocationText",
           "The Global Fund is distinct from other organizations in that it gives countries (or groups of countries) an allocation and asks countries to describe how they will use those funds rather than asking for applications and then determining an amount per-country based on the merits of the various proposals received.<br/><br/>This provides greater predictability for countries and helps ensure that the programs being funded are not just the ones with the most capacity to write good applications."
         )}
+        data={dataAllocationsRadialChart}
         latestUpdate={latestUpdateDateChart1}
         infoType="global"
       >
@@ -378,6 +379,7 @@ export const AccessToFunding: React.FC = () => {
           "The Funding Request explains how the applicant would use Global Fund allocated funds, if approved. Funding Requests are reviewed by the Global Fund’s Technical Review Panel (TRP). Once approved by the TRP, the Funding Request is turned into one or more grants through the grant-making negotiation. The Grant Approvals Committee (GAC) reviews the final version of each grant and recommends implementation-ready grants to the Global Fund Board for approval. Funding Requests are submitted for internal Global Fund review, but the final grant is the legally-binding agreement.<br/><br/>Documents for a specific funding request can be downloaded by clicking the cloud icon. Documents from the 2017-2019 Allocation Period and earlier can be found by clicking on the “Documents’ tab above. If a Funding Request is not visible for the 2023-2025 Allocation Period and the country received an Allocation, it likely means that the applicant has not yet registered for a TRP Window."
         )}
         latestUpdate={latestUpdateDateChart2}
+        data={dataFundingRequestsTable._children}
         infoType="global"
       >
         <TableContainer
@@ -410,6 +412,7 @@ export const AccessToFunding: React.FC = () => {
           "Eligibility for funding from the Global Fund is determined by country income classification and disease burden for HIV, tuberculosis and malaria. Below are the components which are eligible for an allocation for the selected allocation period, according to the Global Fund Eligibility Policy.<br/><br/>Eligibility for the 2023-2025 Allocation Period was determined in 2022 and documented in the 2023 Eligibility List. Eligibility does not guarantee a funding allocation. Learn more about Eligibility <a target='_blank' href='https://www.theglobalfund.org/en/applying-for-funding/understand-and-prepare/eligibility/'>here</a> or <a>see the full history of eligibility for this country</a>."
         )}
         latestUpdate={latestUpdateDateChart3}
+        data={dataEligibilityTable}
         infoType="global"
       >
         <Box
@@ -618,6 +621,7 @@ export const AccessToFunding: React.FC = () => {
         )}
         subtitle=""
         empty={!showDocumentsTable}
+        data={dataDocumentsTable}
         infoType="global"
       >
         <Box

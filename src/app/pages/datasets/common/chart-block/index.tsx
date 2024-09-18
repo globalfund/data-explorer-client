@@ -242,6 +242,7 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
           <ChartBlockButtonToolbar
             blockId={id}
             hashId={props.id}
+            chartData={props.data}
             infoType={props.infoType}
             chartType={props.dropdownSelected}
           />

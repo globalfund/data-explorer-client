@@ -517,6 +517,24 @@ export const GrantImplementationPageBlock2: React.FC<
     dataFinancialInsightsDisbursementsTable,
   ]);
 
+  const chartData = React.useMemo(() => {
+    switch (disbursementsDropdownSelected) {
+      case dropdownItemsDisbursements[0].value:
+        return dataFinancialInsightsDisbursementsBarChart;
+      case dropdownItemsDisbursements[1].value:
+        return dataFinancialInsightsDisbursementsLineChart;
+      case dropdownItemsDisbursements[2].value:
+        return dataFinancialInsightsDisbursementsTable;
+      default:
+        return [];
+    }
+  }, [
+    disbursementsDropdownSelected,
+    dataFinancialInsightsDisbursementsBarChart,
+    dataFinancialInsightsDisbursementsLineChart,
+    dataFinancialInsightsDisbursementsTable,
+  ]);
+
   React.useEffect(() => {
     fetchFinancialInsightsDisbursementsBarChart({
       filterString: chart1FilterString,
@@ -596,6 +614,7 @@ export const GrantImplementationPageBlock2: React.FC<
         removeFilter={handleRemoveChartFilter}
         handleResetFilters={handleResetChartFilters}
         appliedFiltersData={chart1AppliedFiltersData}
+        data={chartData}
         infoType="financials"
       >
         {disbursementsChartContent}

@@ -115,6 +115,7 @@ export const LocationGrantImplementationBlock4 = () => {
       subtitle=""
       empty={!showGrantsTable}
       latestUpdate={latestUpdateDate}
+      data={dataGrantsTable}
       infoType="global"
     >
       <Box height="16px" />

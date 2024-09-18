@@ -1,6 +1,7 @@
 import { InfoPanelType } from "app/components/chart-block/components/button-toolbar/data";
 
 export interface ChartBlockProps {
+  data: any;
   id: string;
   title: string;
   text?: string;

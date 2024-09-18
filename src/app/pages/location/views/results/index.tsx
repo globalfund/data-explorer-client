@@ -125,6 +125,7 @@ export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
         selectedCycles={[props.resultsYear]}
         handleCycleChange={props.setResultsYear}
         latestUpdate={latestUpdateDate}
+        data={dataResultsTable}
         infoType="global"
       >
         <TableContainer
@@ -147,6 +148,7 @@ export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
         )}
         empty={!showDocuments}
         subtitle=""
+        data={dataDocumentsTable}
         infoType="global"
       >
         <TableContainer

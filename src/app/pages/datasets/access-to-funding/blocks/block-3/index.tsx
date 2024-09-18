@@ -210,6 +210,24 @@ export const AccessToFundingBlock3: React.FC<AccessToFundingBlock3Props> = (
     dataAllocationsTable,
   ]);
 
+  const chartData = React.useMemo(() => {
+    switch (dropdownSelected) {
+      case dropdownItemsAllocations[0].value:
+        return dataAllocationsSunburst;
+      case dropdownItemsAllocations[1].value:
+        return dataAllocationsTreemap;
+      case dropdownItemsAllocations[2].value:
+        return dataAllocationsTable;
+      default:
+        return [];
+    }
+  }, [
+    dropdownSelected,
+    dataAllocationsSunburst,
+    dataAllocationsTreemap,
+    dataAllocationsTable,
+  ]);
+
   const chartEmpty = React.useMemo(() => {
     switch (dropdownSelected) {
       case dropdownItemsAllocations[0].value:
@@ -361,6 +379,7 @@ export const AccessToFundingBlock3: React.FC<AccessToFundingBlock3Props> = (
         handleResetFilters={handleResetChartFilters}
         appliedFiltersData={chart2AppliedFiltersData}
         extraDropdown={allocationCycleDropdown}
+        data={chartData}
         infoType="global"
       >
         {chartContent}

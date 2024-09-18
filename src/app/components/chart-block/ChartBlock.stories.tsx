@@ -25,6 +25,7 @@ const Wrapper: React.FC = () => {
       cycles={CYCLES}
       infoType="global"
       title="$84 Billion"
+      data={STORY_DATA_VARIANT_2}
       selectedCycles={selectedCycles}
       subtitle="Funds raised to date"
       handleCycleChange={handleCycleChange}
