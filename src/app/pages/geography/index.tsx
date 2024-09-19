@@ -272,11 +272,11 @@ export const Geography: React.FC = () => {
           ))}
         </Box>
       </Box>
-      <Box>
+      {/* <Box>
         <Typography variant="overline">
           Latest Update: <b>{latestUpdateDate}</b>
         </Typography>
-      </Box>
+      </Box> */}
     </Box>
   );
 };

@@ -159,11 +159,11 @@ export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
             </Box>
           </Grid>
         ))}
-        <Grid item xs={12}>
+        {/* <Grid item xs={12}>
           <Typography variant="overline">
             Latest Update: <b>{latestUpdateDate}</b>
           </Typography>
-        </Grid>
+        </Grid> */}
       </Grid>
     </Box>
   );
