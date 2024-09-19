@@ -95,6 +95,13 @@ export const ResourceMobilization: React.FC = () => {
     }`;
   }, [dataRMBarChart]);
 
+  const exportChartData = React.useMemo(() => {
+    return {
+      headers: ["Period", "Pledge", "Contribution"],
+      data: dataRMBarChart.map((item) => [item.name, item.value, item.value1]),
+    };
+  }, [dataRMBarChart]);
+
   return (
     <Box>
       <ChartBlock
@@ -109,7 +116,7 @@ export const ResourceMobilization: React.FC = () => {
           "pagesLocationResourceMobilization.title",
           "Pledges & Contributions"
         )}
-        data={dataRMBarChart}
+        data={exportChartData}
         handleCycleChange={handleChartCycleChange}
         empty={dataRMBarChart.length === 0 && chart1Cycles.length === 0}
         infoType="pledges_contributions"

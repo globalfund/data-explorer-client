@@ -211,16 +211,47 @@ export const AccessToFundingBlock3: React.FC<AccessToFundingBlock3Props> = (
   ]);
 
   const chartData = React.useMemo(() => {
+    const result: (string | number)[][] = [];
+    let headers: string[] = [];
     switch (dropdownSelected) {
       case dropdownItemsAllocations[0].value:
-        return dataAllocationsSunburst;
+        headers = ["Sub-Region", "Country", "Amount"];
+        dataAllocationsSunburst.forEach((item: any) => {
+          const items = get(item, "children", []);
+          if (items.length > 0) {
+            items.forEach((child: any) => {
+              result.push([item.name, child.name, child.value]);
+            });
+          } else {
+            result.push([item.name, "", item.value]);
+          }
+        });
+        break;
       case dropdownItemsAllocations[1].value:
-        return dataAllocationsTreemap;
+        headers = ["Component", "Amount"];
+        dataAllocationsTreemap.forEach((item: any) => {
+          result.push([item.name, item.value]);
+        });
+        break;
       case dropdownItemsAllocations[2].value:
-        return dataAllocationsTable;
+        headers = ["Geography", "Component", "Period", "Amount"];
+        dataAllocationsTable.forEach((item: any) => {
+          get(item, "_children", []).forEach((child: any) => {
+            Object.keys(child).forEach((key) => {
+              if (key !== "name") {
+                result.push([item.name, child.name, key, child[key]]);
+              }
+            });
+          });
+        });
+        break;
       default:
-        return [];
+        break;
     }
+    return {
+      headers,
+      data: result,
+    };
   }, [
     dropdownSelected,
     dataAllocationsSunburst,

@@ -98,6 +98,35 @@ export const LocationGrantImplementationBlock4 = () => {
     });
   }, [dataGrantsTable]);
 
+  const exportChartData = React.useMemo(() => {
+    return {
+      headers: [
+        "Grant ID",
+        "Start/End date",
+        "Geography",
+        "Component",
+        "Principal Recipient",
+        "Status",
+        "Signed",
+        "Disbursed",
+      ],
+      data: dataGrantsTable.map((item) => [
+        item.number,
+        `${getMonthFromNumber(
+          new Date(item.startDate).getMonth() + 1
+        )} ${new Date(item.startDate).getFullYear()} - ${getMonthFromNumber(
+          new Date(item.endDate).getMonth() + 1
+        )} ${new Date(item.endDate).getFullYear()}`,
+        `"${item.location}"`,
+        item.component,
+        `"${item.principalRecipient}"`,
+        item.status,
+        item.signed,
+        item.disbursed,
+      ]),
+    };
+  }, [dataGrantsTable]);
+
   const showGrantsTable =
     (dataGrantsTable.length > 0 &&
       !loadingGrantsTable &&
@@ -115,7 +144,7 @@ export const LocationGrantImplementationBlock4 = () => {
       subtitle=""
       empty={!showGrantsTable}
       latestUpdate={latestUpdateDate}
-      data={dataGrantsTable}
+      data={exportChartData}
       infoType="global"
     >
       <Box height="16px" />

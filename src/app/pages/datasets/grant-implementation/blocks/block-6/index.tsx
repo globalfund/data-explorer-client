@@ -31,6 +31,7 @@ import {
   componentsGroupingOptions,
   dropdownItemsExpenditures,
 } from "app/pages/datasets/grant-implementation/data";
+import orderBy from "lodash/orderBy";
 
 interface GrantImplementationPageBlock6Props {
   filterString: string;
@@ -494,16 +495,75 @@ export const GrantImplementationPageBlock6: React.FC<
     dataExpendituresTable,
   ]);
 
-  const chartData = React.useMemo(() => {
+  const exportChartData = React.useMemo(() => {
+    const result: (string | number)[][] = [];
     switch (expendituresDropdownSelected) {
       case dropdownItemsExpenditures[0].value:
-        return dataExpendituresHeatmap;
+        let sortedData: HeatmapDataItem[] = [];
+        orderBy(dataExpendituresHeatmap, "row", "asc").forEach((item) => {
+          if (!item.parentRow && !item.parentColumn) {
+            sortedData.push(item);
+            const children = dataExpendituresHeatmap.filter(
+              (child) =>
+                child.parentRow === item.row ||
+                child.parentColumn === item.column
+            );
+            sortedData = sortedData.concat(children);
+          }
+        });
+        return {
+          headers: ["Principal Recipient", "Component", "Amount", "Percentage"],
+          data: sortedData.map((item) => [
+            `"${item.row}"`,
+            `"${item.column}"`,
+            item.value,
+            item.percentage,
+          ]),
+        };
       case dropdownItemsExpenditures[1].value:
-        return dataExpendituresBarChart;
+        dataExpendituresBarChart.forEach((item) => {
+          result.push([`"${item.name}"`, "", item.value]);
+          get(item, "items", []).forEach((subItem) => {
+            result.push([`"${item.name}"`, `"${subItem.name}"`, subItem.value]);
+          });
+        });
+        return {
+          headers: ["Module", "Intervention", "Amount"],
+          data: result,
+        };
       case dropdownItemsExpenditures[2].value:
-        return dataExpendituresTable;
+        dataExpendituresTable.forEach((item) => {
+          result.push([
+            `"${item.name}"`,
+            "",
+            item.cumulativeExpenditure as number,
+            item.periodExpenditure as number,
+          ]);
+          if (item._children) {
+            (item._children as any[]).forEach((subItem) => {
+              result.push([
+                `"${item.name}"`,
+                `"${subItem.name}"`,
+                subItem.cumulativeExpenditure,
+                subItem.periodExpenditure,
+              ]);
+            });
+          }
+        });
+        return {
+          headers: [
+            "Module",
+            "Intervention",
+            "Cumulative Expenditure",
+            "Expenditure for Reported Period",
+          ],
+          data: result,
+        };
       default:
-        return [];
+        return {
+          headers: [],
+          data: [],
+        };
     }
   }, [
     expendituresDropdownSelected,
@@ -590,7 +650,7 @@ export const GrantImplementationPageBlock6: React.FC<
         handleResetFilters={handleResetChartFilters}
         appliedFiltersData={chart4AppliedFiltersData}
         extraDropdown={expendituresCycleDropdown}
-        data={chartData}
+        data={exportChartData}
         infoType="expenditures"
       >
         <Box

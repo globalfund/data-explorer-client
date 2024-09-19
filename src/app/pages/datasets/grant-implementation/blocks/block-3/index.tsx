@@ -521,16 +521,45 @@ export const GrantImplementationPageBlock3: React.FC<
   ]);
 
   const chartData = React.useMemo(() => {
+    let headers: string[] = [];
+    const data: (string | number)[][] = [];
     switch (budgetsDropdownSelected) {
       case dropdownItemsBudgets[0].value:
-        return dataBudgetSankey;
+        headers = ["Source", "Target", "Value"];
+        dataBudgetSankey.links.forEach((link: any) => {
+          data.push([link.source, link.target, link.value]);
+        });
+        break;
       case dropdownItemsBudgets[1].value:
-        return dataBudgetTreemap;
+        headers = ["Component", "Amount"];
+        dataBudgetTreemap.forEach((item: any) => {
+          data.push([item.name, item.value]);
+        });
+        break;
       case dropdownItemsBudgets[2].value:
-        return dataBudgetTable;
+        headers = [
+          "Investment Landscape 1",
+          "Investment Landscape 2",
+          "Cost Category",
+          "Amount",
+        ];
+        dataBudgetTable.forEach((item: any) => {
+          get(item, "_children", []).forEach((subItem: any) => {
+            get(subItem, "_children", []).forEach((subSubItem: any) => {
+              data.push([
+                item.name,
+                subItem.name,
+                subSubItem.name,
+                subSubItem.amount,
+              ]);
+            });
+          });
+        });
+        break;
       default:
-        return [];
+        break;
     }
+    return { headers, data };
   }, [
     budgetsDropdownSelected,
     dataBudgetSankey,

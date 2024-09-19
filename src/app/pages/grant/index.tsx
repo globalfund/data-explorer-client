@@ -237,9 +237,9 @@ export const Grant: React.FC = () => {
     ) {
       remove(newTabs, (t) => t.label === GRANT_TABS[1].label);
     }
-    if (dataTargetsResultsTable.length === 0) {
-      remove(newTabs, (t) => t.label === GRANT_TABS[2].label);
-    }
+    // if (dataTargetsResultsTable.length === 0) {
+    //   remove(newTabs, (t) => t.label === GRANT_TABS[2].label);
+    // }
     return newTabs;
   }, [
     dataHasExpenditures,

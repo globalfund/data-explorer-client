@@ -258,14 +258,27 @@ export const GrantImplementationPageBlock21: React.FC = () => {
   ]);
 
   const chartData = React.useMemo(() => {
+    let headers: string[] = [];
+    const data: (string | number)[][] = [];
     switch (dropdownSelected) {
       case dropdownItemsHolisticGrantInvestments[0].value:
-        return dataSankey;
+        headers = ["Source", "Target", "Value"];
+        dataSankey.links.forEach((link: any) => {
+          data.push([link.source, link.target, link.value]);
+        });
+        break;
       case dropdownItemsHolisticGrantInvestments[1].value:
-        return dataTable;
+        headers = ["Disbursement Area", "Disbursement Sub-Area", "Amount"];
+        get(dataTable, "[0]._children", []).forEach((item: any) => {
+          get(item, "_children", []).forEach((subItem: any) => {
+            data.push([item.name, subItem.name, subItem.amount]);
+          });
+        });
+        break;
       default:
-        return null;
+        break;
     }
+    return { headers, data };
   }, [dropdownSelected, dataSankey, dataTable]);
 
   React.useEffect(() => {

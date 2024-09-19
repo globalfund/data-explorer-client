@@ -518,16 +518,44 @@ export const GrantImplementationPageBlock2: React.FC<
   ]);
 
   const chartData = React.useMemo(() => {
+    let headers: string[] = [];
+    const data: (string | number)[][] = [];
     switch (disbursementsDropdownSelected) {
       case dropdownItemsDisbursements[0].value:
-        return dataFinancialInsightsDisbursementsBarChart;
+        headers = ["Component", "Amount"];
+        dataFinancialInsightsDisbursementsBarChart.forEach((item: any) => {
+          data.push([item.name, item.value]);
+        });
+        break;
       case dropdownItemsDisbursements[1].value:
-        return dataFinancialInsightsDisbursementsLineChart;
+        headers = ["Component", "Year", "Amount"];
+        dataFinancialInsightsDisbursementsLineChart.forEach((item: any) => {
+          item.data.forEach((value: number, index: number) => {
+            if (value) {
+              data.push([
+                item.name,
+                keysFinancialInsightsDisbursementsLineChart[index],
+                value,
+              ]);
+            }
+          });
+        });
+        break;
       case dropdownItemsDisbursements[2].value:
-        return dataFinancialInsightsDisbursementsTable;
+        headers = ["Component", "Signed", "Committed", "Disbursed"];
+        dataFinancialInsightsDisbursementsTable.forEach((item: any) => {
+          data.push([
+            item.component,
+            item.signed,
+            item.committed,
+            item.disbursed,
+          ]);
+        });
+        break;
       default:
-        return [];
+        break;
     }
+    return { headers, data };
   }, [
     disbursementsDropdownSelected,
     dataFinancialInsightsDisbursementsBarChart,

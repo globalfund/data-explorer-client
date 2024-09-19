@@ -458,6 +458,39 @@ export const GrantImplementationPageBlock5: React.FC<
     });
   }, [chart3FilterString, props.componentsGrouping, props.geographyGrouping]);
 
+  const exportChartData = React.useMemo(() => {
+    const data: (string | number)[][] = [];
+    data.push(["Budget Utilisation", "", "", "", dataBudgetUtilisation.value]);
+    dataBudgetUtilisation.items.forEach((item) => {
+      item.items.forEach((subItem) => {
+        subItem.items.forEach((subSubItem) => {
+          data.push([
+            "Budget Utilisation",
+            `"${item.name}"`,
+            `"${subItem.name}"`,
+            `"${subSubItem.name}"`,
+            subSubItem.value,
+          ]);
+        });
+      });
+    });
+
+    return {
+      headers: [
+        "Type",
+        "Principal Recipient Type",
+        "Principal Recipient Sub-Type",
+        "Principal Recipient",
+        "Amount",
+      ],
+      data,
+    };
+  }, [
+    dataBudgetUtilisation,
+    dataInCountryAbsorption,
+    dataDisbursementUtilisation,
+  ]);
+
   return (
     <Box
       padding="50px 0"
@@ -486,7 +519,7 @@ export const GrantImplementationPageBlock5: React.FC<
         handleResetFilters={handleResetChartFilters}
         appliedFiltersData={chart3AppliedFiltersData}
         extraDropdown={financialMetricsCycleDropdown}
-        data={[]}
+        data={exportChartData}
         infoType="financials"
       >
         {financialMetricsContent}

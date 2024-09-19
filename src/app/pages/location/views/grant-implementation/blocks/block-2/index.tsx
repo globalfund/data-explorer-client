@@ -127,6 +127,15 @@ export const LocationGrantImplementationBlock2 = () => {
     }`;
   }, [dataBudgetSankeyChart]);
 
+  const exportChartData = React.useMemo(() => {
+    return {
+      headers: ["Source", "Target", "Value"],
+      data: dataBudgetSankeyChart.links.map((link: any) => {
+        return [link.source, link.target, link.value];
+      }),
+    };
+  }, [dataBudgetSankeyChart]);
+
   const showBudgetSankeyChart = dataBudgetSankeyChart.links.length > 0;
 
   return (
@@ -151,7 +160,7 @@ export const LocationGrantImplementationBlock2 = () => {
         disabled: findIndex(budgetsCycles, { value: c.value }) === -1,
       }))}
       latestUpdate={latestUpdateDate}
-      data={dataBudgetSankeyChart}
+      data={exportChartData}
       infoType="budgets"
     >
       <Grid

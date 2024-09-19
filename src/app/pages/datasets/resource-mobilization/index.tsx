@@ -361,14 +361,71 @@ export const ResourceMobilizationPage: React.FC = () => {
   }, [dropdownSelected, dataBarChart, dataTable, tableSearch]);
 
   const chartData = React.useMemo(() => {
+    let data: (string | number)[][] = [];
     switch (dropdownSelected) {
       case dropdownItems[0].value:
-        return dataBarChart;
+        dataBarChart.forEach((item) => {
+          get(item, "items", []).forEach((subItem) => {
+            if (!subItem.items) {
+              data.push([
+                `"${item.name}"`,
+                "",
+                `"${subItem.name}"`,
+                subItem.value,
+                subItem.value1 ?? "",
+              ]);
+            } else {
+              subItem.items.forEach((subSubItem) => {
+                data.push([
+                  `"${item.name}"`,
+                  `"${subItem.name}"`,
+                  `"${subSubItem.name}"`,
+                  subSubItem.value,
+                  subSubItem.value1 ?? "",
+                ]);
+              });
+            }
+          });
+        });
+        break;
       case dropdownItems[1].value:
-        return dataTable;
+        dataTable.forEach((item: any) => {
+          get(item, "_children", []).forEach((subItem: any) => {
+            if (!subItem._children) {
+              data.push([
+                `"${item.name}"`,
+                "",
+                `"${subItem.name}"`,
+                subItem.pledge,
+                subItem.contribution ?? "",
+              ]);
+            } else {
+              subItem._children.forEach((subSubItem: any) => {
+                data.push([
+                  `"${item.name}"`,
+                  `"${subItem.name}"`,
+                  `"${subSubItem.name}"`,
+                  subSubItem.pledge,
+                  subSubItem.contribution ?? "",
+                ]);
+              });
+            }
+          });
+        });
+        break;
       default:
         return [];
     }
+    return {
+      headers: [
+        "Donor Type",
+        "Donor Sub-Type",
+        "Donor",
+        "Pledge",
+        "Contribution",
+      ],
+      data,
+    };
   }, [dropdownSelected, dataBarChart, dataTable]);
 
   React.useEffect(() => {

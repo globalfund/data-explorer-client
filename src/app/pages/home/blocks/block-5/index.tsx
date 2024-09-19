@@ -229,8 +229,8 @@ export const HomeBlock5: React.FC = () => {
     return {
       headers: ["Principal Recipient", "Component", "Amount", "Percentage"],
       data: sortedData.map((item) => [
-        item.row,
-        item.column,
+        `"${item.row}"`,
+        `"${item.column}"`,
         item.value,
         item.percentage,
       ]),

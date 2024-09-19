@@ -177,6 +177,51 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
     fetchFundingRequestsTable({ filterString: chart3FilterString });
   }, [chart3FilterString]);
 
+  const exportChartData = React.useMemo(() => {
+    const result: (string | number)[][] = [];
+
+    dataFundingRequestsTable.forEach((row) => {
+      get(row, "_children", []).forEach((subRow: any) => {
+        get(subRow, "_children", []).forEach((subSubRow: any) => {
+          result.push([
+            `"${row.components}"`,
+            `"${subRow.components}"`,
+            `"${subRow.submissionDate}"`,
+            `"${subRow.approach}"`,
+            `"${subRow.trpWindow}"`,
+            `"${subRow.trpOutcome}"`,
+            `"${subRow.portfolioCategorization}"`,
+            `"${subSubRow.boardApproval}"`,
+            `"${subSubRow.gacMeeting}"`,
+            `"${subSubRow.grant}"`,
+            `"${subSubRow.startingDate}"`,
+            `"${subSubRow.endingDate}"`,
+            `"${subSubRow.principalRecipient}"`,
+          ]);
+        });
+      });
+    });
+
+    return {
+      headers: [
+        "Geography",
+        "Components",
+        "Submission Date",
+        "Approach",
+        "TRP Window",
+        "TRP Outcome",
+        "Portfolio Categorization",
+        "Board Approval",
+        "GAC Meeting",
+        "Grant",
+        "Starting Date",
+        "Ending Date",
+        "Principal Recipient",
+      ],
+      data: result,
+    };
+  }, [dataFundingRequestsTable]);
+
   return (
     <Box
       padding="50px 0"
@@ -204,8 +249,8 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
         )}
         disableCollapse
         dropdownItems={[]}
+        data={exportChartData}
         latestUpdate={latestUpdateDate}
-        data={dataFundingRequestsTable}
         loading={loadingFundingRequestsTable}
         filterGroups={props.filterGroups}
         appliedFilters={chart3AppliedFilters}

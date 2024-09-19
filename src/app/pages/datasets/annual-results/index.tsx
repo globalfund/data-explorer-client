@@ -371,15 +371,45 @@ export const AnnualResultsPage: React.FC = () => {
     }
   }, [dropdownSelected, dataPolyline, dataTable, yearSelected]);
 
-  const chartData = React.useMemo(() => {
+  const exportChartData = React.useMemo(() => {
+    const result: (string | number)[][] = [];
     switch (dropdownSelected) {
       case dropdownItems[0].value:
-        return dataPolyline;
+        dataPolyline.children?.forEach((component) => {
+          component.children?.forEach((indicator) => {
+            result.push([
+              dataPolyline.name,
+              `"${component.name}"`,
+              `"${indicator.name}"`,
+              indicator.value ?? "",
+            ]);
+          });
+        });
+        break;
       case dropdownItems[1].value:
-        return dataTable;
+        dataTable.forEach((year) => {
+          if (year !== null) {
+            // @ts-ignore
+            get(year, "_children", []).forEach((component: any) => {
+              get(component, "_children", []).forEach((indicator: any) => {
+                result.push([
+                  year.name,
+                  `"${component.name}"`,
+                  `"${indicator.name}"`,
+                  indicator.value ?? "",
+                ]);
+              });
+            });
+          }
+        });
+        break;
       default:
-        return [];
+        break;
     }
+    return {
+      headers: ["Year", "Component", "Indicator", "Amount"],
+      data: result,
+    };
   }, [dropdownSelected, dataPolyline, dataTable]);
 
   React.useEffect(() => {
@@ -468,7 +498,7 @@ export const AnnualResultsPage: React.FC = () => {
               "Annual Results"
             )}
             subtitle=""
-            data={chartData}
+            data={exportChartData}
             loading={loadingResults}
             dropdownItems={dropdownItems}
             latestUpdate={latestUpdateDate}

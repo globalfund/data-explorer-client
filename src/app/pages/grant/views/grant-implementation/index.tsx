@@ -32,6 +32,7 @@ import {
   getRange,
   getFinancialValueWithMetricPrefix,
 } from "app/utils/getFinancialValueWithMetricPrefix";
+import orderBy from "lodash/orderBy";
 
 export const GrantImplementation: React.FC = () => {
   const cmsData = useCMSData({ returnData: true });
@@ -273,6 +274,56 @@ export const GrantImplementation: React.FC = () => {
     );
   }, [chart2Dropdown2]);
 
+  const exportChartData = React.useMemo(() => {
+    return {
+      headers: ["Type", "Amount"],
+      data: [
+        ["Disbursed", dataFinancialValues.disbursement],
+        ["Committed", dataFinancialValues.commitment],
+        ["Signed", dataFinancialValues.signed],
+      ],
+    };
+  }, [dataFinancialValues]);
+
+  const exportBudgetSankeyChartData = React.useMemo(() => {
+    return {
+      headers: ["Source", "Target", "Value"],
+      data: dataBudgetSankeyChart.links.map((link: any) => [
+        link.source,
+        link.target,
+        link.value,
+      ]),
+    };
+  }, [dataBudgetSankeyChart]);
+
+  const exportExpenditureHeatmapChartData = React.useMemo(() => {
+    let sortedData: HeatmapDataItem[] = [];
+    orderBy(dataExpendituresHeatmap, "row", "asc").forEach((item) => {
+      if (!item.parentRow && !item.parentColumn) {
+        sortedData.push(item);
+        const children = dataExpendituresHeatmap.filter(
+          (child) =>
+            child.parentRow === item.row || child.parentColumn === item.column
+        );
+        sortedData = sortedData.concat(children);
+      }
+    });
+    return {
+      headers: [
+        "Modules & Interventions",
+        "Components",
+        "Amount",
+        "Percentage",
+      ],
+      data: sortedData.map((item) => [
+        `"${item.row}"`,
+        `"${item.column}"`,
+        item.value,
+        item.percentage,
+      ]),
+    };
+  }, [dataExpendituresHeatmap]);
+
   useUpdateEffect(() => {
     fetchExpendituresHeatmap({
       routeParams: {
@@ -430,7 +481,7 @@ export const GrantImplementation: React.FC = () => {
           "pagesGrantGrantImplementation.disbursementsSubtitle",
           "Disbursements"
         )}
-        data={radialChartData}
+        data={exportChartData}
         empty={!showRadialChart}
         latestUpdate={latestUpdateDateChart1}
         infoType="financials"
@@ -479,8 +530,8 @@ export const GrantImplementation: React.FC = () => {
           "pagesGrantGrantImplementation.budgetsSubtitle",
           "Grant Budgets"
         )}
-        data={dataBudgetSankeyChart}
         empty={!showBudgetSankeyChart}
+        data={exportBudgetSankeyChartData}
         latestUpdate={latestUpdateDateChart2}
         infoType="budgets"
       >
@@ -535,11 +586,11 @@ export const GrantImplementation: React.FC = () => {
           "Expenditures"
         )}
         title={expendituresTotal}
-        data={dataExpendituresHeatmap}
         empty={!showExpendituresHeatmap}
         dropdownSelected={chart2Dropdown}
         dropdownItems={CHART_2_DROPDOWN_ITEMS}
         handleDropdownChange={setChart2Dropdown}
+        data={exportExpenditureHeatmapChartData}
         unitButtons={chart2UnitButtons}
         latestUpdate={latestUpdateDateChart3}
         infoType="expenditures"
