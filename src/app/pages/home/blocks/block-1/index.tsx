@@ -116,7 +116,7 @@ export const HomeBlock1: React.FC = () => {
         d.value1,
       ]),
     };
-  }, [cmsData]);
+  }, [cmsData, dataPledgesContributionsBarChart]);
 
   return (
     <React.Fragment>
