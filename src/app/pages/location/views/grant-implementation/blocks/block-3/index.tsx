@@ -219,6 +219,7 @@ export const LocationGrantImplementationBlock3 = () => {
   return (
     <ChartBlock
       id="expenditures"
+      exportName="expenditures"
       subtitle={getCMSDataField(
         cmsData,
         "pagesLocationGrantImplementation.expendituresSubtitle",

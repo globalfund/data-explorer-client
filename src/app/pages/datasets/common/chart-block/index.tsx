@@ -245,6 +245,7 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
             hashId={props.id}
             chartData={props.data}
             infoType={props.infoType}
+            exportName={props.exportName}
             chartType={props.dropdownSelected}
           />
         </Box>

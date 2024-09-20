@@ -123,6 +123,7 @@ export const HomeBlock1: React.FC = () => {
       <ChartBlock
         showCycleAll
         id="pledges-contributions"
+        exportName="pledges-contributions"
         selectedCycles={chart1Cycles}
         title={`${totalPledge}`}
         latestUpdate={latestUpdateDate}

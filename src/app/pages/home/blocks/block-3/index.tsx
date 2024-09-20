@@ -134,6 +134,7 @@ export const HomeBlock3: React.FC = () => {
     <ChartBlock
       id="budgets"
       title={totalBudget}
+      exportName="grant-budgets"
       subtitle={getCMSDataField(
         cmsData,
         "pagesHome.grantBudgetsSubtitle",

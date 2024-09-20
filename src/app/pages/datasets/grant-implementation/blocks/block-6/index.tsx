@@ -628,6 +628,7 @@ export const GrantImplementationPageBlock6: React.FC<
     >
       <DatasetChartBlock
         id="expenditures"
+        exportName="expenditures"
         title={getCMSDataField(
           cmsData,
           "pagesDatasetsGrantImplementation.expendituresTitle",

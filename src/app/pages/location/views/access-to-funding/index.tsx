@@ -339,6 +339,7 @@ export const AccessToFunding: React.FC = () => {
     <Box gap="24px" display="flex" flexDirection="column">
       <ChartBlock
         id="allocation"
+        exportName="allocation"
         title={`US$${totalAllocationAmount}`}
         selectedCycles={chart1Cycles}
         loading={loadingAllocationsRadialChart}
@@ -399,6 +400,7 @@ export const AccessToFunding: React.FC = () => {
         noSplitText
         noBottomToolbar
         id="funding-requests"
+        exportName="funding-requests"
         selectedCycles={chart2Cycles}
         loading={loadingFundingRequestsTable}
         title={`${dataFundingRequestsTable._children.length} ${getCMSDataField(
@@ -443,6 +445,7 @@ export const AccessToFunding: React.FC = () => {
       <ChartBlock
         noSplitText
         id="eligibility"
+        exportName="eligibility"
         title={getCMSDataField(
           cmsData,
           "pagesLocationAccessToFunding.eligibilityTitle",
@@ -658,6 +661,7 @@ export const AccessToFunding: React.FC = () => {
       <ChartBlock
         id="documents"
         noBottomToolbar
+        exportName="documents"
         title={getCMSDataField(
           cmsData,
           "pagesLocationAccessToFunding.documentsTitle",

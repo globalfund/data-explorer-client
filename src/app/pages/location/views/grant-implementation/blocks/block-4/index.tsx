@@ -136,6 +136,7 @@ export const LocationGrantImplementationBlock4 = () => {
   return (
     <ChartBlock
       id="grants"
+      exportName="grants"
       title={`${countGrantsTable} ${getCMSDataField(
         cmsData,
         "pagesLocationGrantImplementation.grantsTitle",

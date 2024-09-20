@@ -386,6 +386,7 @@ export const AccessToFundingBlock3: React.FC<AccessToFundingBlock3Props> = (
     >
       <DatasetChartBlock
         id="allocation"
+        exportName="allocation"
         title={getCMSDataField(
           cmsData,
           "pagesDatasetsAccessToFunding.allocationTitle",

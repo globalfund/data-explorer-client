@@ -475,6 +475,7 @@ export const GrantImplementation: React.FC = () => {
       {fullWidthDivider}
       <ChartBlock
         id="radial-chart"
+        exportName="grant-investments"
         title={disbursementsTotal}
         subtitle={getCMSDataField(
           cmsData,
@@ -525,6 +526,7 @@ export const GrantImplementation: React.FC = () => {
       <ChartBlock
         id="budget"
         title={totalBudget}
+        exportName="grant-budgets"
         subtitle={getCMSDataField(
           cmsData,
           "pagesGrantGrantImplementation.budgetsSubtitle",
@@ -580,6 +582,7 @@ export const GrantImplementation: React.FC = () => {
       <ChartBlock
         cycles={CYCLES}
         id="expenditures"
+        exportName="grant-expenditures"
         subtitle={getCMSDataField(
           cmsData,
           "pagesGrantGrantImplementation.expendituresSubtitle",

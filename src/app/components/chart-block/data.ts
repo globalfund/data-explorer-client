@@ -8,6 +8,7 @@ export interface ChartBlockProps {
   empty?: boolean;
   subtitle: string;
   loading?: boolean;
+  exportName: string;
   latestUpdate?: string;
   noSplitText?: boolean;
   showCycleAll?: boolean;

@@ -141,6 +141,7 @@ export const GrantTargetsResults: React.FC = () => {
     <Box marginTop="24px">
       <ChartBlock
         loading={loading}
+        exportName="grant-targets-results"
         title={getCMSDataField(
           cmsData,
           "pagesGrantTargetResults.title",

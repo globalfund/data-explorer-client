@@ -18,6 +18,7 @@ export interface ChartBlockButtonToolbarProps {
   blockId: string;
   infoType: InfoPanelType;
   chartType?: string;
+  exportName: string;
   chartData: {
     headers: string[];
     data: (string | number)[][];
@@ -52,7 +53,7 @@ export const DownloadPanel: React.FC<ChartBlockButtonToolbarProps> = (
   );
 
   const handleButtonClick = (type: "csv" | "pdf" | "png") => () => {
-    exportChart(props.blockId || "", type, props.chartData)
+    exportChart(props.blockId || "", type, props.chartData, props.exportName)
       .then(() => {
         setFeedbackMessage(`Asset downloaded as ${type.toUpperCase()}.`);
       })

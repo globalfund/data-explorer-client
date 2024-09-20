@@ -159,6 +159,7 @@ export const LocationGrantImplementationBlock1 = () => {
       showCycleAll
       id="disbursements"
       subtitle="Disbursements"
+      exportName="disbursements"
       title={disbursementsTotal}
       selectedCycles={chart1Cycles}
       dropdownSelected={chart1Dropdown}

@@ -240,6 +240,7 @@ export const HomeBlock5: React.FC = () => {
   return (
     <ChartBlock
       id="expenditures"
+      exportName="expenditures"
       subtitle={getCMSDataField(
         cmsData,
         "pagesHome.expendituresSubtitle",

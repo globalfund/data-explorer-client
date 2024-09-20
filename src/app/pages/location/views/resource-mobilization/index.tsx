@@ -107,6 +107,7 @@ export const ResourceMobilization: React.FC = () => {
       <ChartBlock
         cycles={cycles}
         id="resource-mobilization"
+        exportName="pledges-contributions"
         loading={loadingRMBarChart}
         title={`US$${totalPledge}`}
         selectedCycles={chart1Cycles}

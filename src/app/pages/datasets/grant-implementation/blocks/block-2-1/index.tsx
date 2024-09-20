@@ -320,6 +320,7 @@ export const GrantImplementationPageBlock21: React.FC = () => {
         titleVariant="h5"
         loading={loading}
         empty={chartEmpty}
+        exportName="investments-by-disbursement-area"
         title={getCMSDataField(
           cmsData,
           "pagesDatasetsGrantImplementation.hgiTitle",

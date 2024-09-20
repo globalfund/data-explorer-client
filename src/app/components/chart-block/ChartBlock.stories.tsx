@@ -29,6 +29,7 @@ const Wrapper: React.FC = () => {
       selectedCycles={selectedCycles}
       subtitle="Funds raised to date"
       handleCycleChange={handleCycleChange}
+      exportName="pledges-and-contributions"
       text="Government, private sector, nongovernment and other donor pledges and contributions"
     >
       <BarChart

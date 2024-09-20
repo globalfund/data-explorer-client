@@ -9,6 +9,7 @@ export interface DatasetChartBlockProps {
   empty?: boolean;
   subtitle: string;
   loading?: boolean;
+  exportName: string;
   latestUpdate?: string;
   infoType: InfoPanelType;
   appliedFilters: string[];

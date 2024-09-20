@@ -160,6 +160,7 @@ export const HomeBlock4: React.FC = () => {
     <ChartBlock
       showCycleAll
       id="disbursements"
+      exportName="disbursements"
       subtitle={getCMSDataField(
         cmsData,
         "pagesHome.disbursementsSubtitle",

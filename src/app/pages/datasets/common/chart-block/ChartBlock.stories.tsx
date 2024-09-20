@@ -28,6 +28,7 @@ const Wrapper: React.FC = () => {
       subtitle="Funds raised to date"
       dropdownItems={items}
       dropdownSelected={dropdownSelected}
+      exportName="pledges-and-contributions"
       handleDropdownChange={handleSelectionChange}
       filterGroups={[]}
       toggleFilter={() => {}}

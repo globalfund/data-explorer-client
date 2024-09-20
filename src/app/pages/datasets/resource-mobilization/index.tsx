@@ -686,6 +686,7 @@ export const ResourceMobilizationPage: React.FC = () => {
         >
           <DatasetChartBlock
             id="pledges-contributions"
+            exportName="pledges-and-contributions"
             title={getCMSDataField(
               cmsData,
               "pagesDatasetsResourceMobilization.pledgesTitle",

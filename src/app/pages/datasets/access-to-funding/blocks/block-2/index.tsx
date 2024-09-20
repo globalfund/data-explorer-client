@@ -246,6 +246,7 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
       <DatasetChartBlock
         id="eligibility"
         infoType="global"
+        exportName="eligibility"
         title={getCMSDataField(
           cmsData,
           "pagesDatasetsAccessToFunding.eligibilityTitle",

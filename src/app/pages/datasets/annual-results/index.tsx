@@ -492,6 +492,7 @@ export const AnnualResultsPage: React.FC = () => {
         >
           <DatasetChartBlock
             id="annual-results"
+            exportName="annual-results"
             title={get(
               cmsData,
               "pagesDatasetsAnnualResults.chartTitle",

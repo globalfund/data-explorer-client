@@ -112,6 +112,7 @@ export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
       {showStats && fullWidthDivider}
       <ChartBlock
         id="results"
+        exportName="results"
         title={getCMSDataField(
           cmsData,
           "pagesLocationResults.title",
@@ -141,6 +142,7 @@ export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
       <ChartBlock
         id="documents"
         noBottomToolbar
+        exportName="documents"
         title={getCMSDataField(
           cmsData,
           "pagesLocationResults.documentTitle",

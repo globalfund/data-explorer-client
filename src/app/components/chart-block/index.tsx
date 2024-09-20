@@ -179,6 +179,7 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
             hashId={props.id}
             chartData={props.data}
             infoType={props.infoType}
+            exportName={props.exportName}
             chartType={props.dropdownSelected}
           />
         )}

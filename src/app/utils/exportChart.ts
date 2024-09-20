@@ -8,7 +8,8 @@ export async function exportChart(
   data: {
     headers: string[];
     data: (string | number)[][];
-  }
+  },
+  exportName: string
 ) {
   const bgcolor = "#ffffff";
   return new Promise((resolve, reject) => {
@@ -22,7 +23,7 @@ export async function exportChart(
         .toJpeg(node, { filter, bgcolor })
         .then((dataUrl: any) => {
           const link = document.createElement("a");
-          link.download = "download.jpg";
+          link.download = `${exportName}.jpg`;
           link.href = dataUrl;
           link.click();
           resolve({});
@@ -36,7 +37,7 @@ export async function exportChart(
         .toSvg(node, { bgcolor })
         .then((dataUrl: any) => {
           const link = document.createElement("a");
-          link.download = "download.svg";
+          link.download = `${exportName}.svg`;
           link.href = dataUrl;
           link.click();
           resolve({});
@@ -71,7 +72,7 @@ export async function exportChart(
           // pdf.addImage(background, "PNG", 0, 0, pdfWidth, pdfHeight);
           pdf.addImage(dataUrl, "PNG", x, 0, w, h);
 
-          pdf.save("download.pdf");
+          pdf.save(`${exportName}.pdf`);
           resolve({});
         })
         .catch((error: any) => {
@@ -87,7 +88,7 @@ export async function exportChart(
       }
       const csvString = csv.join("\n");
       const link = document.createElement("a");
-      link.download = "download.csv";
+      link.download = `${exportName}.csv`;
       link.href = `data:text/csv;charset=utf-8,${csvString}`;
       link.click();
       resolve({});
@@ -99,7 +100,7 @@ export async function exportChart(
         })
         .then((dataUrl: any) => {
           const link = document.createElement("a");
-          link.download = "download.png";
+          link.download = `${exportName}.png`;
           link.href = dataUrl;
           link.click();
           resolve({});
