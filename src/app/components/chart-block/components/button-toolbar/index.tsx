@@ -70,7 +70,6 @@ export const ChartBlockButtonToolbar: React.FC<ChartBlockButtonToolbarProps> = (
         <Box
           gap="8px"
           display="flex"
-          position="relative"
           flexDirection="row"
           justifyContent="flex-end"
           sx={{

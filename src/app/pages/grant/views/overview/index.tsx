@@ -244,7 +244,7 @@ export const GrantOverview: React.FC = () => {
         </Grid>
       </Grid>
       {fullWidthDivider}
-      <Box>
+      <Box position="relative">
         <Box id="grant-overview-race-bar-chart">
           <RaceBarChart data={raceBarChartData} />
         </Box>

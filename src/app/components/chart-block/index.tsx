@@ -165,6 +165,7 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
         display="flex"
         marginTop="40px"
         alignItems="center"
+        position="relative"
         // justifyContent={props.latestUpdate ? "space-between" : "flex-end"}
         justifyContent="flex-end"
       >

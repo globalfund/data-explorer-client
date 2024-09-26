@@ -232,6 +232,7 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
           display="flex"
           marginTop="40px"
           alignItems="center"
+          position="relative"
           // justifyContent={props.latestUpdate ? "space-between" : "flex-end"}
           justifyContent="flex-end"
         >
