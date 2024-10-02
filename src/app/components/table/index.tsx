@@ -10,7 +10,6 @@ const CollapseElement = `<svg width="17" height="16" viewBox="0 0 17 16" fill="n
 export const Table: React.FC<TableProps> = (props: TableProps) => {
   const tableBuiltRef = React.useRef(false);
   const ref = React.useRef<HTMLDivElement>(null);
-  const [expandedCount, setExpandedCount] = React.useState(0);
 
   React.useEffect(() => {
     if (ref.current) {
@@ -41,16 +40,6 @@ export const Table: React.FC<TableProps> = (props: TableProps) => {
         dataTreeStartExpanded,
       });
 
-      table.on("dataTreeRowExpanded", (_, level) => {
-        if (level === 0) {
-          setExpandedCount((prev) => prev + 1);
-        }
-      });
-      table.on("dataTreeRowCollapsed", (_, level) => {
-        if (level === 0) {
-          setExpandedCount((prev) => prev - 1);
-        }
-      });
       table.on("tableBuilt", () => {
         tableBuiltRef.current = true;
       });
@@ -75,25 +64,6 @@ export const Table: React.FC<TableProps> = (props: TableProps) => {
       }
     }
   }, [props.data, tableBuiltRef.current]);
-
-  React.useEffect(() => {
-    if (ref.current) {
-      const tables = Tabulator.findTable(`#${props.id}`);
-      if (tables.length > 0 && tables[0]) {
-        if (
-          expandedCount > 0 &&
-          props.extraColumns &&
-          props.extraColumns.length > 0
-        ) {
-          tables[0].setColumns(props.columns.concat(props.extraColumns));
-        } else {
-          setTimeout(() => {
-            tables[0].setColumns(props.columns);
-          }, 1);
-        }
-      }
-    }
-  }, [expandedCount, props.columns, props.extraColumns]);
 
   return (
     <Box
