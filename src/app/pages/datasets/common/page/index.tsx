@@ -39,6 +39,21 @@ export const DatasetPage: React.FC<DatasetPageProps> = (
     };
   }, []);
 
+  const filterPopoverContent = React.useMemo(() => {
+    return (
+      <FilterPanel
+        onClose={handleFilterPanelClose}
+        filterGroups={props.filterGroups}
+        appliedFilters={props.appliedFilters}
+        handleResetFilters={props.handleResetFilters}
+        appliedFilterBgColors={{
+          hover: "#FF9800",
+          normal: "rgba(255, 152, 0, 0.2)",
+        }}
+      />
+    );
+  }, [props.filterGroups, props.appliedFilters, props.handleResetFilters]);
+
   return (
     <Box padding="50px 0">
       <Typography
@@ -132,16 +147,7 @@ export const DatasetPage: React.FC<DatasetPageProps> = (
               horizontal: "left",
             }}
           >
-            <FilterPanel
-              onClose={handleFilterPanelClose}
-              filterGroups={props.filterGroups}
-              appliedFilters={props.appliedFilters}
-              handleResetFilters={props.handleResetFilters}
-              appliedFilterBgColors={{
-                hover: "#FF9800",
-                normal: "rgba(255, 152, 0, 0.2)",
-              }}
-            />
+            {filterPopoverContent}
           </Popover>
         </Box>
         {props.toolbarRightContent}

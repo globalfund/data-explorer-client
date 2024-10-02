@@ -79,36 +79,23 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
 
   const id = React.useMemo(() => uniqueId("chart-block-"), []);
 
-  const filterPopover = React.useMemo(() => {
+  const filterPopoverContent = React.useMemo(() => {
     return (
-      <Popover
-        disableScrollLock
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        id={`filter-popover-${id}`}
+      <FilterPanel
         onClose={handleFilterPanelClose}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "left",
+        filterGroups={props.filterGroups}
+        toggleFilter={props.toggleFilter}
+        removeFilter={props.removeFilter}
+        appliedFilters={props.appliedFilters}
+        handleResetFilters={props.handleResetFilters}
+        appliedFiltersData={props.appliedFiltersData}
+        appliedFilterBgColors={{
+          hover: "#2196F3",
+          normal: "rgba(33, 150, 243, 0.2)",
         }}
-      >
-        <FilterPanel
-          onClose={handleFilterPanelClose}
-          filterGroups={props.filterGroups}
-          toggleFilter={props.toggleFilter}
-          removeFilter={props.removeFilter}
-          appliedFilters={props.appliedFilters}
-          handleResetFilters={props.handleResetFilters}
-          appliedFiltersData={props.appliedFiltersData}
-          appliedFilterBgColors={{
-            hover: "#2196F3",
-            normal: "rgba(33, 150, 243, 0.2)",
-          }}
-        />
-      </Popover>
+      />
     );
   }, [
-    anchorEl,
     props.appliedFilters,
     props.filterGroups,
     props.appliedFiltersData,
@@ -176,7 +163,19 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
               Filters
             </Button>
           )}
-          {filterPopover}
+          <Popover
+            disableScrollLock
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            id={`filter-popover-${id}`}
+            onClose={handleFilterPanelClose}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "left",
+            }}
+          >
+            {filterPopoverContent}
+          </Popover>
           {/* <Button variant="outlined" startIcon={<SettingsIcon />}>
             Settings
           </Button> */}

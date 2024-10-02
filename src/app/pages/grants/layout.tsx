@@ -55,6 +55,26 @@ export const GrantsLayout: React.FC<GrantsLayoutProps> = (
     />
   );
 
+  const filterPopoverContent = React.useMemo(() => {
+    return (
+      <FilterPanel
+        onClose={handleFilterPanelClose}
+        filterGroups={filterGroups}
+        appliedFilters={pageAppliedFilters}
+        handleResetFilters={handleResetFilters}
+        appliedFilterBgColors={{
+          hover: "#FF9800",
+          normal: "rgba(255, 152, 0, 0.2)",
+        }}
+      />
+    );
+  }, [
+    filterGroups,
+    pageAppliedFilters,
+    handleResetFilters,
+    handleFilterPanelClose,
+  ]);
+
   return (
     <Box padding="50px 0">
       <Typography variant="h1">
@@ -134,16 +154,7 @@ export const GrantsLayout: React.FC<GrantsLayoutProps> = (
               horizontal: "left",
             }}
           >
-            <FilterPanel
-              filterGroups={filterGroups}
-              onClose={handleFilterPanelClose}
-              appliedFilters={pageAppliedFilters}
-              handleResetFilters={handleResetFilters}
-              appliedFilterBgColors={{
-                hover: "#FF9800",
-                normal: "rgba(255, 152, 0, 0.2)",
-              }}
-            />
+            {filterPopoverContent}
           </Popover>
           <Box
             gap="8px"
