@@ -8,6 +8,13 @@ import {
 export interface RadialChartDataItem {
   name: string;
   value: number;
+  tooltip?: {
+    items: {
+      name: string;
+      value: number;
+      percentage: number;
+    }[];
+  };
   itemStyle?: {
     color: string;
   };

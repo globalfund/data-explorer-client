@@ -133,6 +133,25 @@ export const LocationGrantImplementationBlock1 = () => {
     return getRange(values, ["value"]);
   }, [dataDisbursementsLineChart.data]);
 
+  const exportChartData = React.useMemo(() => {
+    const data: (string | number)[][] = [];
+    dataDisbursementsLineChart.data.forEach((item) => {
+      item.data.forEach((value, index) => {
+        if (value) {
+          data.push([
+            dataDisbursementsLineChart.xAxisKeys[index],
+            item.name,
+            value,
+          ]);
+        }
+      });
+    });
+    return {
+      headers: ["Year", "Component", "Amount"],
+      data,
+    };
+  }, [dataDisbursementsLineChart.data]);
+
   const showDisbursementsLineChart = dataDisbursementsLineChart.data.length > 0;
 
   return (
@@ -140,6 +159,7 @@ export const LocationGrantImplementationBlock1 = () => {
       showCycleAll
       id="disbursements"
       subtitle="Disbursements"
+      exportName="disbursements"
       title={disbursementsTotal}
       selectedCycles={chart1Cycles}
       dropdownSelected={chart1Dropdown}
@@ -154,6 +174,7 @@ export const LocationGrantImplementationBlock1 = () => {
         disabled: findIndex(disbursementsCycles, { value: c.value }) === -1,
       }))}
       latestUpdate={latestUpdateDate}
+      data={exportChartData}
       infoType="financials"
     >
       <Box position="relative">

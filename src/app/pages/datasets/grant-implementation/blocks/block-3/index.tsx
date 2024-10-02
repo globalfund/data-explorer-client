@@ -520,6 +520,53 @@ export const GrantImplementationPageBlock3: React.FC<
     budgetTableDataType,
   ]);
 
+  const chartData = React.useMemo(() => {
+    let headers: string[] = [];
+    const data: (string | number)[][] = [];
+    switch (budgetsDropdownSelected) {
+      case dropdownItemsBudgets[0].value:
+        headers = ["Source", "Target", "Value"];
+        dataBudgetSankey.links.forEach((link: any) => {
+          data.push([link.source, link.target, link.value]);
+        });
+        break;
+      case dropdownItemsBudgets[1].value:
+        headers = ["Component", "Amount"];
+        dataBudgetTreemap.forEach((item: any) => {
+          data.push([item.name, item.value]);
+        });
+        break;
+      case dropdownItemsBudgets[2].value:
+        headers = [
+          "Investment Landscape 1",
+          "Investment Landscape 2",
+          "Cost Category",
+          "Amount",
+        ];
+        dataBudgetTable.forEach((item: any) => {
+          get(item, "_children", []).forEach((subItem: any) => {
+            get(subItem, "_children", []).forEach((subSubItem: any) => {
+              data.push([
+                item.name,
+                subItem.name,
+                subSubItem.name,
+                subSubItem.amount,
+              ]);
+            });
+          });
+        });
+        break;
+      default:
+        break;
+    }
+    return { headers, data };
+  }, [
+    budgetsDropdownSelected,
+    dataBudgetSankey,
+    dataBudgetTreemap,
+    dataBudgetTable,
+  ]);
+
   React.useEffect(() => {
     fetchBudgetSankey({
       filterString: chart2FilterString,
@@ -595,6 +642,7 @@ export const GrantImplementationPageBlock3: React.FC<
     >
       <DatasetChartBlock
         id="budgets"
+        exportName="budgets"
         title={getCMSDataField(
           cmsData,
           "pagesDatasetsGrantImplementation.budgetsTitle",
@@ -626,6 +674,7 @@ export const GrantImplementationPageBlock3: React.FC<
         handleResetFilters={handleResetChartFilters}
         appliedFiltersData={chart2AppliedFiltersData}
         extraDropdown={budgetsTableDataTypeDropdown}
+        data={chartData}
         infoType="budgets"
       >
         {budgetsChartContent}

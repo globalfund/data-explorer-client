@@ -141,6 +141,7 @@ export const GrantTargetsResults: React.FC = () => {
     <Box marginTop="24px">
       <ChartBlock
         loading={loading}
+        exportName="grant-targets-results"
         title={getCMSDataField(
           cmsData,
           "pagesGrantTargetResults.title",
@@ -157,6 +158,7 @@ export const GrantTargetsResults: React.FC = () => {
           "pagesGrantTargetResults.text",
           "Description of Impact indicators: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
         )}
+        data={dataTable}
         infoType="global"
       >
         <Box width="100%" height="32px" />

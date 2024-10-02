@@ -137,15 +137,36 @@ export const HomeBlock4: React.FC = () => {
     return getRange(values, ["value"]);
   }, [dataDisbursementsLineChart.data]);
 
+  const exportChartData = React.useMemo(() => {
+    const data: (string | number)[][] = [];
+    dataDisbursementsLineChart.data.forEach((item) => {
+      item.data.forEach((value, index) => {
+        if (value) {
+          data.push([
+            dataDisbursementsLineChart.xAxisKeys[index],
+            item.name,
+            value,
+          ]);
+        }
+      });
+    });
+    return {
+      headers: ["Year", "Component", "Amount"],
+      data,
+    };
+  }, [dataDisbursementsLineChart.data]);
+
   return (
     <ChartBlock
       showCycleAll
       id="disbursements"
+      exportName="disbursements"
       subtitle={getCMSDataField(
         cmsData,
         "pagesHome.disbursementsSubtitle",
         "Disbursements"
       )}
+      data={exportChartData}
       title={disbursementsTotal}
       selectedCycles={chart4Cycles}
       latestUpdate={latestUpdateDate}

@@ -128,6 +128,37 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
     ];
   }, [dataEligibilityTable]);
 
+  const exportChartData = React.useMemo(() => {
+    const result: (string | number)[][] = [];
+    dataEligibilityTable.forEach((geography) => {
+      get(geography, "_children", []).forEach((component: any) => {
+        const diseaseBurdens = get(component, "_children[0]", {});
+        const eligibilityStatuses = get(component, "_children[1]", {});
+        dataEligibilityTableYears.forEach((year) => {
+          const diseaseBurden = get(diseaseBurdens, `["${year}"]`, "");
+          const eligibilityStatus = get(eligibilityStatuses, `["${year}"]`, "");
+          result.push([
+            geography.name,
+            component.name,
+            year,
+            diseaseBurden,
+            eligibilityStatus,
+          ]);
+        });
+      });
+    });
+    return {
+      headers: [
+        "Geography",
+        "Component",
+        "Year",
+        "Disease Burden",
+        "Eligbility Status",
+      ],
+      data: result,
+    };
+  }, [dataEligibilityTable]);
+
   const handleToggleChartFilter = (
     checked: boolean,
     value: string,
@@ -215,6 +246,7 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
       <DatasetChartBlock
         id="eligibility"
         infoType="global"
+        exportName="eligibility"
         title={getCMSDataField(
           cmsData,
           "pagesDatasetsAccessToFunding.eligibilityTitle",
@@ -227,6 +259,7 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
         )}
         dropdownItems={[]}
         disableCollapse
+        data={exportChartData}
         latestUpdate={latestUpdateDate}
         loading={loadingEligibilityTable}
         filterGroups={props.filterGroups}

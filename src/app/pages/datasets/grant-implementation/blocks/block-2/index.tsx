@@ -517,6 +517,52 @@ export const GrantImplementationPageBlock2: React.FC<
     dataFinancialInsightsDisbursementsTable,
   ]);
 
+  const chartData = React.useMemo(() => {
+    let headers: string[] = [];
+    const data: (string | number)[][] = [];
+    switch (disbursementsDropdownSelected) {
+      case dropdownItemsDisbursements[0].value:
+        headers = ["Component", "Amount"];
+        dataFinancialInsightsDisbursementsBarChart.forEach((item: any) => {
+          data.push([item.name, item.value]);
+        });
+        break;
+      case dropdownItemsDisbursements[1].value:
+        headers = ["Component", "Year", "Amount"];
+        dataFinancialInsightsDisbursementsLineChart.forEach((item: any) => {
+          item.data.forEach((value: number, index: number) => {
+            if (value) {
+              data.push([
+                item.name,
+                keysFinancialInsightsDisbursementsLineChart[index],
+                value,
+              ]);
+            }
+          });
+        });
+        break;
+      case dropdownItemsDisbursements[2].value:
+        headers = ["Component", "Signed", "Committed", "Disbursed"];
+        dataFinancialInsightsDisbursementsTable.forEach((item: any) => {
+          data.push([
+            item.component,
+            item.signed,
+            item.committed,
+            item.disbursed,
+          ]);
+        });
+        break;
+      default:
+        break;
+    }
+    return { headers, data };
+  }, [
+    disbursementsDropdownSelected,
+    dataFinancialInsightsDisbursementsBarChart,
+    dataFinancialInsightsDisbursementsLineChart,
+    dataFinancialInsightsDisbursementsTable,
+  ]);
+
   React.useEffect(() => {
     fetchFinancialInsightsDisbursementsBarChart({
       filterString: chart1FilterString,
@@ -571,6 +617,7 @@ export const GrantImplementationPageBlock2: React.FC<
     >
       <DatasetChartBlock
         id="disbursements"
+        exportName="disbursements"
         title={getCMSDataField(
           cmsData,
           "pagesDatasetsGrantImplementation.disbursementsTitle",
@@ -596,6 +643,7 @@ export const GrantImplementationPageBlock2: React.FC<
         removeFilter={handleRemoveChartFilter}
         handleResetFilters={handleResetChartFilters}
         appliedFiltersData={chart1AppliedFiltersData}
+        data={chartData}
         infoType="financials"
       >
         {disbursementsChartContent}

@@ -123,15 +123,24 @@ export const HomeBlock3: React.FC = () => {
     }`;
   }, [dataBudgetsTreemap]);
 
+  const exportChartData = React.useMemo(() => {
+    return {
+      headers: ["Component", "Amount"],
+      data: dataBudgetsTreemap.map((item) => [item.name, item.value]),
+    };
+  }, [dataBudgetsTreemap]);
+
   return (
     <ChartBlock
       id="budgets"
       title={totalBudget}
+      exportName="grant-budgets"
       subtitle={getCMSDataField(
         cmsData,
         "pagesHome.grantBudgetsSubtitle",
         "Grant Budgets"
       )}
+      data={exportChartData}
       selectedCycles={chart3Cycles}
       latestUpdate={latestUpdateDate}
       loading={loadingBudgetsTreemap}

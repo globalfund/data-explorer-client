@@ -23,6 +23,7 @@ import {
   getRange,
   getFinancialValueWithMetricPrefix,
 } from "app/utils/getFinancialValueWithMetricPrefix";
+import orderBy from "lodash/orderBy";
 
 export const LocationGrantImplementationBlock3 = () => {
   const cmsData = useCMSData({ returnData: true });
@@ -190,11 +191,35 @@ export const LocationGrantImplementationBlock3 = () => {
     }`;
   }, [dataExpendituresHeatmap]);
 
+  const exportChartData = React.useMemo(() => {
+    let sortedData: HeatmapDataItem[] = [];
+    orderBy(dataExpendituresHeatmap, "row", "asc").forEach((item) => {
+      if (!item.parentRow && !item.parentColumn) {
+        sortedData.push(item);
+        const children = dataExpendituresHeatmap.filter(
+          (child) =>
+            child.parentRow === item.row || child.parentColumn === item.column
+        );
+        sortedData = sortedData.concat(children);
+      }
+    });
+    return {
+      headers: ["Principal Recipient", "Component", "Amount", "Percentage"],
+      data: sortedData.map((item) => [
+        `"${item.row}"`,
+        `"${item.column}"`,
+        item.value,
+        item.percentage,
+      ]),
+    };
+  }, [dataExpendituresHeatmap]);
+
   const showExpendituresHeatmap = dataExpendituresHeatmap.length > 0;
 
   return (
     <ChartBlock
       id="expenditures"
+      exportName="expenditures"
       subtitle={getCMSDataField(
         cmsData,
         "pagesLocationGrantImplementation.expendituresSubtitle",
@@ -212,6 +237,7 @@ export const LocationGrantImplementationBlock3 = () => {
       }))}
       unitButtons={chart2UnitButtons}
       latestUpdate={latestUpdateDate}
+      data={exportChartData}
       infoType="expenditures"
     >
       <Heatmap

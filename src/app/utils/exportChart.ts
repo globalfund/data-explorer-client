@@ -5,8 +5,13 @@ import domtoimage from "dom-to-image";
 export async function exportChart(
   id: string,
   type: string,
-  bgcolor = "#ffffff"
+  data: {
+    headers: string[];
+    data: (string | number)[][];
+  },
+  exportName: string
 ) {
+  const bgcolor = "#ffffff";
   return new Promise((resolve, reject) => {
     const node = document.getElementById(id);
     const filter = (n: any) =>
@@ -18,7 +23,7 @@ export async function exportChart(
         .toJpeg(node, { filter, bgcolor })
         .then((dataUrl: any) => {
           const link = document.createElement("a");
-          link.download = "download.jpg";
+          link.download = `${exportName}.jpg`;
           link.href = dataUrl;
           link.click();
           resolve({});
@@ -32,7 +37,7 @@ export async function exportChart(
         .toSvg(node, { bgcolor })
         .then((dataUrl: any) => {
           const link = document.createElement("a");
-          link.download = "download.svg";
+          link.download = `${exportName}.svg`;
           link.href = dataUrl;
           link.click();
           resolve({});
@@ -67,13 +72,26 @@ export async function exportChart(
           // pdf.addImage(background, "PNG", 0, 0, pdfWidth, pdfHeight);
           pdf.addImage(dataUrl, "PNG", x, 0, w, h);
 
-          pdf.save("download.pdf");
+          pdf.save(`${exportName}.pdf`);
           resolve({});
         })
         .catch((error: any) => {
           console.error("oops, something went wrong!", error);
           reject("oops, something went wrong!");
         });
+    } else if (type === "csv") {
+      const csv = [];
+      csv.push(data.headers.join(","));
+      const rows = data.data;
+      for (let i = 0; i < rows.length; i++) {
+        csv.push(Object.values(rows[i]).join(","));
+      }
+      const csvString = csv.join("\n");
+      const link = document.createElement("a");
+      link.download = `${exportName}.csv`;
+      link.href = `data:text/csv;charset=utf-8,${csvString}`;
+      link.click();
+      resolve({});
     } else {
       domtoimage
         .toPng(node, {
@@ -82,7 +100,7 @@ export async function exportChart(
         })
         .then((dataUrl: any) => {
           const link = document.createElement("a");
-          link.download = "download.png";
+          link.download = `${exportName}.png`;
           link.href = dataUrl;
           link.click();
           resolve({});

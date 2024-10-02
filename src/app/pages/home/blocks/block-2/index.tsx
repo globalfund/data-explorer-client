@@ -98,14 +98,32 @@ export const HomeBlock2: React.FC = () => {
     }`;
   }, [dataAllocationsRadialChart]);
 
+  const exportChartData = React.useMemo(() => {
+    const result: {
+      headers: string[];
+      data: (string | number)[][];
+    } = {
+      headers: ["Component", "Region", "Amount"],
+      data: [],
+    };
+    dataAllocationsRadialChart.forEach((item) => {
+      item.tooltip?.items.forEach((tooltipItem) => {
+        result.data.push([item.name, tooltipItem.name, tooltipItem.value]);
+      });
+    });
+    return result;
+  }, [dataAllocationsRadialChart]);
+
   return (
     <ChartBlock
       id="allocations"
+      exportName="allocations"
       subtitle={getCMSDataField(
         cmsData,
         "pagesHome.allocationsSubtitle",
         "Allocations"
       )}
+      data={exportChartData}
       title={allocationsTotal}
       selectedCycles={chart2Cycles}
       latestUpdate={latestUpdateDate}

@@ -210,6 +210,55 @@ export const AccessToFundingBlock3: React.FC<AccessToFundingBlock3Props> = (
     dataAllocationsTable,
   ]);
 
+  const chartData = React.useMemo(() => {
+    const result: (string | number)[][] = [];
+    let headers: string[] = [];
+    switch (dropdownSelected) {
+      case dropdownItemsAllocations[0].value:
+        headers = ["Sub-Region", "Country", "Amount"];
+        dataAllocationsSunburst.forEach((item: any) => {
+          const items = get(item, "children", []);
+          if (items.length > 0) {
+            items.forEach((child: any) => {
+              result.push([item.name, child.name, child.value]);
+            });
+          } else {
+            result.push([item.name, "", item.value]);
+          }
+        });
+        break;
+      case dropdownItemsAllocations[1].value:
+        headers = ["Component", "Amount"];
+        dataAllocationsTreemap.forEach((item: any) => {
+          result.push([item.name, item.value]);
+        });
+        break;
+      case dropdownItemsAllocations[2].value:
+        headers = ["Geography", "Component", "Period", "Amount"];
+        dataAllocationsTable.forEach((item: any) => {
+          get(item, "_children", []).forEach((child: any) => {
+            Object.keys(child).forEach((key) => {
+              if (key !== "name") {
+                result.push([item.name, child.name, key, child[key]]);
+              }
+            });
+          });
+        });
+        break;
+      default:
+        break;
+    }
+    return {
+      headers,
+      data: result,
+    };
+  }, [
+    dropdownSelected,
+    dataAllocationsSunburst,
+    dataAllocationsTreemap,
+    dataAllocationsTable,
+  ]);
+
   const chartEmpty = React.useMemo(() => {
     switch (dropdownSelected) {
       case dropdownItemsAllocations[0].value:
@@ -337,6 +386,7 @@ export const AccessToFundingBlock3: React.FC<AccessToFundingBlock3Props> = (
     >
       <DatasetChartBlock
         id="allocation"
+        exportName="allocation"
         title={getCMSDataField(
           cmsData,
           "pagesDatasetsAccessToFunding.allocationTitle",
@@ -361,6 +411,7 @@ export const AccessToFundingBlock3: React.FC<AccessToFundingBlock3Props> = (
         handleResetFilters={handleResetChartFilters}
         appliedFiltersData={chart2AppliedFiltersData}
         extraDropdown={allocationCycleDropdown}
+        data={chartData}
         infoType="global"
       >
         {chartContent}

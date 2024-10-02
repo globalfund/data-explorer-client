@@ -28,6 +28,7 @@ const Wrapper: React.FC = () => {
       subtitle="Funds raised to date"
       dropdownItems={items}
       dropdownSelected={dropdownSelected}
+      exportName="pledges-and-contributions"
       handleDropdownChange={handleSelectionChange}
       filterGroups={[]}
       toggleFilter={() => {}}
@@ -35,6 +36,7 @@ const Wrapper: React.FC = () => {
       handleResetFilters={() => {}}
       appliedFilters={[]}
       appliedFiltersData={defaultAppliedFilters}
+      data={STORY_DATA_VARIANT_2}
       infoType="global"
     >
       <BarChart

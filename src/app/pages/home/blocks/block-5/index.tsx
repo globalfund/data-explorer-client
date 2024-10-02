@@ -3,6 +3,7 @@ import get from "lodash/get";
 import sumBy from "lodash/sumBy";
 import filter from "lodash/filter";
 import Box from "@mui/material/Box";
+import orderBy from "lodash/orderBy";
 import { appColors } from "app/theme";
 import IconButton from "@mui/material/IconButton";
 import { useCMSData } from "app/hooks/useCMSData";
@@ -213,9 +214,33 @@ export const HomeBlock5: React.FC = () => {
     }`;
   }, [dataExpendituresHeatmap]);
 
+  const exportChartData = React.useMemo(() => {
+    let sortedData: HeatmapDataItem[] = [];
+    orderBy(dataExpendituresHeatmap, "row", "asc").forEach((item) => {
+      if (!item.parentRow && !item.parentColumn) {
+        sortedData.push(item);
+        const children = dataExpendituresHeatmap.filter(
+          (child) =>
+            child.parentRow === item.row || child.parentColumn === item.column
+        );
+        sortedData = sortedData.concat(children);
+      }
+    });
+    return {
+      headers: ["Principal Recipient", "Component", "Amount", "Percentage"],
+      data: sortedData.map((item) => [
+        `"${item.row}"`,
+        `"${item.column}"`,
+        item.value,
+        item.percentage,
+      ]),
+    };
+  }, [dataExpendituresHeatmap]);
+
   return (
     <ChartBlock
       id="expenditures"
+      exportName="expenditures"
       subtitle={getCMSDataField(
         cmsData,
         "pagesHome.expendituresSubtitle",
@@ -235,6 +260,7 @@ export const HomeBlock5: React.FC = () => {
         name: c.value,
         value: c.value,
       }))}
+      data={exportChartData}
       infoType="expenditures"
     >
       <Heatmap

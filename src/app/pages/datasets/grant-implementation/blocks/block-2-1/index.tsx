@@ -257,6 +257,30 @@ export const GrantImplementationPageBlock21: React.FC = () => {
     cycleDropdownSelected,
   ]);
 
+  const chartData = React.useMemo(() => {
+    let headers: string[] = [];
+    const data: (string | number)[][] = [];
+    switch (dropdownSelected) {
+      case dropdownItemsHolisticGrantInvestments[0].value:
+        headers = ["Source", "Target", "Value"];
+        dataSankey.links.forEach((link: any) => {
+          data.push([link.source, link.target, link.value]);
+        });
+        break;
+      case dropdownItemsHolisticGrantInvestments[1].value:
+        headers = ["Disbursement Area", "Disbursement Sub-Area", "Amount"];
+        get(dataTable, "[0]._children", []).forEach((item: any) => {
+          get(item, "_children", []).forEach((subItem: any) => {
+            data.push([item.name, subItem.name, subItem.amount]);
+          });
+        });
+        break;
+      default:
+        break;
+    }
+    return { headers, data };
+  }, [dropdownSelected, dataSankey, dataTable]);
+
   React.useEffect(() => {
     if (!cycleDropdownSelected) return;
     fetchSankey({ filterString: chartFilterString });
@@ -296,6 +320,7 @@ export const GrantImplementationPageBlock21: React.FC = () => {
         titleVariant="h5"
         loading={loading}
         empty={chartEmpty}
+        exportName="investments-by-disbursement-area"
         title={getCMSDataField(
           cmsData,
           "pagesDatasetsGrantImplementation.hgiTitle",
@@ -320,6 +345,7 @@ export const GrantImplementationPageBlock21: React.FC = () => {
         removeFilter={() => {}}
         toggleFilter={() => {}}
         latestUpdate={latestUpdateDate}
+        data={chartData}
         infoType="financials"
       >
         {chartContent}

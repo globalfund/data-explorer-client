@@ -95,11 +95,35 @@ export const HomeBlock1: React.FC = () => {
     return `US$${v.number} ${v.text}`;
   }, [dataPledgesContributionsBarChart]);
 
+  const exportData = React.useMemo(() => {
+    return {
+      headers: [
+        "Period",
+        getCMSDataField(
+          cmsData,
+          "pagesHome.pledgesContributionsLabel1",
+          "Pledge"
+        ),
+        getCMSDataField(
+          cmsData,
+          "pagesHome.pledgesContributionsLabel2",
+          "Contribution"
+        ),
+      ],
+      data: dataPledgesContributionsBarChart.map((d) => [
+        d.name,
+        d.value,
+        d.value1,
+      ]),
+    };
+  }, [cmsData, dataPledgesContributionsBarChart]);
+
   return (
     <React.Fragment>
       <ChartBlock
         showCycleAll
         id="pledges-contributions"
+        exportName="pledges-contributions"
         selectedCycles={chart1Cycles}
         title={`${totalPledge}`}
         latestUpdate={latestUpdateDate}
@@ -108,6 +132,7 @@ export const HomeBlock1: React.FC = () => {
           "pagesHome.pledgesContributionsSubtitle",
           "Pledges & Contributions"
         )}
+        data={exportData}
         loading={loadingPledgesContributionsBarChart}
         empty={dataPledgesContributionsBarChart.length === 0}
         handleCycleChange={(value) => handleChartCycleChange(value)}
