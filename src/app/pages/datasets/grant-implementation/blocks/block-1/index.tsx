@@ -143,11 +143,11 @@ export const GrantImplementationPageBlock1: React.FC<
           </Typography>
         </Box>
       </Box>
-      {/* <Box marginBottom="25px">
+      <Box marginBottom="25px">
         <Typography variant="overline">
           Latest Update: <b>{latestUpdateDate}</b>
         </Typography>
-      </Box> */}
+      </Box>
     </React.Fragment>
   );
 };
