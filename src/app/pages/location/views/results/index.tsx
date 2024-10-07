@@ -28,7 +28,7 @@ export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
   });
 
   const params = useParams<{ id: string; tab: string }>();
-  const paramsId = params.id?.replace("|", "%2F");
+  const paramsId = params.id as string;
 
   const locationName = useStoreState((state) =>
     get(state.GeographyOverview, "data.data[0].name", params.id)

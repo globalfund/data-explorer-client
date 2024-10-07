@@ -34,7 +34,8 @@ import {
 export const AccessToFunding: React.FC = () => {
   const cmsData = useCMSData({ returnData: true });
   const params = useParams<{ id: string; tab: string }>();
-  const paramsId = params.id?.replace("|", "%2F");
+  const routeParamsId = params.id as string;
+  const paramsId = params.id?.replace("|", "%2F") as string;
 
   const latestUpdateDateChart1 = useGetDatasetLatestUpdate({
     dataset: "allocations",
@@ -181,7 +182,7 @@ export const AccessToFunding: React.FC = () => {
       fetchFundingRequestsTable({
         filterString,
         routeParams: {
-          code: paramsId,
+          code: routeParamsId,
         },
       });
     }
@@ -207,7 +208,7 @@ export const AccessToFunding: React.FC = () => {
       filterString = `periods=${chart1Cycles[0].value}`;
       fetchAllocationsRadialChart({
         filterString,
-        routeParams: { code: paramsId },
+        routeParams: { code: routeParamsId },
       });
     }
   }, [chart1Cycles]);

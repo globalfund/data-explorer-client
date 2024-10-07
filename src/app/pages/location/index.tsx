@@ -18,7 +18,8 @@ import { ResourceMobilization } from "app/pages/location/views/resource-mobiliza
 
 export const Location: React.FC = () => {
   const params = useParams<{ id: string; tab: string }>();
-  const paramsId = params.id?.replace("|", "%2F");
+  const routeParamsId = params.id as string;
+  const paramsId = params.id?.replace("|", "%2F") as string;
 
   const [resultsYear, setResultsYear] = React.useState(
     RESULT_YEARS[RESULT_YEARS.length - 1]
@@ -312,22 +313,22 @@ export const Location: React.FC = () => {
     if (paramsId) {
       fetchOverview({
         routeParams: {
-          code: paramsId,
+          code: routeParamsId,
         },
       });
       fetchCCMContacts({
         routeParams: {
-          code: paramsId,
+          code: routeParamsId,
         },
       });
       fetchAllocationsRadialChart({
         routeParams: {
-          code: paramsId,
+          code: routeParamsId,
         },
       });
       fetchFundingRequestsTable({
         routeParams: {
-          code: paramsId,
+          code: routeParamsId,
         },
       });
       fetchEligibilityTable({
@@ -355,7 +356,7 @@ export const Location: React.FC = () => {
       });
       fetchGrantsPieCharts({
         routeParams: {
-          code: paramsId,
+          code: routeParamsId,
         },
       });
       fetchResultStats({
@@ -393,6 +394,13 @@ export const Location: React.FC = () => {
       fetchBudgetsCycles({
         filterString: `geographies=${paramsId}`,
       });
+      fetchGrantsTable({
+        filterString: `geographies=${paramsId}`,
+        routeParams: {
+          page: "1",
+          pageSize: "all",
+        },
+      });
     }
   }, [paramsId]);
 
@@ -406,21 +414,9 @@ export const Location: React.FC = () => {
 
   React.useEffect(() => {
     if (paramsId) {
-      fetchGrantsTable({
-        filterString: `geographies=${paramsId}`,
-        routeParams: {
-          page: "1",
-          pageSize: "all",
-        },
-      });
-    }
-  }, [paramsId]);
-
-  React.useEffect(() => {
-    if (paramsId) {
       fetchResultsTable({
         routeParams: {
-          code: paramsId,
+          code: routeParamsId,
           cycle: resultsYear.value,
         },
       });
