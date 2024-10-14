@@ -8,14 +8,11 @@ import { useCMSData } from "app/hooks/useCMSData";
 import { ChartBlock } from "app/components/chart-block";
 import { getCMSDataField } from "app/utils/getCMSDataField";
 import { TableContainer } from "app/components/table-container";
+import { ResultsProps } from "app/pages/location/views/results/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { HomeResultsStats } from "app/pages/home/components/results-stats";
 import { StatCompProps } from "app/pages/home/components/results-stats/data";
 import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
-import {
-  RESULT_YEARS,
-  ResultsProps,
-} from "app/pages/location/views/results/data";
 import {
   TABLE_VARIATION_6_COLUMNS,
   TABLE_VARIATION_7_COLUMNS,
@@ -44,6 +41,18 @@ export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
   );
   const dataResultsTable = useStoreState((state) =>
     get(state.GeographyResultsTable, "data.data", [])
+  );
+  const cyclesResultsTable = useStoreState(
+    (state) =>
+      get(state.AnnualResultsCycles, "data.data", []).map(
+        (c: { name: number; value: number }) => ({
+          name: c.name.toString(),
+          value: c.value.toString(),
+        })
+      ) as {
+        name: string;
+        value: string;
+      }[]
   );
   const loadingResultsTable = useStoreState(
     (state) => state.GeographyResultsTable.loading
@@ -120,7 +129,7 @@ export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
         )}
         noBottomToolbar
         empty={!showResults}
-        cycles={RESULT_YEARS}
+        cycles={cyclesResultsTable}
         loading={loadingResultsTable}
         subtitle=""
         selectedCycles={[props.resultsYear]}

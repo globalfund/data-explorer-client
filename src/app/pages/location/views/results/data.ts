@@ -5,6 +5,7 @@ export const RESULT_YEARS = [
   { name: "2020", value: "2020" },
   { name: "2021", value: "2021" },
   { name: "2022", value: "2022" },
+  { name: "2023", value: "2023" },
 ];
 
 export interface ResultsProps {
