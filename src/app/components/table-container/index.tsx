@@ -79,10 +79,12 @@ export const TableContainer: React.FC<TableContainerProps> = (
   const onSearchBtnClick = () => {
     setOpenSearch(!openSearch);
     if (openSearch) {
-      setSearch("");
-      setSearch1("");
-      if (props.onSearchChange) {
-        props.onSearchChange("");
+      if (search.length > 0) {
+        setSearch("");
+        setSearch1("");
+        if (props.onSearchChange) {
+          props.onSearchChange("");
+        }
       }
     } else {
       setTimeout(() => {
