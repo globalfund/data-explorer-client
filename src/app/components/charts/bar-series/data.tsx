@@ -22,7 +22,7 @@ export const STORY_DATA_VARIANT_1: BarSeriesChartDataItem[] = [
     },
   },
   {
-    name: "HIV/AIDS",
+    name: "HIV",
     values: [5150000003.7, 6354999999.27, 6487600015.67],
     itemStyle: {
       color: "#013E77",

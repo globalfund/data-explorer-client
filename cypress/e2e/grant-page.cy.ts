@@ -35,7 +35,7 @@ describe("Testing The Grant Detail page", () => {
     cy.get("h1").should("have.text", "ALB-C-MOH");
     cy.contains("Overview").should("be.visible");
     cy.contains(
-      "Scaling up and Ensuring Sustainability of the National Response to HIV/AIDS"
+      "Scaling up and Ensuring Sustainability of the National Response to HIV"
     ).should("be.visible");
   });
 
