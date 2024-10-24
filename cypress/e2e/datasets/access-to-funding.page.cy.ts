@@ -31,7 +31,7 @@ describe(
       cy.get("h1").should("have.text", "Access to Funding");
       cy.contains("Eligible Countries by Numbers").should("be.visible");
       cy.contains("Segmented by Components.").should("be.visible");
-      cy.contains("Countries Eligible for HIV/AIDS").should("be.visible");
+      cy.contains("Countries Eligible for HIV").should("be.visible");
       cy.contains("Countries Eligible for Malaria").should("be.visible");
       cy.contains("Countries Eligible for Tuberculosis").should("be.visible");
     });

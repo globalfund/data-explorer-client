@@ -147,7 +147,7 @@ export const STORY_DATA_VARIANT_2: RadialChartDataItem[] = [
 
 export const STORY_DATA_VARIANT_3: RadialChartDataItem[] = [
   {
-    name: "HIV/AIDS",
+    name: "HIV",
     value: 11706734676.03,
     itemStyle: {
       color: "#0A2840",
@@ -161,7 +161,7 @@ export const STORY_DATA_VARIANT_3: RadialChartDataItem[] = [
     },
   },
   {
-    name: "Multi-Component",
+    name: "Multicomponent",
     value: 10920830650.98,
     itemStyle: {
       color: "#00B5AE",

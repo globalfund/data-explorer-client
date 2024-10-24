@@ -95,12 +95,12 @@ export const FullWidthDivider = () => (
 
 export const BUDGET_BREAKDOWN_DATA = [
   {
-    name: "Multi-Component",
+    name: "Multicomponent",
     value: 37.41334776474775,
     color: "#0A2840",
   },
   {
-    name: "HIV/AIDS",
+    name: "HIV",
     value: 26.03209507797034,
     color: "#013E77",
   },

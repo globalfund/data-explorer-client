@@ -15,7 +15,7 @@ export const STORY_DATA_VARIANT_1: PolylineTreeDataItem = {
   name: "2022",
   children: [
     {
-      name: "HIV/AIDS",
+      name: "HIV",
       children: [
         {
           name: "Total number of HIV tests",
@@ -382,7 +382,7 @@ export const STORY_DATA_VARIANT_1: PolylineTreeDataItem = {
       },
     },
     {
-      name: "HIV/TB",
+      name: "TB/HIV",
       children: [
         {
           name: "People living with HIV in care screened for TB",
