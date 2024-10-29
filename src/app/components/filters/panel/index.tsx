@@ -38,7 +38,6 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
   return (
     <Box
       gap="7px"
-      width="500px"
       display="flex"
       bgcolor="#FFFFFF"
       padding="7px 12px"
@@ -47,8 +46,11 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
       border="1px solid #70777E"
       data-cy="filter-panel"
       sx={{
-        "@media (max-width: 767px)": {
-          width: "100%",
+        "@media (min-width: 1280px)": {
+          width: "1200px",
+        },
+        "@media (max-width: 1279px)": {
+          width: "calc(100vw - 40px)",
         },
       }}
     >
