@@ -1,3 +1,5 @@
+import { colors } from "app/theme";
+
 export interface HeaderMenuProps {
   mobileMenuOpen: boolean;
   setMobileMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -7,6 +9,7 @@ export interface HeaderMenuPage {
   id: string;
   label: string;
   link?: string;
+  description?: string;
   subPages?: HeaderMenuPage[];
 }
 
@@ -19,21 +22,26 @@ export const PAGES: HeaderMenuPage[] = [
         id: "resource-mobilization",
         label: "Resource Mobilization",
         link: "/resource-mobilization",
+        description: "Pledges & Contributions Dataset.",
       },
       {
         id: "access-to-funding",
         label: "Access to Funding",
         link: "/access-to-funding",
+        description: "Eligibility, Allocation, and Funding Request Datasets.",
       },
       {
         id: "financial-insights",
         label: "Financial Insights",
         link: "/financial-insights",
+        description:
+          "Disbursement, Financial Metrics, Budgets, and Expenditures Datasets.",
       },
       {
         id: "annual-results",
         label: "Annual Results",
         link: "/annual-results",
+        description: "Annual Results Dataset and Documents.",
       },
       // {
       //   id: "documents",
@@ -62,6 +70,13 @@ export function isNavButtonActive(id: string, path: string): boolean {
     case "grants":
       return path.includes("/grants") || path.includes("/grant");
     default:
-      return false;
+      return id === path.split("/")[1];
   }
 }
+
+export const activeButtonStateStyle = {
+  borderRadius: "4px",
+  background: "transparent",
+  border: "1px solid #CFD4DA",
+  borderBottom: `4px solid ${colors.primary.black}`,
+};

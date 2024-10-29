@@ -36,7 +36,7 @@ export const DetailPageTabs: React.FC<DetailPageTabsProps> = (
 
   return (
     <Box
-      top="91px"
+      top="57px"
       zIndex="100"
       width="100%"
       display="flex"

@@ -41,7 +41,7 @@ export const Header: React.FC = () => {
     }
   };
 
-  const content = React.useMemo(() => {
+  const searchContent = React.useMemo(() => {
     if (mobile) {
       return (
         <Box
@@ -199,29 +199,15 @@ export const Header: React.FC = () => {
             }}
           >
             {((mobile && !searchOpen) || !mobile) && (
-              <NavLink to="/">
+              <NavLink to="/" style={{ display: "flex" }}>
                 <HeaderToolbarLogo />
               </NavLink>
             )}
-            <Box
-              sx={{
-                flexGrow: 1,
-                width: "100%",
-                height: "100%",
-                display: "flex",
-                flexDirection: "column",
-                "> div": {
-                  width: "100%",
-                  height: "50%",
-                },
-              }}
-            >
-              {content}
-              <HeaderMenu
-                mobileMenuOpen={mobileMenuOpen}
-                setMobileMenuOpen={setMobileMenuOpen}
-              />
-            </Box>
+            <HeaderMenu
+              mobileMenuOpen={mobileMenuOpen}
+              setMobileMenuOpen={setMobileMenuOpen}
+            />
+            {searchContent}
           </Toolbar>
         </Container>
       </AppBar>

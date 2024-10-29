@@ -6,9 +6,12 @@ import Drawer from "@mui/material/Drawer";
 import Popover from "@mui/material/Popover";
 import { styled } from "@mui/material/styles";
 import Accordion from "@mui/material/Accordion";
+import Container from "@mui/material/Container";
 import IconClose from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import ChevronRight from "@mui/icons-material/ChevronRight";
 import { useLocation, useNavigate } from "react-router-dom";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -17,19 +20,18 @@ import {
   HeaderMenuPage,
   HeaderMenuProps,
   isNavButtonActive,
+  activeButtonStateStyle,
 } from "app/components/header-menu/data";
-import IconButton from "@mui/material/IconButton";
 
 const HeaderMenuButton = styled(Button)({
-  width: "160px",
+  height: "100%",
   borderRadius: 0,
-  fontSize: "12px",
-  fontWeight: "400",
-  textAlign: "center",
+  minWidth: "160px",
   textTransform: "none",
   color: colors.primary.black,
+  border: "1px solid transparent",
+  borderBottom: "4px solid transparent",
   "&:hover": {
-    fontWeight: "700",
     background: "transparent",
   },
 });
@@ -44,9 +46,6 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [selectedPage, setSelectedPage] = React.useState<string | null>(null);
-  const [selectedSubPage, setSelectedSubPage] = React.useState<string | null>(
-    null
-  );
 
   const handleClick =
     (isSubPage: boolean, page: HeaderMenuPage) =>
@@ -55,8 +54,6 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (
         const container = document.getElementById("header-menu-tabs-container");
         setAnchorEl(container);
         setSelectedPage(page.id);
-      } else {
-        setSelectedSubPage(page.id);
       }
       if (page.link) {
         navigate(page.link);
@@ -67,7 +64,6 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (
   const handleClose = () => {
     setAnchorEl(null);
     setSelectedPage(null);
-    setSelectedSubPage(null);
   };
 
   const onScroll = () => {
@@ -181,6 +177,7 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (
       id="header-menu-tabs-container"
       sx={{
         width: "100%",
+        height: "100%",
         display: "flex",
         flexDirection: "row",
         justifyContent: "center",
@@ -192,13 +189,23 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (
           key={page.id}
           disableRipple
           onClick={handleClick(false, page)}
+          endIcon={
+            page.subPages ? (
+              <ChevronRight
+                sx={{ rotate: `${selectedPage === page.id ? -90 : 90}deg` }}
+              />
+            ) : null
+          }
           sx={
             isNavButtonActive(page.id, location.pathname)
               ? {
-                  fontWeight: "700",
-                  borderBottom: `2px solid ${colors.primary.black}`,
+                  borderBottom: `4px solid ${colors.primary.black}`,
                 }
-              : {}
+              : {
+                  "&:hover": {
+                    borderBottom: `4px solid ${colors.primary.black}`,
+                  },
+                }
           }
           data-cy="header-menu-button"
         >
@@ -222,7 +229,7 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (
           "& .MuiPopover-paper": {
             maxWidth: "100vw",
             left: "0 !important",
-            top: "91px !important",
+            top: "57px !important",
           },
         }}
       >
@@ -230,68 +237,75 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (
           sx={{
             width: "100vw",
             height: "100%",
-            display: "flex",
             paddingTop: "10px",
-            flexDirection: "row",
             background: "#F8F8F8",
-            justifyContent: "center",
-            alignItems: "flex-start",
           }}
         >
-          {PAGES.find((page) => page.id === selectedPage)?.subPages?.map(
-            (subPage) => (
-              <Box
-                key={subPage.id}
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  "&:last-of-type": {
-                    "> button": {
-                      borderRightStyle: "none",
-                    },
-                  },
-                }}
-              >
-                <HeaderMenuButton
-                  disableRipple
-                  key={subPage.id}
-                  onClick={handleClick(true, subPage)}
-                  sx={{
-                    padding: "0 60px",
-                    width: "fit-content",
-                    marginBottom: "10px",
-                    borderRight: `1px solid ${colors.primary.black}`,
-                    fontWeight:
-                      subPage.link === location.pathname ? "700" : "400",
-                    "@media (max-width: 920px)": {
-                      padding: "0 30px",
-                    },
-                  }}
-                  data-cy="header-menu-button"
-                >
-                  {subPage.label}
-                </HeaderMenuButton>
-                {selectedSubPage &&
-                  subPage.subPages?.map((subSubPage) => (
+          <Container maxWidth="lg" sx={{ padding: "0px !important" }}>
+            <Box
+              sx={{
+                gap: "40px",
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "flex-start",
+                justifyContent: "flex-start",
+              }}
+            >
+              {PAGES.find((page) => page.id === selectedPage)?.subPages?.map(
+                (subPage) => (
+                  <Box
+                    key={subPage.id}
+                    sx={{
+                      height: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "flex-start",
+                      justifyContent: "flex-start",
+                      width: `calc(100% / ${PAGES.length})`,
+                    }}
+                  >
                     <HeaderMenuButton
                       disableRipple
-                      key={subSubPage.id}
-                      onClick={handleClick(false, subSubPage)}
-                      sx={{
-                        fontSize: "10px",
-                        padding: "0 60px",
-                        width: "fit-content",
-                      }}
+                      key={subPage.id}
                       data-cy="header-menu-button"
+                      onClick={handleClick(true, subPage)}
+                      sx={{
+                        width: "100%",
+                        height: "100%",
+                        paddingBottom: "10px",
+                        "&:hover": activeButtonStateStyle,
+                        ...(isNavButtonActive(subPage.id, location.pathname)
+                          ? activeButtonStateStyle
+                          : {}),
+                      }}
                     >
-                      {subSubPage.label}
+                      <Box
+                        gap="5px"
+                        width="100%"
+                        display="flex"
+                        flexDirection="column"
+                        alignItems="flex-start"
+                        sx={{
+                          p: {
+                            textAlign: "start",
+                          },
+                        }}
+                      >
+                        <Typography fontSize="14px" fontWeight="700">
+                          {subPage.label}
+                        </Typography>
+                        <Typography fontSize="10px">
+                          {subPage.description}
+                        </Typography>
+                      </Box>
                     </HeaderMenuButton>
-                  ))}
-              </Box>
-            )
-          )}
+                  </Box>
+                )
+              )}
+            </Box>
+          </Container>
         </Box>
       </Popover>
     </Box>

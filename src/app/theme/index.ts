@@ -219,17 +219,18 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           boxShadow: "none",
-          borderBottom: "1px solid #000",
           background: colors.primary.white,
+          borderBottom: "1px solid #CFD4DA",
         },
       },
     },
     MuiToolbar: {
       styleOverrides: {
         root: {
-          height: "90px",
+          height: "57px",
           display: "flex",
           flexDirection: "row",
+          minHeight: "57px !important",
           justifyContent: "space-between",
           background: colors.primary.white,
           "@media (min-width: 920px)": {
