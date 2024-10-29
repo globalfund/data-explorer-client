@@ -188,8 +188,9 @@ export const InfoPanel: React.FC<InfoPanelProps> = (props: InfoPanelProps) => {
       zIndex={1000}
       padding="16px"
       bgcolor="#F5F5F7"
-      borderRadius="16px"
+      borderRadius="5px"
       position="absolute"
+      border="1px solid #252C34"
       data-cy="chart-info-dialog"
     >
       <Box display="flex" justifyContent="space-between" alignItems="center">
