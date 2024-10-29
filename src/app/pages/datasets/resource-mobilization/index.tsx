@@ -538,10 +538,10 @@ export const ResourceMobilizationPage: React.FC = () => {
             </Box>
             <Divider /> */}
             <Box>
-              <Typography variant="h5">
+              <Typography variant="h3">
                 {formatFinancialValue(get(dataStats, "totalPledges", 0))}
               </Typography>
-              <Typography fontSize="14px" fontWeight="700">
+              <Typography fontSize="14px">
                 {getCMSDataField(
                   cmsData,
                   "pagesDatasetsResourceMobilization.statsText2",
@@ -551,10 +551,10 @@ export const ResourceMobilizationPage: React.FC = () => {
             </Box>
             <Divider orientation={tabletScreen ? "vertical" : "horizontal"} />
             <Box>
-              <Typography variant="h5">
+              <Typography variant="h3">
                 {formatFinancialValue(get(dataStats, "totalContributions", 0))}
               </Typography>
-              <Typography fontSize="14px" fontWeight="700">
+              <Typography fontSize="14px">
                 {getCMSDataField(
                   cmsData,
                   "pagesDatasetsResourceMobilization.statsText3",
@@ -575,14 +575,14 @@ export const ResourceMobilizationPage: React.FC = () => {
             }}
           >
             <Box marginBottom="20px">
-              <Typography variant="h5">
+              <Typography variant="h3">
                 {getCMSDataField(
                   cmsData,
                   "pagesDatasetsResourceMobilization.statsText4Title",
                   "Number of Donors Mobilized"
                 )}
               </Typography>
-              <Typography variant="body2" fontWeight="700">
+              <Typography variant="body2">
                 {getCMSDataField(
                   cmsData,
                   "pagesDatasetsResourceMobilization.statsText4Subtitle",
@@ -647,7 +647,9 @@ export const ResourceMobilizationPage: React.FC = () => {
                 {get(dataStats, "donorTypesCount", []).map((item) => (
                   <Grid item xs={12} sm={3} md={3} lg={3} key={item.name}>
                     <Box bgcolor="#F1F3F5" padding="5px 10px">
-                      <Typography variant="h5">{item.value}</Typography>
+                      <Typography fontSize="24px" fontWeight="700">
+                        {item.value}
+                      </Typography>
                       <Typography fontSize="12px">{item.name}</Typography>
                     </Box>
                   </Grid>

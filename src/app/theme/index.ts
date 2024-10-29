@@ -153,32 +153,32 @@ const theme = createTheme({
   typography: {
     fontFamily: "Inter, sans-serif",
     h1: {
-      fontSize: "80px",
+      fontSize: "64px",
       fontWeight: "700",
       color: colors.primary.black,
     },
     h2: {
-      fontSize: "60px",
+      fontSize: "44px",
       fontWeight: "700",
       color: colors.primary.black,
     },
     h3: {
-      fontSize: "40px",
+      fontSize: "36px",
       fontWeight: "700",
       color: colors.primary.black,
     },
     h4: {
-      fontSize: "32px",
-      fontWeight: "700",
-      color: colors.primary.black,
-    },
-    h5: {
       fontSize: "24px",
       fontWeight: "700",
       color: colors.primary.black,
     },
+    h5: {
+      fontSize: "14px",
+      fontWeight: "700",
+      color: colors.primary.black,
+    },
     h6: {
-      fontSize: "18px",
+      fontSize: "12px",
       fontWeight: "700",
       color: colors.primary.black,
     },

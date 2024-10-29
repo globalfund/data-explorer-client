@@ -106,7 +106,7 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
 
   return (
     <Box id={props.id} data-cy="dataset-chart-block">
-      <Typography variant={props.titleVariant ?? "h3"} lineHeight={1.2}>
+      <Typography variant={props.titleVariant ?? "h2"} lineHeight={1.2}>
         {props.title}
       </Typography>
       <Typography variant={props.subtitleVariant ?? "body2"}>
@@ -114,7 +114,7 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
       </Typography>
       <Divider
         sx={{
-          margin: "20px 0",
+          margin: "10px 0",
           "@media (max-width: 767px)": {
             margin: "10px 0",
             borderColor: "#fff",

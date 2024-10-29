@@ -278,7 +278,7 @@ export const Grant: React.FC = () => {
         {params.id}
       </Typography>
       <Typography
-        variant="h5"
+        variant="h4"
         lineHeight={1}
         marginBottom="50px"
         sx={{
@@ -297,7 +297,6 @@ export const Grant: React.FC = () => {
           ))}
       </Typography>
       {fullWidthDivider}
-      <Box height="20px" />
       <DetailPageTabs
         baseRoute={`/grant`}
         activeTab={`${params.ip}/${params.tab}`}
@@ -315,7 +314,6 @@ export const Grant: React.FC = () => {
           })),
         }}
       />
-      <Box height="20px" />
       {fullWidthDivider}
       <Box marginTop="40px">{view}</Box>
     </Box>

@@ -317,7 +317,7 @@ export const GrantImplementationPageBlock21: React.FC = () => {
     >
       <DatasetChartBlock
         id="hgi"
-        titleVariant="h5"
+        titleVariant="h3"
         loading={loading}
         empty={chartEmpty}
         exportName="investments-by-disbursement-area"

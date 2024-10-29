@@ -70,7 +70,7 @@ export const DatasetPage: React.FC<DatasetPageProps> = (
       </Typography>
       {props.subtitle.length > 0 && (
         <Typography
-          variant="h6"
+          variant="h4"
           sx={
             props.subtitle.length > 0
               ? {}

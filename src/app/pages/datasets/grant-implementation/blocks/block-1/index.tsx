@@ -57,13 +57,12 @@ export const GrantImplementationPageBlock1: React.FC<
         width="100%"
         display="flex"
         flexDirection="row"
-        // marginBottom="20px"
-        marginBottom="50px"
+        marginBottom="25px"
         position="relative"
         sx={{
           "> div": {
             width: "calc(100% / 3)",
-            padding: "0 20px",
+            padding: "0 17px",
             "&:not(:last-child)": {
               borderRight: "1px solid #DFE3E5",
             },
@@ -107,10 +106,10 @@ export const GrantImplementationPageBlock1: React.FC<
           </Box>
         )}
         <Box>
-          <Typography variant="h5">
+          <Typography variant="h3">
             {formatFinancialValue(dataFinancialInsightsStats.signed)}
           </Typography>
-          <Typography fontSize="14px" fontWeight="700">
+          <Typography fontSize="14px">
             {getCMSDataField(
               cmsData,
               "pagesDatasetsGrantImplementation.statsText1",
@@ -119,10 +118,10 @@ export const GrantImplementationPageBlock1: React.FC<
           </Typography>
         </Box>
         <Box>
-          <Typography variant="h5">
+          <Typography variant="h3">
             {formatFinancialValue(dataFinancialInsightsStats.committed)}
           </Typography>
-          <Typography fontSize="14px" fontWeight="700">
+          <Typography fontSize="14px">
             {getCMSDataField(
               cmsData,
               "pagesDatasetsGrantImplementation.statsText2",
@@ -131,10 +130,10 @@ export const GrantImplementationPageBlock1: React.FC<
           </Typography>
         </Box>
         <Box>
-          <Typography variant="h5">
+          <Typography variant="h3">
             {formatFinancialValue(dataFinancialInsightsStats.disbursed)}
           </Typography>
-          <Typography fontSize="14px" fontWeight="700">
+          <Typography fontSize="14px">
             {getCMSDataField(
               cmsData,
               "pagesDatasetsGrantImplementation.statsText3",
@@ -143,7 +142,7 @@ export const GrantImplementationPageBlock1: React.FC<
           </Typography>
         </Box>
       </Box>
-      <Box marginBottom="25px">
+      <Box marginBottom="50px">
         <Typography variant="overline">
           Latest Update: <b>{latestUpdateDate}</b>
         </Typography>

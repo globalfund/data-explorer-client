@@ -539,7 +539,7 @@ export const AnnualResultsPage: React.FC = () => {
           }}
         >
           <Box id="documents" padding="50px 0" data-cy="documents-block">
-            <Typography variant="h3" lineHeight={1.2}>
+            <Typography variant="h2" lineHeight={1.2}>
               Documents
             </Typography>
             <Divider

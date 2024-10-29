@@ -188,10 +188,11 @@ export const Header: React.FC = () => {
 
   return (
     <Box sx={{ zIndex: 1000, flexGrow: 1, top: 0, position: "sticky" }}>
-      <AppBar position="static">
-        <Container maxWidth="lg" disableGutters>
+      <AppBar position="static" sx={{ background: "#F8F8F8" }}>
+        <Container maxWidth="lg" disableGutters sx={{ background: "#F8F8F8" }}>
           <Toolbar
             sx={{
+              background: "#F8F8F8",
               "@media (max-width: 767px)": {
                 padding: "0 16px",
               },

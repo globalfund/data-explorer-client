@@ -180,14 +180,14 @@ export const HomeBlock1: React.FC = () => {
           alignItems="center"
           flexDirection="column"
         >
-          <Typography variant="h3" fontWeight="900">
+          <Typography variant="h3" fontWeight="700">
             {totalPledge}
           </Typography>
           <Typography variant="subtitle2">
             {getCMSDataField(
               cmsData,
               "pagesHome.pledgesContributionsLabel1",
-              "Pledge"
+              "Pledged"
             )}
           </Typography>
         </Box>
@@ -197,14 +197,14 @@ export const HomeBlock1: React.FC = () => {
           alignItems="center"
           flexDirection="column"
         >
-          <Typography variant="h3" fontWeight="900">
+          <Typography variant="h3" fontWeight="700">
             {totalContribution}
           </Typography>
           <Typography variant="subtitle2">
             {getCMSDataField(
               cmsData,
               "pagesHome.pledgesContributionsLabel2",
-              "Contribution"
+              "Contributed"
             )}
           </Typography>
         </Box>

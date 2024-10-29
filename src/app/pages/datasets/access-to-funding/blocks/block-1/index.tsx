@@ -85,14 +85,14 @@ export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
         }}
       >
         <Box>
-          <Typography variant="h5">
+          <Typography variant="h3">
             {getCMSDataField(
               cmsData,
               "pagesDatasetsAccessToFunding.statsTitle",
               "Eligible Countries by Numbers"
             )}
           </Typography>
-          <Typography variant="body2" fontWeight="700">
+          <Typography variant="body2">
             {getCMSDataField(
               cmsData,
               "pagesDatasetsAccessToFunding.statsSubtitle",
@@ -152,7 +152,7 @@ export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
         {dataStats.map((item) => (
           <Grid item key={item.name} xs={12} sm={6} md={3}>
             <Box padding="15px" bgcolor="#F1F3F5">
-              <Typography variant="h5">{item.value}</Typography>
+              <Typography variant="h4">{item.value}</Typography>
               <Typography fontSize="12px">
                 Countries Eligible for {item.name}
               </Typography>

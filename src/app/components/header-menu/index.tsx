@@ -233,9 +233,9 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (
             display: "flex",
             paddingTop: "10px",
             flexDirection: "row",
+            background: "#F8F8F8",
             justifyContent: "center",
             alignItems: "flex-start",
-            background: colors.primary.white,
           }}
         >
           {PAGES.find((page) => page.id === selectedPage)?.subPages?.map(
@@ -261,7 +261,7 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (
                   sx={{
                     padding: "0 60px",
                     width: "fit-content",
-                    marginBottom: "20px",
+                    marginBottom: "10px",
                     borderRight: `1px solid ${colors.primary.black}`,
                     fontWeight:
                       subPage.link === location.pathname ? "700" : "400",

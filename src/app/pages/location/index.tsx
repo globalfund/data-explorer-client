@@ -487,7 +487,7 @@ export const Location: React.FC = () => {
         {loading && <CircularProgress sx={{ marginLeft: "16px" }} />}
       </Typography>
       <Typography
-        variant="h5"
+        variant="h4"
         lineHeight={1}
         marginBottom="50px"
         sx={{
@@ -500,13 +500,11 @@ export const Location: React.FC = () => {
         {dataOverview.region}
       </Typography>
       {fullWidthDivider}
-      <Box height="20px" />
       <DetailPageTabs
         tabs={tabs}
         activeTab={params.tab}
         baseRoute={`/location`}
       />
-      <Box height="20px" />
       {fullWidthDivider}
       <Box
         marginTop="40px"
