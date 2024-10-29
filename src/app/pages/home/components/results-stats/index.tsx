@@ -25,6 +25,7 @@ const StatComp: React.FC<StatCompProps> = (props: StatCompProps) => {
 
   return (
     <Box
+      gap="10px"
       display="flex"
       flexDirection="row"
       alignItems="flex-start"
@@ -39,8 +40,9 @@ const StatComp: React.FC<StatCompProps> = (props: StatCompProps) => {
       <Box>
         <Typography
           variant="h3"
-          fontWeight="900"
           sx={{
+            fontSize: "36px",
+            fontWeight: "700",
             "@media (max-width: 1200px)": {
               fontSize: "32px",
             },
