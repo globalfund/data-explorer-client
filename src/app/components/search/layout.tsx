@@ -150,7 +150,21 @@ export function SearchLayout(props: SearchLayoutProps) {
             <CloseIcon />
           </IconButton>
         )}
-        <SearchIcon htmlColor={appColors.COMMON.BLACK} />
+        <Box
+          id="search-icon"
+          sx={{
+            width: "40px",
+            height: "100%",
+            display: "flex",
+            minWidth: "40px",
+            borderRadius: "4px",
+            alignItems: "center",
+            justifyContent: "center",
+            background: appColors.COMMON.BLACK,
+          }}
+        >
+          <SearchIcon htmlColor={appColors.COMMON.WHITE} />
+        </Box>
       </Container>
       {open && (
         <ClickAwayListener

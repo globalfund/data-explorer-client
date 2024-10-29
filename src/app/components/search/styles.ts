@@ -5,10 +5,10 @@ import Button from "@mui/material/Button";
 
 export const Container = styled(Box)`
   display: flex;
-  padding: 8px 20px;
   position: relative;
-  border-radius: 8px;
+  border-radius: 4px;
   background: ${appColors.SEARCH.CONTAINER_BACKGROUND};
+  border: 1px solid ${appColors.SEARCH.DROPDOWN_BUTTON_BORDER_COLOR};
   width: ${(props) =>
     props.theme.withCatMenu ? "calc(100% - 200px)" : "100%"};
 `;
@@ -30,6 +30,7 @@ export const Input = styled.input`
   font-size: 14px;
   font-weight: 400;
   border-style: none;
+  padding: 8px 12px !important;
   color: ${appColors.SEARCH.INPUT_COLOR};
   background: ${appColors.SEARCH.INPUT_BACKGROUND_COLOR};
 

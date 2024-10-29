@@ -60,13 +60,12 @@ export const Header: React.FC = () => {
                 width: "500px",
                 "#search-container": {
                   width: "100%",
-                  padding: "4px 10px",
                   input: {
                     fontSize: "12px",
                   },
-                  svg: {
-                    display: "none",
-                  },
+                },
+                "#search-icon": {
+                  display: "none",
                 },
                 "#search-category-dropdown": {
                   display: "none",
@@ -121,13 +120,12 @@ export const Header: React.FC = () => {
               width: "500px",
               "#search-container": {
                 width: "100%",
-                padding: "4px 10px",
                 input: {
                   fontSize: "12px",
                 },
-                svg: {
-                  display: "none",
-                },
+              },
+              "#search-icon": {
+                display: "none",
               },
               "#search-category-dropdown": {
                 display: "none",
