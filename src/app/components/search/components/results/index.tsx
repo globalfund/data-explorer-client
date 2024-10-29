@@ -16,6 +16,7 @@ import {
 
 interface SearchResultsProps {
   loading: boolean;
+  anchor: "left" | "right";
   results: SearchResultModel[];
 }
 
@@ -24,7 +25,11 @@ export function SearchResults(props: SearchResultsProps) {
   const hasLoaded = useStoreState((state) => state.GlobalSearch.success);
 
   return (
-    <Container id="search-results-container" data-cy="search-results-container">
+    <Container
+      id="search-results-container"
+      theme={{ anchor: props.anchor }}
+      data-cy="search-results-container"
+    >
       {props.loading && (
         <LinearProgress
           sx={{

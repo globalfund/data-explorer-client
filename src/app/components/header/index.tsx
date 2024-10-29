@@ -112,16 +112,24 @@ export const Header: React.FC = () => {
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "flex-end",
+          position: "absolute",
+          right: "0",
+          top: "16px",
         }}
       >
         {searchOpen && (
           <Box
             sx={{
-              width: "500px",
+              width: "171px",
+              borderRadius: "23px",
               "#search-container": {
                 width: "100%",
+                height: "24px",
+                borderRadius: "23px",
                 input: {
                   fontSize: "12px",
+                  borderRadius: "23px",
+                  background: colors.primary.white,
                 },
               },
               "#search-icon": {
@@ -132,6 +140,7 @@ export const Header: React.FC = () => {
               },
               "#search-results-container": {
                 top: "35px",
+                width: "500px",
               },
               "> div": {
                 width: "100%",
@@ -148,7 +157,7 @@ export const Header: React.FC = () => {
             onClick={onSearchBtnClick}
             sx={{
               padding: 0,
-              marginLeft: "10px",
+              marginLeft: "-24px",
               background: colors.primary.black,
               "> svg": {
                 transform: "scale(0.7)",

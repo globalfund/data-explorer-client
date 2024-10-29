@@ -30,6 +30,7 @@ interface SearchLayoutProps {
   loading: boolean;
   category?: string;
   onClose?: () => void;
+  hideClearBtn?: boolean;
   results: SearchResultsTabModel[];
   setValue: (value: string) => void;
   setCategory?: (value: string) => void;
@@ -126,7 +127,7 @@ export function SearchLayout(props: SearchLayoutProps) {
           }
           data-cy="search-input"
         />
-        {props.value.length > 0 && (
+        {props.value.length > 0 && !props.hideClearBtn && (
           <IconButton
             onClick={() => {
               props.setValue("");
@@ -179,7 +180,11 @@ export function SearchLayout(props: SearchLayoutProps) {
           }}
         >
           <Box>
-            <SearchResults loading={props.loading} results={data} />
+            <SearchResults
+              results={data}
+              loading={props.loading}
+              anchor={props.hideClearBtn ? "right" : "left"}
+            />
           </Box>
         </ClickAwayListener>
       )}

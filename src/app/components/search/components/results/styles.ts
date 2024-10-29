@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { HashLink as Link } from "react-router-hash-link";
 
 export const Container = styled.div`
-  left: 0;
+  ${(props) => props.theme.anchor}: 0;
   top: 52px;
   z-index: 2;
   width: 100%;

@@ -82,6 +82,7 @@ export function Search(props: { hocClose?: () => void }) {
         category={category}
         setCategory={setCategory}
         setStoredValue={setStoredValue}
+        hideClearBtn={Boolean(props.hocClose)}
       />
     </Box>
   );
