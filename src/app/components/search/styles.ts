@@ -11,17 +11,18 @@ export const Container = styled(Box)`
   border: 1px solid ${appColors.SEARCH.DROPDOWN_BUTTON_BORDER_COLOR};
   width: ${(props) =>
     props.theme.withCatMenu ? "calc(100% - 200px)" : "100%"};
+
+  @media (max-width: 767px) {
+    width: 100%;
+  }
 `;
 
 export const MobileContainer = styled(Box)`
   width: 100%;
+  display: flex;
   position: relative;
+  flex-direction: row;
   background: transparent;
-
-  @media (min-width: 768px) {
-    display: flex;
-    flex-direction: row;
-  }
 `;
 
 export const Input = styled.input`

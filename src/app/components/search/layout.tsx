@@ -81,7 +81,7 @@ export function SearchLayout(props: SearchLayoutProps) {
     props.results.forEach((tab: SearchResultsTabModel) => {
       allData = [...allData, ...tab.results];
     });
-    if (!isMobile && props.category && props.category !== categories[0].label) {
+    if (props.category && props.category !== categories[0].label) {
       const fIndex = findIndex(categories, { label: props.category }) - 1;
       if (props.results[fIndex]) {
         setData(props.results[fIndex].results);
@@ -93,7 +93,7 @@ export function SearchLayout(props: SearchLayoutProps) {
 
   return (
     <MobileContainer>
-      {!isMobile && props.category && props.setCategory && (
+      {props.category && props.setCategory && (
         <Box id="search-category-dropdown" marginRight="16px">
           <Dropdown
             height={40}
@@ -107,8 +107,7 @@ export function SearchLayout(props: SearchLayoutProps) {
         id="search-container"
         theme={{
           focused: open,
-          withCatMenu:
-            !isMobile && Boolean(props.category) && Boolean(props.setCategory),
+          withCatMenu: Boolean(props.category) && Boolean(props.setCategory),
         }}
       >
         <Input
@@ -162,6 +161,9 @@ export function SearchLayout(props: SearchLayoutProps) {
             alignItems: "center",
             justifyContent: "center",
             background: appColors.COMMON.BLACK,
+            "@media (max-width: 767px)": {
+              height: "35px",
+            },
           }}
         >
           <SearchIcon htmlColor={appColors.COMMON.WHITE} />

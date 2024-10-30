@@ -57,11 +57,17 @@ export const Header: React.FC = () => {
           {searchOpen && (
             <Box
               sx={{
-                width: "500px",
+                maxWidth: "500px",
+                borderRadius: "23px",
+                width: "calc(100% - 48px)",
                 "#search-container": {
                   width: "100%",
+                  height: "24px",
+                  borderRadius: "23px",
                   input: {
                     fontSize: "12px",
+                    borderRadius: "23px",
+                    background: colors.primary.white,
                   },
                 },
                 "#search-icon": {
@@ -72,6 +78,7 @@ export const Header: React.FC = () => {
                 },
                 "#search-results-container": {
                   top: "35px",
+                  width: "500px",
                 },
                 "> div": {
                   width: "100%",
@@ -85,10 +92,18 @@ export const Header: React.FC = () => {
             onClick={onSearchBtnClick}
             sx={{
               padding: 0,
-              marginLeft: "10px",
+              marginLeft: "-24px",
+              background: colors.primary.black,
               "> svg": {
-                transform: "scale(0.9)",
-                color: colors.primary.black,
+                transform: "scale(0.7)",
+                color: colors.primary.white,
+              },
+              "&:hover": {
+                opacity: 0.8,
+                background: colors.primary.black,
+                "> svg": {
+                  color: colors.primary.white,
+                },
               },
             }}
           >
@@ -108,13 +123,16 @@ export const Header: React.FC = () => {
     return (
       <Box
         sx={{
+          top: "16px",
+          right: "0px",
           display: "flex",
           flexDirection: "row",
+          position: "absolute",
           alignItems: "center",
           justifyContent: "flex-end",
-          position: "absolute",
-          right: "0",
-          top: "16px",
+          "@media (max-width: 1216px)": {
+            right: "16px",
+          },
         }}
       >
         {searchOpen && (
@@ -202,16 +220,17 @@ export const Header: React.FC = () => {
           <Toolbar
             sx={{
               background: "#F8F8F8",
+              "@media (max-width: 1279px)": {
+                width: "100%",
+              },
               "@media (max-width: 767px)": {
                 padding: "0 16px",
               },
             }}
           >
-            {((mobile && !searchOpen) || !mobile) && (
-              <NavLink to="/" style={{ display: "flex" }}>
-                <HeaderToolbarLogo />
-              </NavLink>
-            )}
+            <NavLink to="/" style={{ display: "flex" }}>
+              <HeaderToolbarLogo />
+            </NavLink>
             <HeaderMenu
               mobileMenuOpen={mobileMenuOpen}
               setMobileMenuOpen={setMobileMenuOpen}

@@ -34,6 +34,9 @@ const HeaderMenuButton = styled(Button)({
   "&:hover": {
     background: "transparent",
   },
+  "@media (max-width: 920px)": {
+    minWidth: "120px",
+  },
 });
 
 export const HeaderMenu: React.FC<HeaderMenuProps> = (

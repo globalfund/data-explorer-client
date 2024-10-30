@@ -12,7 +12,7 @@ export const categories = [
   {
     value: "All Categories",
     label: "All Categories",
-    icon: <AllCategoriesIcon />,
+    // icon: <AllCategoriesIcon />,
   },
   { value: "Locations", label: "Locations", icon: <LocationsIcon /> },
   { value: "Grants", label: "Grants", icon: <GrantsIcon /> },
