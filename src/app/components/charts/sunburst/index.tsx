@@ -206,8 +206,8 @@ export const SunburstChart: React.FC<SunburstProps> = (
             },
           }}
         >
-          <Typography variant="h5">{props.centerLabel}</Typography>
-          <Typography variant="h5" fontWeight="400">
+          <Typography variant="h4">{props.centerLabel}</Typography>
+          <Typography variant="h4" fontWeight="400">
             {formatFinancialValue(centerValue)}
           </Typography>
         </Box>

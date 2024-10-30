@@ -62,7 +62,7 @@ export const GrantImplementationPageBlock1: React.FC<
         sx={{
           "> div": {
             width: "calc(100% / 3)",
-            padding: "0 17px",
+            padding: "0 10px",
             "&:not(:last-child)": {
               borderRight: "1px solid #DFE3E5",
             },

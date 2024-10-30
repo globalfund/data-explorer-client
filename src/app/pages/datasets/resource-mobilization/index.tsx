@@ -255,7 +255,7 @@ export const ResourceMobilizationPage: React.FC = () => {
     }
     if (
       appliedFiltersData.replenishmentPeriods.length > 0 &&
-      location.search.includes("periods=")
+      location.search.includes("replenishmentPeriods=")
     ) {
       value += `${value.length > 0 ? "&" : ""}periods=${encodeURIComponent(
         appliedFiltersData.replenishmentPeriods.join(",")
@@ -292,7 +292,7 @@ export const ResourceMobilizationPage: React.FC = () => {
     }
     if (
       (appliedFiltersData.replenishmentPeriods.length > 0 &&
-        location.search.includes("periods=")) ||
+        location.search.includes("replenishmentPeriods=")) ||
       chartAppliedFiltersData.replenishmentPeriods.length > 0
     ) {
       value += `${value.length > 0 ? "&" : ""}periods=${encodeURIComponent(
