@@ -24,6 +24,7 @@ import {
   CMSApiPagesGrantGrantImplementation,
   CMSApiPagesGrantOverview,
   CMSApiPagesGrantTargetResults,
+  CMSApiCountrySummary,
 } from "app/state/api/interfaces/cms";
 
 export interface RequestValues<T> {
@@ -77,7 +78,19 @@ export type ApiCallModel = ApiModel<
   ApiCallParams | ApiCallParams[] | string,
   ApiResponseModel
 >;
-
+export interface CMSFormattedCollectionsModel {
+  countrySummary: {
+    [key: string]: string;
+  };
+  setPagesData: Action<
+    CMSFormattedCollectionsModel,
+    {
+      countrySummary: {
+        [key: string]: string;
+      };
+    }
+  >;
+}
 // CMS API Call model for
 export type CMSApiCallModel = ApiModel<
   CMSApiCallParams,
@@ -103,6 +116,7 @@ export type CMSApiCallModel = ApiModel<
   | CMSApiPagesGrantGrantImplementation
   | CMSApiPagesGrantOverview
   | CMSApiPagesGrantTargetResults
+  | CMSApiCountrySummary
 >;
 
 export interface CMSApiCallParams {}
@@ -244,5 +258,9 @@ export interface StoreModel {
     pagesGrantGrantImplementation: CMSApiCallModel;
     pagesGrantOverview: CMSApiCallModel;
     pagesGrantTargetResults: CMSApiCallModel;
+    formattedCollections: CMSFormattedCollectionsModel;
+    collections: {
+      countrySummary: CMSApiCallModel;
+    };
   };
 }

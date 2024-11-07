@@ -130,6 +130,8 @@ import general from "app/state/api/action-reducers/cms/general";
 import { FinancialInsightsHGISankey } from "app/state/api/action-reducers/financial-insights/hgi-sankey";
 import { FinancialInsightsHGITable } from "app/state/api/action-reducers/financial-insights/hgi-table";
 import { DatasetsLatestUpdate } from "app/state/api/action-reducers/latest-update";
+import { countrySummary } from "../api/action-reducers/cms/collections";
+import { formattedCollections } from "../api/action-reducers/cms/formatted";
 
 const storeContent: StoreModel = {
   // homepage
@@ -304,6 +306,10 @@ const storeContent: StoreModel = {
     pagesGrantGrantImplementation: persist(pagesGrantGrantImplementation),
     pagesGrantOverview: persist(pagesGrantOverview),
     pagesGrantTargetResults: persist(pagesGrantTargetResults),
+    collections: {
+      countrySummary: persist(countrySummary),
+    },
+    formattedCollections: persist(formattedCollections),
   },
 };
 
