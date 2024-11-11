@@ -5,13 +5,13 @@ const ranges = [
     divider: 1e9,
     suffix: "Bn",
     abbr_en: " bln",
-    full: "billion",
+    full: "Billion",
   },
   {
     divider: 1e6,
     suffix: "MM",
     abbr_en: " mln",
-    full: "million",
+    full: "Million",
   },
   {
     divider: 1e3,

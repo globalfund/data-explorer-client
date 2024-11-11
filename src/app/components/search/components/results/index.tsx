@@ -48,7 +48,6 @@ export function SearchResults(props: SearchResultsProps) {
       )}
       <Results>
         {props.results.map((result: SearchResultModel) => {
-          console.log(result, "result");
           if (!result.link) {
             return (
               <ResultA

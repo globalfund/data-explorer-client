@@ -35,7 +35,7 @@ describe("Testing HomePage", () => {
       .first()
       .should(
         "have.text",
-        "The Global Fund invests US$5 billion a year to defeat HIV, tuberculosis and malaria and ensure a healthier, safer, equitable future for all."
+        "The Global Fund invests US$5 Billion a year to defeat HIV, tuberculosis and malaria and ensure a healthier, safer, equitable future for all."
       );
   });
 

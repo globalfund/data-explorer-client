@@ -1,6 +1,6 @@
-import { AppliedFiltersModel } from "app/state/api/action-reducers/sync/filters";
 import { appColors } from "app/theme";
 import styled from "styled-components";
+import { AppliedFiltersModel } from "app/state/api/action-reducers/sync/filters";
 
 export interface FilterModel {
   name: string;
