@@ -256,6 +256,21 @@ const theme = createTheme({
         },
       },
     },
+    MuiContainer: {
+      styleOverrides: {
+        root: {
+          "@media (min-width: 1200px)": {
+            maxWidth: "100%",
+          },
+          "@media (min-width: 1440px)": {
+            maxWidth: "1440px",
+          },
+          "@media (min-width: 1200px) and (max-width: 1490px)": {
+            padding: "0 50px",
+          },
+        },
+      },
+    },
     MuiAccordion: {
       styleOverrides: {
         root: {

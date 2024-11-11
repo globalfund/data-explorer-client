@@ -264,7 +264,6 @@ export const Geography: React.FC = () => {
       </Box>
       {fullWidthDivider}
       <Box
-        padding="32px"
         sx={{
           "@media (max-width: 767px)": {
             padding: "16px 0",
