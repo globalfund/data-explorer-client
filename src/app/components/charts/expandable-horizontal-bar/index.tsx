@@ -3,6 +3,7 @@ import filter from "lodash/filter";
 import Box from "@mui/material/Box";
 import { appColors } from "app/theme";
 import * as echarts from "echarts/core";
+import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import ReactDOMServer from "react-dom/server";
 import { SVGRenderer } from "echarts/renderers";
@@ -16,6 +17,7 @@ import { chartTooltipCommonConfig } from "app/components/charts/common/tooltip/c
 import {
   findDeep,
   ExpandableHorizontalBarChartProps,
+  ExpandableHorizontalBarChartDataItem,
 } from "app/components/charts/expandable-horizontal-bar/data";
 import {
   getRange,
@@ -140,6 +142,10 @@ export const ExpandableHorizontalBar: React.FC<
         return [...prev, value];
       });
     }
+  };
+
+  const reset = () => {
+    setExpandedBars([]);
   };
 
   React.useEffect(() => {
@@ -328,10 +334,10 @@ export const ExpandableHorizontalBar: React.FC<
 
   React.useEffect(() => {
     if (expandedBars.length > 0) {
-      const newData = [];
+      const newData: ExpandableHorizontalBarChartDataItem[] = [];
       const temp = [...props.data];
       for (const item of temp) {
-        newData.push(item);
+        // newData.push(item);
         if (
           expandedBars.includes(item.name) &&
           item.items &&
@@ -401,11 +407,23 @@ export const ExpandableHorizontalBar: React.FC<
       <Typography
         fontSize="12px"
         sx={{
-          top: "20px",
+          top: "0px",
           position: "absolute",
         }}
       >
         Y Axis / <b>{props.yAxisLabel}</b>
+        {expandedBars.length > 0 && (
+          <Button
+            onClick={reset}
+            variant="outlined"
+            sx={{
+              zIndex: 1,
+              marginLeft: "10px",
+            }}
+          >
+            Back
+          </Button>
+        )}
       </Typography>
       <Typography
         fontSize="12px"
