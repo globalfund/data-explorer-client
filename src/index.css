@@ -98,3 +98,6 @@ input[type="text"] {
   background: #000;
   border-radius: 24px;
 }
+.tabulator-row:hover {
+  background-color: transparent !important;
+}

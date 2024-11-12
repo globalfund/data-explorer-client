@@ -77,6 +77,8 @@ export const GrantTargetsResults: React.FC = () => {
         field: year,
         formatter: (cell: CellComponent) => {
           const tableEl = document.createElement("div");
+          tableEl.style.width = "100%";
+          tableEl.style.height = "100%";
           cell.getElement().appendChild(tableEl);
           const data = cell.getValue();
 
@@ -107,8 +109,8 @@ export const GrantTargetsResults: React.FC = () => {
             ],
           });
 
-          // cell.getElement().style.height = "max-content";
           cell.getElement().style.padding = "0";
+          cell.getElement().style.background = "#fff !important";
 
           return tableEl;
         },

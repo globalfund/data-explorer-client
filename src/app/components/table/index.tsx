@@ -88,12 +88,12 @@ export const Table: React.FC<TableProps> = (props: TableProps) => {
         ".tabulator-col": {
           background: "#F1F3F5 !important",
           "&:first-of-type": {
-            background: "#DFE3E5 !important",
+            // background: "#DFE3E5 !important",
           },
         },
         ".tabulator-row": {
           "> .tabulator-cell:first-of-type": {
-            background: "#F1F3F5 !important",
+            // background: "#F1F3F5 !important",
           },
           "&:hover": {
             background: "#F1F3F5",
