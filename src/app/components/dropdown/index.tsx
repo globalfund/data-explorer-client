@@ -98,12 +98,16 @@ export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
           marginRight: 0,
           width: props.width ?? 200,
           maxHeight: props.height ?? 32,
+          fontSize: props.compact ? "12px" : "14px",
         }}
         data-cy="category-dropdown-button"
       >
         {dropdownSelectedIcon}
         <span style={{ letterSpacing: "0" }}>{props.dropdownSelected}</span>
-        <ChevronRight sx={{ transform: `rotate(${anchorEl ? -90 : 90}deg)` }} />
+        <ChevronRight
+          fontSize={props.compact ? "small" : "medium"}
+          sx={{ transform: `rotate(${anchorEl ? -90 : 90}deg)` }}
+        />
       </CategoryButton>
       <StyledMenu
         keepMounted
@@ -113,7 +117,7 @@ export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
         open={Boolean(anchorEl)}
         data-cy="category-dropdown-menu"
         anchorOrigin={{
-          vertical: (props.height ?? 32) + 8,
+          vertical: (props.height ?? 32) + 4,
           horizontal: "left",
         }}
         sx={{
@@ -130,8 +134,9 @@ export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
             disableRipple
             key={item.label}
             disableTouchRipple
-            onClick={handleItemClick(item.label)}
             data-cy={`category-dropdown-item`}
+            onClick={handleItemClick(item.label)}
+            style={props.compact ? { fontSize: "12px" } : {}}
             sx={
               props.dropdownSelected === item.label
                 ? {

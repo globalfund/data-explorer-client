@@ -17,6 +17,12 @@ export const colors = {
     grayLight: "#E3E3E3",
     darkBlueGray: "#4F6797",
     midnightBlue: "#013B82",
+    200: "#70777E",
+    300: "#868E96",
+    500: "#ADB5BD",
+    600: "#CFD4DA",
+    700: "#DFE3E5",
+    800: "#F1F3F5",
   },
   graph: {
     green: {
