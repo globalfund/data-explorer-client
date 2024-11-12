@@ -945,4 +945,14 @@ export const appColors = {
       "#0A2840",
     ],
   },
+  TARGETS_RESULTS: {
+    PERFORMANCE_COLORS: ["#DE4A33", "#F08C31", "#F2C22C", "#368F41", "#4BB858"],
+    PERCENTAGE_TEXT_COLORS: [
+      "#FFFFFF",
+      "#000000",
+      "#000000",
+      "#FFFFFF",
+      "#000000",
+    ],
+  },
 };

@@ -10,7 +10,11 @@ import { getCMSDataField } from "app/utils/getCMSDataField";
 import { CellComponent, Tabulator } from "tabulator-tables";
 import { TableContainer } from "app/components/table-container";
 import { TABS } from "app/pages/grant/views/targets-results/data";
-import { TABLE_VARIATION_4_COLUMNS } from "app/components/table/data";
+import {
+  cellAchievementFormatter,
+  cellBaselineTargetResultFormatter,
+  TABLE_VARIATION_4_COLUMNS,
+} from "app/components/table/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 
 export const GrantTargetsResults: React.FC = () => {
@@ -85,9 +89,21 @@ export const GrantTargetsResults: React.FC = () => {
             layout: "fitDataTable",
             height: "fit-content",
             columns: [
-              { title: "Target", field: "target" },
-              { title: "Result", field: "result" },
-              { title: "Achievement", field: "achievement" },
+              {
+                title: "Target",
+                field: "target",
+                formatter: cellBaselineTargetResultFormatter,
+              },
+              {
+                title: "Result",
+                field: "result",
+                formatter: cellBaselineTargetResultFormatter,
+              },
+              {
+                title: "Achievement",
+                field: "achievement",
+                formatter: cellAchievementFormatter,
+              },
             ],
           });
 
@@ -118,9 +134,21 @@ export const GrantTargetsResults: React.FC = () => {
               layout: "fitDataTable",
               height: "fit-content",
               columns: [
-                { title: "Target", field: "target" },
-                { title: "Result", field: "result" },
-                { title: "Achievement", field: "achievement" },
+                {
+                  title: "Target",
+                  field: "target",
+                  formatter: cellBaselineTargetResultFormatter,
+                },
+                {
+                  title: "Result",
+                  field: "result",
+                  formatter: cellBaselineTargetResultFormatter,
+                },
+                {
+                  title: "Achievement",
+                  field: "achievement",
+                  formatter: cellAchievementFormatter,
+                },
               ],
             });
 
