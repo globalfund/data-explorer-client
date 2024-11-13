@@ -7,21 +7,22 @@ import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import { useCMSData } from "app/hooks/useCMSData";
 import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
+import AppsIcon from "@mui/icons-material/Apps";
+import TableChartIcon from "@mui/icons-material/TableChart";
 import { Dropdown } from "app/components/dropdown";
-import SearchIcon from "@mui/icons-material/Search";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { FilterPanel } from "app/components/filters/panel";
 import { getCMSDataField } from "app/utils/getCMSDataField";
 import CircularProgress from "@mui/material/CircularProgress";
 import { GrantsLayoutProps, DROPDOWN_ITEMS } from "app/pages/grants/data";
+import Searchbox from "./component/Searchbox";
 
 export const GrantsLayout: React.FC<GrantsLayoutProps> = (
   props: GrantsLayoutProps
 ) => {
   const mobile = useMediaQuery("(max-width: 767px)");
+  const tablet = useMediaQuery("(max-width: 1024px)");
   const cmsData = useCMSData({ returnData: true });
-
   const {
     view,
     viewResult,
@@ -101,6 +102,7 @@ export const GrantsLayout: React.FC<GrantsLayoutProps> = (
           paddingBottom="4px"
           alignItems="center"
           justifyContent="space-between"
+          gap={"8px"}
           sx={
             mobile && showSearch
               ? {
@@ -156,75 +158,107 @@ export const GrantsLayout: React.FC<GrantsLayoutProps> = (
           >
             {filterPopoverContent}
           </Popover>
-          <Box
-            display="flex"
-            sx={{
-              background: "#F8F8F8",
-              border: "1px solid #DFE3E5",
-              color: "#000",
-              width: "410px",
-              height: "32px",
-              borderRadius: "4px",
-              input: {
-                outline: "none",
-                padding: "0 8px",
-                fontSize: "12px",
-                border: "none",
-                width: "100%",
-                height: "100%",
-                background: "transparent",
-                "::placeholder": {
-                  color: "#CFD4DA",
-                },
-              },
-            }}
-          >
-            <React.Fragment>
-              {showSearch && (
-                <input
-                  type="text"
-                  value={search}
-                  ref={searchInputRef}
-                  onChange={handleSearch}
-                  placeholder="e.g. Kenya"
-                  data-cy="grants-search-input"
-                />
-              )}
-              <IconButton
-                sx={{
-                  height: "100%",
-                  width: "40px",
-                  display: "flex",
-                  padding: "8px 12px",
-                  borderRadius: "4px",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  background: showSearch ? "#000" : "transparent",
-                  border: `1px solid ${showSearch ? "#000" : "#DFE3E5"}`,
-                  svg: {
-                    color: showSearch ? "#fff" : "#000",
-                  },
-                  ":hover": {
-                    background: "#000",
-                    borderColor: "#000",
-                    svg: {
-                      color: "#fff",
-                    },
-                  },
-                }}
-                data-cy="grants-search-btn"
-                // onClick={handleSearchIconClick(!showSearch)}
-              >
-                <SearchIcon htmlColor="#000" fontSize="small" />
-              </IconButton>
-            </React.Fragment>
-          </Box>
-          <Box gap="8px" display="flex">
-            <Dropdown
-              dropdownSelected={view}
-              dropdownItems={DROPDOWN_ITEMS}
-              handleDropdownChange={handleViewChange}
+          {!tablet && (
+            <Searchbox
+              handleSearch={handleSearch}
+              search={search}
+              searchInputRef={searchInputRef}
+              handleSearchIconClick={handleSearchIconClick}
+              showSearch={showSearch}
             />
+          )}
+          <Box
+            gap="8px"
+            display="flex"
+            flexBasis={tablet ? "100%" : "auto"}
+            justifyContent={"flex-end"}
+          >
+            {tablet && (
+              <Box
+                flexBasis={"100%"}
+                gap="16px"
+                justifyContent={"flex-end"}
+                display="flex"
+              >
+                <Searchbox
+                  handleSearch={handleSearch}
+                  search={search}
+                  searchInputRef={searchInputRef}
+                  handleSearchIconClick={handleSearchIconClick}
+                  showSearch={showSearch}
+                />
+                <Divider
+                  orientation="vertical"
+                  flexItem
+                  sx={{
+                    height: "8px",
+                    background: "#000",
+                    alignSelf: "center",
+                    marginRight: "16px",
+                  }}
+                />
+              </Box>
+            )}
+            {!tablet ? (
+              <Dropdown
+                dropdownSelected={view}
+                dropdownItems={DROPDOWN_ITEMS}
+                handleDropdownChange={handleViewChange}
+              />
+            ) : (
+              <React.Fragment>
+                <IconButton
+                  onClick={() => handleViewChange("Table View")}
+                  sx={{
+                    height: "32px",
+                    width: "32px",
+                    borderRadius: "8px",
+                    background: view === "Table View" ? "#000" : "#fff",
+                    border:
+                      view === "Table View" ? "none" : "0.5px solid #868E96",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    ":hover": {
+                      background: view === "Table View" ? "#000" : "#fff",
+                      border:
+                        view === "Table View" ? "none" : "0.5px solid #868E96",
+                    },
+                  }}
+                >
+                  <TableChartIcon
+                    height={18}
+                    width={18}
+                    htmlColor={view === "Table View" ? "#fff" : "#000"}
+                  />
+                </IconButton>
+                <IconButton
+                  onClick={() => handleViewChange("Card View")}
+                  sx={{
+                    height: "32px",
+                    width: "32px",
+                    borderRadius: "8px",
+                    border:
+                      view === "Card View" ? "none" : "0.5px solid #868E96",
+                    background: view === "Card View" ? "#000" : "#fff",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    ":hover": {
+                      background: view === "Card View" ? "#000" : "#fff",
+                      border:
+                        view === "Card View" ? "none" : "0.5px solid #868E96",
+                    },
+                  }}
+                >
+                  <AppsIcon
+                    htmlColor={view === "Card View" ? "#fff" : "#000"}
+                    height={14}
+                    width={14}
+                  />
+                </IconButton>
+              </React.Fragment>
+            )}
           </Box>
         </Box>
         {fullWidthDivider}
