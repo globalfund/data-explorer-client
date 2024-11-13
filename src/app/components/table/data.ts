@@ -89,6 +89,53 @@ export const financialFormatter = (cell: CellComponent) => {
   return formatLocale(cell.getValue()).replace("US$", "");
 };
 
+export const cellBaselineTargetResultFormatter = (cell: CellComponent) => {
+  const cellValue = cell.getValue();
+  let text = "";
+  let backgroundColor = "#FFFFFF";
+
+  if (!cellValue) {
+    backgroundColor = "#DFE3E5";
+  } else {
+    const splits = cellValue.split(",");
+    text = splits.join("\n");
+  }
+
+  cell.getElement().style.backgroundColor = backgroundColor;
+  cell.getElement().style.whiteSpace = "pre-wrap";
+
+  return text;
+};
+
+export const cellAchievementFormatter = (cell: CellComponent) => {
+  const cellValue = cell.getValue()?.replace("%", "");
+  let backgroundColor = "#FFFFFF";
+  let color = "#000000";
+
+  if (cellValue > 0 && cellValue < 25) {
+    backgroundColor = appColors.TARGETS_RESULTS.PERFORMANCE_COLORS[0];
+    color = appColors.TARGETS_RESULTS.PERCENTAGE_TEXT_COLORS[0];
+  } else if (cellValue >= 25 && cellValue < 50) {
+    backgroundColor = appColors.TARGETS_RESULTS.PERFORMANCE_COLORS[1];
+    color = appColors.TARGETS_RESULTS.PERCENTAGE_TEXT_COLORS[1];
+  } else if (cellValue >= 50 && cellValue < 75) {
+    backgroundColor = appColors.TARGETS_RESULTS.PERFORMANCE_COLORS[2];
+    color = appColors.TARGETS_RESULTS.PERCENTAGE_TEXT_COLORS[2];
+  } else if (cellValue >= 75) {
+    backgroundColor = appColors.TARGETS_RESULTS.PERFORMANCE_COLORS[3];
+    color = appColors.TARGETS_RESULTS.PERCENTAGE_TEXT_COLORS[3];
+  } else if (cellValue > 100) {
+    backgroundColor = appColors.TARGETS_RESULTS.PERFORMANCE_COLORS[4];
+    color = appColors.TARGETS_RESULTS.PERCENTAGE_TEXT_COLORS[4];
+  }
+
+  cell.getElement().style.backgroundColor = backgroundColor;
+  cell.getElement().style.color = color;
+  cell.getElement().style.whiteSpace = "pre-wrap";
+
+  return `\n${cell.getValue()}`;
+};
+
 export const TABLE_VARIATION_1_COLUMNS: ColumnDefinition[] = [
   { title: "Name", field: "name", width: "20%" },
   {
@@ -591,16 +638,11 @@ export const TABLE_VARIATION_4_COLUMNS: ColumnDefinition[] = [
       {
         title: "Value",
         field: "baselineValue",
-        formatter: cellBGColorFormatter,
+        formatter: cellBaselineTargetResultFormatter,
       },
       {
         title: "Year",
         field: "baselineYear",
-        formatter: cellBGColorFormatter,
-      },
-      {
-        title: "Source",
-        field: "baselineSource",
         formatter: cellBGColorFormatter,
       },
     ],
