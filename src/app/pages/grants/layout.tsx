@@ -157,19 +157,22 @@ export const GrantsLayout: React.FC<GrantsLayoutProps> = (
             {filterPopoverContent}
           </Popover>
           <Box
-            gap="8px"
             display="flex"
             sx={{
+              background: "#F8F8F8",
+              border: "1px solid #DFE3E5",
+              color: "#000",
+              width: "410px",
+              height: "32px",
+              borderRadius: "4px",
               input: {
-                color: "#000",
-                width: "200px",
-                height: "32px",
                 outline: "none",
                 padding: "0 8px",
                 fontSize: "12px",
-                borderStyle: "none",
-                borderRadius: "8px",
-                background: "#F1F3F4",
+                border: "none",
+                width: "100%",
+                height: "100%",
+                background: "transparent",
                 "::placeholder": {
                   color: "#CFD4DA",
                 },
@@ -189,7 +192,8 @@ export const GrantsLayout: React.FC<GrantsLayoutProps> = (
               )}
               <IconButton
                 sx={{
-                  height: "30px",
+                  height: "100%",
+                  width: "40px",
                   display: "flex",
                   padding: "8px 12px",
                   borderRadius: "4px",
@@ -209,15 +213,13 @@ export const GrantsLayout: React.FC<GrantsLayoutProps> = (
                   },
                 }}
                 data-cy="grants-search-btn"
-                onClick={handleSearchIconClick(!showSearch)}
+                // onClick={handleSearchIconClick(!showSearch)}
               >
-                {showSearch ? (
-                  <CloseIcon htmlColor="#000" fontSize="small" />
-                ) : (
-                  <SearchIcon htmlColor="#000" fontSize="small" />
-                )}
+                <SearchIcon htmlColor="#000" fontSize="small" />
               </IconButton>
             </React.Fragment>
+          </Box>
+          <Box gap="8px" display="flex">
             <Dropdown
               dropdownSelected={view}
               dropdownItems={DROPDOWN_ITEMS}
