@@ -1,9 +1,8 @@
 import React from "react";
-import { colors } from "app/theme";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
-import { activeStyle, inactiveStyle } from "app/components/chart-settings/data";
+import { switchButtonStyle } from "app/components/chart-settings/data";
 import {
   xAxisDropdownItems,
   yAxisDropdownItems,
@@ -25,9 +24,12 @@ export const ChartSettingsBar: React.FC<ChartSettingsBarProps> = (
     setStacks,
   } = props;
 
-  const onButtonClick = (value: boolean) => () => {
-    setStacked(value);
+  const onButtonClick = () => {
+    setStacked((prev) => {
+      return !prev;
+    });
   };
+  const paddingWidth = "1px";
 
   return (
     <Box
@@ -62,27 +64,33 @@ export const ChartSettingsBar: React.FC<ChartSettingsBarProps> = (
           </Typography>
           <Box
             sx={{
+              position: "relative",
               display: "flex",
               flexDirection: "row",
-              "> div": {
+              width: "164px",
+              height: "24px",
+              justifyContent: "center",
+              background: "#F1F3F5",
+              border: `1px solid #DFE3E5`,
+              borderRadius: "4px",
+              ">div:nth-child(1), >div:nth-child(2) ": {
                 fontSize: "12px",
-                padding: "2px 10px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                background: "transparent",
+                whiteSpace: "nowrap",
+                cursor: "pointer",
                 borderRadius: "4px",
-                border: `1px solid ${colors.secondary[700]}`,
+                width: "82px",
+                color: "#868E96",
               },
             }}
           >
-            <Box
-              onClick={onButtonClick(false)}
-              sx={!stacked ? activeStyle : inactiveStyle}
-            >
-              Non-Stacked
-            </Box>
-            <Box
-              onClick={onButtonClick(true)}
-              sx={stacked ? activeStyle : inactiveStyle}
-            >
-              Stacked
+            <Box onClick={() => onButtonClick()}>Non-Stacked</Box>
+            <Box onClick={() => onButtonClick()}>Stacked</Box>
+            <Box sx={switchButtonStyle(paddingWidth, stacked)}>
+              {stacked ? "Stacked" : "Non-Stacked"}
             </Box>
           </Box>
         </Box>
@@ -116,7 +124,7 @@ export const ChartSettingsBar: React.FC<ChartSettingsBarProps> = (
           },
         }}
       >
-        <Box>
+        <Box sx={{ height: "100%" }}>
           <Typography fontSize="12px" fontWeight="700">
             X Axis
           </Typography>

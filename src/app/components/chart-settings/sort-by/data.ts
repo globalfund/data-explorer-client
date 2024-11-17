@@ -17,6 +17,18 @@ export interface ChartSettingsSortByProps {
   onSubmit: () => void;
   orderListDropdownSetSelected?: (name: string, value: string) => void;
   simple?: boolean;
+  secondary?: boolean;
+}
+type IOrder = "A-Z" | "Z-A";
+export interface ChartSettingsSortByOrderProps {
+  items: IOrder;
+  pool: ChartSettingsSortByPoolItem[];
+  setItems: (value: IOrder) => void;
+  onCancel: () => void;
+  onSubmit: () => void;
+  orderListDropdownSetSelected?: (name: string, value: string) => void;
+  simple?: boolean;
+  secondary?: boolean;
 }
 
 export const ChartSettingsSortByItems: ChartSettingsSortByItem[] = [

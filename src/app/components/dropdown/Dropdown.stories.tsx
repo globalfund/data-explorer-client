@@ -1,6 +1,5 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-
 import { Dropdown } from "app/components/dropdown";
 import { withRouter } from "storybook-addon-remix-react-router";
 
@@ -9,7 +8,9 @@ const items = [
   { label: "Modules & Interventions", value: "Modules & Interventions" },
 ];
 
-const Wrapper: React.FC = () => {
+const Wrapper: React.FC<{ secondary?: boolean }> = (props: {
+  secondary?: boolean;
+}) => {
   const [dropdownSelected, setDropdownSelected] = React.useState(
     items[0].value
   );
@@ -23,6 +24,7 @@ const Wrapper: React.FC = () => {
       dropdownItems={items}
       dropdownSelected={dropdownSelected}
       handleDropdownChange={handleSelectionChange}
+      secondary={props.secondary}
     />
   );
 };
@@ -42,3 +44,8 @@ export default meta;
 type StoryType = StoryObj<typeof meta>;
 
 export const Primary: StoryType = {};
+export const Secondary: StoryType = {
+  args: {
+    secondary: true,
+  },
+};

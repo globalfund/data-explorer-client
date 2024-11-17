@@ -98,7 +98,12 @@ const Wrapper: React.FC<{
   };
 
   return (
-    <ChartSettings chartType={props.chartType} reset={reset} {...csprops} />
+    <ChartSettings
+      chartType={props.chartType}
+      reset={reset}
+      {...csprops}
+      handleSettingsPanelClose={() => {}}
+    />
   );
 };
 

@@ -8,7 +8,9 @@ import {
   ChartSettingsSortByItems,
 } from "app/components/chart-settings/sort-by/data";
 
-const Wrapper: React.FC = () => {
+const Wrapper: React.FC<{ secondary: boolean }> = (props: {
+  secondary: boolean;
+}) => {
   const [items, setItems] = React.useState<ChartSettingsSortByItem[]>([]);
   const [tempItems, setTempItems] = React.useState<ChartSettingsSortByItem[]>(
     []
@@ -53,6 +55,7 @@ const Wrapper: React.FC = () => {
       onSubmit={onSubmit}
       setItems={setTempItems}
       orderListDropdownSetSelected={handleItemSortOrderChange}
+      secondary={props.secondary}
     />
   );
 };
@@ -71,4 +74,14 @@ const meta = {
 export default meta;
 type StoryType = StoryObj<typeof meta>;
 
-export const Primary: StoryType = {};
+export const Primary: StoryType = {
+  args: {
+    secondary: false,
+  },
+};
+
+export const Secondary: StoryType = {
+  args: {
+    secondary: true,
+  },
+};

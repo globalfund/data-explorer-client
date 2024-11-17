@@ -6,6 +6,8 @@ import Menu, { MenuProps } from "@mui/material/Menu";
 import ChevronRight from "@mui/icons-material/ChevronRight";
 import { DropdownProps } from "app/components/dropdown/data";
 import { CategoryButton } from "app/components/search/styles";
+import { ReactComponent as AddIcon } from "app/assets/vectors/ChartSettingsAddMedium.svg";
+import Box from "@mui/material/Box";
 
 const StyledMenu = styled((props: MenuProps) => (
   <Menu
@@ -90,25 +92,60 @@ export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
 
   return (
     <React.Fragment>
-      <CategoryButton
-        disableTouchRipple
-        onClick={handleClick}
-        theme={{ anchorEl: Boolean(anchorEl) }}
-        style={{
-          marginRight: 0,
-          width: props.width ?? 200,
-          maxHeight: props.height ?? 32,
-          fontSize: props.compact ? "12px" : "14px",
-        }}
-        data-cy="category-dropdown-button"
-      >
-        {dropdownSelectedIcon}
-        <span style={{ letterSpacing: "0" }}>{props.dropdownSelected}</span>
-        <ChevronRight
-          fontSize={props.compact ? "small" : "medium"}
-          sx={{ transform: `rotate(${anchorEl ? -90 : 90}deg)` }}
-        />
-      </CategoryButton>
+      {props.secondary ? (
+        <CategoryButton
+          disableTouchRipple
+          onClick={handleClick}
+          theme={{ anchorEl: Boolean(anchorEl) }}
+          style={{
+            marginRight: 0,
+            width: props.width ?? 200,
+            maxHeight: props.height ?? 32,
+            fontSize: props.compact ? "12px" : "14px",
+            gap: "3px",
+          }}
+          data-cy="category-dropdown-button"
+        >
+          <Box
+            sx={{
+              svg: {
+                display: "flex",
+                flexShrink: 0,
+                width: "13px",
+                height: "14px",
+              },
+            }}
+          >
+            <AddIcon />
+          </Box>
+          <span style={{ letterSpacing: "0" }}>{props.dropdownSelected}</span>
+          <ChevronRight
+            fontSize={props.compact ? "small" : "medium"}
+            sx={{ transform: `rotate(${anchorEl ? 90 : 0}deg)` }}
+          />
+        </CategoryButton>
+      ) : (
+        <CategoryButton
+          disableTouchRipple
+          onClick={handleClick}
+          theme={{ anchorEl: Boolean(anchorEl) }}
+          style={{
+            marginRight: 0,
+            width: props.width ?? 200,
+            maxHeight: props.height ?? 32,
+            fontSize: props.compact ? "12px" : "14px",
+          }}
+          data-cy="category-dropdown-button"
+        >
+          {dropdownSelectedIcon}
+          <span style={{ letterSpacing: "0" }}>{props.dropdownSelected}</span>
+          <ChevronRight
+            fontSize={props.compact ? "small" : "medium"}
+            sx={{ transform: `rotate(${anchorEl ? -90 : 90}deg)` }}
+          />
+        </CategoryButton>
+      )}
+
       <StyledMenu
         keepMounted
         disableScrollLock

@@ -5,7 +5,7 @@ export interface ChartSettingsBarProps {
   xAxis: string;
   yAxis: string;
   stacks: string;
-  setStacked: (value: boolean) => void;
+  setStacked: React.Dispatch<React.SetStateAction<boolean>>;
   setXAxis: (value: string) => void;
   setYAxis: (value: string) => void;
   setStacks: (value: string) => void;
