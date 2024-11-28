@@ -50,10 +50,11 @@ const Wrapper: React.FC<{ secondary: boolean }> = (props: {
   return (
     <ChartSettingsSortBy
       pool={pool}
-      items={tempItems}
+      tempItems={tempItems}
       onCancel={onCancel}
       onSubmit={onSubmit}
-      setItems={setTempItems}
+      setTempItems={setTempItems}
+      items={items}
       orderListDropdownSetSelected={handleItemSortOrderChange}
       secondary={props.secondary}
     />

@@ -8,19 +8,61 @@ import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
 import { FilterPanel } from "app/components/filters/panel";
-// import UnfoldMoreIcon from "@mui/icons-material/UnfoldMore";
 import CircularProgress from "@mui/material/CircularProgress";
 import { DatasetChartBlockProps } from "app/pages/datasets/common/chart-block/data";
-// import { ReactComponent as CollapseIcon } from "app/assets/vectors/Collapse_ButtonIcon.svg";
-// import { ReactComponent as SettingsIcon } from "app/assets/vectors/Settings_ButtonIcon.svg";
+import { ReactComponent as SettingsIcon } from "app/assets/vectors/Settings_ButtonIcon.svg";
 import { ChartBlockButtonToolbar } from "app/components/chart-block/components/button-toolbar";
+import { ChartSettings } from "app/components/chart-settings";
+import {
+  ChartSettingsBarProps,
+  stacksDropdownItems,
+  xAxisDropdownItems,
+  yAxisDropdownItems,
+} from "app/components/chart-settings/variations/bar/data";
+import { rowsDropdownItems } from "app/components/chart-settings/variations/table/data";
+import { ChartSettingsSortByOrderProps } from "app/components/chart-settings/sort-by/data";
+import { treesDropdownItems } from "app/components/chart-settings/variations/treemap/data";
 
 export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
   props: DatasetChartBlockProps
 ) => {
   // const [collapsed, setCollapsed] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [settingsAnchorEl, setSettingsAnchorEl] =
+    React.useState<null | HTMLElement>(null);
 
+  const [isBarStacked, setIsBarStacked] = React.useState(true);
+  const [barXAxis, setBarXAxis] = React.useState(xAxisDropdownItems[4].value);
+  const [barYAxis, setBarYAxis] = React.useState(yAxisDropdownItems[4].value);
+  const [barStacks, setBarStacks] = React.useState(
+    stacksDropdownItems[3].value
+  );
+  const [lineXAxis, setLineXAxis] = React.useState(xAxisDropdownItems[4].value);
+  const [lineYAxis, setLineYAxis] = React.useState(yAxisDropdownItems[4].value);
+  const [tableRows, setTableRows] = React.useState(rowsDropdownItems[0].value);
+  const [tableOrder, setTableOrder] =
+    React.useState<ChartSettingsSortByOrderProps["order"]>(null);
+
+  const [heatmapRows, setHeatmapRows] = React.useState(
+    rowsDropdownItems[0].value
+  );
+  const [heatmapOrder, setHeatmapOrder] =
+    React.useState<ChartSettingsSortByOrderProps["order"]>(null);
+  const [heatmapBoxes, setHeatmapBoxes] = React.useState<
+    "numerical" | "percentage"
+  >("numerical");
+
+  const [isTreemapNested, setIsTreemapNested] = React.useState(true);
+  const [trees, setTrees] = React.useState(treesDropdownItems[0].value);
+  const [treemapNestedContent, setTreemapNestedContent] = React.useState(
+    treesDropdownItems[0].value
+  );
+  const handleResetTableOrder = () => {
+    setTableOrder(null);
+  };
+  const handleResetHeatmapOrder = () => {
+    setHeatmapOrder(null);
+  };
   const handleFilterButtonClick = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
@@ -29,6 +71,14 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
 
   const handleFilterPanelClose = () => {
     setAnchorEl(null);
+  };
+  const handleSettingsButtonClick = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    setSettingsAnchorEl(event.currentTarget);
+  };
+  const handleSettingsPanelClose = () => {
+    setSettingsAnchorEl(null);
   };
 
   // const handleCollapse = () => {
@@ -117,6 +167,111 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
     props.handleResetFilters,
   ]);
 
+  const settingsChartType = () => {
+    switch (props.dropdownSelected) {
+      case "Bar Chart":
+        return "bar";
+      case "Line Chart":
+        return "line";
+      case "Table View":
+        return "table";
+      case "Sankey Chart":
+        return "sankey";
+      case "Treemap":
+        return "treemap";
+      case "Heatmap":
+        return "heatmap";
+      case "financialMetrics":
+        return "financialMetrics";
+      default:
+        return "bar";
+    }
+  };
+  console.log(props.dropdownSelected, "props.dropdownSelected");
+  const settingsPopover = React.useMemo(() => {
+    return (
+      <Popover
+        disableScrollLock
+        anchorEl={settingsAnchorEl}
+        open={Boolean(settingsAnchorEl)}
+        id={`settings-popover-${id}`}
+        onClose={handleSettingsPanelClose}
+        // anchorOrigin={{
+        //   vertical: "bottom",
+        //   horizontal: "right",
+        // }}
+        anchorPosition={{ top: 400, left: 200 }}
+      >
+        <ChartSettings
+          handleSettingsPanelClose={handleSettingsPanelClose}
+          chartType={settingsChartType()}
+          reset={() => {}}
+          barProps={
+            {
+              setStacked: setIsBarStacked,
+              stacked: isBarStacked,
+              xAxis: barXAxis,
+              setXAxis: setBarXAxis,
+              yAxis: barYAxis,
+              setYAxis: setBarYAxis,
+              setStacks: setBarStacks,
+              stacks: barStacks,
+            } as ChartSettingsBarProps
+          }
+          lineProps={{
+            xAxis: lineXAxis,
+            yAxis: lineYAxis,
+            setXAxis: setLineXAxis,
+            setYAxis: setLineYAxis,
+          }}
+          tableProps={{
+            rows: tableRows,
+            setRows: setTableRows,
+            onReset: handleResetTableOrder,
+            order: tableOrder,
+            setOrder: setTableOrder,
+          }}
+          heatmapProps={{
+            rows: heatmapRows,
+            setRows: setHeatmapRows,
+            onReset: handleResetHeatmapOrder,
+            order: heatmapOrder,
+            setOrder: setHeatmapOrder,
+            heatmapBoxes,
+            setHeatmapBoxes,
+          }}
+          sankeyProps={{
+            nodes: [],
+            setNodes: () => {},
+          }}
+          treemapProps={{
+            nested: isTreemapNested,
+            setNested: setIsTreemapNested,
+            nestedContent: treemapNestedContent,
+            setNestedContent: setTreemapNestedContent,
+            setTrees: setTrees,
+            trees,
+          }}
+        />
+      </Popover>
+    );
+  }, [
+    settingsAnchorEl,
+    props.dropdownSelected,
+    isBarStacked,
+    barXAxis,
+    barYAxis,
+    barStacks,
+    tableRows,
+    tableOrder,
+    heatmapRows,
+    heatmapOrder,
+    isTreemapNested,
+    trees,
+    treemapNestedContent,
+    heatmapBoxes,
+  ]);
+
   return (
     <Box id={props.id} data-cy="dataset-chart-block">
       <Typography variant="h3" lineHeight={1.2}>
@@ -173,9 +328,14 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
             Filters
           </Button>
           {filterPopover}
-          {/* <Button variant="outlined" startIcon={<SettingsIcon />}>
+          <Button
+            variant="outlined"
+            startIcon={<SettingsIcon />}
+            onClick={handleSettingsButtonClick}
+          >
             Settings
-          </Button> */}
+          </Button>
+          {settingsPopover}
           {/* <Button
             variant="outlined"
             onClick={handleCollapse}

@@ -8,6 +8,7 @@ import { DropdownProps } from "app/components/dropdown/data";
 import { CategoryButton } from "app/components/search/styles";
 import { ReactComponent as AddIcon } from "app/assets/vectors/ChartSettingsAddMedium.svg";
 import Box from "@mui/material/Box";
+import { colors } from "app/theme";
 
 const StyledMenu = styled((props: MenuProps) => (
   <Menu
@@ -24,7 +25,7 @@ const StyledMenu = styled((props: MenuProps) => (
     width: 200,
     borderRadius: 4,
     background: appColors.SEARCH.DROPDOWN_BACKGROUND_COLOR,
-    border: `1px solid ${appColors.SEARCH.DROPDOWN_BUTTON_BORDER_COLOR}`,
+    border: `1px solid ${colors.secondary[200]}`,
     "&::-webkit-scrollbar": {
       width: 5,
       borderRadius: 2,
@@ -50,6 +51,7 @@ const StyledMenuItem = styled(MenuItem)(() => ({
   fontSize: "14px",
   padding: "2px 4px",
   borderRadius: "4px",
+  margin: "5px 0",
   color: appColors.SEARCH.DROPDOWN_ITEM_BACKGROUND_COLOR,
   "& svg": {
     marginRight: "8px",
@@ -99,7 +101,7 @@ export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
           theme={{ anchorEl: Boolean(anchorEl) }}
           style={{
             marginRight: 0,
-            width: props.width ?? 200,
+            width: anchorEl && props.expandWidth ? 166 : props.width,
             maxHeight: props.height ?? 32,
             fontSize: props.compact ? "12px" : "14px",
             gap: "3px",
@@ -118,7 +120,15 @@ export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
           >
             <AddIcon />
           </Box>
-          <span style={{ letterSpacing: "0" }}>{props.dropdownSelected}</span>
+          <span
+            style={{
+              letterSpacing: "0",
+              textOverflow: props.noEllipsis ? "inherit" : "noEllipsis",
+              overflow: props.noEllipsis ? "visible" : "hidden",
+            }}
+          >
+            {props.dropdownSelected}
+          </span>
           <ChevronRight
             fontSize={props.compact ? "small" : "medium"}
             sx={{ transform: `rotate(${anchorEl ? 90 : 0}deg)` }}
@@ -159,7 +169,7 @@ export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
         }}
         sx={{
           "& .MuiPaper-root": {
-            width: props.width,
+            width: anchorEl && props.expandWidth ? 166 : props.width,
             "@media (max-width: 767px)": {
               width: props.width ?? "180px",
             },
@@ -180,15 +190,26 @@ export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
                     color: appColors.SEARCH.DROPDOWN_ITEM_ACTIVE_COLOR,
                     background:
                       appColors.SEARCH.DROPDOWN_ITEM_ACTIVE_BACKGROUND_COLOR,
+                    span: {
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                    },
                     "& svg": {
                       filter: "invert(1)",
                     },
                   }
-                : {}
+                : {
+                    span: {
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                    },
+                  }
             }
           >
             {item.icon}
-            <span>{item.label}</span>
+            <span title={item.label}>{item.label}</span>
           </StyledMenuItem>
         ))}
       </StyledMenu>

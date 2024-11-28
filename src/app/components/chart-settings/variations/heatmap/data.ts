@@ -2,12 +2,17 @@ import { ItemInterface } from "react-sortablejs";
 import { DropdownProps } from "app/components/dropdown/data";
 import { ChartSettingsSortByOrderProps } from "app/components/chart-settings/sort-by/data";
 
-export interface ChartSettingsTableProps extends ChartSettingsSortByOrderProps {
+export interface ChartSettingsHeatmapProps
+  extends ChartSettingsSortByOrderProps {
   rows: string;
   setRows: (value: string) => void;
+  heatmapBoxes?: "percentage" | "numerical";
+  setHeatmapBoxes?: React.Dispatch<
+    React.SetStateAction<"percentage" | "numerical">
+  >;
 }
 
-export interface ChartSettingsTableColumnsProps {
+export interface ChartSettingsHeatmapColumnsProps {
   columns: ItemInterface[];
   setColumns: (value: ItemInterface[]) => void;
 }

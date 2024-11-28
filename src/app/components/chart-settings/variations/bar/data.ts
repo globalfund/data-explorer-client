@@ -9,6 +9,7 @@ export interface ChartSettingsBarProps {
   setXAxis: (value: string) => void;
   setYAxis: (value: string) => void;
   setStacks: (value: string) => void;
+  financialMetrics?: boolean;
 }
 
 export const xAxisDropdownItems: DropdownProps["dropdownItems"] = [

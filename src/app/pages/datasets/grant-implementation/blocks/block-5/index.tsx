@@ -482,6 +482,7 @@ export const GrantImplementationPageBlock5: React.FC<
         appliedFiltersData={chart3AppliedFiltersData}
         extraDropdown={financialMetricsCycleDropdown}
         infoType="financials"
+        dropdownSelected="financialMetrics"
       >
         {financialMetricsContent}
       </DatasetChartBlock>

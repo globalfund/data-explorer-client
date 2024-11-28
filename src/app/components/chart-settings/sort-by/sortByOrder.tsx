@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
-import { OrderList } from "app/components/order-list";
+import Refresh from "@mui/icons-material/Refresh";
 import { CategoryButton } from "app/components/search/styles";
 import { ReactComponent as ChartSettingsAddIcon } from "app/assets/vectors/ChartSettingsAdd.svg";
 import { ReactComponent as ChartSettingsSortByIcon } from "app/assets/vectors/ChartSettingsSortBy.svg";
@@ -17,17 +17,24 @@ export const ChartSettingsSortByOrder: React.FC<
   const ref = React.useRef<HTMLDivElement>(null);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
-  const order = ["A-Z", "Z-A"];
+  const order: ChartSettingsSortByOrderProps["order"][] = ["A-Z", "Z-A"];
+
+  const handleOrderChange =
+    (value: ChartSettingsSortByOrderProps["order"]) => () => {
+      props.setOrder(value);
+      setAnchorEl(null);
+    };
+
+  const handleReset = () => {
+    props.onReset();
+    setAnchorEl(null);
+  };
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
-  };
-
-  const handlePoolItemClick = (item: "A-Z" | "Z-A") => () => {
-    props.setItems(item);
   };
 
   return (
@@ -80,7 +87,8 @@ export const ChartSettingsSortByOrder: React.FC<
             onClick={handleClick}
             theme={{ anchorEl: Boolean(anchorEl) }}
             style={{
-              width: 105.23,
+              minWidth: props.order ? "max-content" : "105.23px",
+              width: props.order ? "auto" : "105.23px",
               maxHeight: 22,
               marginRight: 0,
               fontSize: "12px",
@@ -101,9 +109,15 @@ export const ChartSettingsSortByOrder: React.FC<
             >
               <ChartSettingsSortByIcon />
               <Typography fontSize="12px" whiteSpace={"nowrap"}>
-                Add Sort
+                Add Sort {props.order && "(1)"}
               </Typography>
-              <ChevronRight fontSize="small" />
+              <ChevronRight
+                fontSize={"small"}
+                sx={{
+                  transform: `rotate(${anchorEl ? 90 : 0}deg)`,
+                  marginLeft: props.order ? "5px" : "0",
+                }}
+              />
             </Box>
           </CategoryButton>
         </Box>
@@ -116,47 +130,39 @@ export const ChartSettingsSortByOrder: React.FC<
         onClose={handleClose}
         open={Boolean(anchorEl)}
         anchorOrigin={{
-          vertical: 32 + 5,
+          vertical: 30,
           horizontal: "left",
         }}
       >
         <Box
           sx={{
-            width: "350px",
+            width: "105px",
             padding: "7px 10px",
             borderRadius: "4px",
-            border: `1px solid ${colors.secondary[700]}`,
+            border: `1px solid ${colors.secondary[200]}`,
           }}
         >
-          <OrderList
-            items={[
-              {
-                id: props.items,
-              },
-            ]}
-            // @ts-ignore
-            setItems={props.setItems}
-            dropdownSetSelected={props.orderListDropdownSetSelected}
-          />
-
           <Box>
             {order.map((item) => (
               <Button
                 key={item}
-                disabled={item === props.items}
-                onClick={handlePoolItemClick(item as "A-Z" | "Z-A")}
-                startIcon={<ChartSettingsAddIcon />}
+                disabled={item === props.order}
+                onClick={handleOrderChange(item)}
                 sx={{
                   fontSize: "12px",
                   fontWeight: "400",
                   maxHeight: "22px",
-                  padding: "0px 10px",
-                  borderRadius: "4px",
+                  width: "100%",
                   textTransform: "none",
-                  border: `1px solid ${colors.secondary[700]}`,
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  border: "none",
+                  background: "none",
+                  "&:hover": {
+                    background: "none",
+                  },
                   "&:disabled": {
                     color: colors.secondary[500],
-                    borderColor: colors.secondary[600],
                     "svg > path": {
                       fill: colors.secondary[500],
                     },
@@ -167,6 +173,31 @@ export const ChartSettingsSortByOrder: React.FC<
               </Button>
             ))}
           </Box>
+          <Button
+            onClick={handleReset}
+            variant="outlined"
+            sx={{
+              fontSize: "12px",
+              maxHeight: "26px",
+              lineHeight: "1.5",
+              padding: "2px 12px",
+              width: "73px",
+              marginTop: "8px",
+              justifySelf: "flex-end",
+              display: "flex",
+            }}
+            startIcon={
+              <Refresh
+                fontSize="small"
+                htmlColor="#373D43"
+                sx={{
+                  transform: "rotate(-180deg)",
+                }}
+              />
+            }
+          >
+            Reset
+          </Button>
         </Box>
       </Popover>
     </React.Fragment>

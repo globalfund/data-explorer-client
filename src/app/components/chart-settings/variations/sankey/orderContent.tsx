@@ -1,12 +1,11 @@
-import { Typography } from "@mui/material";
 import React from "react";
 import { ChartSettingsSortBy } from "app/components/chart-settings/sort-by";
 import {
   ChartSettingsSortByItem,
-  ChartSettingsSortByItems,
+  ChartSettingsSortByNodes,
 } from "app/components/chart-settings/sort-by/data";
 
-export default function BarOrderContent(props: {
+export default function SankeyOrderContent(props: {
   sortByItems: ChartSettingsSortByItem[];
   setSortByItems: React.Dispatch<
     React.SetStateAction<ChartSettingsSortByItem[]>
@@ -38,7 +37,7 @@ export default function BarOrderContent(props: {
     }
   };
   const pool = React.useMemo(() => {
-    return ChartSettingsSortByItems.map((item) => ({
+    return ChartSettingsSortByNodes.map((item) => ({
       ...item,
       name: item.name,
       disabled: props.sortByItems.some((i) => i.name === item.name),
@@ -47,9 +46,6 @@ export default function BarOrderContent(props: {
 
   return (
     <React.Fragment>
-      <Typography fontSize="14px" marginBottom="15px">
-        Customise the order of what you see.
-      </Typography>
       <ChartSettingsSortBy
         pool={pool}
         onCancel={onCancel}

@@ -33,15 +33,15 @@ export const ChartSettingsSortBy: React.FC<ChartSettingsSortByProps> = (
   };
 
   const handlePoolItemClick = (item: ChartSettingsSortByPoolItem) => () => {
-    if (props.items.find((i) => i.name === item.name)) {
+    if (props.tempItems.find((i) => i.name === item.name)) {
       return;
     }
     const newItem: ChartSettingsSortByItem = {
       ...item,
-      id: (props.items.length + 1).toString(),
+      id: (props.tempItems.length + 1).toString(),
       order: "asc",
     };
-    props.setItems([...props.items, newItem]);
+    props.setTempItems([...props.tempItems, newItem]);
   };
 
   const handleCancel = () => {
@@ -73,7 +73,7 @@ export const ChartSettingsSortBy: React.FC<ChartSettingsSortByProps> = (
             onClick={handleClick}
             theme={{ anchorEl: Boolean(anchorEl) }}
             style={{
-              width: 200,
+              width: 140,
               maxHeight: 26,
               marginRight: 0,
               fontSize: "12px",
@@ -89,7 +89,10 @@ export const ChartSettingsSortBy: React.FC<ChartSettingsSortByProps> = (
               }}
             >
               <ChartSettingsSortByIcon />
-              <Typography fontSize="12px">Add Sort</Typography>
+              <Typography fontSize="12px">
+                Add Sort{" "}
+                {props.items.length > 0 ? `(${props.items.length})` : ""}
+              </Typography>
             </Box>
             <ChartSettingsAddIcon />
           </CategoryButton>
@@ -153,9 +156,9 @@ export const ChartSettingsSortBy: React.FC<ChartSettingsSortByProps> = (
           }}
         >
           <OrderList
-            items={props.items}
+            items={props.tempItems}
             // @ts-ignore
-            setItems={props.setItems}
+            setItems={props.setTempItems}
             dropdownSetSelected={props.orderListDropdownSetSelected}
           />
 

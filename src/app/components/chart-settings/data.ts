@@ -4,6 +4,7 @@ import { ChartSettingsLineProps } from "app/components/chart-settings/variations
 import { ChartSettingsTreemapProps } from "app/components/chart-settings/variations/treemap/data";
 import { ChartSettingsTableProps } from "./variations/table/data";
 import { ChartSettingsSankeyProps } from "./variations/sankey/data";
+import { ChartSettingsHeatmapProps } from "./variations/heatmap/data";
 
 export interface ChartSettingsProps {
   handleSettingsPanelClose: () => void;
@@ -16,13 +17,16 @@ export interface ChartSettingsProps {
     | "sankey"
     | "sunsburst"
     | "table"
-    | "treemap";
+    | "treemap"
+    | "financialMetrics";
+
   reset: () => void;
   barProps?: ChartSettingsBarProps;
   lineProps?: ChartSettingsLineProps;
   tableProps?: ChartSettingsTableProps;
   treemapProps?: ChartSettingsTreemapProps;
   sankeyProps?: ChartSettingsSankeyProps;
+  heatmapProps?: ChartSettingsHeatmapProps;
 }
 
 export const activeStyle = {

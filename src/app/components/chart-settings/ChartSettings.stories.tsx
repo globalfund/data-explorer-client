@@ -1,6 +1,5 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-
 import { ChartSettings } from "app/components/chart-settings";
 import { withRouter } from "storybook-addon-remix-react-router";
 import { ChartSettingsProps } from "app/components/chart-settings/data";
@@ -10,8 +9,8 @@ import {
   yAxisDropdownItems,
   stacksDropdownItems,
 } from "app/components/chart-settings/variations/bar/data";
-import { ItemInterface } from "react-sortablejs";
 import { rowsDropdownItems } from "./variations/table/data";
+import { ChartSettingsSortByOrderProps } from "./sort-by/data";
 
 const Wrapper: React.FC<{
   chartType: ChartSettingsProps["chartType"];
@@ -26,7 +25,11 @@ const Wrapper: React.FC<{
     treesDropdownItems[0].value
   );
   const [rows, setRows] = React.useState(rowsDropdownItems[0].value);
-  const [columns, setColumns] = React.useState<ItemInterface[]>([]);
+  const [tableOrder, setTableOrder] =
+    React.useState<ChartSettingsSortByOrderProps["order"]>(null);
+  const handleResetTableOrder = () => {
+    setTableOrder(null);
+  };
 
   const csprops = React.useMemo(() => {
     switch (props.chartType) {
@@ -62,15 +65,11 @@ const Wrapper: React.FC<{
         return {
           tableProps: {
             rows,
-            columns,
             setRows,
-            setColumns,
-            pool: [],
-            items: [],
-            setItems: () => {},
-            onCancel: () => {},
-            onSubmit: () => {},
-            orderListDropdownSetSelected: () => {},
+            order: tableOrder,
+            setOrder: setTableOrder,
+            onReset: handleResetTableOrder,
+            secondary: true,
           },
         };
       default:

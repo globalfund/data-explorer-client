@@ -6,4 +6,6 @@ export interface DropdownProps {
   dropdownItems: { value: string; label: string; icon?: React.ReactElement }[];
   compact?: boolean;
   secondary?: boolean;
+  noEllipsis?: boolean;
+  expandWidth?: boolean;
 }

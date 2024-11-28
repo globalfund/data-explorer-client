@@ -12,12 +12,12 @@ import {
 import { ItemInterface } from "react-sortablejs";
 
 interface Props {
-  sortByTableColumnItems: ItemInterface[];
-  setSortByTableColumnItems: React.Dispatch<
+  sortByHeatmapColumnItems: ItemInterface[];
+  setSortByHeatmapColumnItems: React.Dispatch<
     React.SetStateAction<ItemInterface[]>
   >;
 }
-export default function TableOrderContent(props: Props) {
+export default function HeatmapOrderContent(props: Props) {
   return (
     <React.Fragment>
       <Box display={"flex"} gap={"8px"}>
@@ -30,8 +30,8 @@ export default function TableOrderContent(props: Props) {
         Drag and drop to customise the order of the columns.
       </Typography>
       <ChartSettingsTableColumns
-        columns={props.sortByTableColumnItems}
-        setColumns={props.setSortByTableColumnItems}
+        columns={props.sortByHeatmapColumnItems}
+        setColumns={props.setSortByHeatmapColumnItems}
       />
     </React.Fragment>
   );
@@ -43,7 +43,6 @@ const ChartSettingsTableColumns: React.FC<ChartSettingsTableColumnsProps> = (
   const { columns, setColumns } = props;
 
   const handleColumnAddition = (value: string) => {
-    console.log("value", value);
     if (columns.find((item) => item.value === value)) {
       return;
     }

@@ -4,7 +4,7 @@ export interface ChartSettingsTreemapProps {
   nested: boolean;
   trees: string;
   nestedContent: string;
-  setNested: (value: boolean) => void;
+  setNested: React.Dispatch<React.SetStateAction<boolean>>;
   setTrees: (value: string) => void;
   setNestedContent: (value: string) => void;
 }

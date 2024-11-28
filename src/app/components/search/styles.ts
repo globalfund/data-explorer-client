@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import { appColors } from "app/theme";
+import { appColors, colors } from "app/theme";
 import styled from "styled-components";
 import Button from "@mui/material/Button";
 
@@ -58,19 +58,19 @@ export const CategoryButton = styled(Button)`
   padding: 7px 12px;
   border-radius: 4px;
   margin-right: 14px;
-  text-transform: capitalize;
-  max-width: calc(50vw - 32px);
   justify-content: space-between;
+  max-width: calc(50vw - 32px);
+  text-transform: none;
   color: ${appColors.SEARCH.DROPDOWN_BUTTON_TEXT_COLOR};
   background: ${appColors.SEARCH.DROPDOWN_BUTTON_BACKGROUND_COLOR};
   border: 1px solid
     ${(props) =>
       props.theme.anchorEl
-        ? appColors.SEARCH.DROPDOWN_BUTTON_TEXT_COLOR
+        ? colors.secondary[200]
         : appColors.SEARCH.DROPDOWN_BUTTON_BORDER_COLOR};
 
   &:hover {
-    border-color: ${appColors.SEARCH.DROPDOWN_BUTTON_TEXT_COLOR};
+    border-color: ${colors.secondary[200]};
   }
 
   .MuiButton-label {

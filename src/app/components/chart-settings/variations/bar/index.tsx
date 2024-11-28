@@ -23,7 +23,6 @@ export const ChartSettingsBar: React.FC<ChartSettingsBarProps> = (
     setYAxis,
     setStacks,
   } = props;
-
   const onButtonClick = () => {
     setStacked((prev) => {
       return !prev;
@@ -110,47 +109,49 @@ export const ChartSettingsBar: React.FC<ChartSettingsBarProps> = (
           </Box>
         )}
       </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          "> div": {
-            gap: "5px",
+      {!props.financialMetrics && (
+        <Box
+          sx={{
             display: "flex",
-            alignItems: "center",
             flexDirection: "row",
-            width: "calc(50% - 5px)",
-          },
-        }}
-      >
-        <Box sx={{ height: "100%" }}>
-          <Typography fontSize="12px" fontWeight="700">
-            X Axis
-          </Typography>
-          <Dropdown
-            compact
-            width={150}
-            height={26}
-            dropdownSelected={xAxis}
-            handleDropdownChange={setXAxis}
-            dropdownItems={xAxisDropdownItems}
-          />
+            justifyContent: "space-between",
+            "> div": {
+              gap: "5px",
+              display: "flex",
+              alignItems: "center",
+              flexDirection: "row",
+              width: "calc(50% - 5px)",
+            },
+          }}
+        >
+          <Box sx={{ height: "100%" }}>
+            <Typography fontSize="12px" fontWeight="700">
+              X Axis
+            </Typography>
+            <Dropdown
+              compact
+              width={150}
+              height={26}
+              dropdownSelected={xAxis}
+              handleDropdownChange={setXAxis}
+              dropdownItems={xAxisDropdownItems}
+            />
+          </Box>
+          <Box>
+            <Typography fontSize="12px" fontWeight="700">
+              Y Axis
+            </Typography>
+            <Dropdown
+              compact
+              width={150}
+              height={26}
+              dropdownSelected={yAxis}
+              handleDropdownChange={setYAxis}
+              dropdownItems={yAxisDropdownItems}
+            />
+          </Box>
         </Box>
-        <Box>
-          <Typography fontSize="12px" fontWeight="700">
-            Y Axis
-          </Typography>
-          <Dropdown
-            compact
-            width={150}
-            height={26}
-            dropdownSelected={yAxis}
-            handleDropdownChange={setYAxis}
-            dropdownItems={yAxisDropdownItems}
-          />
-        </Box>
-      </Box>
+      )}
     </Box>
   );
 };
