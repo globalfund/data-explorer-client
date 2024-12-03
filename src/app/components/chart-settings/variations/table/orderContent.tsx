@@ -43,7 +43,6 @@ const ChartSettingsTableColumns: React.FC<ChartSettingsTableColumnsProps> = (
   const { columns, setColumns } = props;
 
   const handleColumnAddition = (value: string) => {
-    console.log("value", value);
     if (columns.find((item) => item.value === value)) {
       return;
     }

@@ -94,7 +94,18 @@ export const ChartSettingsSortBy: React.FC<ChartSettingsSortByProps> = (
                 {props.items.length > 0 ? `(${props.items.length})` : ""}
               </Typography>
             </Box>
-            <ChartSettingsAddIcon />
+            <Box
+              display={"flex"}
+              flexShrink={"0"}
+              sx={{
+                svg: {
+                  width: "14px",
+                  height: "14px",
+                },
+              }}
+            >
+              <ChartSettingsAddIcon />
+            </Box>
           </CategoryButton>
         </Box>
       ) : (

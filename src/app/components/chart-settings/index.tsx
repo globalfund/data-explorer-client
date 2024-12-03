@@ -23,6 +23,8 @@ import SankeyOrderContent from "./variations/sankey/orderContent";
 import HeatmapOrderContent from "./variations/heatmap/orderContent";
 import { ChartSettingsHeatmap } from "./variations/heatmap";
 import HeatmapBoxesSwitch from "./variations/heatmap/boxesSwitch";
+import { ChartSettingsFinancialmetrics } from "./variations/financialMetrics";
+import FinancialMetricsOrderContent from "./variations/financialMetrics/orderContent";
 
 export const ChartSettings: React.FC<ChartSettingsProps> = (
   props: ChartSettingsProps
@@ -76,8 +78,12 @@ export const ChartSettings: React.FC<ChartSettingsProps> = (
         if (!props.heatmapProps) return null;
         return <ChartSettingsHeatmap {...props.heatmapProps} />;
       case "financialMetrics":
-        if (!props.barProps) return null;
-        return <ChartSettingsBar {...props.barProps} financialMetrics={true} />;
+        if (!props.financialMetricsSettingsProps) return null;
+        return (
+          <ChartSettingsFinancialmetrics
+            {...props.financialMetricsSettingsProps}
+          />
+        );
 
       case "sankey":
         if (!props.sankeyProps) return null;
@@ -139,12 +145,10 @@ export const ChartSettings: React.FC<ChartSettingsProps> = (
           />
         );
       case "financialMetrics":
+        if (!props.financialMetricsSortByProps) return null;
         return (
-          <BarOrderContent
-            setSortByItems={setSortByBarItems}
-            setSortByTempItems={setSortByBarTempItems}
-            sortByItems={sortByBarItems}
-            sortByTempItems={sortByBarTempItems}
+          <FinancialMetricsOrderContent
+            {...props.financialMetricsSortByProps}
           />
         );
       case "treemap":
@@ -160,6 +164,7 @@ export const ChartSettings: React.FC<ChartSettingsProps> = (
     sortSankeyNodesByOrder,
     sortSankeyNodesByOrderTemp,
     sortByHeatmapColumnItems,
+    props.financialMetricsSortByProps?.order,
   ]);
 
   const showSortOrder =
@@ -208,36 +213,61 @@ export const ChartSettings: React.FC<ChartSettingsProps> = (
             justifyContent: "space-between",
           }}
         >
-          <Typography fontSize="14px" marginBottom="15px">
+          <Typography
+            fontSize="12px"
+            marginBottom="15px"
+            fontFamily={"GothamNarrow-Book"}
+            flexBasis={"50%"}
+            display={props.chartType === "line" ? "none" : "block"}
+          >
             Customise what you see in this chart.
           </Typography>
-          <Button
-            onClick={onReset}
-            variant="outlined"
+          <Box
             sx={{
-              fontSize: "12px",
-              maxHeight: "26px",
-              lineHeight: "1.5",
-              padding: "2px 12px",
+              flexBasis: props.chartType === "line" ? "100%" : "50%",
+              display: props.chartType === "bar" ? "flex" : "block",
+              justifyContent: "space-between",
             }}
-            startIcon={
-              <Refresh
-                fontSize="small"
-                sx={{
-                  transform: "rotate(-180deg)",
-                }}
-              />
-            }
           >
-            Reset Settings
-          </Button>
+            <Typography
+              fontSize="12px"
+              marginBottom="15px"
+              fontFamily={"GothamNarrow-Book"}
+              marginLeft={"7.5px"}
+              display={props.chartType === "bar" ? "flex" : "none"}
+            >
+              Customise the order of what you see
+            </Typography>
+            <Button
+              onClick={onReset}
+              variant="outlined"
+              sx={{
+                fontSize: "12px",
+                maxHeight: "26px",
+                lineHeight: "1.5",
+                padding: "2px 12px",
+                justifySelf: "flex-end",
+                display: "flex",
+              }}
+              startIcon={
+                <Refresh
+                  fontSize="small"
+                  sx={{
+                    transform: "rotate(-180deg)",
+                  }}
+                />
+              }
+            >
+              Reset Settings
+            </Button>
+          </Box>
         </Box>
         <Grid container spacing={2}>
           <Grid
             item
             xs={12}
             sm={showSortOrder ? 6 : 10}
-            lg={props.chartType == "heatmap" ? 4 : showSortOrder ? 6 : 10}
+            lg={props.chartType === "heatmap" ? 4 : showSortOrder ? 6 : 10}
             position="relative"
           >
             {settingsContent}

@@ -5,6 +5,8 @@ import { ChartSettingsTreemapProps } from "app/components/chart-settings/variati
 import { ChartSettingsTableProps } from "./variations/table/data";
 import { ChartSettingsSankeyProps } from "./variations/sankey/data";
 import { ChartSettingsHeatmapProps } from "./variations/heatmap/data";
+import { ChartSettingsFinancialMetricsProps } from "./variations/financialMetrics/data";
+import { ChartSettingsSortByOrderProps } from "./sort-by/data";
 
 export interface ChartSettingsProps {
   handleSettingsPanelClose: () => void;
@@ -27,6 +29,8 @@ export interface ChartSettingsProps {
   treemapProps?: ChartSettingsTreemapProps;
   sankeyProps?: ChartSettingsSankeyProps;
   heatmapProps?: ChartSettingsHeatmapProps;
+  financialMetricsSettingsProps?: ChartSettingsFinancialMetricsProps;
+  financialMetricsSortByProps?: ChartSettingsSortByOrderProps;
 }
 
 export const activeStyle = {

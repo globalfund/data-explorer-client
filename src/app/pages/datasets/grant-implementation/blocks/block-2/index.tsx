@@ -51,6 +51,7 @@ export const GrantImplementationPageBlock2: React.FC<
     });
 
   const [tableSearch, setTableSearch] = React.useState("");
+  const [barXAxis, setBarXAxis] = React.useState("Component");
 
   const dataFinancialInsightsDisbursementsBarChart = useStoreState(
     (state) =>
@@ -397,6 +398,21 @@ export const GrantImplementationPageBlock2: React.FC<
     });
   };
 
+  const handleBarXAxisChange = (value: string) => {
+    setBarXAxis(value);
+    fetchFinancialInsightsDisbursementsBarChart({
+      filterString: chart1FilterString,
+      routeParams: {
+        componentField:
+          props.componentsGrouping === componentsGroupingOptions[0].value
+            ? "activityAreaGroup"
+            : "activityArea",
+        geographyGrouping: props.geographyGrouping,
+        xAxisVariable: value,
+      },
+    });
+  };
+
   const disbursementsChartContent = React.useMemo(() => {
     let range;
     switch (disbursementsDropdownSelected) {
@@ -593,6 +609,16 @@ export const GrantImplementationPageBlock2: React.FC<
         handleResetFilters={handleResetChartFilters}
         appliedFiltersData={chart1AppliedFiltersData}
         infoType="financials"
+        barProps={{
+          setStacked: () => {},
+          stacked: false,
+          setStacks: () => {},
+          stacks: "",
+          setXAxis: handleBarXAxisChange,
+          xAxis: barXAxis,
+          setYAxis: () => {},
+          yAxis: "",
+        }}
       >
         {disbursementsChartContent}
       </DatasetChartBlock>

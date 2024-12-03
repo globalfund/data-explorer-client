@@ -47,9 +47,6 @@ export default function BarOrderContent(props: {
 
   return (
     <React.Fragment>
-      <Typography fontSize="14px" marginBottom="15px">
-        Customise the order of what you see.
-      </Typography>
       <ChartSettingsSortBy
         pool={pool}
         onCancel={onCancel}

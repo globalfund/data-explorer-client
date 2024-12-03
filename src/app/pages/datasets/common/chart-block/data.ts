@@ -1,6 +1,7 @@
 import { FilterGroupModel } from "app/components/filters/list/data";
 import { AppliedFiltersModel } from "app/state/api/action-reducers/sync/filters";
 import { InfoPanelType } from "app/components/chart-block/components/button-toolbar/data";
+import { ChartSettingsBarProps } from "app/components/chart-settings/variations/bar/data";
 
 export interface DatasetChartBlockProps {
   id: string;
@@ -21,4 +22,5 @@ export interface DatasetChartBlockProps {
   removeFilter: (value: string, types: string[]) => void;
   toggleFilter: (checked: boolean, value: string, type: string) => void;
   dropdownItems: { value: string; label: string; icon?: React.ReactElement }[];
+  barProps?: ChartSettingsBarProps;
 }

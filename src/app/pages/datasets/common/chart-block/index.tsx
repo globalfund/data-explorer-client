@@ -31,16 +31,21 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
   const [settingsAnchorEl, setSettingsAnchorEl] =
     React.useState<null | HTMLElement>(null);
 
-  const [isBarStacked, setIsBarStacked] = React.useState(true);
-  const [barXAxis, setBarXAxis] = React.useState(xAxisDropdownItems[4].value);
-  const [barYAxis, setBarYAxis] = React.useState(yAxisDropdownItems[4].value);
-  const [barStacks, setBarStacks] = React.useState(
-    stacksDropdownItems[3].value
-  );
+  // const [isBarStacked, setIsBarStacked] = React.useState(true);
+  // const [barXAxis, setBarXAxis] = React.useState(xAxisDropdownItems[4].value);
+  // const [barYAxis, setBarYAxis] = React.useState(yAxisDropdownItems[4].value);
+  // const [barStacks, setBarStacks] = React.useState(
+  //   stacksDropdownItems[3].value
+  // );
   const [lineXAxis, setLineXAxis] = React.useState(xAxisDropdownItems[4].value);
   const [lineYAxis, setLineYAxis] = React.useState(yAxisDropdownItems[4].value);
   const [tableRows, setTableRows] = React.useState(rowsDropdownItems[0].value);
   const [tableOrder, setTableOrder] =
+    React.useState<ChartSettingsSortByOrderProps["order"]>(null);
+  const [financialMetricBar, setFinancialMetricBar] = React.useState(
+    xAxisDropdownItems[4].value
+  );
+  const [financialMetricsOrder, setFinancialMetricsOrder] =
     React.useState<ChartSettingsSortByOrderProps["order"]>(null);
 
   const [heatmapRows, setHeatmapRows] = React.useState(
@@ -59,6 +64,9 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
   );
   const handleResetTableOrder = () => {
     setTableOrder(null);
+  };
+  const handleResetFinancialMetricsOrder = () => {
+    setFinancialMetricsOrder(null);
   };
   const handleResetHeatmapOrder = () => {
     setHeatmapOrder(null);
@@ -187,7 +195,6 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
         return "bar";
     }
   };
-  console.log(props.dropdownSelected, "props.dropdownSelected");
   const settingsPopover = React.useMemo(() => {
     return (
       <Popover
@@ -208,14 +215,7 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
           reset={() => {}}
           barProps={
             {
-              setStacked: setIsBarStacked,
-              stacked: isBarStacked,
-              xAxis: barXAxis,
-              setXAxis: setBarXAxis,
-              yAxis: barYAxis,
-              setYAxis: setBarYAxis,
-              setStacks: setBarStacks,
-              stacks: barStacks,
+              ...props.barProps,
             } as ChartSettingsBarProps
           }
           lineProps={{
@@ -252,16 +252,26 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
             setTrees: setTrees,
             trees,
           }}
+          financialMetricsSettingsProps={{
+            barOption: financialMetricBar,
+            setBarOption: setFinancialMetricBar,
+          }}
+          financialMetricsSortByProps={{
+            order: financialMetricsOrder,
+            setOrder: setFinancialMetricsOrder,
+            onReset: handleResetFinancialMetricsOrder,
+            secondary: true,
+          }}
         />
       </Popover>
     );
   }, [
     settingsAnchorEl,
     props.dropdownSelected,
-    isBarStacked,
-    barXAxis,
-    barYAxis,
-    barStacks,
+    props.barProps?.stacked,
+    props.barProps?.xAxis,
+    props.barProps?.yAxis,
+    props.barProps?.stacks,
     tableRows,
     tableOrder,
     heatmapRows,
@@ -270,6 +280,8 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
     trees,
     treemapNestedContent,
     heatmapBoxes,
+    financialMetricBar,
+    financialMetricsOrder,
   ]);
 
   return (

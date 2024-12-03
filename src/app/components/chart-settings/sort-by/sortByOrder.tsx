@@ -159,7 +159,7 @@ export const ChartSettingsSortByOrder: React.FC<
                   border: "none",
                   background: "none",
                   "&:hover": {
-                    background: "none",
+                    background: "#CFD4DA",
                   },
                   "&:disabled": {
                     color: colors.secondary[500],
