@@ -23,7 +23,7 @@ export const TooltipTitle = () => {
         {getCMSDataField(
           cmsData,
           "pagesDatasets.filtersTooltipTitle",
-          "Global Filtering"
+          "Global Filtering",
         )}
       </Typography>
       <Typography
@@ -36,7 +36,7 @@ export const TooltipTitle = () => {
             `This filter will be affecting the datasets and indicators throughout the
               page and will be shown in <span style="color: #FF9800">orange</span>. 
               Whereas, showcased datasets have their local filtering that is
-            represented in <span style="color: #2196F3">light blue</span>.`
+            represented in <span style="color: #2196F3">light blue</span>.`,
           ),
         }}
       />

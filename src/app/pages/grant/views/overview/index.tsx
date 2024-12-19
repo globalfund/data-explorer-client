@@ -43,7 +43,7 @@ export const GrantOverview: React.FC = () => {
         component: string;
         FPMName: string;
         FPMEmail: string;
-      }
+      },
   );
   const dataOverview = useStoreState((state) =>
     get(state.GrantOverview, "data.data[0]", {
@@ -53,10 +53,10 @@ export const GrantOverview: React.FC = () => {
       disbursement: 0,
       commitment: 0,
       signed: 0,
-    })
+    }),
   );
   const loadingOverview = useStoreState(
-    (state) => state.GrantInfo.loading || state.GrantOverview.loading
+    (state) => state.GrantInfo.loading || state.GrantOverview.loading,
   );
 
   useTitle(`The Data Explorer - ${dataGrant.code}`);
@@ -175,7 +175,7 @@ export const GrantOverview: React.FC = () => {
               {getCMSDataField(
                 cmsData,
                 "pagesGrantOverview.portfolioManager",
-                "Fund Portfolio Manager"
+                "Fund Portfolio Manager",
               )}
             </Typography>
             <Typography variant="overline">
@@ -191,7 +191,7 @@ export const GrantOverview: React.FC = () => {
               {getCMSDataField(
                 cmsData,
                 "pagesGrantOverview.grantStatus",
-                "Grant Status"
+                "Grant Status",
               )}
             </Typography>
             <Typography
@@ -216,7 +216,7 @@ export const GrantOverview: React.FC = () => {
               {getCMSDataField(
                 cmsData,
                 "pagesGrantOverview.countryText",
-                "Country"
+                "Country",
               )}
             </Typography>
             <Typography variant="overline">{dataGrant.countryName}</Typography>
@@ -228,7 +228,7 @@ export const GrantOverview: React.FC = () => {
               {getCMSDataField(
                 cmsData,
                 "pagesGrantOverview.componentText",
-                "Component"
+                "Component",
               )}
             </Typography>
             <Typography variant="overline">{dataGrant.component}</Typography>
@@ -248,7 +248,7 @@ export const GrantOverview: React.FC = () => {
               {getCMSDataField(
                 cmsData,
                 "pagesGrantOverview.principalRecipient",
-                "Principal Recipient"
+                "Principal Recipient",
               )}
             </Typography>
             <Typography variant="overline">
@@ -290,7 +290,7 @@ export const GrantOverview: React.FC = () => {
           {getCMSDataField(
             cmsData,
             "pagesGrantOverview.objectives",
-            "Objectives"
+            "Objectives",
           )}
         </Typography>
         <Typography variant="body2">

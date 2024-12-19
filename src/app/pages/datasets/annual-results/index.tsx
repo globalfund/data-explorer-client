@@ -43,7 +43,7 @@ export const AnnualResultsPage: React.FC = () => {
   });
 
   const [dropdownSelected, setDropdownSelected] = React.useState(
-    dropdownItems[0].value
+    dropdownItems[0].value,
   );
   const [chartAppliedFilters, setChartAppliedFilters] = React.useState<
     string[]
@@ -57,12 +57,12 @@ export const AnnualResultsPage: React.FC = () => {
       get(state.AnnualResultsCycles, "data.data", []) as {
         name: number;
         value: number;
-      }[]
+      }[],
   );
   const [yearSelected, setYearSelected] = React.useState(
     annualResultsCycles.length > 0
       ? annualResultsCycles[0].value.toString()
-      : null
+      : null,
   );
 
   const [tableSearch, setTableSearch] = React.useState("");
@@ -73,19 +73,19 @@ export const AnnualResultsPage: React.FC = () => {
       get(state.AnnualResultsStats, "data.stats", []) as {
         label: string;
         value: number;
-      }[]
+      }[],
   );
   const fetchStats = useStoreActions(
-    (actions) => actions.AnnualResultsStats.fetch
+    (actions) => actions.AnnualResultsStats.fetch,
   );
   const dataPolyline = useStoreState(
     (state) =>
       get(state.AnnualResultsPolyline, "data.data", {
         name: "",
-      }) as PolylineTreeDataItem
+      }) as PolylineTreeDataItem,
   );
   const fetchPolyline = useStoreActions(
-    (actions) => actions.AnnualResultsPolyline.fetch
+    (actions) => actions.AnnualResultsPolyline.fetch,
   );
   const dataTable = useStoreState(
     (state) =>
@@ -97,10 +97,10 @@ export const AnnualResultsPage: React.FC = () => {
           | null
           | object
           | Array<object>;
-      }[]
+      }[],
   );
   const fetchTable = useStoreActions(
-    (actions) => actions.AnnualResultsTable.fetch
+    (actions) => actions.AnnualResultsTable.fetch,
   );
   const loadingResults = useStoreState((state) => {
     switch (dropdownSelected) {
@@ -113,13 +113,13 @@ export const AnnualResultsPage: React.FC = () => {
     }
   });
   const dataDocumentsTable = useStoreState((state) =>
-    get(state.AnnualResultsDocumentsTable, "data.data", [])
+    get(state.AnnualResultsDocumentsTable, "data.data", []),
   );
   const loadingDocumentsTable = useStoreState(
-    (state) => state.AnnualResultsDocumentsTable.loading
+    (state) => state.AnnualResultsDocumentsTable.loading,
   );
   const fetchDocumentsTable = useStoreActions(
-    (actions) => actions.AnnualResultsDocumentsTable.fetch
+    (actions) => actions.AnnualResultsDocumentsTable.fetch,
   );
   const dataLocationFilterOptions = useStoreState(
     (state) =>
@@ -127,7 +127,7 @@ export const AnnualResultsPage: React.FC = () => {
         id: "",
         name: "",
         options: [],
-      }) as FilterGroupModel
+      }) as FilterGroupModel,
   );
   const dataComponentFilterOptions = useStoreState(
     (state) =>
@@ -135,17 +135,17 @@ export const AnnualResultsPage: React.FC = () => {
         id: "",
         name: "",
         options: [],
-      }) as FilterGroupModel
+      }) as FilterGroupModel,
   );
   const pageAppliedFilters = useStoreState((state) => [
     ...state.AppliedFiltersState.components,
     ...state.AppliedFiltersState.locations,
   ]);
   const appliedFiltersData = useStoreState(
-    (state) => state.AppliedFiltersState
+    (state) => state.AppliedFiltersState,
   );
   const appliedFiltersActions = useStoreActions(
-    (actions) => actions.AppliedFiltersState
+    (actions) => actions.AppliedFiltersState,
   );
 
   const handleSelectionChange = (value: string) => {
@@ -172,7 +172,7 @@ export const AnnualResultsPage: React.FC = () => {
   const handleToggleChartFilter = (
     checked: boolean,
     value: string,
-    type: string
+    type: string,
   ) => {
     const state = { ...chartAppliedFiltersData };
     switch (type) {
@@ -245,7 +245,7 @@ export const AnnualResultsPage: React.FC = () => {
       location.search.includes("locations=")
     ) {
       value += `geographies=${encodeURIComponent(
-        appliedFiltersData.locations.join(",")
+        appliedFiltersData.locations.join(","),
       )}`;
     }
     if (
@@ -253,7 +253,7 @@ export const AnnualResultsPage: React.FC = () => {
       location.search.includes("components=")
     ) {
       value += `${value.length > 0 ? "&" : ""}components=${encodeURIComponent(
-        appliedFiltersData.components.join(",")
+        appliedFiltersData.components.join(","),
       )}`;
     }
     return value;
@@ -270,7 +270,7 @@ export const AnnualResultsPage: React.FC = () => {
         uniq([
           ...appliedFiltersData.locations,
           ...chartAppliedFiltersData.locations,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (
@@ -282,7 +282,7 @@ export const AnnualResultsPage: React.FC = () => {
         uniq([
           ...appliedFiltersData.components,
           ...chartAppliedFiltersData.components,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     return value;
@@ -302,7 +302,7 @@ export const AnnualResultsPage: React.FC = () => {
             {getCMSDataField(
               cmsData,
               "pagesDatasetsAnnualResults.toolBarRightText",
-              "Reporting Result Year"
+              "Reporting Result Year",
             )}
           </Typography>
           <Dropdown
@@ -465,7 +465,7 @@ export const AnnualResultsPage: React.FC = () => {
       subtitle={get(
         cmsData,
         "pagesDatasetsAnnualResults.subtitle",
-        "Indicator results reported as part of annual Results Report."
+        "Indicator results reported as part of annual Results Report.",
       )}
     >
       <Box width="100%" marginTop="50px">
@@ -496,7 +496,7 @@ export const AnnualResultsPage: React.FC = () => {
             title={get(
               cmsData,
               "pagesDatasetsAnnualResults.chartTitle",
-              "Annual Results"
+              "Annual Results",
             )}
             subtitle=""
             data={exportChartData}

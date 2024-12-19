@@ -26,21 +26,21 @@ export const HomeBlock1: React.FC = () => {
       get(
         state.HomePledgesContributionsBarChart,
         "data.data",
-        []
-      ) as BarChartDataItem[]
+        [],
+      ) as BarChartDataItem[],
   );
   const loadingPledgesContributionsBarChart = useStoreState((state) =>
-    Boolean(state.HomePledgesContributionsBarChart.loading)
+    Boolean(state.HomePledgesContributionsBarChart.loading),
   );
   const fetchPledgesContributionsBarChart = useStoreActions(
-    (actions) => actions.HomePledgesContributionsBarChart.fetch
+    (actions) => actions.HomePledgesContributionsBarChart.fetch,
   );
   const pledgesContributionsCycles = useStoreState(
     (state) =>
       get(state.PledgesContributionsCycles, "data.data", []) as {
         name: string;
         value: string;
-      }[]
+      }[],
   );
 
   const handleChartCycleChange = (cycle: CycleProps) => {
@@ -66,7 +66,7 @@ export const HomeBlock1: React.FC = () => {
     cycles: {
       name: string;
       value: string;
-    }[]
+    }[],
   ) => {
     let filterString = "";
     if (cycles.length > 0) {
@@ -82,7 +82,7 @@ export const HomeBlock1: React.FC = () => {
   const totalPledge = React.useMemo(() => {
     const v = applyResultValueFormula(
       sumBy(dataPledgesContributionsBarChart, "value"),
-      3
+      3,
     );
     return `US$${v.number} ${v.text}`;
   }, [dataPledgesContributionsBarChart]);
@@ -90,7 +90,7 @@ export const HomeBlock1: React.FC = () => {
   const totalContribution = React.useMemo(() => {
     const v = applyResultValueFormula(
       sumBy(dataPledgesContributionsBarChart, "value1"),
-      3
+      3,
     );
     return `US$${v.number} ${v.text}`;
   }, [dataPledgesContributionsBarChart]);
@@ -102,12 +102,12 @@ export const HomeBlock1: React.FC = () => {
         getCMSDataField(
           cmsData,
           "pagesHome.pledgesContributionsLabel1",
-          "Pledge"
+          "Pledge",
         ),
         getCMSDataField(
           cmsData,
           "pagesHome.pledgesContributionsLabel2",
-          "Contribution"
+          "Contribution",
         ),
       ],
       data: dataPledgesContributionsBarChart.map((d) => [
@@ -130,7 +130,7 @@ export const HomeBlock1: React.FC = () => {
         subtitle={getCMSDataField(
           cmsData,
           "pagesHome.pledgesContributionsSubtitle",
-          "Pledges & Contributions"
+          "Pledges & Contributions",
         )}
         data={exportData}
         loading={loadingPledgesContributionsBarChart}
@@ -148,12 +148,12 @@ export const HomeBlock1: React.FC = () => {
             value: getCMSDataField(
               cmsData,
               "pagesHome.pledgesContributionsLabel1",
-              "Pledge"
+              "Pledge",
             ),
             value1: getCMSDataField(
               cmsData,
               "pagesHome.pledgesContributionsLabel2",
-              "Contribution"
+              "Contribution",
             ),
           }}
         />
@@ -187,7 +187,7 @@ export const HomeBlock1: React.FC = () => {
             {getCMSDataField(
               cmsData,
               "pagesHome.pledgesContributionsLabel1",
-              "Pledged"
+              "Pledged",
             )}
           </Typography>
         </Box>
@@ -204,7 +204,7 @@ export const HomeBlock1: React.FC = () => {
             {getCMSDataField(
               cmsData,
               "pagesHome.pledgesContributionsLabel2",
-              "Contributed"
+              "Contributed",
             )}
           </Typography>
         </Box>

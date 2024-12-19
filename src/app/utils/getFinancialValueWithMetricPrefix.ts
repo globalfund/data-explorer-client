@@ -31,7 +31,7 @@ export function getRange(
   data: any,
   fields: string[],
   lang = "en",
-  fieldPrefix?: string
+  fieldPrefix?: string,
 ) {
   const rangesCount = [0, 0, 0];
 
@@ -82,7 +82,7 @@ export function getRange(
 export function getFinancialValueWithMetricPrefix(
   n: number,
   rangeIndex: number,
-  toFixed = 0
+  toFixed = 0,
 ): string {
   if (rangeIndex > -1) {
     return (n / ranges[rangeIndex].divider).toFixed(toFixed).toString();

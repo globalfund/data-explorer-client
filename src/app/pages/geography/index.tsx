@@ -57,7 +57,7 @@ const GeoCategory: React.FC<GeoCategoryProps> = (props: GeoCategoryProps) => {
 };
 
 const GeoSubCategory: React.FC<GeoSubCategoryProps> = (
-  props: GeoSubCategoryProps
+  props: GeoSubCategoryProps,
 ) => {
   return (
     <Box>
@@ -117,7 +117,7 @@ export const Geography: React.FC = () => {
   const [search, setSearch] = React.useState("");
 
   const dataList = useStoreState(
-    (state) => get(state.GeographyList, "data.data", []) as GeoCategoryProps[]
+    (state) => get(state.GeographyList, "data.data", []) as GeoCategoryProps[],
   );
   const loading = useStoreState((state) => state.GeographyList.loading);
   const fetchList = useStoreActions((actions) => actions.GeographyList.fetch);
@@ -231,7 +231,7 @@ export const Geography: React.FC = () => {
           placeholder={getCMSDataField(
             cmsData,
             "componentsSearch.placeholder",
-            "e.g. Kenya"
+            "e.g. Kenya",
           )}
         />
         {search.length > 0 && (

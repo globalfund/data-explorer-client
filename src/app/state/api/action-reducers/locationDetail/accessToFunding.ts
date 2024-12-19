@@ -15,12 +15,12 @@ export const GrantCycles: ApiCallModel = {
 
 export const TRPWindowCodelist: ApiCallModel = {
   ...APIModel(
-    `${process.env.REACT_APP_API}/funding-requests/trp-window/codelist`
+    `${process.env.REACT_APP_API}/funding-requests/trp-window/codelist`,
   ),
 };
 
 export const PortfolioCategoryCodelist: ApiCallModel = {
   ...APIModel(
-    `${process.env.REACT_APP_API}/funding-requests/portfolio-categories/codelist`
+    `${process.env.REACT_APP_API}/funding-requests/portfolio-categories/codelist`,
   ),
 };

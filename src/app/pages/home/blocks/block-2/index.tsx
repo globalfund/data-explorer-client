@@ -28,21 +28,21 @@ export const HomeBlock2: React.FC = () => {
       get(
         state.HomeAllocationsRadialChart,
         "data.data.chart",
-        []
-      ) as RadialChartDataItem[]
+        [],
+      ) as RadialChartDataItem[],
   );
   const loadingAllocationsRadialChart = useStoreState((state) =>
-    Boolean(state.HomeAllocationsRadialChart.loading)
+    Boolean(state.HomeAllocationsRadialChart.loading),
   );
   const fetchAllocationsRadialChart = useStoreActions(
-    (actions) => actions.HomeAllocationsRadialChart.fetch
+    (actions) => actions.HomeAllocationsRadialChart.fetch,
   );
   const allocationsCycles = useStoreState(
     (state) =>
       get(state.AllocationsCycles, "data.data", []) as {
         name: string;
         value: string;
-      }[]
+      }[],
   );
 
   const handleChartCycleChange = (cycle: CycleProps) => {
@@ -69,7 +69,7 @@ export const HomeBlock2: React.FC = () => {
     cycles: {
       name: string;
       value: string;
-    }[]
+    }[],
   ) => {
     let filterString = "";
     if (cycles.length > 0) {
@@ -121,7 +121,7 @@ export const HomeBlock2: React.FC = () => {
       subtitle={getCMSDataField(
         cmsData,
         "pagesHome.allocationsSubtitle",
-        "Allocations"
+        "Allocations",
       )}
       data={exportChartData}
       title={allocationsTotal}
@@ -137,7 +137,7 @@ export const HomeBlock2: React.FC = () => {
       text={getCMSDataField(
         cmsData,
         "pagesHome.allocationsText",
-        "The Global Fund is distinct from other organizations in that it gives countries (or groups of countries) an allocation and asks countries to describe how they will use those funds rather than asking for applications and then determining an amount per-country based on the merits of the various proposals received.<br/><br/>This provides greater predictability for countries and helps ensure that the programs being funded are not just the ones with the most capacity to write good applications."
+        "The Global Fund is distinct from other organizations in that it gives countries (or groups of countries) an allocation and asks countries to describe how they will use those funds rather than asking for applications and then determining an amount per-country based on the merits of the various proposals received.<br/><br/>This provides greater predictability for countries and helps ensure that the programs being funded are not just the ones with the most capacity to write good applications.",
       )}
       infoType="global"
     >
@@ -146,7 +146,7 @@ export const HomeBlock2: React.FC = () => {
           tooltipLabel={get(
             cmsData,
             "pagesHome.allocationsTooltipLabel",
-            "Total allocation amount"
+            "Total allocation amount",
           )}
           data={dataAllocationsRadialChart}
           itemLabelFormatterType="name"

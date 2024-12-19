@@ -10,17 +10,17 @@ interface Props {
 export function useCMSCollections(props: Props) {
   const cmsData = useStoreState((state) => state.cms.formattedCollections);
   const setCMSData = useStoreActions(
-    (actions) => actions.cms.formattedCollections.setPagesData
+    (actions) => actions.cms.formattedCollections.setPagesData,
   );
 
   // Collections state
   const countrySummaryCMSData = useStoreState(
-    (state) => state.cms.collections.countrySummary.data
+    (state) => state.cms.collections.countrySummary.data,
   );
 
   // Collections actions
   const countrySummaryCMSAction = useStoreActions(
-    (actions) => actions.cms.collections.countrySummary.fetch
+    (actions) => actions.cms.collections.countrySummary.fetch,
   );
 
   function formatCMSData() {

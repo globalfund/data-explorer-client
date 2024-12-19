@@ -23,10 +23,10 @@ export const LocationOverview: React.FC = () => {
       FPMEmail: "",
       currentPrincipalRecipients: [],
       formerPrincipalRecipients: [],
-    })
+    }),
   );
   const dataCCMContacts = useStoreState((state) =>
-    get(state.GeographyOverviewCoordinatingMechanismsContacts, "data.data", [])
+    get(state.GeographyOverviewCoordinatingMechanismsContacts, "data.data", []),
   );
 
   useTitle(`The Data Explorer - ${dataOverview.name}`);
@@ -85,7 +85,7 @@ export const LocationOverview: React.FC = () => {
                 {getCMSDataField(
                   cmsData,
                   "pagesLocationOverview.portfolioManagerTitle",
-                  "Fund Portfolio Manager"
+                  "Fund Portfolio Manager",
                 )}
               </Typography>
               <Typography fontSize="12px">
@@ -102,7 +102,7 @@ export const LocationOverview: React.FC = () => {
                 {getCMSDataField(
                   cmsData,
                   "pagesLocationOverview.coordinatingMechanismContactsTitle",
-                  "Coordinating Mechanism Contacts"
+                  "Coordinating Mechanism Contacts",
                 )}
               </Typography>
               <Box>

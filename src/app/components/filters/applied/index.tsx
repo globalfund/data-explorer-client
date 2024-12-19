@@ -6,17 +6,17 @@ import { FiltersAppliedProps } from "app/components/filters/applied/data";
 import { useStoreActions } from "app/state/store/hooks";
 
 export const FiltersApplied: React.FC<FiltersAppliedProps> = (
-  props: FiltersAppliedProps
+  props: FiltersAppliedProps,
 ) => {
   const appliedFiltersActions = useStoreActions(
-    (actions) => actions.AppliedFiltersState
+    (actions) => actions.AppliedFiltersState,
   );
 
   const handleRemoveFilter = (filter: string) => () => {
     if (props.removeFilter) {
       props.removeFilter(
         filter,
-        props.filterGroups.map((group) => group.id)
+        props.filterGroups.map((group) => group.id),
       );
     } else {
       appliedFiltersActions.removeFilter({

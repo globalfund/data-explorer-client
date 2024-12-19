@@ -46,10 +46,10 @@ export const NOTES_FINANCIALS =
   "The geographical designations employed by the Global Fund do not represent or imply any opinion or judgment on the legal status of any country, territory, city or area on its governmental or state authorities, or on the delimitation of its frontiers or boundaries.<br/><br/>Financial amounts in currencies other than USD from 2014 onward were converted to USD using fixed Replenishment exchange rate, also referred to as the Reference Rate. Financial amounts before 2014 were converted using spot exchange rates.<br /><br />The RSSH category correspond to financial amounts for stand-alone RSSH grants and is not reflective of the full RSSH investment.";
 
 export const DownloadPanel: React.FC<ChartBlockButtonToolbarProps> = (
-  props: ChartBlockButtonToolbarProps
+  props: ChartBlockButtonToolbarProps,
 ) => {
   const [feedbackMessage, setFeedbackMessage] = React.useState<string | null>(
-    null
+    null,
   );
 
   const handleButtonClick = (type: "csv" | "pdf" | "png") => () => {
@@ -93,10 +93,10 @@ export const DownloadPanel: React.FC<ChartBlockButtonToolbarProps> = (
 };
 
 export const SharePanel: React.FC<ChartBlockButtonToolbarProps> = (
-  props: ChartBlockButtonToolbarProps
+  props: ChartBlockButtonToolbarProps,
 ) => {
   const [feedbackMessage, setFeedbackMessage] = React.useState<string | null>(
-    null
+    null,
   );
 
   const handleButtonClick = (type: "code" | "link") => () => {
@@ -109,7 +109,7 @@ export const SharePanel: React.FC<ChartBlockButtonToolbarProps> = (
       chartType = `|${chartType}`;
     }
     navigator.clipboard.writeText(
-      type === "code" ? "" : `${url}#${props.hashId}${chartType}`
+      type === "code" ? "" : `${url}#${props.hashId}${chartType}`,
     );
     setFeedbackMessage(`${type} copied!`);
   };

@@ -45,7 +45,7 @@ export const GrantImplementationPageBlock3: React.FC<
   });
 
   const [budgetsDropdownSelected, setBudgetsDropdownSelected] = React.useState(
-    dropdownItemsBudgets[0].value
+    dropdownItemsBudgets[0].value,
   );
   const [chart2AppliedFilters, setChart2AppliedFilters] = React.useState<
     string[]
@@ -61,12 +61,12 @@ export const GrantImplementationPageBlock3: React.FC<
     const nodes = get(
       state.FinancialInsightsBudgetSankey,
       "data.data.nodes",
-      []
+      [],
     );
     const links = get(
       state.FinancialInsightsBudgetSankey,
       "data.data.links",
-      []
+      [],
     );
     return {
       nodes,
@@ -74,27 +74,27 @@ export const GrantImplementationPageBlock3: React.FC<
     };
   });
   const fetchBudgetSankey = useStoreActions(
-    (actions) => actions.FinancialInsightsBudgetSankey.fetch
+    (actions) => actions.FinancialInsightsBudgetSankey.fetch,
   );
   const dataBudgetTreemap = useStoreState(
     (state) =>
       get(
         state.FinancialInsightsBudgetTreemap,
         "data.data",
-        []
-      ) as TreemapDataItem[]
+        [],
+      ) as TreemapDataItem[],
   );
   const fetchBudgetTreemap = useStoreActions(
-    (actions) => actions.FinancialInsightsBudgetTreemap.fetch
+    (actions) => actions.FinancialInsightsBudgetTreemap.fetch,
   );
   const dataBudgetTable = useStoreState(
     (state) =>
       get(state.FinancialInsightsBudgetTable, "data.data", []) as {
         [key: string]: TableDataItem;
-      }[]
+      }[],
   );
   const fetchBudgetTable = useStoreActions(
-    (actions) => actions.FinancialInsightsBudgetTable.fetch
+    (actions) => actions.FinancialInsightsBudgetTable.fetch,
   );
   const loadingBudget = useStoreState((state) => {
     switch (budgetsDropdownSelected) {
@@ -114,17 +114,17 @@ export const GrantImplementationPageBlock3: React.FC<
         label: cycle.value,
         value: cycle.value,
       }))
-      .reverse()
+      .reverse(),
   );
   const appliedFiltersData = useStoreState(
-    (state) => state.AppliedFiltersState
+    (state) => state.AppliedFiltersState,
   );
 
   const [budgetCycleDropdownSelected, setBudgetCycleDropdownSelected] =
     React.useState(cycles.length > 0 ? cycles[0].value : null);
 
   const [budgetTableDataType, setBudgetTableDataType] = React.useState(
-    dropdownItemsBudgetsTableDataTypes[0].value
+    dropdownItemsBudgetsTableDataTypes[0].value,
   );
 
   const handleBudgetTableDataTypeChange = (value: string) => {
@@ -148,7 +148,7 @@ export const GrantImplementationPageBlock3: React.FC<
   const handleToggleChartFilter = (
     checked: boolean,
     value: string,
-    type: string
+    type: string,
   ) => {
     let state = { ...chart2AppliedFiltersData };
     switch (type) {
@@ -173,7 +173,7 @@ export const GrantImplementationPageBlock3: React.FC<
           state.principalRecipients.push(value);
         } else {
           state.principalRecipients = state.principalRecipients.filter(
-            (item) => item !== value
+            (item) => item !== value,
           );
         }
         break;
@@ -190,7 +190,7 @@ export const GrantImplementationPageBlock3: React.FC<
           state.principalRecipientTypes.push(value);
         } else {
           state.principalRecipientTypes = state.principalRecipientTypes.filter(
-            (item) => item !== value
+            (item) => item !== value,
           );
         }
         break;
@@ -237,7 +237,7 @@ export const GrantImplementationPageBlock3: React.FC<
           break;
         case "principalRecipient":
           state.principalRecipients = state.principalRecipients.filter(
-            (item) => item !== value
+            (item) => item !== value,
           );
           break;
         case "principalRecipientSubType":
@@ -246,7 +246,7 @@ export const GrantImplementationPageBlock3: React.FC<
           break;
         case "principalRecipientType":
           state.principalRecipientTypes = state.principalRecipientTypes.filter(
-            (item) => item !== value
+            (item) => item !== value,
           );
           break;
         case "status":
@@ -331,7 +331,7 @@ export const GrantImplementationPageBlock3: React.FC<
         uniq([
           ...appliedFiltersData.locations,
           ...chart2AppliedFiltersData.locations,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (
@@ -343,7 +343,7 @@ export const GrantImplementationPageBlock3: React.FC<
         uniq([
           ...appliedFiltersData.components,
           ...chart2AppliedFiltersData.components,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (
@@ -357,7 +357,7 @@ export const GrantImplementationPageBlock3: React.FC<
         uniq([
           ...appliedFiltersData.principalRecipients,
           ...chart2AppliedFiltersData.principalRecipients,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (
@@ -371,7 +371,7 @@ export const GrantImplementationPageBlock3: React.FC<
         uniq([
           ...appliedFiltersData.principalRecipientSubTypes,
           ...chart2AppliedFiltersData.principalRecipientSubTypes,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (
@@ -385,7 +385,7 @@ export const GrantImplementationPageBlock3: React.FC<
         uniq([
           ...appliedFiltersData.principalRecipientTypes,
           ...chart2AppliedFiltersData.principalRecipientTypes,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (
@@ -397,7 +397,7 @@ export const GrantImplementationPageBlock3: React.FC<
         uniq([
           ...appliedFiltersData.status,
           ...chart2AppliedFiltersData.status,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (budgetCycleDropdownSelected) {
@@ -459,28 +459,28 @@ export const GrantImplementationPageBlock3: React.FC<
                 {getCMSDataField(
                   cmsData,
                   "pagesDatasetsGrantImplementation.budgetsLabel1",
-                  "Total budget"
+                  "Total budget",
                 )}
               </Grid>
               <Grid item xs={3}>
                 {getCMSDataField(
                   cmsData,
                   "pagesDatasetsGrantImplementation.budgetsLabel2",
-                  "Investement Landscape 1"
+                  "Investement Landscape 1",
                 )}
               </Grid>
               <Grid item xs={3}>
                 {getCMSDataField(
                   cmsData,
                   "pagesDatasetsGrantImplementation.budgetsLabel3",
-                  "Investement Landscape 2"
+                  "Investement Landscape 2",
                 )}
               </Grid>
               <Grid item xs={3}>
                 {getCMSDataField(
                   cmsData,
                   "pagesDatasetsGrantImplementation.budgetsLabel4",
-                  "Cost Category"
+                  "Cost Category",
                 )}
               </Grid>
             </Grid>
@@ -646,12 +646,12 @@ export const GrantImplementationPageBlock3: React.FC<
         title={getCMSDataField(
           cmsData,
           "pagesDatasetsGrantImplementation.budgetsTitle",
-          "Budgets"
+          "Budgets",
         )}
         subtitle={`${totalBudget} ${getCMSDataField(
           cmsData,
           "pagesDatasetsGrantImplementation.budgetsSubtitle",
-          "total budget."
+          "total budget.",
         )}`}
         dropdownItems={dropdownItemsBudgets}
         dropdownSelected={budgetsDropdownSelected}

@@ -69,7 +69,7 @@ const Tooltip = (props: any) => {
 };
 
 export const SunburstChart: React.FC<SunburstProps> = (
-  props: SunburstProps
+  props: SunburstProps,
 ) => {
   const isTouch = useMediaQuery("(hover: none)");
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -134,7 +134,7 @@ export const SunburstChart: React.FC<SunburstProps> = (
           ...chartTooltipCommonConfig(isTouch),
           formatter: (params: any) => {
             return ReactDOMServer.renderToString(
-              <Tooltip {...params} label={props.tooltipLabel} />
+              <Tooltip {...params} label={props.tooltipLabel} />,
             );
           },
         },

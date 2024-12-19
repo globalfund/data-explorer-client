@@ -13,7 +13,7 @@ interface AccessToFundingBlock6Props {
 }
 
 export const AccessToFundingBlock6: React.FC<AccessToFundingBlock6Props> = (
-  props: AccessToFundingBlock6Props
+  props: AccessToFundingBlock6Props,
 ) => {
   const [tableSearch, setTableSearch] = React.useState("");
 
@@ -35,14 +35,14 @@ export const AccessToFundingBlock6: React.FC<AccessToFundingBlock6Props> = (
           };
         }
         return item;
-      }
-    )
+      },
+    ),
   );
   const loadingDocumentsTable = useStoreState(
-    (state) => state.AccessToFundingDocumentsTable.loading
+    (state) => state.AccessToFundingDocumentsTable.loading,
   );
   const fetchDocumentsTable = useStoreActions(
-    (actions) => actions.AccessToFundingDocumentsTable.fetch
+    (actions) => actions.AccessToFundingDocumentsTable.fetch,
   );
 
   const onSearchChange = (search: string) => {

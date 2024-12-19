@@ -28,7 +28,7 @@ export const ResourceMobilization: React.FC = () => {
   const paramsId = params.id?.replace("|", "%2F");
 
   const locationName = useStoreState((state) =>
-    get(state.GeographyOverview, "data.data[0].name", params.id)
+    get(state.GeographyOverview, "data.data[0].name", params.id),
   );
   useTitle(`The Data Explorer - ${locationName}`);
 
@@ -39,14 +39,14 @@ export const ResourceMobilization: React.FC = () => {
       get(
         state.GeographyResourceMobilizationBarChart,
         "data.data",
-        []
-      ) as BarChartDataItem[]
+        [],
+      ) as BarChartDataItem[],
   );
   const loadingRMBarChart = useStoreState(
-    (state) => state.GeographyResourceMobilizationBarChart.loading
+    (state) => state.GeographyResourceMobilizationBarChart.loading,
   );
   const fetchRMBarChart = useStoreActions(
-    (actions) => actions.GeographyResourceMobilizationBarChart.fetch
+    (actions) => actions.GeographyResourceMobilizationBarChart.fetch,
   );
   const cycles = useStoreState(
     (state) =>
@@ -54,11 +54,11 @@ export const ResourceMobilization: React.FC = () => {
         (item: any) => ({
           name: item.value,
           value: item.value,
-        })
+        }),
       ) as {
         name: string;
         value: string;
-      }[]
+      }[],
   );
 
   const handleChartCycleChange = (cycle: CycleProps) => {
@@ -115,7 +115,7 @@ export const ResourceMobilization: React.FC = () => {
         subtitle={getCMSDataField(
           cmsData,
           "pagesLocationResourceMobilization.title",
-          "Pledges & Contributions"
+          "Pledges & Contributions",
         )}
         data={exportChartData}
         handleCycleChange={handleChartCycleChange}
@@ -128,12 +128,12 @@ export const ResourceMobilization: React.FC = () => {
             value: getCMSDataField(
               cmsData,
               "pagesLocationResourceMobilization.barchartLabel1",
-              "Pledge"
+              "Pledge",
             ),
             value1: getCMSDataField(
               cmsData,
               "pagesLocationResourceMobilization.barchartLabel2",
-              "Contribution"
+              "Contribution",
             ),
           }}
         />
@@ -167,7 +167,7 @@ export const ResourceMobilization: React.FC = () => {
             {getCMSDataField(
               cmsData,
               "pagesLocationResourceMobilization.statsLabel1",
-              "Total Pledge"
+              "Total Pledge",
             )}
             {chart1Cycles.length > 0
               ? ` ${chart1Cycles.map((c) => c.name).join(",")}`
@@ -187,7 +187,7 @@ export const ResourceMobilization: React.FC = () => {
             {getCMSDataField(
               cmsData,
               "pagesLocationResourceMobilization.statsLabel2",
-              "Total Contribution"
+              "Total Contribution",
             )}
             {chart1Cycles.length > 0
               ? ` ${chart1Cycles.map((c) => c.name).join(",")}`

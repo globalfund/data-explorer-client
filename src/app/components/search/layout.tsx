@@ -119,7 +119,7 @@ export function SearchLayout(props: SearchLayoutProps) {
           placeholder={getCMSDataField(
             cmsData,
             "componentsSearch.placeholder",
-            "e.g. Kenya"
+            "e.g. Kenya",
           )}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             props.setValue(e.target.value)

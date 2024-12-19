@@ -7,7 +7,7 @@ import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { SankeyChartTooltipProps } from "app/components/charts/sankey/data";
 
 export const SankeyChartTooltip: React.FC<SankeyChartTooltipProps> = (
-  props: SankeyChartTooltipProps
+  props: SankeyChartTooltipProps,
 ) => {
   const value = React.useMemo(() => {
     let items = props.data.links.filter((link) => link.source === props.name);
@@ -29,7 +29,7 @@ export const SankeyChartTooltip: React.FC<SankeyChartTooltipProps> = (
       const node = props.data.nodes.find((n) => n.name === item.target);
       const itemValue = props.data.links
         .filter(
-          (link) => link.target === item.target && link.source === props.name
+          (link) => link.target === item.target && link.source === props.name,
         )
         .reduce((acc, item2) => acc + item2.value, 0);
       returnItems.push({

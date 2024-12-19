@@ -25,44 +25,44 @@ export interface UseFilterOptionsReturn {
 }
 
 export function useFilterOptions(
-  props: UseFilterOptionsProps
+  props: UseFilterOptionsProps,
 ): null | UseFilterOptionsReturn {
   const getLocations = useStoreActions(
-    (store) => store.LocationFilterOptions.fetch
+    (store) => store.LocationFilterOptions.fetch,
   );
   const locations = useStoreState((state) =>
-    get(state.LocationFilterOptions.data, "options", [])
+    get(state.LocationFilterOptions.data, "options", []),
   );
 
   const getComponents = useStoreActions(
-    (store) => store.ComponentFilterOptions.fetch
+    (store) => store.ComponentFilterOptions.fetch,
   );
   const components = useStoreState((state) =>
-    get(state.ComponentFilterOptions.data, "options", [])
+    get(state.ComponentFilterOptions.data, "options", []),
   );
 
   const getPartnerTypes = useStoreActions(
-    (store) => store.PartnerTypeFilterOptions.fetch
+    (store) => store.PartnerTypeFilterOptions.fetch,
   );
   const partnerTypes = useStoreState((state) =>
-    get(state.PartnerTypeFilterOptions.data, "options", [])
+    get(state.PartnerTypeFilterOptions.data, "options", []),
   );
 
   const getStatus = useStoreActions((store) => store.StatusFilterOptions.fetch);
   const status = useStoreState((state) =>
-    get(state.StatusFilterOptions.data, "options", [])
+    get(state.StatusFilterOptions.data, "options", []),
   );
 
   const getReplenishmentPeriods = useStoreActions(
-    (store) => store.ReplenishmentPeriodFilterOptions.fetch
+    (store) => store.ReplenishmentPeriodFilterOptions.fetch,
   );
   const replenishmentPeriods = useStoreState((state) =>
-    get(state.ReplenishmentPeriodFilterOptions.data, "options", [])
+    get(state.ReplenishmentPeriodFilterOptions.data, "options", []),
   );
 
   const getDonors = useStoreActions((store) => store.DonorFilterOptions.fetch);
   const donors = useStoreState((state) =>
-    get(state.DonorFilterOptions.data, "options", [])
+    get(state.DonorFilterOptions.data, "options", []),
   );
 
   const documentTypes = [
@@ -77,42 +77,42 @@ export function useFilterOptions(
   ];
 
   const getGrantCycles = useStoreActions(
-    (store) => store.LocationAccessToFunding.GrantCycles.fetch
+    (store) => store.LocationAccessToFunding.GrantCycles.fetch,
   );
 
   const getEligibilityStatusCodelist = useStoreActions(
-    (store) => store.EligibilityStatusCodelist.fetch
+    (store) => store.EligibilityStatusCodelist.fetch,
   );
   const eligibilityStatusCodelist = useStoreState((state) =>
-    get(state.EligibilityStatusCodelist, "data.data", [])
+    get(state.EligibilityStatusCodelist, "data.data", []),
   );
 
   const getEligibilityDiseaseBurdenCodelist = useStoreActions(
-    (store) => store.EligibilityDiseaseBurdenCodelist.fetch
+    (store) => store.EligibilityDiseaseBurdenCodelist.fetch,
   );
   const EligibilityDiseaseBurdenCodelist = useStoreState((state) =>
-    get(state.EligibilityDiseaseBurdenCodelist, "data.data", [])
+    get(state.EligibilityDiseaseBurdenCodelist, "data.data", []),
   );
 
   const getEligibilityYearOptions = useStoreActions(
-    (store) => store.EligibilityYears.fetch
+    (store) => store.EligibilityYears.fetch,
   );
   const EligibilityYearOptions = useStoreState((state) =>
-    get(state.EligibilityYears, "data.data", [])
+    get(state.EligibilityYears, "data.data", []),
   );
 
   const getFundingRequestsTRPWindowCodelist = useStoreActions(
-    (store) => store.FundingRequestsTRPWindowCodelist.fetch
+    (store) => store.FundingRequestsTRPWindowCodelist.fetch,
   );
   const FundingRequestsTRPWindowCodelist = useStoreState((state) =>
-    get(state.FundingRequestsTRPWindowCodelist, "data.data", [])
+    get(state.FundingRequestsTRPWindowCodelist, "data.data", []),
   );
 
   const getFundingRequestsPortfolioCategoryCodelist = useStoreActions(
-    (store) => store.FundingRequestsPortfolioCategoryCodelist.fetch
+    (store) => store.FundingRequestsPortfolioCategoryCodelist.fetch,
   );
   const FundingRequestsPortfolioCategoryCodelist = useStoreState((state) =>
-    get(state.FundingRequestsPortfolioCategoryCodelist, "data.data", [])
+    get(state.FundingRequestsPortfolioCategoryCodelist, "data.data", []),
   );
 
   React.useEffect(() => {

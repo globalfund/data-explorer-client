@@ -55,13 +55,13 @@ export function Heatmap(props: HeatmapProps) {
     if (props.expandAll) {
       setExpandedRows(
         filter(props.data, (item: HeatmapDataItem) => !item.parentRow).map(
-          (item: HeatmapDataItem) => item.row
-        )
+          (item: HeatmapDataItem) => item.row,
+        ),
       );
       setExpandedColumns(
         filter(props.data, (item: HeatmapDataItem) => !item.parentColumn).map(
-          (item: HeatmapDataItem) => item.column
-        )
+          (item: HeatmapDataItem) => item.column,
+        ),
       );
     } else {
       setExpandedRows([]);
@@ -87,7 +87,7 @@ export function Heatmap(props: HeatmapProps) {
                       expanded: false,
                       level: 2,
                     })),
-                  "name"
+                  "name",
                 );
                 return {
                   name: subName,
@@ -96,7 +96,7 @@ export function Heatmap(props: HeatmapProps) {
                   level: 1,
                 };
               }),
-            "name"
+            "name",
           );
           return {
             name,
@@ -105,14 +105,14 @@ export function Heatmap(props: HeatmapProps) {
             level: 0,
           };
         }),
-        "name"
+        "name",
       ).sort((a, b) => {
         if (a.name === "Income Level") return 1;
         if (b.name === "Income Level") return -1;
         if (a.name > b.name) return 1;
         if (b.name > a.name) return -1;
         return 0;
-      })
+      }),
     );
   }, [rootData, expandedRows]);
 
@@ -134,7 +134,7 @@ export function Heatmap(props: HeatmapProps) {
                       expanded: false,
                       level: 2,
                     })),
-                  "name"
+                  "name",
                 );
                 return {
                   level: 1,
@@ -143,7 +143,7 @@ export function Heatmap(props: HeatmapProps) {
                   children: subChildren.length > 0 ? subChildren : undefined,
                 };
               }),
-            "name"
+            "name",
           );
           return {
             name,
@@ -152,8 +152,8 @@ export function Heatmap(props: HeatmapProps) {
             children: children.length > 0 ? children : undefined,
           };
         }),
-        "name"
-      )
+        "name",
+      ),
     );
   }, [rootData, expandedColumns]);
 
@@ -166,13 +166,13 @@ export function Heatmap(props: HeatmapProps) {
         sortedVisibleRows = orderBy(
           visibleRows,
           (item) => parseInt(item.name, 10),
-          "desc"
+          "desc",
         );
       } else if (props.rowCategory === "grantCycle") {
         sortedVisibleRows = orderBy(
           visibleRows,
           (item) => parseInt(item.name.split(",")[0], 10),
-          "desc"
+          "desc",
         );
       }
     }
@@ -205,13 +205,13 @@ export function Heatmap(props: HeatmapProps) {
         sortedVisibleColumns = orderBy(
           visibleColumns,
           (item) => parseInt(item.name, 10),
-          "desc"
+          "desc",
         );
       } else if (props.columnCategory === "grantCycle") {
         sortedVisibleColumns = orderBy(
           visibleColumns,
           (item) => parseInt(item.name.split(",")[0], 10),
-          "desc"
+          "desc",
         );
       }
     }
@@ -405,13 +405,13 @@ export function Heatmap(props: HeatmapProps) {
                 >
                   {flatVisibleColumns.map((column) => {
                     const data = props.data.find(
-                      (d) => d.row === row.name && d.column === column.name
+                      (d) => d.row === row.name && d.column === column.name,
                     );
                     const color = props.getItemColor(data);
                     let value: number | string = get(
                       data,
                       props.contentProp,
-                      0
+                      0,
                     );
                     if (isNumber(value)) {
                       if ((value as number) > 0) {
@@ -424,7 +424,7 @@ export function Heatmap(props: HeatmapProps) {
                           value = value + "%";
                         } else {
                           value = formatFinancialValue(
-                            parseInt(value.toString(), 10)
+                            parseInt(value.toString(), 10),
                           );
                         }
                       }

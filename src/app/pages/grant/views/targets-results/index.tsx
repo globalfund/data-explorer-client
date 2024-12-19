@@ -27,19 +27,19 @@ export const GrantTargetsResults: React.FC = () => {
   const [tableSearch, setTableSearch] = React.useState("");
 
   const dataTable = useStoreState((state) =>
-    get(state.GrantTargetsResultsTable, "data.data", [])
+    get(state.GrantTargetsResultsTable, "data.data", []),
   );
   const years = useStoreState((state) =>
-    get(state.GrantTargetsResultsTable, "data.years", [])
+    get(state.GrantTargetsResultsTable, "data.years", []),
   );
   const dates = useStoreState((state) =>
-    get(state.GrantTargetsResultsTable, "data.dates", [])
+    get(state.GrantTargetsResultsTable, "data.dates", []),
   );
   const loading = useStoreState(
-    (state) => state.GrantTargetsResultsTable.loading
+    (state) => state.GrantTargetsResultsTable.loading,
   );
   const fetchTable = useStoreActions(
-    (actions) => actions.GrantTargetsResultsTable.fetch
+    (actions) => actions.GrantTargetsResultsTable.fetch,
   );
 
   const handleTabChange = (value: string) => {
@@ -175,18 +175,18 @@ export const GrantTargetsResults: React.FC = () => {
         title={getCMSDataField(
           cmsData,
           "pagesGrantTargetResults.title",
-          "Indicators"
+          "Indicators",
         )}
         id="grant-targets-results"
         subtitle={getCMSDataField(
           cmsData,
           "pagesGrantTargetResults.subtitle",
-          "Targets & Results"
+          "Targets & Results",
         )}
         text={getCMSDataField(
           cmsData,
           "pagesGrantTargetResults.text",
-          "Description of Impact indicators: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
+          "Description of Impact indicators: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished.",
         )}
         data={dataTable}
         infoType="global"

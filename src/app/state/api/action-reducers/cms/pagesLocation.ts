@@ -7,31 +7,31 @@ const pagesLocation: CMSApiCallModel = {
 
 export const pagesLocationAccessToFunding: CMSApiCallModel = {
   ...APIModel(
-    `${process.env.REACT_APP_CMS_API}/pages-location-access-to-funding?locale=all`
+    `${process.env.REACT_APP_CMS_API}/pages-location-access-to-funding?locale=all`,
   ),
 };
 
 export const pagesLocationGrantImplementation: CMSApiCallModel = {
   ...APIModel(
-    `${process.env.REACT_APP_CMS_API}/pages-location-grant-implementation?locale=all`
+    `${process.env.REACT_APP_CMS_API}/pages-location-grant-implementation?locale=all`,
   ),
 };
 
 export const pagesLocationOverview: CMSApiCallModel = {
   ...APIModel(
-    `${process.env.REACT_APP_CMS_API}/pages-location-overview?locale=all`
+    `${process.env.REACT_APP_CMS_API}/pages-location-overview?locale=all`,
   ),
 };
 
 export const pagesLocationResourceMobilization: CMSApiCallModel = {
   ...APIModel(
-    `${process.env.REACT_APP_CMS_API}/pages-location-resource-mobilization?locale=all`
+    `${process.env.REACT_APP_CMS_API}/pages-location-resource-mobilization?locale=all`,
   ),
 };
 
 export const pagesLocationResults: CMSApiCallModel = {
   ...APIModel(
-    `${process.env.REACT_APP_CMS_API}/pages-location-results?locale=all`
+    `${process.env.REACT_APP_CMS_API}/pages-location-results?locale=all`,
   ),
 };
 

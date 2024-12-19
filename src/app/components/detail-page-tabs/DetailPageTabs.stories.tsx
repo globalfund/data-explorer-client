@@ -12,7 +12,7 @@ import {
 
 const Wrapper: React.FC<DetailPageTabsProps> = (props: DetailPageTabsProps) => {
   const [dropdownSelected, setDropdownSelected] = React.useState(
-    props.dropdown?.dropdownItems[0].value
+    props.dropdown?.dropdownItems[0].value,
   );
 
   const handleSelectionChange = (value: string) => {

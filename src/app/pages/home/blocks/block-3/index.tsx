@@ -27,25 +27,25 @@ export const HomeBlock3: React.FC = () => {
   const [chart3Cycles, setChart3Cycles] = React.useState<CycleProps[]>([]);
 
   const [chart3Dropdown, setChart3Dropdown] = React.useState(
-    CHART_3_DROPDOWN_ITEMS[1].value
+    CHART_3_DROPDOWN_ITEMS[1].value,
   );
 
   const dataBudgetsTreemap = useStoreState(
     (state) =>
-      get(state.HomeBudgetsTreemap, "data.data", []) as TreemapDataItem[]
+      get(state.HomeBudgetsTreemap, "data.data", []) as TreemapDataItem[],
   );
   const loadingBudgetsTreemap = useStoreState((state) =>
-    Boolean(state.HomeBudgetsTreemap.loading)
+    Boolean(state.HomeBudgetsTreemap.loading),
   );
   const fetchBudgetsTreemap = useStoreActions(
-    (actions) => actions.HomeBudgetsTreemap.fetch
+    (actions) => actions.HomeBudgetsTreemap.fetch,
   );
   const budgetsCycles = useStoreState(
     (state) =>
       get(state.BudgetsCycles, "data.data", []) as {
         name: string;
         value: string;
-      }[]
+      }[],
   );
 
   const handleChartCycleChange = (cycle: CycleProps) => {
@@ -70,7 +70,7 @@ export const HomeBlock3: React.FC = () => {
 
   const reloadBudgetsTreemap = (
     cycles: CycleProps[],
-    componentField: string
+    componentField: string,
   ) => {
     let filterString = "";
     if (cycles.length > 0) {
@@ -138,7 +138,7 @@ export const HomeBlock3: React.FC = () => {
       subtitle={getCMSDataField(
         cmsData,
         "pagesHome.grantBudgetsSubtitle",
-        "Grant Budgets"
+        "Grant Budgets",
       )}
       data={exportChartData}
       selectedCycles={chart3Cycles}

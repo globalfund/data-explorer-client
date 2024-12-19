@@ -21,7 +21,7 @@ export const useGetDatasetLatestUpdate = (props: {
       get(state.datasetsLatestUpdate, "data.data", []) as {
         name: string;
         date: string;
-      }[]
+      }[],
   );
 
   const value = React.useMemo(() => {

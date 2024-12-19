@@ -96,7 +96,7 @@ export function SearchResults(props: SearchResultsProps) {
             {getCMSDataField(
               cmsData,
               "componentsSearch.noResults",
-              "No results found."
+              "No results found.",
             )}
           </NoResults>
         )}

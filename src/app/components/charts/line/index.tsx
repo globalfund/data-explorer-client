@@ -205,7 +205,7 @@ export const LineChart: React.FC<LineChartProps> = (props: LineChartProps) => {
                 cumulative += value;
               });
             return ReactDOMServer.renderToString(
-              <Tooltip {...params} cumulative={cumulative} />
+              <Tooltip {...params} cumulative={cumulative} />,
             );
           },
         },

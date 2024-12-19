@@ -36,23 +36,23 @@ export const LocationGrantImplementationBlock4 = () => {
         pie1: PieChartDataItem[];
         pie2: PieChartDataItem[];
         pie3: PieChartDataItem[];
-      }
+      },
   );
   const dataGrantsTable = useStoreState(
     (state) =>
-      get(state.GeographyGrantsTable, "data.data", []) as GrantCardProps[]
+      get(state.GeographyGrantsTable, "data.data", []) as GrantCardProps[],
   );
   const countGrantsTable = useStoreState((state) =>
-    get(state.GeographyGrantsTable, "data.count", 0)
+    get(state.GeographyGrantsTable, "data.count", 0),
   );
   const loadingGrantsPieCharts = useStoreState(
-    (state) => state.GeographyGrantsPieCharts.loading
+    (state) => state.GeographyGrantsPieCharts.loading,
   );
   const loadingGrantsTable = useStoreState(
-    (state) => state.GeographyGrantsTable.loading
+    (state) => state.GeographyGrantsTable.loading,
   );
   const fetchGrantsTable = useStoreActions(
-    (actions) => actions.GeographyGrantsTable.fetch
+    (actions) => actions.GeographyGrantsTable.fetch,
   );
 
   const onSearchChange = (search: string) => {
@@ -77,12 +77,12 @@ export const LocationGrantImplementationBlock4 = () => {
       const endDate = new Date(item.endDate);
       if (startDate) {
         datesStr = `${getMonthFromNumber(
-          startDate.getMonth() + 1
+          startDate.getMonth() + 1,
         )} ${startDate.getFullYear()} - `;
       }
       if (endDate) {
         datesStr += `${getMonthFromNumber(
-          endDate.getMonth() + 1
+          endDate.getMonth() + 1,
         )} ${endDate.getFullYear()}`;
       }
       return {
@@ -113,9 +113,9 @@ export const LocationGrantImplementationBlock4 = () => {
       data: dataGrantsTable.map((item) => [
         item.number,
         `${getMonthFromNumber(
-          new Date(item.startDate).getMonth() + 1
+          new Date(item.startDate).getMonth() + 1,
         )} ${new Date(item.startDate).getFullYear()} - ${getMonthFromNumber(
-          new Date(item.endDate).getMonth() + 1
+          new Date(item.endDate).getMonth() + 1,
         )} ${new Date(item.endDate).getFullYear()}`,
         `"${item.location}"`,
         item.component,
@@ -140,7 +140,7 @@ export const LocationGrantImplementationBlock4 = () => {
       title={`${countGrantsTable} ${getCMSDataField(
         cmsData,
         "pagesLocationGrantImplementation.grantsTitle",
-        "Grants"
+        "Grants",
       )}`}
       subtitle=""
       empty={!showGrantsTable}
@@ -195,7 +195,7 @@ export const LocationGrantImplementationBlock4 = () => {
             {getCMSDataField(
               cmsData,
               "pagesLocationGrantImplementation.grantsPieChart1Title",
-              "Components"
+              "Components",
             )}
           </Typography>
           <PieChart data={dataGrantsPieCharts.pie1} />
@@ -211,7 +211,7 @@ export const LocationGrantImplementationBlock4 = () => {
             {getCMSDataField(
               cmsData,
               "pagesLocationGrantImplementation.grantsPieChart2Title",
-              "Principal Recipients"
+              "Principal Recipients",
             )}
           </Typography>
           <PieChart data={dataGrantsPieCharts.pie2} />
@@ -227,7 +227,7 @@ export const LocationGrantImplementationBlock4 = () => {
             {getCMSDataField(
               cmsData,
               "pagesLocationGrantImplementation.grantsPieChart3Title",
-              "Investments"
+              "Investments",
             )}
           </Typography>
           <PieChart data={dataGrantsPieCharts.pie3} />

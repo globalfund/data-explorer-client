@@ -83,7 +83,7 @@ export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
 
   const dropdownSelectedIcon = React.useMemo(() => {
     const selected = props.dropdownItems.find(
-      (item) => item.label === props.dropdownSelected
+      (item) => item.label === props.dropdownSelected,
     );
     return selected ? selected.icon : null;
   }, [props.dropdownItems, props.dropdownSelected]);

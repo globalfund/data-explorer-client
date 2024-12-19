@@ -12,7 +12,7 @@ import {
 } from "app/components/charts/financial-metric/data";
 
 export const FinancialMetric: React.FC<FinancialMetricProps> = (
-  props: FinancialMetricProps
+  props: FinancialMetricProps,
 ) => {
   return (
     <Box
@@ -74,7 +74,7 @@ export const FinancialMetric: React.FC<FinancialMetricProps> = (
 };
 
 const ExpandableItem: React.FC<FinancialMetricExpandableItemProps> = (
-  props: FinancialMetricExpandableItemProps
+  props: FinancialMetricExpandableItemProps,
 ) => {
   const [expanded, setExpanded] = React.useState(false);
 

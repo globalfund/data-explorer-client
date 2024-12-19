@@ -31,13 +31,13 @@ export const GrantImplementationPageBlock4: React.FC<
         name: string;
         value: number;
         color: string;
-      }[]
+      }[],
   );
   const fetchBudgetBreakdown = useStoreActions(
-    (actions) => actions.FinancialInsightsBudgetBreakdown.fetch
+    (actions) => actions.FinancialInsightsBudgetBreakdown.fetch,
   );
   const loadingBudgetBreakdown = useStoreState(
-    (state) => state.FinancialInsightsBudgetBreakdown.loading
+    (state) => state.FinancialInsightsBudgetBreakdown.loading,
   );
   const cycles = useStoreState((state) =>
     get(state.BudgetsCycles, "data.data", [])
@@ -45,7 +45,7 @@ export const GrantImplementationPageBlock4: React.FC<
         label: cycle.value,
         value: cycle.value,
       }))
-      .reverse()
+      .reverse(),
   );
 
   const [budgetBreakdownDropdownSelected, setBudgetBreakdownDropdownSelected] =
@@ -104,14 +104,14 @@ export const GrantImplementationPageBlock4: React.FC<
             {getCMSDataField(
               cmsData,
               "pagesDatasetsGrantImplementation.budgetBreakdownTitle",
-              "Budget Breakdown"
+              "Budget Breakdown",
             )}
           </Typography>
           <Typography fontSize="14px">
             {getCMSDataField(
               cmsData,
               "pagesDatasetsGrantImplementation.budgetBreakdownSubtitle",
-              "By grant component"
+              "By grant component",
             )}
           </Typography>
         </Box>

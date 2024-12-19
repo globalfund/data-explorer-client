@@ -87,7 +87,7 @@ const Tooltip = (props: any) => {
 };
 
 export const BarSeriesChart: React.FC<BarSeriesChartProps> = (
-  props: BarSeriesChartProps
+  props: BarSeriesChartProps,
 ) => {
   const isTouch = useMediaQuery("(hover: none)");
   const mobile = useMediaQuery("(max-width: 767px)");

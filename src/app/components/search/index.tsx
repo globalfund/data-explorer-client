@@ -14,7 +14,7 @@ export function Search(props: { hocClose?: () => void }) {
   const [category, setCategory] = React.useState(categories[0].label);
   const [storedValue, setStoredValue] = useSessionStorage(
     "stored-search-string",
-    ""
+    "",
   );
   const [value, setValue] = React.useState(storedValue);
 
@@ -23,7 +23,7 @@ export function Search(props: { hocClose?: () => void }) {
   const fetchData = useStoreActions((store) => store.GlobalSearch.fetch);
   const data = useStoreState(
     (state) =>
-      get(state.GlobalSearch.data, "data", []) as SearchResultsTabModel[]
+      get(state.GlobalSearch.data, "data", []) as SearchResultsTabModel[],
   );
   const isLoading = useStoreState((state) => state.GlobalSearch.loading);
 
@@ -47,7 +47,7 @@ export function Search(props: { hocClose?: () => void }) {
       }
     },
     500,
-    [value]
+    [value],
   );
 
   function onClose() {

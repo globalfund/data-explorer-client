@@ -60,39 +60,39 @@ export const GrantImplementationPageBlock2: React.FC<
       get(
         state.FinancialInsightsDisbursementsBarChart,
         "data.data",
-        []
-      ) as BarChartDataItem[]
+        [],
+      ) as BarChartDataItem[],
   );
   const fetchFinancialInsightsDisbursementsBarChart = useStoreActions(
-    (actions) => actions.FinancialInsightsDisbursementsBarChart.fetch
+    (actions) => actions.FinancialInsightsDisbursementsBarChart.fetch,
   );
   const dataFinancialInsightsDisbursementsLineChart = useStoreState(
     (state) =>
       get(
         state.FinancialInsightsDisbursementsLineChart,
         "data.data",
-        []
-      ) as LineChartDataItem[]
+        [],
+      ) as LineChartDataItem[],
   );
   const keysFinancialInsightsDisbursementsLineChart = useStoreState(
     (state) =>
       get(
         state.FinancialInsightsDisbursementsLineChart,
         "data.xAxisKeys",
-        []
-      ) as string[]
+        [],
+      ) as string[],
   );
   const fetchFinancialInsightsDisbursementsLineChart = useStoreActions(
-    (actions) => actions.FinancialInsightsDisbursementsLineChart.fetch
+    (actions) => actions.FinancialInsightsDisbursementsLineChart.fetch,
   );
   const dataFinancialInsightsDisbursementsTable = useStoreState(
     (state) =>
       get(state.FinancialInsightsDisbursementsTable, "data.data", []) as {
         [key: string]: TableDataItem;
-      }[]
+      }[],
   );
   const fetchFinancialInsightsDisbursementsTable = useStoreActions(
-    (actions) => actions.FinancialInsightsDisbursementsTable.fetch
+    (actions) => actions.FinancialInsightsDisbursementsTable.fetch,
   );
   const loadingFinancialInsightsDisbursements = useStoreState((state) => {
     switch (disbursementsDropdownSelected) {
@@ -108,7 +108,7 @@ export const GrantImplementationPageBlock2: React.FC<
   });
 
   const appliedFiltersData = useStoreState(
-    (state) => state.AppliedFiltersState
+    (state) => state.AppliedFiltersState,
   );
 
   const handleDisbursementsSelectionChange = (value: string) => {
@@ -132,7 +132,7 @@ export const GrantImplementationPageBlock2: React.FC<
   const handleToggleChartFilter = (
     checked: boolean,
     value: string,
-    type: string
+    type: string,
   ) => {
     let state = { ...chart1AppliedFiltersData };
     switch (type) {
@@ -157,7 +157,7 @@ export const GrantImplementationPageBlock2: React.FC<
           state.principalRecipients.push(value);
         } else {
           state.principalRecipients = state.principalRecipients.filter(
-            (item) => item !== value
+            (item) => item !== value,
           );
         }
         break;
@@ -174,7 +174,7 @@ export const GrantImplementationPageBlock2: React.FC<
           state.principalRecipientTypes.push(value);
         } else {
           state.principalRecipientTypes = state.principalRecipientTypes.filter(
-            (item) => item !== value
+            (item) => item !== value,
           );
         }
         break;
@@ -221,7 +221,7 @@ export const GrantImplementationPageBlock2: React.FC<
           break;
         case "principalRecipient":
           state.principalRecipients = state.principalRecipients.filter(
-            (item) => item !== value
+            (item) => item !== value,
           );
           break;
         case "principalRecipientSubType":
@@ -230,7 +230,7 @@ export const GrantImplementationPageBlock2: React.FC<
           break;
         case "principalRecipientType":
           state.principalRecipientTypes = state.principalRecipientTypes.filter(
-            (item) => item !== value
+            (item) => item !== value,
           );
           break;
         case "status":
@@ -287,7 +287,7 @@ export const GrantImplementationPageBlock2: React.FC<
         uniq([
           ...appliedFiltersData.locations,
           ...chart1AppliedFiltersData.locations,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (
@@ -299,7 +299,7 @@ export const GrantImplementationPageBlock2: React.FC<
         uniq([
           ...appliedFiltersData.components,
           ...chart1AppliedFiltersData.components,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (
@@ -313,7 +313,7 @@ export const GrantImplementationPageBlock2: React.FC<
         uniq([
           ...appliedFiltersData.principalRecipients,
           ...chart1AppliedFiltersData.principalRecipients,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (
@@ -327,7 +327,7 @@ export const GrantImplementationPageBlock2: React.FC<
         uniq([
           ...appliedFiltersData.principalRecipientSubTypes,
           ...chart1AppliedFiltersData.principalRecipientSubTypes,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (
@@ -341,7 +341,7 @@ export const GrantImplementationPageBlock2: React.FC<
         uniq([
           ...appliedFiltersData.principalRecipientTypes,
           ...chart1AppliedFiltersData.principalRecipientTypes,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (
@@ -353,7 +353,7 @@ export const GrantImplementationPageBlock2: React.FC<
         uniq([
           ...appliedFiltersData.status,
           ...chart1AppliedFiltersData.status,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (
@@ -621,12 +621,12 @@ export const GrantImplementationPageBlock2: React.FC<
         title={getCMSDataField(
           cmsData,
           "pagesDatasetsGrantImplementation.disbursementsTitle",
-          "Disbursements"
+          "Disbursements",
         )}
         subtitle={getCMSDataField(
           cmsData,
           "pagesDatasetsGrantImplementation.disbursementsSubtitle",
-          "Disbursement transactions for all grants across the porfolio."
+          "Disbursement transactions for all grants across the porfolio.",
         )}
         dropdownItems={dropdownItemsDisbursements}
         dropdownSelected={disbursementsDropdownSelected}

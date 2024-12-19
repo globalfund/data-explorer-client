@@ -24,7 +24,7 @@ import {
 echarts.use([TooltipComponent, EChartsSankey, SVGRenderer]);
 
 export const SankeyChart: React.FC<SankeyChartProps> = (
-  props: SankeyChartProps
+  props: SankeyChartProps,
 ) => {
   const mobile = useMediaQuery("(max-width: 767px)");
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -103,7 +103,7 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
                         `{value|US$ ${getFinancialValueWithMetricPrefix(
                           params.value,
                           range.index,
-                          3
+                          3,
                         )}${range.abbr}}`,
                       ].join("\n")
                     : params.name;
@@ -142,7 +142,7 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
                         `{value|US$ ${getFinancialValueWithMetricPrefix(
                           params.value,
                           range.index,
-                          3
+                          3,
                         )}${range.abbr}}`,
                         `\n`,
                         `{perc|${((params.value / totalValue) * 100)
@@ -187,7 +187,7 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
                         `{value|US$ ${getFinancialValueWithMetricPrefix(
                           params.value,
                           range.index,
-                          3
+                          3,
                         )}${range.abbr}}`,
                       ].join("")
                     : params.name;
@@ -242,7 +242,7 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
             if (data.source && data.target) {
               const sourceTotal = sumBy(
                 props.data.links.filter((node) => node.source === data.source),
-                "value"
+                "value",
               );
               return ReactDOMServer.renderToString(
                 <Box
@@ -274,7 +274,7 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
                       .replace(".00", "")}
                     % of {data.source}
                   </Box>
-                </Box>
+                </Box>,
               );
             }
             return ReactDOMServer.renderToString(
@@ -283,7 +283,7 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
                 data={props.data}
                 level={data.level}
                 totalValue={totalValue}
-              />
+              />,
             );
           },
         },

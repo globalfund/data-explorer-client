@@ -29,7 +29,7 @@ const ButtonTab = styled(NavLink)`
 `;
 
 export const DetailPageTabs: React.FC<DetailPageTabsProps> = (
-  props: DetailPageTabsProps
+  props: DetailPageTabsProps,
 ) => {
   const mobile = useMediaQuery("(max-width:767px)");
   const params = useParams<{ id: string; tab: string }>();

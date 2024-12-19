@@ -27,7 +27,7 @@ export const AccessToFundingPage: React.FC = () => {
         id: "",
         name: "",
         options: [],
-      }) as FilterGroupModel
+      }) as FilterGroupModel,
   );
   const dataComponentFilterOptions = useStoreState(
     (state) =>
@@ -35,7 +35,7 @@ export const AccessToFundingPage: React.FC = () => {
         id: "",
         name: "",
         options: [],
-      }) as FilterGroupModel
+      }) as FilterGroupModel,
   );
   const pageAppliedFilters = useStoreState((state) => [
     ...state.AppliedFiltersState.components,
@@ -43,10 +43,10 @@ export const AccessToFundingPage: React.FC = () => {
     ...state.AppliedFiltersState.cycles,
   ]);
   const appliedFiltersData = useStoreState(
-    (state) => state.AppliedFiltersState
+    (state) => state.AppliedFiltersState,
   );
   const appliedFiltersActions = useStoreActions(
-    (actions) => actions.AppliedFiltersState
+    (actions) => actions.AppliedFiltersState,
   );
 
   const handleResetFilters = () => {
@@ -77,7 +77,7 @@ export const AccessToFundingPage: React.FC = () => {
       location.search.includes("locations=")
     ) {
       value += `geographies=${encodeURIComponent(
-        appliedFiltersData.locations.join(",")
+        appliedFiltersData.locations.join(","),
       )}`;
     }
     if (
@@ -85,7 +85,7 @@ export const AccessToFundingPage: React.FC = () => {
       location.search.includes("components=")
     ) {
       value += `${value.length > 0 ? "&" : ""}components=${encodeURIComponent(
-        appliedFiltersData.components.join(",")
+        appliedFiltersData.components.join(","),
       )}`;
     }
     return value;
@@ -96,7 +96,7 @@ export const AccessToFundingPage: React.FC = () => {
       title={getCMSDataField(
         cmsData,
         "pagesDatasetsAccessToFunding.title",
-        "Access to Funding"
+        "Access to Funding",
       )}
       subtitle=""
       filterGroups={filterGroups}

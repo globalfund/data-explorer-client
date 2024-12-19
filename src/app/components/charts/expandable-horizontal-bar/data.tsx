@@ -1046,7 +1046,7 @@ export const STORY_DATA_VARIANT_2: ExpandableHorizontalBarChartDataItem[] = [
 
 export function findDeep(
   data: ExpandableHorizontalBarChartDataItem[],
-  name: string
+  name: string,
 ): ExpandableHorizontalBarChartDataItem | undefined {
   for (const item of data) {
     if (item.name === name) {

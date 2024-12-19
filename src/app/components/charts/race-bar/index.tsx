@@ -8,7 +8,7 @@ import {
 } from "app/utils/getFinancialValueWithMetricPrefix";
 
 export const RaceBarChart: React.FC<RaceBarChartProps> = (
-  props: RaceBarChartProps
+  props: RaceBarChartProps,
 ) => {
   return (
     <Box
@@ -49,7 +49,7 @@ export const RaceBarChart: React.FC<RaceBarChartProps> = (
                 ? `US$${getFinancialValueWithMetricPrefix(
                     item.value,
                     range.index,
-                    2
+                    2,
                   )} ${range.abbr}`
                 : item.value}{" "}
               - {item.percentage.toFixed(0)}%

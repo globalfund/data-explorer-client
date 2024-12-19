@@ -61,7 +61,7 @@ export const Variant2: StoryType = {
     columns: TABLE_VARIATION_2_COLUMNS.slice(0, 7),
     extraColumns: TABLE_VARIATION_2_COLUMNS.slice(
       7,
-      TABLE_VARIATION_2_COLUMNS.length - 1
+      TABLE_VARIATION_2_COLUMNS.length - 1,
     ),
   },
 };
@@ -84,7 +84,7 @@ export const Variant4: StoryType = {
     columns: TABLE_VARIATION_4_COLUMNS.slice(0, 1),
     extraColumns: TABLE_VARIATION_4_COLUMNS.slice(
       1,
-      TABLE_VARIATION_2_COLUMNS.length - 1
+      TABLE_VARIATION_2_COLUMNS.length - 1,
     ),
   },
 };

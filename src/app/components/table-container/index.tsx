@@ -20,14 +20,14 @@ import { ReactComponent as ColumnsIcon } from "app/assets/vectors/TableToolbarCo
 import { ReactComponent as FullscreenIcon } from "app/assets/vectors/TableToolbarFullscreen.svg";
 
 export const TableContainer: React.FC<TableContainerProps> = (
-  props: TableContainerProps
+  props: TableContainerProps,
 ) => {
   const [table, setTable] = React.useState<Tabulator | null>(null);
   const [columns, setColumns] = React.useState(
     props.columns.map((column) => ({
       ...column,
       visible: true,
-    }))
+    })),
   );
   const [extraColumns, setExtraColumns] = React.useState(
     props.extraColumns
@@ -35,10 +35,10 @@ export const TableContainer: React.FC<TableContainerProps> = (
           ...column,
           visible: true,
         }))
-      : []
+      : [],
   );
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLButtonElement>(
-    null
+    null,
   );
   const [search, setSearch] = React.useState("");
   const [search1, setSearch1] = React.useState("");
@@ -48,7 +48,7 @@ export const TableContainer: React.FC<TableContainerProps> = (
   const fullscreenRef = React.useRef<HTMLDivElement>(null);
 
   const handleColumnsMenuClick = (
-    event: React.MouseEvent<HTMLButtonElement>
+    event: React.MouseEvent<HTMLButtonElement>,
   ) => {
     setAnchorEl(event.currentTarget);
   };
@@ -108,7 +108,7 @@ export const TableContainer: React.FC<TableContainerProps> = (
       }
     },
     500,
-    [search]
+    [search],
   );
 
   React.useEffect(() => {
@@ -298,7 +298,7 @@ export const TableContainer: React.FC<TableContainerProps> = (
                         checked={column.visible}
                         onChange={handleColumnCheckboxChange(
                           column.title,
-                          true
+                          true,
                         )}
                       />
                     }

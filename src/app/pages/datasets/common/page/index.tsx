@@ -14,12 +14,12 @@ import {
 } from "app/pages/datasets/common/page/data";
 
 export const DatasetPage: React.FC<DatasetPageProps> = (
-  props: DatasetPageProps
+  props: DatasetPageProps,
 ) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleFilterButtonClick = (
-    event: React.MouseEvent<HTMLButtonElement>
+    event: React.MouseEvent<HTMLButtonElement>,
   ) => {
     setAnchorEl(event.currentTarget);
   };

@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import { ChartBlockCyclesProps } from "app/components/chart-block/components/cycles/data";
 
 export const ChartBlockCycles: React.FC<ChartBlockCyclesProps> = (
-  props: ChartBlockCyclesProps
+  props: ChartBlockCyclesProps,
 ) => {
   const handleCycleClick = (cycle: { name: string; value: string }) => () => {
     props.handleCycleChange(cycle);

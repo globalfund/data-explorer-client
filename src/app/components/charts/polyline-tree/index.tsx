@@ -12,7 +12,7 @@ import { PolylineTreeProps } from "app/components/charts/polyline-tree/data";
 echarts.use([EchartsTree, SVGRenderer]);
 
 export const PolylineTree: React.FC<PolylineTreeProps> = (
-  props: PolylineTreeProps
+  props: PolylineTreeProps,
 ) => {
   const mobile = useMediaQuery("(max-width: 767px)");
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -80,7 +80,7 @@ export const PolylineTree: React.FC<PolylineTreeProps> = (
                 return [
                   `{value|${formatLocale(params.value as number).replace(
                     "US$",
-                    ""
+                    "",
                   )}}`,
                   `{smallName|${params.name}}`,
                 ].join(" ");

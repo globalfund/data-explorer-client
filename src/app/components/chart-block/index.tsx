@@ -10,7 +10,7 @@ import { ChartBlockCycles } from "app/components/chart-block/components/cycles";
 import { ChartBlockButtonToolbar } from "app/components/chart-block/components/button-toolbar";
 
 export const ChartBlock: React.FC<ChartBlockProps> = (
-  props: ChartBlockProps
+  props: ChartBlockProps,
 ) => {
   const id = React.useMemo(() => uniqueId("chart-block-"), []);
 
