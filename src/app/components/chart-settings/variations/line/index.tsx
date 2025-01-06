@@ -3,8 +3,8 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
 import {
-  xAxisDropdownItems,
-  yAxisDropdownItems,
+  lineXAxisDropdownItems,
+  lineYAxisDropdownItems,
   ChartSettingsLineProps,
 } from "app/components/chart-settings/variations/line/data";
 
@@ -49,7 +49,7 @@ export const ChartSettingsLine: React.FC<ChartSettingsLineProps> = (
             height={26}
             dropdownSelected={xAxis}
             handleDropdownChange={setXAxis}
-            dropdownItems={xAxisDropdownItems}
+            dropdownItems={lineXAxisDropdownItems}
           />
         </Box>
         <Box>
@@ -62,7 +62,7 @@ export const ChartSettingsLine: React.FC<ChartSettingsLineProps> = (
             height={26}
             dropdownSelected={yAxis}
             handleDropdownChange={setYAxis}
-            dropdownItems={yAxisDropdownItems}
+            dropdownItems={lineYAxisDropdownItems}
           />
         </Box>
       </Box>

@@ -3,6 +3,6 @@ import { ApiCallModel } from "app/state/api/interfaces";
 
 export const FinancialInsightsDisbursementsLineChart: ApiCallModel = {
   ...APIModel(
-    `${process.env.REACT_APP_API}/disbursements/line-chart/{componentField}/{geographyGrouping}`
+    `${process.env.REACT_APP_API}/disbursements/line-chart/{componentField}/{geographyGrouping}/{xAxisLine}`
   ),
 };

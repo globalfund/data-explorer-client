@@ -182,10 +182,10 @@ export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
             key={item.label}
             disableTouchRipple
             data-cy={`category-dropdown-item`}
-            onClick={handleItemClick(item.label)}
+            onClick={handleItemClick(item.value)}
             style={props.compact ? { fontSize: "12px" } : {}}
             sx={
-              props.dropdownSelected === item.label
+              props.dropdownSelected === item.value
                 ? {
                     color: appColors.SEARCH.DROPDOWN_ITEM_ACTIVE_COLOR,
                     background:

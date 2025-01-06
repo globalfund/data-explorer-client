@@ -7,19 +7,13 @@ export interface ChartSettingsLineProps {
   setYAxis: (value: string) => void;
 }
 
-export const xAxisDropdownItems: DropdownProps["dropdownItems"] = [
-  { value: "Amount (USD)", label: "Amount (USD)" },
-  { value: "Replenishment Period", label: "Replenishment Period" },
-  { value: "Years", label: "Years" },
-  { value: "Geography", label: "Geography" },
+export const lineXAxisDropdownItems: DropdownProps["dropdownItems"] = [
   { value: "Component", label: "Component" },
-  { value: "Donor", label: "Donor" },
+  { value: "Geography", label: "Geography" },
+  { value: "PrincipalRecipient", label: "Principal Recipient" },
+  { value: "PrincipalRecipientType", label: "PrincipalRecipient Type" },
 ];
 
-export const yAxisDropdownItems: DropdownProps["dropdownItems"] = [
-  { value: "Donor", label: "Donor" },
-  { value: "Replenishment Period", label: "Replenishment Period" },
-  { value: "Geography", label: "Geography" },
-  { value: "Component", label: "Component" },
-  { value: "Years", label: "Years" },
+export const lineYAxisDropdownItems: DropdownProps["dropdownItems"] = [
+  { value: "Amount (USD)", label: "Amount (USD)" },
 ];

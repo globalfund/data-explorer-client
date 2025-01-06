@@ -44,6 +44,7 @@ const Wrapper: React.FC<{
             setXAxis,
             setYAxis,
             setStacks,
+            stacksDropdownItems,
           },
         };
       case "line":

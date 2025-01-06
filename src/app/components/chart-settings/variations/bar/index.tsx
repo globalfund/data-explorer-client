@@ -6,7 +6,7 @@ import { switchButtonStyle } from "app/components/chart-settings/data";
 import {
   xAxisDropdownItems,
   yAxisDropdownItems,
-  stacksDropdownItems,
+  stacksDropdownItems as stackList,
   ChartSettingsBarProps,
 } from "app/components/chart-settings/variations/bar/data";
 
@@ -28,6 +28,7 @@ export const ChartSettingsBar: React.FC<ChartSettingsBarProps> = (
       return !prev;
     });
   };
+
   const paddingWidth = "1px";
 
   return (
@@ -104,7 +105,7 @@ export const ChartSettingsBar: React.FC<ChartSettingsBarProps> = (
               height={26}
               dropdownSelected={stacks}
               handleDropdownChange={setStacks}
-              dropdownItems={stacksDropdownItems}
+              dropdownItems={props.stacksDropdownItems}
             />
           </Box>
         )}

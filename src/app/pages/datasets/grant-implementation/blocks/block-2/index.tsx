@@ -22,10 +22,15 @@ import {
   TABLE_VARIATION_13_COLUMNS as DISBURSEMENTS_TABLE_COLUMNS,
 } from "app/components/table/data";
 import {
-  dropdownItemsBudgets,
   componentsGroupingOptions,
   dropdownItemsDisbursements,
 } from "app/pages/datasets/grant-implementation/data";
+import { xAxisDropdownItems } from "app/components/chart-settings/variations/bar/data";
+import {
+  lineXAxisDropdownItems,
+  lineYAxisDropdownItems,
+} from "app/components/chart-settings/variations/line/data";
+import { yAxisDropdownItems as barYAxisDropdownItems } from "app/components/chart-settings/variations/bar/data";
 
 interface GrantImplementationPageBlock2Props {
   filterString: string;
@@ -45,14 +50,25 @@ export const GrantImplementationPageBlock2: React.FC<
   const [chart1AppliedFilters, setChart1AppliedFilters] = React.useState<
     string[]
   >([]);
+  const [barXAxis, setBarXAxis] = React.useState("Component");
+  React.useState(xAxisDropdownItems);
+  const filteredXAxisDropdownItems = xAxisDropdownItems.filter(
+    (v) => v.value !== barXAxis
+  );
+  const [stacksDropdownItems, setStacksDropdownItems] = React.useState(
+    filteredXAxisDropdownItems
+  );
   const [chart1AppliedFiltersData, setChart1AppliedFiltersData] =
     React.useState({
       ...defaultAppliedFilters,
     });
 
   const [tableSearch, setTableSearch] = React.useState("");
-  const [barXAxis, setBarXAxis] = React.useState("Component");
-
+  const [isbarChartStacked, setIsBarChartStacked] = React.useState(false);
+  const [lineXAxis, setLineXAxis] = React.useState(
+    lineXAxisDropdownItems[1].value
+  );
+  const [stackValue, setStackValue] = React.useState("");
   const dataFinancialInsightsDisbursementsBarChart = useStoreState(
     (state) =>
       get(
@@ -398,8 +414,15 @@ export const GrantImplementationPageBlock2: React.FC<
     });
   };
 
+  const updateBarChartStackList = (value: string) => {
+    setStacksDropdownItems(() =>
+      xAxisDropdownItems.filter((stackItem) => stackItem.value !== value)
+    );
+  };
+
   const handleBarXAxisChange = (value: string) => {
     setBarXAxis(value);
+    updateBarChartStackList(value);
     fetchFinancialInsightsDisbursementsBarChart({
       filterString: chart1FilterString,
       routeParams: {
@@ -411,6 +434,25 @@ export const GrantImplementationPageBlock2: React.FC<
         xAxisVariable: value,
       },
     });
+  };
+
+  const handleLineXAxisChange = (value: string) => {
+    setLineXAxis(value);
+    fetchFinancialInsightsDisbursementsLineChart({
+      filterString: chart1FilterString,
+      routeParams: {
+        componentField:
+          props.componentsGrouping === componentsGroupingOptions[0].value
+            ? "activityAreaGroup"
+            : "activityArea",
+        geographyGrouping: props.geographyGrouping,
+        xAxisLine: value,
+      },
+    });
+  };
+  const handleBarStackItemChange = (value: string) => {
+    setStackValue(value);
+    //piece of logic to handle the bar chart stack
   };
 
   const disbursementsChartContent = React.useMemo(() => {
@@ -461,7 +503,7 @@ export const GrantImplementationPageBlock2: React.FC<
                 },
               }}
             >
-              X Axis/<b>Components</b>
+              X Axis/<b>{barXAxis}</b>
             </Typography>
           </Box>
         );
@@ -503,7 +545,7 @@ export const GrantImplementationPageBlock2: React.FC<
               position="absolute"
               border="1px solid #DFE3E5"
             >
-              X Axis/<b>Years</b>
+              X Axis/<b>{lineXAxis}</b>
             </Typography>
           </Box>
         );
@@ -528,6 +570,8 @@ export const GrantImplementationPageBlock2: React.FC<
     dataFinancialInsightsDisbursementsLineChart,
     keysFinancialInsightsDisbursementsLineChart,
     dataFinancialInsightsDisbursementsTable,
+    barXAxis,
+    lineXAxis,
   ]);
 
   React.useEffect(() => {
@@ -539,6 +583,7 @@ export const GrantImplementationPageBlock2: React.FC<
             ? "activityAreaGroup"
             : "activityArea",
         geographyGrouping: props.geographyGrouping,
+        xAxisVariable: barXAxis,
       },
     });
     fetchFinancialInsightsDisbursementsLineChart({
@@ -549,6 +594,7 @@ export const GrantImplementationPageBlock2: React.FC<
             ? "activityAreaGroup"
             : "activityArea",
         geographyGrouping: props.geographyGrouping,
+        xAxisLine: lineXAxis,
       },
     });
     fetchFinancialInsightsDisbursementsTable({
@@ -610,14 +656,21 @@ export const GrantImplementationPageBlock2: React.FC<
         appliedFiltersData={chart1AppliedFiltersData}
         infoType="financials"
         barProps={{
-          setStacked: () => {},
-          stacked: false,
-          setStacks: () => {},
-          stacks: "",
+          setStacked: setIsBarChartStacked,
+          stacked: isbarChartStacked,
+          setStacks: handleBarStackItemChange,
+          stacks: stackValue,
           setXAxis: handleBarXAxisChange,
           xAxis: barXAxis,
           setYAxis: () => {},
-          yAxis: "",
+          yAxis: barYAxisDropdownItems[0].value,
+          stacksDropdownItems,
+        }}
+        lineProps={{
+          setXAxis: handleLineXAxisChange,
+          xAxis: lineXAxis,
+          setYAxis: () => {},
+          yAxis: lineYAxisDropdownItems[0].value,
         }}
       >
         {disbursementsChartContent}

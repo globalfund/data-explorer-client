@@ -22,6 +22,7 @@ import {
 import { rowsDropdownItems } from "app/components/chart-settings/variations/table/data";
 import { ChartSettingsSortByOrderProps } from "app/components/chart-settings/sort-by/data";
 import { treesDropdownItems } from "app/components/chart-settings/variations/treemap/data";
+import { ChartSettingsLineProps } from "app/components/chart-settings/variations/line/data";
 
 export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
   props: DatasetChartBlockProps
@@ -37,13 +38,13 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
   // const [barStacks, setBarStacks] = React.useState(
   //   stacksDropdownItems[3].value
   // );
-  const [lineXAxis, setLineXAxis] = React.useState(xAxisDropdownItems[4].value);
-  const [lineYAxis, setLineYAxis] = React.useState(yAxisDropdownItems[4].value);
+  // const [lineXAxis, setLineXAxis] = React.useState(xAxisDropdownItems[0].value);
+  // const [lineYAxis, setLineYAxis] = React.useState(yAxisDropdownItems[4].value);
   const [tableRows, setTableRows] = React.useState(rowsDropdownItems[0].value);
   const [tableOrder, setTableOrder] =
     React.useState<ChartSettingsSortByOrderProps["order"]>(null);
   const [financialMetricBar, setFinancialMetricBar] = React.useState(
-    xAxisDropdownItems[4].value
+    xAxisDropdownItems[0].value
   );
   const [financialMetricsOrder, setFinancialMetricsOrder] =
     React.useState<ChartSettingsSortByOrderProps["order"]>(null);
@@ -218,12 +219,11 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
               ...props.barProps,
             } as ChartSettingsBarProps
           }
-          lineProps={{
-            xAxis: lineXAxis,
-            yAxis: lineYAxis,
-            setXAxis: setLineXAxis,
-            setYAxis: setLineYAxis,
-          }}
+          lineProps={
+            {
+              ...props.lineProps,
+            } as ChartSettingsLineProps
+          }
           tableProps={{
             rows: tableRows,
             setRows: setTableRows,
@@ -272,6 +272,7 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
     props.barProps?.xAxis,
     props.barProps?.yAxis,
     props.barProps?.stacks,
+    props.lineProps?.xAxis,
     tableRows,
     tableOrder,
     heatmapRows,
