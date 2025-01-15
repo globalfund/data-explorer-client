@@ -105,7 +105,16 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
   ]);
 
   return (
-    <Box id={props.id} data-cy="dataset-chart-block">
+    <Box id={props.id} data-cy="dataset-chart-block" position="relative">
+      <Box
+        id={`anchor-${props.id}`}
+        sx={{
+          left: 0,
+          zIndex: -1,
+          top: "-58px",
+          position: "absolute",
+        }}
+      />
       <Typography variant={props.titleVariant ?? "h2"} lineHeight={1.2}>
         {props.title}
       </Typography>

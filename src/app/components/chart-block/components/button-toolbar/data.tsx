@@ -109,7 +109,7 @@ export const SharePanel: React.FC<ChartBlockButtonToolbarProps> = (
       chartType = `|${chartType}`;
     }
     navigator.clipboard.writeText(
-      type === "code" ? "" : `${url}#${props.hashId}${chartType}`,
+      type === "code" ? "" : `${url}#${props.hashId}${chartType ?? ""}`,
     );
     setFeedbackMessage(`${type} copied!`);
   };

@@ -59,6 +59,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
         display="flex"
         flexDirection="row"
         alignItems="center"
+        onClick={props.onClose}
         justifyContent="space-between"
       >
         <Box gap="5px" display="flex" flexDirection="row" alignItems="center">
