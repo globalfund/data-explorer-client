@@ -20,6 +20,7 @@ import {
   financialFormatter,
   cellBGColorFormatter,
 } from "app/components/table/data";
+import { SunburstDataItem } from "app/components/charts/sunburst/data";
 
 interface AccessToFundingBlock3Props {
   filterString: string;
@@ -163,14 +164,21 @@ export const AccessToFundingBlock3: React.FC<AccessToFundingBlock3Props> = (
     fetchAllocationsTable({ filterString });
   };
 
+  const [selectedItem, setSelectedItem] = React.useState<{
+    dataIndex: number;
+    item: SunburstDataItem;
+  } | null>(null);
+
   const chartContent = React.useMemo(() => {
     switch (dropdownSelected) {
       case dropdownItemsAllocations[0].value:
         return (
           <SunburstChart
             tooltipLabel="Allocation"
+            selectedItem={selectedItem}
             data={dataAllocationsSunburst}
             centerLabel="Total Allocation"
+            setSelectedItem={setSelectedItem}
           />
         );
       case dropdownItemsAllocations[1].value:
@@ -208,6 +216,8 @@ export const AccessToFundingBlock3: React.FC<AccessToFundingBlock3Props> = (
     dataAllocationsSunburst,
     dataAllocationsTreemap,
     dataAllocationsTable,
+    selectedItem,
+    setSelectedItem,
   ]);
 
   const chartData = React.useMemo(() => {
