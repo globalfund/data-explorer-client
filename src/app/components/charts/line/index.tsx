@@ -37,41 +37,75 @@ const Tooltip = (props: any) => {
         flexDirection: "column",
       }}
     >
-      <div className="chart-tooltip-title">
-        {props.name} {props.seriesName}
-      </div>
+      <div className="chart-tooltip-title">{props.name}</div>
       <Divider
         style={{ width: "100%", borderColor: "#DFE3E5", margin: "5px 0" }}
       />
       <div
         style={{
+          gap: "7px",
           width: "100%",
           display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
+          flexDirection: "column",
         }}
       >
-        <div className="chart-tooltip-text">
-          <b>Disbursed in</b>
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          <div
+            className="chart-tooltip-text"
+            style={{ width: "calc(100% / 3)" }}
+          >
+            <b>Component</b>
+          </div>
+          <div
+            className="chart-tooltip-text"
+            style={{ width: "calc(100% / 3)" }}
+          >
+            <b>Disbursed in</b>
+          </div>
+          <div
+            className="chart-tooltip-text"
+            style={{ width: "calc(100% / 3)" }}
+          >
+            <b>Cumulative to</b>
+          </div>
         </div>
-        <div className="chart-tooltip-text">
-          {formatFinancialValue(props.value)}
-        </div>
-      </div>
-      <div
-        style={{
-          width: "100%",
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-        }}
-      >
-        <div className="chart-tooltip-text">
-          <b>Cumulative to</b>
-        </div>
-        <div className="chart-tooltip-text">
-          {formatFinancialValue(props.cumulative)}
-        </div>
+        {props.items.map((item: any) => (
+          <div
+            key={item.name}
+            style={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
+            <div
+              className="chart-tooltip-text"
+              style={{ width: "calc(100% / 3)" }}
+            >
+              {item.name}
+            </div>
+            <div
+              className="chart-tooltip-text"
+              style={{ width: "calc(100% / 3)" }}
+            >
+              {formatFinancialValue(item.disbursement)}
+            </div>
+            <div
+              className="chart-tooltip-text"
+              style={{ width: "calc(100% / 3)" }}
+            >
+              {formatFinancialValue(item.cumulative)}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -195,17 +229,30 @@ export const LineChart: React.FC<LineChartProps> = (props: LineChartProps) => {
         tooltip: {
           show: true,
           ...chartTooltipCommonConfig(isTouch),
-          trigger: "item",
+          trigger: "axis",
           formatter: (params: any) => {
-            const seriesData = find(props.data, { name: params.seriesName });
-            let cumulative = 0;
-            seriesData?.data
-              .slice(0, params.dataIndex + 1)
-              .forEach((value: number) => {
-                cumulative += value;
+            const xAxisValue = params[0].axisValue;
+            let items: {
+              name: string;
+              cumulative: number;
+              disbursement: number;
+            }[] = [];
+            params.forEach((param: any) => {
+              const seriesData = find(props.data, { name: param.seriesName });
+              let cumulative = 0;
+              seriesData?.data
+                .slice(0, param.dataIndex + 1)
+                .forEach((value: number) => {
+                  cumulative += value;
+                });
+              items.push({
+                name: param.seriesName,
+                cumulative,
+                disbursement: param.value,
               });
+            });
             return ReactDOMServer.renderToString(
-              <Tooltip {...params} cumulative={cumulative} />,
+              <Tooltip {...params} name={xAxisValue} items={items} />,
             );
           },
         },
