@@ -4,6 +4,8 @@ import Box from "@mui/material/Box";
 import { appColors } from "app/theme";
 import Button from "@mui/material/Button";
 import { ChartBlockCyclesProps } from "app/components/chart-block/components/cycles/data";
+import { ReactComponent as CheckboxIcon } from "app/assets/vectors/Checkbox_notchecked.svg";
+import { ReactComponent as CheckboxCheckedIcon } from "app/assets/vectors/Checkbox_checked_2.svg";
 
 export const ChartBlockCycles: React.FC<ChartBlockCyclesProps> = (
   props: ChartBlockCyclesProps,
@@ -36,6 +38,9 @@ export const ChartBlockCycles: React.FC<ChartBlockCyclesProps> = (
             color: appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_TEXT_COLOR,
             background:
               appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_BACKGROUND_COLOR,
+            path: {
+              fill: appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_TEXT_COLOR,
+            },
           },
         },
       }}
@@ -59,28 +64,39 @@ export const ChartBlockCycles: React.FC<ChartBlockCyclesProps> = (
           All
         </Button>
       )}
-      {props.cycles.map((cycle) => (
-        <Button
-          key={cycle.name}
-          disabled={cycle.disabled}
-          onClick={handleCycleClick(cycle)}
-          data-cy={`chart-cycle-button`}
-          style={
-            find(props.selectedCycles, { value: cycle.value })
-              ? {
-                  fontWeight: "700",
-                  borderColor:
-                    appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_BACKGROUND_COLOR,
-                  color: appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_TEXT_COLOR,
-                  background:
-                    appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_BACKGROUND_COLOR,
-                }
-              : {}
-          }
-        >
-          {cycle.name.replace(" - ", "-")}
-        </Button>
-      ))}
+      {props.cycles.map((cycle) => {
+        const selected = find(props.selectedCycles, { value: cycle.value });
+        let startIcon = undefined;
+        if (props.showCycleAll) {
+          startIcon = selected ? <CheckboxCheckedIcon /> : <CheckboxIcon />;
+        }
+        return (
+          <Button
+            key={cycle.name}
+            startIcon={startIcon}
+            disabled={cycle.disabled}
+            onClick={handleCycleClick(cycle)}
+            data-cy={`chart-cycle-button`}
+            style={
+              selected
+                ? {
+                    fontWeight: "700",
+                    borderColor:
+                      appColors.CHART_BLOCK_CYCLES
+                        .BUTTON_ACTIVE_BACKGROUND_COLOR,
+                    color:
+                      appColors.CHART_BLOCK_CYCLES.BUTTON_ACTIVE_TEXT_COLOR,
+                    background:
+                      appColors.CHART_BLOCK_CYCLES
+                        .BUTTON_ACTIVE_BACKGROUND_COLOR,
+                  }
+                : {}
+            }
+          >
+            {cycle.name.replace(" - ", "-")}
+          </Button>
+        );
+      })}
     </Box>
   );
 };
