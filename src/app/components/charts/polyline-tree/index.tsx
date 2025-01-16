@@ -98,6 +98,16 @@ export const PolylineTree: React.FC<PolylineTreeProps> = (
           emphasis: {
             disabled: mobile,
             focus: "descendant",
+            label: {
+              rich: {
+                value: {
+                  fontSize: 14,
+                },
+                smallName: {
+                  fontSize: 14,
+                },
+              },
+            },
           },
         },
       };
@@ -114,7 +124,7 @@ export const PolylineTree: React.FC<PolylineTreeProps> = (
         data-cy="polyline-tree"
         ref={containerRef}
         width="100%"
-        height="900px"
+        height="1400px"
         sx={{
           "> div": {
             borderRadius: "8px",
