@@ -105,3 +105,7 @@ input[type="text"] {
 .tabulator-row:hover > div {
   background: #F6F7F7 !important;
 }
+
+.tabulator-cell > .table-download-icon {
+  display: none;
+}

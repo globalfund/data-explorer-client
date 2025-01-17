@@ -62,7 +62,13 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
         onClick={props.onClose}
         justifyContent="space-between"
       >
-        <Box gap="5px" display="flex" flexDirection="row" alignItems="center">
+        <Box
+          gap="8px"
+          display="flex"
+          flexDirection="row"
+          alignItems="center"
+          margin="-4px 0 0 -4px"
+        >
           <Add fontSize="small" />
           <Typography fontSize="14px">Filters</Typography>
         </Box>
