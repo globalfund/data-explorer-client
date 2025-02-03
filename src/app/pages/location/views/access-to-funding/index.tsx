@@ -48,7 +48,7 @@ export const AccessToFunding: React.FC = () => {
   });
 
   const locationName = useStoreState((state) =>
-    get(state.GeographyOverview, "data.data[0].name", params.id)
+    get(state.GeographyOverview, "data.data[0].name", params.id),
   );
   useTitle(`The Data Explorer - ${locationName}`);
 
@@ -63,46 +63,46 @@ export const AccessToFunding: React.FC = () => {
       get(
         state.GeographyAllocationsRadialChart,
         "data.data",
-        []
-      ) as RadialChartDataItem[]
+        [],
+      ) as RadialChartDataItem[],
   );
   const fetchAllocationsRadialChart = useStoreActions(
-    (actions) => actions.GeographyAllocationsRadialChart.fetch
+    (actions) => actions.GeographyAllocationsRadialChart.fetch,
   );
   const loadingAllocationsRadialChart = useStoreState(
-    (state) => state.GeographyAllocationsRadialChart.loading
+    (state) => state.GeographyAllocationsRadialChart.loading,
   );
   const dataFundingRequestsTable = useStoreState((state) =>
     get(state.GeographyFundingRequestsTable, "data.data[0]", {
       _children: [],
-    })
+    }),
   );
   const fetchFundingRequestsTable = useStoreActions(
-    (actions) => actions.GeographyFundingRequestsTable.fetch
+    (actions) => actions.GeographyFundingRequestsTable.fetch,
   );
   const loadingFundingRequestsTable = useStoreState(
-    (state) => state.GeographyFundingRequestsTable.loading
+    (state) => state.GeographyFundingRequestsTable.loading,
   );
   const dataFundingRequestStats = useStoreState((state) => ({
     submitted: get(
       state.GeographyFundingRequestsTable,
       "data.submittedCount[0].count",
-      0
+      0,
     ),
     signed: get(
       state.GeographyFundingRequestsTable,
       "data.signedCount[0].count",
-      0
+      0,
     ),
   }));
   const dataEligibilityTable = useStoreState((state) =>
-    get(state.GeographyEligibilityTable, "data.data", [])
+    get(state.GeographyEligibilityTable, "data.data", []),
   );
   const dataDocumentsTable = useStoreState((state) =>
-    get(state.GeographyDocumentsTable, "data.data", [])
+    get(state.GeographyDocumentsTable, "data.data", []),
   );
   const fetchDocumentsTable = useStoreActions(
-    (actions) => actions.GeographyDocumentsTable.fetch
+    (actions) => actions.GeographyDocumentsTable.fetch,
   );
   const allocationsCycles = useStoreState(
     (state) =>
@@ -112,7 +112,7 @@ export const AccessToFunding: React.FC = () => {
       })) as {
         name: string;
         value: string;
-      }[]
+      }[],
   );
   const fundingRequestsCycles = useStoreState(
     (state) =>
@@ -121,13 +121,13 @@ export const AccessToFunding: React.FC = () => {
           (c: any) => ({
             name: c.value,
             value: c.value,
-          })
+          }),
         ),
-        (c: any) => c.value
+        (c: any) => c.value,
       ) as {
         name: string;
         value: string;
-      }[]
+      }[],
   );
   const allocationsCyclesAll = useStoreState(
     (state) =>
@@ -137,7 +137,7 @@ export const AccessToFunding: React.FC = () => {
       })) as {
         name: string;
         value: string;
-      }[]
+      }[],
   );
   const fundingRequestsCyclesAll = useStoreState(
     (state) =>
@@ -146,19 +146,19 @@ export const AccessToFunding: React.FC = () => {
           name: c.value,
           value: c.value,
         })),
-        (c: any) => c.value
+        (c: any) => c.value,
       ) as {
         name: string;
         value: string;
-      }[]
+      }[],
   );
   const dataEligibilityTableYears = useStoreState((state) =>
-    get(state.AccessToFundingEligibilityTable, "data.years", [])
+    get(state.AccessToFundingEligibilityTable, "data.years", []),
   );
 
   const handleChartCycleChange = (
     cycle: { name: string; value: string },
-    index: number
+    index: number,
   ) => {
     switch (index) {
       case 1:
@@ -258,7 +258,7 @@ export const AccessToFunding: React.FC = () => {
             (dataFundingRequestStats.signed /
               dataFundingRequestStats.submitted) *
             100
-          ).toFixed(2)
+          ).toFixed(2),
         ),
       },
       {
@@ -348,7 +348,7 @@ export const AccessToFunding: React.FC = () => {
         subtitle={`${getCMSDataField(
           cmsData,
           "pagesLocationAccessToFunding.allocationSubtitle",
-          "Funds Allocated"
+          "Funds Allocated",
         )} ${get(chart1Cycles, "[0].value", "").replace(" - ", "-")}`}
         empty={!showAllocationRadialChart}
         cycles={allocationsCyclesAll.map((c) => ({
@@ -358,7 +358,7 @@ export const AccessToFunding: React.FC = () => {
         text={getCMSDataField(
           cmsData,
           "pagesLocationAccessToFunding.allocationText",
-          "The Global Fund is distinct from other organizations in that it gives countries (or groups of countries) an allocation and asks countries to describe how they will use those funds rather than asking for applications and then determining an amount per-country based on the merits of the various proposals received.<br/><br/>This provides greater predictability for countries and helps ensure that the programs being funded are not just the ones with the most capacity to write good applications."
+          "The Global Fund is distinct from other organizations in that it gives countries (or groups of countries) an allocation and asks countries to describe how they will use those funds rather than asking for applications and then determining an amount per-country based on the merits of the various proposals received.<br/><br/>This provides greater predictability for countries and helps ensure that the programs being funded are not just the ones with the most capacity to write good applications.",
         )}
         data={exportAllocationChartData}
         latestUpdate={latestUpdateDateChart1}
@@ -369,7 +369,7 @@ export const AccessToFunding: React.FC = () => {
             tooltipLabel={getCMSDataField(
               cmsData,
               "pagesLocationAccessToFunding.allocationTooltipLabel",
-              "Allocation"
+              "Allocation",
             )}
             data={dataAllocationsRadialChart}
             itemLabelFormatterType="name"
@@ -389,7 +389,7 @@ export const AccessToFunding: React.FC = () => {
               {getCMSDataField(
                 cmsData,
                 "pagesLocationAccessToFunding.allocationRadialChartSubtitle",
-                "Total Allocation"
+                "Total Allocation",
               )}{" "}
               {get(chart1Cycles, "[0].value", "")}
             </Typography>
@@ -407,12 +407,12 @@ export const AccessToFunding: React.FC = () => {
         title={`${dataFundingRequestsTable._children.length} ${getCMSDataField(
           cmsData,
           "pagesLocationAccessToFunding.fundingRequestsTitle",
-          "Funding Requests"
+          "Funding Requests",
         )}`}
         subtitle={`${getCMSDataField(
           cmsData,
           "pagesLocationAccessToFunding.fundingRequestsSubtitle",
-          "Submitted for"
+          "Submitted for",
         )} ${get(chart2Cycles, "[0].value", "").replace(" - ", "-")}`}
         empty={!showFundingRequestsTable}
         handleCycleChange={(value) => handleChartCycleChange(value, 2)}
@@ -423,7 +423,7 @@ export const AccessToFunding: React.FC = () => {
         text={getCMSDataField(
           cmsData,
           "pagesLocationAccessToFunding.fundingRequestsText",
-          "The Funding Request explains how the applicant would use Global Fund allocated funds, if approved. Funding Requests are reviewed by the Global Fund’s Technical Review Panel (TRP). Once approved by the TRP, the Funding Request is turned into one or more grants through the grant-making negotiation. The Grant Approvals Committee (GAC) reviews the final version of each grant and recommends implementation-ready grants to the Global Fund Board for approval. Funding Requests are submitted for internal Global Fund review, but the final grant is the legally-binding agreement.<br/><br/>Documents for a specific funding request can be downloaded by clicking the cloud icon. Documents from the 2017-2019 Allocation Period and earlier can be found by clicking on the “Documents’ tab above. If a Funding Request is not visible for the 2023-2025 Allocation Period and the country received an Allocation, it likely means that the applicant has not yet registered for a TRP Window."
+          `The Funding Request explains how the applicant would use Global Fund allocated funds, if approved. Funding Requests are reviewed by the Global Fund’s Technical Review Panel (TRP). Once approved by the TRP, the Funding Request is turned into one or more grants through the grant-making negotiation. The Grant Approvals Committee (GAC) reviews the final version of each grant and recommends implementation-ready grants to the Global Fund Board for approval. Funding Requests are submitted for internal Global Fund review, but the final grant is the legally-binding agreement.<br/><br/>The tracker below indicates the Funding Requests anticipated for the selected Allocation Period. If information is not available for a component for which the country received an allocation, it likely indicates that the country has not yet registered for a TRP window. Once funding requests have a TRP outcome of "Grant Making", they are made available for download in the Documents section of this page, which also included Funding Requests from previous Allocation Periods, Concept Notes, Proposals, and requests for funding from the COVID19 Response Mechanism.`,
         )}
         latestUpdate={latestUpdateDateChart2}
         data={dataFundingRequestsTable._children}
@@ -450,14 +450,14 @@ export const AccessToFunding: React.FC = () => {
         title={getCMSDataField(
           cmsData,
           "pagesLocationAccessToFunding.eligibilityTitle",
-          "Eligibility"
+          "Eligibility",
         )}
         subtitle=""
         empty={!showEligibilityHeatmap}
         text={getCMSDataField(
           cmsData,
           "pagesLocationAccessToFunding.eligibilityText",
-          "Eligibility for funding from the Global Fund is determined by country income classification and disease burden for HIV, tuberculosis and malaria. Below are the components which are eligible for an allocation for the selected allocation period, according to the Global Fund Eligibility Policy.<br/><br/>Eligibility for the 2023-2025 Allocation Period was determined in 2022 and documented in the 2023 Eligibility List. Eligibility does not guarantee a funding allocation. Learn more about Eligibility <a target='_blank' href='https://www.theglobalfund.org/en/applying-for-funding/understand-and-prepare/eligibility/'>here</a> or <a>see the full history of eligibility for this country</a>."
+          "Eligibility for funding from the Global Fund is determined by country income classification and disease burden for HIV, tuberculosis and malaria. Below are the components which are eligible for an allocation for the selected allocation period, according to the Global Fund Eligibility Policy.<br/><br/>Eligibility for the 2023-2025 Allocation Period was determined in 2022 and documented in the 2023 Eligibility List. Eligibility does not guarantee a funding allocation. Learn more about Eligibility <a target='_blank' href='https://www.theglobalfund.org/en/applying-for-funding/understand-and-prepare/eligibility/'>here</a> or <a>see the full history of eligibility for this country</a>.",
         )}
         latestUpdate={latestUpdateDateChart3}
         data={exportEligibilityChartData}
@@ -514,7 +514,7 @@ export const AccessToFunding: React.FC = () => {
               {getCMSDataField(
                 cmsData,
                 "componentsChartsEligibility.diseaseBurdenTitle",
-                "Disease Burden"
+                "Disease Burden",
               )}
             </Typography>
             <Box>
@@ -527,7 +527,7 @@ export const AccessToFunding: React.FC = () => {
                   {getCMSDataField(
                     cmsData,
                     "componentsChartsEligibility.diseaseBurdenExtreme",
-                    "Extreme"
+                    "Extreme",
                   )}
                 </Typography>
               </Box>
@@ -540,7 +540,7 @@ export const AccessToFunding: React.FC = () => {
                   {getCMSDataField(
                     cmsData,
                     "componentsChartsEligibility.diseaseBurdenSevere",
-                    "Severe"
+                    "Severe",
                   )}
                 </Typography>
               </Box>
@@ -553,7 +553,7 @@ export const AccessToFunding: React.FC = () => {
                   {getCMSDataField(
                     cmsData,
                     "componentsChartsEligibility.diseaseBurdenHigh",
-                    "High"
+                    "High",
                   )}
                 </Typography>
               </Box>
@@ -566,7 +566,7 @@ export const AccessToFunding: React.FC = () => {
                   {getCMSDataField(
                     cmsData,
                     "componentsChartsEligibility.diseaseBurdenModerate",
-                    "Moderate"
+                    "Moderate",
                   )}
                 </Typography>
               </Box>
@@ -579,7 +579,7 @@ export const AccessToFunding: React.FC = () => {
                   {getCMSDataField(
                     cmsData,
                     "componentsChartsEligibility.diseaseBurdenNotHigh",
-                    "Not High"
+                    "Not High",
                   )}
                 </Typography>
               </Box>
@@ -592,7 +592,7 @@ export const AccessToFunding: React.FC = () => {
                   {getCMSDataField(
                     cmsData,
                     "componentsChartsEligibility.diseaseBurdenLow",
-                    "Low"
+                    "Low",
                   )}
                 </Typography>
               </Box>
@@ -602,7 +602,7 @@ export const AccessToFunding: React.FC = () => {
                   {getCMSDataField(
                     cmsData,
                     "componentsChartsEligibility.diseaseBurdenNA",
-                    "NA"
+                    "NA",
                   )}
                 </Typography>
               </Box>
@@ -613,7 +613,7 @@ export const AccessToFunding: React.FC = () => {
               {getCMSDataField(
                 cmsData,
                 "componentsChartsEligibility.statusTitle",
-                "Eligibility Status"
+                "Eligibility Status",
               )}
             </Typography>
             <Box>
@@ -623,7 +623,7 @@ export const AccessToFunding: React.FC = () => {
                   {getCMSDataField(
                     cmsData,
                     "componentsChartsEligibility.statusEligible",
-                    "Eligible"
+                    "Eligible",
                   )}
                 </Typography>
               </Box>
@@ -633,7 +633,7 @@ export const AccessToFunding: React.FC = () => {
                   {getCMSDataField(
                     cmsData,
                     "componentsChartsEligibility.statusTransitionFunding",
-                    "Transition Funding"
+                    "Transition Funding",
                   )}
                 </Typography>
               </Box>
@@ -643,7 +643,7 @@ export const AccessToFunding: React.FC = () => {
                   {getCMSDataField(
                     cmsData,
                     "componentsChartsEligibility.statusNotEligible",
-                    "Not Eligible"
+                    "Not Eligible",
                   )}
                 </Typography>
               </Box>
@@ -666,7 +666,7 @@ export const AccessToFunding: React.FC = () => {
         title={getCMSDataField(
           cmsData,
           "pagesLocationAccessToFunding.documentsTitle",
-          "Documents"
+          "Documents",
         )}
         subtitle=""
         empty={!showDocumentsTable}

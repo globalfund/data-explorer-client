@@ -17,7 +17,7 @@ import {
 } from "app/components/chart-block/components/button-toolbar/data";
 
 export const ChartBlockButtonToolbar: React.FC<ChartBlockButtonToolbarProps> = (
-  props: ChartBlockButtonToolbarProps
+  props: ChartBlockButtonToolbarProps,
 ) => {
   const [active, setActive] = React.useState<
     "download" | "share" | "favorite" | "info" | null

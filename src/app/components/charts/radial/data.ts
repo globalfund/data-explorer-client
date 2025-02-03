@@ -29,7 +29,7 @@ export interface RadialChartProps {
 
 export function itemLabelFormatter(
   params: any,
-  type: "name" | "name-percent" | "name-value-percent"
+  type: "name" | "name-percent" | "name-value-percent",
 ) {
   switch (type) {
     case "name":
@@ -41,7 +41,7 @@ export function itemLabelFormatter(
       return `{boldName| ${params.name}}\n$${getFinancialValueWithMetricPrefix(
         params.value,
         range.index,
-        2
+        2,
       )}${range.abbr} - ${params.percent}%`;
     default:
       return params.name;

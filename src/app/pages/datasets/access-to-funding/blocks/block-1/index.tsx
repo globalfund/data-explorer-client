@@ -15,7 +15,7 @@ interface AccessToFundingBlock1Props {
 }
 
 export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
-  props: AccessToFundingBlock1Props
+  props: AccessToFundingBlock1Props,
 ) => {
   const cmsData = useCMSData({ returnData: true });
   const latestUpdateDate = useGetDatasetLatestUpdate({
@@ -27,11 +27,11 @@ export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
       get(state.EligibilityCycles, "data.data", []).map((item) => ({
         label: item,
         value: item,
-      })) as { label: string; value: string }[]
+      })) as { label: string; value: string }[],
   );
 
   const [eligibilityYear, setEligibilityYear] = React.useState(
-    eligibilityYears.length > 0 ? eligibilityYears[0].value : ""
+    eligibilityYears.length > 0 ? eligibilityYears[0].value : "",
   );
 
   const dataStats = useStoreState(
@@ -39,13 +39,13 @@ export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
       get(state.AccessToFundingStats, "data.data", []) as {
         name: string;
         value: string;
-      }[]
+      }[],
   );
   const loadingStats = useStoreState(
-    (state) => state.AccessToFundingStats.loading
+    (state) => state.AccessToFundingStats.loading,
   );
   const fetchStats = useStoreActions(
-    (actions) => actions.AccessToFundingStats.fetch
+    (actions) => actions.AccessToFundingStats.fetch,
   );
 
   const handleEligibilityYearChange = (value: string) => {
@@ -89,14 +89,14 @@ export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
             {getCMSDataField(
               cmsData,
               "pagesDatasetsAccessToFunding.statsTitle",
-              "Eligible Countries by Numbers"
+              "Eligible Countries by Numbers",
             )}
           </Typography>
           <Typography variant="body2">
             {getCMSDataField(
               cmsData,
               "pagesDatasetsAccessToFunding.statsSubtitle",
-              "Segmented by Components."
+              "Segmented by Components.",
             )}
           </Typography>
         </Box>
@@ -116,7 +116,7 @@ export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
             {getCMSDataField(
               cmsData,
               "pagesDatasetsAccessToFunding.statsDropDownLabel",
-              "Eligibility Year"
+              "Eligibility Year",
             )}
           </Typography>
           <Dropdown

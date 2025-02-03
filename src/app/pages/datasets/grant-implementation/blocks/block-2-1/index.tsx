@@ -26,7 +26,7 @@ export const GrantImplementationPageBlock21: React.FC = () => {
   });
 
   const [dropdownSelected, setDropdownSelected] = React.useState(
-    dropdownItemsHolisticGrantInvestments[0].value
+    dropdownItemsHolisticGrantInvestments[0].value,
   );
 
   const [tableSearch, setTableSearch] = React.useState("");
@@ -40,16 +40,16 @@ export const GrantImplementationPageBlock21: React.FC = () => {
     };
   });
   const fetchSankey = useStoreActions(
-    (actions) => actions.FinancialInsightsHGISankey.fetch
+    (actions) => actions.FinancialInsightsHGISankey.fetch,
   );
   const dataTable = useStoreState(
     (state) =>
       get(state.FinancialInsightsHGITable, "data.data", []) as {
         [key: string]: TableDataItem;
-      }[]
+      }[],
   );
   const fetchTable = useStoreActions(
-    (actions) => actions.FinancialInsightsHGITable.fetch
+    (actions) => actions.FinancialInsightsHGITable.fetch,
   );
   const loading = useStoreState((state) => {
     switch (dropdownSelected) {
@@ -68,14 +68,14 @@ export const GrantImplementationPageBlock21: React.FC = () => {
         value: cycle.value,
       }))
       .reverse()
-      .slice(0, 3)
+      .slice(0, 3),
   );
   const appliedFiltersData = useStoreState(
-    (state) => state.AppliedFiltersState
+    (state) => state.AppliedFiltersState,
   );
 
   const [cycleDropdownSelected, setCycleDropdownSelected] = React.useState(
-    cycles.length > 0 ? cycles[0].value : null
+    cycles.length > 0 ? cycles[0].value : null,
   );
 
   const handleDropdownSelectionChange = (value: string) => {
@@ -113,7 +113,7 @@ export const GrantImplementationPageBlock21: React.FC = () => {
       location.search.includes("locations=")
     ) {
       value += `geographies=${encodeURIComponent(
-        appliedFiltersData.locations.join(",")
+        appliedFiltersData.locations.join(","),
       )}`;
     }
     if (
@@ -121,7 +121,7 @@ export const GrantImplementationPageBlock21: React.FC = () => {
       location.search.includes("components=")
     ) {
       value += `${value.length > 0 ? "&" : ""}components=${encodeURIComponent(
-        appliedFiltersData.components.join(",")
+        appliedFiltersData.components.join(","),
       )}`;
     }
     if (
@@ -131,7 +131,7 @@ export const GrantImplementationPageBlock21: React.FC = () => {
       value += `${
         value.length > 0 ? "&" : ""
       }principalRecipients=${encodeURIComponent(
-        appliedFiltersData.principalRecipients.join(",")
+        appliedFiltersData.principalRecipients.join(","),
       )}`;
     }
     if (
@@ -141,7 +141,7 @@ export const GrantImplementationPageBlock21: React.FC = () => {
       value += `${
         value.length > 0 ? "&" : ""
       }principalRecipientSubTypes=${encodeURIComponent(
-        appliedFiltersData.principalRecipientSubTypes.join(",")
+        appliedFiltersData.principalRecipientSubTypes.join(","),
       )}`;
     }
     if (
@@ -151,7 +151,7 @@ export const GrantImplementationPageBlock21: React.FC = () => {
       value += `${
         value.length > 0 ? "&" : ""
       }principalRecipientTypes=${encodeURIComponent(
-        appliedFiltersData.principalRecipientTypes.join(",")
+        appliedFiltersData.principalRecipientTypes.join(","),
       )}`;
     }
     if (
@@ -159,7 +159,7 @@ export const GrantImplementationPageBlock21: React.FC = () => {
       location.search.includes("status=")
     ) {
       value += `${value.length > 0 ? "&" : ""}status=${encodeURIComponent(
-        appliedFiltersData.status.join(",")
+        appliedFiltersData.status.join(","),
       )}`;
     }
     if (cycleDropdownSelected) {
@@ -198,7 +198,7 @@ export const GrantImplementationPageBlock21: React.FC = () => {
                 {getCMSDataField(
                   cmsData,
                   "pagesDatasetsGrantImplementation.hgiSankeyLabel1",
-                  "Total Disbursed"
+                  "Total Disbursed",
                 )}
               </Grid>
               <Grid
@@ -212,7 +212,7 @@ export const GrantImplementationPageBlock21: React.FC = () => {
                 {getCMSDataField(
                   cmsData,
                   "pagesDatasetsGrantImplementation.hgiSankeyLabel2",
-                  "Disbursement Area"
+                  "Disbursement Area",
                 )}
               </Grid>
               <Grid
@@ -226,7 +226,7 @@ export const GrantImplementationPageBlock21: React.FC = () => {
                 {getCMSDataField(
                   cmsData,
                   "pagesDatasetsGrantImplementation.hgiSankeyLabel3",
-                  "Disbursement Sub-Area"
+                  "Disbursement Sub-Area",
                 )}
               </Grid>
             </Grid>
@@ -324,12 +324,12 @@ export const GrantImplementationPageBlock21: React.FC = () => {
         title={getCMSDataField(
           cmsData,
           "pagesDatasetsGrantImplementation.hgiTitle",
-          "Investments by Disbursement Area"
+          "Investments by Disbursement Area",
         )}
         subtitle={getCMSDataField(
           cmsData,
           "pagesDatasetsGrantImplementation.hgiSubtitle",
-          "Cumulative disbursements by disbursement area"
+          "Cumulative disbursements by disbursement area",
         )}
         extraDropdown={cycleDropdown}
         dropdownSelected={dropdownSelected}

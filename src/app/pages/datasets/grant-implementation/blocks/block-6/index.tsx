@@ -66,11 +66,11 @@ export const GrantImplementationPageBlock6: React.FC<
       get(
         state.FinancialInsightsExpendituresHeatmap,
         "data.data",
-        []
-      ) as HeatmapDataItem[]
+        [],
+      ) as HeatmapDataItem[],
   );
   const fetchExpendituresHeatmap = useStoreActions(
-    (actions) => actions.FinancialInsightsExpendituresHeatmap.fetch
+    (actions) => actions.FinancialInsightsExpendituresHeatmap.fetch,
   );
   const loadingExpenditures = useStoreState((state) => {
     switch (expendituresDropdownSelected) {
@@ -89,20 +89,20 @@ export const GrantImplementationPageBlock6: React.FC<
       get(
         state.FinancialInsightsExpendituresBarChart,
         "data.data",
-        []
-      ) as ExpandableHorizontalBarChartDataItem[]
+        [],
+      ) as ExpandableHorizontalBarChartDataItem[],
   );
   const fetchExpendituresBarChart = useStoreActions(
-    (actions) => actions.FinancialInsightsExpendituresBarChart.fetch
+    (actions) => actions.FinancialInsightsExpendituresBarChart.fetch,
   );
   const dataExpendituresTable = useStoreState(
     (state) =>
       get(state.FinancialInsightsExpendituresTable, "data.data", []) as {
         [key: string]: TableDataItem;
-      }[]
+      }[],
   );
   const fetchExpendituresTable = useStoreActions(
-    (actions) => actions.FinancialInsightsExpendituresTable.fetch
+    (actions) => actions.FinancialInsightsExpendituresTable.fetch,
   );
   const expenditureCycles = useStoreState((state) =>
     get(state.ExpendituresCycles, "data.data", [])
@@ -110,17 +110,17 @@ export const GrantImplementationPageBlock6: React.FC<
         label: cycle.value,
         value: cycle.value,
       }))
-      .reverse()
+      .reverse(),
   );
   const appliedFiltersData = useStoreState(
-    (state) => state.AppliedFiltersState
+    (state) => state.AppliedFiltersState,
   );
 
   const [
     expendituresCycleDropdownSelected,
     setExpendituresCycleDropdownSelected,
   ] = React.useState(
-    expenditureCycles.length > 0 ? expenditureCycles[0].value : null
+    expenditureCycles.length > 0 ? expenditureCycles[0].value : null,
   );
 
   const handleResetChartFilters = () => {
@@ -140,7 +140,7 @@ export const GrantImplementationPageBlock6: React.FC<
   const handleToggleChartFilter = (
     checked: boolean,
     value: string,
-    type: string
+    type: string,
   ) => {
     let state = { ...chart4AppliedFiltersData };
     switch (type) {
@@ -165,7 +165,7 @@ export const GrantImplementationPageBlock6: React.FC<
           state.principalRecipients.push(value);
         } else {
           state.principalRecipients = state.principalRecipients.filter(
-            (item) => item !== value
+            (item) => item !== value,
           );
         }
         break;
@@ -182,7 +182,7 @@ export const GrantImplementationPageBlock6: React.FC<
           state.principalRecipientTypes.push(value);
         } else {
           state.principalRecipientTypes = state.principalRecipientTypes.filter(
-            (item) => item !== value
+            (item) => item !== value,
           );
         }
         break;
@@ -229,7 +229,7 @@ export const GrantImplementationPageBlock6: React.FC<
           break;
         case "principalRecipient":
           state.principalRecipients = state.principalRecipients.filter(
-            (item) => item !== value
+            (item) => item !== value,
           );
           break;
         case "principalRecipientSubType":
@@ -238,7 +238,7 @@ export const GrantImplementationPageBlock6: React.FC<
           break;
         case "principalRecipientType":
           state.principalRecipientTypes = state.principalRecipientTypes.filter(
-            (item) => item !== value
+            (item) => item !== value,
           );
           break;
         case "status":
@@ -300,10 +300,10 @@ export const GrantImplementationPageBlock6: React.FC<
       sumBy(
         filter(
           dataExpendituresHeatmap,
-          (item) => !item.parentRow && !item.parentColumn
+          (item) => !item.parentRow && !item.parentColumn,
         ),
-        "value"
-      )
+        "value",
+      ),
     );
   }, [dataExpendituresHeatmap]);
 
@@ -318,7 +318,7 @@ export const GrantImplementationPageBlock6: React.FC<
         uniq([
           ...appliedFiltersData.locations,
           ...chart4AppliedFiltersData.locations,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (
@@ -330,7 +330,7 @@ export const GrantImplementationPageBlock6: React.FC<
         uniq([
           ...appliedFiltersData.components,
           ...chart4AppliedFiltersData.components,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (
@@ -344,7 +344,7 @@ export const GrantImplementationPageBlock6: React.FC<
         uniq([
           ...appliedFiltersData.principalRecipients,
           ...chart4AppliedFiltersData.principalRecipients,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (
@@ -358,7 +358,7 @@ export const GrantImplementationPageBlock6: React.FC<
         uniq([
           ...appliedFiltersData.principalRecipientSubTypes,
           ...chart4AppliedFiltersData.principalRecipientSubTypes,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (
@@ -372,7 +372,7 @@ export const GrantImplementationPageBlock6: React.FC<
         uniq([
           ...appliedFiltersData.principalRecipientTypes,
           ...chart4AppliedFiltersData.principalRecipientTypes,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (
@@ -384,7 +384,7 @@ export const GrantImplementationPageBlock6: React.FC<
         uniq([
           ...appliedFiltersData.status,
           ...chart4AppliedFiltersData.status,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (expendituresCycleDropdownSelected) {
@@ -442,12 +442,12 @@ export const GrantImplementationPageBlock6: React.FC<
             columnHeader={getCMSDataField(
               cmsData,
               "pagesDatasetsGrantImplementation.expendituresHeatmapColumnHeader",
-              "Principal Recipients"
+              "Principal Recipients",
             )}
             rowHeader={getCMSDataField(
               cmsData,
               "pagesDatasetsGrantImplementation.expendituresHeatmapRowHeader",
-              "Components"
+              "Components",
             )}
           />
         );
@@ -458,12 +458,12 @@ export const GrantImplementationPageBlock6: React.FC<
             yAxisLabel={getCMSDataField(
               cmsData,
               "pagesDatasetsGrantImplementation.expendituresBarchartYLabel",
-              "Modules & Interventions"
+              "Modules & Interventions",
             )}
             xAxisLabel={getCMSDataField(
               cmsData,
               "pagesDatasetsGrantImplementation.expendituresBarchartXLabel",
-              "Expenditure"
+              "Expenditure",
             )}
             valueLabels={{
               value: "amount",
@@ -506,7 +506,7 @@ export const GrantImplementationPageBlock6: React.FC<
             const children = dataExpendituresHeatmap.filter(
               (child) =>
                 child.parentRow === item.row ||
-                child.parentColumn === item.column
+                child.parentColumn === item.column,
             );
             sortedData = sortedData.concat(children);
           }
@@ -632,7 +632,7 @@ export const GrantImplementationPageBlock6: React.FC<
         title={getCMSDataField(
           cmsData,
           "pagesDatasetsGrantImplementation.expendituresTitle",
-          "Expenditures"
+          "Expenditures",
         )}
         subtitle={`${totalExpenditure} reported expenditure.`}
         dropdownItems={dropdownItemsExpenditures}

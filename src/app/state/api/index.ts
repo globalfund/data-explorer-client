@@ -10,7 +10,7 @@ import {
 } from "app/state/api/interfaces";
 
 export const APIModel = <QueryModel, ResponseModel>(
-  url: string
+  url: string,
 ): ApiModel<QueryModel, ResponseModel> => ({
   loading: false,
   success: false,
@@ -69,12 +69,12 @@ export const APIModel = <QueryModel, ResponseModel>(
         `${localUrl}${query.filterString ? "?" : ""}${
           query.filterString ?? ""
         }`,
-        { headers }
+        { headers },
       )
       .then(
         (resp: AxiosResponse) =>
           actions.onSuccess({ ...resp.data, addOnData: false }),
-        (error: any) => actions.onError(error.response)
+        (error: any) => actions.onError(error.response),
       );
   }),
   setData: action((state, payload: any) => {
@@ -99,7 +99,7 @@ export const APIModel = <QueryModel, ResponseModel>(
       })
       .then(
         (resp: AxiosResponse) => actions.onSuccess(resp.data),
-        (error: any) => actions.onError(error.response)
+        (error: any) => actions.onError(error.response),
       );
   }),
 });

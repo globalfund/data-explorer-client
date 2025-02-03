@@ -35,7 +35,7 @@ export const LocationGrantImplementationBlock3 = () => {
 
   const [chart3Cycles, setChart3Cycles] = React.useState<CycleProps[]>([]);
   const [chart2Unit, setChart2Unit] = React.useState<"amount" | "percentage">(
-    "percentage"
+    "percentage",
   );
 
   const dataExpendituresHeatmap = useStoreState(
@@ -43,28 +43,28 @@ export const LocationGrantImplementationBlock3 = () => {
       get(
         state.GeographyExpendituresHeatmap,
         "data.data",
-        []
-      ) as HeatmapDataItem[]
+        [],
+      ) as HeatmapDataItem[],
   );
   const fetchExpendituresHeatmap = useStoreActions(
-    (actions) => actions.GeographyExpendituresHeatmap.fetch
+    (actions) => actions.GeographyExpendituresHeatmap.fetch,
   );
   const loadingExpendituresHeatmap = useStoreState(
-    (state) => state.GeographyExpendituresHeatmap.loading
+    (state) => state.GeographyExpendituresHeatmap.loading,
   );
   const expendituresCycles = useStoreState(
     (state) =>
       get(state.GeographyExpendituresCycles, "data.data", []) as {
         name: string;
         value: string;
-      }[]
+      }[],
   );
   const expendituresCyclesAll = useStoreState(
     (state) =>
       get(state.ExpendituresCycles, "data.data", []) as {
         name: string;
         value: string;
-      }[]
+      }[],
   );
 
   const handleChartCycleChange = (cycle: CycleProps) => {
@@ -174,16 +174,16 @@ export const LocationGrantImplementationBlock3 = () => {
         </IconButton>
       </Box>
     ),
-    [chart2Unit]
+    [chart2Unit],
   );
 
   const expendituresTotal = React.useMemo(() => {
     const total = sumBy(
       filter(
         dataExpendituresHeatmap,
-        (item) => !item.parentRow && !item.parentColumn
+        (item) => !item.parentRow && !item.parentColumn,
       ),
-      "value"
+      "value",
     );
     const range = getRange([{ value: total }], ["value"]);
     return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${
@@ -198,7 +198,7 @@ export const LocationGrantImplementationBlock3 = () => {
         sortedData.push(item);
         const children = dataExpendituresHeatmap.filter(
           (child) =>
-            child.parentRow === item.row || child.parentColumn === item.column
+            child.parentRow === item.row || child.parentColumn === item.column,
         );
         sortedData = sortedData.concat(children);
       }
@@ -223,7 +223,7 @@ export const LocationGrantImplementationBlock3 = () => {
       subtitle={getCMSDataField(
         cmsData,
         "pagesLocationGrantImplementation.expendituresSubtitle",
-        "Expenditures"
+        "Expenditures",
       )}
       title={expendituresTotal}
       selectedCycles={chart3Cycles}

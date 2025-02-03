@@ -43,6 +43,15 @@ export const Table: React.FC<TableProps> = (props: TableProps) => {
       table.on("tableBuilt", () => {
         tableBuiltRef.current = true;
       });
+      if (props.dataTree) {
+        table.on("rowClick", (_e, row) => {
+          if (row.isTreeExpanded()) {
+            row.treeCollapse();
+          } else {
+            row.treeExpand();
+          }
+        });
+      }
 
       if (props.dataTreeStartExpanded || props.dataTreeStartExpandedFn) {
         setTimeout(() => {
@@ -96,7 +105,7 @@ export const Table: React.FC<TableProps> = (props: TableProps) => {
             // background: "#F1F3F5 !important",
           },
           "&:hover": {
-            background: "#F1F3F5",
+            background: "#F6F7F7",
             borderColor: "#CFD4DA",
           },
         },

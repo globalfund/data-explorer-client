@@ -99,5 +99,13 @@ input[type="text"] {
   border-radius: 24px;
 }
 .tabulator-row:hover {
-  background-color: transparent !important;
+  /* background-color: transparent !important; */
+  background: #F6F7F7 !important;
+}
+.tabulator-row:hover > div {
+  background: #F6F7F7 !important;
+}
+
+.tabulator-cell > .table-download-icon {
+  display: none;
 }

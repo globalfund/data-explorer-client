@@ -52,10 +52,10 @@ export const GrantImplementationPageBlock5: React.FC<
       }) as {
         value: number;
         items: FinancialMetricExpandableItemProps[];
-      }
+      },
   );
   const fetchBudgetUtilisation = useStoreActions(
-    (actions) => actions.FinancialInsightsBudgetUtilisation.fetch
+    (actions) => actions.FinancialInsightsBudgetUtilisation.fetch,
   );
   const dataInCountryAbsorption = useStoreState(
     (state) =>
@@ -65,10 +65,10 @@ export const GrantImplementationPageBlock5: React.FC<
       }) as {
         value: number;
         items: FinancialMetricExpandableItemProps[];
-      }
+      },
   );
   const fetchInCountryAbsorption = useStoreActions(
-    (actions) => actions.FinancialInsightsCountryAbsorption.fetch
+    (actions) => actions.FinancialInsightsCountryAbsorption.fetch,
   );
   const dataDisbursementUtilisation = useStoreState(
     (state) =>
@@ -78,10 +78,10 @@ export const GrantImplementationPageBlock5: React.FC<
       }) as {
         value: number;
         items: FinancialMetricExpandableItemProps[];
-      }
+      },
   );
   const fetchDisbursementUtilisation = useStoreActions(
-    (actions) => actions.FinancialInsightsDisbursementUtilisation.fetch
+    (actions) => actions.FinancialInsightsDisbursementUtilisation.fetch,
   );
   const loadingFinancialMetrics = useStoreState((state) => {
     return (
@@ -96,10 +96,10 @@ export const GrantImplementationPageBlock5: React.FC<
         label: cycle.value,
         value: cycle.value,
       }))
-      .reverse()
+      .reverse(),
   );
   const appliedFiltersData = useStoreState(
-    (state) => state.AppliedFiltersState
+    (state) => state.AppliedFiltersState,
   );
 
   const [
@@ -124,7 +124,7 @@ export const GrantImplementationPageBlock5: React.FC<
   const handleToggleChartFilter = (
     checked: boolean,
     value: string,
-    type: string
+    type: string,
   ) => {
     let state = { ...chart3AppliedFiltersData };
     switch (type) {
@@ -149,7 +149,7 @@ export const GrantImplementationPageBlock5: React.FC<
           state.principalRecipients.push(value);
         } else {
           state.principalRecipients = state.principalRecipients.filter(
-            (item) => item !== value
+            (item) => item !== value,
           );
         }
         break;
@@ -166,7 +166,7 @@ export const GrantImplementationPageBlock5: React.FC<
           state.principalRecipientTypes.push(value);
         } else {
           state.principalRecipientTypes = state.principalRecipientTypes.filter(
-            (item) => item !== value
+            (item) => item !== value,
           );
         }
         break;
@@ -213,7 +213,7 @@ export const GrantImplementationPageBlock5: React.FC<
           break;
         case "principalRecipient":
           state.principalRecipients = state.principalRecipients.filter(
-            (item) => item !== value
+            (item) => item !== value,
           );
           break;
         case "principalRecipientSubType":
@@ -222,7 +222,7 @@ export const GrantImplementationPageBlock5: React.FC<
           break;
         case "principalRecipientType":
           state.principalRecipientTypes = state.principalRecipientTypes.filter(
-            (item) => item !== value
+            (item) => item !== value,
           );
           break;
         case "status":
@@ -334,7 +334,7 @@ export const GrantImplementationPageBlock5: React.FC<
         uniq([
           ...appliedFiltersData.locations,
           ...chart3AppliedFiltersData.locations,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (
@@ -346,7 +346,7 @@ export const GrantImplementationPageBlock5: React.FC<
         uniq([
           ...appliedFiltersData.components,
           ...chart3AppliedFiltersData.components,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (
@@ -360,7 +360,7 @@ export const GrantImplementationPageBlock5: React.FC<
         uniq([
           ...appliedFiltersData.principalRecipients,
           ...chart3AppliedFiltersData.principalRecipients,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (
@@ -374,7 +374,7 @@ export const GrantImplementationPageBlock5: React.FC<
         uniq([
           ...appliedFiltersData.principalRecipientSubTypes,
           ...chart3AppliedFiltersData.principalRecipientSubTypes,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (
@@ -388,7 +388,7 @@ export const GrantImplementationPageBlock5: React.FC<
         uniq([
           ...appliedFiltersData.principalRecipientTypes,
           ...chart3AppliedFiltersData.principalRecipientTypes,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (
@@ -400,7 +400,7 @@ export const GrantImplementationPageBlock5: React.FC<
         uniq([
           ...appliedFiltersData.status,
           ...chart3AppliedFiltersData.status,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (financialMetricsCycleDropdownSelected) {
@@ -506,7 +506,7 @@ export const GrantImplementationPageBlock5: React.FC<
         title={getCMSDataField(
           cmsData,
           "pagesDatasetsGrantImplementation.financialMetricsTitle",
-          "Financial Metrics"
+          "Financial Metrics",
         )}
         subtitle=""
         dropdownItems={[]}

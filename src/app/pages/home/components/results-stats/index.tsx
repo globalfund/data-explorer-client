@@ -64,7 +64,7 @@ const StatComp: React.FC<StatCompProps> = (props: StatCompProps) => {
 };
 
 export const HomeResultsStats: React.FC<HomeResultsStatsProps> = (
-  props: HomeResultsStatsProps
+  props: HomeResultsStatsProps,
 ) => {
   return (
     <Box

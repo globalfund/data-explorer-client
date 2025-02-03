@@ -163,7 +163,7 @@ export const Treemap: React.FC<TreemapProps> = (props: TreemapProps) => {
           ...chartTooltipCommonConfig(isTouch),
           formatter: (params: any) => {
             return ReactDOMServer.renderToString(
-              <Tooltip {...params} total={total} />
+              <Tooltip {...params} total={total} />,
             );
           },
         },
@@ -183,7 +183,7 @@ export const Treemap: React.FC<TreemapProps> = (props: TreemapProps) => {
         tooltip: {
           formatter: (params: any) => {
             return ReactDOMServer.renderToString(
-              <Tooltip {...params} total={total} />
+              <Tooltip {...params} total={total} />,
             );
           },
         },

@@ -29,13 +29,13 @@ export const GrantImplementationPageBlock1: React.FC<
       signed: 0,
       committed: 0,
       disbursed: 0,
-    })
+    }),
   );
   const loadingStats = useStoreState(
-    (state) => state.FinancialInsightsStats.loading
+    (state) => state.FinancialInsightsStats.loading,
   );
   const fetchFinancialInsightsStats = useStoreActions(
-    (actions) => actions.FinancialInsightsStats.fetch
+    (actions) => actions.FinancialInsightsStats.fetch,
   );
 
   React.useEffect(() => {
@@ -113,7 +113,7 @@ export const GrantImplementationPageBlock1: React.FC<
             {getCMSDataField(
               cmsData,
               "pagesDatasetsGrantImplementation.statsText1",
-              "Total Signed Amount"
+              "Total Signed Amount",
             )}
           </Typography>
         </Box>
@@ -125,7 +125,7 @@ export const GrantImplementationPageBlock1: React.FC<
             {getCMSDataField(
               cmsData,
               "pagesDatasetsGrantImplementation.statsText2",
-              "Total Committed Amount"
+              "Total Committed Amount",
             )}
           </Typography>
         </Box>
@@ -137,7 +137,7 @@ export const GrantImplementationPageBlock1: React.FC<
             {getCMSDataField(
               cmsData,
               "pagesDatasetsGrantImplementation.statsText3",
-              "Total Disbursed Amount"
+              "Total Disbursed Amount",
             )}
           </Typography>
         </Box>

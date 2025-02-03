@@ -12,7 +12,7 @@ import { PolylineTreeProps } from "app/components/charts/polyline-tree/data";
 echarts.use([EchartsTree, SVGRenderer]);
 
 export const PolylineTree: React.FC<PolylineTreeProps> = (
-  props: PolylineTreeProps
+  props: PolylineTreeProps,
 ) => {
   const mobile = useMediaQuery("(max-width: 767px)");
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -80,7 +80,7 @@ export const PolylineTree: React.FC<PolylineTreeProps> = (
                 return [
                   `{value|${formatLocale(params.value as number).replace(
                     "US$",
-                    ""
+                    "",
                   )}}`,
                   `{smallName|${params.name}}`,
                 ].join(" ");
@@ -98,6 +98,16 @@ export const PolylineTree: React.FC<PolylineTreeProps> = (
           emphasis: {
             disabled: mobile,
             focus: "descendant",
+            label: {
+              rich: {
+                value: {
+                  fontSize: 14,
+                },
+                smallName: {
+                  fontSize: 14,
+                },
+              },
+            },
           },
         },
       };
@@ -114,7 +124,7 @@ export const PolylineTree: React.FC<PolylineTreeProps> = (
         data-cy="polyline-tree"
         ref={containerRef}
         width="100%"
-        height="900px"
+        height="1400px"
         sx={{
           "> div": {
             borderRadius: "8px",

@@ -18,7 +18,7 @@ import { GrantsLayoutProps, DROPDOWN_ITEMS } from "app/pages/grants/data";
 import Searchbox from "./component/Searchbox";
 
 export const GrantsLayout: React.FC<GrantsLayoutProps> = (
-  props: GrantsLayoutProps
+  props: GrantsLayoutProps,
 ) => {
   const mobile = useMediaQuery("(max-width: 767px)");
   const tablet = useMediaQuery("(max-width: 1024px)");

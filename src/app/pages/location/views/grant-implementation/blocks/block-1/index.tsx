@@ -29,7 +29,7 @@ export const LocationGrantImplementationBlock1 = () => {
   const [chart1Cycles, setChart1Cycles] = React.useState<CycleProps[]>([]);
 
   const [chart1Dropdown, setChart1Dropdown] = React.useState(
-    CHART_1_DROPDOWN_ITEMS[0].value
+    CHART_1_DROPDOWN_ITEMS[0].value,
   );
 
   const dataDisbursementsLineChart = useStoreState(
@@ -37,27 +37,27 @@ export const LocationGrantImplementationBlock1 = () => {
       get(state.GeographyDisbursementsLineChart, "data", {
         data: [],
         xAxisKeys: [],
-      }) as LineChartProps
+      }) as LineChartProps,
   );
   const fetchDisbursementsLineChart = useStoreActions(
-    (actions) => actions.GeographyDisbursementsLineChart.fetch
+    (actions) => actions.GeographyDisbursementsLineChart.fetch,
   );
   const loadingDisbursementsLineChart = useStoreState(
-    (state) => state.GeographyDisbursementsLineChart.loading
+    (state) => state.GeographyDisbursementsLineChart.loading,
   );
   const disbursementsCycles = useStoreState(
     (state) =>
       get(state.GeographyDisbursementsCycles, "data.data", []) as {
         name: string;
         value: string;
-      }[]
+      }[],
   );
   const disbursementsCyclesAll = useStoreState(
     (state) =>
       get(state.DisbursementsCycles, "data.data", []) as {
         name: string;
         value: string;
-      }[]
+      }[],
   );
 
   const handleChartCycleChange = (cycle: CycleProps) => {

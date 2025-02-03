@@ -9,7 +9,7 @@ export async function exportChart(
     headers: string[];
     data: (string | number)[][];
   },
-  exportName: string
+  exportName: string,
 ) {
   const bgcolor = "#ffffff";
   return new Promise((resolve, reject) => {

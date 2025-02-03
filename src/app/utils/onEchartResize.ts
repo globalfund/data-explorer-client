@@ -3,7 +3,7 @@ import * as echarts from "echarts";
 export function onEchartResize(
   chart: echarts.ECharts,
   id: string,
-  height?: number
+  height?: number,
 ) {
   const container = document.getElementById(id);
   chart.resize({

@@ -29,7 +29,7 @@ export const HomeBlock4: React.FC = () => {
   const [chart4Cycles, setChart4Cycles] = React.useState<CycleProps[]>([]);
 
   const [chart4Dropdown, setChart4Dropdown] = React.useState(
-    CHART_4_DROPDOWN_ITEMS[0].value
+    CHART_4_DROPDOWN_ITEMS[0].value,
   );
 
   const dataDisbursementsLineChart = useStoreState(
@@ -37,20 +37,20 @@ export const HomeBlock4: React.FC = () => {
       get(state.HomeDisbursementsLineChart, "data", {
         data: [],
         xAxisKeys: [],
-      }) as LineChartProps
+      }) as LineChartProps,
   );
   const loadingDisbursementsLineChart = useStoreState((state) =>
-    Boolean(state.HomeDisbursementsLineChart.loading)
+    Boolean(state.HomeDisbursementsLineChart.loading),
   );
   const fetchDisbursementsLineChart = useStoreActions(
-    (actions) => actions.HomeDisbursementsLineChart.fetch
+    (actions) => actions.HomeDisbursementsLineChart.fetch,
   );
   const disbursementsCycles = useStoreState(
     (state) =>
       get(state.DisbursementsCycles, "data.data", []) as {
         name: string;
         value: string;
-      }[]
+      }[],
   );
 
   const handleChartCycleChange = (cycle: CycleProps) => {
@@ -78,7 +78,7 @@ export const HomeBlock4: React.FC = () => {
       name: string;
       value: string;
     }[],
-    componentField: string
+    componentField: string,
   ) => {
     let filterString = "";
     if (cycles.length > 0) {
@@ -164,7 +164,7 @@ export const HomeBlock4: React.FC = () => {
       subtitle={getCMSDataField(
         cmsData,
         "pagesHome.disbursementsSubtitle",
-        "Disbursements"
+        "Disbursements",
       )}
       data={exportChartData}
       title={disbursementsTotal}

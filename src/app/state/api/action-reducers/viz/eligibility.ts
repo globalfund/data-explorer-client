@@ -21,6 +21,6 @@ export const EligibilityStatusCodelist: ApiCallModel = {
 
 export const EligibilityDiseaseBurdenCodelist: ApiCallModel = {
   ...APIModel(
-    `${process.env.REACT_APP_API}/eligibility/disease-burden/codelist`
+    `${process.env.REACT_APP_API}/eligibility/disease-burden/codelist`,
   ),
 };

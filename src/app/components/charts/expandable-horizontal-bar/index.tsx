@@ -120,11 +120,11 @@ export const ExpandableHorizontalBar: React.FC<
   const seriesData = React.useMemo(() => {
     const values = filter(
       data.map((item) => item.value),
-      (v: number | undefined) => v
+      (v: number | undefined) => v,
     ) as number[];
     const values1 = filter(
       data.map((item) => item.value1),
-      (v: number | undefined) => v
+      (v: number | undefined) => v,
     ) as number[];
     if (values1.length === 0) {
       return [values];

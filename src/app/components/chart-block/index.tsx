@@ -10,7 +10,7 @@ import { ChartBlockCycles } from "app/components/chart-block/components/cycles";
 import { ChartBlockButtonToolbar } from "app/components/chart-block/components/button-toolbar";
 
 export const ChartBlock: React.FC<ChartBlockProps> = (
-  props: ChartBlockProps
+  props: ChartBlockProps,
 ) => {
   const id = React.useMemo(() => uniqueId("chart-block-"), []);
 
@@ -62,7 +62,16 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
   }
 
   return (
-    <Box id={props.id} data-cy="chart-block">
+    <Box id={props.id} data-cy="chart-block" position="relative">
+      <Box
+        id={`anchor-${props.id}`}
+        sx={{
+          left: 0,
+          zIndex: -1,
+          top: "-58px",
+          position: "absolute",
+        }}
+      />
       <Typography variant="h3" lineHeight={1.2} fontSize="44px">
         {props.title}
       </Typography>

@@ -13,7 +13,7 @@ export const GrantCard: React.FC<GrantCardProps> = (props: GrantCardProps) => {
     if (props.startDate) {
       const date = new Date(props.startDate);
       res.push(
-        `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`
+        `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`,
       );
     } else {
       res.push("-");
@@ -21,7 +21,7 @@ export const GrantCard: React.FC<GrantCardProps> = (props: GrantCardProps) => {
     if (props.endDate) {
       const date = new Date(props.endDate);
       res.push(
-        `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`
+        `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`,
       );
     } else {
       res.push("-");

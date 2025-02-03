@@ -40,7 +40,7 @@ const HeaderMenuButton = styled(Button)({
 });
 
 export const HeaderMenu: React.FC<HeaderMenuProps> = (
-  props: HeaderMenuProps
+  props: HeaderMenuProps,
 ) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -305,7 +305,7 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (
                       </Box>
                     </HeaderMenuButton>
                   </Box>
-                )
+                ),
               )}
             </Box>
           </Container>

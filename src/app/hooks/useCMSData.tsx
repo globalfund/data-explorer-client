@@ -15,33 +15,33 @@ export function useCMSData(props: UseCMSDataProps) {
 
   // COMPONENTS
   const componentsChartsEligibilityCMSAction = useStoreActions(
-    (actions) => actions.cms.componentsChartsEligibility.fetch
+    (actions) => actions.cms.componentsChartsEligibility.fetch,
   );
   const componentsChartsEligibilityCMSData = useStoreState(
-    (state) => state.cms.componentsChartsEligibility.data
+    (state) => state.cms.componentsChartsEligibility.data,
   );
 
   const componentsSearchCMSAction = useStoreActions(
-    (actions) => actions.cms.componentsSearch.fetch
+    (actions) => actions.cms.componentsSearch.fetch,
   );
   const componentsSearchCMSData = useStoreState(
-    (state) => state.cms.componentsSearch.data
+    (state) => state.cms.componentsSearch.data,
   );
 
   // PAGES
 
   const pagesDatasetsCMSAction = useStoreActions(
-    (actions) => actions.cms.pagesDatasets.fetch
+    (actions) => actions.cms.pagesDatasets.fetch,
   );
   const pagesDatasetsCMSData = useStoreState(
-    (state) => state.cms.pagesDatasets.data
+    (state) => state.cms.pagesDatasets.data,
   );
 
   const pagesGeographyCMSAction = useStoreActions(
-    (actions) => actions.cms.pagesGeography.fetch
+    (actions) => actions.cms.pagesGeography.fetch,
   );
   const pagesGeographyCMSData = useStoreState(
-    (state) => state.cms.pagesGeography.data
+    (state) => state.cms.pagesGeography.data,
   );
 
   // const pagesGrantDetailCMSAction = useStoreActions(
@@ -52,14 +52,14 @@ export function useCMSData(props: UseCMSDataProps) {
   // );
 
   const pagesGrantsCMSAction = useStoreActions(
-    (actions) => actions.cms.pagesGrants.fetch
+    (actions) => actions.cms.pagesGrants.fetch,
   );
   const pagesGrantsCMSData = useStoreState(
-    (state) => state.cms.pagesGrants.data
+    (state) => state.cms.pagesGrants.data,
   );
 
   const pagesHomeCMSAction = useStoreActions(
-    (actions) => actions.cms.pagesHome.fetch
+    (actions) => actions.cms.pagesHome.fetch,
   );
   const pagesHomeCMSData = useStoreState((state) => state.cms.pagesHome.data);
 
@@ -71,100 +71,100 @@ export function useCMSData(props: UseCMSDataProps) {
   // );
 
   const pagesDatasetsAccessToFundingCMSAction = useStoreActions(
-    (actions) => actions.cms.pagesDatasetsAccessToFunding.fetch
+    (actions) => actions.cms.pagesDatasetsAccessToFunding.fetch,
   );
   const pagesDatasetsAccessToFundingCMSData = useStoreState(
-    (state) => state.cms.pagesDatasetsAccessToFunding.data
+    (state) => state.cms.pagesDatasetsAccessToFunding.data,
   );
 
   const pagesDatasetsAnnualResultsCMSAction = useStoreActions(
-    (actions) => actions.cms.pagesDatasetsAnnualResults.fetch
+    (actions) => actions.cms.pagesDatasetsAnnualResults.fetch,
   );
   const pagesDatasetsAnnualResultsCMSData = useStoreState(
-    (state) => state.cms.pagesDatasetsAnnualResults.data
+    (state) => state.cms.pagesDatasetsAnnualResults.data,
   );
 
   const pagesDatasetsGrantImplementationCMSAction = useStoreActions(
-    (actions) => actions.cms.pagesDatasetsGrantImplementation.fetch
+    (actions) => actions.cms.pagesDatasetsGrantImplementation.fetch,
   );
   const pagesDatasetsGrantImplementationCMSData = useStoreState(
-    (state) => state.cms.pagesDatasetsGrantImplementation.data
+    (state) => state.cms.pagesDatasetsGrantImplementation.data,
   );
 
   const pagesDatasetsResourceMobilizationCMSAction = useStoreActions(
-    (actions) => actions.cms.pagesDatasetsResourceMobilization.fetch
+    (actions) => actions.cms.pagesDatasetsResourceMobilization.fetch,
   );
   const pagesDatasetsResourceMobilizationCMSData = useStoreState(
-    (state) => state.cms.pagesDatasetsResourceMobilization.data
+    (state) => state.cms.pagesDatasetsResourceMobilization.data,
   );
 
   const pagesLocationAccessToFundingCMSAction = useStoreActions(
-    (actions) => actions.cms.pagesLocationAccessToFunding.fetch
+    (actions) => actions.cms.pagesLocationAccessToFunding.fetch,
   );
   const pagesLocationAccessToFundingCMSData = useStoreState(
-    (state) => state.cms.pagesLocationAccessToFunding.data
+    (state) => state.cms.pagesLocationAccessToFunding.data,
   );
 
   const pagesLocationGrantImplementationCMSAction = useStoreActions(
-    (actions) => actions.cms.pagesLocationGrantImplementation.fetch
+    (actions) => actions.cms.pagesLocationGrantImplementation.fetch,
   );
   const pagesLocationGrantImplementationCMSData = useStoreState(
-    (state) => state.cms.pagesLocationGrantImplementation.data
+    (state) => state.cms.pagesLocationGrantImplementation.data,
   );
 
   const pagesLocationOverviewCMSAction = useStoreActions(
-    (actions) => actions.cms.pagesLocationOverview.fetch
+    (actions) => actions.cms.pagesLocationOverview.fetch,
   );
   const pagesLocationOverviewCMSData = useStoreState(
-    (state) => state.cms.pagesLocationOverview.data
+    (state) => state.cms.pagesLocationOverview.data,
   );
 
   const pagesLocationResourceMobilizationCMSAction = useStoreActions(
-    (actions) => actions.cms.pagesLocationResourceMobilization.fetch
+    (actions) => actions.cms.pagesLocationResourceMobilization.fetch,
   );
   const pagesLocationResourceMobilizationCMSData = useStoreState(
-    (state) => state.cms.pagesLocationResourceMobilization.data
+    (state) => state.cms.pagesLocationResourceMobilization.data,
   );
 
   const pagesLocationResultsCMSAction = useStoreActions(
-    (actions) => actions.cms.pagesLocationResults.fetch
+    (actions) => actions.cms.pagesLocationResults.fetch,
   );
   const pagesLocationResultsCMSData = useStoreState(
-    (state) => state.cms.pagesLocationResults.data
+    (state) => state.cms.pagesLocationResults.data,
   );
 
   const pagesGrantDocumentsCMSAction = useStoreActions(
-    (actions) => actions.cms.pagesGrantDocuments.fetch
+    (actions) => actions.cms.pagesGrantDocuments.fetch,
   );
   const pagesGrantDocumentsCMSData = useStoreState(
-    (state) => state.cms.pagesGrantDocuments.data
+    (state) => state.cms.pagesGrantDocuments.data,
   );
 
   const pagesGrantGrantImplementationCMSAction = useStoreActions(
-    (actions) => actions.cms.pagesGrantGrantImplementation.fetch
+    (actions) => actions.cms.pagesGrantGrantImplementation.fetch,
   );
   const pagesGrantGrantImplementationCMSData = useStoreState(
-    (state) => state.cms.pagesGrantGrantImplementation.data
+    (state) => state.cms.pagesGrantGrantImplementation.data,
   );
 
   const pagesGrantOverviewCMSAction = useStoreActions(
-    (actions) => actions.cms.pagesGrantOverview.fetch
+    (actions) => actions.cms.pagesGrantOverview.fetch,
   );
   const pagesGrantOverviewCMSData = useStoreState(
-    (state) => state.cms.pagesGrantOverview.data
+    (state) => state.cms.pagesGrantOverview.data,
   );
 
   const pagesGrantTargetResultsCMSAction = useStoreActions(
-    (actions) => actions.cms.pagesGrantTargetResults.fetch
+    (actions) => actions.cms.pagesGrantTargetResults.fetch,
   );
   const pagesGrantTargetResultsCMSData = useStoreState(
-    (state) => state.cms.pagesGrantTargetResults.data
+    (state) => state.cms.pagesGrantTargetResults.data,
   );
 
   // GENERAL
 
   const generalCMSAction = useStoreActions(
-    (actions) => actions.cms.general.fetch
+    (actions) => actions.cms.general.fetch,
   );
   const generalCMSData = useStoreState((state) => state.cms.general.data);
 
@@ -299,7 +299,7 @@ export function useCMSData(props: UseCMSDataProps) {
       const data = get(item, "data.data", []) as any[];
 
       filteredData = data?.find(
-        (d) => d.attributes.locale === currentLanguage
+        (d) => d.attributes.locale === currentLanguage,
       )?.attributes;
 
       newData = {

@@ -19,7 +19,7 @@ interface AccessToFundingBlock5Props {
 }
 
 export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
-  props: AccessToFundingBlock5Props
+  props: AccessToFundingBlock5Props,
 ) => {
   const location = useLocation();
   const cmsData = useCMSData({ returnData: true });
@@ -51,23 +51,23 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
           };
         }
         return item;
-      }
-    )
+      },
+    ),
   );
   const loadingFundingRequestsTable = useStoreState(
-    (state) => state.AccessToFundingFundingRequestsTable.loading
+    (state) => state.AccessToFundingFundingRequestsTable.loading,
   );
   const fetchFundingRequestsTable = useStoreActions(
-    (actions) => actions.AccessToFundingFundingRequestsTable.fetch
+    (actions) => actions.AccessToFundingFundingRequestsTable.fetch,
   );
   const appliedFiltersData = useStoreState(
-    (state) => state.AppliedFiltersState
+    (state) => state.AppliedFiltersState,
   );
 
   const handleToggleChartFilter = (
     checked: boolean,
     value: string,
-    type: string
+    type: string,
   ) => {
     let state = { ...chart3AppliedFiltersData };
     switch (type) {
@@ -134,7 +134,7 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
         uniq([
           ...appliedFiltersData.locations,
           ...chart3AppliedFiltersData.locations,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (
@@ -146,7 +146,7 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
         uniq([
           ...appliedFiltersData.components,
           ...chart3AppliedFiltersData.components,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (
@@ -158,7 +158,7 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
         uniq([
           ...appliedFiltersData.cycles.map((c) => c.split("-")[0]),
           ...chart3AppliedFiltersData.cycles.map((c) => c.split("-")[0]),
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     return value;
@@ -240,12 +240,12 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
         title={getCMSDataField(
           cmsData,
           "pagesDatasetsAccessToFunding.fundingRequestsTitle",
-          "Funding Requests"
+          "Funding Requests",
         )}
         subtitle={getCMSDataField(
           cmsData,
           "pagesDatasetsAccessToFunding.fundingRequestsSubtitle",
-          "Funding request applications by countries."
+          "Funding request applications by countries.",
         )}
         disableCollapse
         dropdownItems={[]}

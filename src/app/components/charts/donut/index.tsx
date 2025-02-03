@@ -9,7 +9,7 @@ import { useChartResizeObserver } from "app/hooks/useChartResizeObserver";
 echarts.use([EChartsPie, SVGRenderer]);
 
 export const DonutChart: React.FC<DonutChartProps> = (
-  props: DonutChartProps
+  props: DonutChartProps,
 ) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
 

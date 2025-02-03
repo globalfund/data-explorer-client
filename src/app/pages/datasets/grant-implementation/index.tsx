@@ -29,10 +29,10 @@ export const GrantImplementationPage: React.FC = () => {
   const location = useLocation();
 
   const [geographyGrouping, setGeographyGrouping] = React.useState(
-    geographyGroupingOptions[0].value
+    geographyGroupingOptions[0].value,
   );
   const [componentsGrouping] = React.useState(
-    componentsGroupingOptions[1].value
+    componentsGroupingOptions[1].value,
   );
 
   const dataLocationFilterOptions = useStoreState(
@@ -41,7 +41,7 @@ export const GrantImplementationPage: React.FC = () => {
         id: "",
         name: "",
         options: [],
-      }) as FilterGroupModel
+      }) as FilterGroupModel,
   );
   const dataComponentFilterOptions = useStoreState(
     (state) =>
@@ -49,7 +49,7 @@ export const GrantImplementationPage: React.FC = () => {
         id: "",
         name: "",
         options: [],
-      }) as FilterGroupModel
+      }) as FilterGroupModel,
   );
   const dataPartnerTypeFilterOptions = useStoreState(
     (state) =>
@@ -57,7 +57,7 @@ export const GrantImplementationPage: React.FC = () => {
         id: "",
         name: "",
         options: [],
-      }) as FilterGroupModel
+      }) as FilterGroupModel,
   );
   const dataStatusFilterOptions = useStoreState(
     (state) =>
@@ -65,7 +65,7 @@ export const GrantImplementationPage: React.FC = () => {
         id: "",
         name: "",
         options: [],
-      }) as FilterGroupModel
+      }) as FilterGroupModel,
   );
   const dataCycleFilterOptions = useStoreState((state) => ({
     id: "cycle",
@@ -76,10 +76,10 @@ export const GrantImplementationPage: React.FC = () => {
     })),
   }));
   const fetchComponentFilterOptions = useStoreActions(
-    (actions) => actions.ComponentFilterOptions.fetch
+    (actions) => actions.ComponentFilterOptions.fetch,
   );
   const fetchLocationFilterOptions = useStoreActions(
-    (actions) => actions.LocationFilterOptions.fetch
+    (actions) => actions.LocationFilterOptions.fetch,
   );
   const pageAppliedFilters = useStoreState((state) => [
     ...state.AppliedFiltersState.components,
@@ -91,10 +91,10 @@ export const GrantImplementationPage: React.FC = () => {
     ...state.AppliedFiltersState.cycles,
   ]);
   const appliedFiltersData = useStoreState(
-    (state) => state.AppliedFiltersState
+    (state) => state.AppliedFiltersState,
   );
   const appliedFiltersActions = useStoreActions(
-    (actions) => actions.AppliedFiltersState
+    (actions) => actions.AppliedFiltersState,
   );
 
   const handleGeographyGroupingChange = (value: string) => {
@@ -139,7 +139,7 @@ export const GrantImplementationPage: React.FC = () => {
             {getCMSDataField(
               cmsData,
               "pagesDatasetsGrantImplementation.toolbarRightText1",
-              "Geography grouping"
+              "Geography grouping",
             )}
           </Typography>
           <Dropdown
@@ -206,7 +206,7 @@ export const GrantImplementationPage: React.FC = () => {
       location.search.includes("locations=")
     ) {
       value += `geographies=${encodeURIComponent(
-        appliedFiltersData.locations.join(",")
+        appliedFiltersData.locations.join(","),
       )}`;
     }
     if (
@@ -214,7 +214,7 @@ export const GrantImplementationPage: React.FC = () => {
       location.search.includes("components=")
     ) {
       value += `${value.length > 0 ? "&" : ""}components=${encodeURIComponent(
-        appliedFiltersData.components.join(",")
+        appliedFiltersData.components.join(","),
       )}`;
     }
     if (
@@ -224,7 +224,7 @@ export const GrantImplementationPage: React.FC = () => {
       value += `${
         value.length > 0 ? "&" : ""
       }principalRecipientTypes=${encodeURIComponent(
-        appliedFiltersData.principalRecipientTypes.join(",")
+        appliedFiltersData.principalRecipientTypes.join(","),
       )}`;
     }
     if (
@@ -234,7 +234,7 @@ export const GrantImplementationPage: React.FC = () => {
       value += `${
         value.length > 0 ? "&" : ""
       }principalRecipientSubTypes=${encodeURIComponent(
-        appliedFiltersData.principalRecipientSubTypes.join(",")
+        appliedFiltersData.principalRecipientSubTypes.join(","),
       )}`;
     }
     if (
@@ -244,7 +244,7 @@ export const GrantImplementationPage: React.FC = () => {
       value += `${
         value.length > 0 ? "&" : ""
       }principalRecipients=${encodeURIComponent(
-        appliedFiltersData.principalRecipients.join(",")
+        appliedFiltersData.principalRecipients.join(","),
       )}`;
     }
     if (
@@ -252,7 +252,7 @@ export const GrantImplementationPage: React.FC = () => {
       location.search.includes("status=")
     ) {
       value += `${value.length > 0 ? "&" : ""}status=${encodeURIComponent(
-        appliedFiltersData.status.join(",")
+        appliedFiltersData.status.join(","),
       )}`;
     }
     if (
@@ -309,7 +309,7 @@ export const GrantImplementationPage: React.FC = () => {
       title={getCMSDataField(
         cmsData,
         "pagesDatasetsGrantImplementation.title",
-        "Financial Insights"
+        "Financial Insights",
       )}
       filterGroups={filterGroups}
       appliedFilters={pageAppliedFilters}
@@ -317,7 +317,7 @@ export const GrantImplementationPage: React.FC = () => {
       subtitle={getCMSDataField(
         cmsData,
         "pagesDatasetsGrantImplementation.subtitle",
-        "See the disbursements, budgets and expenditures datasets and relating insights."
+        "See the disbursements, budgets and expenditures datasets and relating insights.",
       )}
       toolbarRightContent={toolbarRightContent}
     >

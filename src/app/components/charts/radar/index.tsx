@@ -15,7 +15,7 @@ import { RadarSeriesOption, RadarChart as EChartsRadar } from "echarts/charts";
 echarts.use([EChartsRadar, SVGRenderer, LegendComponent]);
 
 export const RadarChart: React.FC<RadarChartProps> = (
-  props: RadarChartProps
+  props: RadarChartProps,
 ) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
 
@@ -53,17 +53,17 @@ export const RadarChart: React.FC<RadarChartProps> = (
             formatter: (value) => {
               const indicatorIndex = findIndex(
                 props.data.components,
-                (c) => c === value
+                (c) => c === value,
               );
               const budgetValue = get(
                 props.data.budgetValues,
                 `[${indicatorIndex}]`,
-                0
+                0,
               );
               const disbursementValue = get(
                 props.data.disbursementValues,
                 `[${indicatorIndex}]`,
-                0
+                0,
               );
               const percentage =
                 budgetValue > 0 ? (disbursementValue / budgetValue) * 100 : 0;

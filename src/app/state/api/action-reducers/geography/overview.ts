@@ -7,6 +7,6 @@ export const GeographyOverview: ApiCallModel = {
 
 export const GeographyOverviewCoordinatingMechanismsContacts: ApiCallModel = {
   ...APIModel(
-    `${process.env.REACT_APP_API}/location/coordinating-mechanism/{code}/contacts`
+    `${process.env.REACT_APP_API}/location/coordinating-mechanism/{code}/contacts`,
   ),
 };

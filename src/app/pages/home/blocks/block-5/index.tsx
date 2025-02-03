@@ -35,29 +35,29 @@ export const HomeBlock5: React.FC = () => {
   const [chart5Cycles, setChart5Cycles] = React.useState<CycleProps[]>([]);
 
   const [chart5Dropdown, setChart5Dropdown] = React.useState(
-    CHART_5_DROPDOWN_ITEMS[1].value
+    CHART_5_DROPDOWN_ITEMS[1].value,
   );
 
   const [chart5Unit, setChart5Unit] = React.useState<"amount" | "percentage">(
-    "percentage"
+    "percentage",
   );
 
   const dataExpendituresHeatmap = useStoreState(
     (state) =>
-      get(state.HomeExpendituresHeatmap, "data.data", []) as HeatmapDataItem[]
+      get(state.HomeExpendituresHeatmap, "data.data", []) as HeatmapDataItem[],
   );
   const loadingExpendituresHeatmap = useStoreState((state) =>
-    Boolean(state.HomeExpendituresHeatmap.loading)
+    Boolean(state.HomeExpendituresHeatmap.loading),
   );
   const fetchExpendituresHeatmap = useStoreActions(
-    (actions) => actions.HomeExpendituresHeatmap.fetch
+    (actions) => actions.HomeExpendituresHeatmap.fetch,
   );
   const expendituresCycles = useStoreState(
     (state) =>
       get(state.ExpendituresCycles, "data.data", []) as {
         name: string;
         value: string;
-      }[]
+      }[],
   );
 
   const handleChartCycleChange = (cycle: CycleProps) => {
@@ -143,7 +143,7 @@ export const HomeBlock5: React.FC = () => {
         </IconButton>
       </Box>
     ),
-    [chart5Unit]
+    [chart5Unit],
   );
 
   const reloadExpendituresHeatmap = (
@@ -151,7 +151,7 @@ export const HomeBlock5: React.FC = () => {
       name: string;
       value: string;
     }[],
-    componentField: string
+    componentField: string,
   ) => {
     let filterString = "";
     if (cycles.length > 0) {
@@ -204,9 +204,9 @@ export const HomeBlock5: React.FC = () => {
     const total = sumBy(
       filter(
         dataExpendituresHeatmap,
-        (item) => !item.parentRow && !item.parentColumn
+        (item) => !item.parentRow && !item.parentColumn,
       ),
-      "value"
+      "value",
     );
     const range = getRange([{ value: total }], ["value"]);
     return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${
@@ -221,7 +221,7 @@ export const HomeBlock5: React.FC = () => {
         sortedData.push(item);
         const children = dataExpendituresHeatmap.filter(
           (child) =>
-            child.parentRow === item.row || child.parentColumn === item.column
+            child.parentRow === item.row || child.parentColumn === item.column,
         );
         sortedData = sortedData.concat(children);
       }
@@ -244,7 +244,7 @@ export const HomeBlock5: React.FC = () => {
       subtitle={getCMSDataField(
         cmsData,
         "pagesHome.expendituresSubtitle",
-        "Expenditures"
+        "Expenditures",
       )}
       title={expendituresTotal}
       selectedCycles={chart5Cycles}

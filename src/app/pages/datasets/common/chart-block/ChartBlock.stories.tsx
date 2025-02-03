@@ -14,7 +14,7 @@ const items = [
 
 const Wrapper: React.FC = () => {
   const [dropdownSelected, setDropdownSelected] = React.useState(
-    items[0].value
+    items[0].value,
   );
 
   const handleSelectionChange = (value: string) => {

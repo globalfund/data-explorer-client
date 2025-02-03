@@ -16,13 +16,13 @@ import { DatasetChartBlockProps } from "app/pages/datasets/common/chart-block/da
 import { ChartBlockButtonToolbar } from "app/components/chart-block/components/button-toolbar";
 
 export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
-  props: DatasetChartBlockProps
+  props: DatasetChartBlockProps,
 ) => {
   // const [collapsed, setCollapsed] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleFilterButtonClick = (
-    event: React.MouseEvent<HTMLButtonElement>
+    event: React.MouseEvent<HTMLButtonElement>,
   ) => {
     setAnchorEl(event.currentTarget);
   };
@@ -105,7 +105,16 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
   ]);
 
   return (
-    <Box id={props.id} data-cy="dataset-chart-block">
+    <Box id={props.id} data-cy="dataset-chart-block" position="relative">
+      <Box
+        id={`anchor-${props.id}`}
+        sx={{
+          left: 0,
+          zIndex: -1,
+          top: "-58px",
+          position: "absolute",
+        }}
+      />
       <Typography variant={props.titleVariant ?? "h2"} lineHeight={1.2}>
         {props.title}
       </Typography>

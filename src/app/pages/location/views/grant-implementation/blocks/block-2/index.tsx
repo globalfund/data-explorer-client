@@ -32,33 +32,33 @@ export const LocationGrantImplementationBlock2 = () => {
     nodes: get(
       state.GeographyBudgetSankeyChart,
       "data.data.nodes",
-      []
+      [],
     ) as SankeyChartData["nodes"],
     links: get(
       state.GeographyBudgetSankeyChart,
       "data.data.links",
-      []
+      [],
     ) as SankeyChartData["links"],
   }));
   const fetchBudgetSankeyChart = useStoreActions(
-    (actions) => actions.GeographyBudgetSankeyChart.fetch
+    (actions) => actions.GeographyBudgetSankeyChart.fetch,
   );
   const loadingBudgetSankeyChart = useStoreState(
-    (state) => state.GeographyBudgetSankeyChart.loading
+    (state) => state.GeographyBudgetSankeyChart.loading,
   );
   const budgetsCycles = useStoreState(
     (state) =>
       get(state.GeographyBudgetsCycles, "data.data", []) as {
         name: string;
         value: string;
-      }[]
+      }[],
   );
   const budgetsCyclesAll = useStoreState(
     (state) =>
       get(state.BudgetsCycles, "data.data", []) as {
         name: string;
         value: string;
-      }[]
+      }[],
   );
 
   const handleChartCycleChange = (cycle: CycleProps) => {
@@ -119,7 +119,7 @@ export const LocationGrantImplementationBlock2 = () => {
     filter(dataBudgetSankeyChart.links, { source: "Total budget" }).forEach(
       (item) => {
         total += item.value;
-      }
+      },
     );
     const range = getRange([{ value: total }], ["value"]);
     return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${
@@ -146,7 +146,7 @@ export const LocationGrantImplementationBlock2 = () => {
       subtitle={getCMSDataField(
         cmsData,
         "pagesLocationGrantImplementation.budgetsSubtitle",
-        "Grant Budgets"
+        "Grant Budgets",
       )}
       selectedCycles={chart2Cycles}
       // dropdownSelected={chart2Dropdown}
@@ -177,28 +177,28 @@ export const LocationGrantImplementationBlock2 = () => {
           {getCMSDataField(
             cmsData,
             "pagesLocationGrantImplementation.budgetsLabel1",
-            "Total budgets"
+            "Total budgets",
           )}
         </Grid>
         <Grid item xs={3}>
           {getCMSDataField(
             cmsData,
             "pagesLocationGrantImplementation.budgetsLabel2",
-            "Landscape 1"
+            "Landscape 1",
           )}
         </Grid>
         <Grid item xs={3}>
           {getCMSDataField(
             cmsData,
             "pagesLocationGrantImplementation.budgetsLabel3",
-            "Landscape 2"
+            "Landscape 2",
           )}
         </Grid>
         <Grid item xs={3}>
           {getCMSDataField(
             cmsData,
             "pagesLocationGrantImplementation.budgetsLabel4",
-            "Cost Category"
+            "Cost Category",
           )}
         </Grid>
       </Grid>

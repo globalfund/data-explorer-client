@@ -28,7 +28,7 @@ export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
   const paramsId = params.id as string;
 
   const locationName = useStoreState((state) =>
-    get(state.GeographyOverview, "data.data[0].name", params.id)
+    get(state.GeographyOverview, "data.data[0].name", params.id),
   );
   useTitle(`The Data Explorer - ${locationName}`);
 
@@ -37,10 +37,10 @@ export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
 
   const dataResultStats = useStoreState(
     (state) =>
-      get(state.GeographyResultStats, "data.stats", []) as StatCompProps[]
+      get(state.GeographyResultStats, "data.stats", []) as StatCompProps[],
   );
   const dataResultsTable = useStoreState((state) =>
-    get(state.GeographyResultsTable, "data.data", [])
+    get(state.GeographyResultsTable, "data.data", []),
   );
   const cyclesResultsTable = useStoreState(
     (state) =>
@@ -48,23 +48,23 @@ export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
         (c: { name: number; value: number }) => ({
           name: c.name.toString(),
           value: c.value.toString(),
-        })
+        }),
       ) as {
         name: string;
         value: string;
-      }[]
+      }[],
   );
   const loadingResultsTable = useStoreState(
-    (state) => state.GeographyResultsTable.loading
+    (state) => state.GeographyResultsTable.loading,
   );
   const dataDocumentsTable = useStoreState((state) =>
-    get(state.GeographyResultsDocumentsTable, "data.data", [])
+    get(state.GeographyResultsDocumentsTable, "data.data", []),
   );
   const fetchResultsTable = useStoreActions(
-    (actions) => actions.GeographyResultsTable.fetch
+    (actions) => actions.GeographyResultsTable.fetch,
   );
   const fetchResultsDocumentsTable = useStoreActions(
-    (actions) => actions.GeographyResultsDocumentsTable.fetch
+    (actions) => actions.GeographyResultsDocumentsTable.fetch,
   );
 
   const onSearchChange = (search: string) => {
@@ -125,7 +125,7 @@ export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
         title={getCMSDataField(
           cmsData,
           "pagesLocationResults.title",
-          "Annual Results"
+          "Annual Results",
         )}
         noBottomToolbar
         empty={!showResults}
@@ -155,7 +155,7 @@ export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
         title={getCMSDataField(
           cmsData,
           "pagesLocationResults.documentTitle",
-          "Documents"
+          "Documents",
         )}
         empty={!showDocuments}
         subtitle=""

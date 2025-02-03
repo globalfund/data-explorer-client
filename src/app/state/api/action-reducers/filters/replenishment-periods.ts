@@ -3,7 +3,7 @@ import { ApiCallModel } from "app/state/api/interfaces";
 
 const ReplenishmentPeriodFilterOptions: ApiCallModel = {
   ...APIModel(
-    `${process.env.REACT_APP_API}/filter-options/replenishment-periods`
+    `${process.env.REACT_APP_API}/filter-options/replenishment-periods`,
   ),
 };
 

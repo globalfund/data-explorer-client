@@ -102,7 +102,7 @@ export const SearchInput = styled.input`
 export function getAppliedFilters(
   appliedFilters: AppliedFiltersModel,
   type: string,
-  level: number
+  level: number,
 ) {
   switch (type) {
     case "geography":
