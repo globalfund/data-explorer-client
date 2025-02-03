@@ -26,6 +26,7 @@ import {
   componentsGroupingOptions,
   dropdownItemsBudgetsTableDataTypes,
 } from "app/pages/datasets/grant-implementation/data";
+import { treesDropdownItems } from "app/components/chart-settings/variations/treemap/data";
 
 interface GrantImplementationPageBlock3Props {
   filterString: string;
@@ -52,6 +53,11 @@ export const GrantImplementationPageBlock3: React.FC<
     });
 
   const [tableSearch, setTableSearch] = React.useState("");
+  const [isTreemapNested, setIsTreemapNested] = React.useState(true);
+  const [trees, setTrees] = React.useState(treesDropdownItems[1].value);
+  const [treemapNestedContent, setTreemapNestedContent] = React.useState(
+    treesDropdownItems[0].value
+  );
 
   const dataBudgetSankey = useStoreState((state) => {
     const nodes = get(
@@ -535,6 +541,7 @@ export const GrantImplementationPageBlock3: React.FC<
             ? "activityAreaGroup"
             : "activityArea",
         geographyGrouping: props.geographyGrouping,
+        treesOption: trees,
       },
     });
   }, [chart2FilterString, props.componentsGrouping, props.geographyGrouping]);
@@ -580,6 +587,21 @@ export const GrantImplementationPageBlock3: React.FC<
     }
   }, [budgetTableDataType]);
 
+  const handleTreesChange = (value: string) => {
+    setTrees(value);
+    fetchBudgetTreemap({
+      filterString: chart2FilterString,
+      routeParams: {
+        componentField:
+          props.componentsGrouping === componentsGroupingOptions[0].value
+            ? "activityAreaGroup"
+            : "activityArea",
+        geographyGrouping: props.geographyGrouping,
+        treesOption: value,
+      },
+    });
+  };
+
   return (
     <Box
       padding="50px 0"
@@ -622,6 +644,14 @@ export const GrantImplementationPageBlock3: React.FC<
         appliedFiltersData={chart2AppliedFiltersData}
         extraDropdown={budgetsTableDataTypeDropdown}
         infoType="budgets"
+        treemapProps={{
+          nested: isTreemapNested,
+          setNested: setIsTreemapNested,
+          nestedContent: treemapNestedContent,
+          setNestedContent: setTreemapNestedContent,
+          setTrees: handleTreesChange,
+          trees,
+        }}
       >
         {budgetsChartContent}
       </DatasetChartBlock>

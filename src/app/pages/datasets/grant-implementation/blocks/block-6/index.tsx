@@ -32,6 +32,8 @@ import {
   dropdownItemsExpenditures,
 } from "app/pages/datasets/grant-implementation/data";
 import { TableContainer } from "app/components/table-container";
+import { xAxisDropdownItems } from "app/components/chart-settings/variations/bar/data";
+import { yAxisDropdownItems as barYAxisDropdownItems } from "app/components/chart-settings/variations/bar/data";
 
 interface GrantImplementationPageBlock6Props {
   filterString: string;
@@ -57,7 +59,16 @@ export const GrantImplementationPageBlock6: React.FC<
   >([]);
 
   const [tableSearch, setTableSearch] = React.useState("");
-
+  const [stackValue, setStackValue] = React.useState("Geography");
+  const [isbarChartStacked, setIsBarChartStacked] = React.useState(false);
+  const [barXAxis, setBarXAxis] = React.useState("Component");
+  React.useState(xAxisDropdownItems);
+  const filteredXAxisDropdownItems = xAxisDropdownItems.filter(
+    (v) => v.value !== barXAxis
+  );
+  const [stacksDropdownItems, setStacksDropdownItems] = React.useState(
+    filteredXAxisDropdownItems
+  );
   const dataExpendituresHeatmap = useStoreState(
     (state) =>
       get(
@@ -258,6 +269,22 @@ export const GrantImplementationPageBlock6: React.FC<
       ...state.status,
       ...state.cycles,
     ]);
+  };
+
+  const updateBarChartStackList = (value: string) => {
+    setStacksDropdownItems(() =>
+      xAxisDropdownItems.filter((stackItem) => stackItem.value !== value)
+    );
+  };
+
+  const handleBarXAxisChange = (value: string) => {
+    setBarXAxis(value);
+    updateBarChartStackList(value);
+  };
+
+  const handleBarStackItemChange = (value: string) => {
+    setStackValue(value);
+    //piece of logic to handle the bar chart stack
   };
 
   const expendituresCycleDropdown = React.useMemo(() => {
@@ -570,6 +597,17 @@ export const GrantImplementationPageBlock6: React.FC<
         appliedFiltersData={chart4AppliedFiltersData}
         extraDropdown={expendituresCycleDropdown}
         infoType="expenditures"
+        barProps={{
+          setStacked: setIsBarChartStacked,
+          stacked: isbarChartStacked,
+          setStacks: handleBarStackItemChange,
+          stacks: stackValue,
+          setXAxis: handleBarXAxisChange,
+          xAxis: barXAxis,
+          setYAxis: () => {},
+          yAxis: barYAxisDropdownItems[0].value,
+          stacksDropdownItems,
+        }}
       >
         <Box
           sx={{

@@ -68,7 +68,7 @@ export const GrantImplementationPageBlock2: React.FC<
   const [lineXAxis, setLineXAxis] = React.useState(
     lineXAxisDropdownItems[1].value
   );
-  const [stackValue, setStackValue] = React.useState("");
+  const [stackValue, setStackValue] = React.useState("Geography");
   const dataFinancialInsightsDisbursementsBarChart = useStoreState(
     (state) =>
       get(

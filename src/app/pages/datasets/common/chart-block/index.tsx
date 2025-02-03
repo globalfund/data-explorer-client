@@ -21,7 +21,7 @@ import {
 } from "app/components/chart-settings/variations/bar/data";
 import { rowsDropdownItems } from "app/components/chart-settings/variations/table/data";
 import { ChartSettingsSortByOrderProps } from "app/components/chart-settings/sort-by/data";
-import { treesDropdownItems } from "app/components/chart-settings/variations/treemap/data";
+import { ChartSettingsTreemapProps } from "app/components/chart-settings/variations/treemap/data";
 import { ChartSettingsLineProps } from "app/components/chart-settings/variations/line/data";
 
 export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
@@ -58,11 +58,11 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
     "numerical" | "percentage"
   >("numerical");
 
-  const [isTreemapNested, setIsTreemapNested] = React.useState(true);
-  const [trees, setTrees] = React.useState(treesDropdownItems[0].value);
-  const [treemapNestedContent, setTreemapNestedContent] = React.useState(
-    treesDropdownItems[0].value
-  );
+  // const [isTreemapNested, setIsTreemapNested] = React.useState(true);
+  // const [trees, setTrees] = React.useState(treesDropdownItems[0].value);
+  // const [treemapNestedContent, setTreemapNestedContent] = React.useState(
+  //   treesDropdownItems[0].value
+  // );
   const handleResetTableOrder = () => {
     setTableOrder(null);
   };
@@ -244,14 +244,11 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
             nodes: [],
             setNodes: () => {},
           }}
-          treemapProps={{
-            nested: isTreemapNested,
-            setNested: setIsTreemapNested,
-            nestedContent: treemapNestedContent,
-            setNestedContent: setTreemapNestedContent,
-            setTrees: setTrees,
-            trees,
-          }}
+          treemapProps={
+            {
+              ...props.treemapProps,
+            } as ChartSettingsTreemapProps
+          }
           financialMetricsSettingsProps={{
             barOption: financialMetricBar,
             setBarOption: setFinancialMetricBar,
@@ -277,9 +274,9 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
     tableOrder,
     heatmapRows,
     heatmapOrder,
-    isTreemapNested,
-    trees,
-    treemapNestedContent,
+    props.treemapProps?.nested,
+    props.treemapProps?.trees,
+    props.treemapProps?.nestedContent,
     heatmapBoxes,
     financialMetricBar,
     financialMetricsOrder,

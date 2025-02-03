@@ -11,14 +11,7 @@ export interface ChartSettingsTreemapProps {
 
 export const treesDropdownItems: DropdownProps["dropdownItems"] = [
   { value: "Component", label: "Component" },
-  { value: "Implementation Period", label: "Implementation Period" },
-  { value: "Years", label: "Years" },
-  { value: "Principal Recipient", label: "Principal Recipient" },
-  { value: "Principal Recipient Type", label: "Principal Recipient Type" },
-  { value: "Investment Landscape", label: "Investment Landscape 1" },
-  { value: "Investment Landscape 2", label: "Investment Landscape 2" },
-  { value: "Cost Category", label: "Cost Category" },
-  { value: "Module", label: "Module" },
-  { value: "Intervention", label: "Intervention" },
   { value: "Geography", label: "Geography" },
+  { value: "PrincipalRecipient", label: "Principal Recipient" },
+  { value: "PrincipalRecipientType", label: "PrincipalRecipient Type" },
 ];

@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import Refresh from "@mui/icons-material/Refresh";
+import CheckIcon from "@mui/icons-material/Check";
 import { ChartSettingsProps } from "app/components/chart-settings/data";
 import { ChartSettingsBar } from "app/components/chart-settings/variations/bar";
 import { ChartSettingsLine } from "app/components/chart-settings/variations/line";
@@ -204,7 +205,7 @@ export const ChartSettings: React.FC<ChartSettingsProps> = (
       </Box>
       <Box
         sx={{
-          padding: "10px 0 20px 0",
+          padding: "10px 0 7px 0",
         }}
       >
         <Box
@@ -215,10 +216,10 @@ export const ChartSettings: React.FC<ChartSettingsProps> = (
         >
           <Typography
             fontSize="12px"
-            marginBottom="15px"
+            marginBottom="5px"
             fontFamily={"GothamNarrow-Book"}
             flexBasis={"50%"}
-            display={props.chartType === "line" ? "none" : "block"}
+            // display={props.chartType === "line" ? "none" : "block"}
           >
             Customise what you see in this chart.
           </Typography>
@@ -231,35 +232,13 @@ export const ChartSettings: React.FC<ChartSettingsProps> = (
           >
             <Typography
               fontSize="12px"
-              marginBottom="15px"
+              marginBottom="5px"
               fontFamily={"GothamNarrow-Book"}
               marginLeft={"7.5px"}
               display={props.chartType === "bar" ? "flex" : "none"}
             >
               Customise the order of what you see
             </Typography>
-            <Button
-              onClick={onReset}
-              variant="outlined"
-              sx={{
-                fontSize: "12px",
-                maxHeight: "26px",
-                lineHeight: "1.5",
-                padding: "2px 12px",
-                justifySelf: "flex-end",
-                display: "flex",
-              }}
-              startIcon={
-                <Refresh
-                  fontSize="small"
-                  sx={{
-                    transform: "rotate(-180deg)",
-                  }}
-                />
-              }
-            >
-              Reset Settings
-            </Button>
           </Box>
         </Box>
         <Grid container spacing={2}>
@@ -325,6 +304,85 @@ export const ChartSettings: React.FC<ChartSettingsProps> = (
             </Grid>
           )}
         </Grid>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              gap: "10px",
+            }}
+          >
+            <Button
+              onClick={onReset}
+              variant="outlined"
+              sx={{
+                fontSize: "12px",
+                maxHeight: "26px",
+                lineHeight: "1.5",
+                padding: "2px 12px",
+                justifySelf: "flex-end",
+                display: "flex",
+                svg: {
+                  width: "12.12px",
+                  height: "12.12px",
+                },
+              }}
+              startIcon={
+                <Refresh
+                  fontSize="small"
+                  htmlColor="#373D43"
+                  sx={{
+                    transform: "rotate(-180deg)",
+                  }}
+                />
+              }
+            >
+              Reset Changes
+            </Button>
+            <Button
+              onClick={onReset}
+              variant="outlined"
+              sx={{
+                fontSize: "12px",
+                maxHeight: "26px",
+                lineHeight: "1.5",
+                padding: "2px 12px",
+                justifySelf: "flex-end",
+                display: "flex",
+                svg: {
+                  width: "12.12px",
+                  height: "12.12px",
+                },
+              }}
+              endIcon={<CloseIcon fontSize="small" htmlColor="#373D43" />}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={onReset}
+              variant="outlined"
+              sx={{
+                fontSize: "12px",
+                maxHeight: "26px",
+                lineHeight: "1.5",
+                padding: "2px 12px",
+                justifySelf: "flex-end",
+                display: "flex",
+                svg: {
+                  width: "12.12px",
+                  height: "12.12px",
+                },
+              }}
+              endIcon={<CheckIcon fontSize="small" htmlColor="#373D43" />}
+            >
+              Apply
+            </Button>
+          </Box>
+        </Box>
       </Box>
     </Box>
   );
