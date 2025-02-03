@@ -18,7 +18,7 @@ import { GrantsLayoutProps, DROPDOWN_ITEMS } from "app/pages/grants/data";
 import Searchbox from "./component/Searchbox";
 
 export const GrantsLayout: React.FC<GrantsLayoutProps> = (
-  props: GrantsLayoutProps,
+  props: GrantsLayoutProps
 ) => {
   const mobile = useMediaQuery("(max-width: 767px)");
   const tablet = useMediaQuery("(max-width: 1024px)");
@@ -103,24 +103,11 @@ export const GrantsLayout: React.FC<GrantsLayoutProps> = (
           alignItems="center"
           justifyContent="space-between"
           gap={"8px"}
-          sx={
-            mobile && showSearch
-              ? {
-                  "> button": {
-                    display: "none",
-                  },
-                  "> div > button:nth-of-type(2)": {
-                    display: "none",
-                  },
-                  "> div": {
-                    width: "100%",
-                    " > input": {
-                      width: "100%",
-                    },
-                  },
-                }
-              : {}
-          }
+          sx={{
+            "@media(max-width:744px)": {
+              flexWrap: "wrap",
+            },
+          }}
         >
           <Button
             variant="outlined"
@@ -158,107 +145,26 @@ export const GrantsLayout: React.FC<GrantsLayoutProps> = (
           >
             {filterPopoverContent}
           </Popover>
-          {!tablet && (
+          <Box
+            sx={{
+              width: "432px",
+              "@media(max-width:744px)": { width: "100%", order: 3 },
+            }}
+          >
             <Searchbox
               handleSearch={handleSearch}
               search={search}
               searchInputRef={searchInputRef}
               handleSearchIconClick={handleSearchIconClick}
-              showSearch={showSearch}
             />
-          )}
-          <Box
-            gap="8px"
-            display="flex"
-            flexBasis={tablet ? "100%" : "auto"}
-            justifyContent={"flex-end"}
-          >
-            {tablet && (
-              <Box
-                flexBasis={"100%"}
-                gap="16px"
-                justifyContent={"flex-end"}
-                display="flex"
-              >
-                <Searchbox
-                  handleSearch={handleSearch}
-                  search={search}
-                  searchInputRef={searchInputRef}
-                  handleSearchIconClick={handleSearchIconClick}
-                  showSearch={showSearch}
-                />
-                <Divider
-                  orientation="vertical"
-                  flexItem
-                  sx={{
-                    height: "8px",
-                    background: "#000",
-                    alignSelf: "center",
-                    marginRight: "16px",
-                  }}
-                />
-              </Box>
-            )}
-            {!tablet ? (
-              <Dropdown
-                dropdownSelected={view}
-                dropdownItems={DROPDOWN_ITEMS}
-                handleDropdownChange={handleViewChange}
-              />
-            ) : (
-              <React.Fragment>
-                <IconButton
-                  onClick={() => handleViewChange("Table View")}
-                  sx={{
-                    height: "32px",
-                    width: "32px",
-                    borderRadius: "8px",
-                    background: view === "Table View" ? "#000" : "#fff",
-                    border:
-                      view === "Table View" ? "none" : "0.5px solid #868E96",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    ":hover": {
-                      background: view === "Table View" ? "#000" : "#fff",
-                      border:
-                        view === "Table View" ? "none" : "0.5px solid #868E96",
-                    },
-                  }}
-                >
-                  <TableChartIcon
-                    height={18}
-                    width={18}
-                    htmlColor={view === "Table View" ? "#fff" : "#000"}
-                  />
-                </IconButton>
-                <IconButton
-                  onClick={() => handleViewChange("Card View")}
-                  sx={{
-                    height: "32px",
-                    width: "32px",
-                    borderRadius: "8px",
-                    border:
-                      view === "Card View" ? "none" : "0.5px solid #868E96",
-                    background: view === "Card View" ? "#000" : "#fff",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    ":hover": {
-                      background: view === "Card View" ? "#000" : "#fff",
-                      border:
-                        view === "Card View" ? "none" : "0.5px solid #868E96",
-                    },
-                  }}
-                >
-                  <AppsIcon
-                    htmlColor={view === "Card View" ? "#fff" : "#000"}
-                    height={14}
-                    width={14}
-                  />
-                </IconButton>
-              </React.Fragment>
-            )}
+          </Box>
+
+          <Box gap="8px" display="flex" flexBasis={"auto"}>
+            <Dropdown
+              dropdownSelected={view}
+              dropdownItems={DROPDOWN_ITEMS}
+              handleDropdownChange={handleViewChange}
+            />
           </Box>
         </Box>
         {fullWidthDivider}

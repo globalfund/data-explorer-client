@@ -3,7 +3,7 @@ import { appColors } from "app/theme";
 import { styled } from "@mui/material/styles";
 import MenuItem from "@mui/material/MenuItem";
 import Menu, { MenuProps } from "@mui/material/Menu";
-import ChevronRight from "@mui/icons-material/ChevronRight";
+import { ReactComponent as ChevronDown } from "app/assets/vectors/ChevronDown.svg";
 import { DropdownProps } from "app/components/dropdown/data";
 import { CategoryButton } from "app/components/search/styles";
 
@@ -83,7 +83,7 @@ export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
 
   const dropdownSelectedIcon = React.useMemo(() => {
     const selected = props.dropdownItems.find(
-      (item) => item.label === props.dropdownSelected,
+      (item) => item.label === props.dropdownSelected
     );
     return selected ? selected.icon : null;
   }, [props.dropdownItems, props.dropdownSelected]);
@@ -96,14 +96,17 @@ export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
         theme={{ anchorEl: Boolean(anchorEl) }}
         style={{
           marginRight: 0,
-          width: props.width ?? 200,
+          width: props.width ?? 134,
           maxHeight: props.height ?? 32,
         }}
+        anchorEl={!!anchorEl}
         data-cy="category-dropdown-button"
       >
         {dropdownSelectedIcon}
-        <span style={{ letterSpacing: "0" }}>{props.dropdownSelected}</span>
-        <ChevronRight sx={{ transform: `rotate(${anchorEl ? -90 : 90}deg)` }} />
+        <span style={{ letterSpacing: "0", fontSize: "14px" }}>
+          {props.dropdownSelected}
+        </span>
+        <ChevronDown />
       </CategoryButton>
       <StyledMenu
         keepMounted

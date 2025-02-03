@@ -1,5 +1,6 @@
 import AppsIcon from "@mui/icons-material/Apps";
 import TableChartIcon from "@mui/icons-material/TableChart";
+import { ReactComponent as CardView } from "app/assets/vectors/CardView.svg";
 
 export interface GrantsLayoutProps {
   view: string;
@@ -167,7 +168,7 @@ export const DROPDOWN_ITEMS: {
   {
     value: "Card View",
     label: "Card View",
-    icon: <AppsIcon />,
+    icon: <CardView />,
   },
   {
     value: "Table View",
