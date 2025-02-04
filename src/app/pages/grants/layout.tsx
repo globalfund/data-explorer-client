@@ -17,7 +17,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { GrantsLayoutProps, DROPDOWN_ITEMS } from "app/pages/grants/data";
 
 export const GrantsLayout: React.FC<GrantsLayoutProps> = (
-  props: GrantsLayoutProps,
+  props: GrantsLayoutProps
 ) => {
   const mobile = useMediaQuery("(max-width: 767px)");
   const cmsData = useCMSData({ returnData: true });
@@ -250,6 +250,7 @@ export const GrantsLayout: React.FC<GrantsLayoutProps> = (
           </Box>
         )}
         {viewResult}
+        <Box height={"8px"} />
         {pagination}
       </Box>
       <Box>
