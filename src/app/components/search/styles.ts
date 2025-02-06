@@ -3,6 +3,9 @@ import { appColors } from "app/theme";
 import styled from "styled-components";
 import Button from "@mui/material/Button";
 
+interface CategoryButtonProps {
+  anchorEl?: boolean;
+}
 export const Container = styled(Box)`
   display: flex;
   position: relative;
@@ -53,7 +56,7 @@ export const MobileBackButton = styled.span`
   }
 `;
 
-export const CategoryButton = styled(Button)`
+export const CategoryButton = styled(Button)<CategoryButtonProps>`
   width: 200px;
   display: flex;
   font-size: 14px;
@@ -84,5 +87,8 @@ export const CategoryButton = styled(Button)`
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+  }
+  svg:nth-of-type(2) {
+    transform: ${(props) => ` rotate(${props.anchorEl ? -180 : 0}deg);`};
   }
 `;
