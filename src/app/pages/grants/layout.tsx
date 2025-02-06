@@ -6,22 +6,16 @@ import Popover from "@mui/material/Popover";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import { useCMSData } from "app/hooks/useCMSData";
-import IconButton from "@mui/material/IconButton";
-import AppsIcon from "@mui/icons-material/Apps";
-import TableChartIcon from "@mui/icons-material/TableChart";
 import { Dropdown } from "app/components/dropdown";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import { FilterPanel } from "app/components/filters/panel";
 import { getCMSDataField } from "app/utils/getCMSDataField";
+import Searchbox from "app/pages/grants/component/Searchbox";
 import CircularProgress from "@mui/material/CircularProgress";
 import { GrantsLayoutProps, DROPDOWN_ITEMS } from "app/pages/grants/data";
-import Searchbox from "./component/Searchbox";
 
 export const GrantsLayout: React.FC<GrantsLayoutProps> = (
-  props: GrantsLayoutProps
+  props: GrantsLayoutProps,
 ) => {
-  const mobile = useMediaQuery("(max-width: 767px)");
-  const tablet = useMediaQuery("(max-width: 1024px)");
   const cmsData = useCMSData({ returnData: true });
   const {
     view,
@@ -29,7 +23,6 @@ export const GrantsLayout: React.FC<GrantsLayoutProps> = (
     pagination,
     handleViewChange,
     search,
-    showSearch,
     handleSearch,
     handleSearchIconClick,
     handleFilterButtonClick,
