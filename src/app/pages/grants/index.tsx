@@ -31,7 +31,7 @@ export const Grants: React.FC = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const data = useStoreState(
-    (state) => get(state.GrantList, "data.data", []) as GrantCardProps[]
+    (state) => get(state.GrantList, "data.data", []) as GrantCardProps[],
   );
   const count = useStoreState((state) => get(state.GrantList, "data.count", 0));
   const loading = useStoreState((state) => state.GrantList.loading);
@@ -43,7 +43,7 @@ export const Grants: React.FC = () => {
         id: "",
         name: "",
         options: [],
-      }) as FilterGroupModel
+      }) as FilterGroupModel,
   );
   const dataComponentFilterOptions = useStoreState(
     (state) =>
@@ -51,7 +51,7 @@ export const Grants: React.FC = () => {
         id: "",
         name: "",
         options: [],
-      }) as FilterGroupModel
+      }) as FilterGroupModel,
   );
   const dataPartnerTypeFilterOptions = useStoreState(
     (state) =>
@@ -59,7 +59,7 @@ export const Grants: React.FC = () => {
         id: "",
         name: "",
         options: [],
-      }) as FilterGroupModel
+      }) as FilterGroupModel,
   );
   const dataStatusFilterOptions = useStoreState(
     (state) =>
@@ -67,7 +67,7 @@ export const Grants: React.FC = () => {
         id: "",
         name: "",
         options: [],
-      }) as FilterGroupModel
+      }) as FilterGroupModel,
   );
   const pageAppliedFilters = useStoreState((state) => [
     ...state.AppliedFiltersState.components,
@@ -78,14 +78,14 @@ export const Grants: React.FC = () => {
     ...state.AppliedFiltersState.status,
   ]);
   const appliedFiltersData = useStoreState(
-    (state) => state.AppliedFiltersState
+    (state) => state.AppliedFiltersState,
   );
   const appliedFiltersActions = useStoreActions(
-    (actions) => actions.AppliedFiltersState
+    (actions) => actions.AppliedFiltersState,
   );
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
-    value: number
+    value: number,
   ) => {
     setPage(value);
     setPageSearchValue(value);
@@ -101,7 +101,7 @@ export const Grants: React.FC = () => {
   };
 
   const handleFilterButtonClick = (
-    event: React.MouseEvent<HTMLButtonElement>
+    event: React.MouseEvent<HTMLButtonElement>,
   ) => {
     setAnchorEl(event.currentTarget);
   };
@@ -168,12 +168,12 @@ export const Grants: React.FC = () => {
       const endDate = new Date(item.endDate);
       if (startDate) {
         datesStr = `${getMonthFromNumber(
-          startDate.getMonth() + 1
+          startDate.getMonth() + 1,
         )} ${startDate.getFullYear()} - `;
       }
       if (endDate) {
         datesStr += `${getMonthFromNumber(
-          endDate.getMonth() + 1
+          endDate.getMonth() + 1,
         )} ${endDate.getFullYear()}`;
       }
       return {
@@ -254,7 +254,7 @@ export const Grants: React.FC = () => {
       }
     },
     500,
-    [search]
+    [search],
   );
 
   const searchInputRef = React.useRef<HTMLInputElement>(null);
@@ -277,38 +277,38 @@ export const Grants: React.FC = () => {
     let value = "";
     if (appliedFiltersData.locations.length > 0) {
       value += `geographies=${encodeURIComponent(
-        appliedFiltersData.locations.join(",")
+        appliedFiltersData.locations.join(","),
       )}`;
     }
     if (appliedFiltersData.components.length > 0) {
       value += `${value.length > 0 ? "&" : ""}components=${encodeURIComponent(
-        appliedFiltersData.components.join(",")
+        appliedFiltersData.components.join(","),
       )}`;
     }
     if (appliedFiltersData.principalRecipientTypes.length > 0) {
       value += `${
         value.length > 0 ? "&" : ""
       }principalRecipientTypes=${encodeURIComponent(
-        appliedFiltersData.principalRecipientTypes.join(",")
+        appliedFiltersData.principalRecipientTypes.join(","),
       )}`;
     }
     if (appliedFiltersData.principalRecipientSubTypes.length > 0) {
       value += `${
         value.length > 0 ? "&" : ""
       }principalRecipientSubTypes=${encodeURIComponent(
-        appliedFiltersData.principalRecipientSubTypes.join(",")
+        appliedFiltersData.principalRecipientSubTypes.join(","),
       )}`;
     }
     if (appliedFiltersData.principalRecipients.length > 0) {
       value += `${
         value.length > 0 ? "&" : ""
       }principalRecipients=${encodeURIComponent(
-        appliedFiltersData.principalRecipients.join(",")
+        appliedFiltersData.principalRecipients.join(","),
       )}`;
     }
     if (appliedFiltersData.status.length > 0) {
       value += `${value.length > 0 ? "&" : ""}status=${encodeURIComponent(
-        appliedFiltersData.status.join(",")
+        appliedFiltersData.status.join(","),
       )}`;
     }
     return value;

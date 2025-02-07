@@ -14,7 +14,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { GrantsLayoutProps, DROPDOWN_ITEMS } from "app/pages/grants/data";
 
 export const GrantsLayout: React.FC<GrantsLayoutProps> = (
-  props: GrantsLayoutProps
+  props: GrantsLayoutProps,
 ) => {
   const cmsData = useCMSData({ returnData: true });
   const {

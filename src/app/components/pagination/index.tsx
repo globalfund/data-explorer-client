@@ -232,7 +232,7 @@ export default function Pagination({
       siblingCount,
       showFirstButton,
       showLastButton,
-    ]
+    ],
   );
   return pagination;
 }

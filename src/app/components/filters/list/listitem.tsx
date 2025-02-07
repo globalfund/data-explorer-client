@@ -21,19 +21,19 @@ import {
 } from "app/components/filters/list/data";
 
 export const FilterListItemContent: React.FC<FilterListItemContentProps> = (
-  props: FilterListItemContentProps
+  props: FilterListItemContentProps,
 ) => {
   const [value, setValue] = React.useState("");
   const [shownOptions, setShownOptions] = React.useState<FilterModel[]>([]);
   const [expanded, setExpanded] = React.useState<string | false>(
-    Boolean(props.forceExpand) ? props.name : false
+    Boolean(props.forceExpand) ? props.name : false,
   );
 
   const appliedFiltersData = useStoreState(
-    (state) => state.AppliedFiltersState
+    (state) => state.AppliedFiltersState,
   );
   const appliedFiltersActions = useStoreActions(
-    (actions) => actions.AppliedFiltersState
+    (actions) => actions.AppliedFiltersState,
   );
 
   const id = React.useMemo(() => {
@@ -63,7 +63,7 @@ export const FilterListItemContent: React.FC<FilterListItemContentProps> = (
     return getAppliedFilters(
       props.appliedFiltersData ?? appliedFiltersData,
       props.id,
-      props.level
+      props.level,
     );
   }, [appliedFiltersData, props.appliedFiltersData, props.id, props.level]);
 
@@ -132,7 +132,7 @@ export const FilterListItemContent: React.FC<FilterListItemContentProps> = (
                   if (fGrandParentIndex > -1) {
                     const fParentIndex = findIndex(
                       options[fGrandParentIndex]?.options,
-                      { name: subOption.name }
+                      { name: subOption.name },
                     );
                     if (fParentIndex > -1) {
                       // @ts-ignore

@@ -50,7 +50,7 @@ describe(
       waitData(1);
 
       cy.contains('[data-cy="category-dropdown-button"]', "2022").should(
-        "be.visible"
+        "be.visible",
       );
     });
 
@@ -59,7 +59,7 @@ describe(
         .first()
         .within(() => {
           cy.contains("Country eligibility for funding over time.").should(
-            "be.visible"
+            "be.visible",
           );
           cy.get('[data-cy="table"]').should("be.visible");
         });
@@ -73,13 +73,13 @@ describe(
           .first()
           .within(() => {
             cy.contains("Allocations amounts for countries.").should(
-              "be.visible"
+              "be.visible",
             );
             cy.get('[data-cy="sunburst-chart"]').should("be.visible");
 
             cy.contains(
               '[data-cy="category-dropdown-button"]',
-              "Sunburst Chart"
+              "Sunburst Chart",
             ).click();
           });
 
@@ -90,7 +90,7 @@ describe(
           .within(() => {
             cy.contains(
               '[data-cy="category-dropdown-item"]',
-              "Treemap"
+              "Treemap",
             ).click();
           });
 
@@ -99,9 +99,9 @@ describe(
             cy.get('[data-cy="treemap-chart"]').should("be.visible");
             cy.contains(
               '[data-cy="category-dropdown-button"]',
-              "Treemap"
+              "Treemap",
             ).click();
-          }
+          },
         );
 
         cy.get('[data-cy="category-dropdown-menu"]')
@@ -111,25 +111,25 @@ describe(
           .within(() => {
             cy.contains(
               '[data-cy="category-dropdown-item"]',
-              "Table View"
+              "Table View",
             ).click();
           });
 
         cy.contains("[data-cy=dataset-chart-block]", "Allocation").within(
           () => {
             cy.get('[data-cy="table"]').should("be.visible");
-          }
+          },
         );
 
         cy.get('[data-cy="allocation-block-2"]').within(() => {
           cy.contains("Cumulative Allocation by Cycles").should("be.visible");
           cy.contains("Accompanied by the Component Breakdown.").should(
-            "be.visible"
+            "be.visible",
           );
 
           cy.get('[data-cy="bar-series-chart"]').should("be.visible");
         });
-      }
+      },
     );
 
     it(
@@ -140,11 +140,11 @@ describe(
           .first()
           .within(() => {
             cy.contains("Funding request applications by countries.").should(
-              "be.visible"
+              "be.visible",
             );
             cy.get('[data-cy="table"]').should("be.visible");
           });
-      }
+      },
     );
-  }
+  },
 );
