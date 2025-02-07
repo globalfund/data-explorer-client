@@ -12,7 +12,6 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "@livesession/sdk": "^1.1.4",
     "@mui/icons-material": "^5.14.0",
     "@mui/material": "^5.14.0",
     "@mui/styled-engine": "npm:@mui/styled-engine-sc@latest",

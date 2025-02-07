@@ -30,34 +30,37 @@
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
 
     <title>The Data Explorer</title>
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=%REACT_APP_GOOGLE_ANALYTICS_ID%"
-    ></script>
-    <script>
-      const userConsent = document.cookie.match(
-        "(^|;) ?userConsent=([^;]*)(;|$)"
-      );
-      if (
-        window.location.hostname === "data.theglobalfund.org" &&
-        userConsent
-      ) {
-        window.dataLayer = window.dataLayer || [];
-        function gtag() {
-          dataLayer.push(arguments);
-        }
-        gtag("js", new Date());
 
-        gtag("config", "%REACT_APP_GOOGLE_ANALYTICS_ID%", {
-          send_page_view: false,
-        });
+    <script>
+      if (window.location.hostname === "data.theglobalfund.org") {
+        var _paq = (window._paq = window._paq || []);
+        /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+        _paq.push(["disableCookies"]);
+        _paq.push(["alwaysUseSendBeacon"]);
+        _paq.push(["trackPageView"]);
+        _paq.push(["enableLinkTracking"]);
+        (function () {
+          var u = "https://stats.theglobalfund.org/";
+          _paq.push(["setTrackerUrl", u + "matomo.php"]);
+          _paq.push(["setSiteId", "11"]);
+          var d = document,
+            g = d.createElement("script"),
+            s = d.getElementsByTagName("script")[0];
+          g.async = true;
+          g.src = u + "matomo.js";
+          s.parentNode.insertBefore(g, s);
+        })();
       }
     </script>
+  </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
