@@ -88,6 +88,7 @@ export const Grants: React.FC = () => {
     value: number
   ) => {
     setPage(value);
+    setPageSearchValue(value);
     fetch({
       routeParams: {
         page: `${value}`,
@@ -145,6 +146,7 @@ export const Grants: React.FC = () => {
 
   const handlePageSearch = () => {
     if (pageSearchValue > 0) {
+      setPage(pageSearchValue);
       fetch({
         routeParams: {
           page: `${pageSearchValue}`,

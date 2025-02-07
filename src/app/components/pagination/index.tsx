@@ -35,6 +35,8 @@ export default function Pagination({
     showFirstButton,
     showLastButton,
     siblingCount,
+    defaultPage: page,
+    page,
     onChange: handlePageChange,
   });
   const mobile = useMediaQuery("(max-width: 670px)");
