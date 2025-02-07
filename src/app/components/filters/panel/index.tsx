@@ -13,7 +13,7 @@ import { FilterPanelProps } from "app/components/filters/panel/data";
 import { ReactComponent as CollapseIcon } from "app/assets/vectors/Collapse_ButtonIcon.svg";
 
 export const FilterPanel: React.FC<FilterPanelProps> = (
-  props: FilterPanelProps,
+  props: FilterPanelProps
 ) => {
   const [collapseAll, setCollapseAll] = React.useState(false);
 
@@ -159,6 +159,8 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
           setCollapseAll={setCollapseAll}
           toggleFilter={props.toggleFilter}
           appliedFiltersData={props.appliedFiltersData}
+          setPage={props.setPage}
+          setPageSearchValue={props.setPageSearchValue}
         />
       </Box>
     </Box>

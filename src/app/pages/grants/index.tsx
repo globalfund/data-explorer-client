@@ -111,6 +111,8 @@ export const Grants: React.FC = () => {
   };
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPage(1);
+    setPageSearchValue(1);
     setSearch(event.target.value);
   };
 
@@ -370,6 +372,8 @@ export const Grants: React.FC = () => {
       loading={loading}
       searchInputRef={searchInputRef}
       latestUpdateDate={latestUpdateDate}
+      setPage={setPage}
+      setPageSearchValue={setPageSearchValue}
     />
   );
 };

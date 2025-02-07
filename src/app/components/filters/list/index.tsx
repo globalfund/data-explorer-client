@@ -9,7 +9,7 @@ import { FilterListProps } from "app/components/filters/list/data";
 import { FilterListItemContent } from "app/components/filters/list/listitem";
 
 export const FilterList: React.FC<FilterListProps> = (
-  props: FilterListProps,
+  props: FilterListProps
 ) => {
   const [expanded, setExpanded] = React.useState<string | false>(false);
 
@@ -51,6 +51,8 @@ export const FilterList: React.FC<FilterListProps> = (
               toggleFilter={props.toggleFilter}
               setCollapseAll={props.setCollapseAll}
               appliedFiltersData={props.appliedFiltersData}
+              setPage={props.setPage}
+              setPageSearchValue={props.setPageSearchValue}
             />
           </AccordionDetails>
         </Accordion>

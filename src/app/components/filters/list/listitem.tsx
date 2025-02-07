@@ -21,19 +21,19 @@ import {
 } from "app/components/filters/list/data";
 
 export const FilterListItemContent: React.FC<FilterListItemContentProps> = (
-  props: FilterListItemContentProps,
+  props: FilterListItemContentProps
 ) => {
   const [value, setValue] = React.useState("");
   const [shownOptions, setShownOptions] = React.useState<FilterModel[]>([]);
   const [expanded, setExpanded] = React.useState<string | false>(
-    Boolean(props.forceExpand) ? props.name : false,
+    Boolean(props.forceExpand) ? props.name : false
   );
 
   const appliedFiltersData = useStoreState(
-    (state) => state.AppliedFiltersState,
+    (state) => state.AppliedFiltersState
   );
   const appliedFiltersActions = useStoreActions(
-    (actions) => actions.AppliedFiltersState,
+    (actions) => actions.AppliedFiltersState
   );
 
   const id = React.useMemo(() => {
@@ -63,11 +63,13 @@ export const FilterListItemContent: React.FC<FilterListItemContentProps> = (
     return getAppliedFilters(
       props.appliedFiltersData ?? appliedFiltersData,
       props.id,
-      props.level,
+      props.level
     );
   }, [appliedFiltersData, props.appliedFiltersData, props.id, props.level]);
 
   const onCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    props.setPage(1);
+    props.setPageSearchValue(1);
     if (props.toggleFilter) {
       props.toggleFilter(e.target.checked, e.target.name, id);
     } else {
@@ -130,7 +132,7 @@ export const FilterListItemContent: React.FC<FilterListItemContentProps> = (
                   if (fGrandParentIndex > -1) {
                     const fParentIndex = findIndex(
                       options[fGrandParentIndex]?.options,
-                      { name: subOption.name },
+                      { name: subOption.name }
                     );
                     if (fParentIndex > -1) {
                       // @ts-ignore
@@ -271,6 +273,8 @@ export const FilterListItemContent: React.FC<FilterListItemContentProps> = (
                 toggleFilter={props.toggleFilter}
                 setCollapseAll={props.setCollapseAll}
                 appliedFiltersData={props.appliedFiltersData}
+                setPage={props.setPage}
+                setPageSearchValue={props.setPageSearchValue}
               />
             </AccordionDetails>
           </Accordion>

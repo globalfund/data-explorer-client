@@ -14,12 +14,12 @@ import {
 } from "app/pages/datasets/common/page/data";
 
 export const DatasetPage: React.FC<DatasetPageProps> = (
-  props: DatasetPageProps,
+  props: DatasetPageProps
 ) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleFilterButtonClick = (
-    event: React.MouseEvent<HTMLButtonElement>,
+    event: React.MouseEvent<HTMLButtonElement>
   ) => {
     setAnchorEl(event.currentTarget);
   };
@@ -50,6 +50,8 @@ export const DatasetPage: React.FC<DatasetPageProps> = (
           hover: "#FF9800",
           normal: "rgba(255, 152, 0, 0.2)",
         }}
+        setPage={() => 0}
+        setPageSearchValue={() => 0}
       />
     );
   }, [props.filterGroups, props.appliedFilters, props.handleResetFilters]);

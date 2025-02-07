@@ -20,6 +20,8 @@ export interface GrantsLayoutProps {
   handleSearchIconClick: (showSearch: boolean) => () => void;
   handleSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleFilterButtonClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  setPage: (value: React.SetStateAction<number>) => void;
+  setPageSearchValue: (value: React.SetStateAction<number>) => void;
 }
 
 export const GRANTS_STORY_DATA = [
