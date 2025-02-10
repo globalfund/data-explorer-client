@@ -35,7 +35,7 @@ describe("Testing HomePage", () => {
       .first()
       .should(
         "have.text",
-        "The Global Fund invests US$5 Billion a year to defeat HIV, tuberculosis and malaria and ensure a healthier, safer, equitable future for all."
+        "The Global Fund invests US$5 Billion a year to defeat HIV, tuberculosis and malaria and ensure a healthier, safer, equitable future for all.",
       );
   });
 
@@ -44,7 +44,7 @@ describe("Testing HomePage", () => {
     cy.get('[data-cy="home-results-stats"]').should("be.visible");
     cy.get('[data-cy="home-results-stats"]').within(() => {
       cy.contains("div", "People on antiretroviral therapy for HIV in").should(
-        "be.visible"
+        "be.visible",
       );
     });
   });
@@ -67,7 +67,7 @@ describe("Testing HomePage", () => {
   it("Shows pledge and contribution block and selects year range", () => {
     // cy.wait("@pledgesCycles");
     cy.contains('[data-cy="chart-block"]', "Pledges & Contributions").should(
-      "be.visible"
+      "be.visible",
     );
 
     cy.contains("[data-cy=chart-block]", "Pledges & Contributions").within(
@@ -77,7 +77,7 @@ describe("Testing HomePage", () => {
 
         cy.get('[data-cy="chart-info-button"]').scrollIntoView().click();
         cy.get('[data-cy="chart-info-dialog"]').should("be.visible");
-      }
+      },
     );
   });
 
@@ -89,7 +89,7 @@ describe("Testing HomePage", () => {
 
     cy.contains(
       "[data-cy=chart-block]",
-      "The Global Fund is distinct from other organizations in that it gives countries (or groups of countries) an allocation and asks countries to describe how they will use those funds rather than asking for applications and then determining an amount per-country based on the merits of the various proposals received."
+      "The Global Fund is distinct from other organizations in that it gives countries (or groups of countries) an allocation and asks countries to describe how they will use those funds rather than asking for applications and then determining an amount per-country based on the merits of the various proposals received.",
     ).should("be.visible");
 
     cy.contains("[data-cy=chart-block]", "Allocation")
@@ -149,7 +149,7 @@ describe("Testing HomePage", () => {
       .within(() => {
         cy.contains(
           '[data-cy="category-dropdown-item"]',
-          "Un-Grouped Component"
+          "Un-Grouped Component",
         ).click();
       });
     waitData(1);
@@ -157,7 +157,7 @@ describe("Testing HomePage", () => {
     cy.contains("[data-cy=chart-block]", "Disbursements").within(() => {
       cy.get('[data-cy="category-dropdown-button"]').should(
         "have.text",
-        "Un-Grouped Component"
+        "Un-Grouped Component",
       );
       cy.get('[data-cy="chart-info-button"]').scrollIntoView().click();
       cy.get('[data-cy="chart-info-dialog"]').should("be.visible");

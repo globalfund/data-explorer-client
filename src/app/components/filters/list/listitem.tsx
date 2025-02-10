@@ -68,6 +68,8 @@ export const FilterListItemContent: React.FC<FilterListItemContentProps> = (
   }, [appliedFiltersData, props.appliedFiltersData, props.id, props.level]);
 
   const onCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    props.setPage(1);
+    props.setPageSearchValue(1);
     if (props.toggleFilter) {
       props.toggleFilter(e.target.checked, e.target.name, id);
     } else {
@@ -271,6 +273,8 @@ export const FilterListItemContent: React.FC<FilterListItemContentProps> = (
                 toggleFilter={props.toggleFilter}
                 setCollapseAll={props.setCollapseAll}
                 appliedFiltersData={props.appliedFiltersData}
+                setPage={props.setPage}
+                setPageSearchValue={props.setPageSearchValue}
               />
             </AccordionDetails>
           </Accordion>

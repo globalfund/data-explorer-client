@@ -60,6 +60,8 @@ export const GrantsLayout: React.FC<GrantsLayoutProps> = (
           hover: "#FF9800",
           normal: "rgba(255, 152, 0, 0.2)",
         }}
+        setPage={props.setPage}
+        setPageSearchValue={props.setPageSearchValue}
       />
     );
   }, [
@@ -185,6 +187,7 @@ export const GrantsLayout: React.FC<GrantsLayoutProps> = (
           </Box>
         )}
         {viewResult}
+        <Box height={"8px"} />
         {pagination}
       </Box>
       <Box>

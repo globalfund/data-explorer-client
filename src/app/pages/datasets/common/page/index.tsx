@@ -50,6 +50,8 @@ export const DatasetPage: React.FC<DatasetPageProps> = (
           hover: "#FF9800",
           normal: "rgba(255, 152, 0, 0.2)",
         }}
+        setPage={() => 0}
+        setPageSearchValue={() => 0}
       />
     );
   }, [props.filterGroups, props.appliedFilters, props.handleResetFilters]);

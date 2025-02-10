@@ -35,7 +35,7 @@ describe("Testing The Grant Detail page", () => {
     cy.get("h1").should("have.text", "ALB-C-MOH");
     cy.contains("Overview").should("be.visible");
     cy.contains(
-      "Scaling up and Ensuring Sustainability of the National Response to HIV"
+      "Scaling up and Ensuring Sustainability of the National Response to HIV",
     ).should("be.visible");
   });
 
@@ -43,18 +43,18 @@ describe("Testing The Grant Detail page", () => {
     waitData(7);
     cy.contains(
       '[data-cy="category-dropdown-button"]',
-      "Implementation Period 2017-2019"
+      "Implementation Period 2017-2019",
     ).click();
 
     cy.contains(
       "[data-cy=category-dropdown-item]",
-      "Implementation Period 2014-2016"
+      "Implementation Period 2014-2016",
     ).click();
 
     waitData(5);
     cy.contains(
       '[data-cy="category-dropdown-button"]',
-      "Implementation Period 2014-2016"
+      "Implementation Period 2014-2016",
     ).should("be.visible");
   });
 
@@ -68,7 +68,7 @@ describe("Testing The Grant Detail page", () => {
     cy.contains("Component").should("be.visible");
     cy.contains("Principal Recipient").should("be.visible");
     cy.contains(
-      "To ensure that Albania remains a low prevalence country for TB and HIV"
+      "To ensure that Albania remains a low prevalence country for TB and HIV",
     ).should("be.visible");
     cy.contains("Objectives").should("be.visible");
   });

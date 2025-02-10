@@ -13,4 +13,6 @@ export interface FilterPanelProps {
   appliedFiltersData?: AppliedFiltersModel;
   removeFilter?: (value: string, types: string[]) => void;
   toggleFilter?: (checked: boolean, value: string, type: string) => void;
+  setPage: (value: React.SetStateAction<number>) => void;
+  setPageSearchValue: (value: React.SetStateAction<number>) => void;
 }

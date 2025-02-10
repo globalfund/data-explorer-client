@@ -25,6 +25,8 @@ export interface FilterListItemContentProps {
   appliedFiltersData?: AppliedFiltersModel;
   setCollapseAll: (collapseAll: boolean) => void;
   toggleFilter?: (checked: boolean, value: string, type: string) => void;
+  setPage: (value: React.SetStateAction<number>) => void;
+  setPageSearchValue: (value: React.SetStateAction<number>) => void;
 }
 
 export interface FilterListProps {
@@ -33,6 +35,8 @@ export interface FilterListProps {
   appliedFiltersData?: AppliedFiltersModel;
   setCollapseAll: (collapseAll: boolean) => void;
   toggleFilter?: (checked: boolean, value: string, type: string) => void;
+  setPage: (value: React.SetStateAction<number>) => void;
+  setPageSearchValue: (value: React.SetStateAction<number>) => void;
 }
 
 export const STORY_DATA_VARIANT_1: FilterGroupModel[] = [

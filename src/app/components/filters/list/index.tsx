@@ -51,6 +51,8 @@ export const FilterList: React.FC<FilterListProps> = (
               toggleFilter={props.toggleFilter}
               setCollapseAll={props.setCollapseAll}
               appliedFiltersData={props.appliedFiltersData}
+              setPage={props.setPage}
+              setPageSearchValue={props.setPageSearchValue}
             />
           </AccordionDetails>
         </Accordion>

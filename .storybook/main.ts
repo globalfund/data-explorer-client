@@ -9,7 +9,7 @@ const config: StorybookConfig = {
     "@storybook/addon-onboarding",
     "@storybook/addon-interactions",
     "storybook-addon-remix-react-router",
-    "@chromatic-com/storybook"
+    "@chromatic-com/storybook",
   ],
   framework: {
     name: "@storybook/react-webpack5",

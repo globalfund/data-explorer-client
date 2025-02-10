@@ -1,25 +1,21 @@
 import React from "react";
 import get from "lodash/get";
-import Box from "@mui/material/Box";
 import { useTitle } from "react-use";
 import Grid from "@mui/material/Grid";
 import { Link } from "react-router-dom";
 import { Table } from "app/components/table";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
 import useDebounce from "react-use/lib/useDebounce";
 import { GrantCard } from "app/components/grant-card";
 import { GrantsLayout } from "app/pages/grants/layout";
 import { DROPDOWN_ITEMS } from "app/pages/grants/data";
-import ArrowBack from "@mui/icons-material/ArrowBackIos";
 import useUpdateEffect from "react-use/lib/useUpdateEffect";
-import ArrowForward from "@mui/icons-material/ArrowForwardIos";
 import { GrantCardProps } from "app/components/grant-card/data";
 import { getMonthFromNumber } from "app/utils/getMonthFromNumber";
 import { FilterGroupModel } from "app/components/filters/list/data";
 import { TABLE_VARIATION_5_COLUMNS } from "app/components/table/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
+import Pagination from "app/components/pagination";
 
 export const Grants: React.FC = () => {
   useTitle("The Data Explorer - Grants");
@@ -28,6 +24,7 @@ export const Grants: React.FC = () => {
   });
 
   const [page, setPage] = React.useState(1);
+  const [pageSearchValue, setPageSearchValue] = React.useState(page);
   const [search, setSearch] = React.useState("");
   const [showSearch, setShowSearch] = React.useState(false);
   const [view, setView] = React.useState(DROPDOWN_ITEMS[0].value);
@@ -86,6 +83,22 @@ export const Grants: React.FC = () => {
   const appliedFiltersActions = useStoreActions(
     (actions) => actions.AppliedFiltersState,
   );
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number,
+  ) => {
+    setPage(value);
+    setPageSearchValue(value);
+    fetch({
+      routeParams: {
+        page: `${value}`,
+        pageSize: "9",
+      },
+      filterString: `q=${search}${
+        filterString.length ? `&${filterString}` : ""
+      }`,
+    });
+  };
 
   const handleFilterButtonClick = (
     event: React.MouseEvent<HTMLButtonElement>,
@@ -98,6 +111,8 @@ export const Grants: React.FC = () => {
   };
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPage(1);
+    setPageSearchValue(1);
     setSearch(event.target.value);
   };
 
@@ -124,6 +139,26 @@ export const Grants: React.FC = () => {
 
   const onScroll = () => {
     setAnchorEl(null);
+  };
+
+  const handlePageSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+    setPageSearchValue(value ? parseInt(value, 10) : 0);
+  };
+
+  const handlePageSearch = () => {
+    if (pageSearchValue > 0) {
+      setPage(pageSearchValue);
+      fetch({
+        routeParams: {
+          page: `${pageSearchValue}`,
+          pageSize: "9",
+        },
+        filterString: `q=${search}${
+          filterString.length ? `&${filterString}` : ""
+        }`,
+      });
+    }
   };
 
   const dataTable = React.useMemo(() => {
@@ -196,43 +231,16 @@ export const Grants: React.FC = () => {
     );
   }, [view, data, count, page, dataTable]);
 
-  const pagination = React.useMemo(
-    () => (
-      <Box gap="8px" display="flex" alignItems="center">
-        <Typography fontSize="12px">
-          {(page - 1) * 9 + 1}-{page * 9} of {count}
-        </Typography>
-        <IconButton
-          sx={{ padding: 0 }}
-          onClick={() =>
-            setPage((p) => {
-              if (p > 1) {
-                return p - 1;
-              }
-              return p;
-            })
-          }
-        >
-          <ArrowBack htmlColor="#000" sx={{ fontSize: "16px" }} />
-        </IconButton>
-        <IconButton
-          sx={{ padding: 0 }}
-          onClick={() =>
-            setPage((p) => {
-              if (p < count / 9) {
-                return p + 1;
-              }
-              return p;
-            })
-          }
-        >
-          <ArrowForward htmlColor="#000" sx={{ fontSize: "16px" }} />
-        </IconButton>
-      </Box>
-    ),
-    [count, page],
+  const pagination = (
+    <Pagination
+      count={count}
+      handlePageChange={handlePageChange}
+      handlePageSearch={handlePageSearch}
+      handlePageSearchChange={handlePageSearchChange}
+      page={page}
+      pageSearchValue={pageSearchValue}
+    />
   );
-
   const [,] = useDebounce(
     () => {
       if (search.length > 0) {
@@ -329,7 +337,7 @@ export const Grants: React.FC = () => {
         filterString.length ? `&${filterString}` : ""
       }`,
     });
-  }, [page, filterString]);
+  }, [filterString]);
 
   useUpdateEffect(() => {
     if (search.length === 0) {
@@ -364,6 +372,8 @@ export const Grants: React.FC = () => {
       loading={loading}
       searchInputRef={searchInputRef}
       latestUpdateDate={latestUpdateDate}
+      setPage={setPage}
+      setPageSearchValue={setPageSearchValue}
     />
   );
 };

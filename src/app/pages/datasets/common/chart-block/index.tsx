@@ -89,6 +89,8 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
         appliedFilters={props.appliedFilters}
         handleResetFilters={props.handleResetFilters}
         appliedFiltersData={props.appliedFiltersData}
+        setPage={() => 0}
+        setPageSearchValue={() => 0}
         appliedFilterBgColors={{
           hover: "#2196F3",
           normal: "rgba(33, 150, 243, 0.2)",
