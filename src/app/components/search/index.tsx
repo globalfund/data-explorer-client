@@ -12,9 +12,13 @@ import { SearchResultsTabModel } from "app/components/search/components/results/
 export function Search(props: {
   hocClose?: () => void;
   withCatMenu?: boolean;
+  forceCategory?: string;
+  handleSearch?: (value: string) => void;
 }) {
   const [open, setOpen] = React.useState(false);
-  const [category, setCategory] = React.useState(categories[0].label);
+  const [category, setCategory] = React.useState(
+    props.forceCategory ? props.forceCategory : categories[0].value,
+  );
   const [storedValue, setStoredValue] = useSessionStorage(
     "stored-search-string",
     "",
@@ -53,6 +57,13 @@ export function Search(props: {
     [value],
   );
 
+  function onValueChange(value: string) {
+    setValue(value);
+    if (props.handleSearch) {
+      props.handleSearch(value);
+    }
+  }
+
   function onClose() {
     setOpen(false);
     if (props.hocClose) {
@@ -81,8 +92,8 @@ export function Search(props: {
         results={data}
         onClose={onClose}
         loading={isLoading}
-        setValue={setValue}
         category={category}
+        setValue={onValueChange}
         setCategory={setCategory}
         withCatMenu={props.withCatMenu}
         setStoredValue={setStoredValue}

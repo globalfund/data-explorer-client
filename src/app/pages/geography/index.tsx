@@ -19,6 +19,7 @@ import {
   GeoSubCategoryProps,
 } from "app/pages/geography/data";
 import Divider from "@mui/material/Divider";
+import { Search } from "app/components/search";
 
 const GeoCategory: React.FC<GeoCategoryProps> = (props: GeoCategoryProps) => {
   return (
@@ -124,14 +125,6 @@ export const Geography: React.FC = () => {
 
   const [filteredData, setFilteredData] = React.useState(dataList);
 
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(event.target.value);
-  };
-
-  const clearSearch = () => {
-    setSearch("");
-  };
-
   React.useEffect(() => {
     const updatedData = [...dataList];
     if (search.length > 0) {
@@ -199,67 +192,20 @@ export const Geography: React.FC = () => {
       {fullWidthDivider}
       <Box
         gap="8px"
-        width="100%"
         display="flex"
         margin="20px 0"
-        position="relative"
         flexDirection="row"
         justifyContent="flex-end"
-        sx={{
-          input: {
-            color: "#000",
-            width: "200px",
-            height: "32px",
-            outline: "none",
-            padding: "0 8px",
-            fontSize: "12px",
-            borderStyle: "none",
-            borderRadius: "4px",
-            background: "#F1F3F5",
-            border: "1px solid #DFE3E5",
-            "::placeholder": {
-              color: "#CFD4DA",
-            },
-          },
-        }}
       >
-        <input
-          type="text"
-          value={search}
-          onChange={handleSearch}
-          data-cy="geography-search-input"
-          placeholder={getCMSDataField(
-            cmsData,
-            "componentsSearch.placeholder",
-            "e.g. Kenya",
-          )}
-        />
-        {search.length > 0 && (
-          <IconButton
-            disableRipple
-            onClick={clearSearch}
-            sx={{
-              padding: 0,
-              top: "6px",
-              right: "48px",
-              position: "absolute",
-            }}
-          >
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        )}
         <Box
+          width="35%"
           sx={{
-            width: "32px",
-            height: "32px",
-            display: "flex",
-            background: "#000",
-            borderRadius: "8px",
-            alignItems: "center",
-            justifyContent: "center",
+            "> div": {
+              width: "100%",
+            },
           }}
         >
-          <SearchIcon htmlColor="#fff" fontSize="small" />
+          <Search forceCategory="Locations" handleSearch={setSearch} />
         </Box>
       </Box>
       {fullWidthDivider}

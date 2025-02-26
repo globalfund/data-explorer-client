@@ -94,7 +94,7 @@ export function SearchLayout(props: SearchLayoutProps) {
 
   return (
     <MobileContainer>
-      {props.category && props.setCategory && (
+      {props.withCatMenu && props.category && props.setCategory && (
         <Box id="search-category-dropdown" marginRight="10px">
           <Dropdown
             height={40}
