@@ -84,7 +84,7 @@ export const Home: React.FC = () => {
             },
           }}
         >
-          <Search />
+          <Search withCatMenu />
         </Box>
       </Box>
       <Box height="64px" />

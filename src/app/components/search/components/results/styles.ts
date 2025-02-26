@@ -3,16 +3,18 @@ import styled from "styled-components";
 import { HashLink as Link } from "react-router-hash-link";
 
 export const Container = styled.div`
-  ${(props) => props.theme.anchor}: 0;
-  top: 52px;
+  top: 48px;
   z-index: 2;
-  width: 100%;
+  padding: 5px;
   display: flex;
-  border-radius: 8px;
   position: absolute;
   flex-direction: column;
   box-shadow: 0px 0px 10px 0px rgba(152, 161, 170, 0.6);
   background: ${appColors.SEARCH.RESULTS_CONTAINER_BACKGROUND_COLOR};
+  width: ${(props) =>
+    props.theme.withCatMenu ? "calc(100% - 144px)" : "100%"};
+  ${(props) => props.theme.anchor}: ${(props) =>
+    props.theme.withCatMenu ? "144px" : "0"};
 
   @media (max-width: 767px) {
     padding: 0 0 20px 0;
@@ -21,33 +23,30 @@ export const Container = styled.div`
 
 export const Results = styled.div`
   width: 100%;
-  height: 368px;
+  height: 400px;
   display: flex;
   overflow-y: auto;
-  min-height: 368px;
-  max-height: 368px;
+  min-height: 400px;
+  max-height: 400px;
   flex-direction: column;
 
   &::-webkit-scrollbar {
     width: 5px;
-    border-radius: 4px;
     background: ${appColors.SEARCH.DROPDOWN_SCROLLBAR_BACKGROUND_COLOR};
   }
   &::-webkit-scrollbar-track {
-    border-radius: 4px;
     background: ${appColors.SEARCH.DROPDOWN_SCROLLBAR_TRACK_BACKGROUND_COLOR};
   }
   &::-webkit-scrollbar-thumb {
-    border-radius: 4px;
     background: ${appColors.SEARCH.DROPDOWN_SCROLLBAR_THUMB_BACKGROUND_COLOR};
   }
 `;
 
 export const ResultA = styled.a`
   width: 100%;
+  padding: 5px;
   display: flex;
   cursor: pointer;
-  padding: 12px 37px;
   flex-direction: row;
   text-decoration: none;
   border-top: 1px solid ${appColors.SEARCH.RESULT_BORDER_COLOR};
@@ -70,11 +69,6 @@ export const ResultA = styled.a`
 
   &:first-of-type {
     border-top-style: none;
-    border-radius: 8px 8px 0 0;
-  }
-
-  &:last-of-type {
-    border-radius: 0 0 8px 8px;
   }
 
   > div {
@@ -84,15 +78,15 @@ export const ResultA = styled.a`
   }
 
   > svg {
-    margin-right: 40px;
+    margin-right: 10px;
   }
 `;
 
 export const ResultLink = styled(Link)`
   width: 100%;
+  padding: 5px;
   display: flex;
   cursor: pointer;
-  padding: 12px 37px;
   flex-direction: row;
   text-decoration: none;
   border-top: 1px solid ${appColors.SEARCH.RESULT_BORDER_COLOR};
@@ -117,11 +111,6 @@ export const ResultLink = styled(Link)`
 
   &:first-of-type {
     border-top-style: none;
-    border-radius: 8px 8px 0 0;
-  }
-
-  &:last-of-type {
-    border-radius: 0 0 8px 8px;
   }
 
   > div {
@@ -131,7 +120,7 @@ export const ResultLink = styled(Link)`
   }
 
   > svg {
-    margin-right: 40px;
+    margin-right: 10px;
   }
 `;
 

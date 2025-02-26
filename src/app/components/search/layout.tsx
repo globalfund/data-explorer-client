@@ -30,6 +30,7 @@ interface SearchLayoutProps {
   loading: boolean;
   category?: string;
   onClose?: () => void;
+  withCatMenu?: boolean;
   hideClearBtn?: boolean;
   results: SearchResultsTabModel[];
   setValue: (value: string) => void;
@@ -94,7 +95,7 @@ export function SearchLayout(props: SearchLayoutProps) {
   return (
     <MobileContainer>
       {props.category && props.setCategory && (
-        <Box id="search-category-dropdown" marginRight="16px">
+        <Box id="search-category-dropdown" marginRight="10px">
           <Dropdown
             height={40}
             dropdownItems={categories}
@@ -105,10 +106,7 @@ export function SearchLayout(props: SearchLayoutProps) {
       )}
       <Container
         id="search-container"
-        theme={{
-          focused: open,
-          withCatMenu: Boolean(props.category) && Boolean(props.setCategory),
-        }}
+        theme={{ focused: open, withCatMenu: props.withCatMenu }}
       >
         <Input
           type="text"
@@ -136,7 +134,7 @@ export function SearchLayout(props: SearchLayoutProps) {
             }}
             sx={{
               padding: 0,
-              marginRight: "16px",
+              marginRight: "10px",
               "&:hover": {
                 background: "transparent",
               },
@@ -185,6 +183,7 @@ export function SearchLayout(props: SearchLayoutProps) {
             <SearchResults
               results={data}
               loading={props.loading}
+              withCatMenu={props.withCatMenu}
               anchor={props.hideClearBtn ? "right" : "left"}
             />
           </Box>

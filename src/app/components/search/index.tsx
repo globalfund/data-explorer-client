@@ -9,7 +9,10 @@ import { categories } from "app/components/search/data";
 import { SearchLayout } from "app/components/search/layout";
 import { SearchResultsTabModel } from "app/components/search/components/results/data";
 
-export function Search(props: { hocClose?: () => void }) {
+export function Search(props: {
+  hocClose?: () => void;
+  withCatMenu?: boolean;
+}) {
   const [open, setOpen] = React.useState(false);
   const [category, setCategory] = React.useState(categories[0].label);
   const [storedValue, setStoredValue] = useSessionStorage(
@@ -81,6 +84,7 @@ export function Search(props: { hocClose?: () => void }) {
         setValue={setValue}
         category={category}
         setCategory={setCategory}
+        withCatMenu={props.withCatMenu}
         setStoredValue={setStoredValue}
         hideClearBtn={Boolean(props.hocClose)}
       />

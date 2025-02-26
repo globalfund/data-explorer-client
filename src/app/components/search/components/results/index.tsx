@@ -16,6 +16,7 @@ import {
 
 interface SearchResultsProps {
   loading: boolean;
+  withCatMenu?: boolean;
   anchor: "left" | "right";
   results: SearchResultModel[];
 }
@@ -27,8 +28,8 @@ export function SearchResults(props: SearchResultsProps) {
   return (
     <Container
       id="search-results-container"
-      theme={{ anchor: props.anchor }}
       data-cy="search-results-container"
+      theme={{ anchor: props.anchor, withCatMenu: props.withCatMenu }}
     >
       {props.loading && (
         <LinearProgress

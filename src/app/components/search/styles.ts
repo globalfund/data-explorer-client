@@ -7,13 +7,12 @@ interface CategoryButtonProps {
   anchorEl?: boolean;
 }
 export const Container = styled(Box)`
+  width: 100%;
   display: flex;
   position: relative;
   border-radius: 4px;
   background: ${appColors.SEARCH.CONTAINER_BACKGROUND};
   border: 1px solid ${appColors.SEARCH.DROPDOWN_BUTTON_BORDER_COLOR};
-  width: ${(props) =>
-    props.theme.withCatMenu ? "calc(100% - 200px)" : "100%"};
 
   @media (max-width: 767px) {
     width: 100%;
