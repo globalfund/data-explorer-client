@@ -27,16 +27,19 @@ export interface FilterListItemContentProps {
   toggleFilter?: (checked: boolean, value: string, type: string) => void;
   setPage: (value: React.SetStateAction<number>) => void;
   setPageSearchValue: (value: React.SetStateAction<number>) => void;
+  shownOptions: FilterModel[];
 }
 
 export interface FilterListProps {
   collapseAll: boolean;
   groups: FilterGroupModel[];
+  group: FilterGroupModel;
   appliedFiltersData?: AppliedFiltersModel;
   setCollapseAll: (collapseAll: boolean) => void;
   toggleFilter?: (checked: boolean, value: string, type: string) => void;
   setPage: (value: React.SetStateAction<number>) => void;
   setPageSearchValue: (value: React.SetStateAction<number>) => void;
+  shownOptions: FilterModel[];
 }
 
 export const STORY_DATA_VARIANT_1: FilterGroupModel[] = [
@@ -90,12 +93,12 @@ export const SearchInput = styled.input`
   font-weight: 400;
   border-radius: 5px;
   border-style: none;
-  padding: 4px 8px 4px 28px !important;
   color: ${appColors.SEARCH.INPUT_COLOR};
   background: ${appColors.SEARCH.INPUT_BACKGROUND_COLOR};
 
   &::placeholder {
     color: #373d43;
+    font-size: 12px;
   }
 
   &:focus::placeholder {
@@ -106,7 +109,7 @@ export const SearchInput = styled.input`
 export function getAppliedFilters(
   appliedFilters: AppliedFiltersModel,
   type: string,
-  level: number,
+  level: number
 ) {
   switch (type) {
     case "geography":

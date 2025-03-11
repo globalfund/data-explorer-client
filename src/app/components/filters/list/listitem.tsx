@@ -21,19 +21,19 @@ import {
 } from "app/components/filters/list/data";
 
 export const FilterListItemContent: React.FC<FilterListItemContentProps> = (
-  props: FilterListItemContentProps,
+  props: FilterListItemContentProps
 ) => {
   const [value, setValue] = React.useState("");
   const [shownOptions, setShownOptions] = React.useState<FilterModel[]>([]);
   const [expanded, setExpanded] = React.useState<string | false>(
-    Boolean(props.forceExpand) ? props.name : false,
+    Boolean(props.forceExpand) ? props.name : false
   );
 
   const appliedFiltersData = useStoreState(
-    (state) => state.AppliedFiltersState,
+    (state) => state.AppliedFiltersState
   );
   const appliedFiltersActions = useStoreActions(
-    (actions) => actions.AppliedFiltersState,
+    (actions) => actions.AppliedFiltersState
   );
 
   const id = React.useMemo(() => {
@@ -63,7 +63,7 @@ export const FilterListItemContent: React.FC<FilterListItemContentProps> = (
     return getAppliedFilters(
       props.appliedFiltersData ?? appliedFiltersData,
       props.id,
-      props.level,
+      props.level
     );
   }, [appliedFiltersData, props.appliedFiltersData, props.id, props.level]);
 
@@ -90,82 +90,81 @@ export const FilterListItemContent: React.FC<FilterListItemContentProps> = (
         props.setCollapseAll(false);
       }
     };
-
+  console.log("hey");
   React.useEffect(() => {
     if (props.forceExpand) {
       setExpanded(props.name);
     }
   }, [props.forceExpand]);
-
-  React.useEffect(() => {
-    if (value.length === 0) {
-      setShownOptions(props.options ?? []);
-    } else {
-      const options: FilterModel[] = [];
-      (props.options ?? []).forEach((option: FilterModel) => {
-        if (option.name.toLowerCase().indexOf(value.toLowerCase()) > -1) {
-          options.push(option);
-        } else if (option.options) {
-          option.options.forEach((subOption: FilterModel) => {
-            if (
-              subOption.name.toLowerCase().indexOf(value.toLowerCase()) > -1
-            ) {
-              const fParentIndex = findIndex(options, { name: option.name });
-              if (fParentIndex > -1) {
-                options[fParentIndex].options?.push(subOption);
-              } else {
-                options.push({
-                  ...option,
-                  options: [subOption],
-                });
-              }
-            } else if (subOption.options) {
-              subOption.options.forEach((subSubOption: FilterModel) => {
-                if (
-                  (subSubOption.name || "")
-                    .toLowerCase()
-                    .indexOf(value.toLowerCase()) > -1
-                ) {
-                  const fGrandParentIndex = findIndex(options, {
-                    name: option.name,
-                  });
-                  if (fGrandParentIndex > -1) {
-                    const fParentIndex = findIndex(
-                      options[fGrandParentIndex]?.options,
-                      { name: subOption.name },
-                    );
-                    if (fParentIndex > -1) {
-                      // @ts-ignore
-                      options[fGrandParentIndex]?.options[
-                        fParentIndex
-                      ]?.options.push(subSubOption);
-                    } else {
-                      // @ts-ignore
-                      options[fGrandParentIndex]?.options.push({
-                        ...subOption,
-                        options: [subSubOption],
-                      });
-                    }
-                  } else {
-                    options.push({
-                      ...option,
-                      options: [
-                        {
-                          ...subOption,
-                          options: [subSubOption],
-                        },
-                      ],
-                    });
-                  }
-                }
-              });
-            }
-          });
-        }
-      });
-      setShownOptions(options);
-    }
-  }, [value, props.options]);
+  // React.useEffect(() => {
+  //   if (value.length === 0) {
+  //     setShownOptions(props.options ?? []);
+  //   } else {
+  //     const options: FilterModel[] = [];
+  //     (props.options ?? []).forEach((option: FilterModel) => {
+  //       if (option.name.toLowerCase().indexOf(value.toLowerCase()) > -1) {
+  //         options.push(option);
+  //       } else if (option.options) {
+  //         option.options.forEach((subOption: FilterModel) => {
+  //           if (
+  //             subOption.name.toLowerCase().indexOf(value.toLowerCase()) > -1
+  //           ) {
+  //             const fParentIndex = findIndex(options, { name: option.name });
+  //             if (fParentIndex > -1) {
+  //               options[fParentIndex].options?.push(subOption);
+  //             } else {
+  //               options.push({
+  //                 ...option,
+  //                 options: [subOption],
+  //               });
+  //             }
+  //           } else if (subOption.options) {
+  //             subOption.options.forEach((subSubOption: FilterModel) => {
+  //               if (
+  //                 (subSubOption.name || "")
+  //                   .toLowerCase()
+  //                   .indexOf(value.toLowerCase()) > -1
+  //               ) {
+  //                 const fGrandParentIndex = findIndex(options, {
+  //                   name: option.name,
+  //                 });
+  //                 if (fGrandParentIndex > -1) {
+  //                   const fParentIndex = findIndex(
+  //                     options[fGrandParentIndex]?.options,
+  //                     { name: subOption.name }
+  //                   );
+  //                   if (fParentIndex > -1) {
+  //                     // @ts-ignore
+  //                     options[fGrandParentIndex]?.options[
+  //                       fParentIndex
+  //                     ]?.options.push(subSubOption);
+  //                   } else {
+  //                     // @ts-ignore
+  //                     options[fGrandParentIndex]?.options.push({
+  //                       ...subOption,
+  //                       options: [subSubOption],
+  //                     });
+  //                   }
+  //                 } else {
+  //                   options.push({
+  //                     ...option,
+  //                     options: [
+  //                       {
+  //                         ...subOption,
+  //                         options: [subSubOption],
+  //                       },
+  //                     ],
+  //                   });
+  //                 }
+  //               }
+  //             });
+  //           }
+  //         });
+  //       }
+  //     });
+  //     setShownOptions(options);
+  //   }
+  // }, [value, props.options]);
 
   React.useEffect(() => {
     if (props.collapseAll) {
@@ -175,7 +174,7 @@ export const FilterListItemContent: React.FC<FilterListItemContentProps> = (
 
   return (
     <Box width="100%" position="relative">
-      {props.withSearch && (
+      {/* {props.withSearch && (
         <React.Fragment>
           <SearchIcon
             fontSize="small"
@@ -195,9 +194,9 @@ export const FilterListItemContent: React.FC<FilterListItemContentProps> = (
             data-cy="filter-panel-search-input"
           />
         </React.Fragment>
-      )}
+      )} */}
       <Box paddingLeft="20px">
-        {shownOptions.map((option) => (
+        {props.shownOptions.map((option) => (
           <Accordion
             key={option.name}
             expanded={expanded === option.name}
@@ -275,6 +274,7 @@ export const FilterListItemContent: React.FC<FilterListItemContentProps> = (
                 appliedFiltersData={props.appliedFiltersData}
                 setPage={props.setPage}
                 setPageSearchValue={props.setPageSearchValue}
+                shownOptions={option.options ?? []}
               />
             </AccordionDetails>
           </Accordion>

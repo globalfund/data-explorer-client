@@ -4,23 +4,35 @@ import Button from "@mui/material/Button";
 import Add from "@mui/icons-material/Add";
 import Divider from "@mui/material/Divider";
 import Close from "@mui/icons-material/Close";
+import Check from "@mui/icons-material/Check";
 import Typography from "@mui/material/Typography";
 import Refresh from "@mui/icons-material/Refresh";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import IconButton from "@mui/material/IconButton";
 import { FilterList } from "app/components/filters/list";
 import { FiltersApplied } from "app/components/filters/applied";
 import { FilterPanelProps } from "app/components/filters/panel/data";
 import { ReactComponent as CollapseIcon } from "app/assets/vectors/Collapse_ButtonIcon.svg";
+import { ReactComponent as SearchIcon } from "app/assets/vectors/Search_grants.svg";
+import { FilterGroupModel, FilterModel, SearchInput } from "../list/data";
+import { appColors } from "app/theme";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import findIndex from "lodash/findIndex";
+import { useStoreActions } from "app/state/store/hooks";
 
 export const FilterPanel: React.FC<FilterPanelProps> = (
-  props: FilterPanelProps,
+  props: FilterPanelProps
 ) => {
   const [collapseAll, setCollapseAll] = React.useState(false);
-
+  const [searchValue, setSearchValue] = React.useState("");
   const handleCollapseAll = () => {
     setCollapseAll(!collapseAll);
   };
-
+  const [shownOptions, setShownOptions] = React.useState<FilterModel[]>([]);
+  const appliedFiltersActions = useStoreActions(
+    (actions) => actions.AppliedFiltersState
+  );
   const appliedFiltersContent = React.useMemo(() => {
     if (props.appliedFilters.length === 0) {
       return <Typography fontSize="12px">No filters applied.</Typography>;
@@ -35,6 +47,136 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
     );
   }, [props.appliedFilters]);
 
+  const [tabValue, setTabValue] = React.useState(props.filterGroups[0].id);
+  console.log(tabValue, "props.filterGroups");
+  const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
+    setTabValue(newValue);
+  };
+  const [level, setLevel] = React.useState(0);
+  const filterGroupOptions = props.filterGroups.find(
+    (group) => group.id === tabValue
+  )?.options;
+  const id = React.useMemo(() => {
+    switch (level) {
+      case 0:
+        if (filterGroupOptions && filterGroupOptions.length > 0) {
+          if (
+            filterGroupOptions[0].options &&
+            filterGroupOptions[0].options.length > 0
+          ) {
+            return `${tabValue}Type`;
+          }
+        }
+        return tabValue;
+      case 1:
+        if (filterGroupOptions && filterGroupOptions.length > 0) {
+          if (
+            filterGroupOptions[0].options &&
+            filterGroupOptions[0].options.length > 0
+          ) {
+            return `${tabValue}SubType`;
+          }
+        }
+        return tabValue;
+      case 2:
+        return tabValue;
+      default:
+        return "";
+    }
+  }, [tabValue, filterGroupOptions]);
+  const onCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    props.setPage(1);
+    props.setPageSearchValue(1);
+    if (props.toggleFilter) {
+      props.toggleFilter(e.target.checked, e.target.name, id);
+    } else {
+      appliedFiltersActions.toggleFilter({
+        checked: e.target.checked,
+        value: e.target.name,
+        type: id,
+      });
+    }
+  };
+
+  const searchFilters = () => {
+    const filterGroupOptions = props.filterGroups.find(
+      (group) => group.id === tabValue
+    )?.options;
+    if (searchValue.length === 0) {
+      console.log("here?");
+      setShownOptions(filterGroupOptions ?? []);
+    } else {
+      const options: FilterModel[] = [];
+      (filterGroupOptions ?? []).forEach((option: FilterModel) => {
+        if (option.name.toLowerCase().indexOf(searchValue.toLowerCase()) > -1) {
+          options.push(option);
+        } else if (option.options) {
+          option.options.forEach((subOption: FilterModel) => {
+            if (
+              subOption.name.toLowerCase().indexOf(searchValue.toLowerCase()) >
+              -1
+            ) {
+              const fParentIndex = findIndex(options, { name: option.name });
+              if (fParentIndex > -1) {
+                options[fParentIndex].options?.push(subOption);
+              } else {
+                options.push({
+                  ...option,
+                  options: [subOption],
+                });
+              }
+            } else if (subOption.options) {
+              subOption.options.forEach((subSubOption: FilterModel) => {
+                if (
+                  (subSubOption.name || "")
+                    .toLowerCase()
+                    .indexOf(searchValue.toLowerCase()) > -1
+                ) {
+                  const fGrandParentIndex = findIndex(options, {
+                    name: option.name,
+                  });
+                  if (fGrandParentIndex > -1) {
+                    const fParentIndex = findIndex(
+                      options[fGrandParentIndex]?.options,
+                      { name: subOption.name }
+                    );
+                    if (fParentIndex > -1) {
+                      // @ts-ignore
+                      options[fGrandParentIndex]?.options[
+                        fParentIndex
+                      ]?.options.push(subSubOption);
+                    } else {
+                      // @ts-ignore
+                      options[fGrandParentIndex]?.options.push({
+                        ...subOption,
+                        options: [subSubOption],
+                      });
+                    }
+                  } else {
+                    options.push({
+                      ...option,
+                      options: [
+                        {
+                          ...subOption,
+                          options: [subSubOption],
+                        },
+                      ],
+                    });
+                  }
+                }
+              });
+            }
+          });
+        }
+      });
+      setShownOptions(options);
+    }
+  };
+
+  console.log(props.filterGroups, "shownOptions");
+  React.useEffect(() => {
+    searchFilters();
+  }, [searchValue, props.filterGroups, tabValue]);
   return (
     <Box
       gap="7px"
@@ -91,7 +233,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
       >
         {appliedFiltersContent}
         <Box
-          gap="5px"
+          gap="10px"
           display="flex"
           minWidth="192px"
           flexDirection="row"
@@ -107,6 +249,28 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
             },
           }}
         >
+          <Box
+            display="flex"
+            gap="4px"
+            padding={"0px 8px"}
+            height={"100%"}
+            width={"219px"}
+            alignItems={"center"}
+            sx={{
+              background: appColors.SEARCH.INPUT_BACKGROUND_COLOR,
+              borderRadius: "5px",
+            }}
+          >
+            <SearchIcon />
+            <SearchInput
+              type="text"
+              value={searchValue}
+              placeholder="Search"
+              style={{ height: "24px", padding: 0 }}
+              onChange={(e) => setSearchValue(e.target.value)}
+              data-cy="filter-panel-search-input"
+            />
+          </Box>
           <Button
             variant="outlined"
             onClick={handleCollapseAll}
@@ -114,21 +278,36 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
           >
             Collapse All
           </Button>
-          <Button
-            variant="outlined"
-            onClick={props.handleResetFilters}
-            startIcon={
-              <Refresh
-                fontSize="small"
-                sx={{
-                  transform: "rotate(-180deg)",
-                }}
-              />
-            }
-          >
-            Reset
-          </Button>
         </Box>
+      </Box>
+      <Box>
+        {/* tabs */}
+        <Tabs
+          value={tabValue}
+          onChange={handleTabChange}
+          indicatorColor="primary"
+          aria-label="secondary tabs example"
+          sx={{
+            minHeight: "32px",
+          }}
+        >
+          {props.filterGroups.map((group) => (
+            <Tab
+              key={group.id}
+              value={group.id}
+              label={group.name}
+              disableTouchRipple
+              sx={{
+                borderBottom: "1px solid #ADB5BD",
+                color: "#373D43",
+                fontFamily: "Inter",
+                textTransform: "none",
+                marginRight: "15px",
+                minHeight: "32px",
+              }}
+            />
+          ))}
+        </Tabs>
       </Box>
       <Box
         padding="20px"
@@ -156,12 +335,121 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
         <FilterList
           collapseAll={collapseAll}
           groups={props.filterGroups}
+          group={
+            props.filterGroups.find((group) => group.id === tabValue) ||
+            ({} as FilterGroupModel)
+          }
           setCollapseAll={setCollapseAll}
           toggleFilter={props.toggleFilter}
           appliedFiltersData={props.appliedFiltersData}
           setPage={props.setPage}
           setPageSearchValue={props.setPageSearchValue}
+          shownOptions={shownOptions ?? []}
         />
+      </Box>
+
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            gap: "10px",
+          }}
+        >
+          <Button
+            onClick={props.handleResetFilters}
+            variant="outlined"
+            sx={{
+              fontSize: "12px",
+              maxHeight: "26px",
+              lineHeight: "1.5",
+              padding: "2px 12px",
+              justifySelf: "flex-end",
+              display: "flex",
+            }}
+            startIcon={
+              <svg
+                width="6"
+                height="9"
+                viewBox="0 0 6 9"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M0.516113 1.54983L1.31594 0.75L5.31509 4.74915L1.31594 8.7483L0.516113 7.94847L3.71543 4.74915L0.516113 1.54983Z"
+                  fill="#373D43"
+                />
+              </svg>
+            }
+          >
+            Reset Changes
+          </Button>
+          <Button
+            variant="outlined"
+            sx={{
+              fontSize: "12px",
+              maxHeight: "26px",
+              lineHeight: "1.5",
+              padding: "2px 12px",
+              justifySelf: "flex-end",
+              display: "flex",
+            }}
+            endIcon={
+              <svg
+                width="8"
+                height="9"
+                viewBox="0 0 8 9"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M0.79541 7.52918L6.85389 1.4707M0.79541 1.4707L6.85389 7.52918"
+                  stroke="#373D43"
+                  stroke-width="1.33333"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            }
+          >
+            Cancel
+          </Button>
+          <Button
+            // onClick={onReset}
+            variant="outlined"
+            sx={{
+              fontSize: "12px",
+              maxHeight: "26px",
+              lineHeight: "1.5",
+              padding: "2px 12px",
+              justifySelf: "flex-end",
+              display: "flex",
+            }}
+            endIcon={
+              <svg
+                width="10"
+                height="7"
+                viewBox="0 0 10 7"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M1.40747 4.00483L3.42696 6.02432L8.4757 0.975586"
+                  stroke="#373D43"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            }
+          >
+            Apply
+          </Button>
+        </Box>
       </Box>
     </Box>
   );
