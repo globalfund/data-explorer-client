@@ -134,3 +134,31 @@ export function getAppliedFilters(
       return [];
   }
 }
+
+export const mergeFilters = (
+  tempFilters: Partial<AppliedFiltersModel>,
+  appliedFilters: Partial<AppliedFiltersModel>
+): AppliedFiltersModel => {
+  // Create a template result with empty arrays for all properties
+  const result = Object.keys(tempFilters).reduce((obj, key) => {
+    obj[key as keyof AppliedFiltersModel] = [];
+    return obj;
+  }, {} as AppliedFiltersModel);
+
+  // Then merge arrays that exist
+  for (const key in result) {
+    const typedKey = key as keyof AppliedFiltersModel;
+    const tempArray = Array.isArray(tempFilters[typedKey])
+      ? (tempFilters[typedKey] as string[])
+      : [];
+    const appliedArray = Array.isArray(appliedFilters[typedKey])
+      ? (appliedFilters[typedKey] as string[])
+      : [];
+
+    result[typedKey] = [
+      ...Array.from(new Set([...tempArray, ...appliedArray])),
+    ];
+  }
+
+  return result;
+};

@@ -3,52 +3,52 @@ import { useStoreActions } from "app/state/store/hooks";
 
 export const useInitialLoad = () => {
   const fetchAllocationsCycles = useStoreActions(
-    (actions) => actions.AllocationsCycles.fetch,
+    (actions) => actions.AllocationsCycles.fetch
   );
   const fetchAnnualResultsCycles = useStoreActions(
-    (actions) => actions.AnnualResultsCycles.fetch,
+    (actions) => actions.AnnualResultsCycles.fetch
   );
   const fetchDisbursementsCycles = useStoreActions(
-    (actions) => actions.DisbursementsCycles.fetch,
+    (actions) => actions.DisbursementsCycles.fetch
   );
   const fetchExpendituresCycles = useStoreActions(
-    (actions) => actions.ExpendituresCycles.fetch,
+    (actions) => actions.ExpendituresCycles.fetch
   );
   const fetchEligibilityCycles = useStoreActions(
-    (actions) => actions.EligibilityCycles.fetch,
+    (actions) => actions.EligibilityCycles.fetch
   );
   const fetchPledgesContributionsCycles = useStoreActions(
-    (actions) => actions.PledgesContributionsCycles.fetch,
+    (actions) => actions.PledgesContributionsCycles.fetch
   );
   const fetchFundingRequestsCycles = useStoreActions(
-    (actions) => actions.FundingRequestsCycles.fetch,
+    (actions) => actions.FundingRequestsCycles.fetch
   );
   const fetchBudgetsCycles = useStoreActions(
-    (actions) => actions.BudgetsCycles.fetch,
+    (actions) => actions.BudgetsCycles.fetch
   );
   const fetchFinancialMetricsCycles = useStoreActions(
-    (actions) => actions.FinancialMetricsCycles.fetch,
+    (actions) => actions.FinancialMetricsCycles.fetch
   );
   const fetchDonorFilterOptions = useStoreActions(
-    (actions) => actions.DonorFilterOptions.fetch,
+    (actions) => actions.DonorFilterOptions.fetch
   );
   const fetchReplenishmentPeriodFilterOptions = useStoreActions(
-    (actions) => actions.ReplenishmentPeriodFilterOptions.fetch,
+    (actions) => actions.ReplenishmentPeriodFilterOptions.fetch
   );
   const fetchLocationFilterOptions = useStoreActions(
-    (actions) => actions.LocationFilterOptions.fetch,
+    (actions) => actions.LocationFilterOptions.fetch
   );
   const fetchComponentFilterOptions = useStoreActions(
-    (actions) => actions.ComponentFilterOptions.fetch,
+    (actions) => actions.ComponentFilterOptions.fetch
   );
   const fetchPartnerTypeFilterOptions = useStoreActions(
-    (actions) => actions.PartnerTypeFilterOptions.fetch,
+    (actions) => actions.PartnerTypeFilterOptions.fetch
   );
   const fetchStatusFilterOptions = useStoreActions(
-    (actions) => actions.StatusFilterOptions.fetch,
+    (actions) => actions.StatusFilterOptions.fetch
   );
   const datasetsLatestUpdate = useStoreActions(
-    (actions) => actions.datasetsLatestUpdate.fetch,
+    (actions) => actions.datasetsLatestUpdate.fetch
   );
 
   React.useEffect(() => {

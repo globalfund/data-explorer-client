@@ -16,6 +16,8 @@ import { TABLE_VARIATION_5_COLUMNS } from "app/components/table/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import Pagination from "app/components/pagination";
+import { AppliedFiltersStateModel } from "app/state/api/action-reducers/sync/filters";
+import { StateMapper, FilterActionTypes } from "easy-peasy";
 
 export const Grants: React.FC = () => {
   useTitle("The Data Explorer - Grants");
@@ -31,19 +33,22 @@ export const Grants: React.FC = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const data = useStoreState(
-    (state) => get(state.GrantList, "data.data", []) as GrantCardProps[],
+    (state) => get(state.GrantList, "data.data", []) as GrantCardProps[]
   );
   const count = useStoreState((state) => get(state.GrantList, "data.count", 0));
   const loading = useStoreState((state) => state.GrantList.loading);
   const fetch = useStoreActions((actions) => actions.GrantList.fetch);
 
+  const appliedFiltersString = useStoreState(
+    (state) => state.AppliedFilterStringState
+  );
   const dataLocationFilterOptions = useStoreState(
     (state) =>
       get(state.LocationFilterOptions, "data.data", {
         id: "",
         name: "",
         options: [],
-      }) as FilterGroupModel,
+      }) as FilterGroupModel
   );
   const dataComponentFilterOptions = useStoreState(
     (state) =>
@@ -51,7 +56,7 @@ export const Grants: React.FC = () => {
         id: "",
         name: "",
         options: [],
-      }) as FilterGroupModel,
+      }) as FilterGroupModel
   );
   const dataPartnerTypeFilterOptions = useStoreState(
     (state) =>
@@ -59,7 +64,7 @@ export const Grants: React.FC = () => {
         id: "",
         name: "",
         options: [],
-      }) as FilterGroupModel,
+      }) as FilterGroupModel
   );
   const dataStatusFilterOptions = useStoreState(
     (state) =>
@@ -67,7 +72,7 @@ export const Grants: React.FC = () => {
         id: "",
         name: "",
         options: [],
-      }) as FilterGroupModel,
+      }) as FilterGroupModel
   );
   const pageAppliedFilters = useStoreState((state) => [
     ...state.AppliedFiltersState.components,
@@ -78,14 +83,17 @@ export const Grants: React.FC = () => {
     ...state.AppliedFiltersState.status,
   ]);
   const appliedFiltersData = useStoreState(
-    (state) => state.AppliedFiltersState,
+    (state) => state.AppliedFiltersState
   );
   const appliedFiltersActions = useStoreActions(
-    (actions) => actions.AppliedFiltersState,
+    (actions) => actions.AppliedFiltersState
+  );
+  const tempAppliedFiltersData = useStoreState(
+    (state) => state.TempAppliedFiltersState
   );
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
-    value: number,
+    value: number
   ) => {
     setPage(value);
     setPageSearchValue(value);
@@ -95,13 +103,15 @@ export const Grants: React.FC = () => {
         pageSize: "9",
       },
       filterString: `q=${search}${
-        filterString.length ? `&${filterString}` : ""
+        appliedFiltersString.state.length
+          ? `&${appliedFiltersString.state}`
+          : ""
       }`,
     });
   };
 
   const handleFilterButtonClick = (
-    event: React.MouseEvent<HTMLButtonElement>,
+    event: React.MouseEvent<HTMLButtonElement>
   ) => {
     setAnchorEl(event.currentTarget);
   };
@@ -155,7 +165,9 @@ export const Grants: React.FC = () => {
           pageSize: "9",
         },
         filterString: `q=${search}${
-          filterString.length ? `&${filterString}` : ""
+          appliedFiltersString.state.length
+            ? `&${appliedFiltersString.state}`
+            : ""
         }`,
       });
     }
@@ -168,12 +180,12 @@ export const Grants: React.FC = () => {
       const endDate = new Date(item.endDate);
       if (startDate) {
         datesStr = `${getMonthFromNumber(
-          startDate.getMonth() + 1,
+          startDate.getMonth() + 1
         )} ${startDate.getFullYear()} - `;
       }
       if (endDate) {
         datesStr += `${getMonthFromNumber(
-          endDate.getMonth() + 1,
+          endDate.getMonth() + 1
         )} ${endDate.getFullYear()}`;
       }
       return {
@@ -254,7 +266,7 @@ export const Grants: React.FC = () => {
       }
     },
     500,
-    [search],
+    [search]
   );
 
   const searchInputRef = React.useRef<HTMLInputElement>(null);
@@ -273,46 +285,54 @@ export const Grants: React.FC = () => {
     dataStatusFilterOptions,
   ]);
 
-  const filterString = React.useMemo(() => {
+  const getFilterString = (
+    data: StateMapper<FilterActionTypes<AppliedFiltersStateModel>>
+  ) => {
     let value = "";
-    if (appliedFiltersData.locations.length > 0) {
-      value += `geographies=${encodeURIComponent(
-        appliedFiltersData.locations.join(","),
-      )}`;
+    if (data.locations.length > 0) {
+      value += `geographies=${encodeURIComponent(data.locations.join(","))}`;
     }
-    if (appliedFiltersData.components.length > 0) {
+    if (data.components.length > 0) {
       value += `${value.length > 0 ? "&" : ""}components=${encodeURIComponent(
-        appliedFiltersData.components.join(","),
+        data.components.join(",")
       )}`;
     }
-    if (appliedFiltersData.principalRecipientTypes.length > 0) {
+    if (data.principalRecipientTypes.length > 0) {
       value += `${
         value.length > 0 ? "&" : ""
       }principalRecipientTypes=${encodeURIComponent(
-        appliedFiltersData.principalRecipientTypes.join(","),
+        data.principalRecipientTypes.join(",")
       )}`;
     }
-    if (appliedFiltersData.principalRecipientSubTypes.length > 0) {
+    if (data.principalRecipientSubTypes.length > 0) {
       value += `${
         value.length > 0 ? "&" : ""
       }principalRecipientSubTypes=${encodeURIComponent(
-        appliedFiltersData.principalRecipientSubTypes.join(","),
+        data.principalRecipientSubTypes.join(",")
       )}`;
     }
-    if (appliedFiltersData.principalRecipients.length > 0) {
+    if (data.principalRecipients.length > 0) {
       value += `${
         value.length > 0 ? "&" : ""
       }principalRecipients=${encodeURIComponent(
-        appliedFiltersData.principalRecipients.join(","),
+        data.principalRecipients.join(",")
       )}`;
     }
-    if (appliedFiltersData.status.length > 0) {
+    if (data.status.length > 0) {
       value += `${value.length > 0 ? "&" : ""}status=${encodeURIComponent(
-        appliedFiltersData.status.join(","),
+        data.status.join(",")
       )}`;
     }
     return value;
-  }, [appliedFiltersData]);
+  };
+  const filterString = React.useCallback(
+    (data: StateMapper<FilterActionTypes<AppliedFiltersStateModel>>) => {
+      return getFilterString(data);
+    },
+    [data]
+  );
+  const tempFilterString = filterString(tempAppliedFiltersData);
+  const appliedFilterString = filterString(appliedFiltersData);
 
   React.useEffect(() => {
     window.addEventListener("scroll", onScroll);
@@ -334,10 +354,12 @@ export const Grants: React.FC = () => {
         pageSize: "9",
       },
       filterString: `q=${search}${
-        filterString.length ? `&${filterString}` : ""
+        appliedFiltersString.state.length
+          ? `&${appliedFiltersString.state}`
+          : ""
       }`,
     });
-  }, [filterString]);
+  }, [appliedFiltersString.state]);
 
   useUpdateEffect(() => {
     if (search.length === 0) {
@@ -347,7 +369,9 @@ export const Grants: React.FC = () => {
           pageSize: "9",
         },
         filterString: `q=${search}${
-          filterString.length ? `&${filterString}` : ""
+          appliedFiltersString.state.length
+            ? `&${appliedFiltersString.state}`
+            : ""
         }`,
       });
     }
@@ -373,7 +397,9 @@ export const Grants: React.FC = () => {
       searchInputRef={searchInputRef}
       latestUpdateDate={latestUpdateDate}
       setPage={setPage}
+      page={page}
       setPageSearchValue={setPageSearchValue}
+      filterString={tempFilterString}
     />
   );
 };

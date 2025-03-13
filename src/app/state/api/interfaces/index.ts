@@ -1,6 +1,9 @@
 import { Action, Thunk } from "easy-peasy";
 import { CMSDataModel } from "app/state/api/action-reducers/sync";
-import { AppliedFiltersStateModel } from "app/state/api/action-reducers/sync/filters";
+import {
+  AppliedFiltersStateModel,
+  AppliedFilterStringModel,
+} from "app/state/api/action-reducers/sync/filters";
 import {
   CMSApiComponentsChartsEligibility,
   CMSApiComponentsSearch,
@@ -233,6 +236,8 @@ export interface StoreModel {
   datasetsLatestUpdate: ApiCallModel;
   // sync state variables
   AppliedFiltersState: AppliedFiltersStateModel;
+  AppliedFilterStringState: AppliedFilterStringModel;
+  TempAppliedFiltersState: AppliedFiltersStateModel;
   // CMS
   CMSData: CMSDataModel;
   cms: {

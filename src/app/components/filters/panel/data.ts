@@ -14,5 +14,8 @@ export interface FilterPanelProps {
   removeFilter?: (value: string, types: string[]) => void;
   toggleFilter?: (checked: boolean, value: string, type: string) => void;
   setPage: (value: React.SetStateAction<number>) => void;
+  page: number;
+  search: string;
   setPageSearchValue: (value: React.SetStateAction<number>) => void;
+  filterString: string;
 }

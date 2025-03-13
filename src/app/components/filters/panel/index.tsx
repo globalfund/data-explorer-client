@@ -4,10 +4,8 @@ import Button from "@mui/material/Button";
 import Add from "@mui/icons-material/Add";
 import Divider from "@mui/material/Divider";
 import Close from "@mui/icons-material/Close";
-import Check from "@mui/icons-material/Check";
 import Typography from "@mui/material/Typography";
-import Refresh from "@mui/icons-material/Refresh";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+
 import IconButton from "@mui/material/IconButton";
 import { FilterList } from "app/components/filters/list";
 import { FiltersApplied } from "app/components/filters/applied";
@@ -19,7 +17,8 @@ import { appColors } from "app/theme";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import findIndex from "lodash/findIndex";
-import { useStoreActions } from "app/state/store/hooks";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import isEqual from "lodash/isEqual";
 
 export const FilterPanel: React.FC<FilterPanelProps> = (
   props: FilterPanelProps
@@ -29,9 +28,23 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
   const handleCollapseAll = () => {
     setCollapseAll(!collapseAll);
   };
+  const fetch = useStoreActions((actions) => actions.GrantList.fetch);
   const [shownOptions, setShownOptions] = React.useState<FilterModel[]>([]);
+  const [tabValue, setTabValue] = React.useState(props.filterGroups[0].id);
+  const appliedFiltersData = useStoreState(
+    (state) => state.AppliedFiltersState
+  );
+  const tempAppliedFiltersData = useStoreState(
+    (state) => state.TempAppliedFiltersState
+  );
+  const tempAppliedFiltersActions = useStoreActions(
+    (actions) => actions.TempAppliedFiltersState
+  );
   const appliedFiltersActions = useStoreActions(
     (actions) => actions.AppliedFiltersState
+  );
+  const appliedFiltersStringAction = useStoreActions(
+    (action) => action.AppliedFilterStringState
   );
   const appliedFiltersContent = React.useMemo(() => {
     if (props.appliedFilters.length === 0) {
@@ -47,63 +60,44 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
     );
   }, [props.appliedFilters]);
 
-  const [tabValue, setTabValue] = React.useState(props.filterGroups[0].id);
-  console.log(tabValue, "props.filterGroups");
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
+    const filterGroupOptions = props.filterGroups.find(
+      (group) => group.id === newValue
+    )?.options;
     setTabValue(newValue);
+    filterOptions(searchValue, filterGroupOptions ?? []);
   };
-  const [level, setLevel] = React.useState(0);
+
   const filterGroupOptions = props.filterGroups.find(
     (group) => group.id === tabValue
   )?.options;
-  const id = React.useMemo(() => {
-    switch (level) {
-      case 0:
-        if (filterGroupOptions && filterGroupOptions.length > 0) {
-          if (
-            filterGroupOptions[0].options &&
-            filterGroupOptions[0].options.length > 0
-          ) {
-            return `${tabValue}Type`;
-          }
-        }
-        return tabValue;
-      case 1:
-        if (filterGroupOptions && filterGroupOptions.length > 0) {
-          if (
-            filterGroupOptions[0].options &&
-            filterGroupOptions[0].options.length > 0
-          ) {
-            return `${tabValue}SubType`;
-          }
-        }
-        return tabValue;
-      case 2:
-        return tabValue;
-      default:
-        return "";
-    }
-  }, [tabValue, filterGroupOptions]);
-  const onCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    props.setPage(1);
-    props.setPageSearchValue(1);
-    if (props.toggleFilter) {
-      props.toggleFilter(e.target.checked, e.target.name, id);
-    } else {
-      appliedFiltersActions.toggleFilter({
-        checked: e.target.checked,
-        value: e.target.name,
-        type: id,
-      });
-    }
+
+  console.log(props.filterString, "props.filterString");
+  const handleApplyFilters = () => {
+    if (isEqual(appliedFiltersData, tempAppliedFiltersData)) return;
+    fetch({
+      routeParams: {
+        page: `${props.page}`,
+        pageSize: "9",
+      },
+      filterString: `q=${props.search}${
+        props.filterString.length ? `&${props.filterString}` : ""
+      }`,
+    });
+    appliedFiltersActions.setAll({ ...tempAppliedFiltersData });
+    appliedFiltersStringAction.setState(props.filterString);
+    tempAppliedFiltersActions.clearAll();
   };
 
-  const searchFilters = () => {
-    const filterGroupOptions = props.filterGroups.find(
-      (group) => group.id === tabValue
-    )?.options;
+  const handleCancelFilters = () => {
+    tempAppliedFiltersActions.setAll({ ...appliedFiltersData });
+  };
+
+  const filterOptions = (
+    searchValue: string,
+    filterGroupOptions?: FilterModel[]
+  ) => {
     if (searchValue.length === 0) {
-      console.log("here?");
       setShownOptions(filterGroupOptions ?? []);
     } else {
       const options: FilterModel[] = [];
@@ -173,10 +167,55 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
     }
   };
 
-  console.log(props.filterGroups, "shownOptions");
+  const handleSearchFiltersChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setSearchValue(e.target.value);
+    filterOptions(e.target.value, filterGroupOptions);
+  };
+
+  const FilterGroupsTabs = React.useMemo(() => {
+    return (
+      <Tabs
+        value={tabValue}
+        onChange={handleTabChange}
+        indicatorColor="primary"
+        aria-label="secondary tabs example"
+        sx={{
+          minHeight: "32px",
+        }}
+        TabIndicatorProps={{
+          sx: {
+            backgroundColor: "#252C34",
+            height: "3px",
+          },
+        }}
+      >
+        {props.filterGroups.map((group) => (
+          <Tab
+            key={group.id}
+            value={group.id}
+            label={group.name}
+            disableTouchRipple
+            sx={{
+              borderBottom:
+                tabValue === group.id ? "none" : "1px solid #ADB5BD",
+              transition: "border-bottom 0.3s",
+              color: "#373D43",
+              fontFamily: "Inter",
+              textTransform: "none",
+              marginRight: "15px",
+              minHeight: "32px",
+            }}
+          />
+        ))}
+      </Tabs>
+    );
+  }, [tabValue, searchValue]);
+
   React.useEffect(() => {
-    searchFilters();
-  }, [searchValue, props.filterGroups, tabValue]);
+    filterOptions(searchValue, filterGroupOptions);
+  }, [props.filterGroups]);
   return (
     <Box
       gap="7px"
@@ -264,10 +303,9 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
             <SearchIcon />
             <SearchInput
               type="text"
-              value={searchValue}
               placeholder="Search"
               style={{ height: "24px", padding: 0 }}
-              onChange={(e) => setSearchValue(e.target.value)}
+              onChange={handleSearchFiltersChange}
               data-cy="filter-panel-search-input"
             />
           </Box>
@@ -282,32 +320,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
       </Box>
       <Box>
         {/* tabs */}
-        <Tabs
-          value={tabValue}
-          onChange={handleTabChange}
-          indicatorColor="primary"
-          aria-label="secondary tabs example"
-          sx={{
-            minHeight: "32px",
-          }}
-        >
-          {props.filterGroups.map((group) => (
-            <Tab
-              key={group.id}
-              value={group.id}
-              label={group.name}
-              disableTouchRipple
-              sx={{
-                borderBottom: "1px solid #ADB5BD",
-                color: "#373D43",
-                fontFamily: "Inter",
-                textTransform: "none",
-                marginRight: "15px",
-                minHeight: "32px",
-              }}
-            />
-          ))}
-        </Tabs>
+        {FilterGroupsTabs}
       </Box>
       <Box
         padding="20px"
@@ -389,6 +402,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
             Reset Changes
           </Button>
           <Button
+            onClick={handleCancelFilters}
             variant="outlined"
             sx={{
               fontSize: "12px",
@@ -419,7 +433,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
             Cancel
           </Button>
           <Button
-            // onClick={onReset}
+            onClick={handleApplyFilters}
             variant="outlined"
             sx={{
               fontSize: "12px",

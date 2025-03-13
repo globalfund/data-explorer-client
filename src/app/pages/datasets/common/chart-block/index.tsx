@@ -95,6 +95,9 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
           hover: "#2196F3",
           normal: "rgba(33, 150, 243, 0.2)",
         }}
+        filterString=""
+        page={0}
+        search=""
       />
     );
   }, [

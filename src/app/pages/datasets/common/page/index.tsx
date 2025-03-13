@@ -45,6 +45,8 @@ export const DatasetPage: React.FC<DatasetPageProps> = (
         onClose={handleFilterPanelClose}
         filterGroups={props.filterGroups}
         appliedFilters={props.appliedFilters}
+        page={0}
+        search=""
         handleResetFilters={props.handleResetFilters}
         appliedFilterBgColors={{
           hover: "#FF9800",
@@ -52,6 +54,7 @@ export const DatasetPage: React.FC<DatasetPageProps> = (
         }}
         setPage={() => 0}
         setPageSearchValue={() => 0}
+        filterString=""
       />
     );
   }, [props.filterGroups, props.appliedFilters, props.handleResetFilters]);

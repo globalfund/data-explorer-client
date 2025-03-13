@@ -9,7 +9,11 @@ import { GeographyList } from "app/state/api/action-reducers/geography/list";
 import { GrantOverview } from "app/state/api/action-reducers/grant/overview";
 import DonorFilterOptions from "app/state/api/action-reducers/filters/donors";
 import StatusFilterOptions from "app/state/api/action-reducers/filters/status";
-import { AppliedFiltersState } from "app/state/api/action-reducers/sync/filters";
+import {
+  AppliedFiltersState,
+  AppliedFilterStringState,
+  TempAppliedFiltersState,
+} from "app/state/api/action-reducers/sync/filters";
 import componentsSearch from "app/state/api/action-reducers/cms/componentsSearch";
 import LocationFilterOptions from "app/state/api/action-reducers/filters/locations";
 import ResultsDocuments from "app/state/api/action-reducers/annual-results/documents";
@@ -144,7 +148,7 @@ const storeContent: StoreModel = {
   // resource mobilization
   ResourceMobilizationStats: persist(ResourceMobilizationStats),
   ResourceMobilizationExpandableBarChart: persist(
-    ResourceMobilizationExpandableBarChart,
+    ResourceMobilizationExpandableBarChart
   ),
   ResourceMobilizationTable: persist(ResourceMobilizationTable),
   // geographies
@@ -153,49 +157,49 @@ const storeContent: StoreModel = {
   AccessToFundingStats: persist(AccessToFundingStats),
   AccessToFundingEligibilityTable: persist(AccessToFundingEligibilityTable),
   AccessToFundingAllocationBarSeries: persist(
-    AccessToFundingAllocationBarSeries,
+    AccessToFundingAllocationBarSeries
   ),
   AccessToFundingAllocationSunburst: persist(AccessToFundingAllocationSunburst),
   AccessToFundingAllocationTreemap: persist(AccessToFundingAllocationTreemap),
   AccessToFundingAllocationTable: persist(AccessToFundingAllocationTable),
   AccessToFundingFundingRequestsTable: persist(
-    AccessToFundingFundingRequestsTable,
+    AccessToFundingFundingRequestsTable
   ),
   AccessToFundingDocumentsTable: persist(AccessToFundingDocuments),
   // financial insights
   FinancialInsightsStats: persist(FinancialInsightsStats),
   FinancialInsightsDisbursementsBarChart: persist(
-    FinancialInsightsDisbursementsBarChart,
+    FinancialInsightsDisbursementsBarChart
   ),
   FinancialInsightsDisbursementsLineChart: persist(
-    FinancialInsightsDisbursementsLineChart,
+    FinancialInsightsDisbursementsLineChart
   ),
   FinancialInsightsDisbursementsTable: persist(
-    FinancialInsightsDisbursementsTable,
+    FinancialInsightsDisbursementsTable
   ),
   FinancialInsightsHGISankey: persist(FinancialInsightsHGISankey),
   FinancialInsightsHGITable: persist(FinancialInsightsHGITable),
   FinancialInsightsBudgetBreakdown: persist(FinancialInsightsBudgetBreakdown),
   FinancialInsightsBudgetUtilisation: persist(
-    FinancialInsightsBudgetUtilisation,
+    FinancialInsightsBudgetUtilisation
   ),
   FinancialInsightsCountryAbsorption: persist(
-    FinancialInsightsCountryAbsorption,
+    FinancialInsightsCountryAbsorption
   ),
   FinancialInsightsDisbursementUtilisation: persist(
-    FinancialInsightsDisbursementUtilisation,
+    FinancialInsightsDisbursementUtilisation
   ),
   FinancialInsightsBudgetSankey: persist(FinancialInsightsBudgetSankey),
   FinancialInsightsBudgetTreemap: persist(FinancialInsightsBudgetTreemap),
   FinancialInsightsBudgetTable: persist(FinancialInsightsBudgetTable),
   FinancialInsightsExpendituresHeatmap: persist(
-    FinancialInsightsExpendituresHeatmap,
+    FinancialInsightsExpendituresHeatmap
   ),
   FinancialInsightsExpendituresBarChart: persist(
-    FinancialInsightsExpendituresBarChart,
+    FinancialInsightsExpendituresBarChart
   ),
   FinancialInsightsExpendituresTable: persist(
-    FinancialInsightsExpendituresTable,
+    FinancialInsightsExpendituresTable
   ),
   // annual results
   AnnualResultsStats: persist(AnnualResultsStats),
@@ -207,10 +211,10 @@ const storeContent: StoreModel = {
   // location
   GeographyOverview: persist(GeographyOverview),
   GeographyOverviewCoordinatingMechanismsContacts: persist(
-    GeographyOverviewCoordinatingMechanismsContacts,
+    GeographyOverviewCoordinatingMechanismsContacts
   ),
   GeographyResourceMobilizationBarChart: persist(
-    GeographyResourceMobilizationBarChart,
+    GeographyResourceMobilizationBarChart
   ),
   GeographyAllocationsRadialChart: persist(GeographyAllocationsRadialChart),
   GeographyFundingRequestsTable: persist(GeographyFundingRequestsTable),
@@ -230,7 +234,7 @@ const storeContent: StoreModel = {
   GeographyAnnualResultsCycles: persist(GeographyAnnualResultsCycles),
   GeographyBudgetsCycles: persist(GeographyBudgetsCycles),
   GeographyPledgesContributionsCycles: persist(
-    GeographyPledgesContributionsCycles,
+    GeographyPledgesContributionsCycles
   ),
   GeographyDisbursementsCycles: persist(GeographyDisbursementsCycles),
   GeographyExpendituresCycles: persist(GeographyExpendituresCycles),
@@ -258,7 +262,7 @@ const storeContent: StoreModel = {
   EligibilityYears: persist(EligibilityYears),
   FundingRequestsTRPWindowCodelist: persist(FundingRequestsTableGeneric),
   FundingRequestsPortfolioCategoryCodelist: persist(
-    FundingRequestsTableGeneric,
+    FundingRequestsTableGeneric
   ),
   LocationAccessToFunding: {
     GrantCycles: persist(FundingRequestsTableGeneric),
@@ -277,6 +281,8 @@ const storeContent: StoreModel = {
   datasetsLatestUpdate: persist(DatasetsLatestUpdate),
   // sync state variables
   AppliedFiltersState: persist(AppliedFiltersState),
+  AppliedFilterStringState: persist(AppliedFilterStringState),
+  TempAppliedFiltersState: persist(TempAppliedFiltersState),
   // CMS API
   CMSData: persist(CMSData),
   cms: {
@@ -293,13 +299,13 @@ const storeContent: StoreModel = {
     pagesDatasetsGrantImplementation: persist(pagesDatasetsGrantImplementation),
     pagesDatasetsAnnualResults: persist(pagesDatasetsAnnualResults),
     pagesDatasetsResourceMobilization: persist(
-      pagesDatasetsResourceMobilization,
+      pagesDatasetsResourceMobilization
     ),
     pagesLocationAccessToFunding: persist(pagesLocationAccessToFunding),
     pagesLocationGrantImplementation: persist(pagesLocationGrantImplementation),
     pagesLocationOverview: persist(pagesLocationOverview),
     pagesLocationResourceMobilization: persist(
-      pagesLocationResourceMobilization,
+      pagesLocationResourceMobilization
     ),
     pagesLocationResults: persist(pagesLocationResults),
     pagesGrantDocuments: persist(pagesGrantDocuments),
