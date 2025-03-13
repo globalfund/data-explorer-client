@@ -21,7 +21,7 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import isEqual from "lodash/isEqual";
 
 export const FilterPanel: React.FC<FilterPanelProps> = (
-  props: FilterPanelProps
+  props: FilterPanelProps,
 ) => {
   const [collapseAll, setCollapseAll] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState("");
@@ -32,19 +32,19 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
   const [shownOptions, setShownOptions] = React.useState<FilterModel[]>([]);
   const [tabValue, setTabValue] = React.useState(props.filterGroups[0].id);
   const appliedFiltersData = useStoreState(
-    (state) => state.AppliedFiltersState
+    (state) => state.AppliedFiltersState,
   );
   const tempAppliedFiltersData = useStoreState(
-    (state) => state.TempAppliedFiltersState
+    (state) => state.TempAppliedFiltersState,
   );
   const tempAppliedFiltersActions = useStoreActions(
-    (actions) => actions.TempAppliedFiltersState
+    (actions) => actions.TempAppliedFiltersState,
   );
   const appliedFiltersActions = useStoreActions(
-    (actions) => actions.AppliedFiltersState
+    (actions) => actions.AppliedFiltersState,
   );
   const appliedFiltersStringAction = useStoreActions(
-    (action) => action.AppliedFilterStringState
+    (action) => action.AppliedFilterStringState,
   );
   const appliedFiltersContent = React.useMemo(() => {
     if (props.appliedFilters.length === 0) {
@@ -62,14 +62,14 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
     const filterGroupOptions = props.filterGroups.find(
-      (group) => group.id === newValue
+      (group) => group.id === newValue,
     )?.options;
     setTabValue(newValue);
     filterOptions(searchValue, filterGroupOptions ?? []);
   };
 
   const filterGroupOptions = props.filterGroups.find(
-    (group) => group.id === tabValue
+    (group) => group.id === tabValue,
   )?.options;
 
   console.log(props.filterString, "props.filterString");
@@ -95,7 +95,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
 
   const filterOptions = (
     searchValue: string,
-    filterGroupOptions?: FilterModel[]
+    filterGroupOptions?: FilterModel[],
   ) => {
     if (searchValue.length === 0) {
       setShownOptions(filterGroupOptions ?? []);
@@ -132,7 +132,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
                   if (fGrandParentIndex > -1) {
                     const fParentIndex = findIndex(
                       options[fGrandParentIndex]?.options,
-                      { name: subOption.name }
+                      { name: subOption.name },
                     );
                     if (fParentIndex > -1) {
                       // @ts-ignore
@@ -168,7 +168,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
   };
 
   const handleSearchFiltersChange = (
-    e: React.ChangeEvent<HTMLInputElement>
+    e: React.ChangeEvent<HTMLInputElement>,
   ) => {
     setSearchValue(e.target.value);
     filterOptions(e.target.value, filterGroupOptions);

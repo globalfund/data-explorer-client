@@ -109,7 +109,7 @@ export const SearchInput = styled.input`
 export function getAppliedFilters(
   appliedFilters: AppliedFiltersModel,
   type: string,
-  level: number
+  level: number,
 ) {
   switch (type) {
     case "geography":
@@ -137,7 +137,7 @@ export function getAppliedFilters(
 
 export const mergeFilters = (
   tempFilters: Partial<AppliedFiltersModel>,
-  appliedFilters: Partial<AppliedFiltersModel>
+  appliedFilters: Partial<AppliedFiltersModel>,
 ): AppliedFiltersModel => {
   // Create a template result with empty arrays for all properties
   const result = Object.keys(tempFilters).reduce((obj, key) => {

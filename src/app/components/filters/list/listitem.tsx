@@ -18,20 +18,20 @@ import {
 } from "app/components/filters/list/data";
 
 export const FilterListItemContent: React.FC<FilterListItemContentProps> = (
-  props: FilterListItemContentProps
+  props: FilterListItemContentProps,
 ) => {
   const [expanded, setExpanded] = React.useState<string | false>(
-    Boolean(props.forceExpand) ? props.name : false
+    Boolean(props.forceExpand) ? props.name : false,
   );
 
   const tempAppliedFiltersData = useStoreState(
-    (state) => state.TempAppliedFiltersState
+    (state) => state.TempAppliedFiltersState,
   );
   const tempAppliedFiltersActions = useStoreActions(
-    (actions) => actions.TempAppliedFiltersState
+    (actions) => actions.TempAppliedFiltersState,
   );
   const appliedFiltersData = useStoreState(
-    (state) => state.AppliedFiltersState
+    (state) => state.AppliedFiltersState,
   );
 
   const id = React.useMemo(() => {
@@ -60,13 +60,13 @@ export const FilterListItemContent: React.FC<FilterListItemContentProps> = (
   const appliedFilters = React.useMemo(() => {
     const mergedFilterOptions = mergeFilters(
       tempAppliedFiltersData,
-      appliedFiltersData
+      appliedFiltersData,
     );
 
     return getAppliedFilters(
       props.appliedFiltersData ?? mergedFilterOptions,
       props.id,
-      props.level
+      props.level,
     );
   }, [
     tempAppliedFiltersData,

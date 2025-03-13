@@ -234,7 +234,7 @@ export const TempAppliedFiltersState: AppliedFiltersStateModel = {
           state.appliedFiltersCount += 1;
         } else {
           state.donorTypes = state.donorTypes.filter(
-            (item) => item !== payload.value
+            (item) => item !== payload.value,
           );
           state.appliedFiltersCount -= 1;
         }
@@ -245,7 +245,7 @@ export const TempAppliedFiltersState: AppliedFiltersStateModel = {
           state.appliedFiltersCount += 1;
         } else {
           state.replenishmentPeriods = state.replenishmentPeriods.filter(
-            (item) => item !== payload.value
+            (item) => item !== payload.value,
           );
           state.appliedFiltersCount -= 1;
         }
@@ -258,7 +258,7 @@ export const TempAppliedFiltersState: AppliedFiltersStateModel = {
           state.appliedFiltersCount += 1;
         } else {
           state.locations = state.locations.filter(
-            (item) => item !== payload.value
+            (item) => item !== payload.value,
           );
           state.appliedFiltersCount -= 1;
         }
@@ -269,7 +269,7 @@ export const TempAppliedFiltersState: AppliedFiltersStateModel = {
           state.appliedFiltersCount += 1;
         } else {
           state.components = state.components.filter(
-            (item) => item !== payload.value
+            (item) => item !== payload.value,
           );
           state.appliedFiltersCount -= 1;
         }
@@ -280,7 +280,7 @@ export const TempAppliedFiltersState: AppliedFiltersStateModel = {
           state.appliedFiltersCount += 1;
         } else {
           state.principalRecipients = state.principalRecipients.filter(
-            (item) => item !== payload.value
+            (item) => item !== payload.value,
           );
           state.appliedFiltersCount -= 1;
         }
@@ -292,7 +292,7 @@ export const TempAppliedFiltersState: AppliedFiltersStateModel = {
         } else {
           state.principalRecipientSubTypes =
             state.principalRecipientSubTypes.filter(
-              (item) => item !== payload.value
+              (item) => item !== payload.value,
             );
           state.appliedFiltersCount -= 1;
         }
@@ -303,7 +303,7 @@ export const TempAppliedFiltersState: AppliedFiltersStateModel = {
           state.appliedFiltersCount += 1;
         } else {
           state.principalRecipientTypes = state.principalRecipientTypes.filter(
-            (item) => item !== payload.value
+            (item) => item !== payload.value,
           );
           state.appliedFiltersCount -= 1;
         }
@@ -336,38 +336,38 @@ export const TempAppliedFiltersState: AppliedFiltersStateModel = {
         case "donor":
           state.donors = state.donors.filter((item) => item !== payload.value);
           state.donorTypes = state.donorTypes.filter(
-            (item) => item !== payload.value
+            (item) => item !== payload.value,
           );
           break;
         case "replenishmentPeriod":
           state.replenishmentPeriods = state.replenishmentPeriods.filter(
-            (item) => item !== payload.value
+            (item) => item !== payload.value,
           );
           break;
         case "geography":
         case "geographyType":
         case "geographySubType":
           state.locations = state.locations.filter(
-            (item) => item !== payload.value
+            (item) => item !== payload.value,
           );
           break;
         case "component":
           state.components = state.components.filter(
-            (item) => item !== payload.value
+            (item) => item !== payload.value,
           );
           break;
         case "principalRecipient":
         case "principalRecipientSubType":
         case "principalRecipientType":
           state.principalRecipients = state.principalRecipients.filter(
-            (item) => item !== payload.value
+            (item) => item !== payload.value,
           );
           state.principalRecipientSubTypes =
             state.principalRecipientSubTypes.filter(
-              (item) => item !== payload.value
+              (item) => item !== payload.value,
             );
           state.principalRecipientTypes = state.principalRecipientTypes.filter(
-            (item) => item !== payload.value
+            (item) => item !== payload.value,
           );
           break;
         case "status":
@@ -523,7 +523,7 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
           state.appliedFiltersCount += 1;
         } else {
           state.donorTypes = state.donorTypes.filter(
-            (item) => item !== payload.value
+            (item) => item !== payload.value,
           );
           state.appliedFiltersCount -= 1;
         }
@@ -534,7 +534,7 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
           state.appliedFiltersCount += 1;
         } else {
           state.replenishmentPeriods = state.replenishmentPeriods.filter(
-            (item) => item !== payload.value
+            (item) => item !== payload.value,
           );
           state.appliedFiltersCount -= 1;
         }
@@ -547,7 +547,7 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
           state.appliedFiltersCount += 1;
         } else {
           state.locations = state.locations.filter(
-            (item) => item !== payload.value
+            (item) => item !== payload.value,
           );
           state.appliedFiltersCount -= 1;
         }
@@ -558,7 +558,7 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
           state.appliedFiltersCount += 1;
         } else {
           state.components = state.components.filter(
-            (item) => item !== payload.value
+            (item) => item !== payload.value,
           );
           state.appliedFiltersCount -= 1;
         }
@@ -569,7 +569,7 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
           state.appliedFiltersCount += 1;
         } else {
           state.principalRecipients = state.principalRecipients.filter(
-            (item) => item !== payload.value
+            (item) => item !== payload.value,
           );
           state.appliedFiltersCount -= 1;
         }
@@ -581,7 +581,7 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
         } else {
           state.principalRecipientSubTypes =
             state.principalRecipientSubTypes.filter(
-              (item) => item !== payload.value
+              (item) => item !== payload.value,
             );
           state.appliedFiltersCount -= 1;
         }
@@ -592,7 +592,7 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
           state.appliedFiltersCount += 1;
         } else {
           state.principalRecipientTypes = state.principalRecipientTypes.filter(
-            (item) => item !== payload.value
+            (item) => item !== payload.value,
           );
           state.appliedFiltersCount -= 1;
         }
@@ -625,38 +625,38 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
         case "donor":
           state.donors = state.donors.filter((item) => item !== payload.value);
           state.donorTypes = state.donorTypes.filter(
-            (item) => item !== payload.value
+            (item) => item !== payload.value,
           );
           break;
         case "replenishmentPeriod":
           state.replenishmentPeriods = state.replenishmentPeriods.filter(
-            (item) => item !== payload.value
+            (item) => item !== payload.value,
           );
           break;
         case "geography":
         case "geographyType":
         case "geographySubType":
           state.locations = state.locations.filter(
-            (item) => item !== payload.value
+            (item) => item !== payload.value,
           );
           break;
         case "component":
           state.components = state.components.filter(
-            (item) => item !== payload.value
+            (item) => item !== payload.value,
           );
           break;
         case "principalRecipient":
         case "principalRecipientSubType":
         case "principalRecipientType":
           state.principalRecipients = state.principalRecipients.filter(
-            (item) => item !== payload.value
+            (item) => item !== payload.value,
           );
           state.principalRecipientSubTypes =
             state.principalRecipientSubTypes.filter(
-              (item) => item !== payload.value
+              (item) => item !== payload.value,
             );
           state.principalRecipientTypes = state.principalRecipientTypes.filter(
-            (item) => item !== payload.value
+            (item) => item !== payload.value,
           );
           break;
         case "status":
