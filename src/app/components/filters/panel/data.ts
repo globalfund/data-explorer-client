@@ -17,5 +17,6 @@ export interface FilterPanelProps {
   page: number;
   search: string;
   setPageSearchValue: (value: React.SetStateAction<number>) => void;
-  filterString: string;
+  handleCancelFilters: () => void;
+  handleApplyFilters: () => void;
 }

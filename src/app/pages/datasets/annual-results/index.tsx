@@ -467,6 +467,8 @@ export const AnnualResultsPage: React.FC = () => {
         "pagesDatasetsAnnualResults.subtitle",
         "Indicator results reported as part of annual Results Report.",
       )}
+      handleApplyFilters={() => {}}
+      handleCancelFilters={() => {}}
     >
       <Box width="100%" marginTop="50px">
         <HomeResultsStats stats={dataStats} loading={loadingResults} />

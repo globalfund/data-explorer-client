@@ -1,6 +1,6 @@
 import React from "react";
 import get from "lodash/get";
-import { useTitle } from "react-use";
+import { useTitle, useUnmount } from "react-use";
 import Grid from "@mui/material/Grid";
 import { Link } from "react-router-dom";
 import { Table } from "app/components/table";
@@ -18,6 +18,7 @@ import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import Pagination from "app/components/pagination";
 import { AppliedFiltersStateModel } from "app/state/api/action-reducers/sync/filters";
 import { StateMapper, FilterActionTypes } from "easy-peasy";
+import isEqual from "lodash/isEqual";
 
 export const Grants: React.FC = () => {
   useTitle("The Data Explorer - Grants");
@@ -39,9 +40,13 @@ export const Grants: React.FC = () => {
   const loading = useStoreState((state) => state.GrantList.loading);
   const fetch = useStoreActions((actions) => actions.GrantList.fetch);
 
-  const appliedFiltersString = useStoreState(
-    (state) => state.AppliedFilterStringState,
+  const tempAppliedFiltersActions = useStoreActions(
+    (actions) => actions.TempAppliedFiltersState,
   );
+  useUnmount(() => {
+    tempAppliedFiltersActions.clearAll();
+  });
+
   const dataLocationFilterOptions = useStoreState(
     (state) =>
       get(state.LocationFilterOptions, "data.data", {
@@ -75,12 +80,12 @@ export const Grants: React.FC = () => {
       }) as FilterGroupModel,
   );
   const pageAppliedFilters = useStoreState((state) => [
-    ...state.AppliedFiltersState.components,
-    ...state.AppliedFiltersState.locations,
-    ...state.AppliedFiltersState.principalRecipientTypes,
-    ...state.AppliedFiltersState.principalRecipientSubTypes,
-    ...state.AppliedFiltersState.principalRecipients,
-    ...state.AppliedFiltersState.status,
+    ...state.TempAppliedFiltersState.components,
+    ...state.TempAppliedFiltersState.locations,
+    ...state.TempAppliedFiltersState.principalRecipientTypes,
+    ...state.TempAppliedFiltersState.principalRecipientSubTypes,
+    ...state.TempAppliedFiltersState.principalRecipients,
+    ...state.TempAppliedFiltersState.status,
   ]);
   const appliedFiltersData = useStoreState(
     (state) => state.AppliedFiltersState,
@@ -103,20 +108,61 @@ export const Grants: React.FC = () => {
         pageSize: "9",
       },
       filterString: `q=${search}${
-        appliedFiltersString.state.length
-          ? `&${appliedFiltersString.state}`
-          : ""
+        appliedFiltersString.length ? `&${appliedFiltersString}` : ""
       }`,
     });
   };
+  const appliedFiltersString = React.useMemo(() => {
+    let value = "";
+    if (appliedFiltersData.locations.length > 0) {
+      value += `geographies=${encodeURIComponent(
+        appliedFiltersData.locations.join(","),
+      )}`;
+    }
+    if (appliedFiltersData.components.length > 0) {
+      value += `${value.length > 0 ? "&" : ""}components=${encodeURIComponent(
+        appliedFiltersData.components.join(","),
+      )}`;
+    }
+    if (appliedFiltersData.principalRecipientTypes.length > 0) {
+      value += `${
+        value.length > 0 ? "&" : ""
+      }principalRecipientTypes=${encodeURIComponent(
+        appliedFiltersData.principalRecipientTypes.join(","),
+      )}`;
+    }
+    if (appliedFiltersData.principalRecipientSubTypes.length > 0) {
+      value += `${
+        value.length > 0 ? "&" : ""
+      }principalRecipientSubTypes=${encodeURIComponent(
+        appliedFiltersData.principalRecipientSubTypes.join(","),
+      )}`;
+    }
+    if (appliedFiltersData.principalRecipients.length > 0) {
+      value += `${
+        value.length > 0 ? "&" : ""
+      }principalRecipients=${encodeURIComponent(
+        appliedFiltersData.principalRecipients.join(","),
+      )}`;
+    }
+    if (appliedFiltersData.status.length > 0) {
+      value += `${value.length > 0 ? "&" : ""}status=${encodeURIComponent(
+        appliedFiltersData.status.join(","),
+      )}`;
+    }
+    return value;
+  }, [appliedFiltersData]);
 
   const handleFilterButtonClick = (
     event: React.MouseEvent<HTMLButtonElement>,
   ) => {
     setAnchorEl(event.currentTarget);
   };
-
+  const handleCancelFilters = () => {
+    tempAppliedFiltersActions.setAll({ ...appliedFiltersData });
+  };
   const handleFilterPanelClose = () => {
+    handleCancelFilters();
     setAnchorEl(null);
   };
 
@@ -136,6 +182,7 @@ export const Grants: React.FC = () => {
   };
 
   const handleResetFilters = () => {
+    tempAppliedFiltersActions.clearAll();
     appliedFiltersActions.setAll({
       ...appliedFiltersData,
       locations: [],
@@ -145,6 +192,12 @@ export const Grants: React.FC = () => {
       principalRecipientTypes: [],
       status: [],
     });
+  };
+
+  const handleApplyFilters = () => {
+    if (isEqual(appliedFiltersData, tempAppliedFiltersData)) return;
+
+    appliedFiltersActions.setAll({ ...tempAppliedFiltersData });
   };
 
   const onScroll = () => {
@@ -165,9 +218,7 @@ export const Grants: React.FC = () => {
           pageSize: "9",
         },
         filterString: `q=${search}${
-          appliedFiltersString.state.length
-            ? `&${appliedFiltersString.state}`
-            : ""
+          appliedFiltersString.length ? `&${appliedFiltersString}` : ""
         }`,
       });
     }
@@ -285,55 +336,6 @@ export const Grants: React.FC = () => {
     dataStatusFilterOptions,
   ]);
 
-  const getFilterString = (
-    data: StateMapper<FilterActionTypes<AppliedFiltersStateModel>>,
-  ) => {
-    let value = "";
-    if (data.locations.length > 0) {
-      value += `geographies=${encodeURIComponent(data.locations.join(","))}`;
-    }
-    if (data.components.length > 0) {
-      value += `${value.length > 0 ? "&" : ""}components=${encodeURIComponent(
-        data.components.join(","),
-      )}`;
-    }
-    if (data.principalRecipientTypes.length > 0) {
-      value += `${
-        value.length > 0 ? "&" : ""
-      }principalRecipientTypes=${encodeURIComponent(
-        data.principalRecipientTypes.join(","),
-      )}`;
-    }
-    if (data.principalRecipientSubTypes.length > 0) {
-      value += `${
-        value.length > 0 ? "&" : ""
-      }principalRecipientSubTypes=${encodeURIComponent(
-        data.principalRecipientSubTypes.join(","),
-      )}`;
-    }
-    if (data.principalRecipients.length > 0) {
-      value += `${
-        value.length > 0 ? "&" : ""
-      }principalRecipients=${encodeURIComponent(
-        data.principalRecipients.join(","),
-      )}`;
-    }
-    if (data.status.length > 0) {
-      value += `${value.length > 0 ? "&" : ""}status=${encodeURIComponent(
-        data.status.join(","),
-      )}`;
-    }
-    return value;
-  };
-  const filterString = React.useCallback(
-    (data: StateMapper<FilterActionTypes<AppliedFiltersStateModel>>) => {
-      return getFilterString(data);
-    },
-    [data],
-  );
-  const tempFilterString = filterString(tempAppliedFiltersData);
-  const appliedFilterString = filterString(appliedFiltersData);
-
   React.useEffect(() => {
     window.addEventListener("scroll", onScroll);
     return () => {
@@ -354,12 +356,10 @@ export const Grants: React.FC = () => {
         pageSize: "9",
       },
       filterString: `q=${search}${
-        appliedFiltersString.state.length
-          ? `&${appliedFiltersString.state}`
-          : ""
+        appliedFiltersString.length ? `&${appliedFiltersString}` : ""
       }`,
     });
-  }, [appliedFiltersString.state]);
+  }, [appliedFiltersString]);
 
   useUpdateEffect(() => {
     if (search.length === 0) {
@@ -369,9 +369,7 @@ export const Grants: React.FC = () => {
           pageSize: "9",
         },
         filterString: `q=${search}${
-          appliedFiltersString.state.length
-            ? `&${appliedFiltersString.state}`
-            : ""
+          appliedFiltersString.length ? `&${appliedFiltersString}` : ""
         }`,
       });
     }
@@ -399,7 +397,8 @@ export const Grants: React.FC = () => {
       setPage={setPage}
       page={page}
       setPageSearchValue={setPageSearchValue}
-      filterString={tempFilterString}
+      handleCancelFilters={handleCancelFilters}
+      handleApplyFilters={handleApplyFilters}
     />
   );
 };

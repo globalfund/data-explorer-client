@@ -23,7 +23,8 @@ export interface GrantsLayoutProps {
   handleFilterButtonClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
   setPage: (value: React.SetStateAction<number>) => void;
   setPageSearchValue: (value: React.SetStateAction<number>) => void;
-  filterString: string;
+  handleCancelFilters: () => void;
+  handleApplyFilters: () => void;
 }
 
 export const GRANTS_STORY_DATA = [

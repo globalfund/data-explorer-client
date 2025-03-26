@@ -320,6 +320,8 @@ export const GrantImplementationPage: React.FC = () => {
         "See the disbursements, budgets and expenditures datasets and relating insights.",
       )}
       toolbarRightContent={toolbarRightContent}
+      handleApplyFilters={() => {}}
+      handleCancelFilters={() => {}}
     >
       <Box width="100%" marginTop="50px">
         <GrantImplementationPageBlock1

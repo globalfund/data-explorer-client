@@ -17,8 +17,6 @@ import { appColors } from "app/theme";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import findIndex from "lodash/findIndex";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import isEqual from "lodash/isEqual";
 
 export const FilterPanel: React.FC<FilterPanelProps> = (
   props: FilterPanelProps,
@@ -28,24 +26,9 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
   const handleCollapseAll = () => {
     setCollapseAll(!collapseAll);
   };
-  const fetch = useStoreActions((actions) => actions.GrantList.fetch);
   const [shownOptions, setShownOptions] = React.useState<FilterModel[]>([]);
   const [tabValue, setTabValue] = React.useState(props.filterGroups[0].id);
-  const appliedFiltersData = useStoreState(
-    (state) => state.AppliedFiltersState,
-  );
-  const tempAppliedFiltersData = useStoreState(
-    (state) => state.TempAppliedFiltersState,
-  );
-  const tempAppliedFiltersActions = useStoreActions(
-    (actions) => actions.TempAppliedFiltersState,
-  );
-  const appliedFiltersActions = useStoreActions(
-    (actions) => actions.AppliedFiltersState,
-  );
-  const appliedFiltersStringAction = useStoreActions(
-    (action) => action.AppliedFilterStringState,
-  );
+
   const appliedFiltersContent = React.useMemo(() => {
     if (props.appliedFilters.length === 0) {
       return <Typography fontSize="12px">No filters applied.</Typography>;
@@ -71,27 +54,6 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
   const filterGroupOptions = props.filterGroups.find(
     (group) => group.id === tabValue,
   )?.options;
-
-  console.log(props.filterString, "props.filterString");
-  const handleApplyFilters = () => {
-    if (isEqual(appliedFiltersData, tempAppliedFiltersData)) return;
-    fetch({
-      routeParams: {
-        page: `${props.page}`,
-        pageSize: "9",
-      },
-      filterString: `q=${props.search}${
-        props.filterString.length ? `&${props.filterString}` : ""
-      }`,
-    });
-    appliedFiltersActions.setAll({ ...tempAppliedFiltersData });
-    appliedFiltersStringAction.setState(props.filterString);
-    tempAppliedFiltersActions.clearAll();
-  };
-
-  const handleCancelFilters = () => {
-    tempAppliedFiltersActions.setAll({ ...appliedFiltersData });
-  };
 
   const filterOptions = (
     searchValue: string,
@@ -402,7 +364,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
             Reset Changes
           </Button>
           <Button
-            onClick={handleCancelFilters}
+            onClick={props.handleCancelFilters}
             variant="outlined"
             sx={{
               fontSize: "12px",
@@ -433,7 +395,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
             Cancel
           </Button>
           <Button
-            onClick={handleApplyFilters}
+            onClick={props.handleApplyFilters}
             variant="outlined"
             sx={{
               fontSize: "12px",

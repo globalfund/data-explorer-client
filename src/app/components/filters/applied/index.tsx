@@ -8,10 +8,9 @@ import { useStoreActions } from "app/state/store/hooks";
 export const FiltersApplied: React.FC<FiltersAppliedProps> = (
   props: FiltersAppliedProps,
 ) => {
-  const appliedFiltersActions = useStoreActions(
-    (actions) => actions.AppliedFiltersState,
+  const tempAppliedFiltersActions = useStoreActions(
+    (actions) => actions.TempAppliedFiltersState,
   );
-
   const handleRemoveFilter = (filter: string) => () => {
     if (props.removeFilter) {
       props.removeFilter(
@@ -19,7 +18,7 @@ export const FiltersApplied: React.FC<FiltersAppliedProps> = (
         props.filterGroups.map((group) => group.id),
       );
     } else {
-      appliedFiltersActions.removeFilter({
+      tempAppliedFiltersActions.removeFilter({
         value: filter,
         types: props.filterGroups.map((group) => group.id),
       });

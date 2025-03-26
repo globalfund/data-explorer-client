@@ -14,7 +14,6 @@ import { ReactComponent as CheckboxCheckedIcon } from "app/assets/vectors/Checkb
 import {
   getAppliedFilters,
   FilterListItemContentProps,
-  mergeFilters,
 } from "app/components/filters/list/data";
 
 export const FilterListItemContent: React.FC<FilterListItemContentProps> = (
@@ -29,9 +28,6 @@ export const FilterListItemContent: React.FC<FilterListItemContentProps> = (
   );
   const tempAppliedFiltersActions = useStoreActions(
     (actions) => actions.TempAppliedFiltersState,
-  );
-  const appliedFiltersData = useStoreState(
-    (state) => state.AppliedFiltersState,
   );
 
   const id = React.useMemo(() => {
@@ -58,23 +54,12 @@ export const FilterListItemContent: React.FC<FilterListItemContentProps> = (
   }, [props.id, props.level, props.options]);
 
   const appliedFilters = React.useMemo(() => {
-    const mergedFilterOptions = mergeFilters(
-      tempAppliedFiltersData,
-      appliedFiltersData,
-    );
-
     return getAppliedFilters(
-      props.appliedFiltersData ?? mergedFilterOptions,
+      props.appliedFiltersData ?? tempAppliedFiltersData,
       props.id,
       props.level,
     );
-  }, [
-    tempAppliedFiltersData,
-    appliedFiltersData,
-    props.appliedFiltersData,
-    props.id,
-    props.level,
-  ]);
+  }, [tempAppliedFiltersData, props.appliedFiltersData, props.id, props.level]);
 
   const onCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     props.setPage(1);

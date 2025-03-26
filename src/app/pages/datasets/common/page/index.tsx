@@ -25,6 +25,7 @@ export const DatasetPage: React.FC<DatasetPageProps> = (
   };
 
   const handleFilterPanelClose = () => {
+    props.handleCancelFilters();
     setAnchorEl(null);
   };
 
@@ -54,7 +55,8 @@ export const DatasetPage: React.FC<DatasetPageProps> = (
         }}
         setPage={() => 0}
         setPageSearchValue={() => 0}
-        filterString=""
+        handleCancelFilters={props.handleCancelFilters}
+        handleApplyFilters={props.handleApplyFilters}
       />
     );
   }, [props.filterGroups, props.appliedFilters, props.handleResetFilters]);

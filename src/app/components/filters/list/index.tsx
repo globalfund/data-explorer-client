@@ -7,14 +7,6 @@ import { FilterListItemContent } from "app/components/filters/list/listitem";
 export const FilterList: React.FC<FilterListProps> = (
   props: FilterListProps,
 ) => {
-  const [expanded, setExpanded] = React.useState<string | false>(false);
-
-  React.useEffect(() => {
-    if (props.collapseAll) {
-      setExpanded(false);
-    }
-  }, [props.collapseAll]);
-
   return (
     <Box>
       <FilterListItemContent
