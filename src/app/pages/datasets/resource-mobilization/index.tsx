@@ -3,7 +3,7 @@ import get from "lodash/get";
 import uniq from "lodash/uniq";
 import sumBy from "lodash/sumBy";
 import Box from "@mui/material/Box";
-import { useTitle } from "react-use";
+import { useTitle, useUnmount } from "react-use";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import { useLocation } from "react-router-dom";
@@ -21,10 +21,15 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import { ReactComponent as TableIcon } from "app/assets/vectors/Select_Table.svg";
-import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
+import {
+  AppliedFiltersStateModel,
+  defaultAppliedFilters,
+} from "app/state/api/action-reducers/sync/filters";
 import { ReactComponent as BarChartIcon } from "app/assets/vectors/Select_BarChart.svg";
 import { ExpandableHorizontalBar } from "app/components/charts/expandable-horizontal-bar";
 import { ExpandableHorizontalBarChartDataItem } from "app/components/charts/expandable-horizontal-bar/data";
+import { StateMapper, FilterActionTypes } from "easy-peasy";
+import isEqual from "lodash/isEqual";
 
 const dropdownItems = [
   { label: "Bar Chart", value: "Bar Chart", icon: <BarChartIcon /> },
@@ -33,7 +38,9 @@ const dropdownItems = [
 
 export const ResourceMobilizationPage: React.FC = () => {
   useTitle("The Data Explorer - Resource Mobilization");
-
+  useUnmount(() => {
+    tempAppliedFiltersActions.clearAll();
+  });
   const location = useLocation();
   const cmsData = useCMSData({ returnData: true });
   const latestUpdateDate = useGetDatasetLatestUpdate({
@@ -119,9 +126,9 @@ export const ResourceMobilizationPage: React.FC = () => {
       }) as FilterGroupModel,
   );
   const pageAppliedFilters = useStoreState((state) => [
-    ...state.AppliedFiltersState.donorTypes,
-    ...state.AppliedFiltersState.donors,
-    ...state.AppliedFiltersState.replenishmentPeriods,
+    ...state.TempAppliedFiltersState.donorTypes,
+    ...state.TempAppliedFiltersState.donors,
+    ...state.TempAppliedFiltersState.replenishmentPeriods,
   ]);
   const appliedFiltersData = useStoreState(
     (state) => state.AppliedFiltersState,
@@ -129,18 +136,30 @@ export const ResourceMobilizationPage: React.FC = () => {
   const appliedFiltersActions = useStoreActions(
     (actions) => actions.AppliedFiltersState,
   );
+  const tempAppliedFiltersData = useStoreState(
+    (state) => state.TempAppliedFiltersState,
+  );
+  const tempAppliedFiltersActions = useStoreActions(
+    (actions) => actions.TempAppliedFiltersState,
+  );
 
   const handleSelectionChange = (value: string) => {
     setDropdownSelected(value);
   };
 
   const handleResetFilters = () => {
+    tempAppliedFiltersActions.clearAll();
+
     appliedFiltersActions.setAll({
       ...appliedFiltersData,
       donorTypes: [],
       donors: [],
       replenishmentPeriods: [],
     });
+  };
+
+  const handleCancelFilters = () => {
+    tempAppliedFiltersActions.setAll({ ...appliedFiltersData });
   };
 
   const handleResetChartFilters = () => {
@@ -220,6 +239,11 @@ export const ResourceMobilizationPage: React.FC = () => {
     ]);
   };
 
+  const handleApplyFilters = () => {
+    if (isEqual(appliedFiltersData, tempAppliedFiltersData)) return;
+    appliedFiltersActions.setAll({ ...tempAppliedFiltersData });
+  };
+
   const chartEmpty = React.useMemo(() => {
     switch (dropdownSelected) {
       case dropdownItems[0].value:
@@ -235,7 +259,7 @@ export const ResourceMobilizationPage: React.FC = () => {
     return [dataDonorFilterOptions, dataReplenishmentPeriodFilterOptions];
   }, [dataDonorFilterOptions, dataReplenishmentPeriodFilterOptions]);
 
-  const filterString = React.useMemo(() => {
+  const appliedFilterString = React.useMemo(() => {
     let value = "";
     if (
       appliedFiltersData.donorTypes.length > 0 &&
@@ -429,8 +453,8 @@ export const ResourceMobilizationPage: React.FC = () => {
   }, [dropdownSelected, dataBarChart, dataTable]);
 
   React.useEffect(() => {
-    fetchStats({ filterString });
-  }, [filterString]);
+    fetchStats({ filterString: appliedFilterString });
+  }, [appliedFilterString]);
 
   React.useEffect(() => {
     fetchBarChart({ filterString: chartFilterString });
@@ -468,6 +492,8 @@ export const ResourceMobilizationPage: React.FC = () => {
         "pagesDatasetsResourceMobilization.subtitle",
         "Government, private sector, non-government and other donor pledges and contributions",
       )}
+      handleApplyFilters={handleApplyFilters}
+      handleCancelFilters={handleCancelFilters}
     >
       <Box width="100%" marginTop="50px">
         <Grid
