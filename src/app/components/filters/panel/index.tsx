@@ -316,7 +316,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
           }
           setCollapseAll={setCollapseAll}
           toggleFilter={props.toggleFilter}
-          appliedFiltersData={props.appliedFiltersData}
+          tempAppliedFiltersData={props.tempAppliedFiltersData}
           setPage={props.setPage}
           setPageSearchValue={props.setPageSearchValue}
           shownOptions={shownOptions ?? []}

@@ -257,6 +257,8 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
           "pagesDatasetsAccessToFunding.eligibilitySubtitle",
           "Country eligibility for funding over time.",
         )}
+        handleApplyFilters={() => {}}
+        handleCancelFilters={() => {}}
         dropdownItems={[]}
         disableCollapse
         data={exportChartData}
@@ -267,7 +269,7 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
         toggleFilter={handleToggleChartFilter}
         removeFilter={handleRemoveChartFilter}
         handleResetFilters={handleResetChartFilters}
-        appliedFiltersData={chart1AppliedFiltersData}
+        tempAppliedFiltersData={chart1AppliedFiltersData}
         empty={dataEligibilityTable.length === 0 && tableSearch.length === 0}
       >
         <Box

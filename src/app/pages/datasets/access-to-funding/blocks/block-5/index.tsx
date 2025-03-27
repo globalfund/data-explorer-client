@@ -248,6 +248,8 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
           "Funding request applications by countries.",
         )}
         disableCollapse
+        handleApplyFilters={() => {}}
+        handleCancelFilters={() => {}}
         dropdownItems={[]}
         data={exportChartData}
         exportName="funding-requests"
@@ -258,7 +260,7 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
         toggleFilter={handleToggleChartFilter}
         removeFilter={handleRemoveChartFilter}
         handleResetFilters={handleResetChartFilters}
-        appliedFiltersData={chart3AppliedFiltersData}
+        tempAppliedFiltersData={chart3AppliedFiltersData}
         empty={
           dataFundingRequestsTable.length === 0 && tableSearch.length === 0
         }

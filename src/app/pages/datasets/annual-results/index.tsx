@@ -506,6 +506,8 @@ export const AnnualResultsPage: React.FC = () => {
             dropdownItems={dropdownItems}
             latestUpdate={latestUpdateDate}
             dropdownSelected={dropdownSelected}
+            handleApplyFilters={() => {}}
+            handleCancelFilters={() => {}}
             handleDropdownChange={handleSelectionChange}
             disableCollapse={dropdownSelected === dropdownItems[1].value}
             empty={chartEmpty}
@@ -514,7 +516,7 @@ export const AnnualResultsPage: React.FC = () => {
             removeFilter={handleRemoveChartFilter}
             handleResetFilters={handleResetChartFilters}
             appliedFilters={chartAppliedFilters}
-            appliedFiltersData={chartAppliedFiltersData}
+            tempAppliedFiltersData={chartAppliedFiltersData}
             infoType="global"
           >
             {chartContent}

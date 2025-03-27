@@ -55,11 +55,16 @@ export const FilterListItemContent: React.FC<FilterListItemContentProps> = (
 
   const appliedFilters = React.useMemo(() => {
     return getAppliedFilters(
-      props.appliedFiltersData ?? tempAppliedFiltersData,
+      props.tempAppliedFiltersData ?? tempAppliedFiltersData,
       props.id,
       props.level,
     );
-  }, [tempAppliedFiltersData, props.appliedFiltersData, props.id, props.level]);
+  }, [
+    tempAppliedFiltersData,
+    props.tempAppliedFiltersData,
+    props.id,
+    props.level,
+  ]);
 
   const onCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     props.setPage(1);
@@ -174,7 +179,7 @@ export const FilterListItemContent: React.FC<FilterListItemContentProps> = (
                 collapseAll={props.collapseAll}
                 toggleFilter={props.toggleFilter}
                 setCollapseAll={props.setCollapseAll}
-                appliedFiltersData={props.appliedFiltersData}
+                tempAppliedFiltersData={props.tempAppliedFiltersData}
                 setPage={props.setPage}
                 setPageSearchValue={props.setPageSearchValue}
                 shownOptions={option.options ?? []}

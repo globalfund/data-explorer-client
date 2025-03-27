@@ -407,6 +407,8 @@ export const AccessToFundingBlock3: React.FC<AccessToFundingBlock3Props> = (
           "pagesDatasetsAccessToFunding.allocationSubtitle",
           "Allocations amounts for countries.",
         )}
+        handleApplyFilters={() => {}}
+        handleCancelFilters={() => {}}
         dropdownItems={dropdownItemsAllocations}
         latestUpdate={latestUpdateDate}
         dropdownSelected={dropdownSelected}
@@ -419,7 +421,7 @@ export const AccessToFundingBlock3: React.FC<AccessToFundingBlock3Props> = (
         toggleFilter={handleToggleChartFilter}
         removeFilter={handleRemoveChartFilter}
         handleResetFilters={handleResetChartFilters}
-        appliedFiltersData={chart2AppliedFiltersData}
+        tempAppliedFiltersData={chart2AppliedFiltersData}
         extraDropdown={allocationCycleDropdown}
         data={chartData}
         infoType="global"

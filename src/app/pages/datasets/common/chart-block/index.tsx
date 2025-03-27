@@ -28,6 +28,7 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
   };
 
   const handleFilterPanelClose = () => {
+    props.handleCancelFilters();
     setAnchorEl(null);
   };
 
@@ -88,7 +89,7 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
         removeFilter={props.removeFilter}
         appliedFilters={props.appliedFilters}
         handleResetFilters={props.handleResetFilters}
-        appliedFiltersData={props.appliedFiltersData}
+        tempAppliedFiltersData={props.tempAppliedFiltersData}
         setPage={() => 0}
         setPageSearchValue={() => 0}
         appliedFilterBgColors={{
@@ -97,14 +98,14 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
         }}
         page={0}
         search=""
-        handleCancelFilters={() => {}}
-        handleApplyFilters={() => {}}
+        handleCancelFilters={props.handleCancelFilters}
+        handleApplyFilters={props.handleApplyFilters}
       />
     );
   }, [
     props.appliedFilters,
     props.filterGroups,
-    props.appliedFiltersData,
+    props.tempAppliedFiltersData,
     props.toggleFilter,
     props.removeFilter,
     props.handleResetFilters,

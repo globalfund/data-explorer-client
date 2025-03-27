@@ -22,7 +22,7 @@ export interface FilterListItemContentProps {
   withSearch?: boolean;
   forceExpand?: boolean;
   options?: FilterModel[];
-  appliedFiltersData?: AppliedFiltersModel;
+  tempAppliedFiltersData?: AppliedFiltersModel;
   setCollapseAll: (collapseAll: boolean) => void;
   toggleFilter?: (checked: boolean, value: string, type: string) => void;
   setPage: (value: React.SetStateAction<number>) => void;
@@ -34,7 +34,7 @@ export interface FilterListProps {
   collapseAll: boolean;
   groups: FilterGroupModel[];
   group: FilterGroupModel;
-  appliedFiltersData?: AppliedFiltersModel;
+  tempAppliedFiltersData?: AppliedFiltersModel;
   setCollapseAll: (collapseAll: boolean) => void;
   toggleFilter?: (checked: boolean, value: string, type: string) => void;
   setPage: (value: React.SetStateAction<number>) => void;

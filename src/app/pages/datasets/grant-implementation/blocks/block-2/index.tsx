@@ -630,6 +630,8 @@ export const GrantImplementationPageBlock2: React.FC<
         )}
         dropdownItems={dropdownItemsDisbursements}
         dropdownSelected={disbursementsDropdownSelected}
+        handleApplyFilters={() => {}}
+        handleCancelFilters={() => {}}
         handleDropdownChange={handleDisbursementsSelectionChange}
         loading={loadingFinancialInsightsDisbursements}
         latestUpdate={latestUpdateDate}
@@ -642,7 +644,7 @@ export const GrantImplementationPageBlock2: React.FC<
         toggleFilter={handleToggleChartFilter}
         removeFilter={handleRemoveChartFilter}
         handleResetFilters={handleResetChartFilters}
-        appliedFiltersData={chart1AppliedFiltersData}
+        tempAppliedFiltersData={chart1AppliedFiltersData}
         data={chartData}
         infoType="financials"
       >

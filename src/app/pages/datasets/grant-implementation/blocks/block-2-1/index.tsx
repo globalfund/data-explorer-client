@@ -341,7 +341,9 @@ export const GrantImplementationPageBlock21: React.FC = () => {
         handleResetFilters={() => {}}
         filterGroups={[]}
         appliedFilters={[]}
-        appliedFiltersData={defaultAppliedFilters}
+        handleApplyFilters={() => {}}
+        handleCancelFilters={() => {}}
+        tempAppliedFiltersData={defaultAppliedFilters}
         removeFilter={() => {}}
         toggleFilter={() => {}}
         latestUpdate={latestUpdateDate}

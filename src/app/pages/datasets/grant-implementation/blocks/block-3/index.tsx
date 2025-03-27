@@ -653,6 +653,8 @@ export const GrantImplementationPageBlock3: React.FC<
           "pagesDatasetsGrantImplementation.budgetsSubtitle",
           "total budget.",
         )}`}
+        handleApplyFilters={() => {}}
+        handleCancelFilters={() => {}}
         dropdownItems={dropdownItemsBudgets}
         dropdownSelected={budgetsDropdownSelected}
         handleDropdownChange={(value) => {
@@ -672,7 +674,7 @@ export const GrantImplementationPageBlock3: React.FC<
         toggleFilter={handleToggleChartFilter}
         removeFilter={handleRemoveChartFilter}
         handleResetFilters={handleResetChartFilters}
-        appliedFiltersData={chart2AppliedFiltersData}
+        tempAppliedFiltersData={chart2AppliedFiltersData}
         extraDropdown={budgetsTableDataTypeDropdown}
         data={chartData}
         infoType="budgets"

@@ -10,7 +10,7 @@ export interface FilterPanelProps {
   onClose: () => void;
   handleResetFilters: () => void;
   filterGroups: FilterGroupModel[];
-  appliedFiltersData?: AppliedFiltersModel;
+  tempAppliedFiltersData?: AppliedFiltersModel;
   removeFilter?: (value: string, types: string[]) => void;
   toggleFilter?: (checked: boolean, value: string, type: string) => void;
   setPage: (value: React.SetStateAction<number>) => void;

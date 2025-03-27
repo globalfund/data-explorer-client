@@ -514,11 +514,13 @@ export const GrantImplementationPageBlock5: React.FC<
         latestUpdate={latestUpdateDate}
         loading={loadingFinancialMetrics}
         filterGroups={props.filterGroups}
+        handleApplyFilters={() => {}}
+        handleCancelFilters={() => {}}
         appliedFilters={chart3AppliedFilters}
         toggleFilter={handleToggleChartFilter}
         removeFilter={handleRemoveChartFilter}
         handleResetFilters={handleResetChartFilters}
-        appliedFiltersData={chart3AppliedFiltersData}
+        tempAppliedFiltersData={chart3AppliedFiltersData}
         extraDropdown={financialMetricsCycleDropdown}
         data={exportChartData}
         infoType="financials"

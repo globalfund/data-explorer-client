@@ -645,11 +645,13 @@ export const GrantImplementationPageBlock6: React.FC<
         }
         empty={expendituresChartEmpty}
         filterGroups={props.filterGroups}
+        handleApplyFilters={() => {}}
+        handleCancelFilters={() => {}}
         appliedFilters={chart4AppliedFilters}
         toggleFilter={handleToggleChartFilter}
         removeFilter={handleRemoveChartFilter}
         handleResetFilters={handleResetChartFilters}
-        appliedFiltersData={chart4AppliedFiltersData}
+        tempAppliedFiltersData={chart4AppliedFiltersData}
         extraDropdown={expendituresCycleDropdown}
         data={exportChartData}
         infoType="expenditures"

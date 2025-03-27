@@ -21,14 +21,10 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import { ReactComponent as TableIcon } from "app/assets/vectors/Select_Table.svg";
-import {
-  AppliedFiltersStateModel,
-  defaultAppliedFilters,
-} from "app/state/api/action-reducers/sync/filters";
+import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 import { ReactComponent as BarChartIcon } from "app/assets/vectors/Select_BarChart.svg";
 import { ExpandableHorizontalBar } from "app/components/charts/expandable-horizontal-bar";
 import { ExpandableHorizontalBarChartDataItem } from "app/components/charts/expandable-horizontal-bar/data";
-import { StateMapper, FilterActionTypes } from "easy-peasy";
 import isEqual from "lodash/isEqual";
 
 const dropdownItems = [
@@ -47,18 +43,25 @@ export const ResourceMobilizationPage: React.FC = () => {
     dataset: "pledges-contributions",
   });
   const tabletScreen = useMediaQuery(
-    "(min-width: 768px) and (max-width:920px)",
+    "(min-width: 768px) and (max-width:920px)"
   );
 
   const [dropdownSelected, setDropdownSelected] = React.useState(
-    dropdownItems[0].value,
+    dropdownItems[0].value
   );
   const [chartAppliedFilters, setChartAppliedFilters] = React.useState<
+    string[]
+  >([]);
+  const [chartTempAppliedFilters, setChartTempAppliedFilters] = React.useState<
     string[]
   >([]);
   const [chartAppliedFiltersData, setChartAppliedFiltersData] = React.useState({
     ...defaultAppliedFilters,
   });
+  const [chartTempAppliedFiltersData, setChartTempAppliedFiltersData] =
+    React.useState({
+      ...defaultAppliedFilters,
+    });
 
   const [tableSearch, setTableSearch] = React.useState("");
 
@@ -74,30 +77,30 @@ export const ResourceMobilizationPage: React.FC = () => {
         totalContributions: number;
         percentage: number;
         donorTypesCount: { name: string; value: number }[];
-      },
+      }
   );
   const loadingStats = useStoreState(
-    (state) => state.ResourceMobilizationStats.loading,
+    (state) => state.ResourceMobilizationStats.loading
   );
   const fetchStats = useStoreActions(
-    (actions) => actions.ResourceMobilizationStats.fetch,
+    (actions) => actions.ResourceMobilizationStats.fetch
   );
   const dataBarChart = useStoreState(
     (state) =>
       get(
         state.ResourceMobilizationExpandableBarChart,
         "data.data",
-        [],
-      ) as ExpandableHorizontalBarChartDataItem[],
+        []
+      ) as ExpandableHorizontalBarChartDataItem[]
   );
   const fetchBarChart = useStoreActions(
-    (actions) => actions.ResourceMobilizationExpandableBarChart.fetch,
+    (actions) => actions.ResourceMobilizationExpandableBarChart.fetch
   );
   const dataTable = useStoreState((state) =>
-    get(state.ResourceMobilizationTable, "data.data", []),
+    get(state.ResourceMobilizationTable, "data.data", [])
   );
   const fetchTable = useStoreActions(
-    (actions) => actions.ResourceMobilizationTable.fetch,
+    (actions) => actions.ResourceMobilizationTable.fetch
   );
   const dataChartLoading = useStoreState((state) => {
     switch (dropdownSelected) {
@@ -115,7 +118,7 @@ export const ResourceMobilizationPage: React.FC = () => {
         id: "",
         name: "",
         options: [],
-      }) as FilterGroupModel,
+      }) as FilterGroupModel
   );
   const dataReplenishmentPeriodFilterOptions = useStoreState(
     (state) =>
@@ -123,7 +126,7 @@ export const ResourceMobilizationPage: React.FC = () => {
         id: "",
         name: "",
         options: [],
-      }) as FilterGroupModel,
+      }) as FilterGroupModel
   );
   const pageAppliedFilters = useStoreState((state) => [
     ...state.TempAppliedFiltersState.donorTypes,
@@ -131,16 +134,16 @@ export const ResourceMobilizationPage: React.FC = () => {
     ...state.TempAppliedFiltersState.replenishmentPeriods,
   ]);
   const appliedFiltersData = useStoreState(
-    (state) => state.AppliedFiltersState,
+    (state) => state.AppliedFiltersState
   );
   const appliedFiltersActions = useStoreActions(
-    (actions) => actions.AppliedFiltersState,
+    (actions) => actions.AppliedFiltersState
   );
   const tempAppliedFiltersData = useStoreState(
-    (state) => state.TempAppliedFiltersState,
+    (state) => state.TempAppliedFiltersState
   );
   const tempAppliedFiltersActions = useStoreActions(
-    (actions) => actions.TempAppliedFiltersState,
+    (actions) => actions.TempAppliedFiltersState
   );
 
   const handleSelectionChange = (value: string) => {
@@ -163,6 +166,14 @@ export const ResourceMobilizationPage: React.FC = () => {
   };
 
   const handleResetChartFilters = () => {
+    setChartTempAppliedFiltersData({
+      ...chartAppliedFiltersData,
+      donorTypes: [],
+      donors: [],
+      replenishmentPeriods: [],
+    });
+    setChartTempAppliedFilters([]);
+
     setChartAppliedFiltersData({
       ...chartAppliedFiltersData,
       donorTypes: [],
@@ -172,12 +183,19 @@ export const ResourceMobilizationPage: React.FC = () => {
     setChartAppliedFilters([]);
   };
 
+  const handleCancelChartFilters = () => {
+    setChartTempAppliedFiltersData(structuredClone(chartAppliedFiltersData));
+    setChartTempAppliedFilters(chartAppliedFilters);
+  };
+
   const handleToggleChartFilter = (
     checked: boolean,
     value: string,
-    type: string,
+    type: string
   ) => {
-    const state = { ...chartAppliedFiltersData };
+    const state = structuredClone(
+      chartTempAppliedFiltersData
+    ) as typeof chartTempAppliedFiltersData;
     switch (type) {
       case "donor":
         if (checked) {
@@ -198,15 +216,15 @@ export const ResourceMobilizationPage: React.FC = () => {
           state.replenishmentPeriods.push(value);
         } else {
           state.replenishmentPeriods = state.replenishmentPeriods.filter(
-            (item) => item !== value,
+            (item) => item !== value
           );
         }
         break;
       default:
         break;
     }
-    setChartAppliedFiltersData(state);
-    setChartAppliedFilters([
+    setChartTempAppliedFiltersData(structuredClone(state) as typeof state);
+    setChartTempAppliedFilters([
       ...state.donorTypes,
       ...state.donors,
       ...state.replenishmentPeriods,
@@ -214,7 +232,7 @@ export const ResourceMobilizationPage: React.FC = () => {
   };
 
   const handleRemoveChartFilter = (value: string, types: string[]) => {
-    const state = { ...chartAppliedFiltersData };
+    const state = { ...chartTempAppliedFiltersData };
     types.forEach((type) => {
       switch (type) {
         case "donor":
@@ -224,19 +242,29 @@ export const ResourceMobilizationPage: React.FC = () => {
           break;
         case "replenishmentPeriod":
           state.replenishmentPeriods = state.replenishmentPeriods.filter(
-            (item) => item !== value,
+            (item) => item !== value
           );
           break;
         default:
           break;
       }
     });
-    setChartAppliedFiltersData(state);
-    setChartAppliedFilters([
+    setChartTempAppliedFiltersData(state);
+    setChartTempAppliedFilters([
       ...state.donorTypes,
       ...state.donors,
       ...state.replenishmentPeriods,
     ]);
+  };
+
+  const handleApplyChartFilters = () => {
+    if (isEqual(chartAppliedFilters, chartTempAppliedFiltersData)) return;
+    setChartAppliedFiltersData(
+      structuredClone(
+        chartTempAppliedFiltersData
+      ) as typeof chartTempAppliedFiltersData
+    );
+    setChartAppliedFilters(chartTempAppliedFilters);
   };
 
   const handleApplyFilters = () => {
@@ -266,7 +294,7 @@ export const ResourceMobilizationPage: React.FC = () => {
       location.search.includes("donorTypes=")
     ) {
       value += `donorTypes=${encodeURIComponent(
-        appliedFiltersData.donorTypes.join(","),
+        appliedFiltersData.donorTypes.join(",")
       )}`;
     }
     if (
@@ -274,7 +302,7 @@ export const ResourceMobilizationPage: React.FC = () => {
       location.search.includes("donors=")
     ) {
       value += `${value.length > 0 ? "&" : ""}donors=${encodeURIComponent(
-        appliedFiltersData.donors.join(","),
+        appliedFiltersData.donors.join(",")
       )}`;
     }
     if (
@@ -282,7 +310,7 @@ export const ResourceMobilizationPage: React.FC = () => {
       location.search.includes("replenishmentPeriods=")
     ) {
       value += `${value.length > 0 ? "&" : ""}periods=${encodeURIComponent(
-        appliedFiltersData.replenishmentPeriods.join(","),
+        appliedFiltersData.replenishmentPeriods.join(",")
       )}`;
     }
     return value;
@@ -299,7 +327,7 @@ export const ResourceMobilizationPage: React.FC = () => {
         uniq([
           ...appliedFiltersData.donorTypes,
           ...chartAppliedFiltersData.donorTypes,
-        ]).join(","),
+        ]).join(",")
       )}`;
     }
     if (
@@ -311,7 +339,7 @@ export const ResourceMobilizationPage: React.FC = () => {
         uniq([
           ...appliedFiltersData.donors,
           ...chartAppliedFiltersData.donors,
-        ]).join(","),
+        ]).join(",")
       )}`;
     }
     if (
@@ -323,7 +351,7 @@ export const ResourceMobilizationPage: React.FC = () => {
         uniq([
           ...appliedFiltersData.replenishmentPeriods,
           ...chartAppliedFiltersData.replenishmentPeriods,
-        ]).join(","),
+        ]).join(",")
       )}`;
     }
     return value;
@@ -347,23 +375,23 @@ export const ResourceMobilizationPage: React.FC = () => {
             yAxisLabel={getCMSDataField(
               cmsData,
               "pagesDatasetsResourceMobilization.barchartYLabel",
-              "Donor Types & Donors",
+              "Donor Types & Donors"
             )}
             xAxisLabel={getCMSDataField(
               cmsData,
               "pagesDatasetsResourceMobilization.barchartXLabel",
-              "Amount",
+              "Amount"
             )}
             valueLabels={{
               value: getCMSDataField(
                 cmsData,
                 "pagesDatasetsResourceMobilization.barchartValueLabel1",
-                "Pledge",
+                "Pledge"
               ),
               value1: getCMSDataField(
                 cmsData,
                 "pagesDatasetsResourceMobilization.barchartValueLabel2",
-                "Contribution",
+                "Contribution"
               ),
             }}
           />
@@ -482,7 +510,7 @@ export const ResourceMobilizationPage: React.FC = () => {
       title={getCMSDataField(
         cmsData,
         "pagesDatasetsResourceMobilization.title",
-        "Resource Mobilization",
+        "Resource Mobilization"
       )}
       filterGroups={filterGroups}
       appliedFilters={pageAppliedFilters}
@@ -490,7 +518,7 @@ export const ResourceMobilizationPage: React.FC = () => {
       subtitle={getCMSDataField(
         cmsData,
         "pagesDatasetsResourceMobilization.subtitle",
-        "Government, private sector, non-government and other donor pledges and contributions",
+        "Government, private sector, non-government and other donor pledges and contributions"
       )}
       handleApplyFilters={handleApplyFilters}
       handleCancelFilters={handleCancelFilters}
@@ -571,7 +599,7 @@ export const ResourceMobilizationPage: React.FC = () => {
                 {getCMSDataField(
                   cmsData,
                   "pagesDatasetsResourceMobilization.statsText2",
-                  "Total Pledged",
+                  "Total Pledged"
                 )}
               </Typography>
             </Box>
@@ -584,7 +612,7 @@ export const ResourceMobilizationPage: React.FC = () => {
                 {getCMSDataField(
                   cmsData,
                   "pagesDatasetsResourceMobilization.statsText3",
-                  "Total Contributed",
+                  "Total Contributed"
                 )}
               </Typography>
             </Box>
@@ -605,14 +633,14 @@ export const ResourceMobilizationPage: React.FC = () => {
                 {getCMSDataField(
                   cmsData,
                   "pagesDatasetsResourceMobilization.statsText4Title",
-                  "Number of Donors Mobilized",
+                  "Number of Donors Mobilized"
                 )}
               </Typography>
               <Typography variant="body2">
                 {getCMSDataField(
                   cmsData,
                   "pagesDatasetsResourceMobilization.statsText4Subtitle",
-                  "Grouped by their Donor types",
+                  "Grouped by their Donor types"
                 )}
               </Typography>
             </Box>
@@ -637,7 +665,7 @@ export const ResourceMobilizationPage: React.FC = () => {
                     {getCMSDataField(
                       cmsData,
                       "pagesDatasetsResourceMobilization.statsText5",
-                      "Total number of donors",
+                      "Total number of donors"
                     )}
                   </Typography>
                 </Box>
@@ -718,12 +746,12 @@ export const ResourceMobilizationPage: React.FC = () => {
             title={getCMSDataField(
               cmsData,
               "pagesDatasetsResourceMobilization.pledgesTitle",
-              "Pledges & Contributions",
+              "Pledges & Contributions"
             )}
             subtitle={getCMSDataField(
               cmsData,
               "pagesDatasetsResourceMobilization.pledgesSubtitle",
-              "Government, private sector, non-government and other donor pledges and contributions.",
+              "Government, private sector, non-government and other donor pledges and contributions."
             )}
             dropdownItems={dropdownItems}
             dropdownSelected={dropdownSelected}
@@ -733,11 +761,13 @@ export const ResourceMobilizationPage: React.FC = () => {
             empty={chartEmpty}
             filterGroups={filterGroups}
             latestUpdate={latestUpdateDate}
-            appliedFilters={chartAppliedFilters}
+            appliedFilters={chartTempAppliedFilters}
             toggleFilter={handleToggleChartFilter}
             removeFilter={handleRemoveChartFilter}
             handleResetFilters={handleResetChartFilters}
-            appliedFiltersData={chartAppliedFiltersData}
+            tempAppliedFiltersData={chartTempAppliedFiltersData}
+            handleApplyFilters={handleApplyChartFilters}
+            handleCancelFilters={handleCancelChartFilters}
             data={chartData}
             infoType="pledges_contributions"
           >

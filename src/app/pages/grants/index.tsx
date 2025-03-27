@@ -16,8 +16,6 @@ import { TABLE_VARIATION_5_COLUMNS } from "app/components/table/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import Pagination from "app/components/pagination";
-import { AppliedFiltersStateModel } from "app/state/api/action-reducers/sync/filters";
-import { StateMapper, FilterActionTypes } from "easy-peasy";
 import isEqual from "lodash/isEqual";
 
 export const Grants: React.FC = () => {
