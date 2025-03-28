@@ -19,9 +19,9 @@ import {
   cellBGColorFormatter,
   TABLE_VARIATION_10_COLUMNS as ELIGIBILITY_TABLE_COLUMNS,
 } from "app/components/table/data";
+import isEqual from "lodash/isEqual";
 
 interface AccessToFundingBlock2Props {
-  filterString: string;
   filterGroups: FilterGroupModel[];
 }
 
@@ -37,7 +37,13 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
   const [chart1AppliedFilters, setChart1AppliedFilters] = React.useState<
     string[]
   >([]);
+  const [chart1TempAppliedFilters, setChart1TempAppliedFilters] =
+    React.useState<string[]>([]);
   const [chart1AppliedFiltersData, setChart1AppliedFiltersData] =
+    React.useState({
+      ...defaultAppliedFilters,
+    });
+  const [chart1TempAppliedFiltersData, setChart1TempAppliedFiltersData] =
     React.useState({
       ...defaultAppliedFilters,
     });
@@ -164,7 +170,9 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
     value: string,
     type: string,
   ) => {
-    let state = { ...chart1AppliedFiltersData };
+    let state = structuredClone(
+      chart1TempAppliedFiltersData,
+    ) as typeof chart1TempAppliedFiltersData;
     switch (type) {
       case "geography":
       case "geographyType":
@@ -185,12 +193,16 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
       default:
         break;
     }
-    setChart1AppliedFiltersData(state);
-    setChart1AppliedFilters([...state.locations, ...state.components]);
+    setChart1TempAppliedFiltersData(
+      structuredClone(state) as typeof chart1TempAppliedFiltersData,
+    );
+    setChart1TempAppliedFilters([...state.locations, ...state.components]);
   };
 
   const handleRemoveChartFilter = (value: string, types: string[]) => {
-    let state = { ...chart1AppliedFiltersData };
+    let state = structuredClone(
+      chart1TempAppliedFiltersData,
+    ) as typeof chart1TempAppliedFiltersData;
     types.forEach((type) => {
       switch (type) {
         case "geography":
@@ -205,17 +217,40 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
           break;
       }
     });
-    setChart1AppliedFiltersData(state);
-    setChart1AppliedFilters([...state.locations, ...state.components]);
+    setChart1TempAppliedFiltersData(
+      structuredClone(state) as typeof chart1TempAppliedFiltersData,
+    );
+    setChart1TempAppliedFilters([...state.locations, ...state.components]);
   };
 
   const handleResetChartFilters = () => {
+    setChart1TempAppliedFiltersData({
+      ...chart1AppliedFiltersData,
+      locations: [],
+      components: [],
+    });
+    setChart1TempAppliedFilters([]);
     setChart1AppliedFiltersData({
       ...chart1AppliedFiltersData,
       locations: [],
       components: [],
     });
     setChart1AppliedFilters([]);
+  };
+
+  const handleCancelChartFilters = () => {
+    setChart1TempAppliedFiltersData(structuredClone(chart1AppliedFiltersData));
+    setChart1TempAppliedFilters(chart1AppliedFilters);
+  };
+
+  const handleApplyChartFilters = () => {
+    if (isEqual(chart1AppliedFilters, chart1TempAppliedFiltersData)) return;
+    setChart1AppliedFiltersData(
+      structuredClone(
+        chart1TempAppliedFiltersData,
+      ) as typeof chart1TempAppliedFiltersData,
+    );
+    setChart1AppliedFilters(chart1TempAppliedFilters);
   };
 
   const onSearchChange = (search: string) => {
@@ -257,19 +292,19 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
           "pagesDatasetsAccessToFunding.eligibilitySubtitle",
           "Country eligibility for funding over time.",
         )}
-        handleApplyFilters={() => {}}
-        handleCancelFilters={() => {}}
+        handleApplyFilters={handleApplyChartFilters}
+        handleCancelFilters={handleCancelChartFilters}
         dropdownItems={[]}
         disableCollapse
         data={exportChartData}
         latestUpdate={latestUpdateDate}
         loading={loadingEligibilityTable}
         filterGroups={props.filterGroups}
-        appliedFilters={chart1AppliedFilters}
+        appliedFilters={chart1TempAppliedFilters}
         toggleFilter={handleToggleChartFilter}
         removeFilter={handleRemoveChartFilter}
         handleResetFilters={handleResetChartFilters}
-        tempAppliedFiltersData={chart1AppliedFiltersData}
+        tempAppliedFiltersData={chart1TempAppliedFiltersData}
         empty={dataEligibilityTable.length === 0 && tableSearch.length === 0}
       >
         <Box

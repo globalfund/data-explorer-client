@@ -167,7 +167,7 @@ export const ResourceMobilizationPage: React.FC = () => {
 
   const handleResetChartFilters = () => {
     setChartTempAppliedFiltersData({
-      ...chartAppliedFiltersData,
+      ...chartTempAppliedFiltersData,
       donorTypes: [],
       donors: [],
       replenishmentPeriods: [],

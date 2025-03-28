@@ -12,6 +12,12 @@ import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 
 interface AccessToFundingBlock1Props {
   filterString: string;
+  eligibilityYear: string;
+  eligibilityYears: {
+    label: string;
+    value: string;
+  }[];
+  setEligibilityYear: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
@@ -21,18 +27,6 @@ export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
   const latestUpdateDate = useGetDatasetLatestUpdate({
     dataset: "eligibility",
   });
-
-  const eligibilityYears = useStoreState(
-    (state) =>
-      get(state.EligibilityCycles, "data.data", []).map((item) => ({
-        label: item,
-        value: item,
-      })) as { label: string; value: string }[],
-  );
-
-  const [eligibilityYear, setEligibilityYear] = React.useState(
-    eligibilityYears.length > 0 ? eligibilityYears[0].value : "",
-  );
 
   const dataStats = useStoreState(
     (state) =>
@@ -49,25 +43,25 @@ export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
   );
 
   const handleEligibilityYearChange = (value: string) => {
-    setEligibilityYear(value);
+    props.setEligibilityYear(value);
   };
 
   React.useEffect(() => {
-    if (eligibilityYears.length > 0 && eligibilityYear === "") {
-      setEligibilityYear(eligibilityYears[0].value);
+    if (props.eligibilityYears.length > 0 && props.eligibilityYear === "") {
+      props.setEligibilityYear(props.eligibilityYears[0].value);
     }
-  }, [eligibilityYears]);
+  }, [props.eligibilityYears]);
 
   React.useEffect(() => {
-    if (eligibilityYears.length > 0) {
+    if (props.eligibilityYears.length > 0) {
       fetchStats({
         filterString: props.filterString,
         routeParams: {
-          year: eligibilityYear,
+          year: props.eligibilityYear,
         },
       });
     }
-  }, [props.filterString, eligibilityYear]);
+  }, [props.filterString, props.eligibilityYear]);
 
   return (
     <Box>
@@ -121,8 +115,8 @@ export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
           </Typography>
           <Dropdown
             width={100}
-            dropdownItems={eligibilityYears}
-            dropdownSelected={eligibilityYear}
+            dropdownItems={props.eligibilityYears}
+            dropdownSelected={props.eligibilityYear}
             handleDropdownChange={handleEligibilityYearChange}
           />
         </Box>

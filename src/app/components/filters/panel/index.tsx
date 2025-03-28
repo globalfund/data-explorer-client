@@ -385,9 +385,9 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
                 <path
                   d="M0.79541 7.52918L6.85389 1.4707M0.79541 1.4707L6.85389 7.52918"
                   stroke="#373D43"
-                  stroke-width="1.33333"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.33333"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
             }
@@ -416,9 +416,9 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
                 <path
                   d="M1.40747 4.00483L3.42696 6.02432L8.4757 0.975586"
                   stroke="#373D43"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
             }
