@@ -27,6 +27,7 @@ import {
   TABLE_VARIATION_9_COLUMNS,
   TABLE_VARIATION_6_COLUMNS as DOCUMENTS_TABLE_COLUMNS,
 } from "app/components/table/data";
+import isEqual from "lodash/isEqual";
 
 const dropdownItems = [
   { label: "Polyline Tree", value: "Polyline Tree", icon: <BarChartIcon /> },
@@ -51,6 +52,14 @@ export const AnnualResultsPage: React.FC = () => {
   const [chartAppliedFiltersData, setChartAppliedFiltersData] = React.useState({
     ...defaultAppliedFilters,
   });
+
+  const [chartTempAppliedFilters, setChartTempAppliedFilters] = React.useState<
+    string[]
+  >([]);
+  const [chartTempAppliedFiltersData, setChartTempAppliedFiltersData] =
+    React.useState({
+      ...defaultAppliedFilters,
+    });
 
   const annualResultsCycles = useStoreState(
     (state) =>
@@ -138,8 +147,8 @@ export const AnnualResultsPage: React.FC = () => {
       }) as FilterGroupModel,
   );
   const pageAppliedFilters = useStoreState((state) => [
-    ...state.AppliedFiltersState.components,
-    ...state.AppliedFiltersState.locations,
+    ...state.TempAppliedFiltersState.components,
+    ...state.TempAppliedFiltersState.locations,
   ]);
   const appliedFiltersData = useStoreState(
     (state) => state.AppliedFiltersState,
@@ -147,17 +156,39 @@ export const AnnualResultsPage: React.FC = () => {
   const appliedFiltersActions = useStoreActions(
     (actions) => actions.AppliedFiltersState,
   );
+  const tempAppliedFiltersData = useStoreState(
+    (state) => state.TempAppliedFiltersState,
+  );
+  const tempAppliedFiltersActions = useStoreActions(
+    (actions) => actions.TempAppliedFiltersState,
+  );
 
   const handleSelectionChange = (value: string) => {
     setDropdownSelected(value);
   };
 
   const handleResetFilters = () => {
+    tempAppliedFiltersActions.clearAll();
     appliedFiltersActions.setAll({
       ...appliedFiltersData,
       locations: [],
       components: [],
     });
+  };
+
+  const handleCancelFilters = () => {
+    const clone = structuredClone(
+      appliedFiltersData,
+    ) as typeof appliedFiltersData;
+    tempAppliedFiltersActions.setAll(clone);
+  };
+
+  const handleApplyFilters = () => {
+    if (isEqual(appliedFiltersData, tempAppliedFiltersData)) return;
+    const clone = structuredClone(
+      tempAppliedFiltersData,
+    ) as typeof tempAppliedFiltersData;
+    appliedFiltersActions.setAll(clone);
   };
 
   const handleResetChartFilters = () => {
@@ -167,6 +198,27 @@ export const AnnualResultsPage: React.FC = () => {
       components: [],
     });
     setChartAppliedFilters([]);
+    setChartTempAppliedFiltersData({
+      ...chartTempAppliedFiltersData,
+      locations: [],
+      components: [],
+    });
+    setChartTempAppliedFilters([]);
+  };
+
+  const handleCancelChartFilters = () => {
+    setChartTempAppliedFiltersData(structuredClone(chartAppliedFiltersData));
+    setChartTempAppliedFilters(chartAppliedFilters);
+  };
+
+  const handleApplyChartFilters = () => {
+    if (isEqual(chartAppliedFilters, chartTempAppliedFiltersData)) return;
+    setChartAppliedFiltersData(
+      structuredClone(
+        chartTempAppliedFiltersData,
+      ) as typeof chartTempAppliedFiltersData,
+    );
+    setChartAppliedFilters(chartTempAppliedFilters);
   };
 
   const handleToggleChartFilter = (
@@ -174,7 +226,9 @@ export const AnnualResultsPage: React.FC = () => {
     value: string,
     type: string,
   ) => {
-    const state = { ...chartAppliedFiltersData };
+    const state = structuredClone(
+      chartTempAppliedFiltersData,
+    ) as typeof chartTempAppliedFiltersData;
     switch (type) {
       case "geography":
       case "geographyType":
@@ -195,12 +249,14 @@ export const AnnualResultsPage: React.FC = () => {
       default:
         break;
     }
-    setChartAppliedFiltersData(state);
-    setChartAppliedFilters([...state.locations, ...state.components]);
+    setChartTempAppliedFiltersData(structuredClone(state) as typeof state);
+    setChartTempAppliedFilters([...state.locations, ...state.components]);
   };
 
   const handleRemoveChartFilter = (value: string, types: string[]) => {
-    const state = { ...chartAppliedFiltersData };
+    const state = structuredClone(
+      chartTempAppliedFiltersData,
+    ) as typeof chartTempAppliedFiltersData;
     types.forEach((type) => {
       switch (type) {
         case "geography":
@@ -215,8 +271,8 @@ export const AnnualResultsPage: React.FC = () => {
           break;
       }
     });
-    setChartAppliedFiltersData(state);
-    setChartAppliedFilters([...state.locations, ...state.components]);
+    setChartTempAppliedFiltersData(structuredClone(state) as typeof state);
+    setChartTempAppliedFilters([...state.locations, ...state.components]);
   };
 
   const chartEmpty = React.useMemo(() => {
@@ -467,8 +523,8 @@ export const AnnualResultsPage: React.FC = () => {
         "pagesDatasetsAnnualResults.subtitle",
         "Indicator results reported as part of annual Results Report.",
       )}
-      handleApplyFilters={() => {}}
-      handleCancelFilters={() => {}}
+      handleApplyFilters={handleApplyFilters}
+      handleCancelFilters={handleCancelFilters}
     >
       <Box width="100%" marginTop="50px">
         <HomeResultsStats stats={dataStats} loading={loadingResults} />
@@ -506,8 +562,8 @@ export const AnnualResultsPage: React.FC = () => {
             dropdownItems={dropdownItems}
             latestUpdate={latestUpdateDate}
             dropdownSelected={dropdownSelected}
-            handleApplyFilters={() => {}}
-            handleCancelFilters={() => {}}
+            handleApplyFilters={handleApplyChartFilters}
+            handleCancelFilters={handleCancelChartFilters}
             handleDropdownChange={handleSelectionChange}
             disableCollapse={dropdownSelected === dropdownItems[1].value}
             empty={chartEmpty}
@@ -515,8 +571,8 @@ export const AnnualResultsPage: React.FC = () => {
             toggleFilter={handleToggleChartFilter}
             removeFilter={handleRemoveChartFilter}
             handleResetFilters={handleResetChartFilters}
-            appliedFilters={chartAppliedFilters}
-            tempAppliedFiltersData={chartAppliedFiltersData}
+            appliedFilters={chartTempAppliedFilters}
+            tempAppliedFiltersData={chartTempAppliedFiltersData}
             infoType="global"
           >
             {chartContent}

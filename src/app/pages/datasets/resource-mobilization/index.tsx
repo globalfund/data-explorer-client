@@ -165,6 +165,11 @@ export const ResourceMobilizationPage: React.FC = () => {
     tempAppliedFiltersActions.setAll({ ...appliedFiltersData });
   };
 
+  const handleApplyFilters = () => {
+    if (isEqual(appliedFiltersData, tempAppliedFiltersData)) return;
+    appliedFiltersActions.setAll({ ...tempAppliedFiltersData });
+  };
+
   const handleResetChartFilters = () => {
     setChartTempAppliedFiltersData({
       ...chartTempAppliedFiltersData,
@@ -265,11 +270,6 @@ export const ResourceMobilizationPage: React.FC = () => {
       ) as typeof chartTempAppliedFiltersData,
     );
     setChartAppliedFilters(chartTempAppliedFilters);
-  };
-
-  const handleApplyFilters = () => {
-    if (isEqual(appliedFiltersData, tempAppliedFiltersData)) return;
-    appliedFiltersActions.setAll({ ...tempAppliedFiltersData });
   };
 
   const chartEmpty = React.useMemo(() => {
