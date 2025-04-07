@@ -27,6 +27,7 @@ import {
   componentsGroupingOptions,
   dropdownItemsBudgetsTableDataTypes,
 } from "app/pages/datasets/grant-implementation/data";
+import isEqual from "lodash/isEqual";
 
 interface GrantImplementationPageBlock3Props {
   filterString: string;
@@ -51,6 +52,13 @@ export const GrantImplementationPageBlock3: React.FC<
     string[]
   >([]);
   const [chart2AppliedFiltersData, setChart2AppliedFiltersData] =
+    React.useState({
+      ...defaultAppliedFilters,
+    });
+
+  const [chart2TempAppliedFilters, setChart2TempAppliedFilters] =
+    React.useState<string[]>([]);
+  const [chart2TempAppliedFiltersData, setChart2TempAppliedFiltersData] =
     React.useState({
       ...defaultAppliedFilters,
     });
@@ -143,6 +151,18 @@ export const GrantImplementationPageBlock3: React.FC<
       cycles: [],
     });
     setChart2AppliedFilters([]);
+
+    setChart2TempAppliedFiltersData({
+      ...chart2TempAppliedFiltersData,
+      locations: [],
+      components: [],
+      principalRecipients: [],
+      principalRecipientSubTypes: [],
+      principalRecipientTypes: [],
+      status: [],
+      cycles: [],
+    });
+    setChart2TempAppliedFilters([]);
   };
 
   const handleToggleChartFilter = (
@@ -150,7 +170,9 @@ export const GrantImplementationPageBlock3: React.FC<
     value: string,
     type: string,
   ) => {
-    let state = { ...chart2AppliedFiltersData };
+    let state = structuredClone(
+      chart2TempAppliedFiltersData,
+    ) as typeof chart2TempAppliedFiltersData;
     switch (type) {
       case "geography":
       case "geographyType":
@@ -211,8 +233,8 @@ export const GrantImplementationPageBlock3: React.FC<
       default:
         break;
     }
-    setChart2AppliedFiltersData(state);
-    setChart2AppliedFilters([
+    setChart2TempAppliedFiltersData(structuredClone(state) as typeof state);
+    setChart2TempAppliedFilters([
       ...state.locations,
       ...state.components,
       ...state.principalRecipients,
@@ -224,7 +246,9 @@ export const GrantImplementationPageBlock3: React.FC<
   };
 
   const handleRemoveChartFilter = (value: string, types: string[]) => {
-    let state = { ...chart2AppliedFiltersData };
+    let state = structuredClone(
+      chart2TempAppliedFiltersData,
+    ) as typeof chart2TempAppliedFiltersData;
     types.forEach((type) => {
       switch (type) {
         case "geography":
@@ -259,8 +283,8 @@ export const GrantImplementationPageBlock3: React.FC<
           break;
       }
     });
-    setChart2AppliedFiltersData(state);
-    setChart2AppliedFilters([
+    setChart2TempAppliedFiltersData(structuredClone(state) as typeof state);
+    setChart2TempAppliedFilters([
       ...state.locations,
       ...state.components,
       ...state.principalRecipients,
@@ -269,6 +293,20 @@ export const GrantImplementationPageBlock3: React.FC<
       ...state.status,
       ...state.cycles,
     ]);
+  };
+  const handleCancelChartFilters = () => {
+    setChart2TempAppliedFiltersData(structuredClone(chart2AppliedFiltersData));
+    setChart2TempAppliedFilters(chart2AppliedFilters);
+  };
+
+  const handleApplyChartFilters = () => {
+    if (isEqual(chart2AppliedFilters, chart2TempAppliedFiltersData)) return;
+    setChart2AppliedFiltersData(
+      structuredClone(
+        chart2TempAppliedFiltersData,
+      ) as typeof chart2TempAppliedFiltersData,
+    );
+    setChart2AppliedFilters(chart2TempAppliedFilters);
   };
 
   const budgetsCycleDropdown = React.useMemo(() => {
@@ -653,8 +691,8 @@ export const GrantImplementationPageBlock3: React.FC<
           "pagesDatasetsGrantImplementation.budgetsSubtitle",
           "total budget.",
         )}`}
-        handleApplyFilters={() => {}}
-        handleCancelFilters={() => {}}
+        handleApplyFilters={handleApplyChartFilters}
+        handleCancelFilters={handleCancelChartFilters}
         dropdownItems={dropdownItemsBudgets}
         dropdownSelected={budgetsDropdownSelected}
         handleDropdownChange={(value) => {
@@ -670,11 +708,11 @@ export const GrantImplementationPageBlock3: React.FC<
         }
         empty={budgetsChartEmpty}
         filterGroups={props.filterGroups}
-        appliedFilters={chart2AppliedFilters}
+        appliedFilters={chart2TempAppliedFilters}
         toggleFilter={handleToggleChartFilter}
         removeFilter={handleRemoveChartFilter}
         handleResetFilters={handleResetChartFilters}
-        tempAppliedFiltersData={chart2AppliedFiltersData}
+        tempAppliedFiltersData={chart2TempAppliedFiltersData}
         extraDropdown={budgetsTableDataTypeDropdown}
         data={chartData}
         infoType="budgets"
