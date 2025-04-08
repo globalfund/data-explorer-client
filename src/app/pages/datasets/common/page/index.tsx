@@ -14,12 +14,12 @@ import {
 } from "app/pages/datasets/common/page/data";
 
 export const DatasetPage: React.FC<DatasetPageProps> = (
-  props: DatasetPageProps,
+  props: DatasetPageProps
 ) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleFilterButtonClick = (
-    event: React.MouseEvent<HTMLButtonElement>,
+    event: React.MouseEvent<HTMLButtonElement>
   ) => {
     setAnchorEl(event.currentTarget);
   };
@@ -29,6 +29,14 @@ export const DatasetPage: React.FC<DatasetPageProps> = (
     setAnchorEl(null);
   };
 
+  const handleCancelFilters = () => {
+    props.handleCancelFilters();
+    setAnchorEl(null);
+  };
+  const handleApplyFilters = () => {
+    props.handleApplyFilters();
+    setAnchorEl(null);
+  };
   const onScroll = () => {
     setAnchorEl(null);
   };
@@ -55,8 +63,8 @@ export const DatasetPage: React.FC<DatasetPageProps> = (
         }}
         setPage={() => 0}
         setPageSearchValue={() => 0}
-        handleCancelFilters={props.handleCancelFilters}
-        handleApplyFilters={props.handleApplyFilters}
+        handleCancelFilters={handleCancelFilters}
+        handleApplyFilters={handleApplyFilters}
       />
     );
   }, [props.filterGroups, props.appliedFilters, props.handleResetFilters]);
