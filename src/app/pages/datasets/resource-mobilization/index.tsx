@@ -146,9 +146,6 @@ export const ResourceMobilizationPage: React.FC = () => {
     (actions) => actions.TempAppliedFiltersState,
   );
 
-  console.log("appliedFiltersData", appliedFiltersData);
-  console.log("tempAppliedFiltersData", tempAppliedFiltersData);
-
   const handleSelectionChange = (value: string) => {
     setDropdownSelected(value);
   };
