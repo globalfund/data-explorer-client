@@ -12,6 +12,7 @@ export function useUrlFilters(): null {
 
   const data = useStoreState((state) => state.AppliedFiltersState);
   const actions = useStoreActions((store) => store.AppliedFiltersState);
+  const tempActions = useStoreActions((store) => store.TempAppliedFiltersState);
 
   // run before app is mounted in order to update the stored applied filters
   useComponentWillMount({
@@ -86,6 +87,8 @@ export function useUrlFilters(): null {
       }
 
       actions.setAll(updatedAppliedFilters);
+      // set the applied filters to the temp applied filters
+      tempActions.setAll(updatedAppliedFilters);
     },
   });
 
