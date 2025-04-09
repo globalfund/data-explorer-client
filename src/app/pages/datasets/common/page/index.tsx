@@ -37,16 +37,17 @@ export const DatasetPage: React.FC<DatasetPageProps> = (
     props.handleApplyFilters();
     setAnchorEl(null);
   };
-  const onScroll = () => {
+  const onScroll = React.useCallback(() => {
+    props.handleCancelFilters();
     setAnchorEl(null);
-  };
+  }, [props.handleCancelFilters]);
 
   React.useEffect(() => {
     window.addEventListener("scroll", onScroll);
     return () => {
       window.removeEventListener("scroll", onScroll);
     };
-  }, []);
+  }, [onScroll]);
 
   const filterPopoverContent = React.useMemo(() => {
     return (

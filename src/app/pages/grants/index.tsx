@@ -200,9 +200,9 @@ export const Grants: React.FC = () => {
     setAnchorEl(null);
   };
 
-  const onScroll = () => {
-    setAnchorEl(null);
-  };
+  const onScroll = React.useCallback(() => {
+    handleCancelFilters();
+  }, [handleCancelFilters]);
 
   const handlePageSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
@@ -341,7 +341,7 @@ export const Grants: React.FC = () => {
     return () => {
       window.removeEventListener("scroll", onScroll);
     };
-  }, []);
+  }, [onScroll]);
 
   React.useEffect(() => {
     if (showSearch) {

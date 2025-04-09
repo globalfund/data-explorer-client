@@ -44,16 +44,17 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
   //   setCollapsed(!collapsed);
   // };
 
-  const onScroll = () => {
+  const onScroll = React.useCallback(() => {
+    props.handleCancelFilters();
     setAnchorEl(null);
-  };
+  }, [props.handleCancelFilters]);
 
   React.useEffect(() => {
     window.addEventListener("scroll", onScroll);
     return () => {
       window.removeEventListener("scroll", onScroll);
     };
-  }, []);
+  }, [onScroll]);
 
   const content = React.useMemo(() => {
     if (props.loading) {
