@@ -3,7 +3,7 @@ import get from "lodash/get";
 import uniq from "lodash/uniq";
 import sumBy from "lodash/sumBy";
 import Box from "@mui/material/Box";
-import { useTitle } from "react-use";
+import { useTitle, useUnmount } from "react-use";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import { useLocation } from "react-router-dom";
@@ -25,6 +25,7 @@ import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filter
 import { ReactComponent as BarChartIcon } from "app/assets/vectors/Select_BarChart.svg";
 import { ExpandableHorizontalBar } from "app/components/charts/expandable-horizontal-bar";
 import { ExpandableHorizontalBarChartDataItem } from "app/components/charts/expandable-horizontal-bar/data";
+import isEqual from "lodash/isEqual";
 
 const dropdownItems = [
   { label: "Bar Chart", value: "Bar Chart", icon: <BarChartIcon /> },
@@ -33,7 +34,9 @@ const dropdownItems = [
 
 export const ResourceMobilizationPage: React.FC = () => {
   useTitle("The Data Explorer - Resource Mobilization");
-
+  useUnmount(() => {
+    tempAppliedFiltersActions.clearAll();
+  });
   const location = useLocation();
   const cmsData = useCMSData({ returnData: true });
   const latestUpdateDate = useGetDatasetLatestUpdate({
@@ -49,9 +52,16 @@ export const ResourceMobilizationPage: React.FC = () => {
   const [chartAppliedFilters, setChartAppliedFilters] = React.useState<
     string[]
   >([]);
+  const [chartTempAppliedFilters, setChartTempAppliedFilters] = React.useState<
+    string[]
+  >([]);
   const [chartAppliedFiltersData, setChartAppliedFiltersData] = React.useState({
     ...defaultAppliedFilters,
   });
+  const [chartTempAppliedFiltersData, setChartTempAppliedFiltersData] =
+    React.useState({
+      ...defaultAppliedFilters,
+    });
 
   const [tableSearch, setTableSearch] = React.useState("");
 
@@ -119,9 +129,9 @@ export const ResourceMobilizationPage: React.FC = () => {
       }) as FilterGroupModel,
   );
   const pageAppliedFilters = useStoreState((state) => [
-    ...state.AppliedFiltersState.donorTypes,
-    ...state.AppliedFiltersState.donors,
-    ...state.AppliedFiltersState.replenishmentPeriods,
+    ...state.TempAppliedFiltersState.donorTypes,
+    ...state.TempAppliedFiltersState.donors,
+    ...state.TempAppliedFiltersState.replenishmentPeriods,
   ]);
   const appliedFiltersData = useStoreState(
     (state) => state.AppliedFiltersState,
@@ -129,12 +139,20 @@ export const ResourceMobilizationPage: React.FC = () => {
   const appliedFiltersActions = useStoreActions(
     (actions) => actions.AppliedFiltersState,
   );
+  const tempAppliedFiltersData = useStoreState(
+    (state) => state.TempAppliedFiltersState,
+  );
+  const tempAppliedFiltersActions = useStoreActions(
+    (actions) => actions.TempAppliedFiltersState,
+  );
 
   const handleSelectionChange = (value: string) => {
     setDropdownSelected(value);
   };
 
   const handleResetFilters = () => {
+    tempAppliedFiltersActions.clearAll();
+
     appliedFiltersActions.setAll({
       ...appliedFiltersData,
       donorTypes: [],
@@ -143,7 +161,25 @@ export const ResourceMobilizationPage: React.FC = () => {
     });
   };
 
+  const handleCancelFilters = () => {
+    if (isEqual(appliedFiltersData, tempAppliedFiltersData)) return;
+    tempAppliedFiltersActions.setAll({ ...appliedFiltersData });
+  };
+
+  const handleApplyFilters = () => {
+    if (isEqual(appliedFiltersData, tempAppliedFiltersData)) return;
+    appliedFiltersActions.setAll({ ...tempAppliedFiltersData });
+  };
+
   const handleResetChartFilters = () => {
+    setChartTempAppliedFiltersData({
+      ...chartTempAppliedFiltersData,
+      donorTypes: [],
+      donors: [],
+      replenishmentPeriods: [],
+    });
+    setChartTempAppliedFilters([]);
+
     setChartAppliedFiltersData({
       ...chartAppliedFiltersData,
       donorTypes: [],
@@ -153,12 +189,19 @@ export const ResourceMobilizationPage: React.FC = () => {
     setChartAppliedFilters([]);
   };
 
+  const handleCancelChartFilters = () => {
+    setChartTempAppliedFiltersData(structuredClone(chartAppliedFiltersData));
+    setChartTempAppliedFilters(chartAppliedFilters);
+  };
+
   const handleToggleChartFilter = (
     checked: boolean,
     value: string,
     type: string,
   ) => {
-    const state = { ...chartAppliedFiltersData };
+    const state = structuredClone(
+      chartTempAppliedFiltersData,
+    ) as typeof chartTempAppliedFiltersData;
     switch (type) {
       case "donor":
         if (checked) {
@@ -186,8 +229,8 @@ export const ResourceMobilizationPage: React.FC = () => {
       default:
         break;
     }
-    setChartAppliedFiltersData(state);
-    setChartAppliedFilters([
+    setChartTempAppliedFiltersData(structuredClone(state) as typeof state);
+    setChartTempAppliedFilters([
       ...state.donorTypes,
       ...state.donors,
       ...state.replenishmentPeriods,
@@ -195,7 +238,7 @@ export const ResourceMobilizationPage: React.FC = () => {
   };
 
   const handleRemoveChartFilter = (value: string, types: string[]) => {
-    const state = { ...chartAppliedFiltersData };
+    const state = { ...chartTempAppliedFiltersData };
     types.forEach((type) => {
       switch (type) {
         case "donor":
@@ -212,12 +255,22 @@ export const ResourceMobilizationPage: React.FC = () => {
           break;
       }
     });
-    setChartAppliedFiltersData(state);
-    setChartAppliedFilters([
+    setChartTempAppliedFiltersData(state);
+    setChartTempAppliedFilters([
       ...state.donorTypes,
       ...state.donors,
       ...state.replenishmentPeriods,
     ]);
+  };
+
+  const handleApplyChartFilters = () => {
+    if (isEqual(chartAppliedFilters, chartTempAppliedFiltersData)) return;
+    setChartAppliedFiltersData(
+      structuredClone(
+        chartTempAppliedFiltersData,
+      ) as typeof chartTempAppliedFiltersData,
+    );
+    setChartAppliedFilters(chartTempAppliedFilters);
   };
 
   const chartEmpty = React.useMemo(() => {
@@ -235,7 +288,7 @@ export const ResourceMobilizationPage: React.FC = () => {
     return [dataDonorFilterOptions, dataReplenishmentPeriodFilterOptions];
   }, [dataDonorFilterOptions, dataReplenishmentPeriodFilterOptions]);
 
-  const filterString = React.useMemo(() => {
+  const appliedFilterString = React.useMemo(() => {
     let value = "";
     if (
       appliedFiltersData.donorTypes.length > 0 &&
@@ -429,8 +482,8 @@ export const ResourceMobilizationPage: React.FC = () => {
   }, [dropdownSelected, dataBarChart, dataTable]);
 
   React.useEffect(() => {
-    fetchStats({ filterString });
-  }, [filterString]);
+    fetchStats({ filterString: appliedFilterString });
+  }, [appliedFilterString]);
 
   React.useEffect(() => {
     fetchBarChart({ filterString: chartFilterString });
@@ -468,6 +521,8 @@ export const ResourceMobilizationPage: React.FC = () => {
         "pagesDatasetsResourceMobilization.subtitle",
         "Government, private sector, non-government and other donor pledges and contributions",
       )}
+      handleApplyFilters={handleApplyFilters}
+      handleCancelFilters={handleCancelFilters}
     >
       <Box width="100%" marginTop="50px">
         <Grid
@@ -707,11 +762,13 @@ export const ResourceMobilizationPage: React.FC = () => {
             empty={chartEmpty}
             filterGroups={filterGroups}
             latestUpdate={latestUpdateDate}
-            appliedFilters={chartAppliedFilters}
+            appliedFilters={chartTempAppliedFilters}
             toggleFilter={handleToggleChartFilter}
             removeFilter={handleRemoveChartFilter}
             handleResetFilters={handleResetChartFilters}
-            appliedFiltersData={chartAppliedFiltersData}
+            tempAppliedFiltersData={chartTempAppliedFiltersData}
+            handleApplyFilters={handleApplyChartFilters}
+            handleCancelFilters={handleCancelChartFilters}
             data={chartData}
             infoType="pledges_contributions"
           >

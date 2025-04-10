@@ -28,23 +28,33 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
   };
 
   const handleFilterPanelClose = () => {
+    props.handleCancelFilters();
     setAnchorEl(null);
   };
 
+  const handleCancelFilters = () => {
+    props.handleCancelFilters();
+    setAnchorEl(null);
+  };
+  const handleApplyFilters = () => {
+    props.handleApplyFilters();
+    setAnchorEl(null);
+  };
   // const handleCollapse = () => {
   //   setCollapsed(!collapsed);
   // };
 
-  const onScroll = () => {
+  const onScroll = React.useCallback(() => {
+    props.handleCancelFilters();
     setAnchorEl(null);
-  };
+  }, [props.handleCancelFilters]);
 
   React.useEffect(() => {
     window.addEventListener("scroll", onScroll);
     return () => {
       window.removeEventListener("scroll", onScroll);
     };
-  }, []);
+  }, [onScroll]);
 
   const content = React.useMemo(() => {
     if (props.loading) {
@@ -88,19 +98,23 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
         removeFilter={props.removeFilter}
         appliedFilters={props.appliedFilters}
         handleResetFilters={props.handleResetFilters}
-        appliedFiltersData={props.appliedFiltersData}
+        tempAppliedFiltersData={props.tempAppliedFiltersData}
         setPage={() => 0}
         setPageSearchValue={() => 0}
         appliedFilterBgColors={{
           hover: "#2196F3",
           normal: "rgba(33, 150, 243, 0.2)",
         }}
+        page={0}
+        search=""
+        handleCancelFilters={handleCancelFilters}
+        handleApplyFilters={handleApplyFilters}
       />
     );
   }, [
     props.appliedFilters,
     props.filterGroups,
-    props.appliedFiltersData,
+    props.tempAppliedFiltersData,
     props.toggleFilter,
     props.removeFilter,
     props.handleResetFilters,
@@ -216,11 +230,7 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
             )}
         </Box>
       </Box>
-      <Box
-      // sx={{
-      //   display: collapsed ? "none" : "block",
-      // }}
-      >
+      <Box>
         <Box
           id={id}
           width="100%"

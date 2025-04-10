@@ -19,9 +19,9 @@ import {
   STORY_DATA_VARIANT_2 as FINANCIAL_METRICS_DATA_2,
   STORY_DATA_VARIANT_3 as FINANCIAL_METRICS_DATA_3,
 } from "app/components/charts/financial-metric/data";
+import isEqual from "lodash/isEqual";
 
 interface GrantImplementationPageBlock5Props {
-  filterString: string;
   geographyGrouping: string;
   componentsGrouping: string;
   filterGroups: FilterGroupModel[];
@@ -40,6 +40,13 @@ export const GrantImplementationPageBlock5: React.FC<
     string[]
   >([]);
   const [chart3AppliedFiltersData, setChart3AppliedFiltersData] =
+    React.useState({
+      ...defaultAppliedFilters,
+    });
+
+  const [chart3TempAppliedFilters, setChart3TempAppliedFilters] =
+    React.useState<string[]>([]);
+  const [chart3TempAppliedFiltersData, setChart3TempAppliedFiltersData] =
     React.useState({
       ...defaultAppliedFilters,
     });
@@ -119,6 +126,17 @@ export const GrantImplementationPageBlock5: React.FC<
       cycles: [],
     });
     setChart3AppliedFilters([]);
+    setChart3TempAppliedFiltersData({
+      ...chart3TempAppliedFiltersData,
+      locations: [],
+      components: [],
+      principalRecipients: [],
+      principalRecipientSubTypes: [],
+      principalRecipientTypes: [],
+      status: [],
+      cycles: [],
+    });
+    setChart3TempAppliedFilters([]);
   };
 
   const handleToggleChartFilter = (
@@ -126,7 +144,9 @@ export const GrantImplementationPageBlock5: React.FC<
     value: string,
     type: string,
   ) => {
-    let state = { ...chart3AppliedFiltersData };
+    let state = structuredClone(
+      chart3TempAppliedFiltersData,
+    ) as typeof chart3TempAppliedFiltersData;
     switch (type) {
       case "geography":
       case "geographyType":
@@ -187,8 +207,8 @@ export const GrantImplementationPageBlock5: React.FC<
       default:
         break;
     }
-    setChart3AppliedFiltersData(state);
-    setChart3AppliedFilters([
+    setChart3TempAppliedFiltersData(structuredClone(state) as typeof state);
+    setChart3TempAppliedFilters([
       ...state.locations,
       ...state.components,
       ...state.principalRecipients,
@@ -200,7 +220,9 @@ export const GrantImplementationPageBlock5: React.FC<
   };
 
   const handleRemoveChartFilter = (value: string, types: string[]) => {
-    let state = { ...chart3AppliedFiltersData };
+    let state = structuredClone(
+      chart3TempAppliedFiltersData,
+    ) as typeof chart3TempAppliedFiltersData;
     types.forEach((type) => {
       switch (type) {
         case "geography":
@@ -235,8 +257,8 @@ export const GrantImplementationPageBlock5: React.FC<
           break;
       }
     });
-    setChart3AppliedFiltersData(state);
-    setChart3AppliedFilters([
+    setChart3TempAppliedFiltersData(structuredClone(state) as typeof state);
+    setChart3TempAppliedFilters([
       ...state.locations,
       ...state.components,
       ...state.principalRecipients,
@@ -245,6 +267,21 @@ export const GrantImplementationPageBlock5: React.FC<
       ...state.status,
       ...state.cycles,
     ]);
+  };
+
+  const handleCancelChartFilters = () => {
+    setChart3TempAppliedFiltersData(structuredClone(chart3AppliedFiltersData));
+    setChart3TempAppliedFilters(chart3AppliedFilters);
+  };
+
+  const handleApplyChartFilters = () => {
+    if (isEqual(chart3AppliedFilters, chart3TempAppliedFiltersData)) return;
+    setChart3AppliedFiltersData(
+      structuredClone(
+        chart3TempAppliedFiltersData,
+      ) as typeof chart3TempAppliedFiltersData,
+    );
+    setChart3AppliedFilters(chart3TempAppliedFilters);
   };
 
   const financialMetricsContent = React.useMemo(() => {
@@ -514,11 +551,13 @@ export const GrantImplementationPageBlock5: React.FC<
         latestUpdate={latestUpdateDate}
         loading={loadingFinancialMetrics}
         filterGroups={props.filterGroups}
-        appliedFilters={chart3AppliedFilters}
+        handleApplyFilters={handleApplyChartFilters}
+        handleCancelFilters={handleCancelChartFilters}
+        appliedFilters={chart3TempAppliedFilters}
         toggleFilter={handleToggleChartFilter}
         removeFilter={handleRemoveChartFilter}
         handleResetFilters={handleResetChartFilters}
-        appliedFiltersData={chart3AppliedFiltersData}
+        tempAppliedFiltersData={chart3TempAppliedFiltersData}
         extraDropdown={financialMetricsCycleDropdown}
         data={exportChartData}
         infoType="financials"

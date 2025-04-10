@@ -25,19 +25,29 @@ export const DatasetPage: React.FC<DatasetPageProps> = (
   };
 
   const handleFilterPanelClose = () => {
+    props.handleCancelFilters();
     setAnchorEl(null);
   };
 
-  const onScroll = () => {
+  const handleCancelFilters = () => {
+    props.handleCancelFilters();
     setAnchorEl(null);
   };
+  const handleApplyFilters = () => {
+    props.handleApplyFilters();
+    setAnchorEl(null);
+  };
+  const onScroll = React.useCallback(() => {
+    props.handleCancelFilters();
+    setAnchorEl(null);
+  }, [props.handleCancelFilters]);
 
   React.useEffect(() => {
     window.addEventListener("scroll", onScroll);
     return () => {
       window.removeEventListener("scroll", onScroll);
     };
-  }, []);
+  }, [onScroll]);
 
   const filterPopoverContent = React.useMemo(() => {
     return (
@@ -45,6 +55,8 @@ export const DatasetPage: React.FC<DatasetPageProps> = (
         onClose={handleFilterPanelClose}
         filterGroups={props.filterGroups}
         appliedFilters={props.appliedFilters}
+        page={0}
+        search=""
         handleResetFilters={props.handleResetFilters}
         appliedFilterBgColors={{
           hover: "#FF9800",
@@ -52,6 +64,8 @@ export const DatasetPage: React.FC<DatasetPageProps> = (
         }}
         setPage={() => 0}
         setPageSearchValue={() => 0}
+        handleCancelFilters={handleCancelFilters}
+        handleApplyFilters={handleApplyFilters}
       />
     );
   }, [props.filterGroups, props.appliedFilters, props.handleResetFilters]);

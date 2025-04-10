@@ -22,6 +22,7 @@ import {
   geographyGroupingOptions,
   componentsGroupingOptions,
 } from "app/pages/datasets/grant-implementation/data";
+import isEqual from "lodash/isEqual";
 
 export const GrantImplementationPage: React.FC = () => {
   const cmsData = useCMSData({ returnData: true });
@@ -82,19 +83,25 @@ export const GrantImplementationPage: React.FC = () => {
     (actions) => actions.LocationFilterOptions.fetch,
   );
   const pageAppliedFilters = useStoreState((state) => [
-    ...state.AppliedFiltersState.components,
-    ...state.AppliedFiltersState.locations,
-    ...state.AppliedFiltersState.principalRecipientTypes,
-    ...state.AppliedFiltersState.principalRecipientSubTypes,
-    ...state.AppliedFiltersState.principalRecipients,
-    ...state.AppliedFiltersState.status,
-    ...state.AppliedFiltersState.cycles,
+    ...state.TempAppliedFiltersState.components,
+    ...state.TempAppliedFiltersState.locations,
+    ...state.TempAppliedFiltersState.principalRecipientTypes,
+    ...state.TempAppliedFiltersState.principalRecipientSubTypes,
+    ...state.TempAppliedFiltersState.principalRecipients,
+    ...state.TempAppliedFiltersState.status,
+    ...state.TempAppliedFiltersState.cycles,
   ]);
   const appliedFiltersData = useStoreState(
     (state) => state.AppliedFiltersState,
   );
   const appliedFiltersActions = useStoreActions(
     (actions) => actions.AppliedFiltersState,
+  );
+  const tempAppliedFiltersData = useStoreState(
+    (state) => state.TempAppliedFiltersState,
+  );
+  const tempAppliedFiltersActions = useStoreActions(
+    (actions) => actions.TempAppliedFiltersState,
   );
 
   const handleGeographyGroupingChange = (value: string) => {
@@ -106,6 +113,7 @@ export const GrantImplementationPage: React.FC = () => {
   // };
 
   const handleResetFilters = () => {
+    tempAppliedFiltersActions.clearAll();
     appliedFiltersActions.setAll({
       ...appliedFiltersData,
       cycles: [],
@@ -116,6 +124,14 @@ export const GrantImplementationPage: React.FC = () => {
       principalRecipientTypes: [],
       status: [],
     });
+  };
+  const handleCancelFilters = () => {
+    tempAppliedFiltersActions.setAll({ ...appliedFiltersData });
+  };
+  const handleApplyFilters = () => {
+    if (isEqual(appliedFiltersData, tempAppliedFiltersData)) return;
+
+    appliedFiltersActions.setAll({ ...tempAppliedFiltersData });
   };
 
   const toolbarRightContent = React.useMemo(() => {
@@ -320,6 +336,8 @@ export const GrantImplementationPage: React.FC = () => {
         "See the disbursements, budgets and expenditures datasets and relating insights.",
       )}
       toolbarRightContent={toolbarRightContent}
+      handleApplyFilters={handleApplyFilters}
+      handleCancelFilters={handleCancelFilters}
     >
       <Box width="100%" marginTop="50px">
         <GrantImplementationPageBlock1
@@ -329,7 +347,6 @@ export const GrantImplementationPage: React.FC = () => {
         />
         <FullWidthDivider />
         <GrantImplementationPageBlock2
-          filterString={filterString}
           geographyGrouping={geographyGrouping}
           componentsGrouping={componentsGrouping}
           filterGroups={filterGroupsDisbursements}
@@ -351,14 +368,12 @@ export const GrantImplementationPage: React.FC = () => {
         />
         <FullWidthDivider />
         <GrantImplementationPageBlock5
-          filterString={filterString}
           filterGroups={filterGroups}
           geographyGrouping={geographyGrouping}
           componentsGrouping={componentsGrouping}
         />
         <FullWidthDivider />
         <GrantImplementationPageBlock6
-          filterString={filterString}
           filterGroups={filterGroups}
           geographyGrouping={geographyGrouping}
           componentsGrouping={componentsGrouping}

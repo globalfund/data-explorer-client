@@ -9,7 +9,11 @@ import { GeographyList } from "app/state/api/action-reducers/geography/list";
 import { GrantOverview } from "app/state/api/action-reducers/grant/overview";
 import DonorFilterOptions from "app/state/api/action-reducers/filters/donors";
 import StatusFilterOptions from "app/state/api/action-reducers/filters/status";
-import { AppliedFiltersState } from "app/state/api/action-reducers/sync/filters";
+import {
+  AppliedFiltersState,
+  AppliedFilterStringState,
+  TempAppliedFiltersState,
+} from "app/state/api/action-reducers/sync/filters";
 import componentsSearch from "app/state/api/action-reducers/cms/componentsSearch";
 import LocationFilterOptions from "app/state/api/action-reducers/filters/locations";
 import ResultsDocuments from "app/state/api/action-reducers/annual-results/documents";
@@ -277,6 +281,8 @@ const storeContent: StoreModel = {
   datasetsLatestUpdate: persist(DatasetsLatestUpdate),
   // sync state variables
   AppliedFiltersState: persist(AppliedFiltersState),
+  AppliedFilterStringState: persist(AppliedFilterStringState),
+  TempAppliedFiltersState: persist(TempAppliedFiltersState),
   // CMS API
   CMSData: persist(CMSData),
   cms: {

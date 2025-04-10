@@ -12,9 +12,9 @@ import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 import { TABLE_VARIATION_12_COLUMNS as FUNDING_REQUESTS_TABLE_COLUMNS } from "app/components/table/data";
+import isEqual from "lodash/isEqual";
 
 interface AccessToFundingBlock5Props {
-  filterString: string;
   filterGroups: FilterGroupModel[];
 }
 
@@ -31,6 +31,12 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
     string[]
   >([]);
   const [chart3AppliedFiltersData, setChart3AppliedFiltersData] =
+    React.useState({
+      ...defaultAppliedFilters,
+    });
+  const [chart3TempAppliedFilters, setChart3TempAppliedFilters] =
+    React.useState<string[]>([]);
+  const [chart3TempAppliedFiltersData, setChart3TempAppliedFiltersData] =
     React.useState({
       ...defaultAppliedFilters,
     });
@@ -69,7 +75,9 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
     value: string,
     type: string,
   ) => {
-    let state = { ...chart3AppliedFiltersData };
+    let state = structuredClone(
+      chart3TempAppliedFiltersData,
+    ) as typeof chart3TempAppliedFiltersData;
     switch (type) {
       case "geography":
       case "geographyType":
@@ -90,12 +98,14 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
       default:
         break;
     }
-    setChart3AppliedFiltersData(state);
-    setChart3AppliedFilters([...state.locations, ...state.components]);
+    setChart3TempAppliedFiltersData(structuredClone(state) as typeof state);
+    setChart3TempAppliedFilters([...state.locations, ...state.components]);
   };
 
   const handleRemoveChartFilter = (value: string, types: string[]) => {
-    let state = { ...chart3AppliedFiltersData };
+    let state = structuredClone(
+      chart3TempAppliedFiltersData,
+    ) as typeof chart3TempAppliedFiltersData;
     types.forEach((type) => {
       switch (type) {
         case "geography":
@@ -110,8 +120,8 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
           break;
       }
     });
-    setChart3AppliedFiltersData(state);
-    setChart3AppliedFilters([...state.locations, ...state.components]);
+    setChart3TempAppliedFiltersData(structuredClone(state) as typeof state);
+    setChart3TempAppliedFilters([...state.locations, ...state.components]);
   };
 
   const handleResetChartFilters = () => {
@@ -121,6 +131,26 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
       components: [],
     });
     setChart3AppliedFilters([]);
+    setChart3TempAppliedFiltersData({
+      ...chart3AppliedFiltersData,
+      locations: [],
+      components: [],
+    });
+    setChart3TempAppliedFilters([]);
+  };
+
+  const handleCancelChartFilters = () => {
+    setChart3TempAppliedFiltersData(structuredClone(chart3AppliedFiltersData));
+    setChart3TempAppliedFilters(chart3AppliedFilters);
+  };
+  const handleApplyChartFilters = () => {
+    if (isEqual(chart3AppliedFilters, chart3TempAppliedFiltersData)) return;
+    setChart3AppliedFiltersData(
+      structuredClone(
+        chart3TempAppliedFiltersData,
+      ) as typeof chart3TempAppliedFiltersData,
+    );
+    setChart3AppliedFilters(chart3TempAppliedFilters);
   };
 
   const chart3FilterString = React.useMemo(() => {
@@ -248,17 +278,19 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
           "Funding request applications by countries.",
         )}
         disableCollapse
+        handleApplyFilters={handleApplyChartFilters}
+        handleCancelFilters={handleCancelChartFilters}
         dropdownItems={[]}
         data={exportChartData}
         exportName="funding-requests"
         latestUpdate={latestUpdateDate}
         loading={loadingFundingRequestsTable}
         filterGroups={props.filterGroups}
-        appliedFilters={chart3AppliedFilters}
+        appliedFilters={chart3TempAppliedFilters}
         toggleFilter={handleToggleChartFilter}
         removeFilter={handleRemoveChartFilter}
         handleResetFilters={handleResetChartFilters}
-        appliedFiltersData={chart3AppliedFiltersData}
+        tempAppliedFiltersData={chart3TempAppliedFiltersData}
         empty={
           dataFundingRequestsTable.length === 0 && tableSearch.length === 0
         }

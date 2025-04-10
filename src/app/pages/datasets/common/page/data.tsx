@@ -12,6 +12,8 @@ export interface DatasetPageProps {
   handleResetFilters: () => void;
   filterGroups: FilterGroupModel[];
   toolbarRightContent?: React.ReactNode;
+  handleApplyFilters: () => void;
+  handleCancelFilters: () => void;
 }
 
 export const TooltipTitle = () => {

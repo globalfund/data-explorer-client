@@ -26,9 +26,9 @@ import {
   componentsGroupingOptions,
   dropdownItemsDisbursements,
 } from "app/pages/datasets/grant-implementation/data";
+import isEqual from "lodash/isEqual";
 
 interface GrantImplementationPageBlock2Props {
-  filterString: string;
   geographyGrouping: string;
   componentsGrouping: string;
   filterGroups: FilterGroupModel[];
@@ -49,6 +49,12 @@ export const GrantImplementationPageBlock2: React.FC<
     string[]
   >([]);
   const [chart1AppliedFiltersData, setChart1AppliedFiltersData] =
+    React.useState({
+      ...defaultAppliedFilters,
+    });
+  const [chart1TempAppliedFilters, setChart1TempAppliedFilters] =
+    React.useState<string[]>([]);
+  const [chart1TempAppliedFiltersData, setChart1TempAppliedFiltersData] =
     React.useState({
       ...defaultAppliedFilters,
     });
@@ -127,6 +133,17 @@ export const GrantImplementationPageBlock2: React.FC<
       cycles: [],
     });
     setChart1AppliedFilters([]);
+    setChart1TempAppliedFiltersData({
+      ...chart1TempAppliedFiltersData,
+      locations: [],
+      components: [],
+      principalRecipients: [],
+      principalRecipientSubTypes: [],
+      principalRecipientTypes: [],
+      status: [],
+      cycles: [],
+    });
+    setChart1TempAppliedFilters([]);
   };
 
   const handleToggleChartFilter = (
@@ -134,7 +151,9 @@ export const GrantImplementationPageBlock2: React.FC<
     value: string,
     type: string,
   ) => {
-    let state = { ...chart1AppliedFiltersData };
+    let state = structuredClone(
+      chart1TempAppliedFiltersData,
+    ) as typeof chart1TempAppliedFiltersData;
     switch (type) {
       case "geography":
       case "geographyType":
@@ -195,8 +214,8 @@ export const GrantImplementationPageBlock2: React.FC<
       default:
         break;
     }
-    setChart1AppliedFiltersData(state);
-    setChart1AppliedFilters([
+    setChart1TempAppliedFiltersData(structuredClone(state) as typeof state);
+    setChart1TempAppliedFilters([
       ...state.locations,
       ...state.components,
       ...state.principalRecipients,
@@ -208,7 +227,9 @@ export const GrantImplementationPageBlock2: React.FC<
   };
 
   const handleRemoveChartFilter = (value: string, types: string[]) => {
-    let state = { ...chart1AppliedFiltersData };
+    let state = structuredClone(
+      chart1TempAppliedFiltersData,
+    ) as typeof chart1TempAppliedFiltersData;
     types.forEach((type) => {
       switch (type) {
         case "geography":
@@ -243,8 +264,8 @@ export const GrantImplementationPageBlock2: React.FC<
           break;
       }
     });
-    setChart1AppliedFiltersData(state);
-    setChart1AppliedFilters([
+    setChart1TempAppliedFiltersData(structuredClone(state) as typeof state);
+    setChart1TempAppliedFilters([
       ...state.locations,
       ...state.components,
       ...state.principalRecipients,
@@ -253,6 +274,21 @@ export const GrantImplementationPageBlock2: React.FC<
       ...state.status,
       ...state.cycles,
     ]);
+  };
+
+  const handleCancelChartFilters = () => {
+    setChart1TempAppliedFiltersData(structuredClone(chart1AppliedFiltersData));
+    setChart1TempAppliedFilters(chart1AppliedFilters);
+  };
+
+  const handleApplyChartFilters = () => {
+    if (isEqual(chart1AppliedFilters, chart1TempAppliedFiltersData)) return;
+    setChart1AppliedFiltersData(
+      structuredClone(
+        chart1TempAppliedFiltersData,
+      ) as typeof chart1TempAppliedFiltersData,
+    );
+    setChart1AppliedFilters(chart1TempAppliedFilters);
   };
 
   const disbursementsChartEmpty = React.useMemo(() => {
@@ -630,6 +666,8 @@ export const GrantImplementationPageBlock2: React.FC<
         )}
         dropdownItems={dropdownItemsDisbursements}
         dropdownSelected={disbursementsDropdownSelected}
+        handleApplyFilters={handleApplyChartFilters}
+        handleCancelFilters={handleCancelChartFilters}
         handleDropdownChange={handleDisbursementsSelectionChange}
         loading={loadingFinancialInsightsDisbursements}
         latestUpdate={latestUpdateDate}
@@ -637,12 +675,12 @@ export const GrantImplementationPageBlock2: React.FC<
           disbursementsDropdownSelected === dropdownItemsDisbursements[2].value
         }
         empty={disbursementsChartEmpty}
-        appliedFilters={chart1AppliedFilters}
+        appliedFilters={chart1TempAppliedFilters}
         filterGroups={props.filterGroups}
         toggleFilter={handleToggleChartFilter}
         removeFilter={handleRemoveChartFilter}
         handleResetFilters={handleResetChartFilters}
-        appliedFiltersData={chart1AppliedFiltersData}
+        tempAppliedFiltersData={chart1TempAppliedFiltersData}
         data={chartData}
         infoType="financials"
       >

@@ -27,12 +27,14 @@ export const GrantsLayout: React.FC<GrantsLayoutProps> = (
     handleSearchIconClick,
     handleFilterButtonClick,
     handleFilterPanelClose,
+    handleCancelFilters,
     filterGroups,
     pageAppliedFilters,
     handleResetFilters,
     anchorEl,
     loading,
     searchInputRef,
+    handleApplyFilters,
   } = props;
 
   const fullWidthDivider = (
@@ -62,6 +64,10 @@ export const GrantsLayout: React.FC<GrantsLayoutProps> = (
         }}
         setPage={props.setPage}
         setPageSearchValue={props.setPageSearchValue}
+        page={props.page}
+        search={search}
+        handleCancelFilters={handleCancelFilters}
+        handleApplyFilters={handleApplyFilters}
       />
     );
   }, [

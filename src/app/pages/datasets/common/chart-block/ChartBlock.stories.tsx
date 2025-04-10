@@ -34,8 +34,10 @@ const Wrapper: React.FC = () => {
       toggleFilter={() => {}}
       removeFilter={() => {}}
       handleResetFilters={() => {}}
+      handleApplyFilters={() => {}}
+      handleCancelFilters={() => {}}
       appliedFilters={[]}
-      appliedFiltersData={defaultAppliedFilters}
+      tempAppliedFiltersData={defaultAppliedFilters}
       data={STORY_DATA_VARIANT_2}
       infoType="global"
     >

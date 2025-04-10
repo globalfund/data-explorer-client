@@ -21,9 +21,9 @@ import {
   cellBGColorFormatter,
 } from "app/components/table/data";
 import { SunburstDataItem } from "app/components/charts/sunburst/data";
+import isEqual from "lodash/isEqual";
 
 interface AccessToFundingBlock3Props {
-  filterString: string;
   filterGroups: FilterGroupModel[];
 }
 
@@ -44,7 +44,15 @@ export const AccessToFundingBlock3: React.FC<AccessToFundingBlock3Props> = (
   const [chart2AppliedFilters, setChart2AppliedFilters] = React.useState<
     string[]
   >([]);
+  const [chart2TempAppliedFilters, setChart2TempAppliedFilters] =
+    React.useState<string[]>([]);
+
   const [chart2AppliedFiltersData, setChart2AppliedFiltersData] =
+    React.useState({
+      ...defaultAppliedFilters,
+    });
+
+  const [chart2TempAppliedFiltersData, setChart2TempAppliedFiltersData] =
     React.useState({
       ...defaultAppliedFilters,
     });
@@ -297,7 +305,9 @@ export const AccessToFundingBlock3: React.FC<AccessToFundingBlock3Props> = (
     value: string,
     type: string,
   ) => {
-    let state = { ...chart2AppliedFiltersData };
+    let state = structuredClone(
+      chart2TempAppliedFiltersData,
+    ) as typeof chart2TempAppliedFiltersData;
     switch (type) {
       case "geography":
       case "geographyType":
@@ -318,12 +328,16 @@ export const AccessToFundingBlock3: React.FC<AccessToFundingBlock3Props> = (
       default:
         break;
     }
-    setChart2AppliedFiltersData(state);
-    setChart2AppliedFilters([...state.locations, ...state.components]);
+    setChart2TempAppliedFiltersData(
+      structuredClone(state) as typeof chart2TempAppliedFiltersData,
+    );
+    setChart2TempAppliedFilters([...state.locations, ...state.components]);
   };
 
   const handleRemoveChartFilter = (value: string, types: string[]) => {
-    let state = { ...chart2AppliedFiltersData };
+    let state = structuredClone(
+      chart2TempAppliedFiltersData,
+    ) as typeof chart2TempAppliedFiltersData;
     types.forEach((type) => {
       switch (type) {
         case "geography":
@@ -338,8 +352,10 @@ export const AccessToFundingBlock3: React.FC<AccessToFundingBlock3Props> = (
           break;
       }
     });
-    setChart2AppliedFiltersData(state);
-    setChart2AppliedFilters([...state.locations, ...state.components]);
+    setChart2TempAppliedFiltersData(
+      structuredClone(state) as typeof chart2TempAppliedFiltersData,
+    );
+    setChart2TempAppliedFilters([...state.locations, ...state.components]);
   };
 
   const handleResetChartFilters = () => {
@@ -349,6 +365,27 @@ export const AccessToFundingBlock3: React.FC<AccessToFundingBlock3Props> = (
       components: [],
     });
     setChart2AppliedFilters([]);
+    setChart2TempAppliedFiltersData({
+      ...chart2TempAppliedFiltersData,
+      locations: [],
+      components: [],
+    });
+    setChart2TempAppliedFilters([]);
+  };
+
+  const handleCancelChartFilters = () => {
+    setChart2TempAppliedFiltersData(structuredClone(chart2AppliedFiltersData));
+    setChart2TempAppliedFilters(chart2AppliedFilters);
+  };
+
+  const handleApplyChartFilters = () => {
+    if (isEqual(chart2AppliedFilters, chart2TempAppliedFiltersData)) return;
+    setChart2AppliedFiltersData(
+      structuredClone(
+        chart2TempAppliedFiltersData,
+      ) as typeof chart2TempAppliedFiltersData,
+    );
+    setChart2AppliedFilters(chart2TempAppliedFilters);
   };
 
   React.useEffect(() => {
@@ -407,6 +444,8 @@ export const AccessToFundingBlock3: React.FC<AccessToFundingBlock3Props> = (
           "pagesDatasetsAccessToFunding.allocationSubtitle",
           "Allocations amounts for countries.",
         )}
+        handleApplyFilters={handleApplyChartFilters}
+        handleCancelFilters={handleCancelChartFilters}
         dropdownItems={dropdownItemsAllocations}
         latestUpdate={latestUpdateDate}
         dropdownSelected={dropdownSelected}
@@ -415,11 +454,11 @@ export const AccessToFundingBlock3: React.FC<AccessToFundingBlock3Props> = (
         empty={chartEmpty}
         disableCollapse={dropdownSelected === dropdownItemsAllocations[2].value}
         filterGroups={props.filterGroups}
-        appliedFilters={chart2AppliedFilters}
+        appliedFilters={chart2TempAppliedFilters}
         toggleFilter={handleToggleChartFilter}
         removeFilter={handleRemoveChartFilter}
         handleResetFilters={handleResetChartFilters}
-        appliedFiltersData={chart2AppliedFiltersData}
+        tempAppliedFiltersData={chart2TempAppliedFiltersData}
         extraDropdown={allocationCycleDropdown}
         data={chartData}
         infoType="global"
