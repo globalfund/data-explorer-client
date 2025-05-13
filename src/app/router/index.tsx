@@ -7,11 +7,9 @@ import {
   RouterProvider,
   createBrowserRouter,
 } from "react-router-dom";
-import { useGeneratesitemap } from "app/hooks/useGenerateSitemap";
-
 export default function Router() {
   useInitialLoad();
-  // useGeneratesitemap();
+  // useGenerateSitemap(); // Uncomment this line to generate the sitemap
   const setUpRouter = () => {
     const result: RouteObject[] = ROUTES;
     return createBrowserRouter(result);
