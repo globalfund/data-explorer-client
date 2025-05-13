@@ -369,6 +369,7 @@ export const PreGrant: React.FC = () => {
 
   React.useEffect(() => {
     if (dataGrant.periods.length > 0) {
+      alert(dataGrant.periods);
       navigate(
         `/grant/${params.id}/${
           dataGrant.periods[dataGrant.periods.length - 1].code
