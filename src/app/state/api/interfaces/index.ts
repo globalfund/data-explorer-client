@@ -28,6 +28,8 @@ import {
   CMSApiPagesGrantOverview,
   CMSApiPagesGrantTargetResults,
   CMSApiCountrySummary,
+  CMSApiComponentsHeader,
+  CMSApiComponentsFooter,
 } from "app/state/api/interfaces/cms";
 
 export interface RequestValues<T> {
@@ -99,6 +101,8 @@ export type CMSApiCallModel = ApiModel<
   CMSApiCallParams,
   | CMSApiComponentsChartsEligibility
   | CMSApiComponentsSearch
+  | CMSApiComponentsHeader
+  | CMSApiComponentsFooter
   | CMSApiPagesDatasets
   | CMSApiPagesGeography
   | CMSApiPagesGrantDetail
@@ -243,6 +247,8 @@ export interface StoreModel {
   cms: {
     componentsChartsEligibility: CMSApiCallModel;
     componentsSearch: CMSApiCallModel;
+    componentsFooter: CMSApiCallModel;
+    componentsHeader: CMSApiCallModel;
     pagesDatasets: CMSApiCallModel;
     pagesGeography: CMSApiCallModel;
     pagesGrantDetail: CMSApiCallModel;

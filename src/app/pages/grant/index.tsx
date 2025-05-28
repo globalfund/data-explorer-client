@@ -11,14 +11,19 @@ import { GrantTargetsResults } from "./views/targets-results";
 import { GrantOverview } from "app/pages/grant/views/overview";
 import { DetailPageTabs } from "app/components/detail-page-tabs";
 import { GrantDocuments } from "app/pages/grant/views/documents";
-import { GRANT_TABS } from "app/components/detail-page-tabs/data";
+import { getGrantTabs } from "app/components/detail-page-tabs/data";
 import { BarChartDataItem } from "app/components/charts/bar/data";
 import { splitStringInMiddle } from "app/utils/splitStringInMiddle";
 import { SankeyChartData } from "app/components/charts/sankey/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { GrantImplementation } from "app/pages/grant/views/grant-implementation";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export const Grant: React.FC = () => {
+  const cmsData = useCMSData({ returnData: true });
+  const GRANT_TABS = React.useMemo(() => {
+    return getGrantTabs(cmsData);
+  }, [cmsData]);
   const navigate = useNavigate();
   const smallScreen = useMediaQuery("(max-width: 920px)");
   const params = useParams<{ id: string; ip: string; tab: string }>();
@@ -246,6 +251,7 @@ export const Grant: React.FC = () => {
     dataBudgetSankeyChart,
     dataTargetsResultsTable,
     dataDisbursementsBarChart,
+    GRANT_TABS,
   ]);
 
   React.useEffect(() => {
