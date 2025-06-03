@@ -47,6 +47,7 @@ export const getGrantTabs = (cmsData: any): DetailPageTabItem[] => {
 
   return GRANT_TABS;
 };
+
 export const GRANT_DROPDOWN_ITEMS = [
   {
     label: "Implementation Period 1",
