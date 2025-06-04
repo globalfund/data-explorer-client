@@ -10,16 +10,19 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { DetailPageTabs } from "app/components/detail-page-tabs";
 import { LocationOverview } from "app/pages/location/views/overview";
 import { RESULT_YEARS } from "app/pages/location/views/results/data";
-import { LOCATION_TABS } from "app/components/detail-page-tabs/data";
+import { getLocationTabs } from "app/components/detail-page-tabs/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { AccessToFunding } from "app/pages/location/views/access-to-funding";
 import { GrantImplementation } from "app/pages/location/views/grant-implementation";
 import { ResourceMobilization } from "app/pages/location/views/resource-mobilization";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export const Location: React.FC = () => {
   const params = useParams<{ id: string; tab: string }>();
   const routeParamsId = params.id as string;
   const paramsId = params.id?.replace("|", "%2F") as string;
+
+  const cmsData = useCMSData({ returnData: true });
 
   const [resultsYear, setResultsYear] = React.useState(
     RESULT_YEARS[RESULT_YEARS.length - 1],
@@ -227,6 +230,11 @@ export const Location: React.FC = () => {
     (actions) => actions.GeographyBudgetsCycles.clear,
   );
 
+  const LOCATION_TABS = React.useMemo(
+    () => getLocationTabs(cmsData),
+    [cmsData],
+  );
+
   const loading = React.useMemo(() => {
     switch (`/${params.tab}`) {
       case LOCATION_TABS[0].link:
@@ -274,6 +282,7 @@ export const Location: React.FC = () => {
     loadingResultStats,
     loadingResultsTable,
     loadingResultsDocumentsTable,
+    LOCATION_TABS,
   ]);
 
   const view = React.useMemo(() => {
@@ -307,7 +316,12 @@ export const Location: React.FC = () => {
       remove(newTabs, (tab) => tab.label === LOCATION_TABS[4].label);
     }
     return newTabs;
-  }, [dataOverview, dataResultsTable, dataResultsDocumentsTable]);
+  }, [
+    dataOverview,
+    dataResultsTable,
+    dataResultsDocumentsTable,
+    LOCATION_TABS,
+  ]);
 
   React.useEffect(() => {
     if (paramsId) {

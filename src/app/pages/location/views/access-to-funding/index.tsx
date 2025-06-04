@@ -250,7 +250,11 @@ export const AccessToFunding: React.FC = () => {
   const raceBarData = React.useMemo(() => {
     return [
       {
-        name: "Signed",
+        name: getCMSDataField(
+          cmsData,
+          "pagesLocationAccessToFunding.fundingRequestsStatsSignedTitle",
+          "Signed",
+        ),
         value: dataFundingRequestStats.signed,
         color: "#0A2840",
         percentage: parseFloat(
@@ -262,7 +266,11 @@ export const AccessToFunding: React.FC = () => {
         ),
       },
       {
-        name: "Submitted",
+        name: getCMSDataField(
+          cmsData,
+          "pagesLocationAccessToFunding.fundingRequestsStatsSubmittedTitle",
+          "Submitted",
+        ),
         value: dataFundingRequestStats.submitted,
         color: "#00B5AE",
         percentage: 100,

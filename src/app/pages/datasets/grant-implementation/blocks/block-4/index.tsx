@@ -169,7 +169,12 @@ export const GrantImplementationPageBlock4: React.FC<
       </Box>
       <Box>
         <Typography variant="overline">
-          Latest Update: <b>{latestUpdateDate}</b>
+          {getCMSDataField(
+            cmsData,
+            "pagesDatasetsGrantImplementation.latestUpdateText",
+            "Latest Update",
+          )}
+          : <b>{latestUpdateDate}</b>
         </Typography>
       </Box>
       {loadingBudgetBreakdown && (

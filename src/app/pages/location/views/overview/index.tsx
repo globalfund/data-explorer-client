@@ -159,7 +159,12 @@ export const LocationOverview: React.FC = () => {
               }}
             >
               <Typography variant="body2" fontWeight="700" marginBottom="10px">
-                Current Principal Recipients in {dataOverview.name}
+                {getCMSDataField(
+                  cmsData,
+                  "pagesLocationOverview.currentPrincipalRecipientsText",
+                  "Current Principal Recipients in",
+                )}{" "}
+                {dataOverview.name}
               </Typography>
               <Grid
                 container
@@ -185,7 +190,12 @@ export const LocationOverview: React.FC = () => {
             <Divider sx={{ borderColor: "#000" }} />
             <Box>
               <Typography variant="body2" fontWeight="700" marginBottom="10px">
-                Former Principal Recipients in {dataOverview.name}
+                {getCMSDataField(
+                  cmsData,
+                  "pagesLocationOverview.formerPrincipalRecipientsText",
+                  "Former Principal Recipients in",
+                )}{" "}
+                {dataOverview.name}
               </Typography>
               <Grid
                 container

@@ -7,6 +7,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { TableContainer } from "app/components/table-container";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { TABLE_VARIATION_6_COLUMNS as DOCUMENTS_TABLE_COLUMNS } from "app/components/table/data";
+import { useCMSData } from "app/hooks/useCMSData";
 
 interface AccessToFundingBlock6Props {
   filterString: string;
@@ -15,6 +16,7 @@ interface AccessToFundingBlock6Props {
 export const AccessToFundingBlock6: React.FC<AccessToFundingBlock6Props> = (
   props: AccessToFundingBlock6Props,
 ) => {
+  const cmsData = useCMSData({ returnData: true });
   const [tableSearch, setTableSearch] = React.useState("");
 
   const dataDocumentsTable = useStoreState((state) =>
@@ -75,7 +77,11 @@ export const AccessToFundingBlock6: React.FC<AccessToFundingBlock6Props> = (
       }}
     >
       <Typography variant="h3" lineHeight={1.2}>
-        Documents
+        {get(
+          cmsData,
+          "pagesDatasetsAccessToFunding.documentsTitle",
+          "Documents",
+        )}
       </Typography>
       <Divider
         sx={{

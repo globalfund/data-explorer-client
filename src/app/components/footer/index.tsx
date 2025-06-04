@@ -14,8 +14,11 @@ import {
   FooterBottomBgBlock,
   FooterLinkSeparator,
 } from "app/components/footer/styles";
+import { useCMSData } from "app/hooks/useCMSData";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 
 export const Footer: React.FC = () => {
+  const cmsData = useCMSData({ returnData: true });
   return (
     <React.Fragment>
       <FooterContainer>
@@ -55,8 +58,12 @@ export const Footer: React.FC = () => {
                 variant="caption"
                 color={appColors.COMMON.BLACK}
               >
-                © {new Date().getFullYear()} The Global Fund to Fight AIDS,
-                Tuberculosis and Malaria
+                © {new Date().getFullYear()}{" "}
+                {getCMSDataField(
+                  cmsData,
+                  "componentsFooter.copyrightText",
+                  "The Global Fund to Fight AIDS, Tuberculosis and Malaria",
+                )}
               </Typography>
             </Grid>
             <Grid
@@ -73,92 +80,162 @@ export const Footer: React.FC = () => {
               }}
             >
               <Grid item sm={4} md={4}>
-                <FooterHeader>CONNECT</FooterHeader>
+                <FooterHeader>
+                  {getCMSDataField(
+                    cmsData,
+                    "componentsFooter.connectTitle",
+                    "CONNECT",
+                  )}
+                </FooterHeader>
                 <FooterExternalLink
                   target="_blank"
                   href="https://www.theglobalfund.org/en/contact/"
                 >
-                  Contact Us
+                  {getCMSDataField(
+                    cmsData,
+                    "componentsFooter.contactUsText",
+                    "Contact Us",
+                  )}
                 </FooterExternalLink>
                 <FooterExternalLink
                   target="_blank"
                   href="https://www.theglobalfund.org/en/careers/"
                 >
-                  Careers
+                  {getCMSDataField(
+                    cmsData,
+                    "componentsFooter.careersText",
+                    "Careers",
+                  )}
                 </FooterExternalLink>
                 <FooterExternalLink
                   target="_blank"
                   href="https://www.theglobalfund.org/en/site/rss"
                 >
-                  RSS Feeds
+                  {getCMSDataField(
+                    cmsData,
+                    "componentsFooter.rssFeedsText",
+                    "RSS Feeds",
+                  )}
                 </FooterExternalLink>
                 <FooterExternalLink
                   target="_blank"
                   href="https://www.theglobalfund.org/en/oig/report-fraud-and-abuse/"
                 >
-                  Report Fraud & Abuse
+                  {getCMSDataField(
+                    cmsData,
+                    "componentsFooter.reportFraudText",
+                    "Report Fraud & Abuse",
+                  )}
                 </FooterExternalLink>
                 <FooterLinkSeparator>-</FooterLinkSeparator>
                 <FooterExternalLink
                   target="_blank"
                   href="https://act.unfoundation.org/FJvB3vUCJUepH_5KN75TTQ2"
                 >
-                  Donate to the Global Fund through United Nations Foundation
+                  {getCMSDataField(
+                    cmsData,
+                    "componentsFooter.donateText",
+                    "Donate to the Global Fund through United Nations Foundation",
+                  )}
                 </FooterExternalLink>
               </Grid>
               <Grid item sm={4} md={4}>
-                <FooterHeader>ABOUT THE WEBSITE</FooterHeader>
+                <FooterHeader>
+                  {getCMSDataField(
+                    cmsData,
+                    "componentsFooter.aboutWebsiteTitle",
+                    "ABOUT THE WEBSITE",
+                  )}
+                </FooterHeader>
                 <FooterExternalLink
                   target="_blank"
                   href="https://www.theglobalfund.org/en/site/phishing-and-scam-alert/"
                 >
-                  Phishing & Scam Alert
+                  {getCMSDataField(
+                    cmsData,
+                    "componentsFooter.phishingAlertText",
+                    "Phishing & Scam Alert",
+                  )}
                 </FooterExternalLink>
                 <FooterExternalLink
                   target="_blank"
                   href="https://www.theglobalfund.org/en/site/privacy-statement/"
                 >
-                  Privacy Statement
+                  {getCMSDataField(
+                    cmsData,
+                    "componentsFooter.privacyStatementText",
+                    "Privacy Statement",
+                  )}
                 </FooterExternalLink>
                 <FooterExternalLink
                   target="_blank"
                   href="https://www.theglobalfund.org/en/site/terms-of-use/"
                 >
-                  Terms of Use
+                  {getCMSDataField(
+                    cmsData,
+                    "componentsFooter.termsOfUseText",
+                    "Terms of Use",
+                  )}
                 </FooterExternalLink>
                 <FooterExternalLink
                   target="_blank"
                   href="https://www.theglobalfund.org/en/site/cookies/"
                 >
-                  Cookies
+                  {getCMSDataField(
+                    cmsData,
+                    "componentsFooter.cookiesText",
+                    "Cookies",
+                  )}
                 </FooterExternalLink>
               </Grid>
               <Grid item sm={4} md={4}>
-                <FooterHeader>MORE GLOBAL FUND SITES</FooterHeader>
+                <FooterHeader>
+                  {getCMSDataField(
+                    cmsData,
+                    "componentsFooter.moreGlobalFundSitesTitle",
+                    "MORE GLOBAL FUND SITES",
+                  )}
+                </FooterHeader>
                 <FooterExternalLink
                   target="_blank"
                   href="http://www.theglobalfund.org"
                 >
-                  The Global Fund Website
+                  {getCMSDataField(
+                    cmsData,
+                    "componentsFooter.globalFundWebsiteText",
+                    "The Global Fund Website",
+                  )}
                 </FooterExternalLink>
                 <FooterExternalLink
                   target="_blank"
                   href="https://data-service.theglobalfund.org"
                 >
-                  Data Service
+                  {getCMSDataField(
+                    cmsData,
+                    "componentsFooter.dataServiceText",
+                    "Data Service",
+                  )}
                 </FooterExternalLink>
                 <FooterExternalLink
                   target="_blank"
                   href="https://www.theglobalfund.org/en/newsroom/digital-media"
                 >
-                  Digital Library
+                  {getCMSDataField(
+                    cmsData,
+                    "componentsFooter.digitalLibraryText",
+                    "Digital Library",
+                  )}
                 </FooterExternalLink>
                 <FooterLinkSeparator>-</FooterLinkSeparator>
                 <FooterExternalLink
                   target="_blank"
                   href="https://archive.theglobalfund.org"
                 >
-                  Archive
+                  {getCMSDataField(
+                    cmsData,
+                    "componentsFooter.archiveText",
+                    "Archive",
+                  )}
                 </FooterExternalLink>
               </Grid>
             </Grid>

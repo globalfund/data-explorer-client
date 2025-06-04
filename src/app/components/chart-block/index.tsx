@@ -8,10 +8,13 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { ChartBlockProps } from "app/components/chart-block/data";
 import { ChartBlockCycles } from "app/components/chart-block/components/cycles";
 import { ChartBlockButtonToolbar } from "app/components/chart-block/components/button-toolbar";
+import { useCMSData } from "app/hooks/useCMSData";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 
 export const ChartBlock: React.FC<ChartBlockProps> = (
   props: ChartBlockProps,
 ) => {
+  const cmsData = useCMSData({ returnData: true });
   const id = React.useMemo(() => uniqueId("chart-block-"), []);
 
   const showRightComponents = React.useMemo(() => {
@@ -179,7 +182,12 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
       >
         {props.latestUpdate && (
           <Typography variant="overline">
-            Latest Update: <b>{props.latestUpdate}</b>
+            {getCMSDataField(
+              cmsData,
+              "pagesHome.latestUpdateText",
+              "Latest Update",
+            )}{" "}
+            : <b>{props.latestUpdate}</b>
           </Typography>
         )}
         {!props.noBottomToolbar && (

@@ -101,7 +101,12 @@ export const AccessToFundingBlock4: React.FC<AccessToFundingBlock4Props> = (
                 transform: "rotate(-90deg)",
               }}
             >
-              Allocated Amount (USD {range.abbr})
+              {getCMSDataField(
+                cmsData,
+                "pagesDatasetsAccessToFunding.cumulativeAllocationYAxisLabel",
+                "Allocated Amount",
+              )}{" "}
+              (USD {range.abbr})
             </Typography>
             <BarSeriesChart
               data={dataAllocationsBarSeries}
