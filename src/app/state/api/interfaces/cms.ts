@@ -39,6 +39,13 @@ export interface CMSApiComponentsSearch {
   };
 }
 
+export interface CMSApiComponentsFooter {
+  data: {};
+}
+
+export interface CMSApiComponentsHeader {
+  data: {};
+}
 export interface CMSApiPagesDatasets {
   data: {};
 }

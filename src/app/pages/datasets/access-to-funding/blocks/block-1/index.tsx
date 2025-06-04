@@ -148,7 +148,12 @@ export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
             <Box padding="15px" bgcolor="#F1F3F5">
               <Typography variant="h4">{item.value}</Typography>
               <Typography fontSize="12px">
-                Countries Eligible for {item.name}
+                {getCMSDataField(
+                  cmsData,
+                  "pagesDatasetsAccessToFunding.countriesEligible",
+                  "Countries Eligible for",
+                )}{" "}
+                {item.name}
               </Typography>
             </Box>
           </Grid>

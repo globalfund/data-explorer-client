@@ -16,12 +16,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import {
-  PAGES,
+  getPages,
   HeaderMenuPage,
   HeaderMenuProps,
   isNavButtonActive,
   activeButtonStateStyle,
 } from "app/components/header-menu/data";
+import { useCMSData } from "app/hooks/useCMSData";
 
 const HeaderMenuButton = styled(Button)({
   height: "100%",
@@ -42,6 +43,8 @@ const HeaderMenuButton = styled(Button)({
 export const HeaderMenu: React.FC<HeaderMenuProps> = (
   props: HeaderMenuProps,
 ) => {
+  const cmsData = useCMSData({ returnData: true });
+  const PAGES = React.useMemo(() => getPages(cmsData), [cmsData]);
   const navigate = useNavigate();
   const location = useLocation();
 

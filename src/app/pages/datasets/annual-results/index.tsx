@@ -600,7 +600,11 @@ export const AnnualResultsPage: React.FC = () => {
         >
           <Box id="documents" padding="50px 0" data-cy="documents-block">
             <Typography variant="h2" lineHeight={1.2}>
-              Documents
+              {getCMSDataField(
+                cmsData,
+                "pagesDatasetsAnnualResults.documentsTitle",
+                "Documents",
+              )}
             </Typography>
             <Divider
               sx={{

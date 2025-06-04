@@ -4,10 +4,10 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { DetailPageTabs } from "app/components/detail-page-tabs";
 import { withRouter } from "storybook-addon-remix-react-router";
 import {
-  GRANT_TABS,
-  GRANT_DROPDOWN_ITEMS,
-  LOCATION_TABS,
+  getGrantTabs,
+  getLocationTabs,
   DetailPageTabsProps,
+  GRANT_DROPDOWN_ITEMS,
 } from "app/components/detail-page-tabs/data";
 
 const Wrapper: React.FC<DetailPageTabsProps> = (props: DetailPageTabsProps) => {
@@ -53,7 +53,7 @@ type StoryType = StoryObj<typeof meta>;
 
 export const Grant: StoryType = {
   args: {
-    tabs: GRANT_TABS,
+    tabs: getGrantTabs({}),
     baseRoute: "/grant",
     dropdown: {
       dropdownSelected: GRANT_DROPDOWN_ITEMS[0].value,
@@ -65,7 +65,7 @@ export const Grant: StoryType = {
 
 export const Location: StoryType = {
   args: {
-    tabs: LOCATION_TABS,
+    tabs: getLocationTabs({}),
     baseRoute: "/location",
   },
 };
