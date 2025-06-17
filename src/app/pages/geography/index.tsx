@@ -16,6 +16,7 @@ import {
 } from "app/pages/geography/data";
 import Divider from "@mui/material/Divider";
 import { Search } from "app/components/search";
+import { Helmet } from "react-helmet-async";
 
 const GeoCategory: React.FC<GeoCategoryProps> = (props: GeoCategoryProps) => {
   return (
@@ -159,86 +160,95 @@ export const Geography: React.FC = () => {
   );
 
   return (
-    <Box
-      padding="50px 0"
-      sx={{
-        "@media (max-width: 767px)": {
-          padding: "32px 0",
-        },
-      }}
-    >
-      <Typography
-        variant="h1"
+    <>
+      <Helmet>
+        <link rel="canonical" href={`${window.location.origin}/geography`} />
+      </Helmet>
+      <Box
+        padding="50px 0"
         sx={{
           "@media (max-width: 767px)": {
-            wordBreak: "break-word",
+            padding: "32px 0",
           },
         }}
       >
-        {get(cmsData, "pagesGeography.title", "Geography")}
-      </Typography>
-      <Box
-        height="56px"
-        sx={{
-          "@media (max-width: 767px)": {
-            display: "none",
-          },
-        }}
-      />
-      {fullWidthDivider}
-      <Box
-        gap="8px"
-        display="flex"
-        margin="20px 0"
-        flexDirection="row"
-        justifyContent="flex-end"
-      >
-        <Box
-          width="35%"
+        <Typography
+          variant="h1"
           sx={{
-            "> div": {
-              width: "100%",
+            "@media (max-width: 767px)": {
+              wordBreak: "break-word",
             },
           }}
         >
-          <Search forceCategory="Locations" handleSearch={setSearch} />
-        </Box>
-      </Box>
-      {fullWidthDivider}
-      <Box
-        sx={{
-          "@media (max-width: 767px)": {
-            padding: "16px 0",
-          },
-        }}
-      >
-        <Box height="18px" />
-        <Box position="relative">
-          {loading && (
-            <Box
-              top="0"
-              left="0"
-              width="100%"
-              height="100%"
-              display="flex"
-              position="absolute"
-              alignItems="flex-start"
-              justifyContent="center"
-              bgcolor="rgba(255, 255, 255, 0.5)"
-            >
-              <CircularProgress />
-            </Box>
-          )}
-          {filteredData.map((item) => (
-            <GeoCategory key={item.name} search={search.length > 0} {...item} />
-          ))}
-        </Box>
-      </Box>
-      <Box>
-        <Typography variant="overline">
-          Latest Update: <b>{latestUpdateDate}</b>
+          {get(cmsData, "pagesGeography.title", "Geography")}
         </Typography>
+        <Box
+          height="56px"
+          sx={{
+            "@media (max-width: 767px)": {
+              display: "none",
+            },
+          }}
+        />
+        {fullWidthDivider}
+        <Box
+          gap="8px"
+          display="flex"
+          margin="20px 0"
+          flexDirection="row"
+          justifyContent="flex-end"
+        >
+          <Box
+            width="35%"
+            sx={{
+              "> div": {
+                width: "100%",
+              },
+            }}
+          >
+            <Search forceCategory="Locations" handleSearch={setSearch} />
+          </Box>
+        </Box>
+        {fullWidthDivider}
+        <Box
+          sx={{
+            "@media (max-width: 767px)": {
+              padding: "16px 0",
+            },
+          }}
+        >
+          <Box height="18px" />
+          <Box position="relative">
+            {loading && (
+              <Box
+                top="0"
+                left="0"
+                width="100%"
+                height="100%"
+                display="flex"
+                position="absolute"
+                alignItems="flex-start"
+                justifyContent="center"
+                bgcolor="rgba(255, 255, 255, 0.5)"
+              >
+                <CircularProgress />
+              </Box>
+            )}
+            {filteredData.map((item) => (
+              <GeoCategory
+                key={item.name}
+                search={search.length > 0}
+                {...item}
+              />
+            ))}
+          </Box>
+        </Box>
+        <Box>
+          <Typography variant="overline">
+            Latest Update: <b>{latestUpdateDate}</b>
+          </Typography>
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 };

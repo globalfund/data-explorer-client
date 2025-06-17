@@ -23,6 +23,7 @@ import {
   componentsGroupingOptions,
 } from "app/pages/datasets/grant-implementation/data";
 import isEqual from "lodash/isEqual";
+import { Helmet } from "react-helmet-async";
 
 export const GrantImplementationPage: React.FC = () => {
   const cmsData = useCMSData({ returnData: true });
@@ -321,64 +322,72 @@ export const GrantImplementationPage: React.FC = () => {
   });
 
   return (
-    <DatasetPage
-      title={getCMSDataField(
-        cmsData,
-        "pagesDatasetsGrantImplementation.title",
-        "Financial Insights",
-      )}
-      filterGroups={filterGroups}
-      appliedFilters={pageAppliedFilters}
-      handleResetFilters={handleResetFilters}
-      subtitle={getCMSDataField(
-        cmsData,
-        "pagesDatasetsGrantImplementation.subtitle",
-        "See the disbursements, budgets and expenditures datasets and relating insights.",
-      )}
-      toolbarRightContent={toolbarRightContent}
-      handleApplyFilters={handleApplyFilters}
-      handleCancelFilters={handleCancelFilters}
-    >
-      <Box width="100%" marginTop="50px">
-        <GrantImplementationPageBlock1
-          filterString={filterString}
-          geographyGrouping={geographyGrouping}
-          componentsGrouping={componentsGrouping}
+    <>
+      <Helmet>
+        <link
+          rel="canonical"
+          href={`${window.location.origin}/financial-insights`}
         />
-        <FullWidthDivider />
-        <GrantImplementationPageBlock2
-          geographyGrouping={geographyGrouping}
-          componentsGrouping={componentsGrouping}
-          filterGroups={filterGroupsDisbursements}
-        />
-        <FullWidthDivider />
-        <GrantImplementationPageBlock21 />
-        <FullWidthDivider />
-        <GrantImplementationPageBlock3
-          filterString={filterString}
-          filterGroups={filterGroups}
-          geographyGrouping={geographyGrouping}
-          componentsGrouping={componentsGrouping}
-        />
-        <FullWidthDivider />
-        <GrantImplementationPageBlock4
-          filterString={filterString}
-          geographyGrouping={geographyGrouping}
-          componentsGrouping={componentsGrouping}
-        />
-        <FullWidthDivider />
-        <GrantImplementationPageBlock5
-          filterGroups={filterGroups}
-          geographyGrouping={geographyGrouping}
-          componentsGrouping={componentsGrouping}
-        />
-        <FullWidthDivider />
-        <GrantImplementationPageBlock6
-          filterGroups={filterGroups}
-          geographyGrouping={geographyGrouping}
-          componentsGrouping={componentsGrouping}
-        />
-      </Box>
-    </DatasetPage>
+      </Helmet>
+      <DatasetPage
+        title={getCMSDataField(
+          cmsData,
+          "pagesDatasetsGrantImplementation.title",
+          "Financial Insights",
+        )}
+        filterGroups={filterGroups}
+        appliedFilters={pageAppliedFilters}
+        handleResetFilters={handleResetFilters}
+        subtitle={getCMSDataField(
+          cmsData,
+          "pagesDatasetsGrantImplementation.subtitle",
+          "See the disbursements, budgets and expenditures datasets and relating insights.",
+        )}
+        toolbarRightContent={toolbarRightContent}
+        handleApplyFilters={handleApplyFilters}
+        handleCancelFilters={handleCancelFilters}
+      >
+        <Box width="100%" marginTop="50px">
+          <GrantImplementationPageBlock1
+            filterString={filterString}
+            geographyGrouping={geographyGrouping}
+            componentsGrouping={componentsGrouping}
+          />
+          <FullWidthDivider />
+          <GrantImplementationPageBlock2
+            geographyGrouping={geographyGrouping}
+            componentsGrouping={componentsGrouping}
+            filterGroups={filterGroupsDisbursements}
+          />
+          <FullWidthDivider />
+          <GrantImplementationPageBlock21 />
+          <FullWidthDivider />
+          <GrantImplementationPageBlock3
+            filterString={filterString}
+            filterGroups={filterGroups}
+            geographyGrouping={geographyGrouping}
+            componentsGrouping={componentsGrouping}
+          />
+          <FullWidthDivider />
+          <GrantImplementationPageBlock4
+            filterString={filterString}
+            geographyGrouping={geographyGrouping}
+            componentsGrouping={componentsGrouping}
+          />
+          <FullWidthDivider />
+          <GrantImplementationPageBlock5
+            filterGroups={filterGroups}
+            geographyGrouping={geographyGrouping}
+            componentsGrouping={componentsGrouping}
+          />
+          <FullWidthDivider />
+          <GrantImplementationPageBlock6
+            filterGroups={filterGroups}
+            geographyGrouping={geographyGrouping}
+            componentsGrouping={componentsGrouping}
+          />
+        </Box>
+      </DatasetPage>
+    </>
   );
 };
