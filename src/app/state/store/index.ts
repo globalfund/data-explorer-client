@@ -136,6 +136,8 @@ import { FinancialInsightsHGITable } from "app/state/api/action-reducers/financi
 import { DatasetsLatestUpdate } from "app/state/api/action-reducers/latest-update";
 import { countrySummary } from "../api/action-reducers/cms/collections";
 import { formattedCollections } from "../api/action-reducers/cms/formatted";
+import componentHeader from "../api/action-reducers/cms/componentsHeader";
+import componentFooter from "../api/action-reducers/cms/componentsFooter";
 
 const storeContent: StoreModel = {
   // homepage
@@ -288,6 +290,8 @@ const storeContent: StoreModel = {
   cms: {
     componentsChartsEligibility: persist(componentsChartsEligibility),
     componentsSearch: persist(componentsSearch),
+    componentsHeader: persist(componentHeader),
+    componentsFooter: persist(componentFooter),
     pagesDatasets: persist(pagesDatasets),
     pagesGeography: persist(pagesGeography),
     pagesGrantDetail: persist(pagesGrantDetail),

@@ -671,7 +671,11 @@ export const GrantImplementationPageBlock6: React.FC<
           "pagesDatasetsGrantImplementation.expendituresTitle",
           "Expenditures",
         )}
-        subtitle={`${totalExpenditure} reported expenditure.`}
+        subtitle={`${totalExpenditure} ${getCMSDataField(
+          cmsData,
+          "pagesDatasetsGrantImplementation.expendituresSubtitle",
+          "reported expenditure.",
+        )}`}
         dropdownItems={dropdownItemsExpenditures}
         dropdownSelected={expendituresDropdownSelected}
         loading={loadingExpenditures}
