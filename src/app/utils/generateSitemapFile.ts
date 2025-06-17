@@ -11,7 +11,7 @@ export const generateXML = (sitemap: Sitemap[]) => {
           <lastmod>${item.lastmod}</lastmod>
           <changefreq>${item.changefreq}</changefreq>
           <priority>${item.priority}</priority>
-        </url>`
+        </url>`,
         )
         .join("")}
     </urlset>`;

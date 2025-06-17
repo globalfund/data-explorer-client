@@ -50,12 +50,12 @@ const isoDate = new Date().toISOString();
 
 const extractStaticPaths = (
   routes: RouteObject[],
-  paths: Sitemap[]
+  paths: Sitemap[],
 ): Sitemap[] => {
   for (const route of routes) {
     if (route.path?.includes(":") || route.path?.includes("*")) continue;
     const path = {
-      loc: `${window.location.host}${route.path}`,
+      loc: `${window.location.origin}${route.path}`,
       lastmod: isoDate,
       changefreq: "monthly",
       priority: 0.8,
@@ -70,19 +70,19 @@ const extractStaticPaths = (
 
 export const useGenerateSitemap = () => {
   const grantsData = useStoreState(
-    (state) => get(state.GrantList, "data.data", []) as GrantCardProps[]
+    (state) => get(state.GrantList, "data.data", []) as GrantCardProps[],
   );
   const fetchGrantList = useStoreActions((actions) => actions.GrantList.fetch);
-  const [isInitialGrantListFetch, setIsInitialGrantListFetch] =
-    React.useState(true);
-  const count = useStoreState((state) => get(state.GrantList, "data.count", 0));
-  const staticPaths = extractStaticPaths(NON_REDIRECT_ROUTES, []);
   const fetchLocationList = useStoreActions(
-    (actions) => actions.GeographyList.fetch
+    (actions) => actions.GeographyList.fetch,
   );
   const locationData = useStoreState(
-    (state) => get(state.GeographyList, "data.data", []) as GeoCategoryProps[]
+    (state) => get(state.GeographyList, "data.data", []) as GeoCategoryProps[],
   );
+  const count = useStoreState((state) => get(state.GrantList, "data.count", 0));
+  const staticPaths = extractStaticPaths(NON_REDIRECT_ROUTES, []);
+  const [isInitialGrantListFetch, setIsInitialGrantListFetch] =
+    React.useState(true);
   const [grantOverviewsSitemap, setGrantOverviewsSitemap] = React.useState<
     Sitemap[]
   >([]);
@@ -138,14 +138,14 @@ export const useGenerateSitemap = () => {
           const response = await getGrantInfo(grant.number);
           const dataGrant = get(response, "data.data[0]", { periods: [] });
           return {
-            loc: `${window.location.host}/grant/${grant.number}/${
+            loc: `${window.location.origin}/grant/${grant.number}/${
               dataGrant.periods[dataGrant.periods.length - 1].code
             }/overview`,
             lastmod: isoDate,
             changefreq: "monthly",
             priority: 0.8,
           };
-        })
+        }),
       ).then((newGrantSitemaps) => {
         console.log("loading sitemap data...");
         setGrantOverviewsSitemap((prev) => [...prev, ...newGrantSitemaps]);
@@ -173,7 +173,7 @@ export const useGenerateSitemap = () => {
       setLocationOverviewSitemap((prev) => [
         ...prev,
         {
-          loc: `${window.location.host}/location/${id}/overview`,
+          loc: `${window.location.origin}/location/${id}/overview`,
           lastmod: isoDate,
           changefreq: "monthly",
           priority: 0.8,
