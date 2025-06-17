@@ -11,7 +11,7 @@ export const generateXML = (sitemap: Sitemap[]) => {
           <lastmod>${item.lastmod}</lastmod>
           <changefreq>${item.changefreq}</changefreq>
           <priority>${item.priority}</priority>
-        </url>`,
+        </url>`
         )
         .join("")}
     </urlset>`;
@@ -21,6 +21,9 @@ export const generateXML = (sitemap: Sitemap[]) => {
   link.href = URL.createObjectURL(blob);
   link.download = "sitemap.xml";
   document.body.appendChild(link);
+  console.log("Sitemap generated and ready for download.");
+  console.log("Finishing up...");
+
   link.click();
   document.body.removeChild(link);
   //   URL.revokeObjectURL(link);
