@@ -21,7 +21,6 @@ import { Helmet } from "react-helmet-async";
 export const Location: React.FC = () => {
   const params = useParams<{ id: string; tab: string }>();
   const routeParamsId = params.id as string;
-  console.log("Location params:", routeParamsId);
   const paramsId = params.id?.replace("|", "%2F") as string;
 
   const cmsData = useCMSData({ returnData: true });
