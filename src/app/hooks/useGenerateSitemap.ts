@@ -50,7 +50,7 @@ const isoDate = new Date().toISOString();
 
 const extractStaticPaths = (
   routes: RouteObject[],
-  paths: Sitemap[],
+  paths: Sitemap[]
 ): Sitemap[] => {
   for (const route of routes) {
     if (route.path?.includes(":") || route.path?.includes("*")) continue;
@@ -70,7 +70,7 @@ const extractStaticPaths = (
 
 export const useGenerateSitemap = () => {
   const grantsData = useStoreState(
-    (state) => get(state.GrantList, "data.data", []) as GrantCardProps[],
+    (state) => get(state.GrantList, "data.data", []) as GrantCardProps[]
   );
   const fetchGrantList = useStoreActions((actions) => actions.GrantList.fetch);
   const [isInitialGrantListFetch, setIsInitialGrantListFetch] =
@@ -78,10 +78,10 @@ export const useGenerateSitemap = () => {
   const count = useStoreState((state) => get(state.GrantList, "data.count", 0));
   const staticPaths = extractStaticPaths(NON_REDIRECT_ROUTES, []);
   const fetchLocationList = useStoreActions(
-    (actions) => actions.GeographyList.fetch,
+    (actions) => actions.GeographyList.fetch
   );
   const locationData = useStoreState(
-    (state) => get(state.GeographyList, "data.data", []) as GeoCategoryProps[],
+    (state) => get(state.GeographyList, "data.data", []) as GeoCategoryProps[]
   );
   const [grantOverviewsSitemap, setGrantOverviewsSitemap] = React.useState<
     Sitemap[]
@@ -94,10 +94,7 @@ export const useGenerateSitemap = () => {
 
   const PAGE_SIZE = 100;
   const getGrantInfo = async (code: string) => {
-    const response = await axios.get(
-      `${process.env.REACT_APP_API}/grant/${code}`,
-    );
-    return response;
+    return await axios.get(`${process.env.REACT_APP_API}/grant/${code}`);
   };
 
   // Fetch grants page by page
@@ -144,7 +141,7 @@ export const useGenerateSitemap = () => {
             changefreq: "monthly",
             priority: 0.8,
           };
-        }),
+        })
       ).then((newGrantSitemaps) => {
         setGrantOverviewsSitemap((prev) => [...prev, ...newGrantSitemaps]);
         setTimeout(() => {
@@ -155,11 +152,8 @@ export const useGenerateSitemap = () => {
     }
   }, [grantsData]);
 
-  const allLocationItems = (
-    locationData: LocationItem[],
-    locationIds: string[],
-  ) => {
-    locationData.forEach((item) => {
+  const allLocationItems = (locData: LocationItem[], locationIds: string[]) => {
+    locData.forEach((item) => {
       if (item.items && item.items.length > 0) {
         allLocationItems(item.items, locationIds);
       } else {
@@ -170,7 +164,7 @@ export const useGenerateSitemap = () => {
   };
   React.useEffect(() => {
     const locationIds = allLocationItems(locationData, []);
-    locationIds.map((id) => {
+    locationIds.forEach((id) => {
       setLocationOverviewSitemap((prev) => [
         ...prev,
         {
@@ -180,7 +174,6 @@ export const useGenerateSitemap = () => {
           priority: 0.8,
         },
       ]);
-      return null;
     });
   }, [locationData]);
 
