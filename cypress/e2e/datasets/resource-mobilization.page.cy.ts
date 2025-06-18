@@ -21,7 +21,7 @@ describe("Testing The Datasets/Resource Mobilization Page", () => {
     cy.contains("[data-cy=header-menu-button]", "Datasets").click();
     cy.contains(
       "[data-cy=header-menu-button]",
-      "Resource Mobilization"
+      "Resource Mobilization",
     ).click();
     waitData(3);
   });
@@ -29,7 +29,7 @@ describe("Testing The Datasets/Resource Mobilization Page", () => {
   it("displays the header", () => {
     cy.get("h1").should("have.text", "Resource Mobilization");
     cy.contains(
-      "Government, private sector, non-government and other donor pledges and contributions"
+      "Government, private sector, non-government and other donor pledges and contributions",
     ).should("be.visible");
     cy.contains("Total Pledged").should("be.visible");
     cy.contains("Total Contributed").should("be.visible");
@@ -46,7 +46,7 @@ describe("Testing The Datasets/Resource Mobilization Page", () => {
       cy.get('[data-cy="filter-panel-search-input"]').first().type("Public");
       cy.contains(
         '[data-cy="filter-list-content-accordion-summary"]',
-        "Public Sector"
+        "Public Sector",
       ).within(() => {
         cy.get('[data-cy="filter-list-content-checkbox"]').click();
         waitData(3);
@@ -55,7 +55,7 @@ describe("Testing The Datasets/Resource Mobilization Page", () => {
 
     cy.get('[data-cy="filter-panel"]').within(() => {
       cy.contains('[data-cy="applied-filter"]', "Public Sector").should(
-        "be.visible"
+        "be.visible",
       );
     });
   });
@@ -63,18 +63,18 @@ describe("Testing The Datasets/Resource Mobilization Page", () => {
   it("Shows pledge and contribution block and can switch chart type", () => {
     cy.contains(
       '[data-cy="dataset-chart-block"]',
-      "Pledges & Contributions"
+      "Pledges & Contributions",
     ).should("be.visible");
     cy.contains(
-      "Government, private sector, non-government and other donor pledges and contributions."
+      "Government, private sector, non-government and other donor pledges and contributions.",
     );
 
     cy.contains(
       "[data-cy=dataset-chart-block]",
-      "Pledges & Contributions"
+      "Pledges & Contributions",
     ).within(() => {
       cy.get('[data-cy="expandable-horizontal-bar-chart"]').should(
-        "be.visible"
+        "be.visible",
       );
 
       cy.contains('[data-cy="category-dropdown-button"]', "Bar Chart").click();
@@ -90,7 +90,7 @@ describe("Testing The Datasets/Resource Mobilization Page", () => {
 
     cy.contains(
       "[data-cy=dataset-chart-block]",
-      "Pledges & Contributions"
+      "Pledges & Contributions",
     ).within(() => {
       cy.get('[data-cy="table"]').should("be.visible");
     });

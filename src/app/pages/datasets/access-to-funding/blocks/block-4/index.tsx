@@ -10,32 +10,41 @@ import { BarSeriesChart } from "app/components/charts/bar-series";
 import { getRange } from "app/utils/getFinancialValueWithMetricPrefix";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { BarSeriesChartDataItem } from "app/components/charts/bar-series/data";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 
 interface AccessToFundingBlock4Props {
   filterString: string;
 }
 
 export const AccessToFundingBlock4: React.FC<AccessToFundingBlock4Props> = (
-  props: AccessToFundingBlock4Props
+  props: AccessToFundingBlock4Props,
 ) => {
   const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "allocations",
+  });
+
   const keysAllocationsBarSeries = useStoreState(
     (state) =>
-      get(state.AccessToFundingAllocationBarSeries, "data.keys", []) as string[]
+      get(
+        state.AccessToFundingAllocationBarSeries,
+        "data.keys",
+        [],
+      ) as string[],
   );
   const dataAllocationsBarSeries = useStoreState(
     (state) =>
       get(
         state.AccessToFundingAllocationBarSeries,
         "data.data",
-        []
-      ) as BarSeriesChartDataItem[]
+        [],
+      ) as BarSeriesChartDataItem[],
   );
   const fetchAllocationsBarSeries = useStoreActions(
-    (actions) => actions.AccessToFundingAllocationBarSeries.fetch
+    (actions) => actions.AccessToFundingAllocationBarSeries.fetch,
   );
   const loadingAllocationsBarSeries = useStoreState(
-    (state) => state.AccessToFundingAllocationBarSeries.loading
+    (state) => state.AccessToFundingAllocationBarSeries.loading,
   );
 
   const range = React.useMemo(() => {
@@ -64,18 +73,18 @@ export const AccessToFundingBlock4: React.FC<AccessToFundingBlock4Props> = (
       }}
       data-cy="allocation-block-2"
     >
-      <Typography variant="h5">
+      <Typography variant="h4">
         {getCMSDataField(
           cmsData,
           "pagesDatasetsAccessToFunding.cumulativeAllocationTitle",
-          "Cumulative Allocation by Cycles"
+          "Cumulative Allocation by Cycles",
         )}
       </Typography>
-      <Typography fontSize="14px" fontWeight="700">
+      <Typography fontSize="14px">
         {getCMSDataField(
           cmsData,
           "pagesDatasetsAccessToFunding.cumulativeAllocationSubtitle",
-          "Accompanied by the Component Breakdown."
+          "Accompanied by the Component Breakdown.",
         )}
       </Typography>
       <Box marginTop="25px" position="relative">
@@ -92,7 +101,12 @@ export const AccessToFundingBlock4: React.FC<AccessToFundingBlock4Props> = (
                 transform: "rotate(-90deg)",
               }}
             >
-              Allocated Amount (USD {range.abbr})
+              {getCMSDataField(
+                cmsData,
+                "pagesDatasetsAccessToFunding.cumulativeAllocationYAxisLabel",
+                "Allocated Amount",
+              )}{" "}
+              (USD {range.abbr})
             </Typography>
             <BarSeriesChart
               data={dataAllocationsBarSeries}
@@ -123,6 +137,9 @@ export const AccessToFundingBlock4: React.FC<AccessToFundingBlock4Props> = (
           </Box>
         )}
       </Box>
+      <Typography variant="overline">
+        Latest Update: <b>{latestUpdateDate}</b>
+      </Typography>
     </Box>
   );
 };

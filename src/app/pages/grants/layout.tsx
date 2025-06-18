@@ -6,39 +6,35 @@ import Popover from "@mui/material/Popover";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import { useCMSData } from "app/hooks/useCMSData";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
 import { Dropdown } from "app/components/dropdown";
-import SearchIcon from "@mui/icons-material/Search";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import { FilterPanel } from "app/components/filters/panel";
 import { getCMSDataField } from "app/utils/getCMSDataField";
+import Searchbox from "app/pages/grants/component/Searchbox";
 import CircularProgress from "@mui/material/CircularProgress";
 import { GrantsLayoutProps, DROPDOWN_ITEMS } from "app/pages/grants/data";
 
 export const GrantsLayout: React.FC<GrantsLayoutProps> = (
-  props: GrantsLayoutProps
+  props: GrantsLayoutProps,
 ) => {
-  const mobile = useMediaQuery("(max-width: 767px)");
   const cmsData = useCMSData({ returnData: true });
-
   const {
     view,
     viewResult,
     pagination,
     handleViewChange,
     search,
-    showSearch,
     handleSearch,
     handleSearchIconClick,
     handleFilterButtonClick,
     handleFilterPanelClose,
+    handleCancelFilters,
     filterGroups,
     pageAppliedFilters,
     handleResetFilters,
     anchorEl,
     loading,
     searchInputRef,
+    handleApplyFilters,
   } = props;
 
   const fullWidthDivider = (
@@ -54,6 +50,32 @@ export const GrantsLayout: React.FC<GrantsLayoutProps> = (
       }}
     />
   );
+
+  const filterPopoverContent = React.useMemo(() => {
+    return (
+      <FilterPanel
+        onClose={handleFilterPanelClose}
+        filterGroups={filterGroups}
+        appliedFilters={pageAppliedFilters}
+        handleResetFilters={handleResetFilters}
+        appliedFilterBgColors={{
+          hover: "#FF9800",
+          normal: "rgba(255, 152, 0, 0.2)",
+        }}
+        setPage={props.setPage}
+        setPageSearchValue={props.setPageSearchValue}
+        page={props.page}
+        search={search}
+        handleCancelFilters={handleCancelFilters}
+        handleApplyFilters={handleApplyFilters}
+      />
+    );
+  }, [
+    filterGroups,
+    pageAppliedFilters,
+    handleResetFilters,
+    handleFilterPanelClose,
+  ]);
 
   return (
     <Box padding="50px 0">
@@ -81,24 +103,12 @@ export const GrantsLayout: React.FC<GrantsLayoutProps> = (
           paddingBottom="4px"
           alignItems="center"
           justifyContent="space-between"
-          sx={
-            mobile && showSearch
-              ? {
-                  "> button": {
-                    display: "none",
-                  },
-                  "> div > button:nth-of-type(2)": {
-                    display: "none",
-                  },
-                  "> div": {
-                    width: "100%",
-                    " > input": {
-                      width: "100%",
-                    },
-                  },
-                }
-              : {}
-          }
+          gap={"8px"}
+          sx={{
+            "@media(max-width:744px)": {
+              flexWrap: "wrap",
+            },
+          }}
         >
           <Button
             variant="outlined"
@@ -134,79 +144,23 @@ export const GrantsLayout: React.FC<GrantsLayoutProps> = (
               horizontal: "left",
             }}
           >
-            <FilterPanel
-              filterGroups={filterGroups}
-              onClose={handleFilterPanelClose}
-              appliedFilters={pageAppliedFilters}
-              handleResetFilters={handleResetFilters}
-              appliedFilterBgColors={{
-                hover: "#FF9800",
-                normal: "rgba(255, 152, 0, 0.2)",
-              }}
-            />
+            {filterPopoverContent}
           </Popover>
           <Box
-            gap="8px"
-            display="flex"
             sx={{
-              input: {
-                color: "#000",
-                width: "200px",
-                height: "32px",
-                outline: "none",
-                padding: "0 8px",
-                fontSize: "12px",
-                borderStyle: "none",
-                borderRadius: "8px",
-                background: "#F1F3F4",
-                "::placeholder": {
-                  color: "#CFD4DA",
-                },
-              },
+              width: "432px",
+              "@media(max-width:744px)": { width: "100%", order: 3 },
             }}
           >
-            <React.Fragment>
-              {showSearch && (
-                <input
-                  type="text"
-                  value={search}
-                  ref={searchInputRef}
-                  onChange={handleSearch}
-                  placeholder="e.g. Kenya"
-                  data-cy="grants-search-input"
-                />
-              )}
-              <IconButton
-                sx={{
-                  height: "30px",
-                  display: "flex",
-                  padding: "8px 12px",
-                  borderRadius: "4px",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  background: showSearch ? "#000" : "transparent",
-                  border: `1px solid ${showSearch ? "#000" : "#DFE3E5"}`,
-                  svg: {
-                    color: showSearch ? "#fff" : "#000",
-                  },
-                  ":hover": {
-                    background: "#000",
-                    borderColor: "#000",
-                    svg: {
-                      color: "#fff",
-                    },
-                  },
-                }}
-                data-cy="grants-search-btn"
-                onClick={handleSearchIconClick(!showSearch)}
-              >
-                {showSearch ? (
-                  <CloseIcon htmlColor="#000" fontSize="small" />
-                ) : (
-                  <SearchIcon htmlColor="#000" fontSize="small" />
-                )}
-              </IconButton>
-            </React.Fragment>
+            <Searchbox
+              handleSearch={handleSearch}
+              search={search}
+              searchInputRef={searchInputRef}
+              handleSearchIconClick={handleSearchIconClick}
+            />
+          </Box>
+
+          <Box gap="8px" display="flex" flexBasis={"auto"}>
             <Dropdown
               dropdownSelected={view}
               dropdownItems={DROPDOWN_ITEMS}
@@ -239,7 +193,13 @@ export const GrantsLayout: React.FC<GrantsLayoutProps> = (
           </Box>
         )}
         {viewResult}
+        <Box height={"8px"} />
         {pagination}
+      </Box>
+      <Box>
+        <Typography variant="overline">
+          Latest Update: <b>{props.latestUpdateDate}</b>
+        </Typography>
       </Box>
     </Box>
   );

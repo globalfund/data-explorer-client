@@ -11,31 +11,36 @@ import { getCMSDataField } from "app/utils/getCMSDataField";
 import { BarChartDataItem } from "app/components/charts/bar/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { applyResultValueFormula } from "app/utils/applyResultValueFormula";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 
 export const HomeBlock1: React.FC = () => {
-  const [chart1Cycles, setChart1Cycles] = React.useState<CycleProps[]>([]);
   const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "pledges-contributions",
+  });
+
+  const [chart1Cycles, setChart1Cycles] = React.useState<CycleProps[]>([]);
 
   const dataPledgesContributionsBarChart = useStoreState(
     (state) =>
       get(
         state.HomePledgesContributionsBarChart,
         "data.data",
-        []
-      ) as BarChartDataItem[]
+        [],
+      ) as BarChartDataItem[],
   );
   const loadingPledgesContributionsBarChart = useStoreState((state) =>
-    Boolean(state.HomePledgesContributionsBarChart.loading)
+    Boolean(state.HomePledgesContributionsBarChart.loading),
   );
   const fetchPledgesContributionsBarChart = useStoreActions(
-    (actions) => actions.HomePledgesContributionsBarChart.fetch
+    (actions) => actions.HomePledgesContributionsBarChart.fetch,
   );
   const pledgesContributionsCycles = useStoreState(
     (state) =>
       get(state.PledgesContributionsCycles, "data.data", []) as {
         name: string;
         value: string;
-      }[]
+      }[],
   );
 
   const handleChartCycleChange = (cycle: CycleProps) => {
@@ -61,7 +66,7 @@ export const HomeBlock1: React.FC = () => {
     cycles: {
       name: string;
       value: string;
-    }[]
+    }[],
   ) => {
     let filterString = "";
     if (cycles.length > 0) {
@@ -77,7 +82,7 @@ export const HomeBlock1: React.FC = () => {
   const totalPledge = React.useMemo(() => {
     const v = applyResultValueFormula(
       sumBy(dataPledgesContributionsBarChart, "value"),
-      3
+      3,
     );
     return `US$${v.number} ${v.text}`;
   }, [dataPledgesContributionsBarChart]);
@@ -85,23 +90,49 @@ export const HomeBlock1: React.FC = () => {
   const totalContribution = React.useMemo(() => {
     const v = applyResultValueFormula(
       sumBy(dataPledgesContributionsBarChart, "value1"),
-      3
+      3,
     );
     return `US$${v.number} ${v.text}`;
   }, [dataPledgesContributionsBarChart]);
+
+  const exportData = React.useMemo(() => {
+    return {
+      headers: [
+        "Period",
+        getCMSDataField(
+          cmsData,
+          "pagesHome.pledgesContributionsLabel1",
+          "Pledge",
+        ),
+        getCMSDataField(
+          cmsData,
+          "pagesHome.pledgesContributionsLabel2",
+          "Contribution",
+        ),
+      ],
+      data: dataPledgesContributionsBarChart.map((d) => [
+        d.name,
+        d.value,
+        d.value1,
+      ]),
+    };
+  }, [cmsData, dataPledgesContributionsBarChart]);
 
   return (
     <React.Fragment>
       <ChartBlock
         showCycleAll
         id="pledges-contributions"
+        exportName="pledges-contributions"
         selectedCycles={chart1Cycles}
         title={`${totalPledge}`}
+        latestUpdate={latestUpdateDate}
         subtitle={getCMSDataField(
           cmsData,
           "pagesHome.pledgesContributionsSubtitle",
-          "Pledges & Contributions"
+          "Pledges & Contributions",
         )}
+        data={exportData}
         loading={loadingPledgesContributionsBarChart}
         empty={dataPledgesContributionsBarChart.length === 0}
         handleCycleChange={(value) => handleChartCycleChange(value)}
@@ -117,12 +148,12 @@ export const HomeBlock1: React.FC = () => {
             value: getCMSDataField(
               cmsData,
               "pagesHome.pledgesContributionsLabel1",
-              "Pledge"
+              "Pledge",
             ),
             value1: getCMSDataField(
               cmsData,
               "pagesHome.pledgesContributionsLabel2",
-              "Contribution"
+              "Contribution",
             ),
           }}
         />
@@ -149,14 +180,14 @@ export const HomeBlock1: React.FC = () => {
           alignItems="center"
           flexDirection="column"
         >
-          <Typography variant="h3" fontWeight="900">
+          <Typography variant="h3" fontWeight="700">
             {totalPledge}
           </Typography>
           <Typography variant="subtitle2">
             {getCMSDataField(
               cmsData,
               "pagesHome.pledgesContributionsLabel1",
-              "Pledge"
+              "Pledged",
             )}
           </Typography>
         </Box>
@@ -166,14 +197,14 @@ export const HomeBlock1: React.FC = () => {
           alignItems="center"
           flexDirection="column"
         >
-          <Typography variant="h3" fontWeight="900">
+          <Typography variant="h3" fontWeight="700">
             {totalContribution}
           </Typography>
           <Typography variant="subtitle2">
             {getCMSDataField(
               cmsData,
               "pagesHome.pledgesContributionsLabel2",
-              "Contribution"
+              "Contributed",
             )}
           </Typography>
         </Box>

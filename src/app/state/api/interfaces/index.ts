@@ -1,6 +1,9 @@
 import { Action, Thunk } from "easy-peasy";
 import { CMSDataModel } from "app/state/api/action-reducers/sync";
-import { AppliedFiltersStateModel } from "app/state/api/action-reducers/sync/filters";
+import {
+  AppliedFiltersStateModel,
+  AppliedFilterStringModel,
+} from "app/state/api/action-reducers/sync/filters";
 import {
   CMSApiComponentsChartsEligibility,
   CMSApiComponentsSearch,
@@ -24,6 +27,9 @@ import {
   CMSApiPagesGrantGrantImplementation,
   CMSApiPagesGrantOverview,
   CMSApiPagesGrantTargetResults,
+  CMSApiCountrySummary,
+  CMSApiComponentsHeader,
+  CMSApiComponentsFooter,
 } from "app/state/api/interfaces/cms";
 
 export interface RequestValues<T> {
@@ -77,12 +83,26 @@ export type ApiCallModel = ApiModel<
   ApiCallParams | ApiCallParams[] | string,
   ApiResponseModel
 >;
-
+export interface CMSFormattedCollectionsModel {
+  countrySummary: {
+    [key: string]: string;
+  };
+  setPagesData: Action<
+    CMSFormattedCollectionsModel,
+    {
+      countrySummary: {
+        [key: string]: string;
+      };
+    }
+  >;
+}
 // CMS API Call model for
 export type CMSApiCallModel = ApiModel<
   CMSApiCallParams,
   | CMSApiComponentsChartsEligibility
   | CMSApiComponentsSearch
+  | CMSApiComponentsHeader
+  | CMSApiComponentsFooter
   | CMSApiPagesDatasets
   | CMSApiPagesGeography
   | CMSApiPagesGrantDetail
@@ -103,6 +123,7 @@ export type CMSApiCallModel = ApiModel<
   | CMSApiPagesGrantGrantImplementation
   | CMSApiPagesGrantOverview
   | CMSApiPagesGrantTargetResults
+  | CMSApiCountrySummary
 >;
 
 export interface CMSApiCallParams {}
@@ -135,6 +156,8 @@ export interface StoreModel {
   FinancialInsightsDisbursementsBarChart: ApiCallModel;
   FinancialInsightsDisbursementsLineChart: ApiCallModel;
   FinancialInsightsDisbursementsTable: ApiCallModel;
+  FinancialInsightsHGISankey: ApiCallModel;
+  FinancialInsightsHGITable: ApiCallModel;
   FinancialInsightsBudgetBreakdown: ApiCallModel;
   FinancialInsightsBudgetUtilisation: ApiCallModel;
   FinancialInsightsCountryAbsorption: ApiCallModel;
@@ -213,13 +236,19 @@ export interface StoreModel {
   ExpendituresCycles: ApiCallModel;
   EligibilityCycles: ApiCallModel;
   ResultsComponentFilterOptions: ApiCallModel;
+  // general
+  datasetsLatestUpdate: ApiCallModel;
   // sync state variables
   AppliedFiltersState: AppliedFiltersStateModel;
+  AppliedFilterStringState: AppliedFilterStringModel;
+  TempAppliedFiltersState: AppliedFiltersStateModel;
   // CMS
   CMSData: CMSDataModel;
   cms: {
     componentsChartsEligibility: CMSApiCallModel;
     componentsSearch: CMSApiCallModel;
+    componentsFooter: CMSApiCallModel;
+    componentsHeader: CMSApiCallModel;
     pagesDatasets: CMSApiCallModel;
     pagesGeography: CMSApiCallModel;
     pagesGrantDetail: CMSApiCallModel;
@@ -240,5 +269,9 @@ export interface StoreModel {
     pagesGrantGrantImplementation: CMSApiCallModel;
     pagesGrantOverview: CMSApiCallModel;
     pagesGrantTargetResults: CMSApiCallModel;
+    formattedCollections: CMSFormattedCollectionsModel;
+    collections: {
+      countrySummary: CMSApiCallModel;
+    };
   };
 }

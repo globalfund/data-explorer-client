@@ -43,7 +43,7 @@ export const GrantOverview: React.FC = () => {
         component: string;
         FPMName: string;
         FPMEmail: string;
-      }
+      },
   );
   const dataOverview = useStoreState((state) =>
     get(state.GrantOverview, "data.data[0]", {
@@ -53,10 +53,10 @@ export const GrantOverview: React.FC = () => {
       disbursement: 0,
       commitment: 0,
       signed: 0,
-    })
+    }),
   );
   const loadingOverview = useStoreState(
-    (state) => state.GrantInfo.loading || state.GrantOverview.loading
+    (state) => state.GrantInfo.loading || state.GrantOverview.loading,
   );
 
   useTitle(`The Data Explorer - ${dataGrant.code}`);
@@ -100,6 +100,21 @@ export const GrantOverview: React.FC = () => {
         percentage: 100,
       },
     ];
+  }, [dataOverview.disbursement, dataOverview.commitment, dataOverview.signed]);
+
+  const exportChartData = React.useMemo(() => {
+    const disbursementPercentage =
+      (dataOverview.disbursement / dataOverview.commitment) * 100;
+    const commitmentPercentage =
+      (dataOverview.commitment / dataOverview.signed) * 100;
+    return {
+      headers: ["Type", "Amount", "Percentage"],
+      data: [
+        ["Disbursed", dataOverview.disbursement, disbursementPercentage],
+        ["Committed", dataOverview.commitment, commitmentPercentage],
+        ["Signed", dataOverview.signed, 100],
+      ],
+    };
   }, [dataOverview.disbursement, dataOverview.commitment, dataOverview.signed]);
 
   const fullWidthDivider = (
@@ -160,7 +175,7 @@ export const GrantOverview: React.FC = () => {
               {getCMSDataField(
                 cmsData,
                 "pagesGrantOverview.portfolioManager",
-                "Fund Portfolio Manager"
+                "Fund Portfolio Manager",
               )}
             </Typography>
             <Typography variant="overline">
@@ -176,7 +191,7 @@ export const GrantOverview: React.FC = () => {
               {getCMSDataField(
                 cmsData,
                 "pagesGrantOverview.grantStatus",
-                "Grant Status"
+                "Grant Status",
               )}
             </Typography>
             <Typography
@@ -201,7 +216,7 @@ export const GrantOverview: React.FC = () => {
               {getCMSDataField(
                 cmsData,
                 "pagesGrantOverview.countryText",
-                "Country"
+                "Country",
               )}
             </Typography>
             <Typography variant="overline">{dataGrant.countryName}</Typography>
@@ -213,7 +228,7 @@ export const GrantOverview: React.FC = () => {
               {getCMSDataField(
                 cmsData,
                 "pagesGrantOverview.componentText",
-                "Component"
+                "Component",
               )}
             </Typography>
             <Typography variant="overline">{dataGrant.component}</Typography>
@@ -233,7 +248,7 @@ export const GrantOverview: React.FC = () => {
               {getCMSDataField(
                 cmsData,
                 "pagesGrantOverview.principalRecipient",
-                "Principal Recipient"
+                "Principal Recipient",
               )}
             </Typography>
             <Typography variant="overline">
@@ -244,12 +259,14 @@ export const GrantOverview: React.FC = () => {
         </Grid>
       </Grid>
       {fullWidthDivider}
-      <Box>
+      <Box position="relative">
         <Box id="grant-overview-race-bar-chart">
           <RaceBarChart data={raceBarChartData} />
         </Box>
         <ChartBlockButtonToolbar
           infoType="global"
+          chartData={exportChartData}
+          exportName="grant-investments"
           hashId="grant-overview-race-bar-chart"
           blockId="grant-overview-race-bar-chart"
         />
@@ -273,7 +290,7 @@ export const GrantOverview: React.FC = () => {
           {getCMSDataField(
             cmsData,
             "pagesGrantOverview.objectives",
-            "Objectives"
+            "Objectives",
           )}
         </Typography>
         <Typography variant="body2">

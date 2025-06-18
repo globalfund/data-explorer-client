@@ -83,7 +83,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Plan International El Salvador",
     parentRow: "Civil Society Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 2747414.54,
     budget: 3971199.9,
     percentage: 69,
@@ -99,7 +99,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "International Charitable Foundation “Alliance for Public Health”",
     parentRow: "Civil Society Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 18588624.36,
     budget: 19543954.61,
     percentage: 95,
@@ -139,7 +139,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Public Health, Hygiene and Prevention",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 30980493,
     budget: 36914187.84,
     percentage: 84,
@@ -147,7 +147,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Initiative Privée et Communautaire pour la Santé et la Riposte au VIH/SIDA  au Burkina Faso (IPC/BF)",
     parentRow: "Civil Society Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 15181150.96,
     budget: 15686493.31,
     percentage: 97,
@@ -163,7 +163,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Caribbean Community (CARICOM)",
     parentRow: "Civil Society Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 8137744.28,
     budget: 10270098.17,
     percentage: 79,
@@ -171,7 +171,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health of the Democratic Republic of Timor-Leste",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 7254692.66,
     budget: 7494078.05,
     percentage: 97,
@@ -179,7 +179,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Save the Children Federation, Inc.",
     parentRow: "Civil Society Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 170340210.28,
     budget: 195138622.92,
     percentage: 87,
@@ -187,7 +187,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health of the Revolutionary Government of Zanzibar",
     parentRow: "Governmental Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 10621149.77,
     budget: 10770743.6,
     percentage: 99,
@@ -195,7 +195,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Republican Center to Fight AIDS",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 16392409.89,
     budget: 18568104.7,
     percentage: 88,
@@ -203,7 +203,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Alliance Nationale pour la Santé et le Développement en Côte D'Ivoire",
     parentRow: "Civil Society Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 21325716.64,
     budget: 27731698.28,
     percentage: 77,
@@ -225,9 +225,9 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
     percentage: 80,
   },
   {
-    row: "HIV/AIDS Prevention and Control Office",
+    row: "HIV Prevention and Control Office",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 415430031.98,
     budget: 479973014.1,
     percentage: 87,
@@ -243,7 +243,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Public Health, Population and Social Affairs",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 15947797.93,
     budget: 32346642,
     percentage: 49,
@@ -259,7 +259,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health of the Democratic Socialist  Republic of Sri Lanka",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 3904580.64,
     budget: 7674715.02,
     percentage: 51,
@@ -267,7 +267,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Republican Center to Fight AIDS",
     parentRow: "Governmental Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 23176495.24,
     budget: 31364406.38,
     percentage: 74,
@@ -275,7 +275,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Christian Health Association of Ghana",
     parentRow: "Civil Society Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 15374761,
     budget: 14280527.6,
     percentage: 108,
@@ -283,7 +283,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health and Wellness,  Jamaica",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 15122559.31,
     budget: 19533881.31,
     percentage: 77,
@@ -307,7 +307,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Cameroon National Association for Family Welfare",
     parentRow: "Civil Society Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 22389029.96,
     budget: 24421712.51,
     percentage: 92,
@@ -315,7 +315,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health, Solidarity, Social Protection and Gender Promotion of the Union of the Comoros",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 1484674.35,
     budget: 1541976.95,
     percentage: 96,
@@ -371,7 +371,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Public Health and Prevention",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 39582812.51,
     budget: 46022818.97,
     percentage: 86,
@@ -403,7 +403,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "AIDS Foundation South Africa",
     parentRow: "Civil Society Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 84597677.04,
     budget: 124536903.61,
     percentage: 68,
@@ -411,7 +411,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health of the Royal Government of Bhutan",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 1027502,
     budget: 1149153.17,
     percentage: 89,
@@ -427,7 +427,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "International Centre for Diarrhoeal Disease Research, Bangladesh",
     parentRow: "Civil Society Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 13432755.12,
     budget: 15418794.08,
     percentage: 87,
@@ -443,7 +443,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health of Mozambique",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 576446535.45,
     budget: 714295875.65,
     percentage: 81,
@@ -459,7 +459,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Society For Family Health",
     parentRow: "Civil Society Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 13520682.48,
     budget: 15894545.42,
     percentage: 85,
@@ -467,7 +467,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Population Services International",
     parentRow: "Civil Society Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 77139803.22,
     budget: 87262929.14,
     percentage: 88,
@@ -475,7 +475,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Coordinating Assembly of Non Governmental Organisation",
     parentRow: "Civil Society Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 8708337.27,
     budget: 11114124.21,
     percentage: 78,
@@ -491,7 +491,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Cameroon National Association for Family Welfare",
     parentRow: "Civil Society Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 10127196.06,
     budget: 10781243.24,
     percentage: 94,
@@ -507,7 +507,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Office National de la Famille et de la Population de la République de Tunisie",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 7822666.03,
     budget: 9954023.78,
     percentage: 79,
@@ -523,7 +523,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Community Development Fund",
     parentRow: "Civil Society Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 1054105.87,
     budget: 1380239.38,
     percentage: 76,
@@ -531,7 +531,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "National Department of Health of the Republic of South Africa",
     parentRow: "Governmental Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 229579082.92,
     budget: 286293943.7,
     percentage: 80,
@@ -547,7 +547,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "The Ministry of Health of the Republic of Guinea",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 76503223.24,
     budget: 87127943.38,
     percentage: 88,
@@ -555,7 +555,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "National Treasury of the Republic of Kenya",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 265779431.19,
     budget: 331437003.79,
     percentage: 80,
@@ -571,7 +571,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Plan International (India Chapter)",
     parentRow: "Civil Society Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 14678969.26,
     budget: 22408888.39,
     percentage: 66,
@@ -579,7 +579,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Directorate General of Disease Prevention and Control, Ministry of Health of The Republic of Indonesia",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 73353380.47,
     budget: 136398203.39,
     percentage: 54,
@@ -587,7 +587,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Fundação para o Desenvolvimento da Comunidade",
     parentRow: "Civil Society Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 90485992.05,
     budget: 107414513.25,
     percentage: 84,
@@ -595,7 +595,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "International Charitable Foundation “Alliance for Public Health”",
     parentRow: "Civil Society Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 84230125.92,
     budget: 99716225.5,
     percentage: 84,
@@ -619,15 +619,15 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health of the Royal Government of Bhutan",
     parentRow: "Governmental Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 2218380,
     budget: 2942855.5,
     percentage: 75,
   },
   {
-    row: "National HIV/AIDS Secretariat",
+    row: "National HIV Secretariat",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 32972645.31,
     budget: 33993381.21,
     percentage: 97,
@@ -635,7 +635,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Alliance Nationale des Communautés pour la Santé - Sénégal",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 12998031.9,
     budget: 14592350.77,
     percentage: 89,
@@ -643,7 +643,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health of the Republic of Ghana",
     parentRow: "Governmental Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 163031532.71,
     budget: 199458647.18,
     percentage: 82,
@@ -675,7 +675,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Association pour Résilience des Communautés vers l’Accès au Développement et à la Santé Plus",
     parentRow: "Civil Society Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 19549832.91,
     budget: 24160809.33,
     percentage: 81,
@@ -691,7 +691,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Social Security Board",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 763603.99,
     budget: 1228289.61,
     percentage: 62,
@@ -707,7 +707,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Secrétariat Permanent du Conseil National de Lutte contre le Sida et les Infections Sexuellement Transmissibles (SP/CNLS-IST)",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 59111717.09,
     budget: 64393342.31,
     percentage: 92,
@@ -715,7 +715,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Kenya Red Cross Society",
     parentRow: "Civil Society Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 130630693.73,
     budget: 145515440.37,
     percentage: 90,
@@ -731,7 +731,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Empresa Nacional Promotora del Desarrollo Territorial",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 14047464.92,
     budget: 19856046.05,
     percentage: 71,
@@ -739,7 +739,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health of Sao Tome and Principe",
     parentRow: "Governmental Organization",
-    column: "Multi-Component",
+    column: "Multicomponent",
     value: 8955656.76,
     budget: 14063746.56,
     percentage: 64,
@@ -771,7 +771,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health of Republic of Serbia",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 2259528.59,
     budget: 2634418.64,
     percentage: 86,
@@ -787,7 +787,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ghana-West Africa Program to Combat AIDS - STI",
     parentRow: "Civil Society Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 25632481.77,
     budget: 25793212.21,
     percentage: 99,
@@ -803,7 +803,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Republican Scientific and Practical Center for Medical Technologies, Informatization, Administration and Management of Health",
     parentRow: "Governmental Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 29547845.34,
     budget: 34609376.63,
     percentage: 85,
@@ -835,7 +835,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health of the Republic of El Salvador",
     parentRow: "Governmental Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 1271983.1,
     budget: 12637692.06,
     percentage: 10,
@@ -851,7 +851,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Australian Federation Of AIDS Organisations Limited",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 13935630.26,
     budget: 16075816.13,
     percentage: 87,
@@ -859,7 +859,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Public Health of the Republic of Cameroon",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 221278498.9,
     budget: 275944465.13,
     percentage: 80,
@@ -867,7 +867,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health, Public Hygiene and Universal Health Coverage of the Republic of Côte d’Ivoire",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 82934138.3,
     budget: 109435853.73,
     percentage: 76,
@@ -875,7 +875,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Department of Economic Affairs, Ministry of Finance of India",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 127321163.54,
     budget: 136363986,
     percentage: 93,
@@ -899,7 +899,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Economic Relations Division, Ministry of Finance of the People's Republic of Bangladesh",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 2556417.01,
     budget: 3754211,
     percentage: 68,
@@ -907,7 +907,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Humanist Institute for Co-operation with Developing Countries",
     parentRow: "Civil Society Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 4125030.78,
     budget: 4909342.25,
     percentage: 84,
@@ -923,7 +923,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Cellule Nationale de Coordination Technique de la Riposte Nationale au Sida et aux Hépatites",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 14696188.87,
     budget: 15939092.26,
     percentage: 92,
@@ -931,7 +931,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health of the Republic of Suriname",
     parentRow: "Governmental Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 1857705.2,
     budget: 2201759.96,
     percentage: 84,
@@ -939,7 +939,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health of the Republic of Armenia",
     parentRow: "Governmental Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 17275226.98,
     budget: 17775387.21,
     percentage: 97,
@@ -955,7 +955,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Cooperative Housing Foundation",
     parentRow: "Civil Society Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 14296293.12,
     budget: 25158423.31,
     percentage: 57,
@@ -971,7 +971,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health and Social Development of the Republic of Mali",
     parentRow: "Governmental Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 25444879.5,
     budget: 49220967.03,
     percentage: 52,
@@ -979,7 +979,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "International Organization for Migration",
     parentRow: "Multilateral Organization",
-    column: "Multi-Component",
+    column: "Multicomponent",
     value: 77882876.5,
     budget: 110803876.31,
     percentage: 70,
@@ -987,7 +987,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Public Health and Prevention",
     parentRow: "Governmental Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 15104166.74,
     budget: 36284482.33,
     percentage: 42,
@@ -1011,7 +1011,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Socios en Salud sucursal Peru",
     parentRow: "Civil Society Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 3412055.79,
     budget: 2987886.98,
     percentage: 114,
@@ -1019,7 +1019,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Consejo Nacional para el VIH y el SIDA",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 13151647.48,
     budget: 17731044.85,
     percentage: 74,
@@ -1027,7 +1027,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Finance of the Kingdom of Lesotho",
     parentRow: "Governmental Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 97128652.44,
     budget: 144470849.83,
     percentage: 67,
@@ -1035,7 +1035,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "National Emergency Response Council on HIV and AIDS",
     parentRow: "Governmental Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 57124767.83,
     budget: 101666698.84,
     percentage: 56,
@@ -1043,7 +1043,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Primature de la République Togolaise",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 72068444.58,
     budget: 99257780.49,
     percentage: 73,
@@ -1051,7 +1051,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "World Vision (PNG) Trust",
     parentRow: "Civil Society Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 70517714.44,
     budget: 90086371.58,
     percentage: 78,
@@ -1067,7 +1067,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "National Center For Disease Control and Public Health",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 10345025.91,
     budget: 12265386.1,
     percentage: 84,
@@ -1107,7 +1107,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health of Mongolia",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 2880092.08,
     budget: 3044707.77,
     percentage: 95,
@@ -1115,7 +1115,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health of the Republic of Azerbaijan",
     parentRow: "Governmental Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 8920836.24,
     budget: 13456798.6,
     percentage: 66,
@@ -1123,7 +1123,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Instituto Dermatológico y Cirugía de Piel ‘Dr. Huberto Bogaert Díaz’",
     parentRow: "Civil Society Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 12533754.66,
     budget: 13442869.04,
     percentage: 93,
@@ -1131,7 +1131,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health of the Republic of Rwanda",
     parentRow: "Governmental Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 113232497.81,
     budget: 148463394.44,
     percentage: 76,
@@ -1147,7 +1147,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Finance of the United Republic of Tanzania",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 532167847,
     budget: 609230837.02,
     percentage: 87,
@@ -1155,7 +1155,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Sécrétariat Exécutif du Comité National de Lutte Contre le VIH/SIDA de la République de Madagascar",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 15093242.94,
     budget: 19483646.59,
     percentage: 77,
@@ -1163,7 +1163,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of National Health Services, Regulations and Coordination of Pakistan",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 17481026.85,
     budget: 22241118.86,
     percentage: 79,
@@ -1179,7 +1179,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Public Institution - Coordination, Implementation and Monitoring Unit of the Health  System Projects",
     parentRow: "Governmental Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 27215521.32,
     budget: 34776852.84,
     percentage: 78,
@@ -1187,7 +1187,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Pilipinas Shell Foundation, Inc.",
     parentRow: "Private Sector",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 18185138,
     budget: 20732077.39,
     percentage: 88,
@@ -1235,7 +1235,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "United Nations Children's Fund",
     parentRow: "Multilateral Organization",
-    column: "Multi-Component",
+    column: "Multicomponent",
     value: 11125489.28,
     budget: 43409436.94,
     percentage: 26,
@@ -1251,7 +1251,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health of the Lao People's Democratic Republic",
     parentRow: "Governmental Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 11243171.64,
     budget: 19489616.79,
     percentage: 58,
@@ -1259,7 +1259,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Raks Thai Foundation",
     parentRow: "Civil Society Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 44586586.13,
     budget: 49389231.77,
     percentage: 90,
@@ -1267,7 +1267,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health of the Republic of Rwanda",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 173695669.95,
     budget: 180056518.24,
     percentage: 96,
@@ -1283,7 +1283,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "United Nations Development Programme",
     parentRow: "Multilateral Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 902756371.41,
     budget: 1086530937.29,
     percentage: 83,
@@ -1291,7 +1291,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "United Nations Development Programme",
     parentRow: "Multilateral Organization",
-    column: "Multi-Component",
+    column: "Multicomponent",
     value: 148672479.92,
     budget: 193680922.71,
     percentage: 77,
@@ -1305,9 +1305,9 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
     percentage: 92,
   },
   {
-    row: "India HIV/AIDS Alliance",
+    row: "India HIV Alliance",
     parentRow: "Civil Society Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 43040443.67,
     budget: 57284090.27,
     percentage: 75,
@@ -1315,7 +1315,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health and Wellness",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 2081390.28,
     budget: 3478044.25,
     percentage: 60,
@@ -1331,7 +1331,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Viet Nam Union of Science and Technology Associations",
     parentRow: "Civil Society Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 12386196.28,
     budget: 12798919.1,
     percentage: 97,
@@ -1339,7 +1339,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Alliance Nationale pour la Santé et le Développement en Côte D'Ivoire",
     parentRow: "Civil Society Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 28470511.24,
     budget: 39653669.83,
     percentage: 72,
@@ -1371,7 +1371,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "The Family Planning Association of Sri Lanka",
     parentRow: "Civil Society Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 2878694,
     budget: 3545721.22,
     percentage: 81,
@@ -1379,7 +1379,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "National High Council for the Fight against AIDS",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 50880988.68,
     budget: 53029811.43,
     percentage: 96,
@@ -1403,7 +1403,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health and Social Protection of the Republic of Albania",
     parentRow: "Governmental Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 2418683,
     budget: 2868559.78,
     percentage: 84,
@@ -1411,15 +1411,15 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Coordination Committee of the Fight against AIDS of Cabo Verde",
     parentRow: "Governmental Organization",
-    column: "Multi-Component",
+    column: "Multicomponent",
     value: 8723215.08,
     budget: 10108514.28,
     percentage: 86,
   },
   {
-    row: 'Charitable Organization "All-Ukrainian Network of People Living with HIV/AIDS"',
+    row: 'Charitable Organization "All-Ukrainian Network of People Living with HIV"',
     parentRow: "Civil Society Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 85058972.32,
     budget: 100115573.35,
     percentage: 85,
@@ -1443,7 +1443,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Centro de Información y Recursos para el Desarrollo",
     parentRow: "Civil Society Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 8108346.21,
     budget: 10465888.39,
     percentage: 77,
@@ -1459,7 +1459,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Namibia Network of AIDS Service Organizations",
     parentRow: "Civil Society Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 3548526.88,
     budget: 3782407.83,
     percentage: 94,
@@ -1467,7 +1467,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Solomon Islands Ministry of Health and Medical Services",
     parentRow: "Governmental Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 1200803.9,
     budget: 1512241.2,
     percentage: 79,
@@ -1483,7 +1483,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health of the Republic of Malawi",
     parentRow: "Governmental Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 621757292.87,
     budget: 648811696.19,
     percentage: 96,
@@ -1499,7 +1499,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health of the Republic of El Salvador",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 14300380,
     budget: 21230477.25,
     percentage: 67,
@@ -1515,7 +1515,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Lagos State Ministry of Health",
     parentRow: "Governmental Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 15320397.81,
     budget: 20207233.62,
     percentage: 76,
@@ -1539,7 +1539,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "World Vision International",
     parentRow: "Civil Society Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 6593014.27,
     budget: 7551955.46,
     percentage: 87,
@@ -1547,7 +1547,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: 'State Institution "Public Health Center of the Ministry of Health of Ukraine"',
     parentRow: "Governmental Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 93458574.52,
     budget: 119390993.28,
     percentage: 78,
@@ -1555,7 +1555,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "ActionAid International Malawi",
     parentRow: "Civil Society Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 29244399,
     budget: 30082198.12,
     percentage: 97,
@@ -1563,7 +1563,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health, Solidarity, Social Protection and Gender Promotion of the Union of the Comoros",
     parentRow: "Governmental Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 818070.77,
     budget: 2186441.95,
     percentage: 37,
@@ -1571,7 +1571,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Finance, Planning and Economic Development of the Republic of Uganda",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 479281353.41,
     budget: 611972079.58,
     percentage: 78,
@@ -1579,7 +1579,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health of the Republic of Suriname",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 338492.6,
     budget: 955768.85,
     percentage: 35,
@@ -1611,7 +1611,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "William J. Clinton Foundation",
     parentRow: "Private Sector",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 13281339.56,
     budget: 18283889.09,
     percentage: 73,
@@ -1635,7 +1635,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "National Executive Secretariat for fight against Aids of the Islamic Republic of Mauritania",
     parentRow: "Governmental Organization",
-    column: "Multi-Component",
+    column: "Multicomponent",
     value: 15462565.91,
     budget: 23765504.47,
     percentage: 65,
@@ -1643,7 +1643,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "United Nations Children's Fund",
     parentRow: "Multilateral Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 32462769.02,
     budget: 39548856.63,
     percentage: 82,
@@ -1651,7 +1651,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health of Mongolia",
     parentRow: "Governmental Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 10857730.45,
     budget: 14149274.67,
     percentage: 77,
@@ -1667,7 +1667,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health of the Co-operative Republic of Guyana",
     parentRow: "Governmental Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 742221.63,
     budget: 1410238.62,
     percentage: 53,
@@ -1675,7 +1675,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "World Vision International",
     parentRow: "Civil Society Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 36230666.33,
     budget: 66286750.32,
     percentage: 55,
@@ -1691,7 +1691,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Cambodia Ministry of Economy and Finance",
     parentRow: "Governmental Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 111551974.63,
     budget: 137096031.36,
     percentage: 81,
@@ -1707,7 +1707,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Plan International (India Chapter)",
     parentRow: "Civil Society Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 13666770.26,
     budget: 17802600.44,
     percentage: 77,
@@ -1715,7 +1715,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Department of Disease Control, Ministry of Public Health of the Royal Government of Thailand",
     parentRow: "Governmental Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 44488956.26,
     budget: 64304239.48,
     percentage: 69,
@@ -1755,7 +1755,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health and Social Services of Namibia",
     parentRow: "Governmental Organization",
-    column: "Multi-Component",
+    column: "Multicomponent",
     value: 33194469,
     budget: 49281286.99,
     percentage: 67,
@@ -1787,7 +1787,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health and Social Services of Namibia",
     parentRow: "Governmental Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 31440417.8,
     budget: 36132321.12,
     percentage: 87,
@@ -1795,7 +1795,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health of the State of Eritrea",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 32620798.38,
     budget: 41096278.99,
     percentage: 79,
@@ -1811,7 +1811,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Beyond Zero NPC",
     parentRow: "Civil Society Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 61369861.29,
     budget: 75716004.37,
     percentage: 81,
@@ -1819,7 +1819,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health and Social Welfare",
     parentRow: "Governmental Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 45039539.83,
     budget: 66376385.75,
     percentage: 68,
@@ -1827,15 +1827,15 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "United Nations Children's Fund",
     parentRow: "Multilateral Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 8862596,
     budget: 15000000,
     percentage: 59,
   },
   {
-    row: "African Comprehensive HIV/AIDS Partnerships",
+    row: "African Comprehensive HIV Partnerships",
     parentRow: "Multilateral Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 13585191.1,
     budget: 15068680.49,
     percentage: 90,
@@ -1875,7 +1875,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Community Development Fund",
     parentRow: "Civil Society Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 2698230.81,
     budget: 2801151.36,
     percentage: 96,
@@ -1891,7 +1891,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Conseil National de Lutte contre le SIDA de la République du Sénégal",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 31713295.49,
     budget: 35654269.69,
     percentage: 89,
@@ -1899,7 +1899,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Networking HIV and AIDS Community of Southern Africa NPC",
     parentRow: "Civil Society Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 91276470,
     budget: 130650057.74,
     percentage: 70,
@@ -1931,7 +1931,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "ActionAid International The Gambia",
     parentRow: "Civil Society Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 4416421.78,
     budget: 5076253.09,
     percentage: 87,
@@ -1947,7 +1947,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Family Health International (FHI360)",
     parentRow: "Civil Society Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 301181595,
     budget: 369054723.61,
     percentage: 82,
@@ -1963,7 +1963,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "CARE Peru",
     parentRow: "Civil Society Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 5884014.99,
     budget: 6264585.26,
     percentage: 94,
@@ -1971,7 +1971,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Frontline AIDS",
     parentRow: "Civil Society Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 8319787.92,
     budget: 11414407.85,
     percentage: 73,
@@ -1979,7 +1979,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Botswana-Ministry of Health",
     parentRow: "Governmental Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 9986805.01,
     budget: 23705886.8,
     percentage: 42,
@@ -1995,7 +1995,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Programme santé de lutte contre le Sida",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 41259357.25,
     budget: 59661663.1,
     percentage: 69,
@@ -2011,7 +2011,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Public Health of the Republic of Ecuador",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 9008781,
     budget: 9672292.56,
     percentage: 93,
@@ -2027,7 +2027,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "United Nations Office for Project Services",
     parentRow: "Multilateral Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 126545358.66,
     budget: 154657637.35,
     percentage: 82,
@@ -2051,15 +2051,15 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health and Social Action of the Republic of Senegal",
     parentRow: "Governmental Organization",
-    column: "Multi-Component",
+    column: "Multicomponent",
     value: 48100775.56,
     budget: 78555774.74,
     percentage: 61,
   },
   {
-    row: "Viet Nam Authority of HIV/AIDS Control",
+    row: "Viet Nam Authority of HIV Control",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 87436909,
     budget: 107390045.86,
     percentage: 81,
@@ -2067,7 +2067,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health of the Kingdom of Morocco",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 12417422.67,
     budget: 13282254.66,
     percentage: 93,
@@ -2083,7 +2083,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Churches Health Association of Zambia",
     parentRow: "Civil Society Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 134725452.35,
     budget: 163867471.4,
     percentage: 82,
@@ -2099,7 +2099,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Yayasan Spiritia",
     parentRow: "Civil Society Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 49628497.65,
     budget: 55405091.22,
     percentage: 90,
@@ -2123,7 +2123,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Organisation of Eastern Caribbean States",
     parentRow: "Civil Society Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 4419361.71,
     budget: 5140467.73,
     percentage: 86,
@@ -2139,7 +2139,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "La Croix-Rouge française",
     parentRow: "Civil Society Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 116927751.51,
     budget: 142183137.76,
     percentage: 82,
@@ -2147,7 +2147,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health of the Republic of Azerbaijan",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 7100810.95,
     budget: 7176227.73,
     percentage: 99,
@@ -2155,7 +2155,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Indonesia AIDS Coalition",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 7574614,
     budget: 10781867.96,
     percentage: 70,
@@ -2179,7 +2179,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health of the Kingdom of Morocco",
     parentRow: "Governmental Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 16011014.69,
     budget: 19100454.27,
     percentage: 84,
@@ -2195,7 +2195,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Malaysian AIDS Council",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 4007177.35,
     budget: 5272821.12,
     percentage: 76,
@@ -2251,7 +2251,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health of the Co-operative Republic of Guyana",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 2409770.87,
     budget: 4539733.79,
     percentage: 53,
@@ -2283,7 +2283,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Nai Zindagi",
     parentRow: "Civil Society Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 32578424.38,
     budget: 40133979.52,
     percentage: 81,
@@ -2291,7 +2291,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Amref Health Africa",
     parentRow: "Civil Society Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 58327417.86,
     budget: 61574600.04,
     percentage: 95,
@@ -2307,7 +2307,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Solidarity and Action Against The HIV Infection in India",
     parentRow: "Civil Society Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 19055229.16,
     budget: 34421973.48,
     percentage: 55,
@@ -2315,7 +2315,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "National Agency for the Control of AIDS",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 47084546.25,
     budget: 87223028.74,
     percentage: 54,
@@ -2323,7 +2323,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Centro de Colaboração em Saúde",
     parentRow: "Civil Society Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 79742972.45,
     budget: 84986556.01,
     percentage: 94,
@@ -2347,7 +2347,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Catholic Relief Services - United States Conference of Catholic Bishops",
     parentRow: "Civil Society Organization",
-    column: "Multi-Component",
+    column: "Multicomponent",
     value: 7053913,
     budget: 11789421.99,
     percentage: 60,
@@ -2419,7 +2419,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Population Services International",
     parentRow: "Civil Society Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 16322731.5,
     budget: 17191036.41,
     percentage: 95,
@@ -2435,7 +2435,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Institute of Nutrition of Central America and Panama (INCAP)",
     parentRow: "Multilateral Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 34708986.56,
     budget: 46146009.25,
     percentage: 75,
@@ -2443,7 +2443,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Humanist Institute for Co-operation with Developing Countries (Hivos)",
     parentRow: "Civil Society Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 31495869.05,
     budget: 35648453.04,
     percentage: 88,
@@ -2451,7 +2451,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Plan International, Inc.",
     parentRow: "Civil Society Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 26539882.54,
     budget: 42442515.99,
     percentage: 63,
@@ -2491,7 +2491,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Plan International, Inc.",
     parentRow: "Civil Society Organization",
-    column: "Multi-Component",
+    column: "Multicomponent",
     value: 10829883.63,
     budget: 11382840.53,
     percentage: 95,
@@ -2499,7 +2499,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "The National AIDS Secretariat of the Republic of The Gambia",
     parentRow: "Governmental Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 27141477.86,
     budget: 31610497.57,
     percentage: 86,
@@ -2507,7 +2507,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Pact, Inc.",
     parentRow: "Civil Society Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 9475563.5,
     budget: 12347559.23,
     percentage: 77,
@@ -2515,7 +2515,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health of the Lao People's Democratic Republic",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 7181793.63,
     budget: 8627308.28,
     percentage: 83,
@@ -2523,7 +2523,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "CARE INTERNATIONAL CAMEROON",
     parentRow: "Civil Society Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 6456066.83,
     budget: 16343976.4,
     percentage: 40,
@@ -2531,7 +2531,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health of the Republic of Zambia",
     parentRow: "Governmental Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 331786387.2,
     budget: 404303087.75,
     percentage: 82,
@@ -2539,7 +2539,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "The AIDS Support Organisation (Uganda) Limited",
     parentRow: "Civil Society Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 43469125.2,
     budget: 58883004.36,
     percentage: 74,
@@ -2547,7 +2547,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health of Montenegro",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 1049483.83,
     budget: 1432963.39,
     percentage: 73,
@@ -2555,7 +2555,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Plan International, Inc.",
     parentRow: "Civil Society Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 39887146.15,
     budget: 47995858.36,
     percentage: 83,
@@ -2563,7 +2563,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Kazakh scientific center of dermatology and infectious diseases of the Ministry of Health of the Republic of Kazakhstan",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 10568096.37,
     budget: 11826100.6,
     percentage: 89,
@@ -2571,7 +2571,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Prévention Information Lutte contre le Sida",
     parentRow: "Civil Society Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 1169942.03,
     budget: 1243912.65,
     percentage: 94,
@@ -2579,7 +2579,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "St. Petersburg charitable fund programs “Humanitarian action”",
     parentRow: "Civil Society Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 4731125.58,
     budget: 6744251.06,
     percentage: 70,
@@ -2595,7 +2595,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "United Nations Development Programme",
     parentRow: "Multilateral Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 240531618.95,
     budget: 324183107.12,
     percentage: 74,
@@ -2611,7 +2611,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health, Population and Hospital Reform of the People's Democratic Republic of Algeria",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 4132996.05,
     budget: 4790620.45,
     percentage: 86,
@@ -2635,7 +2635,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Stichting Cordaid",
     parentRow: "Civil Society Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 354430475.99,
     budget: 419619039.27,
     percentage: 84,
@@ -2667,7 +2667,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health of the Republic of Guinea-Bissau",
     parentRow: "Governmental Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 40832637.59,
     budget: 54250981.03,
     percentage: 75,
@@ -2675,7 +2675,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Instituto Nicaragüense de Seguridad Social",
     parentRow: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 4027914.02,
     budget: 4166336.17,
     percentage: 97,
@@ -2683,7 +2683,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "World Vision Malawi",
     parentRow: "Civil Society Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 13534644,
     budget: 15097235.43,
     percentage: 90,
@@ -2691,7 +2691,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   {
     row: "Ministry of Health",
     parentRow: "Governmental Organization",
-    column: "Multi-Component",
+    column: "Multicomponent",
     value: 85644459.71,
     budget: 168113984.34,
     percentage: 51,
@@ -2705,7 +2705,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   },
   {
     row: "Governmental Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 3825267188.1999993,
     budget: 4691213909.3099985,
     percentage: 82,
@@ -2719,7 +2719,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   },
   {
     row: "Governmental Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 2238846880.6,
     budget: 2793301037.3600006,
     percentage: 80,
@@ -2733,7 +2733,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   },
   {
     row: "Governmental Organization",
-    column: "Multi-Component",
+    column: "Multicomponent",
     value: 200081142.01999998,
     budget: 343888811.38,
     percentage: 58,
@@ -2747,7 +2747,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   },
   {
     row: "Civil Society Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 1120168925.9499998,
     budget: 1341681259.3400002,
     percentage: 83,
@@ -2761,7 +2761,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   },
   {
     row: "Civil Society Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 1664466415.38,
     budget: 2058352117.9900002,
     percentage: 81,
@@ -2775,7 +2775,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   },
   {
     row: "Civil Society Organization",
-    column: "Multi-Component",
+    column: "Multicomponent",
     value: 17883796.630000003,
     budget: 23172262.52,
     percentage: 77,
@@ -2789,7 +2789,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   },
   {
     row: "Private Sector",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 18185138,
     budget: 20732077.39,
     percentage: 88,
@@ -2803,7 +2803,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   },
   {
     row: "Private Sector",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 13281339.56,
     budget: 18283889.09,
     percentage: 73,
@@ -2817,7 +2817,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   },
   {
     row: "Private Sector",
-    column: "Multi-Component",
+    column: "Multicomponent",
     value: 0,
     budget: 0,
     percentage: 120,
@@ -2831,7 +2831,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   },
   {
     row: "Multilateral Organization",
-    column: "HIV/AIDS",
+    column: "HIV",
     value: 1096473485.6499999,
     budget: 1326883440.52,
     percentage: 83,
@@ -2845,7 +2845,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   },
   {
     row: "Multilateral Organization",
-    column: "HIV/TB",
+    column: "TB/HIV",
     value: 262979406.04999998,
     budget: 354251787.61,
     percentage: 74,
@@ -2859,7 +2859,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
   },
   {
     row: "Multilateral Organization",
-    column: "Multi-Component",
+    column: "Multicomponent",
     value: 237680845.7,
     budget: 347894235.96000004,
     percentage: 68,
@@ -2869,7 +2869,7 @@ export const STORY_DATA_VARIANT_1: HeatmapDataItem[] = [
 export const STORY_DATA_VARIANT_2: HeatmapDataItem[] = [
   {
     column: "2023",
-    row: "HIV/AIDS",
+    row: "HIV",
     value: "Eligible",
     diseaseBurden: "NH",
   },
@@ -2893,7 +2893,7 @@ export const STORY_DATA_VARIANT_2: HeatmapDataItem[] = [
   },
   {
     column: "2022",
-    row: "HIV/AIDS",
+    row: "HIV",
     value: "Eligible",
     diseaseBurden: "NH",
   },
@@ -2917,7 +2917,7 @@ export const STORY_DATA_VARIANT_2: HeatmapDataItem[] = [
   },
   {
     column: "2021",
-    row: "HIV/AIDS",
+    row: "HIV",
     value: "Eligible",
     diseaseBurden: "NH",
   },
@@ -2941,7 +2941,7 @@ export const STORY_DATA_VARIANT_2: HeatmapDataItem[] = [
   },
   {
     column: "2020",
-    row: "HIV/AIDS",
+    row: "HIV",
     value: "Eligible",
     diseaseBurden: "NH",
   },
@@ -2965,7 +2965,7 @@ export const STORY_DATA_VARIANT_2: HeatmapDataItem[] = [
   },
   {
     column: "2019",
-    row: "HIV/AIDS",
+    row: "HIV",
     value: "Eligible",
     diseaseBurden: "NH",
   },
@@ -2989,7 +2989,7 @@ export const STORY_DATA_VARIANT_2: HeatmapDataItem[] = [
   },
   {
     column: "2018",
-    row: "HIV/AIDS",
+    row: "HIV",
     value: "Eligible",
     diseaseBurden: "M",
   },
@@ -3013,7 +3013,7 @@ export const STORY_DATA_VARIANT_2: HeatmapDataItem[] = [
   },
   {
     column: "2017",
-    row: "HIV/AIDS",
+    row: "HIV",
     value: "Eligible",
     diseaseBurden: "M",
   },
@@ -3037,7 +3037,7 @@ export const STORY_DATA_VARIANT_2: HeatmapDataItem[] = [
   },
   {
     column: "2016",
-    row: "HIV/AIDS",
+    row: "HIV",
     value: "Eligible",
     diseaseBurden: "M",
   },
@@ -3067,7 +3067,7 @@ export const STORY_DATA_VARIANT_2: HeatmapDataItem[] = [
   },
   {
     column: "2015",
-    row: "HIV/AIDS",
+    row: "HIV",
     value: "Eligible",
     diseaseBurden: "M",
   },
@@ -3097,7 +3097,7 @@ export const STORY_DATA_VARIANT_2: HeatmapDataItem[] = [
   },
   {
     column: "2014",
-    row: "HIV/AIDS",
+    row: "HIV",
     value: "Eligible",
     diseaseBurden: "M",
   },
@@ -3127,7 +3127,7 @@ export const STORY_DATA_VARIANT_2: HeatmapDataItem[] = [
   },
   {
     column: "2013",
-    row: "HIV/AIDS",
+    row: "HIV",
     value: "Eligible",
     diseaseBurden: "H",
   },
@@ -3157,7 +3157,7 @@ export const STORY_DATA_VARIANT_2: HeatmapDataItem[] = [
   },
   {
     column: "2012",
-    row: "HIV/AIDS",
+    row: "HIV",
     value: "Eligible",
     diseaseBurden: "H",
   },
@@ -3181,7 +3181,7 @@ export const STORY_DATA_VARIANT_2: HeatmapDataItem[] = [
   },
   {
     column: "2011",
-    row: "HIV/AIDS",
+    row: "HIV",
     value: "Eligible",
     diseaseBurden: "H",
   },
@@ -3211,7 +3211,7 @@ export const STORY_DATA_VARIANT_2: HeatmapDataItem[] = [
   },
   {
     column: "2010",
-    row: "HIV/AIDS",
+    row: "HIV",
     value: "Eligible",
     diseaseBurden: "NA",
   },
@@ -3235,7 +3235,7 @@ export const STORY_DATA_VARIANT_2: HeatmapDataItem[] = [
   },
   {
     column: "2009",
-    row: "HIV/AIDS",
+    row: "HIV",
     value: "Eligible",
     diseaseBurden: "NA",
   },
@@ -3259,7 +3259,7 @@ export const STORY_DATA_VARIANT_2: HeatmapDataItem[] = [
   },
   {
     column: "2008",
-    row: "HIV/AIDS",
+    row: "HIV",
     value: "Eligible",
     diseaseBurden: "NA",
   },
@@ -3283,7 +3283,7 @@ export const STORY_DATA_VARIANT_2: HeatmapDataItem[] = [
   },
   {
     column: "2007",
-    row: "HIV/AIDS",
+    row: "HIV",
     value: "Eligible",
     diseaseBurden: "NA",
   },
@@ -3307,7 +3307,7 @@ export const STORY_DATA_VARIANT_2: HeatmapDataItem[] = [
   },
   {
     column: "2006",
-    row: "HIV/AIDS",
+    row: "HIV",
     value: "Eligible",
     diseaseBurden: "NA",
   },
@@ -3331,7 +3331,7 @@ export const STORY_DATA_VARIANT_2: HeatmapDataItem[] = [
   },
   {
     column: "2005",
-    row: "HIV/AIDS",
+    row: "HIV",
     value: "Eligible",
     diseaseBurden: "NA",
   },
@@ -3355,7 +3355,7 @@ export const STORY_DATA_VARIANT_2: HeatmapDataItem[] = [
   },
   {
     column: "2004",
-    row: "HIV/AIDS",
+    row: "HIV",
     value: "Eligible",
     diseaseBurden: "NA",
   },
@@ -3379,7 +3379,7 @@ export const STORY_DATA_VARIANT_2: HeatmapDataItem[] = [
   },
   {
     column: "2003",
-    row: "HIV/AIDS",
+    row: "HIV",
     value: "Eligible",
     diseaseBurden: "NA",
   },

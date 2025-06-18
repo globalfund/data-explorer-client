@@ -1,15 +1,18 @@
 import AppsIcon from "@mui/icons-material/Apps";
 import TableChartIcon from "@mui/icons-material/TableChart";
+import { ReactComponent as CardView } from "app/assets/vectors/CardView.svg";
 
 export interface GrantsLayoutProps {
   view: string;
   anchorEl: any;
   search: string;
+  page: number;
   loading: boolean;
   filterGroups: any;
   showSearch: boolean;
   searchInputRef: any;
   pageAppliedFilters: any;
+  latestUpdateDate?: string;
   viewResult: React.ReactNode;
   pagination: React.ReactNode;
   handleResetFilters: () => void;
@@ -18,6 +21,10 @@ export interface GrantsLayoutProps {
   handleSearchIconClick: (showSearch: boolean) => () => void;
   handleSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleFilterButtonClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  setPage: (value: React.SetStateAction<number>) => void;
+  setPageSearchValue: (value: React.SetStateAction<number>) => void;
+  handleCancelFilters: () => void;
+  handleApplyFilters: () => void;
 }
 
 export const GRANTS_STORY_DATA = [
@@ -166,7 +173,7 @@ export const DROPDOWN_ITEMS: {
   {
     value: "Card View",
     label: "Card View",
-    icon: <AppsIcon />,
+    icon: <CardView />,
   },
   {
     value: "Table View",

@@ -847,7 +847,7 @@ export const STORY_DATA_VARIANT_1: ExpandableHorizontalBarChartDataItem[] = [
 
 export const STORY_DATA_VARIANT_2: ExpandableHorizontalBarChartDataItem[] = [
   {
-    name: "HIV/AIDS",
+    name: "HIV",
     value: 6507650968.13,
     items: [
       {
@@ -911,7 +911,7 @@ export const STORY_DATA_VARIANT_2: ExpandableHorizontalBarChartDataItem[] = [
         value: 51397820.99,
       },
       {
-        name: "Reducing human rights-related barriers to HIV/TB services",
+        name: "Reducing human rights-related barriers to TB/HIV services",
         value: 110293032.98,
       },
       {
@@ -939,7 +939,7 @@ export const STORY_DATA_VARIANT_2: ExpandableHorizontalBarChartDataItem[] = [
     ],
   },
   {
-    name: "Multi-Component",
+    name: "Multicomponent",
     value: 4929393204.469999,
     items: [
       {
@@ -1029,7 +1029,7 @@ export const STORY_DATA_VARIANT_2: ExpandableHorizontalBarChartDataItem[] = [
         value: 0,
       },
       {
-        name: "Multi-Component",
+        name: "Multicomponent",
         value: 193997.94,
       },
       {
@@ -1046,7 +1046,7 @@ export const STORY_DATA_VARIANT_2: ExpandableHorizontalBarChartDataItem[] = [
 
 export function findDeep(
   data: ExpandableHorizontalBarChartDataItem[],
-  name: string
+  name: string,
 ): ExpandableHorizontalBarChartDataItem | undefined {
   for (const item of data) {
     if (item.name === name) {

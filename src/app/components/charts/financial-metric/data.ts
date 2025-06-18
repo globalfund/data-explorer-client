@@ -188,7 +188,7 @@ export const STORY_DATA_VARIANT_1: FinancialMetricProps = {
         },
         {
           level: 1,
-          name: 'Charitable Organization "All-Ukrainian Network of People Living with HIV/AIDS"',
+          name: 'Charitable Organization "All-Ukrainian Network of People Living with HIV"',
           value: 104.39295182499693,
           color: "#013E77",
           items: [],
@@ -293,7 +293,7 @@ export const STORY_DATA_VARIANT_1: FinancialMetricProps = {
         },
         {
           level: 1,
-          name: "India HIV/AIDS Alliance",
+          name: "India HIV Alliance",
           value: 105.80658537817722,
           color: "#013E77",
           items: [],
@@ -721,7 +721,7 @@ export const STORY_DATA_VARIANT_1: FinancialMetricProps = {
         },
         {
           level: 1,
-          name: "HIV/AIDS Prevention and Control Office",
+          name: "HIV Prevention and Control Office",
           value: 103.16514245542834,
           color: "#013E77",
           items: [],
@@ -1169,7 +1169,7 @@ export const STORY_DATA_VARIANT_1: FinancialMetricProps = {
         },
         {
           level: 1,
-          name: "National HIV/AIDS Secretariat",
+          name: "National HIV Secretariat",
           value: 101.75587051817172,
           color: "#013E77",
           items: [],
@@ -1372,7 +1372,7 @@ export const STORY_DATA_VARIANT_1: FinancialMetricProps = {
         },
         {
           level: 1,
-          name: "Viet Nam Authority of HIV/AIDS Control",
+          name: "Viet Nam Authority of HIV Control",
           value: 105.10040216077994,
           color: "#013E77",
           items: [],
@@ -1394,7 +1394,7 @@ export const STORY_DATA_VARIANT_1: FinancialMetricProps = {
       items: [
         {
           level: 1,
-          name: "African Comprehensive HIV/AIDS Partnerships",
+          name: "African Comprehensive HIV Partnerships",
           value: 100,
           color: "#013E77",
           items: [],
@@ -1670,7 +1670,7 @@ export const STORY_DATA_VARIANT_2: FinancialMetricProps = {
         },
         {
           level: 1,
-          name: 'Charitable Organization "All-Ukrainian Network of People Living with HIV/AIDS"',
+          name: 'Charitable Organization "All-Ukrainian Network of People Living with HIV"',
           value: 95.42325114701974,
           color: "#00B5AE",
           items: [],
@@ -1775,7 +1775,7 @@ export const STORY_DATA_VARIANT_2: FinancialMetricProps = {
         },
         {
           level: 1,
-          name: "India HIV/AIDS Alliance",
+          name: "India HIV Alliance",
           value: 88.32626415461839,
           color: "#00B5AE",
           items: [],
@@ -2203,7 +2203,7 @@ export const STORY_DATA_VARIANT_2: FinancialMetricProps = {
         },
         {
           level: 1,
-          name: "HIV/AIDS Prevention and Control Office",
+          name: "HIV Prevention and Control Office",
           value: 80.65678562579191,
           color: "#00B5AE",
           items: [],
@@ -2651,7 +2651,7 @@ export const STORY_DATA_VARIANT_2: FinancialMetricProps = {
         },
         {
           level: 1,
-          name: "National HIV/AIDS Secretariat",
+          name: "National HIV Secretariat",
           value: 100.71653192817651,
           color: "#00B5AE",
           items: [],
@@ -2854,7 +2854,7 @@ export const STORY_DATA_VARIANT_2: FinancialMetricProps = {
         },
         {
           level: 1,
-          name: "Viet Nam Authority of HIV/AIDS Control",
+          name: "Viet Nam Authority of HIV Control",
           value: 99.77533866220159,
           color: "#00B5AE",
           items: [],
@@ -2876,7 +2876,7 @@ export const STORY_DATA_VARIANT_2: FinancialMetricProps = {
       items: [
         {
           level: 1,
-          name: "African Comprehensive HIV/AIDS Partnerships",
+          name: "African Comprehensive HIV Partnerships",
           value: 97.6034366823948,
           color: "#00B5AE",
           items: [],
@@ -3152,7 +3152,7 @@ export const STORY_DATA_VARIANT_3: FinancialMetricProps = {
         },
         {
           level: 1,
-          name: 'Charitable Organization "All-Ukrainian Network of People Living with HIV/AIDS"',
+          name: 'Charitable Organization "All-Ukrainian Network of People Living with HIV"',
           value: 95.42325114701974,
           color: "#0A2840",
           items: [],
@@ -3257,7 +3257,7 @@ export const STORY_DATA_VARIANT_3: FinancialMetricProps = {
         },
         {
           level: 1,
-          name: "India HIV/AIDS Alliance",
+          name: "India HIV Alliance",
           value: 88.32626415461839,
           color: "#0A2840",
           items: [],
@@ -3685,7 +3685,7 @@ export const STORY_DATA_VARIANT_3: FinancialMetricProps = {
         },
         {
           level: 1,
-          name: "HIV/AIDS Prevention and Control Office",
+          name: "HIV Prevention and Control Office",
           value: 80.65678562579191,
           color: "#0A2840",
           items: [],
@@ -4133,7 +4133,7 @@ export const STORY_DATA_VARIANT_3: FinancialMetricProps = {
         },
         {
           level: 1,
-          name: "National HIV/AIDS Secretariat",
+          name: "National HIV Secretariat",
           value: 100.71653192817651,
           color: "#0A2840",
           items: [],
@@ -4336,7 +4336,7 @@ export const STORY_DATA_VARIANT_3: FinancialMetricProps = {
         },
         {
           level: 1,
-          name: "Viet Nam Authority of HIV/AIDS Control",
+          name: "Viet Nam Authority of HIV Control",
           value: 99.77533866220159,
           color: "#0A2840",
           items: [],
@@ -4358,7 +4358,7 @@ export const STORY_DATA_VARIANT_3: FinancialMetricProps = {
       items: [
         {
           level: 1,
-          name: "African Comprehensive HIV/AIDS Partnerships",
+          name: "African Comprehensive HIV Partnerships",
           value: 97.6034366823948,
           color: "#0A2840",
           items: [],

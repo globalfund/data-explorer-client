@@ -22,15 +22,15 @@ export const stats: {
   value: number | string;
 }[] = [
   {
-    value: "24.5 million",
+    value: "24.5 Million",
     label: "People on antiretroviral therapy for HIV in 2022.",
   },
   {
-    value: "6.7 million",
+    value: "6.7 Million",
     label: "People with TB treated in 2022.",
   },
   {
-    value: "220 million",
+    value: "220 Million",
     label: "Mosquito nets distributed in 2022.",
   },
 ];
@@ -42,6 +42,15 @@ export const dropdownItemsDisbursements = [
     icon: <BarChartIcon />,
   },
   { label: "Line Chart", value: "Line Chart", icon: <LineChartIcon /> },
+  { label: "Table View", value: "Table View", icon: <TableIcon /> },
+];
+
+export const dropdownItemsHolisticGrantInvestments = [
+  {
+    label: "Sankey Chart",
+    value: "Sankey Chart",
+    icon: <SankeyChartIcon />,
+  },
   { label: "Table View", value: "Table View", icon: <TableIcon /> },
 ];
 
@@ -86,12 +95,12 @@ export const FullWidthDivider = () => (
 
 export const BUDGET_BREAKDOWN_DATA = [
   {
-    name: "Multi-Component",
+    name: "Multicomponent",
     value: 37.41334776474775,
     color: "#0A2840",
   },
   {
-    name: "HIV/AIDS",
+    name: "HIV",
     value: 26.03209507797034,
     color: "#013E77",
   },

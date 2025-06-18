@@ -9,6 +9,7 @@ import { ChartBlock } from "app/components/chart-block";
 import { getCMSDataField } from "app/utils/getCMSDataField";
 import { LineChartProps } from "app/components/charts/line/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import {
   CYCLES,
   CycleProps,
@@ -21,10 +22,14 @@ import {
 
 export const HomeBlock4: React.FC = () => {
   const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "disbursements",
+  });
+
   const [chart4Cycles, setChart4Cycles] = React.useState<CycleProps[]>([]);
 
   const [chart4Dropdown, setChart4Dropdown] = React.useState(
-    CHART_4_DROPDOWN_ITEMS[0].value
+    CHART_4_DROPDOWN_ITEMS[0].value,
   );
 
   const dataDisbursementsLineChart = useStoreState(
@@ -32,20 +37,20 @@ export const HomeBlock4: React.FC = () => {
       get(state.HomeDisbursementsLineChart, "data", {
         data: [],
         xAxisKeys: [],
-      }) as LineChartProps
+      }) as LineChartProps,
   );
   const loadingDisbursementsLineChart = useStoreState((state) =>
-    Boolean(state.HomeDisbursementsLineChart.loading)
+    Boolean(state.HomeDisbursementsLineChart.loading),
   );
   const fetchDisbursementsLineChart = useStoreActions(
-    (actions) => actions.HomeDisbursementsLineChart.fetch
+    (actions) => actions.HomeDisbursementsLineChart.fetch,
   );
   const disbursementsCycles = useStoreState(
     (state) =>
       get(state.DisbursementsCycles, "data.data", []) as {
         name: string;
         value: string;
-      }[]
+      }[],
   );
 
   const handleChartCycleChange = (cycle: CycleProps) => {
@@ -73,7 +78,7 @@ export const HomeBlock4: React.FC = () => {
       name: string;
       value: string;
     }[],
-    componentField: string
+    componentField: string,
   ) => {
     let filterString = "";
     if (cycles.length > 0) {
@@ -132,17 +137,39 @@ export const HomeBlock4: React.FC = () => {
     return getRange(values, ["value"]);
   }, [dataDisbursementsLineChart.data]);
 
+  const exportChartData = React.useMemo(() => {
+    const data: (string | number)[][] = [];
+    dataDisbursementsLineChart.data.forEach((item) => {
+      item.data.forEach((value, index) => {
+        if (value) {
+          data.push([
+            dataDisbursementsLineChart.xAxisKeys[index],
+            item.name,
+            value,
+          ]);
+        }
+      });
+    });
+    return {
+      headers: ["Year", "Component", "Amount"],
+      data,
+    };
+  }, [dataDisbursementsLineChart.data]);
+
   return (
     <ChartBlock
       showCycleAll
       id="disbursements"
+      exportName="disbursements"
       subtitle={getCMSDataField(
         cmsData,
         "pagesHome.disbursementsSubtitle",
-        "Disbursements"
+        "Disbursements",
       )}
+      data={exportChartData}
       title={disbursementsTotal}
       selectedCycles={chart4Cycles}
+      latestUpdate={latestUpdateDate}
       dropdownSelected={chart4Dropdown}
       dropdownItems={CHART_4_DROPDOWN_ITEMS}
       loading={loadingDisbursementsLineChart}

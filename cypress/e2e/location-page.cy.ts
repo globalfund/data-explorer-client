@@ -51,7 +51,7 @@ describe("Testing The Location page", () => {
     cy.contains('[data-cy="chart-block"]', "Submitted for 2023-2025").within(
       () => {
         cy.get('[data-cy="table-container"]').should("be.visible");
-      }
+      },
     );
     cy.contains('[data-cy="chart-block"]', "Eligibility").within(() => {
       cy.get('[data-cy="table"]').should("be.visible");

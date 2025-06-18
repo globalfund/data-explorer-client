@@ -10,6 +10,7 @@ import { FilterGroupModel } from "app/components/filters/list/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { FinancialMetric } from "app/components/charts/financial-metric";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 import { componentsGroupingOptions } from "app/pages/datasets/grant-implementation/data";
 import {
@@ -18,9 +19,9 @@ import {
   STORY_DATA_VARIANT_2 as FINANCIAL_METRICS_DATA_2,
   STORY_DATA_VARIANT_3 as FINANCIAL_METRICS_DATA_3,
 } from "app/components/charts/financial-metric/data";
+import isEqual from "lodash/isEqual";
 
 interface GrantImplementationPageBlock5Props {
-  filterString: string;
   geographyGrouping: string;
   componentsGrouping: string;
   filterGroups: FilterGroupModel[];
@@ -31,11 +32,21 @@ export const GrantImplementationPageBlock5: React.FC<
 > = (props: GrantImplementationPageBlock5Props) => {
   const location = useLocation();
   const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "budgets",
+  });
 
   const [chart3AppliedFilters, setChart3AppliedFilters] = React.useState<
     string[]
   >([]);
   const [chart3AppliedFiltersData, setChart3AppliedFiltersData] =
+    React.useState({
+      ...defaultAppliedFilters,
+    });
+
+  const [chart3TempAppliedFilters, setChart3TempAppliedFilters] =
+    React.useState<string[]>([]);
+  const [chart3TempAppliedFiltersData, setChart3TempAppliedFiltersData] =
     React.useState({
       ...defaultAppliedFilters,
     });
@@ -48,10 +59,10 @@ export const GrantImplementationPageBlock5: React.FC<
       }) as {
         value: number;
         items: FinancialMetricExpandableItemProps[];
-      }
+      },
   );
   const fetchBudgetUtilisation = useStoreActions(
-    (actions) => actions.FinancialInsightsBudgetUtilisation.fetch
+    (actions) => actions.FinancialInsightsBudgetUtilisation.fetch,
   );
   const dataInCountryAbsorption = useStoreState(
     (state) =>
@@ -61,10 +72,10 @@ export const GrantImplementationPageBlock5: React.FC<
       }) as {
         value: number;
         items: FinancialMetricExpandableItemProps[];
-      }
+      },
   );
   const fetchInCountryAbsorption = useStoreActions(
-    (actions) => actions.FinancialInsightsCountryAbsorption.fetch
+    (actions) => actions.FinancialInsightsCountryAbsorption.fetch,
   );
   const dataDisbursementUtilisation = useStoreState(
     (state) =>
@@ -74,10 +85,10 @@ export const GrantImplementationPageBlock5: React.FC<
       }) as {
         value: number;
         items: FinancialMetricExpandableItemProps[];
-      }
+      },
   );
   const fetchDisbursementUtilisation = useStoreActions(
-    (actions) => actions.FinancialInsightsDisbursementUtilisation.fetch
+    (actions) => actions.FinancialInsightsDisbursementUtilisation.fetch,
   );
   const loadingFinancialMetrics = useStoreState((state) => {
     return (
@@ -92,10 +103,10 @@ export const GrantImplementationPageBlock5: React.FC<
         label: cycle.value,
         value: cycle.value,
       }))
-      .reverse()
+      .reverse(),
   );
   const appliedFiltersData = useStoreState(
-    (state) => state.AppliedFiltersState
+    (state) => state.AppliedFiltersState,
   );
 
   const [
@@ -115,14 +126,27 @@ export const GrantImplementationPageBlock5: React.FC<
       cycles: [],
     });
     setChart3AppliedFilters([]);
+    setChart3TempAppliedFiltersData({
+      ...chart3TempAppliedFiltersData,
+      locations: [],
+      components: [],
+      principalRecipients: [],
+      principalRecipientSubTypes: [],
+      principalRecipientTypes: [],
+      status: [],
+      cycles: [],
+    });
+    setChart3TempAppliedFilters([]);
   };
 
   const handleToggleChartFilter = (
     checked: boolean,
     value: string,
-    type: string
+    type: string,
   ) => {
-    let state = { ...chart3AppliedFiltersData };
+    let state = structuredClone(
+      chart3TempAppliedFiltersData,
+    ) as typeof chart3TempAppliedFiltersData;
     switch (type) {
       case "geography":
       case "geographyType":
@@ -145,7 +169,7 @@ export const GrantImplementationPageBlock5: React.FC<
           state.principalRecipients.push(value);
         } else {
           state.principalRecipients = state.principalRecipients.filter(
-            (item) => item !== value
+            (item) => item !== value,
           );
         }
         break;
@@ -162,7 +186,7 @@ export const GrantImplementationPageBlock5: React.FC<
           state.principalRecipientTypes.push(value);
         } else {
           state.principalRecipientTypes = state.principalRecipientTypes.filter(
-            (item) => item !== value
+            (item) => item !== value,
           );
         }
         break;
@@ -183,8 +207,8 @@ export const GrantImplementationPageBlock5: React.FC<
       default:
         break;
     }
-    setChart3AppliedFiltersData(state);
-    setChart3AppliedFilters([
+    setChart3TempAppliedFiltersData(structuredClone(state) as typeof state);
+    setChart3TempAppliedFilters([
       ...state.locations,
       ...state.components,
       ...state.principalRecipients,
@@ -196,7 +220,9 @@ export const GrantImplementationPageBlock5: React.FC<
   };
 
   const handleRemoveChartFilter = (value: string, types: string[]) => {
-    let state = { ...chart3AppliedFiltersData };
+    let state = structuredClone(
+      chart3TempAppliedFiltersData,
+    ) as typeof chart3TempAppliedFiltersData;
     types.forEach((type) => {
       switch (type) {
         case "geography":
@@ -209,7 +235,7 @@ export const GrantImplementationPageBlock5: React.FC<
           break;
         case "principalRecipient":
           state.principalRecipients = state.principalRecipients.filter(
-            (item) => item !== value
+            (item) => item !== value,
           );
           break;
         case "principalRecipientSubType":
@@ -218,7 +244,7 @@ export const GrantImplementationPageBlock5: React.FC<
           break;
         case "principalRecipientType":
           state.principalRecipientTypes = state.principalRecipientTypes.filter(
-            (item) => item !== value
+            (item) => item !== value,
           );
           break;
         case "status":
@@ -231,8 +257,8 @@ export const GrantImplementationPageBlock5: React.FC<
           break;
       }
     });
-    setChart3AppliedFiltersData(state);
-    setChart3AppliedFilters([
+    setChart3TempAppliedFiltersData(structuredClone(state) as typeof state);
+    setChart3TempAppliedFilters([
       ...state.locations,
       ...state.components,
       ...state.principalRecipients,
@@ -241,6 +267,21 @@ export const GrantImplementationPageBlock5: React.FC<
       ...state.status,
       ...state.cycles,
     ]);
+  };
+
+  const handleCancelChartFilters = () => {
+    setChart3TempAppliedFiltersData(structuredClone(chart3AppliedFiltersData));
+    setChart3TempAppliedFilters(chart3AppliedFilters);
+  };
+
+  const handleApplyChartFilters = () => {
+    if (isEqual(chart3AppliedFilters, chart3TempAppliedFiltersData)) return;
+    setChart3AppliedFiltersData(
+      structuredClone(
+        chart3TempAppliedFiltersData,
+      ) as typeof chart3TempAppliedFiltersData,
+    );
+    setChart3AppliedFilters(chart3TempAppliedFilters);
   };
 
   const financialMetricsContent = React.useMemo(() => {
@@ -330,7 +371,7 @@ export const GrantImplementationPageBlock5: React.FC<
         uniq([
           ...appliedFiltersData.locations,
           ...chart3AppliedFiltersData.locations,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (
@@ -342,7 +383,7 @@ export const GrantImplementationPageBlock5: React.FC<
         uniq([
           ...appliedFiltersData.components,
           ...chart3AppliedFiltersData.components,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (
@@ -356,7 +397,7 @@ export const GrantImplementationPageBlock5: React.FC<
         uniq([
           ...appliedFiltersData.principalRecipients,
           ...chart3AppliedFiltersData.principalRecipients,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (
@@ -370,7 +411,7 @@ export const GrantImplementationPageBlock5: React.FC<
         uniq([
           ...appliedFiltersData.principalRecipientSubTypes,
           ...chart3AppliedFiltersData.principalRecipientSubTypes,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (
@@ -384,7 +425,7 @@ export const GrantImplementationPageBlock5: React.FC<
         uniq([
           ...appliedFiltersData.principalRecipientTypes,
           ...chart3AppliedFiltersData.principalRecipientTypes,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (
@@ -396,7 +437,7 @@ export const GrantImplementationPageBlock5: React.FC<
         uniq([
           ...appliedFiltersData.status,
           ...chart3AppliedFiltersData.status,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (financialMetricsCycleDropdownSelected) {
@@ -454,6 +495,39 @@ export const GrantImplementationPageBlock5: React.FC<
     });
   }, [chart3FilterString, props.componentsGrouping, props.geographyGrouping]);
 
+  const exportChartData = React.useMemo(() => {
+    const data: (string | number)[][] = [];
+    data.push(["Budget Utilisation", "", "", "", dataBudgetUtilisation.value]);
+    dataBudgetUtilisation.items.forEach((item) => {
+      item.items.forEach((subItem) => {
+        subItem.items.forEach((subSubItem) => {
+          data.push([
+            "Budget Utilisation",
+            `"${item.name}"`,
+            `"${subItem.name}"`,
+            `"${subSubItem.name}"`,
+            subSubItem.value,
+          ]);
+        });
+      });
+    });
+
+    return {
+      headers: [
+        "Type",
+        "Principal Recipient Type",
+        "Principal Recipient Sub-Type",
+        "Principal Recipient",
+        "Amount",
+      ],
+      data,
+    };
+  }, [
+    dataBudgetUtilisation,
+    dataInCountryAbsorption,
+    dataDisbursementUtilisation,
+  ]);
+
   return (
     <Box
       padding="50px 0"
@@ -465,22 +539,27 @@ export const GrantImplementationPageBlock5: React.FC<
     >
       <DatasetChartBlock
         id="financial-metrics"
+        exportName="financial-metrics"
         title={getCMSDataField(
           cmsData,
           "pagesDatasetsGrantImplementation.financialMetricsTitle",
-          "Financial Metrics"
+          "Financial Metrics",
         )}
         subtitle=""
         dropdownItems={[]}
         empty={financialMetricsEmpty}
+        latestUpdate={latestUpdateDate}
         loading={loadingFinancialMetrics}
         filterGroups={props.filterGroups}
-        appliedFilters={chart3AppliedFilters}
+        handleApplyFilters={handleApplyChartFilters}
+        handleCancelFilters={handleCancelChartFilters}
+        appliedFilters={chart3TempAppliedFilters}
         toggleFilter={handleToggleChartFilter}
         removeFilter={handleRemoveChartFilter}
         handleResetFilters={handleResetChartFilters}
-        appliedFiltersData={chart3AppliedFiltersData}
+        tempAppliedFiltersData={chart3TempAppliedFiltersData}
         extraDropdown={financialMetricsCycleDropdown}
+        data={exportChartData}
         infoType="financials"
       >
         {financialMetricsContent}

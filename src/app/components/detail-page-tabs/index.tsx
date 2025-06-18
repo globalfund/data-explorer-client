@@ -5,6 +5,7 @@ import { Dropdown } from "app/components/dropdown";
 import { NavLink, useParams } from "react-router-dom";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { DetailPageTabsProps } from "app/components/detail-page-tabs/data";
+import { colors } from "app/theme";
 
 const ButtonTab = styled(NavLink)`
   font-size: 14px;
@@ -28,15 +29,20 @@ const ButtonTab = styled(NavLink)`
 `;
 
 export const DetailPageTabs: React.FC<DetailPageTabsProps> = (
-  props: DetailPageTabsProps
+  props: DetailPageTabsProps,
 ) => {
   const mobile = useMediaQuery("(max-width:767px)");
   const params = useParams<{ id: string; tab: string }>();
 
   return (
     <Box
+      top="57px"
+      zIndex="100"
       width="100%"
       display="flex"
+      padding="20px 0"
+      position="sticky"
+      bgcolor={colors.primary.white}
       justifyContent="space-between"
       sx={{
         "> button": {

@@ -21,6 +21,7 @@ import { getCMSDataField } from "app/utils/getCMSDataField";
 import { RaceBarChart } from "app/components/charts/race-bar";
 import { SankeyChartData } from "app/components/charts/sankey/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import { CHART_2_DROPDOWN_ITEMS } from "app/pages/grant/views/grant-implementation/data";
 import { componentsGroupingOptions } from "app/pages/datasets/grant-implementation/data";
 import {
@@ -31,21 +32,31 @@ import {
   getRange,
   getFinancialValueWithMetricPrefix,
 } from "app/utils/getFinancialValueWithMetricPrefix";
+import orderBy from "lodash/orderBy";
 
 export const GrantImplementation: React.FC = () => {
   const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDateChart1 = useGetDatasetLatestUpdate({
+    dataset: "disbursements",
+  });
+  const latestUpdateDateChart2 = useGetDatasetLatestUpdate({
+    dataset: "budgets",
+  });
+  const latestUpdateDateChart3 = useGetDatasetLatestUpdate({
+    dataset: "expenditures",
+  });
   const params = useParams<{ id: string; ip: string; tab: string }>();
 
   useTitle(`The Data Explorer - ${params.id} Financial Insights`);
 
   const [chart2Dropdown, setChart2Dropdown] = React.useState(
-    CHART_2_DROPDOWN_ITEMS[0].value
+    CHART_2_DROPDOWN_ITEMS[0].value,
   );
   const [chart2Dropdown2, setChart2Dropdown2] = React.useState(
-    componentsGroupingOptions[0].value
+    componentsGroupingOptions[0].value,
   );
   const [chart2Unit, setChart2Unit] = React.useState<"amount" | "percentage">(
-    "percentage"
+    "percentage",
   );
 
   const dataFinancialValues = useStoreState((state) =>
@@ -53,12 +64,12 @@ export const GrantImplementation: React.FC = () => {
       disbursement: 0,
       commitment: 0,
       signed: 0,
-    })
+    }),
   );
   const dataProgrameDates = useStoreState((state) => ({
     boardApprovedDate: get(
       state.GrantOverview,
-      "data.data[0].boardApprovedDate"
+      "data.data[0].boardApprovedDate",
     ),
     programStartDate: get(state.GrantOverview, "data.data[0].dates[0]"),
     programEndDate: get(state.GrantOverview, "data.data[0].dates[1]"),
@@ -68,23 +79,23 @@ export const GrantImplementation: React.FC = () => {
       get(state.GrantBudgetSankeyChart, "data.data[0]", {
         nodes: [],
         links: [],
-      }) as SankeyChartData
+      }) as SankeyChartData,
   );
   const dataExpendituresHeatmap = useStoreState(
     (state) =>
-      get(state.GrantExpendituresHeatmap, "data.data", []) as HeatmapDataItem[]
+      get(state.GrantExpendituresHeatmap, "data.data", []) as HeatmapDataItem[],
   );
   const dataHasExpenditures = useStoreState(
     (state) =>
       get(
         state.GrantHasExpenditures,
         "data.data.hasExpenditures",
-        false
-      ) as boolean
+        false,
+      ) as boolean,
   );
 
   const fetchExpendituresHeatmap = useStoreActions(
-    (actions) => actions.GrantExpendituresHeatmap.fetch
+    (actions) => actions.GrantExpendituresHeatmap.fetch,
   );
 
   const chart2UnitButtons = React.useMemo(
@@ -150,7 +161,7 @@ export const GrantImplementation: React.FC = () => {
         </IconButton>
       </Box>
     ),
-    [chart2Unit]
+    [chart2Unit],
   );
 
   const radialChartData = React.useMemo(
@@ -170,7 +181,7 @@ export const GrantImplementation: React.FC = () => {
         },
       },
     ],
-    [dataFinancialValues]
+    [dataFinancialValues],
   );
 
   const signedFormatted = React.useMemo(() => {
@@ -178,7 +189,7 @@ export const GrantImplementation: React.FC = () => {
     return `${getFinancialValueWithMetricPrefix(
       dataFinancialValues.signed,
       range.index,
-      2
+      2,
     )} ${range.abbr}`;
   }, [dataFinancialValues]);
 
@@ -217,12 +228,12 @@ export const GrantImplementation: React.FC = () => {
   const disbursementsTotal = React.useMemo(() => {
     const range = getRange(
       [{ value: dataFinancialValues.disbursement }],
-      ["value"]
+      ["value"],
     );
     return `US$${getFinancialValueWithMetricPrefix(
       dataFinancialValues.disbursement,
       range.index,
-      2
+      2,
     )} ${range.full}`;
   }, [dataFinancialValues.disbursement]);
 
@@ -230,9 +241,9 @@ export const GrantImplementation: React.FC = () => {
     const total = sumBy(
       filter(
         dataExpendituresHeatmap,
-        (item) => !item.parentRow && !item.parentColumn
+        (item) => !item.parentRow && !item.parentColumn,
       ),
-      "value"
+      "value",
     );
     const range = getRange([{ value: total }], ["value"]);
     return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${
@@ -245,7 +256,7 @@ export const GrantImplementation: React.FC = () => {
     filter(dataBudgetSankeyChart.links, { source: "Total budget" }).forEach(
       (item) => {
         total += item.value;
-      }
+      },
     );
     const range = getRange([{ value: total }], ["value"]);
     return `US$${getFinancialValueWithMetricPrefix(total, range.index, 2)} ${
@@ -262,6 +273,56 @@ export const GrantImplementation: React.FC = () => {
       />
     );
   }, [chart2Dropdown2]);
+
+  const exportChartData = React.useMemo(() => {
+    return {
+      headers: ["Type", "Amount"],
+      data: [
+        ["Disbursed", dataFinancialValues.disbursement],
+        ["Committed", dataFinancialValues.commitment],
+        ["Signed", dataFinancialValues.signed],
+      ],
+    };
+  }, [dataFinancialValues]);
+
+  const exportBudgetSankeyChartData = React.useMemo(() => {
+    return {
+      headers: ["Source", "Target", "Value"],
+      data: dataBudgetSankeyChart.links.map((link: any) => [
+        link.source,
+        link.target,
+        link.value,
+      ]),
+    };
+  }, [dataBudgetSankeyChart]);
+
+  const exportExpenditureHeatmapChartData = React.useMemo(() => {
+    let sortedData: HeatmapDataItem[] = [];
+    orderBy(dataExpendituresHeatmap, "row", "asc").forEach((item) => {
+      if (!item.parentRow && !item.parentColumn) {
+        sortedData.push(item);
+        const children = dataExpendituresHeatmap.filter(
+          (child) =>
+            child.parentRow === item.row || child.parentColumn === item.column,
+        );
+        sortedData = sortedData.concat(children);
+      }
+    });
+    return {
+      headers: [
+        "Modules & Interventions",
+        "Components",
+        "Amount",
+        "Percentage",
+      ],
+      data: sortedData.map((item) => [
+        `"${item.row}"`,
+        `"${item.column}"`,
+        item.value,
+        item.percentage,
+      ]),
+    };
+  }, [dataExpendituresHeatmap]);
 
   useUpdateEffect(() => {
     fetchExpendituresHeatmap({
@@ -359,7 +420,7 @@ export const GrantImplementation: React.FC = () => {
               {getCMSDataField(
                 cmsData,
                 "pagesGrantGrantImplementation.dateStat1",
-                "Board Approved Date"
+                "Board Approved Date",
               )}
             </Typography>
             <Typography variant="overline">
@@ -378,7 +439,7 @@ export const GrantImplementation: React.FC = () => {
               {getCMSDataField(
                 cmsData,
                 "pagesGrantGrantImplementation.dateStat2",
-                "Program Start Date"
+                "Program Start Date",
               )}
             </Typography>
             <Typography
@@ -402,7 +463,7 @@ export const GrantImplementation: React.FC = () => {
               {getCMSDataField(
                 cmsData,
                 "pagesGrantGrantImplementation.dateStat3",
-                "Program End Date"
+                "Program End Date",
               )}
             </Typography>
             <Typography variant="overline">
@@ -414,20 +475,23 @@ export const GrantImplementation: React.FC = () => {
       {fullWidthDivider}
       <ChartBlock
         id="radial-chart"
+        exportName="grant-investments"
         title={disbursementsTotal}
         subtitle={getCMSDataField(
           cmsData,
           "pagesGrantGrantImplementation.disbursementsSubtitle",
-          "Disbursements"
+          "Disbursements",
         )}
+        data={exportChartData}
         empty={!showRadialChart}
+        latestUpdate={latestUpdateDateChart1}
         infoType="financials"
       >
         <RadialChart
           tooltipLabel={getCMSDataField(
             cmsData,
             "pagesGrantGrantImplementation.disbursementsTooltipLabel",
-            "Amount"
+            "Amount",
           )}
           data={radialChartData}
           itemLabelFormatterType="name-value-percent"
@@ -451,7 +515,7 @@ export const GrantImplementation: React.FC = () => {
             {getCMSDataField(
               cmsData,
               "pagesGrantGrantImplementation.disbursementsRadialChartLabel",
-              "Signed"
+              "Signed",
             )}
           </Typography>
           <Typography variant="body2">{signedFormatted}</Typography>
@@ -462,12 +526,15 @@ export const GrantImplementation: React.FC = () => {
       <ChartBlock
         id="budget"
         title={totalBudget}
+        exportName="grant-budgets"
         subtitle={getCMSDataField(
           cmsData,
           "pagesGrantGrantImplementation.budgetsSubtitle",
-          "Grant Budgets"
+          "Grant Budgets",
         )}
         empty={!showBudgetSankeyChart}
+        data={exportBudgetSankeyChartData}
+        latestUpdate={latestUpdateDateChart2}
         infoType="budgets"
       >
         <Grid
@@ -484,28 +551,28 @@ export const GrantImplementation: React.FC = () => {
             {getCMSDataField(
               cmsData,
               "pagesDatasetsGrantImplementation.budgetsLabel1",
-              "Total budget"
+              "Total budget",
             )}
           </Grid>
           <Grid item xs={3}>
             {getCMSDataField(
               cmsData,
               "pagesDatasetsGrantImplementation.budgetsLabel2",
-              "Investement Landscape 1"
+              "Investement Landscape 1",
             )}
           </Grid>
           <Grid item xs={3}>
             {getCMSDataField(
               cmsData,
               "pagesDatasetsGrantImplementation.budgetsLabel3",
-              "Investement Landscape 2"
+              "Investement Landscape 2",
             )}
           </Grid>
           <Grid item xs={3}>
             {getCMSDataField(
               cmsData,
               "pagesDatasetsGrantImplementation.budgetsLabel4",
-              "Cost Category"
+              "Cost Category",
             )}
           </Grid>
         </Grid>
@@ -515,17 +582,20 @@ export const GrantImplementation: React.FC = () => {
       <ChartBlock
         cycles={CYCLES}
         id="expenditures"
+        exportName="grant-expenditures"
         subtitle={getCMSDataField(
           cmsData,
           "pagesGrantGrantImplementation.expendituresSubtitle",
-          "Expenditures"
+          "Expenditures",
         )}
         title={expendituresTotal}
         empty={!showExpendituresHeatmap}
         dropdownSelected={chart2Dropdown}
         dropdownItems={CHART_2_DROPDOWN_ITEMS}
         handleDropdownChange={setChart2Dropdown}
+        data={exportExpenditureHeatmapChartData}
         unitButtons={chart2UnitButtons}
+        latestUpdate={latestUpdateDateChart3}
         infoType="expenditures"
         extraDropdown={expendituresComponentGroupingDropdown}
       >

@@ -9,6 +9,16 @@ export interface SunburstProps {
   centerLabel: string;
   tooltipLabel: string;
   data: SunburstDataItem[];
+  selectedItem: {
+    dataIndex: number;
+    item: SunburstDataItem;
+  } | null;
+  setSelectedItem: (
+    item: {
+      dataIndex: number;
+      item: SunburstDataItem;
+    } | null,
+  ) => void;
 }
 
 export const STORY_DATA_VARIANT_1: SunburstDataItem[] = [

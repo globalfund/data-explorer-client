@@ -13,30 +13,42 @@ import { TableContainer } from "app/components/table-container";
 import { FilterGroupModel } from "app/components/filters/list/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 import {
   cellBGColorFormatter,
   TABLE_VARIATION_10_COLUMNS as ELIGIBILITY_TABLE_COLUMNS,
 } from "app/components/table/data";
+import isEqual from "lodash/isEqual";
 
 interface AccessToFundingBlock2Props {
-  filterString: string;
   filterGroups: FilterGroupModel[];
 }
 
 export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
-  props: AccessToFundingBlock2Props
+  props: AccessToFundingBlock2Props,
 ) => {
   const location = useLocation();
   const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "eligibility",
+  });
 
   const [chart1AppliedFilters, setChart1AppliedFilters] = React.useState<
     string[]
   >([]);
+  const [chart1TempAppliedFilters, setChart1TempAppliedFilters] =
+    React.useState<string[]>([]);
   const [chart1AppliedFiltersData, setChart1AppliedFiltersData] =
     React.useState({
       ...defaultAppliedFilters,
     });
+  const [chart1TempAppliedFiltersData, setChart1TempAppliedFiltersData] =
+    React.useState({
+      ...defaultAppliedFilters,
+    });
+
+  const [tableSearch, setTableSearch] = React.useState("");
 
   const dataEligibilityTable = useStoreState((state) =>
     get(state.AccessToFundingEligibilityTable, "data.data", []).map(
@@ -52,20 +64,20 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
           };
         }
         return item;
-      }
-    )
+      },
+    ),
   );
   const dataEligibilityTableYears = useStoreState((state) =>
-    get(state.AccessToFundingEligibilityTable, "data.years", [])
+    get(state.AccessToFundingEligibilityTable, "data.years", []),
   );
   const loadingEligibilityTable = useStoreState(
-    (state) => state.AccessToFundingEligibilityTable.loading
+    (state) => state.AccessToFundingEligibilityTable.loading,
   );
   const fetchEligibilityTable = useStoreActions(
-    (actions) => actions.AccessToFundingEligibilityTable.fetch
+    (actions) => actions.AccessToFundingEligibilityTable.fetch,
   );
   const appliedFiltersData = useStoreState(
-    (state) => state.AppliedFiltersState
+    (state) => state.AppliedFiltersState,
   );
 
   const chart1FilterString = React.useMemo(() => {
@@ -79,7 +91,7 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
         uniq([
           ...appliedFiltersData.locations,
           ...chart1AppliedFiltersData.locations,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (
@@ -91,7 +103,7 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
         uniq([
           ...appliedFiltersData.components,
           ...chart1AppliedFiltersData.components,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (
@@ -103,7 +115,7 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
         uniq([
           ...appliedFiltersData.cycles,
           ...chart1AppliedFiltersData.cycles,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     return value;
@@ -122,12 +134,45 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
     ];
   }, [dataEligibilityTable]);
 
+  const exportChartData = React.useMemo(() => {
+    const result: (string | number)[][] = [];
+    dataEligibilityTable.forEach((geography) => {
+      get(geography, "_children", []).forEach((component: any) => {
+        const diseaseBurdens = get(component, "_children[0]", {});
+        const eligibilityStatuses = get(component, "_children[1]", {});
+        dataEligibilityTableYears.forEach((year) => {
+          const diseaseBurden = get(diseaseBurdens, `["${year}"]`, "");
+          const eligibilityStatus = get(eligibilityStatuses, `["${year}"]`, "");
+          result.push([
+            geography.name,
+            component.name,
+            year,
+            diseaseBurden,
+            eligibilityStatus,
+          ]);
+        });
+      });
+    });
+    return {
+      headers: [
+        "Geography",
+        "Component",
+        "Year",
+        "Disease Burden",
+        "Eligbility Status",
+      ],
+      data: result,
+    };
+  }, [dataEligibilityTable]);
+
   const handleToggleChartFilter = (
     checked: boolean,
     value: string,
-    type: string
+    type: string,
   ) => {
-    let state = { ...chart1AppliedFiltersData };
+    let state = structuredClone(
+      chart1TempAppliedFiltersData,
+    ) as typeof chart1TempAppliedFiltersData;
     switch (type) {
       case "geography":
       case "geographyType":
@@ -148,12 +193,16 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
       default:
         break;
     }
-    setChart1AppliedFiltersData(state);
-    setChart1AppliedFilters([...state.locations, ...state.components]);
+    setChart1TempAppliedFiltersData(
+      structuredClone(state) as typeof chart1TempAppliedFiltersData,
+    );
+    setChart1TempAppliedFilters([...state.locations, ...state.components]);
   };
 
   const handleRemoveChartFilter = (value: string, types: string[]) => {
-    let state = { ...chart1AppliedFiltersData };
+    let state = structuredClone(
+      chart1TempAppliedFiltersData,
+    ) as typeof chart1TempAppliedFiltersData;
     types.forEach((type) => {
       switch (type) {
         case "geography":
@@ -168,17 +217,49 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
           break;
       }
     });
-    setChart1AppliedFiltersData(state);
-    setChart1AppliedFilters([...state.locations, ...state.components]);
+    setChart1TempAppliedFiltersData(
+      structuredClone(state) as typeof chart1TempAppliedFiltersData,
+    );
+    setChart1TempAppliedFilters([...state.locations, ...state.components]);
   };
 
   const handleResetChartFilters = () => {
+    setChart1TempAppliedFiltersData({
+      ...chart1AppliedFiltersData,
+      locations: [],
+      components: [],
+    });
+    setChart1TempAppliedFilters([]);
     setChart1AppliedFiltersData({
       ...chart1AppliedFiltersData,
       locations: [],
       components: [],
     });
     setChart1AppliedFilters([]);
+  };
+
+  const handleCancelChartFilters = () => {
+    setChart1TempAppliedFiltersData(structuredClone(chart1AppliedFiltersData));
+    setChart1TempAppliedFilters(chart1AppliedFilters);
+  };
+
+  const handleApplyChartFilters = () => {
+    if (isEqual(chart1AppliedFilters, chart1TempAppliedFiltersData)) return;
+    setChart1AppliedFiltersData(
+      structuredClone(
+        chart1TempAppliedFiltersData,
+      ) as typeof chart1TempAppliedFiltersData,
+    );
+    setChart1AppliedFilters(chart1TempAppliedFilters);
+  };
+
+  const onSearchChange = (search: string) => {
+    setTableSearch(search);
+    let filterString = chart1FilterString;
+    if (search) {
+      filterString += `${filterString.length > 0 ? "&" : ""}q=${search}`;
+    }
+    fetchEligibilityTable({ filterString });
   };
 
   React.useEffect(() => {
@@ -199,27 +280,32 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
     >
       <DatasetChartBlock
         id="eligibility"
+        infoType="global"
+        exportName="eligibility"
         title={getCMSDataField(
           cmsData,
           "pagesDatasetsAccessToFunding.eligibilityTitle",
-          "Eligibility"
+          "Eligibility",
         )}
         subtitle={getCMSDataField(
           cmsData,
           "pagesDatasetsAccessToFunding.eligibilitySubtitle",
-          "Country eligibility for funding over time."
+          "Country eligibility for funding over time.",
         )}
+        handleApplyFilters={handleApplyChartFilters}
+        handleCancelFilters={handleCancelChartFilters}
         dropdownItems={[]}
         disableCollapse
+        data={exportChartData}
+        latestUpdate={latestUpdateDate}
         loading={loadingEligibilityTable}
-        empty={dataEligibilityTable.length === 0}
         filterGroups={props.filterGroups}
-        appliedFilters={chart1AppliedFilters}
+        appliedFilters={chart1TempAppliedFilters}
         toggleFilter={handleToggleChartFilter}
         removeFilter={handleRemoveChartFilter}
         handleResetFilters={handleResetChartFilters}
-        appliedFiltersData={chart1AppliedFiltersData}
-        infoType="global"
+        tempAppliedFiltersData={chart1TempAppliedFiltersData}
+        empty={dataEligibilityTable.length === 0 && tableSearch.length === 0}
       >
         <Box
           gap="20px"
@@ -261,7 +347,7 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
               {getCMSDataField(
                 cmsData,
                 "componentsChartsEligibility.diseaseBurdenTitle",
-                "Disease Burden"
+                "Disease Burden",
               )}
             </Typography>
             <Box>
@@ -274,7 +360,7 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
                   {getCMSDataField(
                     cmsData,
                     "componentsChartsEligibility.diseaseBurdenExtreme",
-                    "Extreme"
+                    "Extreme",
                   )}
                 </Typography>
               </Box>
@@ -287,7 +373,7 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
                   {getCMSDataField(
                     cmsData,
                     "componentsChartsEligibility.diseaseBurdenSevere",
-                    "Severe"
+                    "Severe",
                   )}
                 </Typography>
               </Box>
@@ -300,7 +386,7 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
                   {getCMSDataField(
                     cmsData,
                     "componentsChartsEligibility.diseaseBurdenHigh",
-                    "High"
+                    "High",
                   )}
                 </Typography>
               </Box>
@@ -313,7 +399,7 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
                   {getCMSDataField(
                     cmsData,
                     "componentsChartsEligibility.diseaseBurdenModerate",
-                    "Moderate"
+                    "Moderate",
                   )}
                 </Typography>
               </Box>
@@ -326,7 +412,7 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
                   {getCMSDataField(
                     cmsData,
                     "componentsChartsEligibility.diseaseBurdenNotHigh",
-                    "Not High"
+                    "Not High",
                   )}
                 </Typography>
               </Box>
@@ -339,7 +425,7 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
                   {getCMSDataField(
                     cmsData,
                     "componentsChartsEligibility.diseaseBurdenLow",
-                    "Low"
+                    "Low",
                   )}
                 </Typography>
               </Box>
@@ -349,7 +435,7 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
                   {getCMSDataField(
                     cmsData,
                     "componentsChartsEligibility.diseaseBurdenNA",
-                    "NA"
+                    "NA",
                   )}
                 </Typography>
               </Box>
@@ -360,7 +446,7 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
               {getCMSDataField(
                 cmsData,
                 "componentsChartsEligibility.statusTitle",
-                "Eligibility Status"
+                "Eligibility Status",
               )}
             </Typography>
             <Box>
@@ -370,7 +456,7 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
                   {getCMSDataField(
                     cmsData,
                     "componentsChartsEligibility.statusEligible",
-                    "Eligible"
+                    "Eligible",
                   )}
                 </Typography>
               </Box>
@@ -380,7 +466,7 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
                   {getCMSDataField(
                     cmsData,
                     "componentsChartsEligibility.statusTransitionFunding",
-                    "Transition Funding"
+                    "Transition Funding",
                   )}
                 </Typography>
               </Box>
@@ -390,7 +476,7 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
                   {getCMSDataField(
                     cmsData,
                     "componentsChartsEligibility.statusNotEligible",
-                    "Not Eligible"
+                    "Not Eligible",
                   )}
                 </Typography>
               </Box>
@@ -409,8 +495,10 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
         </Box>
         <TableContainer
           dataTree
+          search={tableSearch}
           id="eligibility-table"
           data={dataEligibilityTable}
+          onSearchChange={onSearchChange}
           columns={eligibilityTableColumns}
           dataTreeStartExpandedFn={(row) => row.getData().top}
         />

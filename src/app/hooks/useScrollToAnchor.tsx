@@ -7,14 +7,15 @@ export function useScrollToAnchor() {
 
   React.useEffect(() => {
     if (location.hash) {
-      lastHash.current = location.hash.slice(1).split("|")[0];
+      lastHash.current = `anchor-${location.hash.slice(1).split("|")[0]}`;
     }
 
     setTimeout(() => {
       if (lastHash.current && document.getElementById(lastHash.current)) {
-        document
-          .getElementById(lastHash.current)
-          ?.scrollIntoView({ behavior: "smooth", block: "start" });
+        document.getElementById(lastHash.current)?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
         lastHash.current = "";
       }
     }, 1000);

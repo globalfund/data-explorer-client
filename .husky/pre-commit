@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+yarn prettier src/app --check
+npx eslint src --ext .js,.jsx,.tsx,ts --max-warnings 0

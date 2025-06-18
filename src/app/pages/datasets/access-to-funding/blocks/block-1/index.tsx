@@ -8,54 +8,60 @@ import { Dropdown } from "app/components/dropdown";
 import { getCMSDataField } from "app/utils/getCMSDataField";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 
 interface AccessToFundingBlock1Props {
   filterString: string;
+  eligibilityYear: string;
+  eligibilityYears: {
+    label: string;
+    value: string;
+  }[];
+  setEligibilityYear: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
-  props: AccessToFundingBlock1Props
+  props: AccessToFundingBlock1Props,
 ) => {
   const cmsData = useCMSData({ returnData: true });
-
-  const eligibilityYears = useStoreState(
-    (state) =>
-      get(state.EligibilityCycles, "data.data", []).map((item) => ({
-        label: item,
-        value: item,
-      })) as { label: string; value: string }[]
-  );
-
-  const [eligibilityYear, setEligibilityYear] = React.useState(
-    eligibilityYears[0].value
-  );
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "eligibility",
+  });
 
   const dataStats = useStoreState(
     (state) =>
       get(state.AccessToFundingStats, "data.data", []) as {
         name: string;
         value: string;
-      }[]
+      }[],
   );
   const loadingStats = useStoreState(
-    (state) => state.AccessToFundingStats.loading
+    (state) => state.AccessToFundingStats.loading,
   );
   const fetchStats = useStoreActions(
-    (actions) => actions.AccessToFundingStats.fetch
+    (actions) => actions.AccessToFundingStats.fetch,
   );
 
   const handleEligibilityYearChange = (value: string) => {
-    setEligibilityYear(value);
+    props.setEligibilityYear(value);
   };
 
   React.useEffect(() => {
-    fetchStats({
-      filterString: props.filterString,
-      routeParams: {
-        year: eligibilityYear,
-      },
-    });
-  }, [props.filterString, eligibilityYear]);
+    if (props.eligibilityYears.length > 0 && props.eligibilityYear === "") {
+      props.setEligibilityYear(props.eligibilityYears[0].value);
+    }
+  }, [props.eligibilityYears]);
+
+  React.useEffect(() => {
+    if (props.eligibilityYears.length > 0) {
+      fetchStats({
+        filterString: props.filterString,
+        routeParams: {
+          year: props.eligibilityYear,
+        },
+      });
+    }
+  }, [props.filterString, props.eligibilityYear]);
 
   return (
     <Box>
@@ -73,18 +79,18 @@ export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
         }}
       >
         <Box>
-          <Typography variant="h5">
+          <Typography variant="h3">
             {getCMSDataField(
               cmsData,
               "pagesDatasetsAccessToFunding.statsTitle",
-              "Eligible Countries by Numbers"
+              "Eligible Countries by Numbers",
             )}
           </Typography>
-          <Typography variant="body2" fontWeight="700">
+          <Typography variant="body2">
             {getCMSDataField(
               cmsData,
               "pagesDatasetsAccessToFunding.statsSubtitle",
-              "Segmented by Components."
+              "Segmented by Components.",
             )}
           </Typography>
         </Box>
@@ -104,13 +110,13 @@ export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
             {getCMSDataField(
               cmsData,
               "pagesDatasetsAccessToFunding.statsDropDownLabel",
-              "Eligibility Year"
+              "Eligibility Year",
             )}
           </Typography>
           <Dropdown
             width={100}
-            dropdownItems={eligibilityYears}
-            dropdownSelected={eligibilityYear}
+            dropdownItems={props.eligibilityYears}
+            dropdownSelected={props.eligibilityYear}
             handleDropdownChange={handleEligibilityYearChange}
           />
         </Box>
@@ -140,13 +146,23 @@ export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
         {dataStats.map((item) => (
           <Grid item key={item.name} xs={12} sm={6} md={3}>
             <Box padding="15px" bgcolor="#F1F3F5">
-              <Typography variant="h5">{item.value}</Typography>
+              <Typography variant="h4">{item.value}</Typography>
               <Typography fontSize="12px">
-                Countries Eligible for {item.name}
+                {getCMSDataField(
+                  cmsData,
+                  "pagesDatasetsAccessToFunding.countriesEligible",
+                  "Countries Eligible for",
+                )}{" "}
+                {item.name}
               </Typography>
             </Box>
           </Grid>
         ))}
+        <Grid item xs={12}>
+          <Typography variant="overline">
+            Latest Update: <b>{latestUpdateDate}</b>
+          </Typography>
+        </Grid>
       </Grid>
     </Box>
   );

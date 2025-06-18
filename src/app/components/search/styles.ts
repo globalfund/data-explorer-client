@@ -3,25 +3,28 @@ import { appColors } from "app/theme";
 import styled from "styled-components";
 import Button from "@mui/material/Button";
 
+interface CategoryButtonProps {
+  anchorEl?: boolean;
+}
 export const Container = styled(Box)`
+  width: 100%;
   display: flex;
-  padding: 8px 20px;
   position: relative;
-  border-radius: 8px;
+  border-radius: 4px;
   background: ${appColors.SEARCH.CONTAINER_BACKGROUND};
-  width: ${(props) =>
-    props.theme.withCatMenu ? "calc(100% - 200px)" : "100%"};
+  border: 1px solid ${appColors.SEARCH.DROPDOWN_BUTTON_BORDER_COLOR};
+
+  @media (max-width: 767px) {
+    width: 100%;
+  }
 `;
 
 export const MobileContainer = styled(Box)`
   width: 100%;
+  display: flex;
   position: relative;
+  flex-direction: row;
   background: transparent;
-
-  @media (min-width: 768px) {
-    display: flex;
-    flex-direction: row;
-  }
 `;
 
 export const Input = styled.input`
@@ -30,6 +33,7 @@ export const Input = styled.input`
   font-size: 14px;
   font-weight: 400;
   border-style: none;
+  padding: 8px 12px !important;
   color: ${appColors.SEARCH.INPUT_COLOR};
   background: ${appColors.SEARCH.INPUT_BACKGROUND_COLOR};
 
@@ -51,7 +55,7 @@ export const MobileBackButton = styled.span`
   }
 `;
 
-export const CategoryButton = styled(Button)`
+export const CategoryButton = styled(Button)<CategoryButtonProps>`
   width: 200px;
   display: flex;
   font-size: 14px;
@@ -82,5 +86,8 @@ export const CategoryButton = styled(Button)`
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+  }
+  svg:nth-of-type(2) {
+    transform: ${(props) => ` rotate(${props.anchorEl ? -180 : 0}deg);`};
   }
 `;

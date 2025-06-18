@@ -9,19 +9,23 @@ import { TableContainer } from "app/components/table-container";
 import { FilterGroupModel } from "app/components/filters/list/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 import { TABLE_VARIATION_12_COLUMNS as FUNDING_REQUESTS_TABLE_COLUMNS } from "app/components/table/data";
+import isEqual from "lodash/isEqual";
 
 interface AccessToFundingBlock5Props {
-  filterString: string;
   filterGroups: FilterGroupModel[];
 }
 
 export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
-  props: AccessToFundingBlock5Props
+  props: AccessToFundingBlock5Props,
 ) => {
   const location = useLocation();
   const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "funding_requests",
+  });
 
   const [chart3AppliedFilters, setChart3AppliedFilters] = React.useState<
     string[]
@@ -30,6 +34,14 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
     React.useState({
       ...defaultAppliedFilters,
     });
+  const [chart3TempAppliedFilters, setChart3TempAppliedFilters] =
+    React.useState<string[]>([]);
+  const [chart3TempAppliedFiltersData, setChart3TempAppliedFiltersData] =
+    React.useState({
+      ...defaultAppliedFilters,
+    });
+
+  const [tableSearch, setTableSearch] = React.useState("");
 
   const dataFundingRequestsTable = useStoreState((state) =>
     get(state.AccessToFundingFundingRequestsTable, "data.data", []).map(
@@ -45,25 +57,27 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
           };
         }
         return item;
-      }
-    )
+      },
+    ),
   );
   const loadingFundingRequestsTable = useStoreState(
-    (state) => state.AccessToFundingFundingRequestsTable.loading
+    (state) => state.AccessToFundingFundingRequestsTable.loading,
   );
   const fetchFundingRequestsTable = useStoreActions(
-    (actions) => actions.AccessToFundingFundingRequestsTable.fetch
+    (actions) => actions.AccessToFundingFundingRequestsTable.fetch,
   );
   const appliedFiltersData = useStoreState(
-    (state) => state.AppliedFiltersState
+    (state) => state.AppliedFiltersState,
   );
 
   const handleToggleChartFilter = (
     checked: boolean,
     value: string,
-    type: string
+    type: string,
   ) => {
-    let state = { ...chart3AppliedFiltersData };
+    let state = structuredClone(
+      chart3TempAppliedFiltersData,
+    ) as typeof chart3TempAppliedFiltersData;
     switch (type) {
       case "geography":
       case "geographyType":
@@ -84,12 +98,14 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
       default:
         break;
     }
-    setChart3AppliedFiltersData(state);
-    setChart3AppliedFilters([...state.locations, ...state.components]);
+    setChart3TempAppliedFiltersData(structuredClone(state) as typeof state);
+    setChart3TempAppliedFilters([...state.locations, ...state.components]);
   };
 
   const handleRemoveChartFilter = (value: string, types: string[]) => {
-    let state = { ...chart3AppliedFiltersData };
+    let state = structuredClone(
+      chart3TempAppliedFiltersData,
+    ) as typeof chart3TempAppliedFiltersData;
     types.forEach((type) => {
       switch (type) {
         case "geography":
@@ -104,8 +120,8 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
           break;
       }
     });
-    setChart3AppliedFiltersData(state);
-    setChart3AppliedFilters([...state.locations, ...state.components]);
+    setChart3TempAppliedFiltersData(structuredClone(state) as typeof state);
+    setChart3TempAppliedFilters([...state.locations, ...state.components]);
   };
 
   const handleResetChartFilters = () => {
@@ -115,6 +131,26 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
       components: [],
     });
     setChart3AppliedFilters([]);
+    setChart3TempAppliedFiltersData({
+      ...chart3AppliedFiltersData,
+      locations: [],
+      components: [],
+    });
+    setChart3TempAppliedFilters([]);
+  };
+
+  const handleCancelChartFilters = () => {
+    setChart3TempAppliedFiltersData(structuredClone(chart3AppliedFiltersData));
+    setChart3TempAppliedFilters(chart3AppliedFilters);
+  };
+  const handleApplyChartFilters = () => {
+    if (isEqual(chart3AppliedFilters, chart3TempAppliedFiltersData)) return;
+    setChart3AppliedFiltersData(
+      structuredClone(
+        chart3TempAppliedFiltersData,
+      ) as typeof chart3TempAppliedFiltersData,
+    );
+    setChart3AppliedFilters(chart3TempAppliedFilters);
   };
 
   const chart3FilterString = React.useMemo(() => {
@@ -128,7 +164,7 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
         uniq([
           ...appliedFiltersData.locations,
           ...chart3AppliedFiltersData.locations,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (
@@ -140,7 +176,7 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
         uniq([
           ...appliedFiltersData.components,
           ...chart3AppliedFiltersData.components,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (
@@ -152,15 +188,69 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
         uniq([
           ...appliedFiltersData.cycles.map((c) => c.split("-")[0]),
           ...chart3AppliedFiltersData.cycles.map((c) => c.split("-")[0]),
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     return value;
   }, [appliedFiltersData, chart3AppliedFiltersData, location.search]);
 
+  const onSearchChange = (search: string) => {
+    setTableSearch(search);
+    let filterString = chart3FilterString;
+    if (search) {
+      filterString += `${filterString.length > 0 ? "&" : ""}q=${search}`;
+    }
+    fetchFundingRequestsTable({ filterString });
+  };
+
   React.useEffect(() => {
     fetchFundingRequestsTable({ filterString: chart3FilterString });
   }, [chart3FilterString]);
+
+  const exportChartData = React.useMemo(() => {
+    const result: (string | number)[][] = [];
+
+    dataFundingRequestsTable.forEach((row) => {
+      get(row, "_children", []).forEach((subRow: any) => {
+        get(subRow, "_children", []).forEach((subSubRow: any) => {
+          result.push([
+            `"${row.components}"`,
+            `"${subRow.components}"`,
+            `"${subRow.submissionDate}"`,
+            `"${subRow.approach}"`,
+            `"${subRow.trpWindow}"`,
+            `"${subRow.trpOutcome}"`,
+            `"${subRow.portfolioCategorization}"`,
+            `"${subSubRow.boardApproval}"`,
+            `"${subSubRow.gacMeeting}"`,
+            `"${subSubRow.grant}"`,
+            `"${subSubRow.startingDate}"`,
+            `"${subSubRow.endingDate}"`,
+            `"${subSubRow.principalRecipient}"`,
+          ]);
+        });
+      });
+    });
+
+    return {
+      headers: [
+        "Geography",
+        "Components",
+        "Submission Date",
+        "Approach",
+        "TRP Window",
+        "TRP Outcome",
+        "Portfolio Categorization",
+        "Board Approval",
+        "GAC Meeting",
+        "Grant",
+        "Starting Date",
+        "Ending Date",
+        "Principal Recipient",
+      ],
+      data: result,
+    };
+  }, [dataFundingRequestsTable]);
 
   return (
     <Box
@@ -175,33 +265,42 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
       }}
     >
       <DatasetChartBlock
+        infoType="global"
         id="funding-requests"
         title={getCMSDataField(
           cmsData,
           "pagesDatasetsAccessToFunding.fundingRequestsTitle",
-          "Funding Requests"
+          "Funding Requests",
         )}
         subtitle={getCMSDataField(
           cmsData,
           "pagesDatasetsAccessToFunding.fundingRequestsSubtitle",
-          "Funding request applications by countries."
+          "Funding request applications by countries.",
         )}
         disableCollapse
+        handleApplyFilters={handleApplyChartFilters}
+        handleCancelFilters={handleCancelChartFilters}
         dropdownItems={[]}
+        data={exportChartData}
+        exportName="funding-requests"
+        latestUpdate={latestUpdateDate}
         loading={loadingFundingRequestsTable}
-        empty={dataFundingRequestsTable.length === 0}
         filterGroups={props.filterGroups}
-        appliedFilters={chart3AppliedFilters}
+        appliedFilters={chart3TempAppliedFilters}
         toggleFilter={handleToggleChartFilter}
         removeFilter={handleRemoveChartFilter}
         handleResetFilters={handleResetChartFilters}
-        appliedFiltersData={chart3AppliedFiltersData}
-        infoType="global"
+        tempAppliedFiltersData={chart3TempAppliedFiltersData}
+        empty={
+          dataFundingRequestsTable.length === 0 && tableSearch.length === 0
+        }
       >
         <TableContainer
           dataTree
+          search={tableSearch}
           id="funding-requests-table"
           data={dataFundingRequestsTable}
+          onSearchChange={onSearchChange}
           columns={FUNDING_REQUESTS_TABLE_COLUMNS}
           dataTreeStartExpandedFn={(row) => row.getData().top}
         />

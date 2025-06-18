@@ -12,6 +12,7 @@ import { FilterGroupModel } from "app/components/filters/list/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { GrantImplementationPageBlock1 } from "app/pages/datasets/grant-implementation/blocks/block-1";
 import { GrantImplementationPageBlock2 } from "app/pages/datasets/grant-implementation/blocks/block-2";
+import { GrantImplementationPageBlock21 } from "app/pages/datasets/grant-implementation/blocks/block-2-1";
 import { GrantImplementationPageBlock3 } from "app/pages/datasets/grant-implementation/blocks/block-3";
 import { GrantImplementationPageBlock4 } from "app/pages/datasets/grant-implementation/blocks/block-4";
 import { GrantImplementationPageBlock5 } from "app/pages/datasets/grant-implementation/blocks/block-5";
@@ -21,6 +22,7 @@ import {
   geographyGroupingOptions,
   componentsGroupingOptions,
 } from "app/pages/datasets/grant-implementation/data";
+import isEqual from "lodash/isEqual";
 
 export const GrantImplementationPage: React.FC = () => {
   const cmsData = useCMSData({ returnData: true });
@@ -28,10 +30,10 @@ export const GrantImplementationPage: React.FC = () => {
   const location = useLocation();
 
   const [geographyGrouping, setGeographyGrouping] = React.useState(
-    geographyGroupingOptions[0].value
+    geographyGroupingOptions[0].value,
   );
   const [componentsGrouping] = React.useState(
-    componentsGroupingOptions[1].value
+    componentsGroupingOptions[1].value,
   );
 
   const dataLocationFilterOptions = useStoreState(
@@ -40,7 +42,7 @@ export const GrantImplementationPage: React.FC = () => {
         id: "",
         name: "",
         options: [],
-      }) as FilterGroupModel
+      }) as FilterGroupModel,
   );
   const dataComponentFilterOptions = useStoreState(
     (state) =>
@@ -48,7 +50,7 @@ export const GrantImplementationPage: React.FC = () => {
         id: "",
         name: "",
         options: [],
-      }) as FilterGroupModel
+      }) as FilterGroupModel,
   );
   const dataPartnerTypeFilterOptions = useStoreState(
     (state) =>
@@ -56,7 +58,7 @@ export const GrantImplementationPage: React.FC = () => {
         id: "",
         name: "",
         options: [],
-      }) as FilterGroupModel
+      }) as FilterGroupModel,
   );
   const dataStatusFilterOptions = useStoreState(
     (state) =>
@@ -64,7 +66,7 @@ export const GrantImplementationPage: React.FC = () => {
         id: "",
         name: "",
         options: [],
-      }) as FilterGroupModel
+      }) as FilterGroupModel,
   );
   const dataCycleFilterOptions = useStoreState((state) => ({
     id: "cycle",
@@ -75,25 +77,31 @@ export const GrantImplementationPage: React.FC = () => {
     })),
   }));
   const fetchComponentFilterOptions = useStoreActions(
-    (actions) => actions.ComponentFilterOptions.fetch
+    (actions) => actions.ComponentFilterOptions.fetch,
   );
   const fetchLocationFilterOptions = useStoreActions(
-    (actions) => actions.LocationFilterOptions.fetch
+    (actions) => actions.LocationFilterOptions.fetch,
   );
   const pageAppliedFilters = useStoreState((state) => [
-    ...state.AppliedFiltersState.components,
-    ...state.AppliedFiltersState.locations,
-    ...state.AppliedFiltersState.principalRecipientTypes,
-    ...state.AppliedFiltersState.principalRecipientSubTypes,
-    ...state.AppliedFiltersState.principalRecipients,
-    ...state.AppliedFiltersState.status,
-    ...state.AppliedFiltersState.cycles,
+    ...state.TempAppliedFiltersState.components,
+    ...state.TempAppliedFiltersState.locations,
+    ...state.TempAppliedFiltersState.principalRecipientTypes,
+    ...state.TempAppliedFiltersState.principalRecipientSubTypes,
+    ...state.TempAppliedFiltersState.principalRecipients,
+    ...state.TempAppliedFiltersState.status,
+    ...state.TempAppliedFiltersState.cycles,
   ]);
   const appliedFiltersData = useStoreState(
-    (state) => state.AppliedFiltersState
+    (state) => state.AppliedFiltersState,
   );
   const appliedFiltersActions = useStoreActions(
-    (actions) => actions.AppliedFiltersState
+    (actions) => actions.AppliedFiltersState,
+  );
+  const tempAppliedFiltersData = useStoreState(
+    (state) => state.TempAppliedFiltersState,
+  );
+  const tempAppliedFiltersActions = useStoreActions(
+    (actions) => actions.TempAppliedFiltersState,
   );
 
   const handleGeographyGroupingChange = (value: string) => {
@@ -105,6 +113,7 @@ export const GrantImplementationPage: React.FC = () => {
   // };
 
   const handleResetFilters = () => {
+    tempAppliedFiltersActions.clearAll();
     appliedFiltersActions.setAll({
       ...appliedFiltersData,
       cycles: [],
@@ -115,6 +124,14 @@ export const GrantImplementationPage: React.FC = () => {
       principalRecipientTypes: [],
       status: [],
     });
+  };
+  const handleCancelFilters = () => {
+    tempAppliedFiltersActions.setAll({ ...appliedFiltersData });
+  };
+  const handleApplyFilters = () => {
+    if (isEqual(appliedFiltersData, tempAppliedFiltersData)) return;
+
+    appliedFiltersActions.setAll({ ...tempAppliedFiltersData });
   };
 
   const toolbarRightContent = React.useMemo(() => {
@@ -138,7 +155,7 @@ export const GrantImplementationPage: React.FC = () => {
             {getCMSDataField(
               cmsData,
               "pagesDatasetsGrantImplementation.toolbarRightText1",
-              "Geography grouping"
+              "Geography grouping",
             )}
           </Typography>
           <Dropdown
@@ -205,7 +222,7 @@ export const GrantImplementationPage: React.FC = () => {
       location.search.includes("locations=")
     ) {
       value += `geographies=${encodeURIComponent(
-        appliedFiltersData.locations.join(",")
+        appliedFiltersData.locations.join(","),
       )}`;
     }
     if (
@@ -213,7 +230,7 @@ export const GrantImplementationPage: React.FC = () => {
       location.search.includes("components=")
     ) {
       value += `${value.length > 0 ? "&" : ""}components=${encodeURIComponent(
-        appliedFiltersData.components.join(",")
+        appliedFiltersData.components.join(","),
       )}`;
     }
     if (
@@ -223,7 +240,7 @@ export const GrantImplementationPage: React.FC = () => {
       value += `${
         value.length > 0 ? "&" : ""
       }principalRecipientTypes=${encodeURIComponent(
-        appliedFiltersData.principalRecipientTypes.join(",")
+        appliedFiltersData.principalRecipientTypes.join(","),
       )}`;
     }
     if (
@@ -233,7 +250,7 @@ export const GrantImplementationPage: React.FC = () => {
       value += `${
         value.length > 0 ? "&" : ""
       }principalRecipientSubTypes=${encodeURIComponent(
-        appliedFiltersData.principalRecipientSubTypes.join(",")
+        appliedFiltersData.principalRecipientSubTypes.join(","),
       )}`;
     }
     if (
@@ -243,7 +260,7 @@ export const GrantImplementationPage: React.FC = () => {
       value += `${
         value.length > 0 ? "&" : ""
       }principalRecipients=${encodeURIComponent(
-        appliedFiltersData.principalRecipients.join(",")
+        appliedFiltersData.principalRecipients.join(","),
       )}`;
     }
     if (
@@ -251,7 +268,7 @@ export const GrantImplementationPage: React.FC = () => {
       location.search.includes("status=")
     ) {
       value += `${value.length > 0 ? "&" : ""}status=${encodeURIComponent(
-        appliedFiltersData.status.join(",")
+        appliedFiltersData.status.join(","),
       )}`;
     }
     if (
@@ -308,7 +325,7 @@ export const GrantImplementationPage: React.FC = () => {
       title={getCMSDataField(
         cmsData,
         "pagesDatasetsGrantImplementation.title",
-        "Financial Insights"
+        "Financial Insights",
       )}
       filterGroups={filterGroups}
       appliedFilters={pageAppliedFilters}
@@ -316,9 +333,11 @@ export const GrantImplementationPage: React.FC = () => {
       subtitle={getCMSDataField(
         cmsData,
         "pagesDatasetsGrantImplementation.subtitle",
-        "See the disbursements, budgets and expenditures datasets and relating insights."
+        "See the disbursements, budgets and expenditures datasets and relating insights.",
       )}
       toolbarRightContent={toolbarRightContent}
+      handleApplyFilters={handleApplyFilters}
+      handleCancelFilters={handleCancelFilters}
     >
       <Box width="100%" marginTop="50px">
         <GrantImplementationPageBlock1
@@ -328,11 +347,12 @@ export const GrantImplementationPage: React.FC = () => {
         />
         <FullWidthDivider />
         <GrantImplementationPageBlock2
-          filterString={filterString}
           geographyGrouping={geographyGrouping}
           componentsGrouping={componentsGrouping}
           filterGroups={filterGroupsDisbursements}
         />
+        <FullWidthDivider />
+        <GrantImplementationPageBlock21 />
         <FullWidthDivider />
         <GrantImplementationPageBlock3
           filterString={filterString}
@@ -348,14 +368,12 @@ export const GrantImplementationPage: React.FC = () => {
         />
         <FullWidthDivider />
         <GrantImplementationPageBlock5
-          filterString={filterString}
           filterGroups={filterGroups}
           geographyGrouping={geographyGrouping}
           componentsGrouping={componentsGrouping}
         />
         <FullWidthDivider />
         <GrantImplementationPageBlock6
-          filterString={filterString}
           filterGroups={filterGroups}
           geographyGrouping={geographyGrouping}
           componentsGrouping={componentsGrouping}

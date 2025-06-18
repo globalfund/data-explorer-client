@@ -18,20 +18,20 @@ export const Home: React.FC = () => {
   useTitle("The Data Explorer - Home");
 
   const dataResultsStats = useStoreState(
-    (state) => get(state.HomeResultsStats, "data.stats", []) as StatCompProps[]
+    (state) => get(state.HomeResultsStats, "data.stats", []) as StatCompProps[],
   );
   const loadingResultsStats = useStoreState((state) =>
-    Boolean(state.HomeResultsStats.loading)
+    Boolean(state.HomeResultsStats.loading),
   );
   const fetchResultsStats = useStoreActions(
-    (actions) => actions.HomeResultsStats.fetch
+    (actions) => actions.HomeResultsStats.fetch,
   );
   const annualResultsCycles = useStoreState(
     (state) =>
       get(state.AnnualResultsCycles, "data.data", []) as {
         name: number;
         value: number;
-      }[]
+      }[],
   );
 
   React.useEffect(() => {
@@ -84,7 +84,7 @@ export const Home: React.FC = () => {
             },
           }}
         >
-          <Search />
+          <Search withCatMenu />
         </Box>
       </Box>
       <Box height="64px" />

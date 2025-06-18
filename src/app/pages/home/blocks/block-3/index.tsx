@@ -7,6 +7,7 @@ import { Treemap } from "app/components/charts/treemap";
 import { getCMSDataField } from "app/utils/getCMSDataField";
 import { TreemapDataItem } from "app/components/charts/treemap/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import {
   CYCLES,
   CycleProps,
@@ -19,29 +20,32 @@ import {
 
 export const HomeBlock3: React.FC = () => {
   const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "budgets",
+  });
 
   const [chart3Cycles, setChart3Cycles] = React.useState<CycleProps[]>([]);
 
   const [chart3Dropdown, setChart3Dropdown] = React.useState(
-    CHART_3_DROPDOWN_ITEMS[1].value
+    CHART_3_DROPDOWN_ITEMS[1].value,
   );
 
   const dataBudgetsTreemap = useStoreState(
     (state) =>
-      get(state.HomeBudgetsTreemap, "data.data", []) as TreemapDataItem[]
+      get(state.HomeBudgetsTreemap, "data.data", []) as TreemapDataItem[],
   );
   const loadingBudgetsTreemap = useStoreState((state) =>
-    Boolean(state.HomeBudgetsTreemap.loading)
+    Boolean(state.HomeBudgetsTreemap.loading),
   );
   const fetchBudgetsTreemap = useStoreActions(
-    (actions) => actions.HomeBudgetsTreemap.fetch
+    (actions) => actions.HomeBudgetsTreemap.fetch,
   );
   const budgetsCycles = useStoreState(
     (state) =>
       get(state.BudgetsCycles, "data.data", []) as {
         name: string;
         value: string;
-      }[]
+      }[],
   );
 
   const handleChartCycleChange = (cycle: CycleProps) => {
@@ -66,7 +70,7 @@ export const HomeBlock3: React.FC = () => {
 
   const reloadBudgetsTreemap = (
     cycles: CycleProps[],
-    componentField: string
+    componentField: string,
   ) => {
     let filterString = "";
     if (cycles.length > 0) {
@@ -119,16 +123,26 @@ export const HomeBlock3: React.FC = () => {
     }`;
   }, [dataBudgetsTreemap]);
 
+  const exportChartData = React.useMemo(() => {
+    return {
+      headers: ["Component", "Amount"],
+      data: dataBudgetsTreemap.map((item) => [item.name, item.value]),
+    };
+  }, [dataBudgetsTreemap]);
+
   return (
     <ChartBlock
       id="budgets"
       title={totalBudget}
+      exportName="grant-budgets"
       subtitle={getCMSDataField(
         cmsData,
         "pagesHome.grantBudgetsSubtitle",
-        "Grant Budgets"
+        "Grant Budgets",
       )}
+      data={exportChartData}
       selectedCycles={chart3Cycles}
+      latestUpdate={latestUpdateDate}
       loading={loadingBudgetsTreemap}
       // dropdownSelected={chart3Dropdown}
       dropdownItems={CHART_3_DROPDOWN_ITEMS}

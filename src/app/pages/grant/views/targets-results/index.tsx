@@ -10,7 +10,11 @@ import { getCMSDataField } from "app/utils/getCMSDataField";
 import { CellComponent, Tabulator } from "tabulator-tables";
 import { TableContainer } from "app/components/table-container";
 import { TABS } from "app/pages/grant/views/targets-results/data";
-import { TABLE_VARIATION_4_COLUMNS } from "app/components/table/data";
+import {
+  cellAchievementFormatter,
+  cellBaselineTargetResultFormatter,
+  TABLE_VARIATION_4_COLUMNS,
+} from "app/components/table/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 
 export const GrantTargetsResults: React.FC = () => {
@@ -20,37 +24,49 @@ export const GrantTargetsResults: React.FC = () => {
   useTitle(`The Data Explorer - ${params.id} Targets & Results`);
 
   const [tab, setTab] = React.useState(TABS[0]);
+  const [tableSearch, setTableSearch] = React.useState("");
 
   const dataTable = useStoreState((state) =>
-    get(state.GrantTargetsResultsTable, "data.data", [])
+    get(state.GrantTargetsResultsTable, "data.data", []),
   );
   const years = useStoreState((state) =>
-    get(state.GrantTargetsResultsTable, "data.years", [])
+    get(state.GrantTargetsResultsTable, "data.years", []),
   );
   const dates = useStoreState((state) =>
-    get(state.GrantTargetsResultsTable, "data.dates", [])
+    get(state.GrantTargetsResultsTable, "data.dates", []),
   );
   const loading = useStoreState(
-    (state) => state.GrantTargetsResultsTable.loading
+    (state) => state.GrantTargetsResultsTable.loading,
   );
   const fetchTable = useStoreActions(
-    (actions) => actions.GrantTargetsResultsTable.fetch
+    (actions) => actions.GrantTargetsResultsTable.fetch,
   );
 
   const handleTabChange = (value: string) => {
     setTab(TABS.find((t) => t.name === value) || TABS[0]);
   };
 
-  useUpdateEffect(() => {
+  const reloadTable = (search: string) => {
     if (params.id && params.ip) {
       fetchTable({
         routeParams: {
           code: params.id,
           ip: params.ip.toString(),
         },
-        filterString: `type=${tab.value}`,
+        filterString: `type=${tab.value}${
+          search.length > 0 ? `&q=${search}` : ""
+        }`,
       });
     }
+  };
+
+  const onSearchChange = (search: string) => {
+    setTableSearch(search);
+    reloadTable(search);
+  };
+
+  useUpdateEffect(() => {
+    reloadTable(tableSearch);
   }, [params.id, params.ip, tab]);
 
   const columns = React.useMemo(() => {
@@ -61,6 +77,8 @@ export const GrantTargetsResults: React.FC = () => {
         field: year,
         formatter: (cell: CellComponent) => {
           const tableEl = document.createElement("div");
+          tableEl.style.width = "100%";
+          tableEl.style.height = "100%";
           cell.getElement().appendChild(tableEl);
           const data = cell.getValue();
 
@@ -73,14 +91,26 @@ export const GrantTargetsResults: React.FC = () => {
             layout: "fitDataTable",
             height: "fit-content",
             columns: [
-              { title: "Target", field: "target" },
-              { title: "Result", field: "result" },
-              { title: "Achievement", field: "achievement" },
+              {
+                title: "Target",
+                field: "target",
+                formatter: cellBaselineTargetResultFormatter,
+              },
+              {
+                title: "Result",
+                field: "result",
+                formatter: cellBaselineTargetResultFormatter,
+              },
+              {
+                title: "Achievement",
+                field: "achievement",
+                formatter: cellAchievementFormatter,
+              },
             ],
           });
 
-          // cell.getElement().style.height = "max-content";
           cell.getElement().style.padding = "0";
+          cell.getElement().style.background = "#fff !important";
 
           return tableEl;
         },
@@ -106,9 +136,21 @@ export const GrantTargetsResults: React.FC = () => {
               layout: "fitDataTable",
               height: "fit-content",
               columns: [
-                { title: "Target", field: "target" },
-                { title: "Result", field: "result" },
-                { title: "Achievement", field: "achievement" },
+                {
+                  title: "Target",
+                  field: "target",
+                  formatter: cellBaselineTargetResultFormatter,
+                },
+                {
+                  title: "Result",
+                  field: "result",
+                  formatter: cellBaselineTargetResultFormatter,
+                },
+                {
+                  title: "Achievement",
+                  field: "achievement",
+                  formatter: cellAchievementFormatter,
+                },
               ],
             });
 
@@ -129,22 +171,24 @@ export const GrantTargetsResults: React.FC = () => {
     <Box marginTop="24px">
       <ChartBlock
         loading={loading}
+        exportName="grant-targets-results"
         title={getCMSDataField(
           cmsData,
           "pagesGrantTargetResults.title",
-          "Indicators"
+          "Indicators",
         )}
         id="grant-targets-results"
         subtitle={getCMSDataField(
           cmsData,
           "pagesGrantTargetResults.subtitle",
-          "Targets & Results"
+          "Targets & Results",
         )}
         text={getCMSDataField(
           cmsData,
           "pagesGrantTargetResults.text",
-          "Description of Impact indicators: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished."
+          "Description of Impact indicators: We unite the world to find solutions that have the most impact, and we take them to scale worldwide. It’s working. We won’t stop until the job is finished.",
         )}
+        data={dataTable}
         infoType="global"
       >
         <Box width="100%" height="32px" />
@@ -152,8 +196,10 @@ export const GrantTargetsResults: React.FC = () => {
           dataTree
           data={dataTable}
           columns={columns}
+          search={tableSearch}
           dataTreeStartExpanded
           noColumnVisibilitySelection
+          onSearchChange={onSearchChange}
           id="grant-targets-results-table"
           tabsView={{
             tabs: TABS.map((t) => t.name),

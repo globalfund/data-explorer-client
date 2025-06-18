@@ -24,6 +24,9 @@ export const Primary: StoryType = {
     filterGroups: [],
     appliedFilters: [],
     handleResetFilters: () => {},
+    handleApplyFilters: () => {},
+    handleCancelFilters: () => {},
+
     children: <div>Content</div>,
     subtitle:
       "Government, private sector, non-government and other donor pledges and contributions.",

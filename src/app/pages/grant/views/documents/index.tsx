@@ -25,7 +25,7 @@ export const GrantDocuments: React.FC = () => {
           {getCMSDataField(
             cmsData,
             "pagesGrantDocuments.notAvailable",
-            "No data available"
+            "No data available",
           )}
         </Typography>
       </Box>

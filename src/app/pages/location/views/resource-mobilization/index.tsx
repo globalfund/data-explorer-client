@@ -13,18 +13,22 @@ import { getCMSDataField } from "app/utils/getCMSDataField";
 import useUpdateEffect from "react-use/lib/useUpdateEffect";
 import { BarChartDataItem } from "app/components/charts/bar/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import {
-  getFinancialValueWithMetricPrefix,
   getRange,
+  getFinancialValueWithMetricPrefix,
 } from "app/utils/getFinancialValueWithMetricPrefix";
 
 export const ResourceMobilization: React.FC = () => {
   const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "pledges-contributions",
+  });
   const params = useParams<{ id: string; tab: string }>();
   const paramsId = params.id?.replace("|", "%2F");
 
   const locationName = useStoreState((state) =>
-    get(state.GeographyOverview, "data.data[0].name", params.id)
+    get(state.GeographyOverview, "data.data[0].name", params.id),
   );
   useTitle(`The Data Explorer - ${locationName}`);
 
@@ -35,14 +39,14 @@ export const ResourceMobilization: React.FC = () => {
       get(
         state.GeographyResourceMobilizationBarChart,
         "data.data",
-        []
-      ) as BarChartDataItem[]
+        [],
+      ) as BarChartDataItem[],
   );
   const loadingRMBarChart = useStoreState(
-    (state) => state.GeographyResourceMobilizationBarChart.loading
+    (state) => state.GeographyResourceMobilizationBarChart.loading,
   );
   const fetchRMBarChart = useStoreActions(
-    (actions) => actions.GeographyResourceMobilizationBarChart.fetch
+    (actions) => actions.GeographyResourceMobilizationBarChart.fetch,
   );
   const cycles = useStoreState(
     (state) =>
@@ -50,11 +54,11 @@ export const ResourceMobilization: React.FC = () => {
         (item: any) => ({
           name: item.value,
           value: item.value,
-        })
+        }),
       ) as {
         name: string;
         value: string;
-      }[]
+      }[],
   );
 
   const handleChartCycleChange = (cycle: CycleProps) => {
@@ -91,19 +95,29 @@ export const ResourceMobilization: React.FC = () => {
     }`;
   }, [dataRMBarChart]);
 
+  const exportChartData = React.useMemo(() => {
+    return {
+      headers: ["Period", "Pledge", "Contribution"],
+      data: dataRMBarChart.map((item) => [item.name, item.value, item.value1]),
+    };
+  }, [dataRMBarChart]);
+
   return (
     <Box>
       <ChartBlock
         cycles={cycles}
         id="resource-mobilization"
+        exportName="pledges-contributions"
         loading={loadingRMBarChart}
         title={`US$${totalPledge}`}
         selectedCycles={chart1Cycles}
+        latestUpdate={latestUpdateDate}
         subtitle={getCMSDataField(
           cmsData,
           "pagesLocationResourceMobilization.title",
-          "Pledges & Contributions"
+          "Pledges & Contributions",
         )}
+        data={exportChartData}
         handleCycleChange={handleChartCycleChange}
         empty={dataRMBarChart.length === 0 && chart1Cycles.length === 0}
         infoType="pledges_contributions"
@@ -114,12 +128,12 @@ export const ResourceMobilization: React.FC = () => {
             value: getCMSDataField(
               cmsData,
               "pagesLocationResourceMobilization.barchartLabel1",
-              "Pledge"
+              "Pledge",
             ),
             value1: getCMSDataField(
               cmsData,
               "pagesLocationResourceMobilization.barchartLabel2",
-              "Contribution"
+              "Contribution",
             ),
           }}
         />
@@ -153,7 +167,7 @@ export const ResourceMobilization: React.FC = () => {
             {getCMSDataField(
               cmsData,
               "pagesLocationResourceMobilization.statsLabel1",
-              "Total Pledge"
+              "Total Pledge",
             )}
             {chart1Cycles.length > 0
               ? ` ${chart1Cycles.map((c) => c.name).join(",")}`
@@ -173,7 +187,7 @@ export const ResourceMobilization: React.FC = () => {
             {getCMSDataField(
               cmsData,
               "pagesLocationResourceMobilization.statsLabel2",
-              "Total Contribution"
+              "Total Contribution",
             )}
             {chart1Cycles.length > 0
               ? ` ${chart1Cycles.map((c) => c.name).join(",")}`

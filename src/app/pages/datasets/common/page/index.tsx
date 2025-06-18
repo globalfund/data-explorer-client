@@ -14,30 +14,61 @@ import {
 } from "app/pages/datasets/common/page/data";
 
 export const DatasetPage: React.FC<DatasetPageProps> = (
-  props: DatasetPageProps
+  props: DatasetPageProps,
 ) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleFilterButtonClick = (
-    event: React.MouseEvent<HTMLButtonElement>
+    event: React.MouseEvent<HTMLButtonElement>,
   ) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleFilterPanelClose = () => {
+    props.handleCancelFilters();
     setAnchorEl(null);
   };
 
-  const onScroll = () => {
+  const handleCancelFilters = () => {
+    props.handleCancelFilters();
     setAnchorEl(null);
   };
+  const handleApplyFilters = () => {
+    props.handleApplyFilters();
+    setAnchorEl(null);
+  };
+  const onScroll = React.useCallback(() => {
+    props.handleCancelFilters();
+    setAnchorEl(null);
+  }, [props.handleCancelFilters]);
 
   React.useEffect(() => {
     window.addEventListener("scroll", onScroll);
     return () => {
       window.removeEventListener("scroll", onScroll);
     };
-  }, []);
+  }, [onScroll]);
+
+  const filterPopoverContent = React.useMemo(() => {
+    return (
+      <FilterPanel
+        onClose={handleFilterPanelClose}
+        filterGroups={props.filterGroups}
+        appliedFilters={props.appliedFilters}
+        page={0}
+        search=""
+        handleResetFilters={props.handleResetFilters}
+        appliedFilterBgColors={{
+          hover: "#FF9800",
+          normal: "rgba(255, 152, 0, 0.2)",
+        }}
+        setPage={() => 0}
+        setPageSearchValue={() => 0}
+        handleCancelFilters={handleCancelFilters}
+        handleApplyFilters={handleApplyFilters}
+      />
+    );
+  }, [props.filterGroups, props.appliedFilters, props.handleResetFilters]);
 
   return (
     <Box padding="50px 0">
@@ -55,7 +86,7 @@ export const DatasetPage: React.FC<DatasetPageProps> = (
       </Typography>
       {props.subtitle.length > 0 && (
         <Typography
-          variant="h6"
+          variant="h4"
           sx={
             props.subtitle.length > 0
               ? {}
@@ -132,16 +163,7 @@ export const DatasetPage: React.FC<DatasetPageProps> = (
               horizontal: "left",
             }}
           >
-            <FilterPanel
-              onClose={handleFilterPanelClose}
-              filterGroups={props.filterGroups}
-              appliedFilters={props.appliedFilters}
-              handleResetFilters={props.handleResetFilters}
-              appliedFilterBgColors={{
-                hover: "#FF9800",
-                normal: "rgba(255, 152, 0, 0.2)",
-              }}
-            />
+            {filterPopoverContent}
           </Popover>
         </Box>
         {props.toolbarRightContent}

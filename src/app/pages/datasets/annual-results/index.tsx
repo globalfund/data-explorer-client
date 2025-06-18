@@ -4,10 +4,10 @@ import uniq from "lodash/uniq";
 import Box from "@mui/material/Box";
 import { useTitle } from "react-use";
 import Divider from "@mui/material/Divider";
-import { Table } from "app/components/table";
 import { useLocation } from "react-router-dom";
 import { RowComponent } from "tabulator-tables";
 import Typography from "@mui/material/Typography";
+import { useCMSData } from "app/hooks/useCMSData";
 import { Dropdown } from "app/components/dropdown";
 import { getCMSDataField } from "app/utils/getCMSDataField";
 import { DatasetPage } from "app/pages/datasets/common/page";
@@ -18,15 +18,16 @@ import { FilterGroupModel } from "app/components/filters/list/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { HomeResultsStats } from "app/pages/home/components/results-stats";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import { PolylineTreeDataItem } from "app/components/charts/polyline-tree/data";
 import { ReactComponent as TableIcon } from "app/assets/vectors/Select_Table.svg";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 import { ReactComponent as BarChartIcon } from "app/assets/vectors/Select_BarChart.svg";
-import { useCMSData } from "app/hooks/useCMSData";
 import {
   TABLE_VARIATION_9_COLUMNS,
   TABLE_VARIATION_6_COLUMNS as DOCUMENTS_TABLE_COLUMNS,
 } from "app/components/table/data";
+import isEqual from "lodash/isEqual";
 
 const dropdownItems = [
   { label: "Polyline Tree", value: "Polyline Tree", icon: <BarChartIcon /> },
@@ -34,12 +35,16 @@ const dropdownItems = [
 ];
 
 export const AnnualResultsPage: React.FC = () => {
-  const cmsData = useCMSData({ returnData: true });
   useTitle("The Data Explorer - Annual Results");
+
   const location = useLocation();
+  const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "results",
+  });
 
   const [dropdownSelected, setDropdownSelected] = React.useState(
-    dropdownItems[0].value
+    dropdownItems[0].value,
   );
   const [chartAppliedFilters, setChartAppliedFilters] = React.useState<
     string[]
@@ -48,37 +53,48 @@ export const AnnualResultsPage: React.FC = () => {
     ...defaultAppliedFilters,
   });
 
+  const [chartTempAppliedFilters, setChartTempAppliedFilters] = React.useState<
+    string[]
+  >([]);
+  const [chartTempAppliedFiltersData, setChartTempAppliedFiltersData] =
+    React.useState({
+      ...defaultAppliedFilters,
+    });
+
   const annualResultsCycles = useStoreState(
     (state) =>
       get(state.AnnualResultsCycles, "data.data", []) as {
         name: number;
         value: number;
-      }[]
+      }[],
   );
   const [yearSelected, setYearSelected] = React.useState(
     annualResultsCycles.length > 0
       ? annualResultsCycles[0].value.toString()
-      : null
+      : null,
   );
+
+  const [tableSearch, setTableSearch] = React.useState("");
+  const [tableSearch2, setTableSearch2] = React.useState("");
 
   const dataStats = useStoreState(
     (state) =>
       get(state.AnnualResultsStats, "data.stats", []) as {
         label: string;
         value: number;
-      }[]
+      }[],
   );
   const fetchStats = useStoreActions(
-    (actions) => actions.AnnualResultsStats.fetch
+    (actions) => actions.AnnualResultsStats.fetch,
   );
   const dataPolyline = useStoreState(
     (state) =>
       get(state.AnnualResultsPolyline, "data.data", {
         name: "",
-      }) as PolylineTreeDataItem
+      }) as PolylineTreeDataItem,
   );
   const fetchPolyline = useStoreActions(
-    (actions) => actions.AnnualResultsPolyline.fetch
+    (actions) => actions.AnnualResultsPolyline.fetch,
   );
   const dataTable = useStoreState(
     (state) =>
@@ -90,10 +106,10 @@ export const AnnualResultsPage: React.FC = () => {
           | null
           | object
           | Array<object>;
-      }[]
+      }[],
   );
   const fetchTable = useStoreActions(
-    (actions) => actions.AnnualResultsTable.fetch
+    (actions) => actions.AnnualResultsTable.fetch,
   );
   const loadingResults = useStoreState((state) => {
     switch (dropdownSelected) {
@@ -106,13 +122,13 @@ export const AnnualResultsPage: React.FC = () => {
     }
   });
   const dataDocumentsTable = useStoreState((state) =>
-    get(state.AnnualResultsDocumentsTable, "data.data", [])
+    get(state.AnnualResultsDocumentsTable, "data.data", []),
   );
   const loadingDocumentsTable = useStoreState(
-    (state) => state.AnnualResultsDocumentsTable.loading
+    (state) => state.AnnualResultsDocumentsTable.loading,
   );
   const fetchDocumentsTable = useStoreActions(
-    (actions) => actions.AnnualResultsDocumentsTable.fetch
+    (actions) => actions.AnnualResultsDocumentsTable.fetch,
   );
   const dataLocationFilterOptions = useStoreState(
     (state) =>
@@ -120,7 +136,7 @@ export const AnnualResultsPage: React.FC = () => {
         id: "",
         name: "",
         options: [],
-      }) as FilterGroupModel
+      }) as FilterGroupModel,
   );
   const dataComponentFilterOptions = useStoreState(
     (state) =>
@@ -128,17 +144,23 @@ export const AnnualResultsPage: React.FC = () => {
         id: "",
         name: "",
         options: [],
-      }) as FilterGroupModel
+      }) as FilterGroupModel,
   );
   const pageAppliedFilters = useStoreState((state) => [
-    ...state.AppliedFiltersState.components,
-    ...state.AppliedFiltersState.locations,
+    ...state.TempAppliedFiltersState.components,
+    ...state.TempAppliedFiltersState.locations,
   ]);
   const appliedFiltersData = useStoreState(
-    (state) => state.AppliedFiltersState
+    (state) => state.AppliedFiltersState,
   );
   const appliedFiltersActions = useStoreActions(
-    (actions) => actions.AppliedFiltersState
+    (actions) => actions.AppliedFiltersState,
+  );
+  const tempAppliedFiltersData = useStoreState(
+    (state) => state.TempAppliedFiltersState,
+  );
+  const tempAppliedFiltersActions = useStoreActions(
+    (actions) => actions.TempAppliedFiltersState,
   );
 
   const handleSelectionChange = (value: string) => {
@@ -146,11 +168,27 @@ export const AnnualResultsPage: React.FC = () => {
   };
 
   const handleResetFilters = () => {
+    tempAppliedFiltersActions.clearAll();
     appliedFiltersActions.setAll({
       ...appliedFiltersData,
       locations: [],
       components: [],
     });
+  };
+
+  const handleCancelFilters = () => {
+    const clone = structuredClone(
+      appliedFiltersData,
+    ) as typeof appliedFiltersData;
+    tempAppliedFiltersActions.setAll(clone);
+  };
+
+  const handleApplyFilters = () => {
+    if (isEqual(appliedFiltersData, tempAppliedFiltersData)) return;
+    const clone = structuredClone(
+      tempAppliedFiltersData,
+    ) as typeof tempAppliedFiltersData;
+    appliedFiltersActions.setAll(clone);
   };
 
   const handleResetChartFilters = () => {
@@ -160,14 +198,37 @@ export const AnnualResultsPage: React.FC = () => {
       components: [],
     });
     setChartAppliedFilters([]);
+    setChartTempAppliedFiltersData({
+      ...chartTempAppliedFiltersData,
+      locations: [],
+      components: [],
+    });
+    setChartTempAppliedFilters([]);
+  };
+
+  const handleCancelChartFilters = () => {
+    setChartTempAppliedFiltersData(structuredClone(chartAppliedFiltersData));
+    setChartTempAppliedFilters(chartAppliedFilters);
+  };
+
+  const handleApplyChartFilters = () => {
+    if (isEqual(chartAppliedFilters, chartTempAppliedFiltersData)) return;
+    setChartAppliedFiltersData(
+      structuredClone(
+        chartTempAppliedFiltersData,
+      ) as typeof chartTempAppliedFiltersData,
+    );
+    setChartAppliedFilters(chartTempAppliedFilters);
   };
 
   const handleToggleChartFilter = (
     checked: boolean,
     value: string,
-    type: string
+    type: string,
   ) => {
-    const state = { ...chartAppliedFiltersData };
+    const state = structuredClone(
+      chartTempAppliedFiltersData,
+    ) as typeof chartTempAppliedFiltersData;
     switch (type) {
       case "geography":
       case "geographyType":
@@ -188,12 +249,14 @@ export const AnnualResultsPage: React.FC = () => {
       default:
         break;
     }
-    setChartAppliedFiltersData(state);
-    setChartAppliedFilters([...state.locations, ...state.components]);
+    setChartTempAppliedFiltersData(structuredClone(state) as typeof state);
+    setChartTempAppliedFilters([...state.locations, ...state.components]);
   };
 
   const handleRemoveChartFilter = (value: string, types: string[]) => {
-    const state = { ...chartAppliedFiltersData };
+    const state = structuredClone(
+      chartTempAppliedFiltersData,
+    ) as typeof chartTempAppliedFiltersData;
     types.forEach((type) => {
       switch (type) {
         case "geography":
@@ -208,37 +271,9 @@ export const AnnualResultsPage: React.FC = () => {
           break;
       }
     });
-    setChartAppliedFiltersData(state);
-    setChartAppliedFilters([...state.locations, ...state.components]);
+    setChartTempAppliedFiltersData(structuredClone(state) as typeof state);
+    setChartTempAppliedFilters([...state.locations, ...state.components]);
   };
-
-  const chartContent = React.useMemo(() => {
-    switch (dropdownSelected) {
-      case dropdownItems[0].value:
-        return <PolylineTree data={dataPolyline} />;
-      case dropdownItems[1].value:
-        return (
-          <Table
-            dataTree
-            data={dataTable}
-            id="annual-results-table"
-            columns={TABLE_VARIATION_9_COLUMNS}
-            dataTreeStartExpandedFn={(row: RowComponent, level: number) => {
-              if (level === 0) return row.getData().name === yearSelected;
-              if (level === 1) {
-                const parent = row.getTreeParent();
-                if (parent) {
-                  return parent.getData().name === yearSelected;
-                }
-              }
-              return false;
-            }}
-          />
-        );
-      default:
-        return null;
-    }
-  }, [dropdownSelected, dataPolyline, dataTable, yearSelected]);
 
   const chartEmpty = React.useMemo(() => {
     switch (dropdownSelected) {
@@ -249,11 +284,11 @@ export const AnnualResultsPage: React.FC = () => {
           !dataPolyline.children.length
         );
       case dropdownItems[1].value:
-        return !dataTable || !dataTable.length;
+        return (!dataTable || !dataTable.length) && tableSearch.length === 0;
       default:
         return false;
     }
-  }, [dropdownSelected, dataPolyline, dataTable]);
+  }, [tableSearch, dropdownSelected, dataPolyline, dataTable]);
 
   const filterGroups = React.useMemo(() => {
     return [dataLocationFilterOptions, dataComponentFilterOptions];
@@ -266,7 +301,7 @@ export const AnnualResultsPage: React.FC = () => {
       location.search.includes("locations=")
     ) {
       value += `geographies=${encodeURIComponent(
-        appliedFiltersData.locations.join(",")
+        appliedFiltersData.locations.join(","),
       )}`;
     }
     if (
@@ -274,7 +309,7 @@ export const AnnualResultsPage: React.FC = () => {
       location.search.includes("components=")
     ) {
       value += `${value.length > 0 ? "&" : ""}components=${encodeURIComponent(
-        appliedFiltersData.components.join(",")
+        appliedFiltersData.components.join(","),
       )}`;
     }
     return value;
@@ -291,7 +326,7 @@ export const AnnualResultsPage: React.FC = () => {
         uniq([
           ...appliedFiltersData.locations,
           ...chartAppliedFiltersData.locations,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (
@@ -303,7 +338,7 @@ export const AnnualResultsPage: React.FC = () => {
         uniq([
           ...appliedFiltersData.components,
           ...chartAppliedFiltersData.components,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     return value;
@@ -323,7 +358,7 @@ export const AnnualResultsPage: React.FC = () => {
             {getCMSDataField(
               cmsData,
               "pagesDatasetsAnnualResults.toolBarRightText",
-              "Reporting Result Year"
+              "Reporting Result Year",
             )}
           </Typography>
           <Dropdown
@@ -341,6 +376,97 @@ export const AnnualResultsPage: React.FC = () => {
       </Box>
     );
   }, [yearSelected]);
+
+  const onSearchChange = (search: string) => {
+    setTableSearch(search);
+    let filterString = chartFilterString;
+    if (search) {
+      filterString += `${filterString.length > 0 ? "&" : ""}q=${search}`;
+    }
+    fetchTable({ filterString });
+  };
+
+  const onSearchChange2 = (search: string) => {
+    setTableSearch2(search);
+    let filterString2 = `types=Profile&${filterString}${
+      filterString.length ? "&" : ""
+    }cycle=${yearSelected}`;
+    if (search) {
+      filterString2 += `&q=${search}`;
+    }
+    fetchDocumentsTable({ filterString: filterString2 });
+  };
+
+  const chartContent = React.useMemo(() => {
+    switch (dropdownSelected) {
+      case dropdownItems[0].value:
+        return <PolylineTree data={dataPolyline} />;
+      case dropdownItems[1].value:
+        return (
+          <TableContainer
+            dataTree
+            data={dataTable}
+            search={tableSearch}
+            id="annual-results-table"
+            onSearchChange={onSearchChange}
+            columns={TABLE_VARIATION_9_COLUMNS}
+            dataTreeStartExpandedFn={(row: RowComponent, level: number) => {
+              if (level === 0) return row.getData().name === yearSelected;
+              if (level === 1) {
+                const parent = row.getTreeParent();
+                if (parent) {
+                  return parent.getData().name === yearSelected;
+                }
+              }
+              return false;
+            }}
+          />
+        );
+      default:
+        return null;
+    }
+  }, [dropdownSelected, dataPolyline, dataTable, yearSelected]);
+
+  const exportChartData = React.useMemo(() => {
+    const result: (string | number)[][] = [];
+    switch (dropdownSelected) {
+      case dropdownItems[0].value:
+        dataPolyline.children?.forEach((component) => {
+          component.children?.forEach((indicator) => {
+            result.push([
+              dataPolyline.name,
+              `"${component.name}"`,
+              `"${indicator.name}"`,
+              indicator.value ?? "",
+            ]);
+          });
+        });
+        break;
+      case dropdownItems[1].value:
+        dataTable.forEach((year) => {
+          if (year !== null) {
+            // @ts-ignore
+            get(year, "_children", []).forEach((component: any) => {
+              get(component, "_children", []).forEach((indicator: any) => {
+                result.push([
+                  year.name,
+                  `"${component.name}"`,
+                  `"${indicator.name}"`,
+                  indicator.value ?? "",
+                ]);
+              });
+            });
+          }
+        });
+        break;
+      default:
+        break;
+    }
+    return {
+      headers: ["Year", "Component", "Indicator", "Amount"],
+      data: result,
+    };
+  }, [dropdownSelected, dataPolyline, dataTable]);
 
   React.useEffect(() => {
     if (annualResultsCycles.length > 0) {
@@ -395,8 +521,10 @@ export const AnnualResultsPage: React.FC = () => {
       subtitle={get(
         cmsData,
         "pagesDatasetsAnnualResults.subtitle",
-        "Indicator results reported as part of annual Results Report."
+        "Indicator results reported as part of annual Results Report.",
       )}
+      handleApplyFilters={handleApplyFilters}
+      handleCancelFilters={handleCancelFilters}
     >
       <Box width="100%" marginTop="50px">
         <HomeResultsStats stats={dataStats} loading={loadingResults} />
@@ -422,15 +550,20 @@ export const AnnualResultsPage: React.FC = () => {
         >
           <DatasetChartBlock
             id="annual-results"
+            exportName="annual-results"
             title={get(
               cmsData,
               "pagesDatasetsAnnualResults.chartTitle",
-              "Annual Results"
+              "Annual Results",
             )}
             subtitle=""
+            data={exportChartData}
             loading={loadingResults}
             dropdownItems={dropdownItems}
+            latestUpdate={latestUpdateDate}
             dropdownSelected={dropdownSelected}
+            handleApplyFilters={handleApplyChartFilters}
+            handleCancelFilters={handleCancelChartFilters}
             handleDropdownChange={handleSelectionChange}
             disableCollapse={dropdownSelected === dropdownItems[1].value}
             empty={chartEmpty}
@@ -438,8 +571,8 @@ export const AnnualResultsPage: React.FC = () => {
             toggleFilter={handleToggleChartFilter}
             removeFilter={handleRemoveChartFilter}
             handleResetFilters={handleResetChartFilters}
-            appliedFilters={chartAppliedFilters}
-            appliedFiltersData={chartAppliedFiltersData}
+            appliedFilters={chartTempAppliedFilters}
+            tempAppliedFiltersData={chartTempAppliedFiltersData}
             infoType="global"
           >
             {chartContent}
@@ -466,8 +599,12 @@ export const AnnualResultsPage: React.FC = () => {
           }}
         >
           <Box id="documents" padding="50px 0" data-cy="documents-block">
-            <Typography variant="h3" lineHeight={1.2}>
-              Documents
+            <Typography variant="h2" lineHeight={1.2}>
+              {getCMSDataField(
+                cmsData,
+                "pagesDatasetsAnnualResults.documentsTitle",
+                "Documents",
+              )}
             </Typography>
             <Divider
               sx={{
@@ -488,18 +625,7 @@ export const AnnualResultsPage: React.FC = () => {
                 <CircularProgress />
               </Box>
             )}
-            {!loadingDocumentsTable && dataDocumentsTable.length > 0 ? (
-              <React.Fragment>
-                <Box height="40px" />
-                <TableContainer
-                  dataTree
-                  id="documents-table"
-                  dataTreeStartExpanded
-                  data={dataDocumentsTable}
-                  columns={DOCUMENTS_TABLE_COLUMNS}
-                />
-              </React.Fragment>
-            ) : (
+            {dataDocumentsTable.length === 0 && tableSearch2.length === 0 ? (
               <Box
                 width="100%"
                 height="100%"
@@ -510,6 +636,19 @@ export const AnnualResultsPage: React.FC = () => {
               >
                 <Typography>No data available</Typography>
               </Box>
+            ) : (
+              <React.Fragment>
+                <Box height="40px" />
+                <TableContainer
+                  dataTree
+                  id="documents-table"
+                  search={tableSearch2}
+                  dataTreeStartExpanded
+                  data={dataDocumentsTable}
+                  onSearchChange={onSearchChange2}
+                  columns={DOCUMENTS_TABLE_COLUMNS}
+                />
+              </React.Fragment>
             )}
           </Box>
         </Box>

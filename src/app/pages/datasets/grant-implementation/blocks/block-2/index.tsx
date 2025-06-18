@@ -3,32 +3,32 @@ import get from "lodash/get";
 import uniq from "lodash/uniq";
 import Box from "@mui/material/Box";
 import { appColors } from "app/theme";
-import { Table } from "app/components/table";
 import { useLocation } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import { useCMSData } from "app/hooks/useCMSData";
 import { BarChart } from "app/components/charts/bar";
 import { LineChart } from "app/components/charts/line";
 import { getCMSDataField } from "app/utils/getCMSDataField";
+import { TableContainer } from "app/components/table-container";
 import { BarChartDataItem } from "app/components/charts/bar/data";
 import { LineChartDataItem } from "app/components/charts/line/data";
 import { FilterGroupModel } from "app/components/filters/list/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { getRange } from "app/utils/getFinancialValueWithMetricPrefix";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 import {
   TableDataItem,
   TABLE_VARIATION_13_COLUMNS as DISBURSEMENTS_TABLE_COLUMNS,
 } from "app/components/table/data";
 import {
-  dropdownItemsBudgets,
   componentsGroupingOptions,
   dropdownItemsDisbursements,
 } from "app/pages/datasets/grant-implementation/data";
+import isEqual from "lodash/isEqual";
 
 interface GrantImplementationPageBlock2Props {
-  filterString: string;
   geographyGrouping: string;
   componentsGrouping: string;
   filterGroups: FilterGroupModel[];
@@ -39,6 +39,9 @@ export const GrantImplementationPageBlock2: React.FC<
 > = (props: GrantImplementationPageBlock2Props) => {
   const location = useLocation();
   const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "disbursements",
+  });
 
   const [disbursementsDropdownSelected, setDisbursementsDropdownSelected] =
     React.useState(dropdownItemsDisbursements[0].value);
@@ -49,45 +52,53 @@ export const GrantImplementationPageBlock2: React.FC<
     React.useState({
       ...defaultAppliedFilters,
     });
+  const [chart1TempAppliedFilters, setChart1TempAppliedFilters] =
+    React.useState<string[]>([]);
+  const [chart1TempAppliedFiltersData, setChart1TempAppliedFiltersData] =
+    React.useState({
+      ...defaultAppliedFilters,
+    });
+
+  const [tableSearch, setTableSearch] = React.useState("");
 
   const dataFinancialInsightsDisbursementsBarChart = useStoreState(
     (state) =>
       get(
         state.FinancialInsightsDisbursementsBarChart,
         "data.data",
-        []
-      ) as BarChartDataItem[]
+        [],
+      ) as BarChartDataItem[],
   );
   const fetchFinancialInsightsDisbursementsBarChart = useStoreActions(
-    (actions) => actions.FinancialInsightsDisbursementsBarChart.fetch
+    (actions) => actions.FinancialInsightsDisbursementsBarChart.fetch,
   );
   const dataFinancialInsightsDisbursementsLineChart = useStoreState(
     (state) =>
       get(
         state.FinancialInsightsDisbursementsLineChart,
         "data.data",
-        []
-      ) as LineChartDataItem[]
+        [],
+      ) as LineChartDataItem[],
   );
   const keysFinancialInsightsDisbursementsLineChart = useStoreState(
     (state) =>
       get(
         state.FinancialInsightsDisbursementsLineChart,
         "data.xAxisKeys",
-        []
-      ) as string[]
+        [],
+      ) as string[],
   );
   const fetchFinancialInsightsDisbursementsLineChart = useStoreActions(
-    (actions) => actions.FinancialInsightsDisbursementsLineChart.fetch
+    (actions) => actions.FinancialInsightsDisbursementsLineChart.fetch,
   );
   const dataFinancialInsightsDisbursementsTable = useStoreState(
     (state) =>
       get(state.FinancialInsightsDisbursementsTable, "data.data", []) as {
         [key: string]: TableDataItem;
-      }[]
+      }[],
   );
   const fetchFinancialInsightsDisbursementsTable = useStoreActions(
-    (actions) => actions.FinancialInsightsDisbursementsTable.fetch
+    (actions) => actions.FinancialInsightsDisbursementsTable.fetch,
   );
   const loadingFinancialInsightsDisbursements = useStoreState((state) => {
     switch (disbursementsDropdownSelected) {
@@ -103,7 +114,7 @@ export const GrantImplementationPageBlock2: React.FC<
   });
 
   const appliedFiltersData = useStoreState(
-    (state) => state.AppliedFiltersState
+    (state) => state.AppliedFiltersState,
   );
 
   const handleDisbursementsSelectionChange = (value: string) => {
@@ -122,14 +133,27 @@ export const GrantImplementationPageBlock2: React.FC<
       cycles: [],
     });
     setChart1AppliedFilters([]);
+    setChart1TempAppliedFiltersData({
+      ...chart1TempAppliedFiltersData,
+      locations: [],
+      components: [],
+      principalRecipients: [],
+      principalRecipientSubTypes: [],
+      principalRecipientTypes: [],
+      status: [],
+      cycles: [],
+    });
+    setChart1TempAppliedFilters([]);
   };
 
   const handleToggleChartFilter = (
     checked: boolean,
     value: string,
-    type: string
+    type: string,
   ) => {
-    let state = { ...chart1AppliedFiltersData };
+    let state = structuredClone(
+      chart1TempAppliedFiltersData,
+    ) as typeof chart1TempAppliedFiltersData;
     switch (type) {
       case "geography":
       case "geographyType":
@@ -152,7 +176,7 @@ export const GrantImplementationPageBlock2: React.FC<
           state.principalRecipients.push(value);
         } else {
           state.principalRecipients = state.principalRecipients.filter(
-            (item) => item !== value
+            (item) => item !== value,
           );
         }
         break;
@@ -169,7 +193,7 @@ export const GrantImplementationPageBlock2: React.FC<
           state.principalRecipientTypes.push(value);
         } else {
           state.principalRecipientTypes = state.principalRecipientTypes.filter(
-            (item) => item !== value
+            (item) => item !== value,
           );
         }
         break;
@@ -190,8 +214,8 @@ export const GrantImplementationPageBlock2: React.FC<
       default:
         break;
     }
-    setChart1AppliedFiltersData(state);
-    setChart1AppliedFilters([
+    setChart1TempAppliedFiltersData(structuredClone(state) as typeof state);
+    setChart1TempAppliedFilters([
       ...state.locations,
       ...state.components,
       ...state.principalRecipients,
@@ -203,7 +227,9 @@ export const GrantImplementationPageBlock2: React.FC<
   };
 
   const handleRemoveChartFilter = (value: string, types: string[]) => {
-    let state = { ...chart1AppliedFiltersData };
+    let state = structuredClone(
+      chart1TempAppliedFiltersData,
+    ) as typeof chart1TempAppliedFiltersData;
     types.forEach((type) => {
       switch (type) {
         case "geography":
@@ -216,7 +242,7 @@ export const GrantImplementationPageBlock2: React.FC<
           break;
         case "principalRecipient":
           state.principalRecipients = state.principalRecipients.filter(
-            (item) => item !== value
+            (item) => item !== value,
           );
           break;
         case "principalRecipientSubType":
@@ -225,7 +251,7 @@ export const GrantImplementationPageBlock2: React.FC<
           break;
         case "principalRecipientType":
           state.principalRecipientTypes = state.principalRecipientTypes.filter(
-            (item) => item !== value
+            (item) => item !== value,
           );
           break;
         case "status":
@@ -238,8 +264,8 @@ export const GrantImplementationPageBlock2: React.FC<
           break;
       }
     });
-    setChart1AppliedFiltersData(state);
-    setChart1AppliedFilters([
+    setChart1TempAppliedFiltersData(structuredClone(state) as typeof state);
+    setChart1TempAppliedFilters([
       ...state.locations,
       ...state.components,
       ...state.principalRecipients,
@@ -248,6 +274,166 @@ export const GrantImplementationPageBlock2: React.FC<
       ...state.status,
       ...state.cycles,
     ]);
+  };
+
+  const handleCancelChartFilters = () => {
+    setChart1TempAppliedFiltersData(structuredClone(chart1AppliedFiltersData));
+    setChart1TempAppliedFilters(chart1AppliedFilters);
+  };
+
+  const handleApplyChartFilters = () => {
+    if (isEqual(chart1AppliedFilters, chart1TempAppliedFiltersData)) return;
+    setChart1AppliedFiltersData(
+      structuredClone(
+        chart1TempAppliedFiltersData,
+      ) as typeof chart1TempAppliedFiltersData,
+    );
+    setChart1AppliedFilters(chart1TempAppliedFilters);
+  };
+
+  const disbursementsChartEmpty = React.useMemo(() => {
+    switch (disbursementsDropdownSelected) {
+      case dropdownItemsDisbursements[0].value:
+        return !dataFinancialInsightsDisbursementsBarChart.length;
+      case dropdownItemsDisbursements[1].value:
+        return !dataFinancialInsightsDisbursementsLineChart.length;
+      case dropdownItemsDisbursements[2].value:
+        return (
+          !dataFinancialInsightsDisbursementsTable.length && !tableSearch.length
+        );
+      default:
+        return false;
+    }
+  }, [
+    tableSearch,
+    disbursementsDropdownSelected,
+    dataFinancialInsightsDisbursementsBarChart,
+    dataFinancialInsightsDisbursementsLineChart,
+    dataFinancialInsightsDisbursementsTable,
+  ]);
+
+  const chart1FilterString = React.useMemo(() => {
+    let value = "";
+    if (
+      (appliedFiltersData.locations.length > 0 &&
+        location.search.includes("locations=")) ||
+      chart1AppliedFiltersData.locations.length > 0
+    ) {
+      value += `geographies=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.locations,
+          ...chart1AppliedFiltersData.locations,
+        ]).join(","),
+      )}`;
+    }
+    if (
+      (appliedFiltersData.components.length > 0 &&
+        location.search.includes("components=")) ||
+      chart1AppliedFiltersData.components.length > 0
+    ) {
+      value += `${value.length > 0 ? "&" : ""}components=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.components,
+          ...chart1AppliedFiltersData.components,
+        ]).join(","),
+      )}`;
+    }
+    if (
+      (appliedFiltersData.principalRecipients.length > 0 &&
+        location.search.includes("principalRecipients=")) ||
+      chart1AppliedFiltersData.principalRecipients.length > 0
+    ) {
+      value += `${
+        value.length > 0 ? "&" : ""
+      }principalRecipients=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipients,
+          ...chart1AppliedFiltersData.principalRecipients,
+        ]).join(","),
+      )}`;
+    }
+    if (
+      (appliedFiltersData.principalRecipientSubTypes.length > 0 &&
+        location.search.includes("principalRecipientSubTypes=")) ||
+      chart1AppliedFiltersData.principalRecipientSubTypes.length > 0
+    ) {
+      value += `${
+        value.length > 0 ? "&" : ""
+      }principalRecipientSubTypes=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipientSubTypes,
+          ...chart1AppliedFiltersData.principalRecipientSubTypes,
+        ]).join(","),
+      )}`;
+    }
+    if (
+      (appliedFiltersData.principalRecipientTypes.length > 0 &&
+        location.search.includes("principalRecipientTypes=")) ||
+      chart1AppliedFiltersData.principalRecipientTypes.length > 0
+    ) {
+      value += `${
+        value.length > 0 ? "&" : ""
+      }principalRecipientTypes=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.principalRecipientTypes,
+          ...chart1AppliedFiltersData.principalRecipientTypes,
+        ]).join(","),
+      )}`;
+    }
+    if (
+      (appliedFiltersData.status.length > 0 &&
+        location.search.includes("status=")) ||
+      chart1AppliedFiltersData.status.length > 0
+    ) {
+      value += `${value.length > 0 ? "&" : ""}status=${encodeURIComponent(
+        uniq([
+          ...appliedFiltersData.status,
+          ...chart1AppliedFiltersData.status,
+        ]).join(","),
+      )}`;
+    }
+    if (
+      (appliedFiltersData.cycles.length > 0 &&
+        location.search.includes("cycles=")) ||
+      chart1AppliedFiltersData.cycles.length > 0
+    ) {
+      // const years = uniq([
+      //   ...appliedFiltersData.cycles,
+      //   ...chart1AppliedFiltersData.cycles,
+      // ]).map((cycle) => cycle.replace(/ /g, "").split("-")[0]);
+      // const yearsTo = uniq([
+      //   ...appliedFiltersData.cycles,
+      //   ...chart1AppliedFiltersData.cycles,
+      // ]).map((cycle) => cycle.replace(/ /g, "").split("-")[1]);
+      // value += `${
+      //   value.length > 0 ? "&" : ""
+      // }years=${encodeURIComponent(
+      //   years.join(",")
+      // )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
+      value += `${value.length > 0 ? "&" : ""}cycleNames=${uniq([
+        ...appliedFiltersData.cycles,
+        ...chart1AppliedFiltersData.cycles,
+      ]).join(",")}`;
+    }
+    return value;
+  }, [appliedFiltersData, chart1AppliedFiltersData, location.search]);
+
+  const onSearchChange = (search: string) => {
+    setTableSearch(search);
+    let filterString = chart1FilterString;
+    if (search) {
+      filterString += `${filterString.length > 0 ? "&" : ""}q=${search}`;
+    }
+    fetchFinancialInsightsDisbursementsTable({
+      filterString,
+      routeParams: {
+        componentField:
+          props.componentsGrouping === componentsGroupingOptions[0].value
+            ? "activityAreaGroup"
+            : "activityArea",
+        geographyGrouping: props.geographyGrouping,
+      },
+    });
   };
 
   const disbursementsChartContent = React.useMemo(() => {
@@ -346,9 +532,11 @@ export const GrantImplementationPageBlock2: React.FC<
         );
       case dropdownItemsDisbursements[2].value:
         return (
-          <Table
+          <TableContainer
             dataTree
+            search={tableSearch}
             id="disbursements-table"
+            onSearchChange={onSearchChange}
             columns={DISBURSEMENTS_TABLE_COLUMNS}
             data={dataFinancialInsightsDisbursementsTable}
           />
@@ -357,6 +545,7 @@ export const GrantImplementationPageBlock2: React.FC<
         return null;
     }
   }, [
+    tableSearch,
     disbursementsDropdownSelected,
     dataFinancialInsightsDisbursementsBarChart,
     dataFinancialInsightsDisbursementsLineChart,
@@ -364,129 +553,51 @@ export const GrantImplementationPageBlock2: React.FC<
     dataFinancialInsightsDisbursementsTable,
   ]);
 
-  const disbursementsChartEmpty = React.useMemo(() => {
+  const chartData = React.useMemo(() => {
+    let headers: string[] = [];
+    const data: (string | number)[][] = [];
     switch (disbursementsDropdownSelected) {
       case dropdownItemsDisbursements[0].value:
-        return !dataFinancialInsightsDisbursementsBarChart.length;
+        headers = ["Component", "Amount"];
+        dataFinancialInsightsDisbursementsBarChart.forEach((item: any) => {
+          data.push([item.name, item.value]);
+        });
+        break;
       case dropdownItemsDisbursements[1].value:
-        return !dataFinancialInsightsDisbursementsLineChart.length;
+        headers = ["Component", "Year", "Amount"];
+        dataFinancialInsightsDisbursementsLineChart.forEach((item: any) => {
+          item.data.forEach((value: number, index: number) => {
+            if (value) {
+              data.push([
+                item.name,
+                keysFinancialInsightsDisbursementsLineChart[index],
+                value,
+              ]);
+            }
+          });
+        });
+        break;
       case dropdownItemsDisbursements[2].value:
-        return !dataFinancialInsightsDisbursementsTable.length;
+        headers = ["Component", "Signed", "Committed", "Disbursed"];
+        dataFinancialInsightsDisbursementsTable.forEach((item: any) => {
+          data.push([
+            item.component,
+            item.signed,
+            item.committed,
+            item.disbursed,
+          ]);
+        });
+        break;
       default:
-        return false;
+        break;
     }
+    return { headers, data };
   }, [
     disbursementsDropdownSelected,
     dataFinancialInsightsDisbursementsBarChart,
     dataFinancialInsightsDisbursementsLineChart,
     dataFinancialInsightsDisbursementsTable,
   ]);
-
-  const chart1FilterString = React.useMemo(() => {
-    let value = "";
-    if (
-      (appliedFiltersData.locations.length > 0 &&
-        location.search.includes("locations=")) ||
-      chart1AppliedFiltersData.locations.length > 0
-    ) {
-      value += `geographies=${encodeURIComponent(
-        uniq([
-          ...appliedFiltersData.locations,
-          ...chart1AppliedFiltersData.locations,
-        ]).join(",")
-      )}`;
-    }
-    if (
-      (appliedFiltersData.components.length > 0 &&
-        location.search.includes("components=")) ||
-      chart1AppliedFiltersData.components.length > 0
-    ) {
-      value += `${value.length > 0 ? "&" : ""}components=${encodeURIComponent(
-        uniq([
-          ...appliedFiltersData.components,
-          ...chart1AppliedFiltersData.components,
-        ]).join(",")
-      )}`;
-    }
-    if (
-      (appliedFiltersData.principalRecipients.length > 0 &&
-        location.search.includes("principalRecipients=")) ||
-      chart1AppliedFiltersData.principalRecipients.length > 0
-    ) {
-      value += `${
-        value.length > 0 ? "&" : ""
-      }principalRecipients=${encodeURIComponent(
-        uniq([
-          ...appliedFiltersData.principalRecipients,
-          ...chart1AppliedFiltersData.principalRecipients,
-        ]).join(",")
-      )}`;
-    }
-    if (
-      (appliedFiltersData.principalRecipientSubTypes.length > 0 &&
-        location.search.includes("principalRecipientSubTypes=")) ||
-      chart1AppliedFiltersData.principalRecipientSubTypes.length > 0
-    ) {
-      value += `${
-        value.length > 0 ? "&" : ""
-      }principalRecipientSubTypes=${encodeURIComponent(
-        uniq([
-          ...appliedFiltersData.principalRecipientSubTypes,
-          ...chart1AppliedFiltersData.principalRecipientSubTypes,
-        ]).join(",")
-      )}`;
-    }
-    if (
-      (appliedFiltersData.principalRecipientTypes.length > 0 &&
-        location.search.includes("principalRecipientTypes=")) ||
-      chart1AppliedFiltersData.principalRecipientTypes.length > 0
-    ) {
-      value += `${
-        value.length > 0 ? "&" : ""
-      }principalRecipientTypes=${encodeURIComponent(
-        uniq([
-          ...appliedFiltersData.principalRecipientTypes,
-          ...chart1AppliedFiltersData.principalRecipientTypes,
-        ]).join(",")
-      )}`;
-    }
-    if (
-      (appliedFiltersData.status.length > 0 &&
-        location.search.includes("status=")) ||
-      chart1AppliedFiltersData.status.length > 0
-    ) {
-      value += `${value.length > 0 ? "&" : ""}status=${encodeURIComponent(
-        uniq([
-          ...appliedFiltersData.status,
-          ...chart1AppliedFiltersData.status,
-        ]).join(",")
-      )}`;
-    }
-    if (
-      (appliedFiltersData.cycles.length > 0 &&
-        location.search.includes("cycles=")) ||
-      chart1AppliedFiltersData.cycles.length > 0
-    ) {
-      // const years = uniq([
-      //   ...appliedFiltersData.cycles,
-      //   ...chart1AppliedFiltersData.cycles,
-      // ]).map((cycle) => cycle.replace(/ /g, "").split("-")[0]);
-      // const yearsTo = uniq([
-      //   ...appliedFiltersData.cycles,
-      //   ...chart1AppliedFiltersData.cycles,
-      // ]).map((cycle) => cycle.replace(/ /g, "").split("-")[1]);
-      // value += `${
-      //   value.length > 0 ? "&" : ""
-      // }years=${encodeURIComponent(
-      //   years.join(",")
-      // )}&yearsTo=${encodeURIComponent(yearsTo.join(","))}`;
-      value += `${value.length > 0 ? "&" : ""}cycleNames=${uniq([
-        ...appliedFiltersData.cycles,
-        ...chart1AppliedFiltersData.cycles,
-      ]).join(",")}`;
-    }
-    return value;
-  }, [appliedFiltersData, chart1AppliedFiltersData, location.search]);
 
   React.useEffect(() => {
     fetchFinancialInsightsDisbursementsBarChart({
@@ -542,30 +653,35 @@ export const GrantImplementationPageBlock2: React.FC<
     >
       <DatasetChartBlock
         id="disbursements"
+        exportName="disbursements"
         title={getCMSDataField(
           cmsData,
           "pagesDatasetsGrantImplementation.disbursementsTitle",
-          "Disbursements"
+          "Disbursements",
         )}
         subtitle={getCMSDataField(
           cmsData,
           "pagesDatasetsGrantImplementation.disbursementsSubtitle",
-          "Disbursement transactions for all grants across the porfolio."
+          "Disbursement transactions for all grants across the porfolio.",
         )}
         dropdownItems={dropdownItemsDisbursements}
         dropdownSelected={disbursementsDropdownSelected}
+        handleApplyFilters={handleApplyChartFilters}
+        handleCancelFilters={handleCancelChartFilters}
         handleDropdownChange={handleDisbursementsSelectionChange}
         loading={loadingFinancialInsightsDisbursements}
+        latestUpdate={latestUpdateDate}
         disableCollapse={
           disbursementsDropdownSelected === dropdownItemsDisbursements[2].value
         }
         empty={disbursementsChartEmpty}
-        appliedFilters={chart1AppliedFilters}
+        appliedFilters={chart1TempAppliedFilters}
         filterGroups={props.filterGroups}
         toggleFilter={handleToggleChartFilter}
         removeFilter={handleRemoveChartFilter}
         handleResetFilters={handleResetChartFilters}
-        appliedFiltersData={chart1AppliedFiltersData}
+        tempAppliedFiltersData={chart1TempAppliedFiltersData}
+        data={chartData}
         infoType="financials"
       >
         {disbursementsChartContent}

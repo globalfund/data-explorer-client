@@ -41,7 +41,7 @@ export const Header: React.FC = () => {
     }
   };
 
-  const content = React.useMemo(() => {
+  const searchContent = React.useMemo(() => {
     if (mobile) {
       return (
         <Box
@@ -57,22 +57,28 @@ export const Header: React.FC = () => {
           {searchOpen && (
             <Box
               sx={{
-                width: "500px",
+                maxWidth: "500px",
+                borderRadius: "23px",
+                width: "calc(100% - 48px)",
                 "#search-container": {
                   width: "100%",
-                  padding: "4px 10px",
+                  height: "24px",
+                  borderRadius: "23px",
                   input: {
                     fontSize: "12px",
+                    borderRadius: "23px",
+                    background: colors.primary.white,
                   },
-                  svg: {
-                    display: "none",
-                  },
+                },
+                "#search-icon": {
+                  display: "none",
                 },
                 "#search-category-dropdown": {
                   display: "none",
                 },
                 "#search-results-container": {
                   top: "35px",
+                  width: "500px",
                 },
                 "> div": {
                   width: "100%",
@@ -86,10 +92,18 @@ export const Header: React.FC = () => {
             onClick={onSearchBtnClick}
             sx={{
               padding: 0,
-              marginLeft: "10px",
+              marginLeft: "-24px",
+              background: colors.primary.black,
               "> svg": {
-                transform: "scale(0.9)",
-                color: colors.primary.black,
+                transform: "scale(0.7)",
+                color: colors.primary.white,
+              },
+              "&:hover": {
+                opacity: 0.8,
+                background: colors.primary.black,
+                "> svg": {
+                  color: colors.primary.white,
+                },
               },
             }}
           >
@@ -109,31 +123,42 @@ export const Header: React.FC = () => {
     return (
       <Box
         sx={{
+          top: "16px",
+          right: "0px",
           display: "flex",
           flexDirection: "row",
+          position: "absolute",
           alignItems: "center",
           justifyContent: "flex-end",
+          "@media (max-width: 1216px)": {
+            right: "16px",
+          },
         }}
       >
         {searchOpen && (
           <Box
             sx={{
-              width: "500px",
+              width: "171px",
+              borderRadius: "23px",
               "#search-container": {
                 width: "100%",
-                padding: "4px 10px",
+                height: "24px",
+                borderRadius: "23px",
                 input: {
                   fontSize: "12px",
+                  borderRadius: "23px",
+                  background: colors.primary.white,
                 },
-                svg: {
-                  display: "none",
-                },
+              },
+              "#search-icon": {
+                display: "none",
               },
               "#search-category-dropdown": {
                 display: "none",
               },
               "#search-results-container": {
                 top: "35px",
+                width: "500px",
               },
               "> div": {
                 width: "100%",
@@ -150,7 +175,7 @@ export const Header: React.FC = () => {
             onClick={onSearchBtnClick}
             sx={{
               padding: 0,
-              marginLeft: "10px",
+              marginLeft: "-24px",
               background: colors.primary.black,
               "> svg": {
                 transform: "scale(0.7)",
@@ -190,39 +215,27 @@ export const Header: React.FC = () => {
 
   return (
     <Box sx={{ zIndex: 1000, flexGrow: 1, top: 0, position: "sticky" }}>
-      <AppBar position="static">
-        <Container maxWidth="lg" disableGutters>
+      <AppBar position="static" sx={{ background: "#F8F8F8" }}>
+        <Container maxWidth="lg" disableGutters sx={{ background: "#F8F8F8" }}>
           <Toolbar
             sx={{
+              background: "#F8F8F8",
+              "@media (max-width: 1279px)": {
+                width: "100%",
+              },
               "@media (max-width: 767px)": {
                 padding: "0 16px",
               },
             }}
           >
-            {((mobile && !searchOpen) || !mobile) && (
-              <NavLink to="/">
-                <HeaderToolbarLogo />
-              </NavLink>
-            )}
-            <Box
-              sx={{
-                flexGrow: 1,
-                width: "100%",
-                height: "100%",
-                display: "flex",
-                flexDirection: "column",
-                "> div": {
-                  width: "100%",
-                  height: "50%",
-                },
-              }}
-            >
-              {content}
-              <HeaderMenu
-                mobileMenuOpen={mobileMenuOpen}
-                setMobileMenuOpen={setMobileMenuOpen}
-              />
-            </Box>
+            <NavLink to="/" style={{ display: "flex" }}>
+              <HeaderToolbarLogo />
+            </NavLink>
+            <HeaderMenu
+              mobileMenuOpen={mobileMenuOpen}
+              setMobileMenuOpen={setMobileMenuOpen}
+            />
+            {searchContent}
           </Toolbar>
         </Container>
       </AppBar>

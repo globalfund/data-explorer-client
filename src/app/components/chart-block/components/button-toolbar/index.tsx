@@ -17,7 +17,7 @@ import {
 } from "app/components/chart-block/components/button-toolbar/data";
 
 export const ChartBlockButtonToolbar: React.FC<ChartBlockButtonToolbarProps> = (
-  props: ChartBlockButtonToolbarProps
+  props: ChartBlockButtonToolbarProps,
 ) => {
   const [active, setActive] = React.useState<
     "download" | "share" | "favorite" | "info" | null
@@ -69,10 +69,7 @@ export const ChartBlockButtonToolbar: React.FC<ChartBlockButtonToolbarProps> = (
       <ClickAwayListener onClickAway={handleClose}>
         <Box
           gap="8px"
-          width="100%"
           display="flex"
-          marginTop="40px"
-          position="relative"
           flexDirection="row"
           justifyContent="flex-end"
           sx={{

@@ -6,13 +6,13 @@ import Providers from "app/Providers";
 import reportWebVitals from "./reportWebVitals";
 
 const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
+  document.getElementById("root") as HTMLElement,
 );
 
 root.render(
   <Providers>
     <App />
-  </Providers>
+  </Providers>,
 );
 
 reportWebVitals();

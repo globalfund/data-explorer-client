@@ -11,14 +11,19 @@ import { GrantTargetsResults } from "./views/targets-results";
 import { GrantOverview } from "app/pages/grant/views/overview";
 import { DetailPageTabs } from "app/components/detail-page-tabs";
 import { GrantDocuments } from "app/pages/grant/views/documents";
-import { GRANT_TABS } from "app/components/detail-page-tabs/data";
+import { getGrantTabs } from "app/components/detail-page-tabs/data";
 import { BarChartDataItem } from "app/components/charts/bar/data";
 import { splitStringInMiddle } from "app/utils/splitStringInMiddle";
 import { SankeyChartData } from "app/components/charts/sankey/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { GrantImplementation } from "app/pages/grant/views/grant-implementation";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export const Grant: React.FC = () => {
+  const cmsData = useCMSData({ returnData: true });
+  const GRANT_TABS = React.useMemo(() => {
+    return getGrantTabs(cmsData);
+  }, [cmsData]);
   const navigate = useNavigate();
   const smallScreen = useMediaQuery("(max-width: 920px)");
   const params = useParams<{ id: string; ip: string; tab: string }>();
@@ -52,64 +57,64 @@ export const Grant: React.FC = () => {
         principalRecipientShortrName: string;
         component: string;
         FPMName: string;
-      }
+      },
   );
   const clearGrant = useStoreActions((actions) => actions.GrantInfo.clear);
   const fetchOverview = useStoreActions(
-    (actions) => actions.GrantOverview.fetch
+    (actions) => actions.GrantOverview.fetch,
   );
   const clearOverview = useStoreActions(
-    (actions) => actions.GrantOverview.clear
+    (actions) => actions.GrantOverview.clear,
   );
   const dataDisbursementsBarChart = useStoreState(
     (state) =>
       get(
         state.GrantDisbursementsBarChart,
         "data.data",
-        []
-      ) as BarChartDataItem[]
+        [],
+      ) as BarChartDataItem[],
   );
   const fetchDisbursementsBarChart = useStoreActions(
-    (actions) => actions.GrantDisbursementsBarChart.fetch
+    (actions) => actions.GrantDisbursementsBarChart.fetch,
   );
   const clearDisbursementsBarChart = useStoreActions(
-    (actions) => actions.GrantDisbursementsBarChart.clear
+    (actions) => actions.GrantDisbursementsBarChart.clear,
   );
   const dataBudgetSankeyChart = useStoreState(
     (state) =>
       get(state.GrantBudgetSankeyChart, "data.data[0]", {
         nodes: [],
         links: [],
-      }) as SankeyChartData
+      }) as SankeyChartData,
   );
   const fetchBudgetSankeyChart = useStoreActions(
-    (actions) => actions.GrantBudgetSankeyChart.fetch
+    (actions) => actions.GrantBudgetSankeyChart.fetch,
   );
   const clearBudgetSankeyChart = useStoreActions(
-    (actions) => actions.GrantBudgetSankeyChart.clear
+    (actions) => actions.GrantBudgetSankeyChart.clear,
   );
   const clearExpendituresHeatmap = useStoreActions(
-    (actions) => actions.FinancialInsightsExpendituresHeatmap.clear
+    (actions) => actions.FinancialInsightsExpendituresHeatmap.clear,
   );
   const fetchExpendituresHeatmap = useStoreActions(
-    (actions) => actions.GrantExpendituresHeatmap.fetch
+    (actions) => actions.GrantExpendituresHeatmap.fetch,
   );
   const dataHasExpenditures = useStoreState(
     (state) =>
       get(
         state.GrantHasExpenditures,
         "data.data.hasExpenditures",
-        false
-      ) as boolean
+        false,
+      ) as boolean,
   );
   const fetchHasExpenditures = useStoreActions(
-    (actions) => actions.GrantHasExpenditures.fetch
+    (actions) => actions.GrantHasExpenditures.fetch,
   );
   const dataTargetsResultsTable = useStoreState((state) =>
-    get(state.GrantTargetsResultsTable, "data.data", [])
+    get(state.GrantTargetsResultsTable, "data.data", []),
   );
   const fetchTargetsResults = useStoreActions(
-    (actions) => actions.GrantTargetsResultsTable.fetch
+    (actions) => actions.GrantTargetsResultsTable.fetch,
   );
   const fetchGrant = useStoreActions((actions) => actions.GrantInfo.fetch);
 
@@ -121,8 +126,8 @@ export const Grant: React.FC = () => {
     get(
       dataGrant.periods,
       `[${params.ip !== undefined ? parseInt(params.ip) - 1 : 0}]`,
-      null
-    )
+      null,
+    ),
   );
 
   const handleDropdownChange = (value: string) => {
@@ -158,10 +163,22 @@ export const Grant: React.FC = () => {
       get(
         dataGrant.periods,
         `[${params.ip !== undefined ? parseInt(params.ip) - 1 : 0}]`,
-        null
-      )
+        null,
+      ),
     );
   }, [params.ip]);
+
+  React.useEffect(() => {
+    if (!dropdownSelected && dataGrant.periods.length > 0) {
+      setDropdownSelected(
+        get(
+          dataGrant.periods,
+          `[${params.ip !== undefined ? parseInt(params.ip) - 1 : 0}]`,
+          null,
+        ),
+      );
+    }
+  }, [dataGrant.periods]);
 
   React.useEffect(() => {
     if (params.id && dropdownSelected) {
@@ -225,15 +242,16 @@ export const Grant: React.FC = () => {
     ) {
       remove(newTabs, (t) => t.label === GRANT_TABS[1].label);
     }
-    if (dataTargetsResultsTable.length === 0) {
-      remove(newTabs, (t) => t.label === GRANT_TABS[2].label);
-    }
+    // if (dataTargetsResultsTable.length === 0) {
+    //   remove(newTabs, (t) => t.label === GRANT_TABS[2].label);
+    // }
     return newTabs;
   }, [
     dataHasExpenditures,
     dataBudgetSankeyChart,
     dataTargetsResultsTable,
     dataDisbursementsBarChart,
+    GRANT_TABS,
   ]);
 
   React.useEffect(() => {
@@ -266,7 +284,7 @@ export const Grant: React.FC = () => {
         {params.id}
       </Typography>
       <Typography
-        variant="h5"
+        variant="h4"
         lineHeight={1}
         marginBottom="50px"
         sx={{
@@ -285,7 +303,6 @@ export const Grant: React.FC = () => {
           ))}
       </Typography>
       {fullWidthDivider}
-      <Box height="20px" />
       <DetailPageTabs
         baseRoute={`/grant`}
         activeTab={`${params.ip}/${params.tab}`}
@@ -303,7 +320,6 @@ export const Grant: React.FC = () => {
           })),
         }}
       />
-      <Box height="20px" />
       {fullWidthDivider}
       <Box marginTop="40px">{view}</Box>
     </Box>
@@ -343,7 +359,7 @@ export const PreGrant: React.FC = () => {
         component: string;
         FPMName: string;
         FPMEmail: string;
-      }
+      },
   );
   const fetchGrant = useStoreActions((actions) => actions.GrantInfo.fetch);
 
@@ -363,7 +379,7 @@ export const PreGrant: React.FC = () => {
         `/grant/${params.id}/${
           dataGrant.periods[dataGrant.periods.length - 1].code
         }/overview`,
-        { replace: true }
+        { replace: true },
       );
     }
   }, [dataGrant.periods]);

@@ -11,6 +11,7 @@ import { CYCLES, CycleProps } from "app/pages/home/data";
 import useUpdateEffect from "react-use/lib/useUpdateEffect";
 import { LineChartProps } from "app/components/charts/line/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import { CHART_1_DROPDOWN_ITEMS } from "app/pages/location/views/grant-implementation/data";
 import {
   getRange,
@@ -18,13 +19,17 @@ import {
 } from "app/utils/getFinancialValueWithMetricPrefix";
 
 export const LocationGrantImplementationBlock1 = () => {
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "disbursements",
+  });
+
   const params = useParams<{ id: string; tab: string }>();
   const paramsId = params.id?.replace("|", "%2F");
 
   const [chart1Cycles, setChart1Cycles] = React.useState<CycleProps[]>([]);
 
   const [chart1Dropdown, setChart1Dropdown] = React.useState(
-    CHART_1_DROPDOWN_ITEMS[0].value
+    CHART_1_DROPDOWN_ITEMS[0].value,
   );
 
   const dataDisbursementsLineChart = useStoreState(
@@ -32,27 +37,27 @@ export const LocationGrantImplementationBlock1 = () => {
       get(state.GeographyDisbursementsLineChart, "data", {
         data: [],
         xAxisKeys: [],
-      }) as LineChartProps
+      }) as LineChartProps,
   );
   const fetchDisbursementsLineChart = useStoreActions(
-    (actions) => actions.GeographyDisbursementsLineChart.fetch
+    (actions) => actions.GeographyDisbursementsLineChart.fetch,
   );
   const loadingDisbursementsLineChart = useStoreState(
-    (state) => state.GeographyDisbursementsLineChart.loading
+    (state) => state.GeographyDisbursementsLineChart.loading,
   );
   const disbursementsCycles = useStoreState(
     (state) =>
       get(state.GeographyDisbursementsCycles, "data.data", []) as {
         name: string;
         value: string;
-      }[]
+      }[],
   );
   const disbursementsCyclesAll = useStoreState(
     (state) =>
       get(state.DisbursementsCycles, "data.data", []) as {
         name: string;
         value: string;
-      }[]
+      }[],
   );
 
   const handleChartCycleChange = (cycle: CycleProps) => {
@@ -128,6 +133,25 @@ export const LocationGrantImplementationBlock1 = () => {
     return getRange(values, ["value"]);
   }, [dataDisbursementsLineChart.data]);
 
+  const exportChartData = React.useMemo(() => {
+    const data: (string | number)[][] = [];
+    dataDisbursementsLineChart.data.forEach((item) => {
+      item.data.forEach((value, index) => {
+        if (value) {
+          data.push([
+            dataDisbursementsLineChart.xAxisKeys[index],
+            item.name,
+            value,
+          ]);
+        }
+      });
+    });
+    return {
+      headers: ["Year", "Component", "Amount"],
+      data,
+    };
+  }, [dataDisbursementsLineChart.data]);
+
   const showDisbursementsLineChart = dataDisbursementsLineChart.data.length > 0;
 
   return (
@@ -135,6 +159,7 @@ export const LocationGrantImplementationBlock1 = () => {
       showCycleAll
       id="disbursements"
       subtitle="Disbursements"
+      exportName="disbursements"
       title={disbursementsTotal}
       selectedCycles={chart1Cycles}
       dropdownSelected={chart1Dropdown}
@@ -148,6 +173,8 @@ export const LocationGrantImplementationBlock1 = () => {
         value: c.value,
         disabled: findIndex(disbursementsCycles, { value: c.value }) === -1,
       }))}
+      latestUpdate={latestUpdateDate}
+      data={exportChartData}
       infoType="financials"
     >
       <Box position="relative">

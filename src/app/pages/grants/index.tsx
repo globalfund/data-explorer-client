@@ -1,40 +1,49 @@
 import React from "react";
 import get from "lodash/get";
-import Box from "@mui/material/Box";
-import { useTitle } from "react-use";
+import { useTitle, useUnmount } from "react-use";
 import Grid from "@mui/material/Grid";
 import { Link } from "react-router-dom";
 import { Table } from "app/components/table";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
 import useDebounce from "react-use/lib/useDebounce";
 import { GrantCard } from "app/components/grant-card";
 import { GrantsLayout } from "app/pages/grants/layout";
 import { DROPDOWN_ITEMS } from "app/pages/grants/data";
-import ArrowBack from "@mui/icons-material/ArrowBackIos";
 import useUpdateEffect from "react-use/lib/useUpdateEffect";
-import ArrowForward from "@mui/icons-material/ArrowForwardIos";
 import { GrantCardProps } from "app/components/grant-card/data";
 import { getMonthFromNumber } from "app/utils/getMonthFromNumber";
 import { FilterGroupModel } from "app/components/filters/list/data";
 import { TABLE_VARIATION_5_COLUMNS } from "app/components/table/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
+import Pagination from "app/components/pagination";
+import isEqual from "lodash/isEqual";
 
 export const Grants: React.FC = () => {
   useTitle("The Data Explorer - Grants");
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "grants",
+  });
 
   const [page, setPage] = React.useState(1);
+  const [pageSearchValue, setPageSearchValue] = React.useState(page);
   const [search, setSearch] = React.useState("");
   const [showSearch, setShowSearch] = React.useState(false);
   const [view, setView] = React.useState(DROPDOWN_ITEMS[0].value);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const data = useStoreState(
-    (state) => get(state.GrantList, "data.data", []) as GrantCardProps[]
+    (state) => get(state.GrantList, "data.data", []) as GrantCardProps[],
   );
   const count = useStoreState((state) => get(state.GrantList, "data.count", 0));
   const loading = useStoreState((state) => state.GrantList.loading);
   const fetch = useStoreActions((actions) => actions.GrantList.fetch);
+
+  const tempAppliedFiltersActions = useStoreActions(
+    (actions) => actions.TempAppliedFiltersState,
+  );
+  useUnmount(() => {
+    tempAppliedFiltersActions.clearAll();
+  });
 
   const dataLocationFilterOptions = useStoreState(
     (state) =>
@@ -42,7 +51,7 @@ export const Grants: React.FC = () => {
         id: "",
         name: "",
         options: [],
-      }) as FilterGroupModel
+      }) as FilterGroupModel,
   );
   const dataComponentFilterOptions = useStoreState(
     (state) =>
@@ -50,7 +59,7 @@ export const Grants: React.FC = () => {
         id: "",
         name: "",
         options: [],
-      }) as FilterGroupModel
+      }) as FilterGroupModel,
   );
   const dataPartnerTypeFilterOptions = useStoreState(
     (state) =>
@@ -58,7 +67,7 @@ export const Grants: React.FC = () => {
         id: "",
         name: "",
         options: [],
-      }) as FilterGroupModel
+      }) as FilterGroupModel,
   );
   const dataStatusFilterOptions = useStoreState(
     (state) =>
@@ -66,34 +75,99 @@ export const Grants: React.FC = () => {
         id: "",
         name: "",
         options: [],
-      }) as FilterGroupModel
+      }) as FilterGroupModel,
   );
   const pageAppliedFilters = useStoreState((state) => [
-    ...state.AppliedFiltersState.components,
-    ...state.AppliedFiltersState.locations,
-    ...state.AppliedFiltersState.principalRecipientTypes,
-    ...state.AppliedFiltersState.principalRecipientSubTypes,
-    ...state.AppliedFiltersState.principalRecipients,
-    ...state.AppliedFiltersState.status,
+    ...state.TempAppliedFiltersState.components,
+    ...state.TempAppliedFiltersState.locations,
+    ...state.TempAppliedFiltersState.principalRecipientTypes,
+    ...state.TempAppliedFiltersState.principalRecipientSubTypes,
+    ...state.TempAppliedFiltersState.principalRecipients,
+    ...state.TempAppliedFiltersState.status,
   ]);
   const appliedFiltersData = useStoreState(
-    (state) => state.AppliedFiltersState
+    (state) => state.AppliedFiltersState,
   );
   const appliedFiltersActions = useStoreActions(
-    (actions) => actions.AppliedFiltersState
+    (actions) => actions.AppliedFiltersState,
   );
+  const tempAppliedFiltersData = useStoreState(
+    (state) => state.TempAppliedFiltersState,
+  );
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number,
+  ) => {
+    setPage(value);
+    setPageSearchValue(value);
+    fetch({
+      routeParams: {
+        page: `${value}`,
+        pageSize: "9",
+      },
+      filterString: `q=${search}${
+        appliedFiltersString.length ? `&${appliedFiltersString}` : ""
+      }`,
+    });
+  };
+  const appliedFiltersString = React.useMemo(() => {
+    let value = "";
+    if (appliedFiltersData.locations.length > 0) {
+      value += `geographies=${encodeURIComponent(
+        appliedFiltersData.locations.join(","),
+      )}`;
+    }
+    if (appliedFiltersData.components.length > 0) {
+      value += `${value.length > 0 ? "&" : ""}components=${encodeURIComponent(
+        appliedFiltersData.components.join(","),
+      )}`;
+    }
+    if (appliedFiltersData.principalRecipientTypes.length > 0) {
+      value += `${
+        value.length > 0 ? "&" : ""
+      }principalRecipientTypes=${encodeURIComponent(
+        appliedFiltersData.principalRecipientTypes.join(","),
+      )}`;
+    }
+    if (appliedFiltersData.principalRecipientSubTypes.length > 0) {
+      value += `${
+        value.length > 0 ? "&" : ""
+      }principalRecipientSubTypes=${encodeURIComponent(
+        appliedFiltersData.principalRecipientSubTypes.join(","),
+      )}`;
+    }
+    if (appliedFiltersData.principalRecipients.length > 0) {
+      value += `${
+        value.length > 0 ? "&" : ""
+      }principalRecipients=${encodeURIComponent(
+        appliedFiltersData.principalRecipients.join(","),
+      )}`;
+    }
+    if (appliedFiltersData.status.length > 0) {
+      value += `${value.length > 0 ? "&" : ""}status=${encodeURIComponent(
+        appliedFiltersData.status.join(","),
+      )}`;
+    }
+    return value;
+  }, [appliedFiltersData]);
 
   const handleFilterButtonClick = (
-    event: React.MouseEvent<HTMLButtonElement>
+    event: React.MouseEvent<HTMLButtonElement>,
   ) => {
     setAnchorEl(event.currentTarget);
   };
-
+  const handleCancelFilters = () => {
+    tempAppliedFiltersActions.setAll({ ...appliedFiltersData });
+    setAnchorEl(null);
+  };
   const handleFilterPanelClose = () => {
+    handleCancelFilters();
     setAnchorEl(null);
   };
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPage(1);
+    setPageSearchValue(1);
     setSearch(event.target.value);
   };
 
@@ -107,6 +181,7 @@ export const Grants: React.FC = () => {
   };
 
   const handleResetFilters = () => {
+    tempAppliedFiltersActions.clearAll();
     appliedFiltersActions.setAll({
       ...appliedFiltersData,
       locations: [],
@@ -118,8 +193,35 @@ export const Grants: React.FC = () => {
     });
   };
 
-  const onScroll = () => {
+  const handleApplyFilters = () => {
+    if (isEqual(appliedFiltersData, tempAppliedFiltersData)) return;
+
+    appliedFiltersActions.setAll({ ...tempAppliedFiltersData });
     setAnchorEl(null);
+  };
+
+  const onScroll = React.useCallback(() => {
+    handleCancelFilters();
+  }, [handleCancelFilters]);
+
+  const handlePageSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+    setPageSearchValue(value ? parseInt(value, 10) : 0);
+  };
+
+  const handlePageSearch = () => {
+    if (pageSearchValue > 0) {
+      setPage(pageSearchValue);
+      fetch({
+        routeParams: {
+          page: `${pageSearchValue}`,
+          pageSize: "9",
+        },
+        filterString: `q=${search}${
+          appliedFiltersString.length ? `&${appliedFiltersString}` : ""
+        }`,
+      });
+    }
   };
 
   const dataTable = React.useMemo(() => {
@@ -129,12 +231,12 @@ export const Grants: React.FC = () => {
       const endDate = new Date(item.endDate);
       if (startDate) {
         datesStr = `${getMonthFromNumber(
-          startDate.getMonth() + 1
+          startDate.getMonth() + 1,
         )} ${startDate.getFullYear()} - `;
       }
       if (endDate) {
         datesStr += `${getMonthFromNumber(
-          endDate.getMonth() + 1
+          endDate.getMonth() + 1,
         )} ${endDate.getFullYear()}`;
       }
       return {
@@ -192,43 +294,16 @@ export const Grants: React.FC = () => {
     );
   }, [view, data, count, page, dataTable]);
 
-  const pagination = React.useMemo(
-    () => (
-      <Box gap="8px" display="flex" alignItems="center">
-        <Typography fontSize="12px">
-          {(page - 1) * 9 + 1}-{page * 9} of {count}
-        </Typography>
-        <IconButton
-          sx={{ padding: 0 }}
-          onClick={() =>
-            setPage((p) => {
-              if (p > 1) {
-                return p - 1;
-              }
-              return p;
-            })
-          }
-        >
-          <ArrowBack htmlColor="#000" sx={{ fontSize: "16px" }} />
-        </IconButton>
-        <IconButton
-          sx={{ padding: 0 }}
-          onClick={() =>
-            setPage((p) => {
-              if (p < count / 9) {
-                return p + 1;
-              }
-              return p;
-            })
-          }
-        >
-          <ArrowForward htmlColor="#000" sx={{ fontSize: "16px" }} />
-        </IconButton>
-      </Box>
-    ),
-    [count, page]
+  const pagination = (
+    <Pagination
+      count={count}
+      handlePageChange={handlePageChange}
+      handlePageSearch={handlePageSearch}
+      handlePageSearchChange={handlePageSearchChange}
+      page={page}
+      pageSearchValue={pageSearchValue}
+    />
   );
-
   const [,] = useDebounce(
     () => {
       if (search.length > 0) {
@@ -242,7 +317,7 @@ export const Grants: React.FC = () => {
       }
     },
     500,
-    [search]
+    [search],
   );
 
   const searchInputRef = React.useRef<HTMLInputElement>(null);
@@ -261,53 +336,12 @@ export const Grants: React.FC = () => {
     dataStatusFilterOptions,
   ]);
 
-  const filterString = React.useMemo(() => {
-    let value = "";
-    if (appliedFiltersData.locations.length > 0) {
-      value += `geographies=${encodeURIComponent(
-        appliedFiltersData.locations.join(",")
-      )}`;
-    }
-    if (appliedFiltersData.components.length > 0) {
-      value += `${value.length > 0 ? "&" : ""}components=${encodeURIComponent(
-        appliedFiltersData.components.join(",")
-      )}`;
-    }
-    if (appliedFiltersData.principalRecipientTypes.length > 0) {
-      value += `${
-        value.length > 0 ? "&" : ""
-      }principalRecipientTypes=${encodeURIComponent(
-        appliedFiltersData.principalRecipientTypes.join(",")
-      )}`;
-    }
-    if (appliedFiltersData.principalRecipientSubTypes.length > 0) {
-      value += `${
-        value.length > 0 ? "&" : ""
-      }principalRecipientSubTypes=${encodeURIComponent(
-        appliedFiltersData.principalRecipientSubTypes.join(",")
-      )}`;
-    }
-    if (appliedFiltersData.principalRecipients.length > 0) {
-      value += `${
-        value.length > 0 ? "&" : ""
-      }principalRecipients=${encodeURIComponent(
-        appliedFiltersData.principalRecipients.join(",")
-      )}`;
-    }
-    if (appliedFiltersData.status.length > 0) {
-      value += `${value.length > 0 ? "&" : ""}status=${encodeURIComponent(
-        appliedFiltersData.status.join(",")
-      )}`;
-    }
-    return value;
-  }, [appliedFiltersData]);
-
   React.useEffect(() => {
     window.addEventListener("scroll", onScroll);
     return () => {
       window.removeEventListener("scroll", onScroll);
     };
-  }, []);
+  }, [onScroll]);
 
   React.useEffect(() => {
     if (showSearch) {
@@ -322,10 +356,10 @@ export const Grants: React.FC = () => {
         pageSize: "9",
       },
       filterString: `q=${search}${
-        filterString.length ? `&${filterString}` : ""
+        appliedFiltersString.length ? `&${appliedFiltersString}` : ""
       }`,
     });
-  }, [page, filterString]);
+  }, [appliedFiltersString]);
 
   useUpdateEffect(() => {
     if (search.length === 0) {
@@ -335,7 +369,7 @@ export const Grants: React.FC = () => {
           pageSize: "9",
         },
         filterString: `q=${search}${
-          filterString.length ? `&${filterString}` : ""
+          appliedFiltersString.length ? `&${appliedFiltersString}` : ""
         }`,
       });
     }
@@ -359,6 +393,12 @@ export const Grants: React.FC = () => {
       anchorEl={anchorEl}
       loading={loading}
       searchInputRef={searchInputRef}
+      latestUpdateDate={latestUpdateDate}
+      setPage={setPage}
+      page={page}
+      setPageSearchValue={setPageSearchValue}
+      handleCancelFilters={handleCancelFilters}
+      handleApplyFilters={handleApplyFilters}
     />
   );
 };

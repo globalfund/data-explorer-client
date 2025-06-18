@@ -5,13 +5,13 @@ const ranges = [
     divider: 1e9,
     suffix: "Bn",
     abbr_en: " bln",
-    full: "billion",
+    full: "Billion",
   },
   {
     divider: 1e6,
     suffix: "MM",
     abbr_en: " mln",
-    full: "million",
+    full: "Million",
   },
   {
     divider: 1e3,
@@ -31,7 +31,7 @@ export function getRange(
   data: any,
   fields: string[],
   lang = "en",
-  fieldPrefix?: string
+  fieldPrefix?: string,
 ) {
   const rangesCount = [0, 0, 0];
 
@@ -82,7 +82,7 @@ export function getRange(
 export function getFinancialValueWithMetricPrefix(
   n: number,
   rangeIndex: number,
-  toFixed = 0
+  toFixed = 0,
 ): string {
   if (rangeIndex > -1) {
     return (n / ranges[rangeIndex].divider).toFixed(toFixed).toString();

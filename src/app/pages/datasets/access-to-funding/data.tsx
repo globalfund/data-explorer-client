@@ -17,15 +17,15 @@ export const stats: {
   value: number | string;
 }[] = [
   {
-    value: "24.5 million",
+    value: "24.5 Million",
     label: "People on antiretroviral therapy for HIV in 2022.",
   },
   {
-    value: "6.7 million",
+    value: "6.7 Million",
     label: "People with TB treated in 2022.",
   },
   {
-    value: "220 million",
+    value: "220 Million",
     label: "Mosquito nets distributed in 2022.",
   },
 ];

@@ -1,5 +1,6 @@
 import React from "react";
 import Box from "@mui/material/Box";
+import { useDebounce } from "react-use";
 import findIndex from "lodash/findIndex";
 import Button from "@mui/material/Button";
 import Popover from "@mui/material/Popover";
@@ -12,21 +13,21 @@ import Typography from "@mui/material/Typography";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { TabulatorFull as Tabulator } from "tabulator-tables";
 import { TableContainerProps } from "app/components/table-container/data";
-// import { ReactComponent as FilterIcon } from "app/assets/vectors/TableToolbarFilter.svg";
-// import { ReactComponent as SearchIcon } from "app/assets/vectors/TableToolbarSearch.svg";
+import { ReactComponent as SearchIcon } from "app/assets/vectors/TableToolbarSearch.svg";
 import { ReactComponent as ColumnsIcon } from "app/assets/vectors/TableToolbarColumns.svg";
+// import { ReactComponent as FilterIcon } from "app/assets/vectors/TableToolbarFilter.svg";
 // import { ReactComponent as DownloadIcon } from "app/assets/vectors/TableToolbarDownload.svg";
 import { ReactComponent as FullscreenIcon } from "app/assets/vectors/TableToolbarFullscreen.svg";
 
 export const TableContainer: React.FC<TableContainerProps> = (
-  props: TableContainerProps
+  props: TableContainerProps,
 ) => {
-  // const [table, setTable] = React.useState<any>(null);
+  const [table, setTable] = React.useState<Tabulator | null>(null);
   const [columns, setColumns] = React.useState(
     props.columns.map((column) => ({
       ...column,
       visible: true,
-    }))
+    })),
   );
   const [extraColumns, setExtraColumns] = React.useState(
     props.extraColumns
@@ -34,32 +35,20 @@ export const TableContainer: React.FC<TableContainerProps> = (
           ...column,
           visible: true,
         }))
-      : []
+      : [],
   );
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLButtonElement>(
-    null
+    null,
   );
+  const [search, setSearch] = React.useState("");
+  const [search1, setSearch1] = React.useState("");
+  const [openSearch, setOpenSearch] = React.useState(false);
 
+  const inputRef = React.useRef<HTMLInputElement>(null);
   const fullscreenRef = React.useRef<HTMLDivElement>(null);
 
-  // React.useEffect(() => {
-  //   const element = document.getElementById("table");
-  //   if (element) {
-  //     const tabulatorTables = Tabulator.findTable("#table");
-  //     if (tabulatorTables.length > 0 && tabulatorTables[0]) {
-  //       setTable(tabulatorTables[0]);
-  //     }
-  //   }
-  // }, []);
-
-  // const download = () => {
-  //   if (table) {
-  //     table.download("csv", "data.csv");
-  //   }
-  // };
-
   const handleColumnsMenuClick = (
-    event: React.MouseEvent<HTMLButtonElement>
+    event: React.MouseEvent<HTMLButtonElement>,
   ) => {
     setAnchorEl(event.currentTarget);
   };
@@ -86,6 +75,51 @@ export const TableContainer: React.FC<TableContainerProps> = (
       }
       setColumnsAction([...columnsLocal]);
     };
+
+  const onSearchBtnClick = () => {
+    setOpenSearch(!openSearch);
+    if (openSearch) {
+      if (search.length > 0) {
+        setSearch("");
+        setSearch1("");
+        if (props.onSearchChange) {
+          props.onSearchChange("");
+        }
+      }
+    } else {
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 100);
+    }
+  };
+
+  const onSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+    setSearch1(e.target.value);
+    if (e.target.value.length === 0 && props.onSearchChange) {
+      props.onSearchChange("");
+    }
+  };
+
+  useDebounce(
+    () => {
+      if (search.length > 0 && props.onSearchChange) {
+        props.onSearchChange(search);
+      }
+    },
+    500,
+    [search],
+  );
+
+  React.useEffect(() => {
+    if (props.search) {
+      setSearch1(props.search);
+      setOpenSearch(true);
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 100);
+    }
+  }, []);
 
   return (
     <Box
@@ -172,9 +206,23 @@ export const TableContainer: React.FC<TableContainerProps> = (
             },
           }}
         >
-          {/* <IconButton disableRipple>
-            <SearchIcon />
-          </IconButton> */}
+          {openSearch && (
+            <input
+              type="text"
+              ref={inputRef}
+              value={search1}
+              placeholder="Search"
+              onChange={onSearchInputChange}
+              style={{
+                padding: "6px 8px",
+                borderRadius: "4px",
+                border: "1px solid #DFE3E5",
+              }}
+            />
+          )}
+          <IconButton disableRipple onClick={onSearchBtnClick}>
+            {!openSearch ? <SearchIcon /> : <Close />}
+          </IconButton>
           <IconButton disableRipple onClick={fullscreen}>
             <FullscreenIcon />
           </IconButton>
@@ -250,7 +298,7 @@ export const TableContainer: React.FC<TableContainerProps> = (
                         checked={column.visible}
                         onChange={handleColumnCheckboxChange(
                           column.title,
-                          true
+                          true,
                         )}
                       />
                     }
@@ -261,7 +309,13 @@ export const TableContainer: React.FC<TableContainerProps> = (
           </Popover>
         </Box>
       </Box>
-      <Table {...props} columns={columns} extraColumns={extraColumns} />
+      <Table
+        {...props}
+        data={props.data}
+        columns={columns}
+        setTable={setTable}
+        extraColumns={extraColumns}
+      />
     </Box>
   );
 };

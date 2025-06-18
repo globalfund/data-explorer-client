@@ -3,10 +3,9 @@ import get from "lodash/get";
 import uniq from "lodash/uniq";
 import sumBy from "lodash/sumBy";
 import Box from "@mui/material/Box";
-import { useTitle } from "react-use";
+import { useTitle, useUnmount } from "react-use";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
-import { Table } from "app/components/table";
 import { useLocation } from "react-router-dom";
 import { useCMSData } from "app/hooks/useCMSData";
 import Typography from "@mui/material/Typography";
@@ -14,16 +13,19 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { getCMSDataField } from "app/utils/getCMSDataField";
 import { DatasetPage } from "app/pages/datasets/common/page";
 import CircularProgress from "@mui/material/CircularProgress";
+import { TableContainer } from "app/components/table-container";
 import { FilterGroupModel } from "app/components/filters/list/data";
 import { TABLE_VARIATION_8_COLUMNS } from "app/components/table/data";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import { ReactComponent as TableIcon } from "app/assets/vectors/Select_Table.svg";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 import { ReactComponent as BarChartIcon } from "app/assets/vectors/Select_BarChart.svg";
 import { ExpandableHorizontalBar } from "app/components/charts/expandable-horizontal-bar";
 import { ExpandableHorizontalBarChartDataItem } from "app/components/charts/expandable-horizontal-bar/data";
+import isEqual from "lodash/isEqual";
 
 const dropdownItems = [
   { label: "Bar Chart", value: "Bar Chart", icon: <BarChartIcon /> },
@@ -31,22 +33,37 @@ const dropdownItems = [
 ];
 
 export const ResourceMobilizationPage: React.FC = () => {
-  const cmsData = useCMSData({ returnData: true });
   useTitle("The Data Explorer - Resource Mobilization");
+  useUnmount(() => {
+    tempAppliedFiltersActions.clearAll();
+  });
   const location = useLocation();
+  const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "pledges-contributions",
+  });
   const tabletScreen = useMediaQuery(
-    "(min-width: 768px) and (max-width:920px)"
+    "(min-width: 768px) and (max-width:920px)",
   );
 
   const [dropdownSelected, setDropdownSelected] = React.useState(
-    dropdownItems[0].value
+    dropdownItems[0].value,
   );
   const [chartAppliedFilters, setChartAppliedFilters] = React.useState<
+    string[]
+  >([]);
+  const [chartTempAppliedFilters, setChartTempAppliedFilters] = React.useState<
     string[]
   >([]);
   const [chartAppliedFiltersData, setChartAppliedFiltersData] = React.useState({
     ...defaultAppliedFilters,
   });
+  const [chartTempAppliedFiltersData, setChartTempAppliedFiltersData] =
+    React.useState({
+      ...defaultAppliedFilters,
+    });
+
+  const [tableSearch, setTableSearch] = React.useState("");
 
   const dataStats = useStoreState(
     (state) =>
@@ -60,30 +77,30 @@ export const ResourceMobilizationPage: React.FC = () => {
         totalContributions: number;
         percentage: number;
         donorTypesCount: { name: string; value: number }[];
-      }
+      },
   );
   const loadingStats = useStoreState(
-    (state) => state.ResourceMobilizationStats.loading
+    (state) => state.ResourceMobilizationStats.loading,
   );
   const fetchStats = useStoreActions(
-    (actions) => actions.ResourceMobilizationStats.fetch
+    (actions) => actions.ResourceMobilizationStats.fetch,
   );
   const dataBarChart = useStoreState(
     (state) =>
       get(
         state.ResourceMobilizationExpandableBarChart,
         "data.data",
-        []
-      ) as ExpandableHorizontalBarChartDataItem[]
+        [],
+      ) as ExpandableHorizontalBarChartDataItem[],
   );
   const fetchBarChart = useStoreActions(
-    (actions) => actions.ResourceMobilizationExpandableBarChart.fetch
+    (actions) => actions.ResourceMobilizationExpandableBarChart.fetch,
   );
   const dataTable = useStoreState((state) =>
-    get(state.ResourceMobilizationTable, "data.data", [])
+    get(state.ResourceMobilizationTable, "data.data", []),
   );
   const fetchTable = useStoreActions(
-    (actions) => actions.ResourceMobilizationTable.fetch
+    (actions) => actions.ResourceMobilizationTable.fetch,
   );
   const dataChartLoading = useStoreState((state) => {
     switch (dropdownSelected) {
@@ -101,7 +118,7 @@ export const ResourceMobilizationPage: React.FC = () => {
         id: "",
         name: "",
         options: [],
-      }) as FilterGroupModel
+      }) as FilterGroupModel,
   );
   const dataReplenishmentPeriodFilterOptions = useStoreState(
     (state) =>
@@ -109,18 +126,24 @@ export const ResourceMobilizationPage: React.FC = () => {
         id: "",
         name: "",
         options: [],
-      }) as FilterGroupModel
+      }) as FilterGroupModel,
   );
   const pageAppliedFilters = useStoreState((state) => [
-    ...state.AppliedFiltersState.donorTypes,
-    ...state.AppliedFiltersState.donors,
-    ...state.AppliedFiltersState.replenishmentPeriods,
+    ...state.TempAppliedFiltersState.donorTypes,
+    ...state.TempAppliedFiltersState.donors,
+    ...state.TempAppliedFiltersState.replenishmentPeriods,
   ]);
   const appliedFiltersData = useStoreState(
-    (state) => state.AppliedFiltersState
+    (state) => state.AppliedFiltersState,
   );
   const appliedFiltersActions = useStoreActions(
-    (actions) => actions.AppliedFiltersState
+    (actions) => actions.AppliedFiltersState,
+  );
+  const tempAppliedFiltersData = useStoreState(
+    (state) => state.TempAppliedFiltersState,
+  );
+  const tempAppliedFiltersActions = useStoreActions(
+    (actions) => actions.TempAppliedFiltersState,
   );
 
   const handleSelectionChange = (value: string) => {
@@ -128,6 +151,8 @@ export const ResourceMobilizationPage: React.FC = () => {
   };
 
   const handleResetFilters = () => {
+    tempAppliedFiltersActions.clearAll();
+
     appliedFiltersActions.setAll({
       ...appliedFiltersData,
       donorTypes: [],
@@ -136,7 +161,25 @@ export const ResourceMobilizationPage: React.FC = () => {
     });
   };
 
+  const handleCancelFilters = () => {
+    if (isEqual(appliedFiltersData, tempAppliedFiltersData)) return;
+    tempAppliedFiltersActions.setAll({ ...appliedFiltersData });
+  };
+
+  const handleApplyFilters = () => {
+    if (isEqual(appliedFiltersData, tempAppliedFiltersData)) return;
+    appliedFiltersActions.setAll({ ...tempAppliedFiltersData });
+  };
+
   const handleResetChartFilters = () => {
+    setChartTempAppliedFiltersData({
+      ...chartTempAppliedFiltersData,
+      donorTypes: [],
+      donors: [],
+      replenishmentPeriods: [],
+    });
+    setChartTempAppliedFilters([]);
+
     setChartAppliedFiltersData({
       ...chartAppliedFiltersData,
       donorTypes: [],
@@ -146,12 +189,19 @@ export const ResourceMobilizationPage: React.FC = () => {
     setChartAppliedFilters([]);
   };
 
+  const handleCancelChartFilters = () => {
+    setChartTempAppliedFiltersData(structuredClone(chartAppliedFiltersData));
+    setChartTempAppliedFilters(chartAppliedFilters);
+  };
+
   const handleToggleChartFilter = (
     checked: boolean,
     value: string,
-    type: string
+    type: string,
   ) => {
-    const state = { ...chartAppliedFiltersData };
+    const state = structuredClone(
+      chartTempAppliedFiltersData,
+    ) as typeof chartTempAppliedFiltersData;
     switch (type) {
       case "donor":
         if (checked) {
@@ -172,15 +222,15 @@ export const ResourceMobilizationPage: React.FC = () => {
           state.replenishmentPeriods.push(value);
         } else {
           state.replenishmentPeriods = state.replenishmentPeriods.filter(
-            (item) => item !== value
+            (item) => item !== value,
           );
         }
         break;
       default:
         break;
     }
-    setChartAppliedFiltersData(state);
-    setChartAppliedFilters([
+    setChartTempAppliedFiltersData(structuredClone(state) as typeof state);
+    setChartTempAppliedFilters([
       ...state.donorTypes,
       ...state.donors,
       ...state.replenishmentPeriods,
@@ -188,7 +238,7 @@ export const ResourceMobilizationPage: React.FC = () => {
   };
 
   const handleRemoveChartFilter = (value: string, types: string[]) => {
-    const state = { ...chartAppliedFiltersData };
+    const state = { ...chartTempAppliedFiltersData };
     types.forEach((type) => {
       switch (type) {
         case "donor":
@@ -198,88 +248,54 @@ export const ResourceMobilizationPage: React.FC = () => {
           break;
         case "replenishmentPeriod":
           state.replenishmentPeriods = state.replenishmentPeriods.filter(
-            (item) => item !== value
+            (item) => item !== value,
           );
           break;
         default:
           break;
       }
     });
-    setChartAppliedFiltersData(state);
-    setChartAppliedFilters([
+    setChartTempAppliedFiltersData(state);
+    setChartTempAppliedFilters([
       ...state.donorTypes,
       ...state.donors,
       ...state.replenishmentPeriods,
     ]);
   };
 
-  const chartContent = React.useMemo(() => {
-    switch (dropdownSelected) {
-      case dropdownItems[0].value:
-        return (
-          <ExpandableHorizontalBar
-            data={dataBarChart}
-            yAxisLabel={getCMSDataField(
-              cmsData,
-              "pagesDatasetsResourceMobilization.barchartYLabel",
-              "Donor Types & Donors"
-            )}
-            xAxisLabel={getCMSDataField(
-              cmsData,
-              "pagesDatasetsResourceMobilization.barchartXLabel",
-              "Amount"
-            )}
-            valueLabels={{
-              value: getCMSDataField(
-                cmsData,
-                "pagesDatasetsResourceMobilization.barchartValueLabel1",
-                "Pledge"
-              ),
-              value1: getCMSDataField(
-                cmsData,
-                "pagesDatasetsResourceMobilization.barchartValueLabel2",
-                "Contribution"
-              ),
-            }}
-          />
-        );
-      case dropdownItems[1].value:
-        return (
-          <Table
-            dataTree
-            data={dataTable}
-            id="pledges-contributions-table"
-            columns={TABLE_VARIATION_8_COLUMNS}
-          />
-        );
-      default:
-        return null;
-    }
-  }, [dropdownSelected, dataBarChart, dataTable]);
+  const handleApplyChartFilters = () => {
+    if (isEqual(chartAppliedFilters, chartTempAppliedFiltersData)) return;
+    setChartAppliedFiltersData(
+      structuredClone(
+        chartTempAppliedFiltersData,
+      ) as typeof chartTempAppliedFiltersData,
+    );
+    setChartAppliedFilters(chartTempAppliedFilters);
+  };
 
   const chartEmpty = React.useMemo(() => {
     switch (dropdownSelected) {
       case dropdownItems[0].value:
         return !dataBarChart || !dataBarChart.length;
       case dropdownItems[1].value:
-        return !dataTable || !dataTable.length;
+        return (!dataTable || !dataTable.length) && !tableSearch.length;
       default:
         return false;
     }
-  }, [dropdownSelected, dataBarChart, dataTable]);
+  }, [dropdownSelected, dataBarChart, dataTable, tableSearch]);
 
   const filterGroups = React.useMemo(() => {
     return [dataDonorFilterOptions, dataReplenishmentPeriodFilterOptions];
   }, [dataDonorFilterOptions, dataReplenishmentPeriodFilterOptions]);
 
-  const filterString = React.useMemo(() => {
+  const appliedFilterString = React.useMemo(() => {
     let value = "";
     if (
       appliedFiltersData.donorTypes.length > 0 &&
       location.search.includes("donorTypes=")
     ) {
       value += `donorTypes=${encodeURIComponent(
-        appliedFiltersData.donorTypes.join(",")
+        appliedFiltersData.donorTypes.join(","),
       )}`;
     }
     if (
@@ -287,15 +303,15 @@ export const ResourceMobilizationPage: React.FC = () => {
       location.search.includes("donors=")
     ) {
       value += `${value.length > 0 ? "&" : ""}donors=${encodeURIComponent(
-        appliedFiltersData.donors.join(",")
+        appliedFiltersData.donors.join(","),
       )}`;
     }
     if (
       appliedFiltersData.replenishmentPeriods.length > 0 &&
-      location.search.includes("periods=")
+      location.search.includes("replenishmentPeriods=")
     ) {
       value += `${value.length > 0 ? "&" : ""}periods=${encodeURIComponent(
-        appliedFiltersData.replenishmentPeriods.join(",")
+        appliedFiltersData.replenishmentPeriods.join(","),
       )}`;
     }
     return value;
@@ -312,7 +328,7 @@ export const ResourceMobilizationPage: React.FC = () => {
         uniq([
           ...appliedFiltersData.donorTypes,
           ...chartAppliedFiltersData.donorTypes,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (
@@ -324,27 +340,150 @@ export const ResourceMobilizationPage: React.FC = () => {
         uniq([
           ...appliedFiltersData.donors,
           ...chartAppliedFiltersData.donors,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     if (
       (appliedFiltersData.replenishmentPeriods.length > 0 &&
-        location.search.includes("periods=")) ||
+        location.search.includes("replenishmentPeriods=")) ||
       chartAppliedFiltersData.replenishmentPeriods.length > 0
     ) {
       value += `${value.length > 0 ? "&" : ""}periods=${encodeURIComponent(
         uniq([
           ...appliedFiltersData.replenishmentPeriods,
           ...chartAppliedFiltersData.replenishmentPeriods,
-        ]).join(",")
+        ]).join(","),
       )}`;
     }
     return value;
   }, [appliedFiltersData, chartAppliedFiltersData, location.search]);
 
+  const onSearchChange = (search: string) => {
+    setTableSearch(search);
+    let filterString = chartFilterString;
+    if (search) {
+      filterString += `${filterString.length > 0 ? "&" : ""}q=${search}`;
+    }
+    fetchTable({ filterString });
+  };
+
+  const chartContent = React.useMemo(() => {
+    switch (dropdownSelected) {
+      case dropdownItems[0].value:
+        return (
+          <ExpandableHorizontalBar
+            data={dataBarChart}
+            yAxisLabel={getCMSDataField(
+              cmsData,
+              "pagesDatasetsResourceMobilization.barchartYLabel",
+              "Donor Types & Donors",
+            )}
+            xAxisLabel={getCMSDataField(
+              cmsData,
+              "pagesDatasetsResourceMobilization.barchartXLabel",
+              "Amount",
+            )}
+            valueLabels={{
+              value: getCMSDataField(
+                cmsData,
+                "pagesDatasetsResourceMobilization.barchartValueLabel1",
+                "Pledge",
+              ),
+              value1: getCMSDataField(
+                cmsData,
+                "pagesDatasetsResourceMobilization.barchartValueLabel2",
+                "Contribution",
+              ),
+            }}
+          />
+        );
+      case dropdownItems[1].value:
+        return (
+          <TableContainer
+            dataTree
+            data={dataTable}
+            search={tableSearch}
+            onSearchChange={onSearchChange}
+            id="pledges-contributions-table"
+            columns={TABLE_VARIATION_8_COLUMNS}
+          />
+        );
+      default:
+        return null;
+    }
+  }, [dropdownSelected, dataBarChart, dataTable, tableSearch]);
+
+  const chartData = React.useMemo(() => {
+    let data: (string | number)[][] = [];
+    switch (dropdownSelected) {
+      case dropdownItems[0].value:
+        dataBarChart.forEach((item) => {
+          get(item, "items", []).forEach((subItem) => {
+            if (!subItem.items) {
+              data.push([
+                `"${item.name}"`,
+                "",
+                `"${subItem.name}"`,
+                subItem.value,
+                subItem.value1 ?? "",
+              ]);
+            } else {
+              subItem.items.forEach((subSubItem) => {
+                data.push([
+                  `"${item.name}"`,
+                  `"${subItem.name}"`,
+                  `"${subSubItem.name}"`,
+                  subSubItem.value,
+                  subSubItem.value1 ?? "",
+                ]);
+              });
+            }
+          });
+        });
+        break;
+      case dropdownItems[1].value:
+        dataTable.forEach((item: any) => {
+          get(item, "_children", []).forEach((subItem: any) => {
+            if (!subItem._children) {
+              data.push([
+                `"${item.name}"`,
+                "",
+                `"${subItem.name}"`,
+                subItem.pledge,
+                subItem.contribution ?? "",
+              ]);
+            } else {
+              subItem._children.forEach((subSubItem: any) => {
+                data.push([
+                  `"${item.name}"`,
+                  `"${subItem.name}"`,
+                  `"${subSubItem.name}"`,
+                  subSubItem.pledge,
+                  subSubItem.contribution ?? "",
+                ]);
+              });
+            }
+          });
+        });
+        break;
+      default:
+        return [];
+    }
+    return {
+      headers: [
+        "Donor Type",
+        "Donor Sub-Type",
+        "Donor",
+        "Pledge",
+        "Contribution",
+      ],
+      data,
+    };
+  }, [dropdownSelected, dataBarChart, dataTable]);
+
   React.useEffect(() => {
-    fetchStats({ filterString });
-  }, [filterString]);
+    fetchStats({ filterString: appliedFilterString });
+  }, [appliedFilterString]);
 
   React.useEffect(() => {
     fetchBarChart({ filterString: chartFilterString });
@@ -372,7 +511,7 @@ export const ResourceMobilizationPage: React.FC = () => {
       title={getCMSDataField(
         cmsData,
         "pagesDatasetsResourceMobilization.title",
-        "Resource Mobilization"
+        "Resource Mobilization",
       )}
       filterGroups={filterGroups}
       appliedFilters={pageAppliedFilters}
@@ -380,8 +519,10 @@ export const ResourceMobilizationPage: React.FC = () => {
       subtitle={getCMSDataField(
         cmsData,
         "pagesDatasetsResourceMobilization.subtitle",
-        "Government, private sector, non-government and other donor pledges and contributions"
+        "Government, private sector, non-government and other donor pledges and contributions",
       )}
+      handleApplyFilters={handleApplyFilters}
+      handleCancelFilters={handleCancelFilters}
     >
       <Box width="100%" marginTop="50px">
         <Grid
@@ -452,27 +593,27 @@ export const ResourceMobilizationPage: React.FC = () => {
             </Box>
             <Divider /> */}
             <Box>
-              <Typography variant="h5">
+              <Typography variant="h3">
                 {formatFinancialValue(get(dataStats, "totalPledges", 0))}
               </Typography>
-              <Typography fontSize="14px" fontWeight="700">
+              <Typography fontSize="14px">
                 {getCMSDataField(
                   cmsData,
                   "pagesDatasetsResourceMobilization.statsText2",
-                  "Total Pledged"
+                  "Total Pledged",
                 )}
               </Typography>
             </Box>
             <Divider orientation={tabletScreen ? "vertical" : "horizontal"} />
             <Box>
-              <Typography variant="h5">
+              <Typography variant="h3">
                 {formatFinancialValue(get(dataStats, "totalContributions", 0))}
               </Typography>
-              <Typography fontSize="14px" fontWeight="700">
+              <Typography fontSize="14px">
                 {getCMSDataField(
                   cmsData,
                   "pagesDatasetsResourceMobilization.statsText3",
-                  "Total Contributed"
+                  "Total Contributed",
                 )}
               </Typography>
             </Box>
@@ -489,18 +630,18 @@ export const ResourceMobilizationPage: React.FC = () => {
             }}
           >
             <Box marginBottom="20px">
-              <Typography variant="h5">
+              <Typography variant="h3">
                 {getCMSDataField(
                   cmsData,
                   "pagesDatasetsResourceMobilization.statsText4Title",
-                  "Number of Donors Mobilized"
+                  "Number of Donors Mobilized",
                 )}
               </Typography>
-              <Typography variant="body2" fontWeight="700">
+              <Typography variant="body2">
                 {getCMSDataField(
                   cmsData,
                   "pagesDatasetsResourceMobilization.statsText4Subtitle",
-                  "Grouped by their Donor types"
+                  "Grouped by their Donor types",
                 )}
               </Typography>
             </Box>
@@ -525,7 +666,7 @@ export const ResourceMobilizationPage: React.FC = () => {
                     {getCMSDataField(
                       cmsData,
                       "pagesDatasetsResourceMobilization.statsText5",
-                      "Total number of donors"
+                      "Total number of donors",
                     )}
                   </Typography>
                 </Box>
@@ -561,13 +702,20 @@ export const ResourceMobilizationPage: React.FC = () => {
                 {get(dataStats, "donorTypesCount", []).map((item) => (
                   <Grid item xs={12} sm={3} md={3} lg={3} key={item.name}>
                     <Box bgcolor="#F1F3F5" padding="5px 10px">
-                      <Typography variant="h5">{item.value}</Typography>
+                      <Typography fontSize="24px" fontWeight="700">
+                        {item.value}
+                      </Typography>
                       <Typography fontSize="12px">{item.name}</Typography>
                     </Box>
                   </Grid>
                 ))}
               </Grid>
             </Grid>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="overline">
+              Latest Update: <b>{latestUpdateDate}</b>
+            </Typography>
           </Grid>
         </Grid>
         <Divider
@@ -595,15 +743,16 @@ export const ResourceMobilizationPage: React.FC = () => {
         >
           <DatasetChartBlock
             id="pledges-contributions"
+            exportName="pledges-and-contributions"
             title={getCMSDataField(
               cmsData,
               "pagesDatasetsResourceMobilization.pledgesTitle",
-              "Pledges & Contributions"
+              "Pledges & Contributions",
             )}
             subtitle={getCMSDataField(
               cmsData,
               "pagesDatasetsResourceMobilization.pledgesSubtitle",
-              "Government, private sector, non-government and other donor pledges and contributions."
+              "Government, private sector, non-government and other donor pledges and contributions.",
             )}
             dropdownItems={dropdownItems}
             dropdownSelected={dropdownSelected}
@@ -612,11 +761,15 @@ export const ResourceMobilizationPage: React.FC = () => {
             loading={dataChartLoading}
             empty={chartEmpty}
             filterGroups={filterGroups}
-            appliedFilters={chartAppliedFilters}
+            latestUpdate={latestUpdateDate}
+            appliedFilters={chartTempAppliedFilters}
             toggleFilter={handleToggleChartFilter}
             removeFilter={handleRemoveChartFilter}
             handleResetFilters={handleResetChartFilters}
-            appliedFiltersData={chartAppliedFiltersData}
+            tempAppliedFiltersData={chartTempAppliedFiltersData}
+            handleApplyFilters={handleApplyChartFilters}
+            handleCancelFilters={handleCancelChartFilters}
+            data={chartData}
             infoType="pledges_contributions"
           >
             {chartContent}

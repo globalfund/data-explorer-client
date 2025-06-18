@@ -30,6 +30,8 @@ interface SearchLayoutProps {
   loading: boolean;
   category?: string;
   onClose?: () => void;
+  withCatMenu?: boolean;
+  hideClearBtn?: boolean;
   results: SearchResultsTabModel[];
   setValue: (value: string) => void;
   setCategory?: (value: string) => void;
@@ -80,7 +82,7 @@ export function SearchLayout(props: SearchLayoutProps) {
     props.results.forEach((tab: SearchResultsTabModel) => {
       allData = [...allData, ...tab.results];
     });
-    if (!isMobile && props.category && props.category !== categories[0].label) {
+    if (props.category && props.category !== categories[0].label) {
       const fIndex = findIndex(categories, { label: props.category }) - 1;
       if (props.results[fIndex]) {
         setData(props.results[fIndex].results);
@@ -92,8 +94,8 @@ export function SearchLayout(props: SearchLayoutProps) {
 
   return (
     <MobileContainer>
-      {!isMobile && props.category && props.setCategory && (
-        <Box id="search-category-dropdown" marginRight="16px">
+      {props.withCatMenu && props.category && props.setCategory && (
+        <Box id="search-category-dropdown" marginRight="10px">
           <Dropdown
             height={40}
             dropdownItems={categories}
@@ -104,11 +106,7 @@ export function SearchLayout(props: SearchLayoutProps) {
       )}
       <Container
         id="search-container"
-        theme={{
-          focused: open,
-          withCatMenu:
-            !isMobile && Boolean(props.category) && Boolean(props.setCategory),
-        }}
+        theme={{ focused: open, withCatMenu: props.withCatMenu }}
       >
         <Input
           type="text"
@@ -119,14 +117,14 @@ export function SearchLayout(props: SearchLayoutProps) {
           placeholder={getCMSDataField(
             cmsData,
             "componentsSearch.placeholder",
-            "e.g. Kenya"
+            "e.g. Kenya",
           )}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             props.setValue(e.target.value)
           }
           data-cy="search-input"
         />
-        {props.value.length > 0 && (
+        {props.value.length > 0 && !props.hideClearBtn && (
           <IconButton
             onClick={() => {
               props.setValue("");
@@ -136,7 +134,7 @@ export function SearchLayout(props: SearchLayoutProps) {
             }}
             sx={{
               padding: 0,
-              marginRight: "16px",
+              marginRight: "10px",
               "&:hover": {
                 background: "transparent",
               },
@@ -150,7 +148,24 @@ export function SearchLayout(props: SearchLayoutProps) {
             <CloseIcon />
           </IconButton>
         )}
-        <SearchIcon htmlColor={appColors.COMMON.BLACK} />
+        <Box
+          id="search-icon"
+          sx={{
+            width: "40px",
+            height: "100%",
+            display: "flex",
+            minWidth: "40px",
+            borderRadius: "4px",
+            alignItems: "center",
+            justifyContent: "center",
+            background: appColors.COMMON.BLACK,
+            "@media (max-width: 767px)": {
+              height: "35px",
+            },
+          }}
+        >
+          <SearchIcon htmlColor={appColors.COMMON.WHITE} />
+        </Box>
       </Container>
       {open && (
         <ClickAwayListener
@@ -165,7 +180,12 @@ export function SearchLayout(props: SearchLayoutProps) {
           }}
         >
           <Box>
-            <SearchResults loading={props.loading} results={data} />
+            <SearchResults
+              results={data}
+              loading={props.loading}
+              withCatMenu={props.withCatMenu}
+              anchor={props.hideClearBtn ? "right" : "left"}
+            />
           </Box>
         </ClickAwayListener>
       )}

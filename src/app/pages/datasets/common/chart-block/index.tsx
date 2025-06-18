@@ -16,35 +16,45 @@ import { DatasetChartBlockProps } from "app/pages/datasets/common/chart-block/da
 import { ChartBlockButtonToolbar } from "app/components/chart-block/components/button-toolbar";
 
 export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
-  props: DatasetChartBlockProps
+  props: DatasetChartBlockProps,
 ) => {
   // const [collapsed, setCollapsed] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleFilterButtonClick = (
-    event: React.MouseEvent<HTMLButtonElement>
+    event: React.MouseEvent<HTMLButtonElement>,
   ) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleFilterPanelClose = () => {
+    props.handleCancelFilters();
     setAnchorEl(null);
   };
 
+  const handleCancelFilters = () => {
+    props.handleCancelFilters();
+    setAnchorEl(null);
+  };
+  const handleApplyFilters = () => {
+    props.handleApplyFilters();
+    setAnchorEl(null);
+  };
   // const handleCollapse = () => {
   //   setCollapsed(!collapsed);
   // };
 
-  const onScroll = () => {
+  const onScroll = React.useCallback(() => {
+    props.handleCancelFilters();
     setAnchorEl(null);
-  };
+  }, [props.handleCancelFilters]);
 
   React.useEffect(() => {
     window.addEventListener("scroll", onScroll);
     return () => {
       window.removeEventListener("scroll", onScroll);
     };
-  }, []);
+  }, [onScroll]);
 
   const content = React.useMemo(() => {
     if (props.loading) {
@@ -79,53 +89,57 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
 
   const id = React.useMemo(() => uniqueId("chart-block-"), []);
 
-  const filterPopover = React.useMemo(() => {
+  const filterPopoverContent = React.useMemo(() => {
     return (
-      <Popover
-        disableScrollLock
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        id={`filter-popover-${id}`}
+      <FilterPanel
         onClose={handleFilterPanelClose}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "left",
+        filterGroups={props.filterGroups}
+        toggleFilter={props.toggleFilter}
+        removeFilter={props.removeFilter}
+        appliedFilters={props.appliedFilters}
+        handleResetFilters={props.handleResetFilters}
+        tempAppliedFiltersData={props.tempAppliedFiltersData}
+        setPage={() => 0}
+        setPageSearchValue={() => 0}
+        appliedFilterBgColors={{
+          hover: "#2196F3",
+          normal: "rgba(33, 150, 243, 0.2)",
         }}
-      >
-        <FilterPanel
-          onClose={handleFilterPanelClose}
-          filterGroups={props.filterGroups}
-          toggleFilter={props.toggleFilter}
-          removeFilter={props.removeFilter}
-          appliedFilters={props.appliedFilters}
-          handleResetFilters={props.handleResetFilters}
-          appliedFiltersData={props.appliedFiltersData}
-          appliedFilterBgColors={{
-            hover: "#2196F3",
-            normal: "rgba(33, 150, 243, 0.2)",
-          }}
-        />
-      </Popover>
+        page={0}
+        search=""
+        handleCancelFilters={handleCancelFilters}
+        handleApplyFilters={handleApplyFilters}
+      />
     );
   }, [
-    anchorEl,
     props.appliedFilters,
     props.filterGroups,
-    props.appliedFiltersData,
+    props.tempAppliedFiltersData,
     props.toggleFilter,
     props.removeFilter,
     props.handleResetFilters,
   ]);
 
   return (
-    <Box id={props.id} data-cy="dataset-chart-block">
-      <Typography variant="h3" lineHeight={1.2}>
+    <Box id={props.id} data-cy="dataset-chart-block" position="relative">
+      <Box
+        id={`anchor-${props.id}`}
+        sx={{
+          left: 0,
+          zIndex: -1,
+          top: "-58px",
+          position: "absolute",
+        }}
+      />
+      <Typography variant={props.titleVariant ?? "h2"} lineHeight={1.2}>
         {props.title}
       </Typography>
-      <Typography variant="body2">{props.subtitle}</Typography>
+      <Typography variant={props.subtitleVariant ?? "body2"}>
+        {props.subtitle}
+      </Typography>
       <Divider
         sx={{
-          margin: "20px 0",
+          margin: "10px 0",
           "@media (max-width: 767px)": {
             margin: "10px 0",
             borderColor: "#fff",
@@ -149,30 +163,44 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
         }}
       >
         <Box gap="10px" display="flex" flexDirection="row">
-          <Button
-            variant="outlined"
-            startIcon={<Add fontSize="small" />}
-            onClick={handleFilterButtonClick}
-            sx={
-              props.appliedFilters.length > 0
-                ? {
-                    "&:after": {
-                      top: "-3px",
-                      right: "8px",
-                      width: "6px",
-                      height: "6px",
-                      content: "''",
-                      borderRadius: "50%",
-                      position: "absolute",
-                      background: "#2196F3",
-                    },
-                  }
-                : {}
-            }
+          {props.filterGroups.length > 0 && (
+            <Button
+              variant="outlined"
+              startIcon={<Add fontSize="small" />}
+              onClick={handleFilterButtonClick}
+              sx={
+                props.appliedFilters.length > 0
+                  ? {
+                      "&:after": {
+                        top: "-3px",
+                        right: "8px",
+                        width: "6px",
+                        height: "6px",
+                        content: "''",
+                        borderRadius: "50%",
+                        position: "absolute",
+                        background: "#2196F3",
+                      },
+                    }
+                  : {}
+              }
+            >
+              Filters
+            </Button>
+          )}
+          <Popover
+            disableScrollLock
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            id={`filter-popover-${id}`}
+            onClose={handleFilterPanelClose}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "left",
+            }}
           >
-            Filters
-          </Button>
-          {filterPopover}
+            {filterPopoverContent}
+          </Popover>
           {/* <Button variant="outlined" startIcon={<SettingsIcon />}>
             Settings
           </Button> */}
@@ -202,11 +230,7 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
             )}
         </Box>
       </Box>
-      <Box
-      // sx={{
-      //   display: collapsed ? "none" : "block",
-      // }}
-      >
+      <Box>
         <Box
           id={id}
           width="100%"
@@ -223,11 +247,25 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
         >
           {content}
         </Box>
-        <Box width="100%" marginTop="40px">
+        <Box
+          width="100%"
+          display="flex"
+          marginTop="40px"
+          alignItems="center"
+          position="relative"
+          justifyContent={props.latestUpdate ? "space-between" : "flex-end"}
+        >
+          {props.latestUpdate && (
+            <Typography variant="overline">
+              Latest Update: <b>{props.latestUpdate}</b>
+            </Typography>
+          )}
           <ChartBlockButtonToolbar
             blockId={id}
             hashId={props.id}
+            chartData={props.data}
             infoType={props.infoType}
+            exportName={props.exportName}
             chartType={props.dropdownSelected}
           />
         </Box>

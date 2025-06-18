@@ -39,6 +39,13 @@ export interface CMSApiComponentsSearch {
   };
 }
 
+export interface CMSApiComponentsFooter {
+  data: {};
+}
+
+export interface CMSApiComponentsHeader {
+  data: {};
+}
 export interface CMSApiPagesDatasets {
   data: {};
 }
@@ -119,4 +126,31 @@ export interface CMSApiPagesGrantOverview {
 
 export interface CMSApiPagesGrantTargetResults {
   data: {};
+}
+
+export interface CMSApiCountrySummary {
+  data: {
+    meta: {
+      pagination: {
+        page: number;
+        pageSize: number;
+        totalPages: number;
+        totalRecords: number;
+      };
+    };
+    data: {
+      id: string;
+      type: string;
+      attributes: {
+        locale: string;
+        title: string;
+        description: string;
+        content: string;
+        image: string;
+        url: string;
+        createdAt: string;
+        updatedAt: string;
+      };
+    }[];
+  };
 }

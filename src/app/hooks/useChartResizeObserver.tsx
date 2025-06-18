@@ -24,7 +24,7 @@ export const useChartResizeObserver = (props: ChartResizeObserverProps) => {
             // @ts-ignore
             props.chart,
             props.containerId,
-            props.containerRef.current?.clientHeight
+            props.containerRef.current?.clientHeight,
           );
         });
       });

@@ -11,7 +11,7 @@ export const HomeHero: React.FC = () => {
         {getCMSDataField(cmsData, "pagesHome.title", "Data Explorer")}
       </Typography>
       <Typography
-        variant="h5"
+        variant="h4"
         marginBottom="50px"
         maxWidth="80%"
         sx={{
@@ -26,7 +26,7 @@ export const HomeHero: React.FC = () => {
         {getCMSDataField(
           cmsData,
           "pagesHome.subtitle",
-          "The Global Fund invests US$5 billion a year to defeat HIV, tuberculosis and malaria and ensure a healthier, safer, equitable future for all."
+          "The Global Fund invests US$5 Billion a year to defeat HIV, tuberculosis and malaria and ensure a healthier, safer, equitable future for all.",
         )}
       </Typography>
     </React.Fragment>

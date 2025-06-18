@@ -9,12 +9,19 @@ import { categories } from "app/components/search/data";
 import { SearchLayout } from "app/components/search/layout";
 import { SearchResultsTabModel } from "app/components/search/components/results/data";
 
-export function Search(props: { hocClose?: () => void }) {
+export function Search(props: {
+  hocClose?: () => void;
+  withCatMenu?: boolean;
+  forceCategory?: string;
+  handleSearch?: (value: string) => void;
+}) {
   const [open, setOpen] = React.useState(false);
-  const [category, setCategory] = React.useState(categories[0].label);
+  const [category, setCategory] = React.useState(
+    props.forceCategory ? props.forceCategory : categories[0].value,
+  );
   const [storedValue, setStoredValue] = useSessionStorage(
     "stored-search-string",
-    ""
+    "",
   );
   const [value, setValue] = React.useState(storedValue);
 
@@ -23,7 +30,7 @@ export function Search(props: { hocClose?: () => void }) {
   const fetchData = useStoreActions((store) => store.GlobalSearch.fetch);
   const data = useStoreState(
     (state) =>
-      get(state.GlobalSearch.data, "data", []) as SearchResultsTabModel[]
+      get(state.GlobalSearch.data, "data", []) as SearchResultsTabModel[],
   );
   const isLoading = useStoreState((state) => state.GlobalSearch.loading);
 
@@ -47,8 +54,15 @@ export function Search(props: { hocClose?: () => void }) {
       }
     },
     500,
-    [value]
+    [value],
   );
+
+  function onValueChange(value: string) {
+    setValue(value);
+    if (props.handleSearch) {
+      props.handleSearch(value);
+    }
+  }
 
   function onClose() {
     setOpen(false);
@@ -78,10 +92,12 @@ export function Search(props: { hocClose?: () => void }) {
         results={data}
         onClose={onClose}
         loading={isLoading}
-        setValue={setValue}
         category={category}
+        setValue={onValueChange}
         setCategory={setCategory}
+        withCatMenu={props.withCatMenu}
         setStoredValue={setStoredValue}
+        hideClearBtn={Boolean(props.hocClose)}
       />
     </Box>
   );

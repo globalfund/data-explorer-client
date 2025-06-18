@@ -8,10 +8,13 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { ChartBlockProps } from "app/components/chart-block/data";
 import { ChartBlockCycles } from "app/components/chart-block/components/cycles";
 import { ChartBlockButtonToolbar } from "app/components/chart-block/components/button-toolbar";
+import { useCMSData } from "app/hooks/useCMSData";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 
 export const ChartBlock: React.FC<ChartBlockProps> = (
-  props: ChartBlockProps
+  props: ChartBlockProps,
 ) => {
+  const cmsData = useCMSData({ returnData: true });
   const id = React.useMemo(() => uniqueId("chart-block-"), []);
 
   const showRightComponents = React.useMemo(() => {
@@ -62,11 +65,20 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
   }
 
   return (
-    <Box id={props.id} data-cy="chart-block">
-      <Typography variant="h2" lineHeight={1}>
+    <Box id={props.id} data-cy="chart-block" position="relative">
+      <Box
+        id={`anchor-${props.id}`}
+        sx={{
+          left: 0,
+          zIndex: -1,
+          top: "-58px",
+          position: "absolute",
+        }}
+      />
+      <Typography variant="h3" lineHeight={1.2} fontSize="44px">
         {props.title}
       </Typography>
-      <Typography variant="h5" marginBottom="5px">
+      <Typography variant="h5" marginBottom="5px" fontSize="24px">
         {props.subtitle}
       </Typography>
       {props.text && props.text.length > 0 && (
@@ -160,16 +172,35 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
       >
         {content}
       </Box>
-      {!props.noBottomToolbar && (
-        <Box width="100%">
+      <Box
+        width="100%"
+        display="flex"
+        marginTop="40px"
+        alignItems="center"
+        position="relative"
+        justifyContent={props.latestUpdate ? "space-between" : "flex-end"}
+      >
+        {props.latestUpdate && (
+          <Typography variant="overline">
+            {getCMSDataField(
+              cmsData,
+              "pagesHome.latestUpdateText",
+              "Latest Update",
+            )}{" "}
+            : <b>{props.latestUpdate}</b>
+          </Typography>
+        )}
+        {!props.noBottomToolbar && (
           <ChartBlockButtonToolbar
             blockId={id}
             hashId={props.id}
+            chartData={props.data}
             infoType={props.infoType}
+            exportName={props.exportName}
             chartType={props.dropdownSelected}
           />
-        </Box>
-      )}
+        )}
+      </Box>
     </Box>
   );
 };

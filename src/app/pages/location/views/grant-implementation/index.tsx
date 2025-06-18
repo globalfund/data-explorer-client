@@ -17,7 +17,7 @@ export const GrantImplementation = () => {
   const params = useParams<{ id: string; tab: string }>();
 
   const locationName = useStoreState((state) =>
-    get(state.GeographyOverview, "data.data[0].name", params.id)
+    get(state.GeographyOverview, "data.data[0].name", params.id),
   );
   useTitle(`The Data Explorer - ${locationName}`);
 
@@ -26,18 +26,18 @@ export const GrantImplementation = () => {
       get(state.GeographyDisbursementsLineChart, "data", {
         data: [],
         xAxisKeys: [],
-      }) as LineChartProps
+      }) as LineChartProps,
   );
   const dataBudgetSankeyChart = useStoreState((state) => ({
     nodes: get(
       state.GeographyBudgetSankeyChart,
       "data.data.nodes",
-      []
+      [],
     ) as SankeyChartData["nodes"],
     links: get(
       state.GeographyBudgetSankeyChart,
       "data.data.links",
-      []
+      [],
     ) as SankeyChartData["links"],
   }));
   const dataExpendituresHeatmap = useStoreState(
@@ -45,8 +45,8 @@ export const GrantImplementation = () => {
       get(
         state.GeographyExpendituresHeatmap,
         "data.data",
-        []
-      ) as HeatmapDataItem[]
+        [],
+      ) as HeatmapDataItem[],
   );
 
   const fullWidthDivider = (

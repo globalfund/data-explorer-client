@@ -16,6 +16,8 @@ import {
 
 interface SearchResultsProps {
   loading: boolean;
+  withCatMenu?: boolean;
+  anchor: "left" | "right";
   results: SearchResultModel[];
 }
 
@@ -24,7 +26,11 @@ export function SearchResults(props: SearchResultsProps) {
   const hasLoaded = useStoreState((state) => state.GlobalSearch.success);
 
   return (
-    <Container id="search-results-container" data-cy="search-results-container">
+    <Container
+      id="search-results-container"
+      data-cy="search-results-container"
+      theme={{ anchor: props.anchor, withCatMenu: props.withCatMenu }}
+    >
       {props.loading && (
         <LinearProgress
           sx={{
@@ -43,7 +49,6 @@ export function SearchResults(props: SearchResultsProps) {
       )}
       <Results>
         {props.results.map((result: SearchResultModel) => {
-          console.log(result, "result");
           if (!result.link) {
             return (
               <ResultA
@@ -92,7 +97,7 @@ export function SearchResults(props: SearchResultsProps) {
             {getCMSDataField(
               cmsData,
               "componentsSearch.noResults",
-              "No results found."
+              "No results found.",
             )}
           </NoResults>
         )}

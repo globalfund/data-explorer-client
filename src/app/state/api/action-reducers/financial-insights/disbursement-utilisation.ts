@@ -3,6 +3,6 @@ import { ApiCallModel } from "app/state/api/interfaces";
 
 export const FinancialInsightsDisbursementUtilisation: ApiCallModel = {
   ...APIModel(
-    `${process.env.REACT_APP_API}/disbursements/utilization/{componentField}/{geographyGrouping}`
+    `${process.env.REACT_APP_API}/disbursements/utilization/{componentField}/{geographyGrouping}`,
   ),
 };

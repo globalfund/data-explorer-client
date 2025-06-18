@@ -14,7 +14,7 @@ const items = [
 
 const Wrapper: React.FC = () => {
   const [dropdownSelected, setDropdownSelected] = React.useState(
-    items[0].value
+    items[0].value,
   );
 
   const handleSelectionChange = (value: string) => {
@@ -28,13 +28,17 @@ const Wrapper: React.FC = () => {
       subtitle="Funds raised to date"
       dropdownItems={items}
       dropdownSelected={dropdownSelected}
+      exportName="pledges-and-contributions"
       handleDropdownChange={handleSelectionChange}
       filterGroups={[]}
       toggleFilter={() => {}}
       removeFilter={() => {}}
       handleResetFilters={() => {}}
+      handleApplyFilters={() => {}}
+      handleCancelFilters={() => {}}
       appliedFilters={[]}
-      appliedFiltersData={defaultAppliedFilters}
+      tempAppliedFiltersData={defaultAppliedFilters}
+      data={STORY_DATA_VARIANT_2}
       infoType="global"
     >
       <BarChart

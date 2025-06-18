@@ -10,18 +10,22 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { DetailPageTabs } from "app/components/detail-page-tabs";
 import { LocationOverview } from "app/pages/location/views/overview";
 import { RESULT_YEARS } from "app/pages/location/views/results/data";
-import { LOCATION_TABS } from "app/components/detail-page-tabs/data";
+import { getLocationTabs } from "app/components/detail-page-tabs/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { AccessToFunding } from "app/pages/location/views/access-to-funding";
 import { GrantImplementation } from "app/pages/location/views/grant-implementation";
 import { ResourceMobilization } from "app/pages/location/views/resource-mobilization";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export const Location: React.FC = () => {
   const params = useParams<{ id: string; tab: string }>();
-  const paramsId = params.id?.replace("|", "%2F");
+  const routeParamsId = params.id as string;
+  const paramsId = params.id?.replace("|", "%2F") as string;
+
+  const cmsData = useCMSData({ returnData: true });
 
   const [resultsYear, setResultsYear] = React.useState(
-    RESULT_YEARS[RESULT_YEARS.length - 1]
+    RESULT_YEARS[RESULT_YEARS.length - 1],
   );
 
   const dataOverview = useStoreState((state) =>
@@ -34,196 +38,201 @@ export const Location: React.FC = () => {
       FPMEmail: "",
       currentPrincipalRecipients: [],
       formerPrincipalRecipients: [],
-    })
+    }),
   );
   const loadingOverview = useStoreState(
-    (state) => state.GeographyOverview.loading
+    (state) => state.GeographyOverview.loading,
   );
   const fetchOverview = useStoreActions(
-    (actions) => actions.GeographyOverview.fetch
+    (actions) => actions.GeographyOverview.fetch,
   );
   const clearOverview = useStoreActions(
-    (actions) => actions.GeographyOverview.clear
+    (actions) => actions.GeographyOverview.clear,
   );
   const fetchCCMContacts = useStoreActions(
-    (actions) => actions.GeographyOverviewCoordinatingMechanismsContacts.fetch
+    (actions) => actions.GeographyOverviewCoordinatingMechanismsContacts.fetch,
   );
   const loadingCCMContacts = useStoreState(
-    (state) => state.GeographyOverviewCoordinatingMechanismsContacts.loading
+    (state) => state.GeographyOverviewCoordinatingMechanismsContacts.loading,
   );
   const clearCCMContacts = useStoreActions(
-    (actions) => actions.GeographyOverviewCoordinatingMechanismsContacts.clear
+    (actions) => actions.GeographyOverviewCoordinatingMechanismsContacts.clear,
   );
   const fetchRMBarChart = useStoreActions(
-    (actions) => actions.GeographyResourceMobilizationBarChart.fetch
+    (actions) => actions.GeographyResourceMobilizationBarChart.fetch,
   );
   const loadingRMBarChart = useStoreState(
-    (state) => state.GeographyResourceMobilizationBarChart.loading
+    (state) => state.GeographyResourceMobilizationBarChart.loading,
   );
   const clearRMBarChart = useStoreActions(
-    (actions) => actions.GeographyResourceMobilizationBarChart.clear
+    (actions) => actions.GeographyResourceMobilizationBarChart.clear,
   );
   const fetchAllocationsRadialChart = useStoreActions(
-    (actions) => actions.GeographyAllocationsRadialChart.fetch
+    (actions) => actions.GeographyAllocationsRadialChart.fetch,
   );
   const loadingAllocationsRadialChart = useStoreState(
-    (state) => state.GeographyAllocationsRadialChart.loading
+    (state) => state.GeographyAllocationsRadialChart.loading,
   );
   const clearAllocationsRadialChart = useStoreActions(
-    (actions) => actions.GeographyAllocationsRadialChart.clear
+    (actions) => actions.GeographyAllocationsRadialChart.clear,
   );
   const fetchFundingRequestsTable = useStoreActions(
-    (actions) => actions.GeographyFundingRequestsTable.fetch
+    (actions) => actions.GeographyFundingRequestsTable.fetch,
   );
   const loadingFundingRequestsTable = useStoreState(
-    (state) => state.GeographyFundingRequestsTable.loading
+    (state) => state.GeographyFundingRequestsTable.loading,
   );
   const clearFundingRequestsTable = useStoreActions(
-    (actions) => actions.GeographyFundingRequestsTable.clear
+    (actions) => actions.GeographyFundingRequestsTable.clear,
   );
   const fetchEligibilityTable = useStoreActions(
-    (actions) => actions.GeographyEligibilityTable.fetch
+    (actions) => actions.GeographyEligibilityTable.fetch,
   );
   const loadingEligibilityTable = useStoreState(
-    (state) => state.GeographyEligibilityTable.loading
+    (state) => state.GeographyEligibilityTable.loading,
   );
   const clearEligibilityTable = useStoreActions(
-    (actions) => actions.GeographyEligibilityTable.clear
+    (actions) => actions.GeographyEligibilityTable.clear,
   );
   const fetchDocumentsTable = useStoreActions(
-    (actions) => actions.GeographyDocumentsTable.fetch
+    (actions) => actions.GeographyDocumentsTable.fetch,
   );
   const loadingDocumentsTable = useStoreState(
-    (state) => state.GeographyDocumentsTable.loading
+    (state) => state.GeographyDocumentsTable.loading,
   );
   const clearDocumentsTable = useStoreActions(
-    (actions) => actions.GeographyDocumentsTable.clear
+    (actions) => actions.GeographyDocumentsTable.clear,
   );
   const fetchDisbursementsLineChart = useStoreActions(
-    (actions) => actions.GeographyDisbursementsLineChart.fetch
+    (actions) => actions.GeographyDisbursementsLineChart.fetch,
   );
   const loadingDisbursementsLineChart = useStoreState(
-    (state) => state.GeographyDisbursementsLineChart.loading
+    (state) => state.GeographyDisbursementsLineChart.loading,
   );
   const clearDisbursementsLineChart = useStoreActions(
-    (actions) => actions.GeographyDisbursementsLineChart.clear
+    (actions) => actions.GeographyDisbursementsLineChart.clear,
   );
   const fetchBudgetSankeyChart = useStoreActions(
-    (actions) => actions.GeographyBudgetSankeyChart.fetch
+    (actions) => actions.GeographyBudgetSankeyChart.fetch,
   );
   const loadingBudgetSankeyChart = useStoreState(
-    (state) => state.GeographyBudgetSankeyChart.loading
+    (state) => state.GeographyBudgetSankeyChart.loading,
   );
   const clearBudgetSanketChart = useStoreActions(
-    (actions) => actions.GeographyBudgetSankeyChart.clear
+    (actions) => actions.GeographyBudgetSankeyChart.clear,
   );
   const fetchExpendituresHeatmap = useStoreActions(
-    (actions) => actions.GeographyExpendituresHeatmap.fetch
+    (actions) => actions.GeographyExpendituresHeatmap.fetch,
   );
   const loadingExpendituresHeatmap = useStoreState(
-    (state) => state.GeographyExpendituresHeatmap.loading
+    (state) => state.GeographyExpendituresHeatmap.loading,
   );
   const clearExpendituresHeatmap = useStoreActions(
-    (actions) => actions.GeographyExpendituresHeatmap.clear
+    (actions) => actions.GeographyExpendituresHeatmap.clear,
   );
   const fetchGrantsPieCharts = useStoreActions(
-    (actions) => actions.GeographyGrantsPieCharts.fetch
+    (actions) => actions.GeographyGrantsPieCharts.fetch,
   );
   const loadingGrantsPieCharts = useStoreState(
-    (state) => state.GeographyGrantsPieCharts.loading
+    (state) => state.GeographyGrantsPieCharts.loading,
   );
   const clearGrantsPieCharts = useStoreActions(
-    (actions) => actions.GeographyGrantsPieCharts.clear
+    (actions) => actions.GeographyGrantsPieCharts.clear,
   );
   const fetchGrantsTable = useStoreActions(
-    (actions) => actions.GeographyGrantsTable.fetch
+    (actions) => actions.GeographyGrantsTable.fetch,
   );
   const loadingGrantsTable = useStoreState(
-    (state) => state.GeographyGrantsTable.loading
+    (state) => state.GeographyGrantsTable.loading,
   );
   const clearGrantsTable = useStoreActions(
-    (actions) => actions.GeographyGrantsTable.clear
+    (actions) => actions.GeographyGrantsTable.clear,
   );
   const dataResultsTable = useStoreState((state) =>
-    get(state.GeographyResultsTable, "data.data", [])
+    get(state.GeographyResultsTable, "data.data", []),
   );
   const fetchResultStats = useStoreActions(
-    (actions) => actions.GeographyResultStats.fetch
+    (actions) => actions.GeographyResultStats.fetch,
   );
   const loadingResultStats = useStoreState(
-    (state) => state.GeographyResultStats.loading
+    (state) => state.GeographyResultStats.loading,
   );
   const clearResultStats = useStoreActions(
-    (actions) => actions.GeographyResultStats.clear
+    (actions) => actions.GeographyResultStats.clear,
   );
   const fetchResultsTable = useStoreActions(
-    (actions) => actions.GeographyResultsTable.fetch
+    (actions) => actions.GeographyResultsTable.fetch,
   );
   const loadingResultsTable = useStoreState(
-    (state) => state.GeographyResultsTable.loading
+    (state) => state.GeographyResultsTable.loading,
   );
   const clearResultsTable = useStoreActions(
-    (actions) => actions.GeographyResultsTable.clear
+    (actions) => actions.GeographyResultsTable.clear,
   );
   const dataResultsDocumentsTable = useStoreState((state) =>
-    get(state.GeographyResultsDocumentsTable, "data.data", [])
+    get(state.GeographyResultsDocumentsTable, "data.data", []),
   );
   const fetchResultsDocumentsTable = useStoreActions(
-    (actions) => actions.GeographyResultsDocumentsTable.fetch
+    (actions) => actions.GeographyResultsDocumentsTable.fetch,
   );
   const loadingResultsDocumentsTable = useStoreState(
-    (state) => state.GeographyResultsDocumentsTable.loading
+    (state) => state.GeographyResultsDocumentsTable.loading,
   );
   const clearResultsDocumentsTable = useStoreActions(
-    (actions) => actions.GeographyResultsDocumentsTable.clear
+    (actions) => actions.GeographyResultsDocumentsTable.clear,
   );
   const fetchAllocationsCycles = useStoreActions(
-    (actions) => actions.GeographyAllocationsCycles.fetch
+    (actions) => actions.GeographyAllocationsCycles.fetch,
   );
   const fetchAnnualResultsCycles = useStoreActions(
-    (actions) => actions.GeographyAnnualResultsCycles.fetch
+    (actions) => actions.GeographyAnnualResultsCycles.fetch,
   );
   const fetchDisbursementsCycles = useStoreActions(
-    (actions) => actions.GeographyDisbursementsCycles.fetch
+    (actions) => actions.GeographyDisbursementsCycles.fetch,
   );
   const fetchExpendituresCycles = useStoreActions(
-    (actions) => actions.GeographyExpendituresCycles.fetch
+    (actions) => actions.GeographyExpendituresCycles.fetch,
   );
   const fetchEligibilityCycles = useStoreActions(
-    (actions) => actions.GeographyEligibilityCycles.fetch
+    (actions) => actions.GeographyEligibilityCycles.fetch,
   );
   const fetchPledgesContributionsCycles = useStoreActions(
-    (actions) => actions.GeographyPledgesContributionsCycles.fetch
+    (actions) => actions.GeographyPledgesContributionsCycles.fetch,
   );
   const fetchFundingRequestsCycles = useStoreActions(
-    (actions) => actions.GeographyFundingRequestsCycles.fetch
+    (actions) => actions.GeographyFundingRequestsCycles.fetch,
   );
   const fetchBudgetsCycles = useStoreActions(
-    (actions) => actions.GeographyBudgetsCycles.fetch
+    (actions) => actions.GeographyBudgetsCycles.fetch,
   );
   const clearAllocationsCycles = useStoreActions(
-    (actions) => actions.GeographyAllocationsCycles.clear
+    (actions) => actions.GeographyAllocationsCycles.clear,
   );
   const clearAnnualResultsCycles = useStoreActions(
-    (actions) => actions.GeographyAnnualResultsCycles.clear
+    (actions) => actions.GeographyAnnualResultsCycles.clear,
   );
   const clearDisbursementsCycles = useStoreActions(
-    (actions) => actions.GeographyDisbursementsCycles.clear
+    (actions) => actions.GeographyDisbursementsCycles.clear,
   );
   const clearExpendituresCycles = useStoreActions(
-    (actions) => actions.GeographyExpendituresCycles.clear
+    (actions) => actions.GeographyExpendituresCycles.clear,
   );
   const clearEligibilityCycles = useStoreActions(
-    (actions) => actions.GeographyEligibilityCycles.clear
+    (actions) => actions.GeographyEligibilityCycles.clear,
   );
   const clearPledgesContributionsCycles = useStoreActions(
-    (actions) => actions.GeographyPledgesContributionsCycles.clear
+    (actions) => actions.GeographyPledgesContributionsCycles.clear,
   );
   const clearFundingRequestsCycles = useStoreActions(
-    (actions) => actions.GeographyFundingRequestsCycles.clear
+    (actions) => actions.GeographyFundingRequestsCycles.clear,
   );
   const clearBudgetsCycles = useStoreActions(
-    (actions) => actions.GeographyBudgetsCycles.clear
+    (actions) => actions.GeographyBudgetsCycles.clear,
+  );
+
+  const LOCATION_TABS = React.useMemo(
+    () => getLocationTabs(cmsData),
+    [cmsData],
   );
 
   const loading = React.useMemo(() => {
@@ -273,6 +282,7 @@ export const Location: React.FC = () => {
     loadingResultStats,
     loadingResultsTable,
     loadingResultsDocumentsTable,
+    LOCATION_TABS,
   ]);
 
   const view = React.useMemo(() => {
@@ -306,28 +316,33 @@ export const Location: React.FC = () => {
       remove(newTabs, (tab) => tab.label === LOCATION_TABS[4].label);
     }
     return newTabs;
-  }, [dataOverview, dataResultsTable, dataResultsDocumentsTable]);
+  }, [
+    dataOverview,
+    dataResultsTable,
+    dataResultsDocumentsTable,
+    LOCATION_TABS,
+  ]);
 
   React.useEffect(() => {
     if (paramsId) {
       fetchOverview({
         routeParams: {
-          code: paramsId,
+          code: routeParamsId,
         },
       });
       fetchCCMContacts({
         routeParams: {
-          code: paramsId,
+          code: routeParamsId,
         },
       });
       fetchAllocationsRadialChart({
         routeParams: {
-          code: paramsId,
+          code: routeParamsId,
         },
       });
       fetchFundingRequestsTable({
         routeParams: {
-          code: paramsId,
+          code: routeParamsId,
         },
       });
       fetchEligibilityTable({
@@ -355,7 +370,7 @@ export const Location: React.FC = () => {
       });
       fetchGrantsPieCharts({
         routeParams: {
-          code: paramsId,
+          code: routeParamsId,
         },
       });
       fetchResultStats({
@@ -393,6 +408,13 @@ export const Location: React.FC = () => {
       fetchBudgetsCycles({
         filterString: `geographies=${paramsId}`,
       });
+      fetchGrantsTable({
+        filterString: `geographies=${paramsId}`,
+        routeParams: {
+          page: "1",
+          pageSize: "all",
+        },
+      });
     }
   }, [paramsId]);
 
@@ -406,21 +428,9 @@ export const Location: React.FC = () => {
 
   React.useEffect(() => {
     if (paramsId) {
-      fetchGrantsTable({
-        filterString: `geographies=${paramsId}`,
-        routeParams: {
-          page: "1",
-          pageSize: "all",
-        },
-      });
-    }
-  }, [paramsId]);
-
-  React.useEffect(() => {
-    if (paramsId) {
       fetchResultsTable({
         routeParams: {
-          code: paramsId,
+          code: routeParamsId,
           cycle: resultsYear.value,
         },
       });
@@ -491,7 +501,7 @@ export const Location: React.FC = () => {
         {loading && <CircularProgress sx={{ marginLeft: "16px" }} />}
       </Typography>
       <Typography
-        variant="h5"
+        variant="h4"
         lineHeight={1}
         marginBottom="50px"
         sx={{
@@ -504,13 +514,11 @@ export const Location: React.FC = () => {
         {dataOverview.region}
       </Typography>
       {fullWidthDivider}
-      <Box height="20px" />
       <DetailPageTabs
         tabs={tabs}
         activeTab={params.tab}
         baseRoute={`/location`}
       />
-      <Box height="20px" />
       {fullWidthDivider}
       <Box
         marginTop="40px"

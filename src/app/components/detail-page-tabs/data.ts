@@ -1,3 +1,5 @@
+import { getCMSDataField } from "app/utils/getCMSDataField";
+
 interface DetailPageTabItem {
   link: string;
   label: string;
@@ -15,24 +17,36 @@ export interface DetailPageTabsProps {
   };
 }
 
-export const GRANT_TABS: DetailPageTabItem[] = [
-  {
-    label: "Overview",
-    link: "/overview",
-  },
-  {
-    label: "Financial Insights",
-    link: "/financial-insights",
-  },
-  {
-    label: "Target & Results",
-    link: "/targets-results",
-  },
-  // {
-  //   label: "Documents",
-  //   link: "/documents",
-  // },
-];
+export const getGrantTabs = (cmsData: any): DetailPageTabItem[] => {
+  const GRANT_TABS: DetailPageTabItem[] = [
+    {
+      label: getCMSDataField(
+        cmsData,
+        "pagesGrantDetail.overviewLabel",
+        "Overview",
+      ),
+      link: "/overview",
+    },
+    {
+      label: getCMSDataField(
+        cmsData,
+        "pagesGrantDetail.financialInsightsLabel",
+        "Financial Insights",
+      ),
+      link: "/financial-insights",
+    },
+    // {
+    //   label: "Target & Results",
+    //   link: "/targets-results",
+    // },
+    // {
+    //   label: "Documents",
+    //   link: "/documents",
+    // },
+  ];
+
+  return GRANT_TABS;
+};
 
 export const GRANT_DROPDOWN_ITEMS = [
   {
@@ -53,25 +67,45 @@ export const GRANT_DROPDOWN_ITEMS = [
   },
 ];
 
-export const LOCATION_TABS: DetailPageTabItem[] = [
-  {
-    label: "Overview",
-    link: "/overview",
-  },
-  {
-    label: "Resource Mobilization",
-    link: "/resource-mobilization",
-  },
-  {
-    label: "Access to Funding",
-    link: "/access-to-funding",
-  },
-  {
-    label: "Financial Insights",
-    link: "/financial-insights",
-  },
-  {
-    label: "Results",
-    link: "/results",
-  },
-];
+export const getLocationTabs = (cmsData: any): DetailPageTabItem[] => {
+  const LOCATION_TABS: DetailPageTabItem[] = [
+    {
+      label: getCMSDataField(
+        cmsData,
+        "pagesLocation.overviewLabel",
+        "Overview",
+      ),
+      link: "/overview",
+    },
+    {
+      label: getCMSDataField(
+        cmsData,
+        "pagesLocation.resourceMobilizationLabel",
+        "Resource Mobilization",
+      ),
+      link: "/resource-mobilization",
+    },
+    {
+      label: getCMSDataField(
+        cmsData,
+        "pagesLocation.accessToFundingLabel",
+        "Access to Funding",
+      ),
+      link: "/access-to-funding",
+    },
+    {
+      label: getCMSDataField(
+        cmsData,
+        "pagesLocation.financialInsightsLabel",
+        "Financial Insights",
+      ),
+      link: "/financial-insights",
+    },
+    {
+      label: getCMSDataField(cmsData, "pagesLocation.resultsLabel", "Results"),
+      link: "/results",
+    },
+  ];
+
+  return LOCATION_TABS;
+};

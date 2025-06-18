@@ -109,7 +109,7 @@ const Tooltip = (props: any) => {
 };
 
 export const RadialChart: React.FC<RadialChartProps> = (
-  props: RadialChartProps
+  props: RadialChartProps,
 ) => {
   const isTouch = useMediaQuery("(hover: none)");
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -172,7 +172,7 @@ export const RadialChart: React.FC<RadialChartProps> = (
                 {...params}
                 totalValue={totalValue}
                 label={props.tooltipLabel}
-              />
+              />,
             );
           },
         },

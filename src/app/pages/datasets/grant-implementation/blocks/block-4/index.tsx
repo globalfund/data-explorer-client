@@ -8,6 +8,7 @@ import { Dropdown } from "app/components/dropdown";
 import { getCMSDataField } from "app/utils/getCMSDataField";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import { componentsGroupingOptions } from "app/pages/datasets/grant-implementation/data";
 
 interface GrantImplementationPageBlock4Props {
@@ -20,19 +21,23 @@ export const GrantImplementationPageBlock4: React.FC<
   GrantImplementationPageBlock4Props
 > = (props: GrantImplementationPageBlock4Props) => {
   const cmsData = useCMSData({ returnData: true });
+  const latestUpdateDate = useGetDatasetLatestUpdate({
+    dataset: "budgets",
+  });
+
   const dataBudgetBreakdown = useStoreState(
     (state) =>
       get(state.FinancialInsightsBudgetBreakdown, "data.data", []) as {
         name: string;
         value: number;
         color: string;
-      }[]
+      }[],
   );
   const fetchBudgetBreakdown = useStoreActions(
-    (actions) => actions.FinancialInsightsBudgetBreakdown.fetch
+    (actions) => actions.FinancialInsightsBudgetBreakdown.fetch,
   );
   const loadingBudgetBreakdown = useStoreState(
-    (state) => state.FinancialInsightsBudgetBreakdown.loading
+    (state) => state.FinancialInsightsBudgetBreakdown.loading,
   );
   const cycles = useStoreState((state) =>
     get(state.BudgetsCycles, "data.data", [])
@@ -40,7 +45,7 @@ export const GrantImplementationPageBlock4: React.FC<
         label: cycle.value,
         value: cycle.value,
       }))
-      .reverse()
+      .reverse(),
   );
 
   const [budgetBreakdownDropdownSelected, setBudgetBreakdownDropdownSelected] =
@@ -95,18 +100,18 @@ export const GrantImplementationPageBlock4: React.FC<
         justifyContent="space-between"
       >
         <Box>
-          <Typography variant="h5">
+          <Typography variant="h3">
             {getCMSDataField(
               cmsData,
               "pagesDatasetsGrantImplementation.budgetBreakdownTitle",
-              "Budget Breakdown"
+              "Budget Breakdown",
             )}
           </Typography>
-          <Typography fontSize="14px" fontWeight="700">
+          <Typography fontSize="14px">
             {getCMSDataField(
               cmsData,
               "pagesDatasetsGrantImplementation.budgetBreakdownSubtitle",
-              "By grant component"
+              "By grant component",
             )}
           </Typography>
         </Box>
@@ -161,6 +166,16 @@ export const GrantImplementationPageBlock4: React.FC<
             />
           </Box>
         ))}
+      </Box>
+      <Box>
+        <Typography variant="overline">
+          {getCMSDataField(
+            cmsData,
+            "pagesDatasetsGrantImplementation.latestUpdateText",
+            "Latest Update",
+          )}
+          : <b>{latestUpdateDate}</b>
+        </Typography>
       </Box>
       {loadingBudgetBreakdown && (
         <Box

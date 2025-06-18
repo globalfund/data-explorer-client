@@ -28,7 +28,7 @@ describe("Testing The Location page", () => {
     it("displays the header", () => {
       cy.get("h1").should("have.text", "Financial Insights");
       cy.contains(
-        "See the disbursements, budgets and expenditures datasets and relating insights."
+        "See the disbursements, budgets and expenditures datasets and relating insights.",
       ).should("be.visible");
       cy.contains("Total Signed Amount").should("be.visible");
       cy.contains("Total Committed Amount").should("be.visible");
@@ -47,17 +47,17 @@ describe("Testing The Location page", () => {
             .type("Europe");
           cy.contains(
             '[data-cy="filter-list-content-accordion-summary"]',
-            "Europe"
+            "Europe",
           ).within(() => {
             cy.get('[data-cy="filter-list-content-checkbox"]').click();
             waitData(4);
           });
-        }
+        },
       );
 
       cy.get('[data-cy="filter-panel"]').within(() => {
         cy.contains('[data-cy="applied-filter"]', "Europe").should(
-          "be.visible"
+          "be.visible",
         );
       });
     });
@@ -66,7 +66,7 @@ describe("Testing The Location page", () => {
       cy.get('[data-cy="toolbar-right-content"]').within(() => {
         cy.contains(
           '[data-cy="category-dropdown-button"]',
-          "Standard View"
+          "Standard View",
         ).click();
       });
 
@@ -77,7 +77,7 @@ describe("Testing The Location page", () => {
         .within(() => {
           cy.contains(
             '[data-cy="category-dropdown-item"]',
-            "Portfolio View"
+            "Portfolio View",
           ).click();
         });
 
@@ -85,7 +85,7 @@ describe("Testing The Location page", () => {
 
       cy.contains(
         '[data-cy="category-dropdown-button"]',
-        "Portfolio View"
+        "Portfolio View",
       ).should("be.visible");
     });
 
@@ -97,13 +97,13 @@ describe("Testing The Location page", () => {
           .first()
           .within(() => {
             cy.contains(
-              "Disbursement transactions for all grants across the porfolio."
+              "Disbursement transactions for all grants across the porfolio.",
             ).should("be.visible");
             cy.get('[data-cy="bar-chart"]').should("be.visible");
 
             cy.contains(
               '[data-cy="category-dropdown-button"]',
-              "Bar Chart"
+              "Bar Chart",
             ).click();
           });
 
@@ -114,7 +114,7 @@ describe("Testing The Location page", () => {
           .within(() => {
             cy.contains(
               '[data-cy="category-dropdown-item"]',
-              "Line Chart"
+              "Line Chart",
             ).click();
           });
 
@@ -123,9 +123,9 @@ describe("Testing The Location page", () => {
             cy.get('[data-cy="line-chart"]').should("be.visible");
             cy.contains(
               '[data-cy="category-dropdown-button"]',
-              "Line Chart"
+              "Line Chart",
             ).click();
-          }
+          },
         );
 
         cy.get('[data-cy="category-dropdown-menu"]')
@@ -135,16 +135,16 @@ describe("Testing The Location page", () => {
           .within(() => {
             cy.contains(
               '[data-cy="category-dropdown-item"]',
-              "Table View"
+              "Table View",
             ).click();
           });
 
         cy.contains("[data-cy=dataset-chart-block]", "Disbursements").within(
           () => {
             cy.get('[data-cy="table"]').should("be.visible");
-          }
+          },
         );
-      }
+      },
     );
 
     it(
@@ -158,7 +158,7 @@ describe("Testing The Location page", () => {
 
             cy.contains(
               '[data-cy="category-dropdown-button"]',
-              "Sankey Chart"
+              "Sankey Chart",
             ).click();
           });
 
@@ -169,7 +169,7 @@ describe("Testing The Location page", () => {
           .within(() => {
             cy.contains(
               '[data-cy="category-dropdown-item"]',
-              "Treemap"
+              "Treemap",
             ).click();
           });
 
@@ -177,7 +177,7 @@ describe("Testing The Location page", () => {
           cy.get('[data-cy="treemap-chart"]').should("be.visible");
           cy.contains(
             '[data-cy="category-dropdown-button"]',
-            "Treemap"
+            "Treemap",
           ).click();
         });
 
@@ -188,7 +188,7 @@ describe("Testing The Location page", () => {
           .within(() => {
             cy.contains(
               '[data-cy="category-dropdown-item"]',
-              "Table View"
+              "Table View",
             ).click();
           });
 
@@ -200,7 +200,7 @@ describe("Testing The Location page", () => {
           cy.contains("Budget Breakdown").should("be.visible");
           cy.contains("By grant component").should("be.visible");
         });
-      }
+      },
     );
 
     it(
@@ -212,7 +212,7 @@ describe("Testing The Location page", () => {
           .within(() => {
             cy.contains(
               '[data-cy="category-dropdown-button"]',
-              "Grant Cycle 6"
+              "Grant Cycle 6",
             ).click();
           });
 
@@ -223,7 +223,7 @@ describe("Testing The Location page", () => {
           .within(() => {
             cy.contains(
               '[data-cy="category-dropdown-item"]',
-              "Grant Cycle 5"
+              "Grant Cycle 5",
             ).click();
             waitData(3);
           });
@@ -233,7 +233,7 @@ describe("Testing The Location page", () => {
           .within(() => {
             cy.contains(
               '[data-cy="category-dropdown-button"]',
-              "Grant Cycle 5"
+              "Grant Cycle 5",
             ).should("be.visible");
           });
 
@@ -242,7 +242,7 @@ describe("Testing The Location page", () => {
           .within(() => {
             cy.get('[data-cy="donut-chart"]').should("be.visible");
             cy.get('[data-cy="financial-metric-expandable-item"]').should(
-              "be.visible"
+              "be.visible",
             );
           });
 
@@ -251,7 +251,7 @@ describe("Testing The Location page", () => {
           .within(() => {
             cy.get('[data-cy="donut-chart"]').should("be.visible");
             cy.get('[data-cy="financial-metric-expandable-item"]').should(
-              "be.visible"
+              "be.visible",
             );
           });
 
@@ -260,10 +260,10 @@ describe("Testing The Location page", () => {
           .within(() => {
             cy.get('[data-cy="donut-chart"]').should("be.visible");
             cy.get('[data-cy="financial-metric-expandable-item"]').should(
-              "be.visible"
+              "be.visible",
             );
           });
-      }
+      },
     );
 
     it(
@@ -278,7 +278,7 @@ describe("Testing The Location page", () => {
 
             cy.contains(
               '[data-cy="category-dropdown-button"]',
-              "Heatmap"
+              "Heatmap",
             ).click();
           });
 
@@ -289,20 +289,20 @@ describe("Testing The Location page", () => {
           .within(() => {
             cy.contains(
               '[data-cy="category-dropdown-item"]',
-              "Bar Chart"
+              "Bar Chart",
             ).click();
           });
 
         cy.contains("[data-cy=dataset-chart-block]", "Expenditures").within(
           () => {
             cy.get('[data-cy="expandable-horizontal-bar-chart"]').should(
-              "be.visible"
+              "be.visible",
             );
             cy.contains(
               '[data-cy="category-dropdown-button"]',
-              "Bar Chart"
+              "Bar Chart",
             ).click();
-          }
+          },
         );
 
         cy.get('[data-cy="category-dropdown-menu"]')
@@ -312,16 +312,16 @@ describe("Testing The Location page", () => {
           .within(() => {
             cy.contains(
               '[data-cy="category-dropdown-item"]',
-              "Table View"
+              "Table View",
             ).click();
           });
 
         cy.contains("[data-cy=dataset-chart-block]", "Expenditures").within(
           () => {
             cy.get('[data-cy="table"]').should("be.visible");
-          }
+          },
         );
-      }
+      },
     );
   });
 });

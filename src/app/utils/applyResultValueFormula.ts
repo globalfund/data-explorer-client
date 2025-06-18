@@ -14,7 +14,7 @@ function fnum(x: number) {
   if (x < 1000000) {
     return {
       number: evenRound(x / 1000000, 2),
-      text: "million",
+      text: "Million",
     };
   }
   // if (x < 10000000) {
@@ -24,31 +24,31 @@ function fnum(x: number) {
   //       : (x / 1000000).toFixed(2);
   //   return {
   //     number: Number(n),
-  //     text: 'million'
+  //     text: 'Million'
   //   };
   // }
   if (x < 10000000) {
     return {
       number: evenRound(x / 1000000, 2),
-      text: "million",
+      text: "Million",
     };
   }
   if (x < 100000000) {
     return {
       number: evenRound(x / 1000000, 2),
-      text: "million",
+      text: "Million",
     };
   }
   if (x < 1000000000) {
     return {
       number: Math.round(x / 1000000),
-      text: "million",
+      text: "Million",
     };
   }
   if (x < 1000000000000) {
     return {
       number: Math.round(x / 1000000000),
-      text: "billion",
+      text: "Billion",
     };
   }
   return {

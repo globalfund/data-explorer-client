@@ -1,4 +1,5 @@
 import React from "react";
+import sumBy from "lodash/sumBy";
 import Box from "@mui/material/Box";
 import { appColors } from "app/theme";
 import * as echarts from "echarts/core";
@@ -15,11 +16,15 @@ import {
   SankeySeriesOption,
   SankeyChart as EChartsSankey,
 } from "echarts/charts";
+import {
+  getFinancialValueWithMetricPrefix,
+  getRange,
+} from "app/utils/getFinancialValueWithMetricPrefix";
 
 echarts.use([TooltipComponent, EChartsSankey, SVGRenderer]);
 
 export const SankeyChart: React.FC<SankeyChartProps> = (
-  props: SankeyChartProps
+  props: SankeyChartProps,
 ) => {
   const mobile = useMediaQuery("(max-width: 767px)");
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -35,15 +40,21 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
 
   const totalValue = React.useMemo(() => {
     return props.data.links
-      .filter((link) => link.source === "Total budget")
+      .filter((link) => link.source.includes("Total"))
       .reduce((acc, item) => acc + item.value, 0);
   }, [props.data.links]);
+
+  const maxLevel = React.useMemo(() => {
+    return Math.max(...props.data.nodes.map((node) => node.level));
+  }, [props.data.nodes]);
 
   React.useEffect(() => {
     if (containerRef.current) {
       const chart = echarts.init(containerRef.current, undefined, {
         renderer: "svg",
       });
+
+      const maxLevel = Math.max(...props.data.nodes.map((node) => node.level));
 
       const option: echarts.ComposeOption<
         SankeySeriesOption | TooltipComponentOption
@@ -57,7 +68,7 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
           type: "sankey",
           draggable: false,
           layoutIterations: 0,
-          right: mobile ? 0 : 250,
+          right: mobile || maxLevel === 2 ? 0 : 250,
           nodes: props.data.nodes,
           links: props.data.links,
           emphasis: {
@@ -84,9 +95,34 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
                 position: "right",
                 fontWeight: "bold",
                 color: appColors.COMMON.WHITE,
+                formatter: (params: any) => {
+                  const range = getRange([{ value: params.value }], ["value"]);
+                  return props.formatLabel
+                    ? [
+                        `{name|${params.name}: }`,
+                        `{value|US$ ${getFinancialValueWithMetricPrefix(
+                          params.value,
+                          range.index,
+                          3,
+                        )}${range.abbr}}`,
+                      ].join("\n")
+                    : params.name;
+                },
+                rich: {
+                  name: {
+                    fontSize: 12,
+                    fontWeight: "bold",
+                    color: appColors.COMMON.WHITE,
+                  },
+                  value: {
+                    fontSize: 12,
+                    color: appColors.COMMON.WHITE,
+                  },
+                },
               },
               lineStyle: {
-                color: appColors.SANKEY_CHART.LINK_COLORS[1],
+                color:
+                  appColors.SANKEY_CHART.LINK_COLORS[maxLevel === 3 ? 0 : 1],
               },
               itemStyle: {
                 color: appColors.SANKEY_CHART.NODE_COLOR,
@@ -98,16 +134,75 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
                 show: !mobile,
                 position: "left",
                 color: appColors.COMMON.WHITE,
+                formatter: (params: any) => {
+                  const range = getRange([{ value: params.value }], ["value"]);
+                  return props.formatLabel
+                    ? [
+                        `{name|${params.name}: }`,
+                        `{value|US$ ${getFinancialValueWithMetricPrefix(
+                          params.value,
+                          range.index,
+                          3,
+                        )}${range.abbr}}`,
+                        `\n`,
+                        `{perc|${((params.value / totalValue) * 100)
+                          .toFixed(2)
+                          .replace(".00", "")}% of total}`,
+                      ].join("")
+                    : params.name;
+                },
+                rich: {
+                  name: {
+                    fontSize: 12,
+                    fontWeight: "bold",
+                    color: appColors.COMMON.WHITE,
+                  },
+                  value: {
+                    fontSize: 12,
+                    color: appColors.COMMON.WHITE,
+                  },
+                  perc: {
+                    fontSize: 10,
+                    align: "right",
+                    padding: [5, 0, 0, 0],
+                    color: appColors.COMMON.WHITE,
+                  },
+                },
               },
               lineStyle: {
-                color: appColors.SANKEY_CHART.LINK_COLORS[2],
+                color:
+                  appColors.SANKEY_CHART.LINK_COLORS[maxLevel === 3 ? 1 : 2],
               },
             },
             {
               depth: 2,
               label: {
-                position: "right",
                 color: appColors.COMMON.BLACK,
+                position: maxLevel === 2 ? "left" : "right",
+                formatter: (params: any) => {
+                  const range = getRange([{ value: params.value }], ["value"]);
+                  return props.formatLabel
+                    ? [
+                        `{name|${params.name}: }`,
+                        `{value|US$ ${getFinancialValueWithMetricPrefix(
+                          params.value,
+                          range.index,
+                          3,
+                        )}${range.abbr}}`,
+                      ].join("")
+                    : params.name;
+                },
+                rich: {
+                  name: {
+                    fontSize: 12,
+                    fontWeight: "bold",
+                    color: appColors.COMMON.BLACK,
+                  },
+                  value: {
+                    fontSize: 12,
+                    color: appColors.COMMON.BLACK,
+                  },
+                },
               },
               lineStyle: {
                 color: appColors.SANKEY_CHART.LINK_COLORS[2],
@@ -145,6 +240,10 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
           formatter: (params: any) => {
             const data = params.data;
             if (data.source && data.target) {
+              const sourceTotal = sumBy(
+                props.data.links.filter((node) => node.source === data.source),
+                "value",
+              );
               return ReactDOMServer.renderToString(
                 <Box
                   style={{
@@ -169,14 +268,13 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
                     {formatFinancialValue(data.value)}
                   </Typography>
                   <Box>
-                    {data.source} -{">"} {data.target}
-                    <br />
-                    {((data.value / totalValue) * 100)
+                    {data.target} -{" "}
+                    {((data.value / sourceTotal) * 100)
                       .toFixed(2)
                       .replace(".00", "")}
-                    % of total budget
+                    % of {data.source}
                   </Box>
-                </Box>
+                </Box>,
               );
             }
             return ReactDOMServer.renderToString(
@@ -185,7 +283,7 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
                 data={props.data}
                 level={data.level}
                 totalValue={totalValue}
-              />
+              />,
             );
           },
         },

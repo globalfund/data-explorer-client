@@ -12,6 +12,7 @@ export function useUrlFilters(): null {
 
   const data = useStoreState((state) => state.AppliedFiltersState);
   const actions = useStoreActions((store) => store.AppliedFiltersState);
+  const tempActions = useStoreActions((store) => store.TempAppliedFiltersState);
 
   // run before app is mounted in order to update the stored applied filters
   useComponentWillMount({
@@ -22,10 +23,10 @@ export function useUrlFilters(): null {
       const components = currentUrlParams.get("components");
       const principalRecipients = currentUrlParams.get("principalRecipients");
       const principalRecipientSubTypes = currentUrlParams.get(
-        "principalRecipientSubTypes"
+        "principalRecipientSubTypes",
       );
       const principalRecipientTypes = currentUrlParams.get(
-        "principalRecipientTypes"
+        "principalRecipientTypes",
       );
       const status = currentUrlParams.get("status");
       const documentTypes = currentUrlParams.get("documentTypes");
@@ -86,20 +87,23 @@ export function useUrlFilters(): null {
       }
 
       actions.setAll(updatedAppliedFilters);
+      // set the applied filters to the temp applied filters
+      tempActions.setAll(updatedAppliedFilters);
     },
   });
 
   // clear stored applied filters
-  useUnmount(() => actions.setAll(defaultAppliedFilters));
+  useUnmount(() => {
+    actions.setAll(defaultAppliedFilters);
+  });
 
   // run when stored applied filters change
   useUpdateEffect(() => {
     const currentUrlParams = new URLSearchParams(location.search);
-
     if (data.locations.length > 0) {
       currentUrlParams.set(
         "locations",
-        data.locations.join(",").replace(/&/g, "%26")
+        data.locations.join(",").replace(/&/g, "%26"),
       );
     } else {
       currentUrlParams.delete("locations");
@@ -107,7 +111,7 @@ export function useUrlFilters(): null {
     if (data.components.length > 0) {
       currentUrlParams.set(
         "components",
-        data.components.join(",").replace(/&/g, "%26")
+        data.components.join(",").replace(/&/g, "%26"),
       );
     } else {
       currentUrlParams.delete("components");
@@ -115,7 +119,7 @@ export function useUrlFilters(): null {
     if (data.principalRecipientTypes.length > 0) {
       currentUrlParams.set(
         "principalRecipientTypes",
-        data.principalRecipientTypes.join(",").replace(/&/g, "%26")
+        data.principalRecipientTypes.join(",").replace(/&/g, "%26"),
       );
     } else {
       currentUrlParams.delete("principalRecipientTypes");
@@ -123,7 +127,7 @@ export function useUrlFilters(): null {
     if (data.principalRecipientSubTypes.length > 0) {
       currentUrlParams.set(
         "principalRecipientSubTypes",
-        data.principalRecipientSubTypes.join(",").replace(/&/g, "%26")
+        data.principalRecipientSubTypes.join(",").replace(/&/g, "%26"),
       );
     } else {
       currentUrlParams.delete("principalRecipientSubTypes");
@@ -131,7 +135,7 @@ export function useUrlFilters(): null {
     if (data.principalRecipients.length > 0) {
       currentUrlParams.set(
         "principalRecipients",
-        data.principalRecipients.join(",").replace(/&/g, "%26")
+        data.principalRecipients.join(",").replace(/&/g, "%26"),
       );
     } else {
       currentUrlParams.delete("principalRecipients");
@@ -139,7 +143,7 @@ export function useUrlFilters(): null {
     if (data.status.length > 0) {
       currentUrlParams.set(
         "status",
-        data.status.join(",").replace(/&/g, "%26")
+        data.status.join(",").replace(/&/g, "%26"),
       );
     } else {
       currentUrlParams.delete("status");
@@ -147,7 +151,7 @@ export function useUrlFilters(): null {
     if (data.documentTypes.length > 0) {
       currentUrlParams.set(
         "documentTypes",
-        data.documentTypes.join(",").replace(/&/g, "%26")
+        data.documentTypes.join(",").replace(/&/g, "%26"),
       );
     } else {
       currentUrlParams.delete("documentTypes");
@@ -155,7 +159,7 @@ export function useUrlFilters(): null {
     if (data.donors.length > 0) {
       currentUrlParams.set(
         "donors",
-        data.donors.join(",").replace(/&/g, "%26")
+        data.donors.join(",").replace(/&/g, "%26"),
       );
     } else {
       currentUrlParams.delete("donors");
@@ -163,7 +167,7 @@ export function useUrlFilters(): null {
     if (data.donorSubTypes.length > 0) {
       currentUrlParams.set(
         "donorSubTypes",
-        data.donorSubTypes.join(",").replace(/&/g, "%26")
+        data.donorSubTypes.join(",").replace(/&/g, "%26"),
       );
     } else {
       currentUrlParams.delete("donorSubTypes");
@@ -171,7 +175,7 @@ export function useUrlFilters(): null {
     if (data.donorTypes.length > 0) {
       currentUrlParams.set(
         "donorTypes",
-        data.donorTypes.join(",").replace(/&/g, "%26")
+        data.donorTypes.join(",").replace(/&/g, "%26"),
       );
     } else {
       currentUrlParams.delete("donorTypes");
@@ -179,7 +183,7 @@ export function useUrlFilters(): null {
     if (data.replenishmentPeriods.length > 0) {
       currentUrlParams.set(
         "replenishmentPeriods",
-        data.replenishmentPeriods.join(",").replace(/&/g, "%26")
+        data.replenishmentPeriods.join(",").replace(/&/g, "%26"),
       );
     } else {
       currentUrlParams.delete("replenishmentPeriods");
@@ -187,7 +191,7 @@ export function useUrlFilters(): null {
     if (data.cycles.length > 0) {
       currentUrlParams.set(
         "cycles",
-        data.cycles.join(",").replace(/&/g, "%26")
+        data.cycles.join(",").replace(/&/g, "%26"),
       );
     } else {
       currentUrlParams.delete("cycles");
@@ -195,7 +199,7 @@ export function useUrlFilters(): null {
     if (data.trpWindows.length > 0) {
       currentUrlParams.set(
         "trpWindows",
-        data.trpWindows.join(",").replace(/&/g, "%26")
+        data.trpWindows.join(",").replace(/&/g, "%26"),
       );
     } else {
       currentUrlParams.delete("trpWindows");
@@ -203,7 +207,7 @@ export function useUrlFilters(): null {
     if (data.portfolioCategories.length > 0) {
       currentUrlParams.set(
         "portfolioCategories",
-        data.portfolioCategories.join(",").replace(/&/g, "%26")
+        data.portfolioCategories.join(",").replace(/&/g, "%26"),
       );
     } else {
       currentUrlParams.delete("portfolioCategories");
@@ -224,10 +228,10 @@ export function useUrlFilters(): null {
     const components = currentUrlParams.get("components");
     const principalRecipients = currentUrlParams.get("principalRecipients");
     const principalRecipientSubTypes = currentUrlParams.get(
-      "principalRecipientSubTypes"
+      "principalRecipientSubTypes",
     );
     const principalRecipientTypes = currentUrlParams.get(
-      "principalRecipientTypes"
+      "principalRecipientTypes",
     );
     const status = currentUrlParams.get("status");
     const documentTypes = currentUrlParams.get("documentTypes");

@@ -153,32 +153,32 @@ const theme = createTheme({
   typography: {
     fontFamily: "Inter, sans-serif",
     h1: {
-      fontSize: "80px",
+      fontSize: "64px",
       fontWeight: "700",
       color: colors.primary.black,
     },
     h2: {
-      fontSize: "60px",
+      fontSize: "44px",
       fontWeight: "700",
       color: colors.primary.black,
     },
     h3: {
-      fontSize: "40px",
+      fontSize: "36px",
       fontWeight: "700",
       color: colors.primary.black,
     },
     h4: {
-      fontSize: "32px",
-      fontWeight: "700",
-      color: colors.primary.black,
-    },
-    h5: {
       fontSize: "24px",
       fontWeight: "700",
       color: colors.primary.black,
     },
+    h5: {
+      fontSize: "14px",
+      fontWeight: "700",
+      color: colors.primary.black,
+    },
     h6: {
-      fontSize: "18px",
+      fontSize: "12px",
       fontWeight: "700",
       color: colors.primary.black,
     },
@@ -219,17 +219,18 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           boxShadow: "none",
-          borderBottom: "1px solid #000",
           background: colors.primary.white,
+          borderBottom: "1px solid #CFD4DA",
         },
       },
     },
     MuiToolbar: {
       styleOverrides: {
         root: {
-          height: "90px",
+          height: "57px",
           display: "flex",
           flexDirection: "row",
+          minHeight: "57px !important",
           justifyContent: "space-between",
           background: colors.primary.white,
           "@media (min-width: 920px)": {
@@ -252,6 +253,21 @@ const theme = createTheme({
         paper: {
           borderRadius: 0,
           boxShadow: "none",
+        },
+      },
+    },
+    MuiContainer: {
+      styleOverrides: {
+        root: {
+          "@media (min-width: 1200px)": {
+            maxWidth: "100%",
+          },
+          "@media (min-width: 1440px)": {
+            maxWidth: "1440px",
+          },
+          "@media (min-width: 1200px) and (max-width: 1490px)": {
+            padding: "0 50px",
+          },
         },
       },
     },
@@ -750,7 +766,7 @@ export const appColors = {
     TITLE_COLOR: PRIMARY_COLOR_1,
   },
   SEARCH: {
-    CONTAINER_BACKGROUND: "#F1F3F4",
+    CONTAINER_BACKGROUND: "#F8F8F8",
     TAB_TEXT_COLOR: PRIMARY_COLOR_1,
     TAB_BORDER_COLOR: "transparent",
     TAB_BORDER_ACTIVE_COLOR: PRIMARY_COLOR_1,
@@ -780,7 +796,7 @@ export const appColors = {
     DROPDOWN_BUTTON_TEXT_COLOR: BLACK,
     CONTAINER_BORDER_COLOR: PRIMARY_COLOR_1,
     INPUT_COLOR: BLACK,
-    INPUT_BACKGROUND_COLOR: "#F1F3F4",
+    INPUT_BACKGROUND_COLOR: "#F8F8F8",
   },
   TABLE: {
     BORDER_BOTTOM_COLOR: SECONDARY_COLOR_7,
@@ -901,7 +917,7 @@ export const appColors = {
   },
   SANKEY_CHART: {
     NODE_COLOR: "#252C34",
-    LINK_COLORS: ["#3B5366", "#013E77", "#33C4BE"],
+    LINK_COLORS: ["#0A2840", "#013E77", "#00B5AE"],
   },
   TOOLTIP: {
     TEXT_COLOR: "#262C34",
@@ -927,6 +943,16 @@ export const appColors = {
       "#00B5AE",
       "#C3EDFD",
       "#0A2840",
+    ],
+  },
+  TARGETS_RESULTS: {
+    PERFORMANCE_COLORS: ["#DE4A33", "#F08C31", "#F2C22C", "#368F41", "#4BB858"],
+    PERCENTAGE_TEXT_COLORS: [
+      "#FFFFFF",
+      "#000000",
+      "#000000",
+      "#FFFFFF",
+      "#000000",
     ],
   },
 };

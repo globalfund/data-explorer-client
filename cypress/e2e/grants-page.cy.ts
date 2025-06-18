@@ -59,7 +59,7 @@ describe("Testing The Grants page", () => {
       cy.get('[data-cy="filter-panel-search-input"]').first().type("Kenya");
       cy.contains(
         '[data-cy="filter-list-content-accordion-summary"]',
-        "Africa"
+        "Africa",
       ).within(() => {
         cy.get('[data-cy="filter-list-content-checkbox"]').click();
         cy.wait("@grants");

@@ -22,6 +22,8 @@ export interface TableProps {
   }[];
   columns: ColumnDefinition[];
   dataTree?: boolean;
+  search?: string;
+  setTable?: (table: Tabulator) => void;
   dataTreeBranchElement?: boolean;
   dataTreeStartExpanded?: boolean;
   extraColumns?: ColumnDefinition[];
@@ -75,16 +77,65 @@ export const cellBGColorFormatter = (cell: CellComponent) => {
     backgroundColor = "#FFFFFF";
   }
   cell.getElement().style.backgroundColor = backgroundColor;
-  cell.getElement().style.whiteSpace = "pre-wrap";
+  if (cellValue && !cellValue?.includes("<a")) {
+    cell.getElement().style.whiteSpace = "pre-wrap";
+  }
   return text;
 };
 
-const financialFormatter = (cell: CellComponent) => {
+export const financialFormatter = (cell: CellComponent) => {
   if (!cell.getValue()) {
     return cellBGColorFormatter(cell);
   }
   cell.getElement().style.backgroundColor = "#FFFFFF";
   return formatLocale(cell.getValue()).replace("US$", "");
+};
+
+export const cellBaselineTargetResultFormatter = (cell: CellComponent) => {
+  const cellValue = cell.getValue();
+  let text = "";
+  let backgroundColor = "#FFFFFF";
+
+  if (!cellValue) {
+    backgroundColor = "#DFE3E5";
+  } else {
+    const splits = cellValue.split(",");
+    text = splits.join("\n");
+  }
+
+  cell.getElement().style.backgroundColor = backgroundColor;
+  cell.getElement().style.whiteSpace = "pre-wrap";
+
+  return text;
+};
+
+export const cellAchievementFormatter = (cell: CellComponent) => {
+  const cellValue = cell.getValue()?.replace("%", "");
+  let backgroundColor = "#FFFFFF";
+  let color = "#000000";
+
+  if (cellValue > 0 && cellValue < 25) {
+    backgroundColor = appColors.TARGETS_RESULTS.PERFORMANCE_COLORS[0];
+    color = appColors.TARGETS_RESULTS.PERCENTAGE_TEXT_COLORS[0];
+  } else if (cellValue >= 25 && cellValue < 50) {
+    backgroundColor = appColors.TARGETS_RESULTS.PERFORMANCE_COLORS[1];
+    color = appColors.TARGETS_RESULTS.PERCENTAGE_TEXT_COLORS[1];
+  } else if (cellValue >= 50 && cellValue < 75) {
+    backgroundColor = appColors.TARGETS_RESULTS.PERFORMANCE_COLORS[2];
+    color = appColors.TARGETS_RESULTS.PERCENTAGE_TEXT_COLORS[2];
+  } else if (cellValue >= 75) {
+    backgroundColor = appColors.TARGETS_RESULTS.PERFORMANCE_COLORS[3];
+    color = appColors.TARGETS_RESULTS.PERCENTAGE_TEXT_COLORS[3];
+  } else if (cellValue > 100) {
+    backgroundColor = appColors.TARGETS_RESULTS.PERFORMANCE_COLORS[4];
+    color = appColors.TARGETS_RESULTS.PERCENTAGE_TEXT_COLORS[4];
+  }
+
+  cell.getElement().style.backgroundColor = backgroundColor;
+  cell.getElement().style.color = color;
+  cell.getElement().style.whiteSpace = "pre-wrap";
+
+  return `\n${cell.getValue()}`;
 };
 
 export const TABLE_VARIATION_1_COLUMNS: ColumnDefinition[] = [
@@ -589,16 +640,11 @@ export const TABLE_VARIATION_4_COLUMNS: ColumnDefinition[] = [
       {
         title: "Value",
         field: "baselineValue",
-        formatter: cellBGColorFormatter,
+        formatter: cellBaselineTargetResultFormatter,
       },
       {
         title: "Year",
         field: "baselineYear",
-        formatter: cellBGColorFormatter,
-      },
-      {
-        title: "Source",
-        field: "baselineSource",
         formatter: cellBGColorFormatter,
       },
     ],
@@ -857,27 +903,25 @@ export const TABLE_VARIATION_5_DATA: {
   },
 ];
 
+const docsMutator = (_value: any, data: any) => {
+  if (!isNaN(parseInt(data.documents, 10))) return data.name;
+  return `
+    <a href="${data.documents}" style="gap: 5px;display: inline-flex;align-items: center;color: #000000;text-decoration: none;">
+      <span>${data.name}</span>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="table-download-icon">
+        <path d="M10.1656 6.7063C10.2326 6.63597 10.3128 6.58 10.4013 6.54169C10.4899 6.50339 10.5851 6.48351 10.6813 6.48324C10.7775 6.48296 10.8728 6.50229 10.9615 6.54009C11.0503 6.5779 11.1308 6.6334 11.1982 6.70335C11.2656 6.7733 11.3186 6.85627 11.354 6.9474C11.3895 7.03852 11.4067 7.13595 11.4047 7.23395C11.4026 7.33195 11.3814 7.42855 11.3422 7.51807C11.303 7.60758 11.2466 7.6882 11.1763 7.75518L8.43516 10.509C8.30006 10.6442 8.11825 10.72 7.92886 10.72C7.73947 10.72 7.55766 10.6442 7.42255 10.509L4.7207 7.79046C4.58418 7.65377 4.50655 7.46743 4.50488 7.27242C4.50322 7.07742 4.57765 6.88973 4.71181 6.75064C4.84596 6.61155 5.02885 6.53245 5.22025 6.53075C5.41164 6.52906 5.59586 6.60489 5.73237 6.74158L7.21947 8.24338L7.23444 2.95417C7.24257 2.76358 7.323 2.58364 7.45879 2.45229C7.59457 2.32093 7.77511 2.24842 7.96234 2.25003C8.14957 2.25163 8.32888 2.32724 8.46248 2.4609C8.59607 2.59457 8.67352 2.77586 8.67849 2.96657L8.66445 8.21096L10.1656 6.7063ZM2.25 13.0453L2.25936 10.1676C2.25686 10.0688 2.27391 9.97051 2.3095 9.87858C2.34508 9.78664 2.39848 9.70295 2.46649 9.63248C2.5345 9.56202 2.61574 9.50624 2.70537 9.46845C2.795 9.43066 2.89117 9.41165 2.98817 9.41255C3.08516 9.41345 3.18098 9.43423 3.26992 9.47367C3.35886 9.51311 3.43909 9.57039 3.50584 9.64209C3.57259 9.7138 3.62448 9.79847 3.65842 9.89105C3.69236 9.98362 3.70766 10.0822 3.70341 10.181L3.69685 12.2787C6.56686 12.2844 9.43405 12.2844 12.2984 12.2787L12.305 10.1695C12.3067 9.97428 12.3845 9.78774 12.5212 9.65095C12.658 9.51415 12.8424 9.43829 13.034 9.44006C13.2256 9.44183 13.4087 9.52108 13.543 9.66039C13.6773 9.79969 13.7517 9.98763 13.75 10.1829L13.7406 13.0434H13.7322C13.7238 13.2314 13.645 13.409 13.512 13.5395C13.379 13.6701 13.2019 13.7437 13.0172 13.7452C9.6649 13.7516 6.31511 13.7516 2.96781 13.7452C2.78287 13.7447 2.60521 13.6718 2.4716 13.5415C2.33799 13.4112 2.25865 13.2336 2.25 13.0453Z" fill="#373D43"/>
+      </svg>
+    </a>`;
+};
+
 export const TABLE_VARIATION_6_COLUMNS: ColumnDefinition[] = [
   {
     title: "Geography",
     field: "name",
-    width: "78%",
+    width: "98%",
+    resizable: false,
     formatter: cellBGColorFormatter,
-  },
-  {
-    width: "20%",
-    title: "Documents",
-    field: "documents",
-    formatter: (cell: CellComponent) => {
-      if (typeof cell.getValue() === "string") {
-        cell.getElement().style.textAlign = "right";
-        return `<a href="${cell.getValue()}"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M10.1656 6.7063C10.2326 6.63597 10.3128 6.58 10.4013 6.54169C10.4899 6.50339 10.5851 6.48351 10.6813 6.48324C10.7775 6.48296 10.8728 6.50229 10.9615 6.54009C11.0503 6.5779 11.1308 6.6334 11.1982 6.70335C11.2656 6.7733 11.3186 6.85627 11.354 6.9474C11.3895 7.03852 11.4067 7.13595 11.4047 7.23395C11.4026 7.33195 11.3814 7.42855 11.3422 7.51807C11.303 7.60758 11.2466 7.6882 11.1763 7.75518L8.43516 10.509C8.30006 10.6442 8.11825 10.72 7.92886 10.72C7.73947 10.72 7.55766 10.6442 7.42255 10.509L4.7207 7.79046C4.58418 7.65377 4.50655 7.46743 4.50488 7.27242C4.50322 7.07742 4.57765 6.88973 4.71181 6.75064C4.84596 6.61155 5.02885 6.53245 5.22025 6.53075C5.41164 6.52906 5.59586 6.60489 5.73237 6.74158L7.21947 8.24338L7.23444 2.95417C7.24257 2.76358 7.323 2.58364 7.45879 2.45229C7.59457 2.32093 7.77511 2.24842 7.96234 2.25003C8.14957 2.25163 8.32888 2.32724 8.46248 2.4609C8.59607 2.59457 8.67352 2.77586 8.67849 2.96657L8.66445 8.21096L10.1656 6.7063ZM2.25 13.0453L2.25936 10.1676C2.25686 10.0688 2.27391 9.97051 2.3095 9.87858C2.34508 9.78664 2.39848 9.70295 2.46649 9.63248C2.5345 9.56202 2.61574 9.50624 2.70537 9.46845C2.795 9.43066 2.89117 9.41165 2.98817 9.41255C3.08516 9.41345 3.18098 9.43423 3.26992 9.47367C3.35886 9.51311 3.43909 9.57039 3.50584 9.64209C3.57259 9.7138 3.62448 9.79847 3.65842 9.89105C3.69236 9.98362 3.70766 10.0822 3.70341 10.181L3.69685 12.2787C6.56686 12.2844 9.43405 12.2844 12.2984 12.2787L12.305 10.1695C12.3067 9.97428 12.3845 9.78774 12.5212 9.65095C12.658 9.51415 12.8424 9.43829 13.034 9.44006C13.2256 9.44183 13.4087 9.52108 13.543 9.66039C13.6773 9.79969 13.7517 9.98763 13.75 10.1829L13.7406 13.0434H13.7322C13.7238 13.2314 13.645 13.409 13.512 13.5395C13.379 13.6701 13.2019 13.7437 13.0172 13.7452C9.6649 13.7516 6.31511 13.7516 2.96781 13.7452C2.78287 13.7447 2.60521 13.6718 2.4716 13.5415C2.33799 13.4112 2.25865 13.2336 2.25 13.0453Z" fill="#373D43"/>
-      </svg>
-      </a>`;
-      }
-      return cell.getValue();
-    },
+    mutator: docsMutator,
   },
 ];
 
@@ -913,7 +957,7 @@ export const TABLE_VARIATION_6_DATA: {
               "https://gfdatastore.blob.core.windows.net/files/Applications/Funding Requests/KEN/2023/Malaria/en/KEN-M_FundingRequest_1_en.zip",
           },
           {
-            name: "Proposal - Round 10 - HIV/AIDS - Kenya",
+            name: "Proposal - Round 10 - HIV - Kenya",
             documents:
               "https://gfdatastore.blob.core.windows.net/files/Applications/Proposals/KEN/Round 10/HIV/en/KEN-R10-HA_Proposal_0_en.pdf",
           },
@@ -943,17 +987,17 @@ export const TABLE_VARIATION_6_DATA: {
               "https://gfdatastore.blob.core.windows.net/files/Applications/Proposals/KEN/Round 05/Tuberculosis/en/KEN-R05-TB_Proposal_0_en.pdf",
           },
           {
-            name: "2020 - Funding Request - Window 3 - HIV/TB - Kenya",
+            name: "2020 - Funding Request - Window 3 - TB/HIV - Kenya",
             documents:
               "https://gfdatastore.blob.core.windows.net/files/Applications/Funding Requests/KEN/2020/TB_HIV/en/KEN-C_FundingRequest_1_en.zip",
           },
           {
-            name: "Proposal - Round 07 - HIV/AIDS - Kenya",
+            name: "Proposal - Round 07 - HIV - Kenya",
             documents:
               "https://gfdatastore.blob.core.windows.net/files/Applications/Proposals/KEN/Round 07/HIV/en/KEN-R07-HA_Proposal_0_en.pdf",
           },
           {
-            name: "2015 - Concept Note - HIV/TB - Kenya",
+            name: "2015 - Concept Note - TB/HIV - Kenya",
             documents:
               "https://gfdatastore.blob.core.windows.net/files/Applications/Concept Notes/KEN/2015/TB_HIV/en/KEN-TH_ConceptNote_0_en.zip",
           },
@@ -963,12 +1007,12 @@ export const TABLE_VARIATION_6_DATA: {
               "https://gfdatastore.blob.core.windows.net/files/Applications/Funding Requests/KEN/2020/Malaria/en/KEN-M_FundingRequest_1_en.zip",
           },
           {
-            name: "Proposal - Round 02 - HIV/AIDS - Kenya",
+            name: "Proposal - Round 02 - HIV - Kenya",
             documents:
               "https://gfdatastore.blob.core.windows.net/files/Applications/Proposals/KEN/Round 02/HIV/en/KEN-R02-HA_Proposal_0_en.pdf",
           },
           {
-            name: "2023 - Funding Request - Window 3 - HIV/TB - Kenya",
+            name: "2023 - Funding Request - Window 3 - TB/HIV - Kenya",
             documents:
               "https://gfdatastore.blob.core.windows.net/files/Applications/Funding Requests/KEN/2023/TB_HIV/en/KEN-C_FundingRequest_1_en.zip",
           },
@@ -978,7 +1022,7 @@ export const TABLE_VARIATION_6_DATA: {
               "https://gfdatastore.blob.core.windows.net/files/Applications/Proposals/KEN/Round 02/Tuberculosis/en/KEN-R02-TB_Proposal_0_en.pdf",
           },
           {
-            name: "2017 - Funding Request - HIV/TB - Kenya",
+            name: "2017 - Funding Request - TB/HIV - Kenya",
             documents:
               "https://gfdatastore.blob.core.windows.net/files/Applications/Funding Requests/KEN/2017/TB_HIV/en/KEN-C_FundingRequest_0_en.zip",
           },
@@ -1003,7 +1047,7 @@ export const TABLE_VARIATION_6_DATA: {
               "https://gfdatastore.blob.core.windows.net/files/Applications/Proposals/KEN/Round 06/Tuberculosis/en/KEN-R06-TB_Proposal_0_en.pdf",
           },
           {
-            name: "Proposal - Round 01 - HIV/AIDS - Kenya",
+            name: "Proposal - Round 01 - HIV - Kenya",
             documents:
               "https://gfdatastore.blob.core.windows.net/files/Applications/Proposals/KEN/Round 01/HIV/en/KEN-R01-HA_Proposal_0_en.pdf",
           },
@@ -1018,9 +1062,20 @@ export const TABLE_VARIATION_7_COLUMNS: ColumnDefinition[] = [
     title: "Description",
     field: "description",
     formatter: cellBGColorFormatter,
+    width: "70%",
   },
-  { title: "Component", field: "component", formatter: cellBGColorFormatter },
-  { title: "Result", field: "result", formatter: financialFormatter },
+  {
+    title: "Component",
+    field: "component",
+    formatter: cellBGColorFormatter,
+    width: "15%",
+  },
+  {
+    title: "Result",
+    field: "result",
+    formatter: financialFormatter,
+    width: "15%",
+  },
 ];
 
 export const TABLE_VARIATION_7_DATA: {
@@ -1088,6 +1143,7 @@ export const TABLE_VARIATION_8_COLUMNS: ColumnDefinition[] = [
     title: "Contribution (US$)",
     field: "contribution",
     formatter: financialFormatter,
+    width: "25%",
   },
 ];
 
@@ -1980,7 +2036,7 @@ export const TABLE_VARIATION_9_DATA: {
         ],
       },
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         _children: [
           {
             name: "Total number of HIV tests",
@@ -2150,7 +2206,7 @@ export const TABLE_VARIATION_9_DATA: {
         ],
       },
       {
-        name: "HIV/TB",
+        name: "TB/HIV",
         _children: [
           {
             name: "People living with HIV in care screened for TB",
@@ -2230,7 +2286,7 @@ export const TABLE_VARIATION_9_DATA: {
         ],
       },
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         _children: [
           {
             name: "Total number of HIV tests",
@@ -2367,7 +2423,7 @@ export const TABLE_VARIATION_9_DATA: {
         ],
       },
       {
-        name: "HIV/TB",
+        name: "TB/HIV",
         _children: [
           {
             name: "People living with HIV in care screened for TB",
@@ -2480,7 +2536,7 @@ export const TABLE_VARIATION_9_DATA: {
         ],
       },
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         _children: [
           {
             name: "Total number of HIV tests",
@@ -2609,7 +2665,7 @@ export const TABLE_VARIATION_9_DATA: {
         ],
       },
       {
-        name: "HIV/TB",
+        name: "TB/HIV",
         _children: [
           {
             name: "People living with HIV in care screened for TB",
@@ -2713,7 +2769,7 @@ export const TABLE_VARIATION_9_DATA: {
         ],
       },
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         _children: [
           {
             name: "Total number of HIV tests",
@@ -2838,7 +2894,7 @@ export const TABLE_VARIATION_9_DATA: {
         ],
       },
       {
-        name: "HIV/TB",
+        name: "TB/HIV",
         _children: [
           {
             name: "People living with HIV in care screened for TB",
@@ -2946,7 +3002,7 @@ export const TABLE_VARIATION_9_DATA: {
         ],
       },
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         _children: [
           {
             name: "Total number of HIV tests",
@@ -3071,7 +3127,7 @@ export const TABLE_VARIATION_9_DATA: {
         ],
       },
       {
-        name: "HIV/TB",
+        name: "TB/HIV",
         _children: [
           {
             name: "People living with HIV in care screened for TB",
@@ -3183,7 +3239,7 @@ export const TABLE_VARIATION_9_DATA: {
         ],
       },
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         _children: [
           {
             name: "Total number of HIV tests",
@@ -3300,7 +3356,7 @@ export const TABLE_VARIATION_9_DATA: {
         ],
       },
       {
-        name: "HIV/TB",
+        name: "TB/HIV",
         _children: [
           {
             name: "People living with HIV in care screened for TB",
@@ -3818,7 +3874,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Afghanistan",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 9109250,
         "2020-2022": 10474755,
         "2023-2025": 7700026,
@@ -3844,7 +3900,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Albania",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 1138134,
       },
       {
@@ -3858,7 +3914,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Algeria",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 2312936,
       },
     ],
@@ -3868,7 +3924,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Angola",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 25110399,
         "2020-2022": 38734092,
         "2023-2025": 57007044,
@@ -3894,7 +3950,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Armenia",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 5282781,
         "2020-2022": 6112987,
         "2023-2025": 6550471,
@@ -3914,7 +3970,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Azerbaijan",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 6068394,
         "2020-2022": 9264124,
         "2023-2025": 12736573,
@@ -3934,7 +3990,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Bangladesh",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 18295447,
         "2020-2022": 23000765,
         "2023-2025": 25393719,
@@ -3960,7 +4016,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Belarus",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 7862511,
         "2020-2022": 12221135,
         "2023-2025": 15873645,
@@ -3980,7 +4036,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Belize",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 1378449,
         "2020-2022": 2999251,
         "2023-2025": 3019115,
@@ -3998,7 +4054,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Benin",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 29962378,
         "2020-2022": 39964530.97,
         "2023-2025": 38839506.11,
@@ -4024,7 +4080,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Bhutan",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 1081903,
         "2020-2022": 1054855,
         "2023-2025": 1054796,
@@ -4050,7 +4106,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Bolivia (Plurinational State)",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 9175449,
         "2020-2022": 10168010,
         "2023-2025": 11225870,
@@ -4076,7 +4132,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Botswana",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 13950867,
         "2020-2022": 19077252,
         "2023-2025": 22878037,
@@ -4100,7 +4156,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Burkina Faso",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 36760555,
         "2020-2022": 53239523.52,
         "2023-2025": 45753995.09,
@@ -4126,7 +4182,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Burundi",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 29916039,
         "2020-2022": 38883452,
         "2023-2025": 38898974,
@@ -4152,7 +4208,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Cabo Verde",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 2544394,
         "2020-2022": 2994952.85,
         "2023-2025": 2994587.25,
@@ -4178,7 +4234,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Cambodia",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 41597533,
         "2020-2022": 41595706,
         "2023-2025": 41549020,
@@ -4202,7 +4258,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Cameroon",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 99897386,
         "2020-2022": 149772367.5,
         "2023-2025": 161358210.4,
@@ -4228,7 +4284,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Central African Republic",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 25946486,
         "2020-2022": 67076163.9,
         "2023-2025": 62096913.5,
@@ -4254,7 +4310,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Chad",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 35365870,
         "2020-2022": 52435328.96,
         "2023-2025": 55460580.51,
@@ -4280,7 +4336,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Colombia",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 10014581,
         "2020-2022": 19457001,
         "2023-2025": 22725404,
@@ -4294,7 +4350,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Comoros",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 1335201,
         "2020-2022": 1051469.7,
         "2023-2025": 981611.55,
@@ -4320,7 +4376,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Congo",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 12950236,
         "2020-2022": 19362717.7,
         "2023-2025": 29633112.46,
@@ -4346,7 +4402,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Congo (Democratic Republic)",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 122678456,
         "2020-2022": 174093362,
         "2023-2025": 189997416,
@@ -4372,7 +4428,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Costa Rica",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 2120098,
         "2020-2022": 2200662,
         "2023-2025": 2043734,
@@ -4386,7 +4442,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Côte d'Ivoire",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 74113356,
         "2020-2022": 90998409.53,
         "2023-2025": 81898856.33,
@@ -4412,7 +4468,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Cuba",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 13253226,
         "2020-2022": 17394860,
         "2023-2025": 19709425,
@@ -4426,7 +4482,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Djibouti",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 2910923,
         "2020-2022": 3392778,
         "2023-2025": 3394291,
@@ -4452,7 +4508,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Dominican Republic",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 15994956,
         "2020-2022": 15995839,
         "2023-2025": 16101778,
@@ -4470,7 +4526,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Ecuador",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 5328421,
         "2020-2022": 6005764,
         "2023-2025": 7257254,
@@ -4484,7 +4540,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Egypt",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 500093,
         "2020-2022": 4203113,
         "2023-2025": 6920930,
@@ -4504,7 +4560,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "El Salvador",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 14481816,
         "2020-2022": 16074816,
         "2023-2025": 14382672,
@@ -4524,7 +4580,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Eritrea",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 17649811,
         "2020-2022": 21312156,
         "2023-2025": 21276487,
@@ -4550,7 +4606,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Eswatini",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 35310126,
         "2020-2022": 39348102,
         "2023-2025": 32901259,
@@ -4576,7 +4632,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Ethiopia",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 194160287.7,
         "2020-2022": 278315505,
         "2023-2025": 256910005,
@@ -4608,7 +4664,7 @@ export const TABLE_VARIATION_11_DATA: {
         "2023-2025": 2128464.03,
       },
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2023-2025": 2634056.69,
       },
       {
@@ -4624,7 +4680,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Gambia",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 8665790,
         "2020-2022": 17529962,
         "2023-2025": 17044875,
@@ -4650,7 +4706,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Georgia",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 8412986,
         "2020-2022": 12076771,
         "2023-2025": 12156754,
@@ -4670,7 +4726,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Ghana",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 66436395,
         "2020-2022": 88833024,
         "2023-2025": 95049043,
@@ -4696,7 +4752,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Guatemala",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 19773326,
         "2020-2022": 25609594,
         "2023-2025": 24972106,
@@ -4722,7 +4778,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Guinea",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 40598457,
         "2020-2022": 53120571,
         "2023-2025": 52493058,
@@ -4748,7 +4804,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Guinea-Bissau",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 10254189,
         "2020-2022": 23126468.87,
         "2023-2025": 21227603.07,
@@ -4774,7 +4830,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Guyana",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 3993335,
         "2020-2022": 4816401,
         "2023-2025": 4066316,
@@ -4800,7 +4856,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Haiti",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 66216854,
         "2020-2022": 72959840,
         "2023-2025": 67995904,
@@ -4826,7 +4882,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Honduras",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 10004747,
         "2020-2022": 11604842,
         "2023-2025": 12473040,
@@ -4852,7 +4908,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "India",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 155063624,
         "2020-2022": 155000000,
         "2023-2025": 155000000,
@@ -4878,7 +4934,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Indonesia",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 91934562,
         "2020-2022": 102717937,
         "2023-2025": 102736705,
@@ -4904,7 +4960,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Iran (Islamic Republic)",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 10687693,
         "2020-2022": 11222078,
         "2023-2025": 13983498,
@@ -4918,7 +4974,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Jamaica",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 9930638,
         "2020-2022": 11488614,
         "2023-2025": 13523239,
@@ -4932,7 +4988,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Kazakhstan",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 2714223,
         "2020-2022": 5197500,
         "2023-2025": 8086543,
@@ -4952,7 +5008,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Kenya",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 246899292,
         "2020-2022": 271649197,
         "2023-2025": 252843015,
@@ -4995,7 +5051,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Kosovo",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 1769087,
         "2020-2022": 1990223.35,
         "2023-2025": 2261906.66,
@@ -5015,7 +5071,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Kyrgyzstan",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 11266362,
         "2020-2022": 11491690,
         "2023-2025": 13695211,
@@ -5035,7 +5091,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Lao (Peoples Democratic Republic)",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 7374096,
         "2020-2022": 6930536,
         "2023-2025": 7449033,
@@ -5055,7 +5111,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Lesotho",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 59413092,
         "2020-2022": 60654854,
         "2023-2025": 59981314,
@@ -5075,7 +5131,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Liberia",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 24833450,
         "2020-2022": 31095109,
         "2023-2025": 35963003,
@@ -5101,7 +5157,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Madagascar",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 15485534,
         "2020-2022": 20407983,
         "2023-2025": 28371317,
@@ -5127,7 +5183,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Malawi",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 370804766,
         "2020-2022": 393004813,
         "2023-2025": 404987463,
@@ -5153,7 +5209,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Malaysia",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 4031592,
         "2020-2022": 3964273,
         "2023-2025": 3561223,
@@ -5167,7 +5223,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Mali",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 51808127,
         "2020-2022": 80322830.2,
         "2023-2025": 72025245.57,
@@ -5193,7 +5249,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Mauritania",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 5760741,
         "2020-2022": 5011845,
         "2023-2025": 6370317,
@@ -5219,7 +5275,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Mauritius",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 2487917,
         "2020-2022": 2265213,
         "2023-2025": 2368481,
@@ -5233,7 +5289,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Moldova",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 8018089,
         "2020-2022": 9554788.51,
         "2023-2025": 10350429.45,
@@ -5253,7 +5309,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Mongolia",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 3044708,
         "2020-2022": 2626061,
         "2023-2025": 3410907,
@@ -5273,7 +5329,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Montenegro",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 625000,
         "2020-2022": 620000,
         "2023-2025": 929108.81,
@@ -5287,7 +5343,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Morocco",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 13282255,
         "2020-2022": 14547900.51,
         "2023-2025": 16911747.04,
@@ -5307,7 +5363,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Mozambique",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 289889134,
         "2020-2022": 496359122,
         "2023-2025": 506987373,
@@ -5333,7 +5389,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Multicountry Caribbean MCC",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 2350000,
         "2020-2022": 2450000,
         "2023-2025": 2191214,
@@ -5367,7 +5423,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Multicountry Middle East MER",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 7780584,
         "2020-2022": 11516412,
         "2023-2025": 14962882,
@@ -5393,7 +5449,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Multicountry Western Pacific",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 5092793,
         "2020-2022": 5169562,
         "2023-2025": 6572889,
@@ -5419,7 +5475,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Myanmar",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 123102465,
         "2020-2022": 122408561,
         "2023-2025": 97456405,
@@ -5439,7 +5495,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Namibia",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 29406863,
         "2020-2022": 28300213,
         "2023-2025": 23914632,
@@ -5465,7 +5521,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Nepal",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 21964144,
         "2020-2022": 26926654,
         "2023-2025": 29427095,
@@ -5491,7 +5547,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Nicaragua",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 8429981,
         "2020-2022": 12457279,
         "2023-2025": 12381024,
@@ -5517,7 +5573,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Niger",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 15032504,
         "2020-2022": 15913473.78,
         "2023-2025": 20505649.75,
@@ -5543,7 +5599,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Nigeria",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 239781871,
         "2020-2022": 329107978,
         "2023-2025": 361689416,
@@ -5569,7 +5625,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Pakistan",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 34956107,
         "2020-2022": 71687227,
         "2023-2025": 65446113,
@@ -5595,7 +5651,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Panama",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 1779385,
       },
       {
@@ -5609,7 +5665,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Papua New Guinea",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 8211639,
         "2020-2022": 21065825,
         "2023-2025": 20179277,
@@ -5635,7 +5691,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Paraguay",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 4432967,
         "2020-2022": 6722401,
         "2023-2025": 7028868,
@@ -5653,7 +5709,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Peru",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 6264586,
         "2020-2022": 9018643,
         "2023-2025": 13970236,
@@ -5673,7 +5729,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Philippines",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 8483242,
         "2020-2022": 20338651,
         "2023-2025": 25087000,
@@ -5709,7 +5765,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Rwanda",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 154462907,
         "2020-2022": 121349916,
         "2023-2025": 109231273,
@@ -5735,7 +5791,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Sao Tome and Principe",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 899645,
         "2020-2022": 1009680.69,
         "2023-2025": 1008797.84,
@@ -5761,7 +5817,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Senegal",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 24540785,
         "2020-2022": 28542091.21,
         "2023-2025": 31857932.18,
@@ -5787,7 +5843,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Serbia",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 1232579,
         "2020-2022": 1663980.59,
         "2023-2025": 2242340.84,
@@ -5801,7 +5857,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Sierra Leone",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 40265850,
         "2020-2022": 42675300,
         "2023-2025": 38051061,
@@ -5847,7 +5903,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Somalia",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 16004070,
         "2020-2022": 21172635,
         "2023-2025": 18723090,
@@ -5873,7 +5929,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "South Africa",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 317721470,
         "2020-2022": 491237860,
         "2023-2025": 463598573,
@@ -5893,7 +5949,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "South Sudan",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 29015250,
         "2020-2022": 58196898,
         "2023-2025": 68125558,
@@ -5919,7 +5975,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Sri Lanka",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 6948047,
         "2020-2022": 6387963,
         "2023-2025": 6381149,
@@ -5943,7 +5999,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Sudan",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 18839720,
         "2020-2022": 22106965,
         "2023-2025": 19740899,
@@ -5969,7 +6025,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Suriname",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 810721,
         "2020-2022": 2355648,
         "2023-2025": 2371250,
@@ -5993,7 +6049,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Tajikistan",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 12939544,
         "2020-2022": 14362894,
         "2023-2025": 15437432,
@@ -6013,7 +6069,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Tanzania (United Republic)",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 408487081,
         "2020-2022": 364840423,
         "2023-2025": 370004151,
@@ -6039,7 +6095,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Thailand",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 24569150,
         "2020-2022": 40573017,
         "2023-2025": 48079625,
@@ -6059,7 +6115,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Timor-Leste",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 2312598,
         "2020-2022": 3357640,
         "2023-2025": 3353220,
@@ -6085,7 +6141,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Togo",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 30858946,
         "2020-2022": 44982023.93,
         "2023-2025": 44518909.12,
@@ -6111,7 +6167,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Tunisia",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 4060055,
         "2020-2022": 4798985,
       },
@@ -6137,7 +6193,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Uganda",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 255632244,
         "2020-2022": 289203023,
         "2023-2025": 288484740,
@@ -6163,7 +6219,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Ukraine",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 70836441,
         "2020-2022": 70833698,
         "2023-2025": 101299533,
@@ -6183,7 +6239,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Uzbekistan",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 13928377,
         "2020-2022": 17969088,
         "2023-2025": 20902851,
@@ -6203,7 +6259,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Viet Nam",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 56638006,
         "2020-2022": 54996342,
         "2023-2025": 54980054,
@@ -6223,7 +6279,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Zambia",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 184377140,
         "2020-2022": 233545183,
         "2023-2025": 251027914,
@@ -6249,7 +6305,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Zanzibar",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 3992509,
         "2020-2022": 4631020,
         "2023-2025": 4209668,
@@ -6275,7 +6331,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Zimbabwe",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2017-2019": 406518928,
         "2020-2022": 425034567,
         "2023-2025": 432970984,
@@ -6301,7 +6357,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Russian Federation",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2020-2022": 10014430,
         "2023-2025": 10010167,
       },
@@ -6318,7 +6374,7 @@ export const TABLE_VARIATION_11_DATA: {
         "2023-2025": 14744295,
       },
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2023-2025": 18028173,
       },
       {
@@ -6333,7 +6389,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Equatorial Guinea",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2023-2025": 4161483.45,
       },
       {
@@ -6347,7 +6403,7 @@ export const TABLE_VARIATION_11_DATA: {
     name: "Multicountry North Africa",
     _children: [
       {
-        name: "HIV/AIDS",
+        name: "HIV",
         "2023-2025": 9551333,
       },
     ],
@@ -7444,7 +7500,7 @@ export const TABLE_VARIATION_13_DATA: {
   [key: string]: TableDataItem;
 }[] = [
   {
-    component: "HIV/AIDS",
+    component: "HIV",
     grants: 593,
     signed: 29276661067.43,
     committed: 27230518396.57,
@@ -7465,7 +7521,7 @@ export const TABLE_VARIATION_13_DATA: {
     disbursed: 9728602404.67,
   },
   {
-    component: "HIV/TB",
+    component: "TB/HIV",
     grants: 116,
     signed: 9872930982.46,
     committed: 8063100176.66,
@@ -7479,7 +7535,7 @@ export const TABLE_VARIATION_13_DATA: {
     disbursed: 1258115789.13,
   },
   {
-    component: "Multi-Component",
+    component: "Multicomponent",
     grants: 24,
     signed: 1770608991.38,
     committed: 1230893645.88,
@@ -7647,7 +7703,7 @@ export const TABLE_VARIATION_15_DATA: {
   [key: string]: TableDataItem;
 }[] = [
   {
-    name: "HIV/AIDS",
+    name: "HIV",
     cumulativeExpenditure: 945025388.9299998,
     periodExpenditure: 6507650968.13,
     _children: [
@@ -7727,7 +7783,7 @@ export const TABLE_VARIATION_15_DATA: {
         periodExpenditure: 51397820.99,
       },
       {
-        name: "Reducing human rights-related barriers to HIV/TB services",
+        name: "Reducing human rights-related barriers to TB/HIV services",
         cumulativeExpenditure: 18609011.89,
         periodExpenditure: 110293032.98,
       },
@@ -7761,7 +7817,7 @@ export const TABLE_VARIATION_15_DATA: {
     ],
   },
   {
-    name: "Multi-Component",
+    name: "Multicomponent",
     cumulativeExpenditure: 1110513490.01,
     periodExpenditure: 4929393204.469999,
     _children: [
@@ -7872,7 +7928,7 @@ export const TABLE_VARIATION_15_DATA: {
         periodExpenditure: 0,
       },
       {
-        name: "Multi-Component",
+        name: "Multicomponent",
         cumulativeExpenditure: 103036.59,
         periodExpenditure: 193997.94,
       },
@@ -7887,5 +7943,20 @@ export const TABLE_VARIATION_15_DATA: {
         periodExpenditure: 0,
       },
     ],
+  },
+];
+
+export const TABLE_VARIATION_16_COLUMNS: ColumnDefinition[] = [
+  {
+    title: "Disbursement Area",
+    field: "name",
+    width: "70%",
+    formatter: cellBGColorFormatter,
+  },
+  {
+    title: "Amount (US$)",
+    field: "amount",
+    width: "30%",
+    formatter: financialFormatter,
   },
 ];

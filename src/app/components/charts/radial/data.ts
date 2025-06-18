@@ -8,6 +8,13 @@ import {
 export interface RadialChartDataItem {
   name: string;
   value: number;
+  tooltip?: {
+    items: {
+      name: string;
+      value: number;
+      percentage: number;
+    }[];
+  };
   itemStyle?: {
     color: string;
   };
@@ -22,7 +29,7 @@ export interface RadialChartProps {
 
 export function itemLabelFormatter(
   params: any,
-  type: "name" | "name-percent" | "name-value-percent"
+  type: "name" | "name-percent" | "name-value-percent",
 ) {
   switch (type) {
     case "name":
@@ -34,7 +41,7 @@ export function itemLabelFormatter(
       return `{boldName| ${params.name}}\n$${getFinancialValueWithMetricPrefix(
         params.value,
         range.index,
-        2
+        2,
       )}${range.abbr} - ${params.percent}%`;
     default:
       return params.name;
@@ -140,7 +147,7 @@ export const STORY_DATA_VARIANT_2: RadialChartDataItem[] = [
 
 export const STORY_DATA_VARIANT_3: RadialChartDataItem[] = [
   {
-    name: "HIV/AIDS",
+    name: "HIV",
     value: 11706734676.03,
     itemStyle: {
       color: "#0A2840",
@@ -154,7 +161,7 @@ export const STORY_DATA_VARIANT_3: RadialChartDataItem[] = [
     },
   },
   {
-    name: "Multi-Component",
+    name: "Multicomponent",
     value: 10920830650.98,
     itemStyle: {
       color: "#00B5AE",
