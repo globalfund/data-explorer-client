@@ -37,6 +37,7 @@ export interface RequestValues<T> {
   addOnData?: boolean;
   isCMSfetch?: boolean;
   filterString?: string;
+  getCountOnly?: boolean;
   routeParams?: {
     [key: string]: string;
   };
@@ -46,6 +47,7 @@ export interface ResponseData<T> {
   data: any[];
   count: number;
   addOnData?: boolean;
+  getCountOnly?: boolean;
 }
 
 export interface Errors {

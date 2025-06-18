@@ -26,6 +26,7 @@ import { ReactComponent as BarChartIcon } from "app/assets/vectors/Select_BarCha
 import { ExpandableHorizontalBar } from "app/components/charts/expandable-horizontal-bar";
 import { ExpandableHorizontalBarChartDataItem } from "app/components/charts/expandable-horizontal-bar/data";
 import isEqual from "lodash/isEqual";
+import { Helmet } from "react-helmet-async";
 
 const dropdownItems = [
   { label: "Bar Chart", value: "Bar Chart", icon: <BarChartIcon /> },
@@ -507,79 +508,86 @@ export const ResourceMobilizationPage: React.FC = () => {
   }, [location.hash]);
 
   return (
-    <DatasetPage
-      title={getCMSDataField(
-        cmsData,
-        "pagesDatasetsResourceMobilization.title",
-        "Resource Mobilization",
-      )}
-      filterGroups={filterGroups}
-      appliedFilters={pageAppliedFilters}
-      handleResetFilters={handleResetFilters}
-      subtitle={getCMSDataField(
-        cmsData,
-        "pagesDatasetsResourceMobilization.subtitle",
-        "Government, private sector, non-government and other donor pledges and contributions",
-      )}
-      handleApplyFilters={handleApplyFilters}
-      handleCancelFilters={handleCancelFilters}
-    >
-      <Box width="100%" marginTop="50px">
-        <Grid
-          container
-          marginBottom="50px"
-          position="relative"
-          sx={{
-            "@media (max-width: 767px)": {
-              marginBottom: "16px",
-            },
-          }}
-        >
-          {loadingStats && (
-            <Box
-              width="100%"
-              height="100%"
-              display="flex"
-              position="absolute"
-              alignItems="center"
-              justifyContent="center"
-              bgcolor="rgba(255, 255, 255, 0.8)"
-            >
-              <CircularProgress />
-            </Box>
-          )}
+    <>
+      <Helmet>
+        <link
+          rel="canonical"
+          href={`${window.location.origin}/resource-mobilization`}
+        />
+      </Helmet>
+      <DatasetPage
+        title={getCMSDataField(
+          cmsData,
+          "pagesDatasetsResourceMobilization.title",
+          "Resource Mobilization",
+        )}
+        filterGroups={filterGroups}
+        appliedFilters={pageAppliedFilters}
+        handleResetFilters={handleResetFilters}
+        subtitle={getCMSDataField(
+          cmsData,
+          "pagesDatasetsResourceMobilization.subtitle",
+          "Government, private sector, non-government and other donor pledges and contributions",
+        )}
+        handleApplyFilters={handleApplyFilters}
+        handleCancelFilters={handleCancelFilters}
+      >
+        <Box width="100%" marginTop="50px">
           <Grid
-            item
-            sm={12}
-            md={4}
-            // gap="20px"
-            display="flex"
-            flexDirection="column"
+            container
+            marginBottom="50px"
+            position="relative"
             sx={{
-              paddingRight: "21px",
-              borderRight: "1px solid #CFD4DA",
-              "> div": {
-                height: "100%",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-              },
-              "@media (max-width: 920px)": {
-                paddingRight: "0px",
-                flexDirection: "row",
-                marginBottom: "50px",
-                borderRightStyle: "none",
-                justifyContent: "space-around",
-              },
               "@media (max-width: 767px)": {
-                gap: "16px",
-                width: "100%",
-                marginBottom: "64px",
-                flexDirection: "column",
+                marginBottom: "16px",
               },
             }}
           >
-            {/* <Box>
+            {loadingStats && (
+              <Box
+                width="100%"
+                height="100%"
+                display="flex"
+                position="absolute"
+                alignItems="center"
+                justifyContent="center"
+                bgcolor="rgba(255, 255, 255, 0.8)"
+              >
+                <CircularProgress />
+              </Box>
+            )}
+            <Grid
+              item
+              sm={12}
+              md={4}
+              // gap="20px"
+              display="flex"
+              flexDirection="column"
+              sx={{
+                paddingRight: "21px",
+                borderRight: "1px solid #CFD4DA",
+                "> div": {
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                },
+                "@media (max-width: 920px)": {
+                  paddingRight: "0px",
+                  flexDirection: "row",
+                  marginBottom: "50px",
+                  borderRightStyle: "none",
+                  justifyContent: "space-around",
+                },
+                "@media (max-width: 767px)": {
+                  gap: "16px",
+                  width: "100%",
+                  marginBottom: "64px",
+                  flexDirection: "column",
+                },
+              }}
+            >
+              {/* <Box>
               <Typography variant="h5">
                 {get(dataStats, "percentage", 0).toFixed(2).replace(".00", "")}%
               </Typography>
@@ -592,190 +600,193 @@ export const ResourceMobilizationPage: React.FC = () => {
               </Typography>
             </Box>
             <Divider /> */}
-            <Box>
-              <Typography variant="h3">
-                {formatFinancialValue(get(dataStats, "totalPledges", 0))}
-              </Typography>
-              <Typography fontSize="14px">
-                {getCMSDataField(
-                  cmsData,
-                  "pagesDatasetsResourceMobilization.statsText2",
-                  "Total Pledged",
-                )}
-              </Typography>
-            </Box>
-            <Divider orientation={tabletScreen ? "vertical" : "horizontal"} />
-            <Box>
-              <Typography variant="h3">
-                {formatFinancialValue(get(dataStats, "totalContributions", 0))}
-              </Typography>
-              <Typography fontSize="14px">
-                {getCMSDataField(
-                  cmsData,
-                  "pagesDatasetsResourceMobilization.statsText3",
-                  "Total Contributed",
-                )}
-              </Typography>
-            </Box>
-          </Grid>
-          <Grid
-            item
-            sm={12}
-            md={8}
-            sx={{
-              paddingLeft: "21px",
-              "@media (max-width: 920px)": {
-                paddingLeft: "0px",
-              },
-            }}
-          >
-            <Box marginBottom="20px">
-              <Typography variant="h3">
-                {getCMSDataField(
-                  cmsData,
-                  "pagesDatasetsResourceMobilization.statsText4Title",
-                  "Number of Donors Mobilized",
-                )}
-              </Typography>
-              <Typography variant="body2">
-                {getCMSDataField(
-                  cmsData,
-                  "pagesDatasetsResourceMobilization.statsText4Subtitle",
-                  "Grouped by their Donor types",
-                )}
-              </Typography>
-            </Box>
+              <Box>
+                <Typography variant="h3">
+                  {formatFinancialValue(get(dataStats, "totalPledges", 0))}
+                </Typography>
+                <Typography fontSize="14px">
+                  {getCMSDataField(
+                    cmsData,
+                    "pagesDatasetsResourceMobilization.statsText2",
+                    "Total Pledged",
+                  )}
+                </Typography>
+              </Box>
+              <Divider orientation={tabletScreen ? "vertical" : "horizontal"} />
+              <Box>
+                <Typography variant="h3">
+                  {formatFinancialValue(
+                    get(dataStats, "totalContributions", 0),
+                  )}
+                </Typography>
+                <Typography fontSize="14px">
+                  {getCMSDataField(
+                    cmsData,
+                    "pagesDatasetsResourceMobilization.statsText3",
+                    "Total Contributed",
+                  )}
+                </Typography>
+              </Box>
+            </Grid>
             <Grid
-              container
-              spacing={2}
+              item
+              sm={12}
+              md={8}
               sx={{
-                minHeight: "200px",
+                paddingLeft: "21px",
+                "@media (max-width: 920px)": {
+                  paddingLeft: "0px",
+                },
               }}
             >
-              <Grid item xs={4} sm={4} md={3} lg={2}>
-                <Box
-                  height="100%"
-                  bgcolor="#F1F3F5"
-                  padding="5px 10px"
-                  borderRadius="5px"
-                >
-                  <Typography fontSize="40px" fontWeight="700">
-                    {sumBy(get(dataStats, "donorTypesCount", []), "value")}
-                  </Typography>
-                  <Typography variant="body2">
-                    {getCMSDataField(
-                      cmsData,
-                      "pagesDatasetsResourceMobilization.statsText5",
-                      "Total number of donors",
-                    )}
-                  </Typography>
-                </Box>
-              </Grid>
+              <Box marginBottom="20px">
+                <Typography variant="h3">
+                  {getCMSDataField(
+                    cmsData,
+                    "pagesDatasetsResourceMobilization.statsText4Title",
+                    "Number of Donors Mobilized",
+                  )}
+                </Typography>
+                <Typography variant="body2">
+                  {getCMSDataField(
+                    cmsData,
+                    "pagesDatasetsResourceMobilization.statsText4Subtitle",
+                    "Grouped by their Donor types",
+                  )}
+                </Typography>
+              </Box>
               <Grid
-                item
                 container
                 spacing={2}
-                xs={8}
-                sm={8}
-                md={9}
-                lg={10}
-                height="100%"
                 sx={{
-                  "> div": {
-                    "> div": {
-                      height: "84px",
-                      borderRadius: "5px",
-                      "> *": {
-                        lineHeight: "normal",
-                      },
-                      "@media (max-width: 920px)": {
-                        height: "104px",
-                      },
-                      "@media (max-width: 767px)": {
-                        height: "auto",
-                        padding: "10px",
-                      },
-                    },
-                  },
+                  minHeight: "200px",
                 }}
               >
-                {get(dataStats, "donorTypesCount", []).map((item) => (
-                  <Grid item xs={12} sm={3} md={3} lg={3} key={item.name}>
-                    <Box bgcolor="#F1F3F5" padding="5px 10px">
-                      <Typography fontSize="24px" fontWeight="700">
-                        {item.value}
-                      </Typography>
-                      <Typography fontSize="12px">{item.name}</Typography>
-                    </Box>
-                  </Grid>
-                ))}
+                <Grid item xs={4} sm={4} md={3} lg={2}>
+                  <Box
+                    height="100%"
+                    bgcolor="#F1F3F5"
+                    padding="5px 10px"
+                    borderRadius="5px"
+                  >
+                    <Typography fontSize="40px" fontWeight="700">
+                      {sumBy(get(dataStats, "donorTypesCount", []), "value")}
+                    </Typography>
+                    <Typography variant="body2">
+                      {getCMSDataField(
+                        cmsData,
+                        "pagesDatasetsResourceMobilization.statsText5",
+                        "Total number of donors",
+                      )}
+                    </Typography>
+                  </Box>
+                </Grid>
+                <Grid
+                  item
+                  container
+                  spacing={2}
+                  xs={8}
+                  sm={8}
+                  md={9}
+                  lg={10}
+                  height="100%"
+                  sx={{
+                    "> div": {
+                      "> div": {
+                        height: "84px",
+                        borderRadius: "5px",
+                        "> *": {
+                          lineHeight: "normal",
+                        },
+                        "@media (max-width: 920px)": {
+                          height: "104px",
+                        },
+                        "@media (max-width: 767px)": {
+                          height: "auto",
+                          padding: "10px",
+                        },
+                      },
+                    },
+                  }}
+                >
+                  {get(dataStats, "donorTypesCount", []).map((item) => (
+                    <Grid item xs={12} sm={3} md={3} lg={3} key={item.name}>
+                      <Box bgcolor="#F1F3F5" padding="5px 10px">
+                        <Typography fontSize="24px" fontWeight="700">
+                          {item.value}
+                        </Typography>
+                        <Typography fontSize="12px">{item.name}</Typography>
+                      </Box>
+                    </Grid>
+                  ))}
+                </Grid>
               </Grid>
             </Grid>
+            <Grid item xs={12}>
+              <Typography variant="overline">
+                Latest Update: <b>{latestUpdateDate}</b>
+              </Typography>
+            </Grid>
           </Grid>
-          <Grid item xs={12}>
-            <Typography variant="overline">
-              Latest Update: <b>{latestUpdateDate}</b>
-            </Typography>
-          </Grid>
-        </Grid>
-        <Divider
-          sx={{
-            left: 0,
-            width: "100vw",
-            position: "absolute",
-            borderColor: "#CFD4DA",
-            "@media (max-width: 767px)": {
-              display: "none",
-            },
-          }}
-        />
-        <Box
-          paddingTop="50px"
-          sx={
-            dropdownSelected === dropdownItems[1].value
-              ? {
-                  "#content": {
-                    padding: 0,
-                  },
-                }
-              : {}
-          }
-        >
-          <DatasetChartBlock
-            id="pledges-contributions"
-            exportName="pledges-and-contributions"
-            title={getCMSDataField(
-              cmsData,
-              "pagesDatasetsResourceMobilization.pledgesTitle",
-              "Pledges & Contributions",
-            )}
-            subtitle={getCMSDataField(
-              cmsData,
-              "pagesDatasetsResourceMobilization.pledgesSubtitle",
-              "Government, private sector, non-government and other donor pledges and contributions.",
-            )}
-            dropdownItems={dropdownItems}
-            dropdownSelected={dropdownSelected}
-            handleDropdownChange={handleSelectionChange}
-            disableCollapse={dropdownSelected === dropdownItems[1].value}
-            loading={dataChartLoading}
-            empty={chartEmpty}
-            filterGroups={filterGroups}
-            latestUpdate={latestUpdateDate}
-            appliedFilters={chartTempAppliedFilters}
-            toggleFilter={handleToggleChartFilter}
-            removeFilter={handleRemoveChartFilter}
-            handleResetFilters={handleResetChartFilters}
-            tempAppliedFiltersData={chartTempAppliedFiltersData}
-            handleApplyFilters={handleApplyChartFilters}
-            handleCancelFilters={handleCancelChartFilters}
-            data={chartData}
-            infoType="pledges_contributions"
+          <Divider
+            sx={{
+              left: 0,
+              width: "100vw",
+              position: "absolute",
+              borderColor: "#CFD4DA",
+              "@media (max-width: 767px)": {
+                display: "none",
+              },
+            }}
+          />
+          <Box
+            paddingTop="50px"
+            sx={
+              dropdownSelected === dropdownItems[1].value
+                ? {
+                    "#content": {
+                      padding: 0,
+                    },
+                  }
+                : {}
+            }
           >
-            {chartContent}
-          </DatasetChartBlock>
+            <DatasetChartBlock
+              id="pledges-contributions"
+              exportName="pledges-and-contributions"
+              title={getCMSDataField(
+                cmsData,
+                "pagesDatasetsResourceMobilization.pledgesTitle",
+                "Pledges & Contributions",
+              )}
+              subtitle={getCMSDataField(
+                cmsData,
+                "pagesDatasetsResourceMobilization.pledgesSubtitle",
+                "Government, private sector, non-government and other donor pledges and contributions.",
+              )}
+              dropdownItems={dropdownItems}
+              dropdownSelected={dropdownSelected}
+              handleDropdownChange={handleSelectionChange}
+              disableCollapse={dropdownSelected === dropdownItems[1].value}
+              loading={dataChartLoading}
+              empty={chartEmpty}
+              filterGroups={filterGroups}
+              latestUpdate={latestUpdateDate}
+              appliedFilters={chartTempAppliedFilters}
+              toggleFilter={handleToggleChartFilter}
+              removeFilter={handleRemoveChartFilter}
+              handleResetFilters={handleResetChartFilters}
+              tempAppliedFiltersData={chartTempAppliedFiltersData}
+              handleApplyFilters={handleApplyChartFilters}
+              handleCancelFilters={handleCancelChartFilters}
+              data={chartData}
+              infoType="pledges_contributions"
+            >
+              {chartContent}
+            </DatasetChartBlock>
+          </Box>
         </Box>
-      </Box>
-    </DatasetPage>
+      </DatasetPage>
+    </>
   );
 };

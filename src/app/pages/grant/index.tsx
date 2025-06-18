@@ -18,6 +18,7 @@ import { SankeyChartData } from "app/components/charts/sankey/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { GrantImplementation } from "app/pages/grant/views/grant-implementation";
 import { useCMSData } from "app/hooks/useCMSData";
+import { Helmet } from "react-helmet-async";
 
 export const Grant: React.FC = () => {
   const cmsData = useCMSData({ returnData: true });
@@ -279,50 +280,58 @@ export const Grant: React.FC = () => {
   );
 
   return (
-    <Box padding="50px 0">
-      <Typography variant="h1" lineHeight={1.2}>
-        {params.id}
-      </Typography>
-      <Typography
-        variant="h4"
-        lineHeight={1}
-        marginBottom="50px"
-        sx={{
-          "@media (max-width: 767px)": {
-            marginBottom: 0,
-          },
-        }}
-      >
-        {smallScreen && dropdownSelected?.title}
-        {!smallScreen &&
-          titleSplits.map((s) => (
-            <React.Fragment key={s}>
-              {s}
-              <br />
-            </React.Fragment>
-          ))}
-      </Typography>
-      {fullWidthDivider}
-      <DetailPageTabs
-        baseRoute={`/grant`}
-        activeTab={`${params.ip}/${params.tab}`}
-        tabs={tabs.map((t) => ({
-          ...t,
-          link: `/${params.ip}${t.link}`,
-        }))}
-        dropdown={{
-          width: 280,
-          handleDropdownChange,
-          dropdownSelected: dropdownSelected?.name || "",
-          dropdownItems: dataGrant.periods.map((p) => ({
-            label: p.name,
-            value: p.code.toString(),
-          })),
-        }}
-      />
-      {fullWidthDivider}
-      <Box marginTop="40px">{view}</Box>
-    </Box>
+    <>
+      <Helmet>
+        <link
+          rel="canonical"
+          href={`${window.location.origin}/grant/${params.id}/${params.ip}/${params.tab}`}
+        />
+      </Helmet>
+      <Box padding="50px 0">
+        <Typography variant="h1" lineHeight={1.2}>
+          {params.id}
+        </Typography>
+        <Typography
+          variant="h4"
+          lineHeight={1}
+          marginBottom="50px"
+          sx={{
+            "@media (max-width: 767px)": {
+              marginBottom: 0,
+            },
+          }}
+        >
+          {smallScreen && dropdownSelected?.title}
+          {!smallScreen &&
+            titleSplits.map((s) => (
+              <React.Fragment key={s}>
+                {s}
+                <br />
+              </React.Fragment>
+            ))}
+        </Typography>
+        {fullWidthDivider}
+        <DetailPageTabs
+          baseRoute={`/grant`}
+          activeTab={`${params.ip}/${params.tab}`}
+          tabs={tabs.map((t) => ({
+            ...t,
+            link: `/${params.ip}${t.link}`,
+          }))}
+          dropdown={{
+            width: 280,
+            handleDropdownChange,
+            dropdownSelected: dropdownSelected?.name || "",
+            dropdownItems: dataGrant.periods.map((p) => ({
+              label: p.name,
+              value: p.code.toString(),
+            })),
+          }}
+        />
+        {fullWidthDivider}
+        <Box marginTop="40px">{view}</Box>
+      </Box>
+    </>
   );
 };
 

@@ -45,6 +45,38 @@ const REDIRECT_ROUTES: RouteObject[] = [
     element: <Redirect to="/grants" />,
   },
 ];
+export const NON_REDIRECT_ROUTES: RouteObject[] = [
+  { path: "/", element: <Home /> },
+  { path: "/geography", element: <Geography /> },
+  { path: "/grants", element: <Grants /> },
+  { path: "/grant/:id", element: <PreGrant /> },
+  {
+    path: "/grant/:id/:ip",
+    element: <Redirect to="/grant/:id/:ip/overview" />,
+  },
+  { path: "/grant/:id/:ip/:tab", element: <Grant /> },
+  {
+    path: "/location/:id",
+    element: <Redirect to="/location/:id/overview" />,
+  },
+  { path: "/location/:id/:tab", element: <Location /> },
+  {
+    path: "/resource-mobilization",
+    element: <ResourceMobilizationPage />,
+  },
+  {
+    path: "/access-to-funding",
+    element: <AccessToFundingPage />,
+  },
+  {
+    path: "/financial-insights",
+    element: <GrantImplementationPage />,
+  },
+  {
+    path: "/annual-results",
+    element: <AnnualResultsPage />,
+  },
+];
 
 export const ROUTES: RouteObject[] = [
   {
@@ -52,36 +84,7 @@ export const ROUTES: RouteObject[] = [
     element: <Page />,
     errorElement: <div>404</div>,
     children: [
-      { path: "/", element: <Home /> },
-      { path: "/geography", element: <Geography /> },
-      { path: "/grants", element: <Grants /> },
-      { path: "/grant/:id", element: <PreGrant /> },
-      {
-        path: "/grant/:id/:ip",
-        element: <Redirect to="/grant/:id/overview" />,
-      },
-      { path: "/grant/:id/:ip/:tab", element: <Grant /> },
-      {
-        path: "/location/:id",
-        element: <Redirect to="/location/:id/overview" />,
-      },
-      { path: "/location/:id/:tab", element: <Location /> },
-      {
-        path: "/resource-mobilization",
-        element: <ResourceMobilizationPage />,
-      },
-      {
-        path: "/access-to-funding",
-        element: <AccessToFundingPage />,
-      },
-      {
-        path: "/financial-insights",
-        element: <GrantImplementationPage />,
-      },
-      {
-        path: "/annual-results",
-        element: <AnnualResultsPage />,
-      },
+      ...NON_REDIRECT_ROUTES,
       ...REDIRECT_ROUTES,
       {
         path: "*",

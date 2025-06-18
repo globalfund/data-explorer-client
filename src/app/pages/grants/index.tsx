@@ -17,6 +17,7 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import Pagination from "app/components/pagination";
 import isEqual from "lodash/isEqual";
+import { Helmet } from "react-helmet-async";
 
 export const Grants: React.FC = () => {
   useTitle("The Data Explorer - Grants");
@@ -376,29 +377,34 @@ export const Grants: React.FC = () => {
   }, [search]);
 
   return (
-    <GrantsLayout
-      view={view}
-      viewResult={viewResult}
-      pagination={pagination}
-      handleViewChange={handleViewChange}
-      search={search}
-      showSearch={showSearch}
-      handleSearch={handleSearch}
-      handleSearchIconClick={handleSearchIconClick}
-      handleFilterButtonClick={handleFilterButtonClick}
-      handleFilterPanelClose={handleFilterPanelClose}
-      filterGroups={filterGroups}
-      pageAppliedFilters={pageAppliedFilters}
-      handleResetFilters={handleResetFilters}
-      anchorEl={anchorEl}
-      loading={loading}
-      searchInputRef={searchInputRef}
-      latestUpdateDate={latestUpdateDate}
-      setPage={setPage}
-      page={page}
-      setPageSearchValue={setPageSearchValue}
-      handleCancelFilters={handleCancelFilters}
-      handleApplyFilters={handleApplyFilters}
-    />
+    <>
+      <Helmet>
+        <link rel="canonical" href={`${window.location.origin}/grants`} />
+      </Helmet>
+      <GrantsLayout
+        view={view}
+        viewResult={viewResult}
+        pagination={pagination}
+        handleViewChange={handleViewChange}
+        search={search}
+        showSearch={showSearch}
+        handleSearch={handleSearch}
+        handleSearchIconClick={handleSearchIconClick}
+        handleFilterButtonClick={handleFilterButtonClick}
+        handleFilterPanelClose={handleFilterPanelClose}
+        filterGroups={filterGroups}
+        pageAppliedFilters={pageAppliedFilters}
+        handleResetFilters={handleResetFilters}
+        anchorEl={anchorEl}
+        loading={loading}
+        searchInputRef={searchInputRef}
+        latestUpdateDate={latestUpdateDate}
+        setPage={setPage}
+        page={page}
+        setPageSearchValue={setPageSearchValue}
+        handleCancelFilters={handleCancelFilters}
+        handleApplyFilters={handleApplyFilters}
+      />
+    </>
   );
 };
