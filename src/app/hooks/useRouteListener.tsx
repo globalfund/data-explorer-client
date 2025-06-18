@@ -11,7 +11,7 @@ export const useRouteListener = () => {
   const location = useLocation();
 
   React.useEffect(() => {
-    if (window.location.hostname === "data.theglobalfund.org") {
+    if (window.location.hostname === "data.theglobalfund.org" && window._paq) {
       window._paq.push(["setCustomUrl", location.pathname]);
       window._paq.push(["trackPageView"]);
     }
