@@ -5,12 +5,10 @@ import { useTitle } from "react-use";
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import { NavLink } from "react-router-dom";
+import Divider from "@mui/material/Divider";
+import { Search } from "app/components/search";
 import { useCMSData } from "app/hooks/useCMSData";
-import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import CloseIcon from "@mui/icons-material/Close";
-import SearchIcon from "@mui/icons-material/Search";
-import { getCMSDataField } from "app/utils/getCMSDataField";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
@@ -18,8 +16,6 @@ import {
   GeoCategoryProps,
   GeoSubCategoryProps,
 } from "app/pages/geography/data";
-import Divider from "@mui/material/Divider";
-import { Search } from "app/components/search";
 
 const GeoCategory: React.FC<GeoCategoryProps> = (props: GeoCategoryProps) => {
   return (

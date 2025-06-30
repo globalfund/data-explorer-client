@@ -1,22 +1,25 @@
 import React from "react";
 import Box from "@mui/material/Box";
+import Tab from "@mui/material/Tab";
+import { appColors } from "app/theme";
+import Tabs from "@mui/material/Tabs";
+import findIndex from "lodash/findIndex";
 import Button from "@mui/material/Button";
 import Add from "@mui/icons-material/Add";
 import Divider from "@mui/material/Divider";
 import Close from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
-
 import IconButton from "@mui/material/IconButton";
 import { FilterList } from "app/components/filters/list";
 import { FiltersApplied } from "app/components/filters/applied";
 import { FilterPanelProps } from "app/components/filters/panel/data";
-import { ReactComponent as CollapseIcon } from "app/assets/vectors/Collapse_ButtonIcon.svg";
 import { ReactComponent as SearchIcon } from "app/assets/vectors/Search_grants.svg";
-import { FilterGroupModel, FilterModel, SearchInput } from "../list/data";
-import { appColors } from "app/theme";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import findIndex from "lodash/findIndex";
+import { ReactComponent as CollapseIcon } from "app/assets/vectors/Collapse_ButtonIcon.svg";
+import {
+  FilterModel,
+  SearchInput,
+  FilterGroupModel,
+} from "app/components/filters/list/data";
 
 export const FilterPanel: React.FC<FilterPanelProps> = (
   props: FilterPanelProps,
@@ -43,34 +46,38 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
     );
   }, [props.appliedFilters]);
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
-    const filterGroupOptions = props.filterGroups.find(
+  const filterGroupOptions = React.useMemo(
+    () => props.filterGroups.find((group) => group.id === tabValue)?.options,
+    [props.filterGroups, tabValue],
+  );
+
+  const handleTabChange = (_e: React.SyntheticEvent, newValue: string) => {
+    const localFilterGroupOptions = props.filterGroups.find(
       (group) => group.id === newValue,
     )?.options;
     setTabValue(newValue);
-    filterOptions(searchValue, filterGroupOptions ?? []);
+    filterOptions(searchValue, localFilterGroupOptions ?? []);
   };
 
-  const filterGroupOptions = props.filterGroups.find(
-    (group) => group.id === tabValue,
-  )?.options;
-
   const filterOptions = (
-    searchValue: string,
-    filterGroupOptions?: FilterModel[],
+    localSearchValue: string,
+    localFilterGroupOptions?: FilterModel[],
   ) => {
-    if (searchValue.length === 0) {
-      setShownOptions(filterGroupOptions ?? []);
+    if (localSearchValue.length === 0) {
+      setShownOptions(localFilterGroupOptions ?? []);
     } else {
       const options: FilterModel[] = [];
-      (filterGroupOptions ?? []).forEach((option: FilterModel) => {
-        if (option.name.toLowerCase().indexOf(searchValue.toLowerCase()) > -1) {
+      (localFilterGroupOptions ?? []).forEach((option: FilterModel) => {
+        if (
+          option.name.toLowerCase().indexOf(localSearchValue.toLowerCase()) > -1
+        ) {
           options.push(option);
         } else if (option.options) {
           option.options.forEach((subOption: FilterModel) => {
             if (
-              subOption.name.toLowerCase().indexOf(searchValue.toLowerCase()) >
-              -1
+              subOption.name
+                .toLowerCase()
+                .indexOf(localSearchValue.toLowerCase()) > -1
             ) {
               const fParentIndex = findIndex(options, { name: option.name });
               if (fParentIndex > -1) {
@@ -86,7 +93,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
                 if (
                   (subSubOption.name || "")
                     .toLowerCase()
-                    .indexOf(searchValue.toLowerCase()) > -1
+                    .indexOf(localSearchValue.toLowerCase()) > -1
                 ) {
                   const fGrandParentIndex = findIndex(options, {
                     name: option.name,
@@ -178,6 +185,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
   React.useEffect(() => {
     filterOptions(searchValue, filterGroupOptions);
   }, [props.filterGroups]);
+
   return (
     <Box
       gap="7px"

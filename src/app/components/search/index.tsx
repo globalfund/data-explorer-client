@@ -57,10 +57,10 @@ export function Search(props: {
     [value],
   );
 
-  function onValueChange(value: string) {
-    setValue(value);
+  function onValueChange(v: string) {
+    setValue(v);
     if (props.handleSearch) {
-      props.handleSearch(value);
+      props.handleSearch(v);
     }
   }
 
