@@ -1,7 +1,10 @@
+import React from "react";
 import { Home } from "app/pages/home";
 import { Grants } from "app/pages/grants";
 import { Page } from "app/components/page";
 import { Location } from "app/pages/location";
+import { Header } from "app/components/header";
+import { Footer } from "app/components/footer";
 import { RouteObject } from "react-router-dom";
 import { Geography } from "app/pages/geography";
 import { Grant, PreGrant } from "app/pages/grant";
@@ -50,7 +53,35 @@ export const ROUTES: RouteObject[] = [
   {
     path: "/",
     element: <Page />,
-    errorElement: <div>404</div>,
+    ErrorBoundary: () => (
+      <React.Fragment>
+        <Header />
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "calc(100vh - 58px - 256px - 150px)",
+          }}
+        >
+          <div style={{ textAlign: "center" }}>
+            It seems like you have encountered an error.
+            <br />
+            Please try refreshing the page or{" "}
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://www.theglobalfund.org/en/contact/"
+            >
+              contact us
+            </a>{" "}
+            if the issue persists.
+          </div>
+        </div>
+        <Footer />
+      </React.Fragment>
+    ),
     children: [
       { path: "/", element: <Home /> },
       { path: "/geography", element: <Geography /> },
