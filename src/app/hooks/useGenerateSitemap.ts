@@ -50,7 +50,7 @@ const isoDate = new Date().toISOString();
 
 const extractStaticPaths = (
   routes: RouteObject[],
-  paths: Sitemap[],
+  paths: Sitemap[]
 ): Sitemap[] => {
   for (const route of routes) {
     if (route.path?.includes(":") || route.path?.includes("*")) continue;
@@ -69,18 +69,23 @@ const extractStaticPaths = (
 };
 
 export const useGenerateSitemap = () => {
+  const staticPaths = extractStaticPaths(NON_REDIRECT_ROUTES, []);
+  const PAGE_SIZE = 100;
+
+  // Fetching data from the store
   const grantsData = useStoreState(
-    (state) => get(state.GrantList, "data.data", []) as GrantCardProps[],
+    (state) => get(state.GrantList, "data.data", []) as GrantCardProps[]
   );
   const fetchGrantList = useStoreActions((actions) => actions.GrantList.fetch);
   const fetchLocationList = useStoreActions(
-    (actions) => actions.GeographyList.fetch,
+    (actions) => actions.GeographyList.fetch
   );
   const locationData = useStoreState(
-    (state) => get(state.GeographyList, "data.data", []) as GeoCategoryProps[],
+    (state) => get(state.GeographyList, "data.data", []) as GeoCategoryProps[]
   );
   const count = useStoreState((state) => get(state.GrantList, "data.count", 0));
-  const staticPaths = extractStaticPaths(NON_REDIRECT_ROUTES, []);
+
+  //local states
   const [isInitialGrantListFetch, setIsInitialGrantListFetch] =
     React.useState(true);
   const [grantOverviewsSitemap, setGrantOverviewsSitemap] = React.useState<
@@ -92,7 +97,6 @@ export const useGenerateSitemap = () => {
   const [allGrantsFetched, setAllGrantsFetched] = React.useState(false);
   const [currentPage, setCurrentPage] = React.useState(1);
 
-  const PAGE_SIZE = 100;
   const getGrantInfo = async (code: string) => {
     return await axios.get(`${process.env.REACT_APP_API}/grant/${code}`);
   };
@@ -145,7 +149,7 @@ export const useGenerateSitemap = () => {
             changefreq: "monthly",
             priority: 0.8,
           };
-        }),
+        })
       ).then((newGrantSitemaps) => {
         console.log("loading sitemap data...");
         setGrantOverviewsSitemap((prev) => [...prev, ...newGrantSitemaps]);
