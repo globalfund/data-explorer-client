@@ -50,7 +50,7 @@ const isoDate = new Date().toISOString();
 
 const extractStaticPaths = (
   routes: RouteObject[],
-  paths: Sitemap[]
+  paths: Sitemap[],
 ): Sitemap[] => {
   for (const route of routes) {
     if (route.path?.includes(":") || route.path?.includes("*")) continue;
@@ -74,14 +74,14 @@ export const useGenerateSitemap = () => {
 
   // Fetching data from the store
   const grantsData = useStoreState(
-    (state) => get(state.GrantList, "data.data", []) as GrantCardProps[]
+    (state) => get(state.GrantList, "data.data", []) as GrantCardProps[],
   );
   const fetchGrantList = useStoreActions((actions) => actions.GrantList.fetch);
   const fetchLocationList = useStoreActions(
-    (actions) => actions.GeographyList.fetch
+    (actions) => actions.GeographyList.fetch,
   );
   const locationData = useStoreState(
-    (state) => get(state.GeographyList, "data.data", []) as GeoCategoryProps[]
+    (state) => get(state.GeographyList, "data.data", []) as GeoCategoryProps[],
   );
   const count = useStoreState((state) => get(state.GrantList, "data.count", 0));
 
@@ -149,7 +149,7 @@ export const useGenerateSitemap = () => {
             changefreq: "monthly",
             priority: 0.8,
           };
-        })
+        }),
       ).then((newGrantSitemaps) => {
         console.log("loading sitemap data...");
         setGrantOverviewsSitemap((prev) => [...prev, ...newGrantSitemaps]);
