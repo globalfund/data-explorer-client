@@ -19,7 +19,7 @@
     "@storybook/addon-themes": "^8.0.8",
     "@types/react-router-hash-link": "^2.4.9",
     "@types/tabulator-tables": "^5.6.0",
-    "axios": "^1.4.0",
+    "axios": "^1.8.2",
     "detect-it": "^4.0.1",
     "dom-to-image": "^2.6.0",
     "dotenv": "^16.4.5",
