@@ -1,4 +1,3 @@
-import AppsIcon from "@mui/icons-material/Apps";
 import TableChartIcon from "@mui/icons-material/TableChart";
 import { ReactComponent as CardView } from "app/assets/vectors/CardView.svg";
 

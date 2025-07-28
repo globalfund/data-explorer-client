@@ -1,5 +1,4 @@
 import React from "react";
-import get from "lodash/get";
 import { useCMSData } from "app/hooks/useCMSData";
 import { useStoreState } from "app/state/store/hooks";
 import { getIcon } from "app/components/search/icons";

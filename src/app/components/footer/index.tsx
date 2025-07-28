@@ -198,7 +198,7 @@ export const Footer: React.FC = () => {
                 </FooterHeader>
                 <FooterExternalLink
                   target="_blank"
-                  href="http://www.theglobalfund.org"
+                  href="https://www.theglobalfund.org"
                 >
                   {getCMSDataField(
                     cmsData,

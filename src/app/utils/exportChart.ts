@@ -83,8 +83,8 @@ export async function exportChart(
       const csv = [];
       csv.push(data.headers.join(","));
       const rows = data.data;
-      for (let i = 0; i < rows.length; i++) {
-        csv.push(Object.values(rows[i]).join(","));
+      for (let value of rows) {
+        csv.push(Object.values(value).join(","));
       }
       const csvString = csv.join("\n");
       const link = document.createElement("a");

@@ -1,5 +1,5 @@
 import {
-  AllCategoriesIcon,
+  // AllCategoriesIcon,
   // DocumentsIcon,
   // DonorsIcon,
   GrantsIcon,

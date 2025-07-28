@@ -66,6 +66,9 @@ export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
   const fetchResultsDocumentsTable = useStoreActions(
     (actions) => actions.GeographyResultsDocumentsTable.fetch,
   );
+  const loadingDocumentsTable = useStoreState(
+    (state) => state.GeographyResultsDocumentsTable.loading,
+  );
 
   const onSearchChange = (search: string) => {
     setTableSearch(search);
@@ -85,7 +88,7 @@ export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
   };
 
   const onSearchChange2 = (search: string) => {
-    setTableSearch(search);
+    setTableSearch2(search);
     let filterString = `types=Profile&geographies=${paramsId}`;
     if (search) {
       filterString += `&q=${search}`;
@@ -158,10 +161,12 @@ export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
           "Documents",
         )}
         empty={!showDocuments}
+        loading={loadingDocumentsTable}
         subtitle=""
         data={dataDocumentsTable}
         infoType="global"
       >
+        <Box height="24px" />
         <TableContainer
           dataTree
           dataTreeStartExpanded
