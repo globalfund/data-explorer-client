@@ -495,14 +495,8 @@ export const ResourceMobilizationPage: React.FC = () => {
     if (location.hash) {
       const blockId = location.hash.slice(1).split("|")[0];
       const blockChartType = location.hash.slice(1).split("|")[1];
-      if (blockId && blockChartType) {
-        switch (blockId) {
-          case "disbursements":
-            setDropdownSelected(decodeURIComponent(blockChartType));
-            break;
-          default:
-            break;
-        }
+      if (blockId === "disbursements" && blockChartType) {
+        setDropdownSelected(decodeURIComponent(blockChartType));
       }
     }
   }, [location.hash]);

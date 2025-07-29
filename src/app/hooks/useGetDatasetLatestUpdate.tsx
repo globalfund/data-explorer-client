@@ -24,12 +24,9 @@ export const useGetDatasetLatestUpdate = (props: {
       }[],
   );
 
-  const value = React.useMemo(() => {
-    if (datasetsLatestUpdate) {
-      return find(datasetsLatestUpdate, { name: props.dataset })?.date;
-    }
-    return "";
-  }, [datasetsLatestUpdate, props.dataset]);
+  if (datasetsLatestUpdate) {
+    return find(datasetsLatestUpdate, { name: props.dataset })?.date;
+  }
 
-  return value;
+  return "";
 };

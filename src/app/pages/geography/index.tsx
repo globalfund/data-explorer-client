@@ -5,6 +5,8 @@ import { useTitle } from "react-use";
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import { NavLink } from "react-router-dom";
+import Divider from "@mui/material/Divider";
+import { Search } from "app/components/search";
 import { useCMSData } from "app/hooks/useCMSData";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -14,8 +16,6 @@ import {
   GeoCategoryProps,
   GeoSubCategoryProps,
 } from "app/pages/geography/data";
-import Divider from "@mui/material/Divider";
-import { Search } from "app/components/search";
 import { Helmet } from "react-helmet-async";
 
 const GeoCategory: React.FC<GeoCategoryProps> = (props: GeoCategoryProps) => {

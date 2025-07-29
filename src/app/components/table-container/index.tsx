@@ -22,7 +22,6 @@ import { ReactComponent as FullscreenIcon } from "app/assets/vectors/TableToolba
 export const TableContainer: React.FC<TableContainerProps> = (
   props: TableContainerProps,
 ) => {
-  const [table, setTable] = React.useState<Tabulator | null>(null);
   const [columns, setColumns] = React.useState(
     props.columns.map((column) => ({
       ...column,
@@ -313,7 +312,6 @@ export const TableContainer: React.FC<TableContainerProps> = (
         {...props}
         data={props.data}
         columns={columns}
-        setTable={setTable}
         extraColumns={extraColumns}
       />
     </Box>

@@ -44,10 +44,6 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
       .reduce((acc, item) => acc + item.value, 0);
   }, [props.data.links]);
 
-  const maxLevel = React.useMemo(() => {
-    return Math.max(...props.data.nodes.map((node) => node.level));
-  }, [props.data.nodes]);
-
   React.useEffect(() => {
     if (containerRef.current) {
       const chart = echarts.init(containerRef.current, undefined, {

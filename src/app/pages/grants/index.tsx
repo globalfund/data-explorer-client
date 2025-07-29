@@ -1,9 +1,9 @@
 import React from "react";
 import get from "lodash/get";
-import { useTitle, useUnmount } from "react-use";
 import Grid from "@mui/material/Grid";
 import { Link } from "react-router-dom";
 import { Table } from "app/components/table";
+import { useTitle, useUnmount } from "react-use";
 import useDebounce from "react-use/lib/useDebounce";
 import { GrantCard } from "app/components/grant-card";
 import { GrantsLayout } from "app/pages/grants/layout";
@@ -42,6 +42,7 @@ export const Grants: React.FC = () => {
   const tempAppliedFiltersActions = useStoreActions(
     (actions) => actions.TempAppliedFiltersState,
   );
+
   useUnmount(() => {
     tempAppliedFiltersActions.clearAll();
   });
@@ -95,10 +96,7 @@ export const Grants: React.FC = () => {
   const tempAppliedFiltersData = useStoreState(
     (state) => state.TempAppliedFiltersState,
   );
-  const handlePageChange = (
-    event: React.ChangeEvent<unknown>,
-    value: number,
-  ) => {
+  const handlePageChange = (_e: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
     setPageSearchValue(value);
     fetch({
@@ -157,10 +155,12 @@ export const Grants: React.FC = () => {
   ) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleCancelFilters = () => {
     tempAppliedFiltersActions.setAll({ ...appliedFiltersData });
     setAnchorEl(null);
   };
+
   const handleFilterPanelClose = () => {
     handleCancelFilters();
     setAnchorEl(null);
