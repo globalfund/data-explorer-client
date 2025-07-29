@@ -1,11 +1,8 @@
-// scripts/generate-sitemap.ts
-
 import axios, { AxiosResponse } from "axios";
-// import { NON_REDIRECT_ROUTES } from "../src/app/router/data";
 import { generateXML } from "../src/app/utils/generateSitemapFile.ts";
 import get from "lodash/get";
-import { RouteObject } from "react-router-dom";
 import pLimit from "p-limit";
+import { ROUTE_CONFIGS } from "../src/app/router/paths.ts";
 
 interface Sitemap {
   loc: string;
@@ -18,32 +15,7 @@ interface LocationItem {
   items?: LocationItem[];
   value: string;
 }
-export const NON_REDIRECT_ROUTES: RouteObject[] = [
-  { path: "/" },
-  { path: "/geography" },
-  { path: "/grants" },
-  { path: "/grant/:id" },
-  {
-    path: "/grant/:id/:ip",
-  },
-  { path: "/grant/:id/:ip/:tab" },
-  {
-    path: "/location/:id",
-  },
-  { path: "/location/:id/:tab" },
-  {
-    path: "/resource-mobilization",
-  },
-  {
-    path: "/access-to-funding",
-  },
-  {
-    path: "/financial-insights",
-  },
-  {
-    path: "/annual-results",
-  },
-];
+
 const isoDate = new Date().toISOString();
 const API_BASE = process.env.REACT_APP_API || "http://localhost:4200";
 const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3000";
@@ -52,10 +24,10 @@ const PAGE_SIZE = 100;
 
 const extractStaticPaths = (
   routes: any[],
-  paths: Sitemap[] = [],
+  paths: Sitemap[] = []
 ): Sitemap[] => {
   for (const route of routes) {
-    if (route.path?.includes(":") || route.path?.includes("*")) continue;
+    if (route?.path.includes(":") || route?.path.includes("*")) continue;
     paths.push({
       loc: `${BASE_URL}${route.path}`,
       lastmod: isoDate,
@@ -72,7 +44,7 @@ const getGrantsCount = async () => {
 };
 
 const fetchGrantsPerPage = async (
-  pageCount: number,
+  pageCount: number
 ): Promise<AxiosResponse<any>> => {
   return await axios.get(`${API_BASE}/grants/${pageCount}/${PAGE_SIZE}`);
 };
@@ -118,7 +90,7 @@ const flattenLocationIds = (items: LocationItem[], ids: string[] = []) => {
 const main = async () => {
   console.log("Generating sitemap...");
 
-  const staticPaths = extractStaticPaths(NON_REDIRECT_ROUTES);
+  const staticPaths = extractStaticPaths(ROUTE_CONFIGS);
 
   const grants = await fetchAllGrants();
   const limit = pLimit(10);
@@ -138,8 +110,8 @@ const main = async () => {
           changefreq: "monthly",
           priority: 0.8,
         };
-      }),
-    ),
+      })
+    )
   );
 
   const locations = await fetchAllLocations();
