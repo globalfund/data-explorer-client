@@ -4,9 +4,16 @@ import { Header } from "app/components/header";
 import { Footer } from "app/components/footer";
 import { RouteObject } from "react-router-dom";
 import { Redirect } from "app/components/redirect";
-
+import { Location } from "app/pages/location";
+import { Home } from "app/pages/home";
+import { AccessToFundingPage } from "app/pages/datasets/access-to-funding";
+import { AnnualResultsPage } from "app/pages/datasets/annual-results";
+import { GrantImplementationPage } from "app/pages/datasets/grant-implementation";
+import { ResourceMobilizationPage } from "app/pages/datasets/resource-mobilization";
+import { Geography } from "app/pages/geography";
+import { PreGrant, Grant } from "app/pages/grant";
+import { Grants } from "app/pages/grants";
 import { ROUTE_CONFIGS } from "./paths";
-import { lazy } from "react";
 
 const REDIRECT_ROUTES: RouteObject[] = [
   {
@@ -43,24 +50,32 @@ const REDIRECT_ROUTES: RouteObject[] = [
   },
 ];
 
-export function createRoutes(componentLoader: (name: string) => JSX.Element) {
-  return ROUTE_CONFIGS.map((config) => {
-    if (config.redirectTo) {
-      return {
-        path: config.path,
-        element: <Redirect to={config.redirectTo} />,
-      };
-    }
+const COMPONENT_MAP: Record<string, React.ComponentType> = {
+  Home,
+  Geography,
+  Grants,
+  PreGrant,
+  Grant,
+  Location,
+  ResourceMobilizationPage,
+  AccessToFundingPage,
+  GrantImplementationPage,
+  AnnualResultsPage,
+};
 
+const NON_REDIRECT_ROUTES = ROUTE_CONFIGS.map((config) => {
+  if (config.redirectTo) {
     return {
       path: config.path,
-      element: componentLoader(config.componentName!),
+      element: <Redirect to={config.redirectTo} />,
     };
-  });
-}
-const NON_REDIRECT_ROUTES: RouteObject[] = createRoutes((componentName) => {
-  const Component = lazy(() => import(`./components/${componentName}`));
-  return <Component />;
+  }
+
+  const Component = COMPONENT_MAP[config.componentName!];
+  return {
+    path: config.path,
+    element: <Component />,
+  };
 });
 
 export const ROUTES: RouteObject[] = [
