@@ -16,6 +16,7 @@ import { AccessToFunding } from "app/pages/location/views/access-to-funding";
 import { GrantImplementation } from "app/pages/location/views/grant-implementation";
 import { ResourceMobilization } from "app/pages/location/views/resource-mobilization";
 import { useCMSData } from "app/hooks/useCMSData";
+import { Helmet } from "react-helmet-async";
 
 export const Location: React.FC = () => {
   const params = useParams<{ id: string; tab: string }>();
@@ -480,56 +481,64 @@ export const Location: React.FC = () => {
   );
 
   return (
-    <Box
-      padding="50px 0"
-      sx={{
-        "@media (max-width: 767px)": {
-          padding: "32px 0",
-        },
-      }}
-    >
-      <Typography
-        variant="h1"
-        lineHeight={1.2}
-        sx={{
-          "@media (max-width: 767px)": {
-            wordBreak: "break-word",
-          },
-        }}
-      >
-        {dataOverview.name}
-        {loading && <CircularProgress sx={{ marginLeft: "16px" }} />}
-      </Typography>
-      <Typography
-        variant="h4"
-        lineHeight={1}
-        marginBottom="50px"
-        sx={{
-          "@media (max-width: 767px)": {
-            marginBottom: "4px",
-            wordBreak: "break-word",
-          },
-        }}
-      >
-        {dataOverview.region}
-      </Typography>
-      {fullWidthDivider}
-      <DetailPageTabs
-        tabs={tabs}
-        activeTab={params.tab}
-        baseRoute={`/location`}
-      />
-      {fullWidthDivider}
+    <>
+      <Helmet>
+        <link
+          rel="canonical"
+          href={`${window.location.origin}/location/${paramsId}/${params.tab}`}
+        />
+      </Helmet>
       <Box
-        marginTop="40px"
+        padding="50px 0"
         sx={{
           "@media (max-width: 767px)": {
-            marginTop: 0,
+            padding: "32px 0",
           },
         }}
       >
-        {view}
+        <Typography
+          variant="h1"
+          lineHeight={1.2}
+          sx={{
+            "@media (max-width: 767px)": {
+              wordBreak: "break-word",
+            },
+          }}
+        >
+          {dataOverview.name}
+          {loading && <CircularProgress sx={{ marginLeft: "16px" }} />}
+        </Typography>
+        <Typography
+          variant="h4"
+          lineHeight={1}
+          marginBottom="50px"
+          sx={{
+            "@media (max-width: 767px)": {
+              marginBottom: "4px",
+              wordBreak: "break-word",
+            },
+          }}
+        >
+          {dataOverview.region}
+        </Typography>
+        {fullWidthDivider}
+        <DetailPageTabs
+          tabs={tabs}
+          activeTab={params.tab}
+          baseRoute={`/location`}
+        />
+        {fullWidthDivider}
+        <Box
+          marginTop="40px"
+          sx={{
+            "@media (max-width: 767px)": {
+              marginTop: 0,
+            },
+          }}
+        >
+          {view}
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 };

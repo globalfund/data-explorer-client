@@ -16,6 +16,7 @@ import { AccessToFundingBlock4 } from "app/pages/datasets/access-to-funding/bloc
 import { AccessToFundingBlock5 } from "app/pages/datasets/access-to-funding/blocks/block-5";
 import { AccessToFundingBlock6 } from "app/pages/datasets/access-to-funding/blocks/block-6";
 import isEqual from "lodash/isEqual";
+import { Helmet } from "react-helmet-async";
 
 export const AccessToFundingPage: React.FC = () => {
   const cmsData = useCMSData({ returnData: true });
@@ -152,43 +153,51 @@ export const AccessToFundingPage: React.FC = () => {
   // };
 
   return (
-    <DatasetPage
-      title={getCMSDataField(
-        cmsData,
-        "pagesDatasetsAccessToFunding.title",
-        "Access to Funding",
-      )}
-      subtitle=""
-      filterGroups={filterGroups}
-      appliedFilters={pageAppliedFilters}
-      handleResetFilters={handleResetFilters}
-      handleApplyFilters={handleApplyFilters}
-      handleCancelFilters={handleCancelFilters}
-    >
-      <Box width="100%" marginTop="50px">
-        {/* Eligible Countries by Numbers */}
-        <AccessToFundingBlock1
-          filterString={filterString}
-          eligibilityYear={eligibilityYear}
-          eligibilityYears={eligibilityYears}
-          setEligibilityYear={setEligibilityYear}
+    <>
+      <Helmet>
+        <link
+          rel="canonical"
+          href={`${window.location.origin}/access-to-funding`}
         />
-        <FullWidthDivider />
-        {/* Eligibility */}
-        <AccessToFundingBlock2 filterGroups={filterGroups} />
-        <FullWidthDivider />
-        {/* Allocation */}
-        <AccessToFundingBlock3 filterGroups={filterGroups} />
-        <FullWidthDivider />
-        {/* Cumulative Allocation by Cycles */}
-        <AccessToFundingBlock4 filterString={filterString} />
-        <FullWidthDivider />
-        {/* Funding Requests */}
-        <AccessToFundingBlock5 filterGroups={filterGroups} />
-        <FullWidthDivider />
-        {/* Documents */}
-        <AccessToFundingBlock6 filterString={filterString} />
-      </Box>
-    </DatasetPage>
+      </Helmet>
+      <DatasetPage
+        title={getCMSDataField(
+          cmsData,
+          "pagesDatasetsAccessToFunding.title",
+          "Access to Funding",
+        )}
+        subtitle=""
+        filterGroups={filterGroups}
+        appliedFilters={pageAppliedFilters}
+        handleResetFilters={handleResetFilters}
+        handleApplyFilters={handleApplyFilters}
+        handleCancelFilters={handleCancelFilters}
+      >
+        <Box width="100%" marginTop="50px">
+          {/* Eligible Countries by Numbers */}
+          <AccessToFundingBlock1
+            filterString={filterString}
+            eligibilityYear={eligibilityYear}
+            eligibilityYears={eligibilityYears}
+            setEligibilityYear={setEligibilityYear}
+          />
+          <FullWidthDivider />
+          {/* Eligibility */}
+          <AccessToFundingBlock2 filterGroups={filterGroups} />
+          <FullWidthDivider />
+          {/* Allocation */}
+          <AccessToFundingBlock3 filterGroups={filterGroups} />
+          <FullWidthDivider />
+          {/* Cumulative Allocation by Cycles */}
+          <AccessToFundingBlock4 filterString={filterString} />
+          <FullWidthDivider />
+          {/* Funding Requests */}
+          <AccessToFundingBlock5 filterGroups={filterGroups} />
+          <FullWidthDivider />
+          {/* Documents */}
+          <AccessToFundingBlock6 filterString={filterString} />
+        </Box>
+      </DatasetPage>
+    </>
   );
 };

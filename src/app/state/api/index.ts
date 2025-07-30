@@ -24,7 +24,7 @@ export const APIModel = <QueryModel, ResponseModel>(
     state.errorData = payload;
   }),
   onSuccess: action((state, payload: ResponseData<ResponseModel>) => {
-    const { addOnData, ...actualPayload } = payload;
+    const { addOnData, getCountOnly, ...actualPayload } = payload;
     state.loading = false;
     state.success = true;
     if (addOnData) {
@@ -33,10 +33,13 @@ export const APIModel = <QueryModel, ResponseModel>(
         ...state.data,
         count: actualPayload.count,
         // @ts-ignore
-        data: [...state.data.data, ...actualPayload.data],
+        data: getCountOnly ? [] : [...state.data.data, ...actualPayload.data],
       };
     } else {
-      state.data = actualPayload;
+      state.data = {
+        ...actualPayload,
+        data: getCountOnly ? [] : actualPayload.data,
+      };
     }
   }),
   setSuccess: action((state) => {
@@ -73,7 +76,11 @@ export const APIModel = <QueryModel, ResponseModel>(
       )
       .then(
         (resp: AxiosResponse) =>
-          actions.onSuccess({ ...resp.data, addOnData: false }),
+          actions.onSuccess({
+            ...resp.data,
+            addOnData: false,
+            getCountOnly: query.getCountOnly ?? false,
+          }),
         (error: any) => actions.onError(error.response),
       );
   }),
