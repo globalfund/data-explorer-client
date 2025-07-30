@@ -3,6 +3,6 @@ import { ApiCallModel } from "app/state/api/interfaces";
 
 export const HomeBudgetsTreemap: ApiCallModel = {
   ...APIModel(
-    `${process.env.REACT_APP_API}/budgets/treemap/{componentField}/{geographyGrouping}`,
+    `${import.meta.env.VITE_API}/budgets/treemap/{componentField}/{geographyGrouping}`,
   ),
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import * as echarts from "echarts/core";
+import * as echarts from "echarts";
 import { onEchartResize } from "app/utils/onEchartResize";
 
 interface ChartResizeObserverProps {
@@ -19,9 +19,9 @@ export const useChartResizeObserver = (props: ChartResizeObserverProps) => {
       }
       const ro = new ResizeObserver((entries) => {
         window.requestAnimationFrame(() => {
-          if (!Array.isArray(entries) || !entries.length) return;
+          if (!props.chart || !Array.isArray(entries) || !entries.length)
+            return;
           onEchartResize(
-            // @ts-ignore
             props.chart,
             props.containerId,
             props.containerRef.current?.clientHeight,

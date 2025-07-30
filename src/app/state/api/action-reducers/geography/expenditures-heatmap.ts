@@ -3,6 +3,6 @@ import { ApiCallModel } from "app/state/api/interfaces";
 
 export const GeographyExpendituresHeatmap: ApiCallModel = {
   ...APIModel(
-    `${process.env.REACT_APP_API}/expenditures/heatmap/{row}/{column}/{componentField}/Standard View`,
+    `${import.meta.env.VITE_API}/expenditures/heatmap/{row}/{column}/{componentField}/Standard View`,
   ),
 };

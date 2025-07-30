@@ -20,9 +20,9 @@ import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { HomeResultsStats } from "app/pages/home/components/results-stats";
 import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import { PolylineTreeDataItem } from "app/components/charts/polyline-tree/data";
-import { ReactComponent as TableIcon } from "app/assets/vectors/Select_Table.svg";
+import TableIcon from "app/assets/vectors/Select_Table.svg?react";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
-import { ReactComponent as BarChartIcon } from "app/assets/vectors/Select_BarChart.svg";
+import BarChartIcon from "app/assets/vectors/Select_BarChart.svg?react";
 import {
   TABLE_VARIATION_9_COLUMNS,
   TABLE_VARIATION_6_COLUMNS as DOCUMENTS_TABLE_COLUMNS,
@@ -446,7 +446,7 @@ export const AnnualResultsPage: React.FC = () => {
       case dropdownItems[1].value:
         dataTable.forEach((year) => {
           if (year !== null) {
-            // @ts-ignore
+            // @ts-expect-error object is possibly null
             get(year, "_children", []).forEach((component: any) => {
               get(component, "_children", []).forEach((indicator: any) => {
                 result.push([

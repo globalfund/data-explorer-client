@@ -2,5 +2,5 @@ import { APIModel } from "app/state/api";
 import { ApiCallModel } from "app/state/api/interfaces";
 
 export const ResourceMobilizationTable: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/pledges-contributions/table`),
+  ...APIModel(`${import.meta.env.VITE_API}/pledges-contributions/table`),
 };

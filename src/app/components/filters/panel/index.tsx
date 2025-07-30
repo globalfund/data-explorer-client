@@ -13,8 +13,8 @@ import IconButton from "@mui/material/IconButton";
 import { FilterList } from "app/components/filters/list";
 import { FiltersApplied } from "app/components/filters/applied";
 import { FilterPanelProps } from "app/components/filters/panel/data";
-import { ReactComponent as SearchIcon } from "app/assets/vectors/Search_grants.svg";
-import { ReactComponent as CollapseIcon } from "app/assets/vectors/Collapse_ButtonIcon.svg";
+import SearchIcon from "app/assets/vectors/Search_grants.svg?react";
+import CollapseIcon from "app/assets/vectors/Collapse_ButtonIcon.svg?react";
 import {
   FilterModel,
   SearchInput,
@@ -104,12 +104,12 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
                       { name: subOption.name },
                     );
                     if (fParentIndex > -1) {
-                      // @ts-ignore
+                      // @ts-expect-error object possibly undefined
                       options[fGrandParentIndex]?.options[
                         fParentIndex
                       ]?.options.push(subSubOption);
                     } else {
-                      // @ts-ignore
+                      // @ts-expect-error object possibly undefined
                       options[fGrandParentIndex]?.options.push({
                         ...subOption,
                         options: [subSubOption],

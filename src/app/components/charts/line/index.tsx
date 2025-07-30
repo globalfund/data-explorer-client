@@ -232,7 +232,7 @@ export const LineChart: React.FC<LineChartProps> = (props: LineChartProps) => {
           trigger: "axis",
           formatter: (params: any) => {
             const xAxisValue = params[0].axisValue;
-            let items: {
+            const items: {
               name: string;
               cumulative: number;
               disbursement: number;

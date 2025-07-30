@@ -13,7 +13,7 @@ import IconSearch from "@mui/icons-material/Search";
 import { HeaderMenu } from "app/components/header-menu";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { NavLink, useLocation } from "react-router-dom";
-import { ReactComponent as HeaderToolbarLogo } from "app/assets/vectors/HeaderToolbarLogo.svg";
+import HeaderToolbarLogo from "app/assets/vectors/HeaderToolbarLogo.svg?react";
 
 export const Header: React.FC = () => {
   const { pathname, hash } = useLocation();

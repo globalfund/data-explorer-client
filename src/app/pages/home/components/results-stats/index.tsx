@@ -2,10 +2,10 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
-import { ReactComponent as TBIcon } from "app/assets/vectors/TB.svg";
-import { ReactComponent as HIVIcon } from "app/assets/vectors/HIV.svg";
+import TBIcon from "app/assets/vectors/TB.svg?react";
+import HIVIcon from "app/assets/vectors/HIV.svg?react";
 import { applyResultValueFormula } from "app/utils/applyResultValueFormula";
-import { ReactComponent as MalariaIcon } from "app/assets/vectors/Malaria.svg";
+import MalariaIcon from "app/assets/vectors/Malaria.svg?react";
 import {
   StatCompProps,
   HomeResultsStatsProps,

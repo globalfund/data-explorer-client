@@ -36,7 +36,7 @@ export function useCMSCollections(props: Props) {
       countrySummary: [],
     };
     items.forEach((item) => {
-      // @ts-ignore
+      // @ts-expect-error TypeScript does not know the structure of item.data
       formattedData[item.key] = item.data.data
         ?.filter((d: any) => d.attributes.locale === currentLanguage)
         .map((d: any) => ({

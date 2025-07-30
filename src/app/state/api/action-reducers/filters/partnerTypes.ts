@@ -3,7 +3,7 @@ import { ApiCallModel } from "app/state/api/interfaces";
 
 const PartnerTypeFilterOptions: ApiCallModel = {
   ...APIModel(
-    `${process.env.REACT_APP_API}/filter-options/principal-recipients`,
+    `${import.meta.env.VITE_API}/filter-options/principal-recipients`,
   ),
 };
 

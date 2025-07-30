@@ -88,7 +88,7 @@ function roundToSigFigs(value: number, sigFigures: number) {
   }
   if (sigFigures < 1 || sigFigures > 14) {
     // console.log('The sigFigures argument must be between 0 and 15 exclusive.');
-    // eslint-disable-next-line no-param-reassign
+
     sigFigures = 1;
   }
   const roundingPosition =

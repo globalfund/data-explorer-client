@@ -4,8 +4,8 @@ import Box from "@mui/material/Box";
 import { appColors } from "app/theme";
 import Button from "@mui/material/Button";
 import { ChartBlockCyclesProps } from "app/components/chart-block/components/cycles/data";
-import { ReactComponent as CheckboxIcon } from "app/assets/vectors/Checkbox_notchecked.svg";
-import { ReactComponent as CheckboxCheckedIcon } from "app/assets/vectors/Checkbox_checked_2.svg";
+import CheckboxIcon from "app/assets/vectors/Checkbox_notchecked.svg?react";
+import CheckboxCheckedIcon from "app/assets/vectors/Checkbox_checked_2.svg?react";
 
 export const ChartBlockCycles: React.FC<ChartBlockCyclesProps> = (
   props: ChartBlockCyclesProps,

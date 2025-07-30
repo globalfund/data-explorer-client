@@ -160,7 +160,7 @@ export const GrantImplementationPageBlock6: React.FC<
     value: string,
     type: string,
   ) => {
-    let state = structuredClone(
+    const state = structuredClone(
       chart4TempAppliedFiltersData,
     ) as typeof chart4TempAppliedFiltersData;
     switch (type) {
@@ -236,7 +236,7 @@ export const GrantImplementationPageBlock6: React.FC<
   };
 
   const handleRemoveChartFilter = (value: string, types: string[]) => {
-    let state = structuredClone(
+    const state = structuredClone(
       chart4TempAppliedFiltersData,
     ) as typeof chart4TempAppliedFiltersData;
     types.forEach((type) => {

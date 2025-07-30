@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import forEach from "lodash/forEach";
 import { action, thunk } from "easy-peasy";
 import axios, { AxiosResponse } from "axios";
@@ -28,11 +27,10 @@ export const APIModel = <QueryModel, ResponseModel>(
     state.loading = false;
     state.success = true;
     if (addOnData) {
-      // @ts-ignore
       state.data = {
         ...state.data,
         count: actualPayload.count,
-        // @ts-ignore
+        // @ts-expect-error TypeScript doesn't know that data can be an array
         data: getCountOnly ? [] : [...state.data.data, ...actualPayload.data],
       };
     } else {
@@ -55,9 +53,9 @@ export const APIModel = <QueryModel, ResponseModel>(
     let localUrl = url;
     const headers: any = {
       "Content-Type": "application/json",
-      ...(process.env.REACT_APP_CMS_API &&
-      localUrl.includes(process.env.REACT_APP_CMS_API)
-        ? { Authorization: `Bearer ${process.env.REACT_APP_CMS_TOKEN}` }
+      ...(import.meta.env.VITE_CMS_API &&
+      localUrl.includes(import.meta.env.VITE_CMS_API)
+        ? { Authorization: `Bearer ${import.meta.env.VITE_CMS_TOKEN}` }
         : {}),
     };
     if (query.routeParams) {

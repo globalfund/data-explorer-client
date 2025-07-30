@@ -9,8 +9,8 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { ReactComponent as CheckboxIcon } from "app/assets/vectors/Checkbox_notchecked.svg";
-import { ReactComponent as CheckboxCheckedIcon } from "app/assets/vectors/Checkbox_checked.svg";
+import CheckboxIcon from "app/assets/vectors/Checkbox_notchecked.svg?react";
+import CheckboxCheckedIcon from "app/assets/vectors/Checkbox_checked.svg?react";
 import {
   getAppliedFilters,
   FilterListItemContentProps,
@@ -20,7 +20,7 @@ export const FilterListItemContent: React.FC<FilterListItemContentProps> = (
   props: FilterListItemContentProps,
 ) => {
   const [expanded, setExpanded] = React.useState<string | false>(
-    Boolean(props.forceExpand) ? props.name : false,
+    props.forceExpand ? props.name : false,
   );
 
   const tempAppliedFiltersData = useStoreState(
@@ -82,8 +82,7 @@ export const FilterListItemContent: React.FC<FilterListItemContentProps> = (
 
   const handleChange =
     (panel: string) => (e: React.SyntheticEvent, isExpanded: boolean) => {
-      const targetType = get(e, "target.type", "");
-      // @ts-ignore
+      const targetType: string = get(e, "target.type", "");
       if (targetType !== "checkbox") {
         setExpanded(isExpanded ? panel : false);
         props.setCollapseAll(false);

@@ -3,6 +3,6 @@ import { ApiCallModel } from "app/state/api/interfaces";
 
 export const FinancialInsightsBudgetTable: ApiCallModel = {
   ...APIModel(
-    `${process.env.REACT_APP_API}/budgets/table/{componentField}/{geographyGrouping}`,
+    `${import.meta.env.VITE_API}/budgets/table/{componentField}/{geographyGrouping}`,
   ),
 };

@@ -53,19 +53,17 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [selectedPage, setSelectedPage] = React.useState<string | null>(null);
 
-  const handleClick =
-    (isSubPage: boolean, page: HeaderMenuPage) =>
-    (_: React.SyntheticEvent<Element, Event>) => {
-      if (!isSubPage) {
-        const container = document.getElementById("header-menu-tabs-container");
-        setAnchorEl(container);
-        setSelectedPage(page.id);
-      }
-      if (page.link) {
-        navigate(page.link);
-        handleClose();
-      }
-    };
+  const handleClick = (isSubPage: boolean, page: HeaderMenuPage) => () => {
+    if (!isSubPage) {
+      const container = document.getElementById("header-menu-tabs-container");
+      setAnchorEl(container);
+      setSelectedPage(page.id);
+    }
+    if (page.link) {
+      navigate(page.link);
+      handleClose();
+    }
+  };
 
   const handleClose = () => {
     setAnchorEl(null);

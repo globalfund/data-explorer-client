@@ -3,6 +3,6 @@ import { ApiCallModel } from "app/state/api/interfaces";
 
 export const GeographyBudgetSankeyChart: ApiCallModel = {
   ...APIModel(
-    `${process.env.REACT_APP_API}/budgets/sankey/{componentField}/Standard View`,
+    `${import.meta.env.VITE_API}/budgets/sankey/{componentField}/Standard View`,
   ),
 };

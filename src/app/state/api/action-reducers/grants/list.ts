@@ -2,5 +2,5 @@ import { APIModel } from "app/state/api";
 import { ApiCallModel } from "app/state/api/interfaces";
 
 export const GrantList: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/grants/{page}/{pageSize}`),
+  ...APIModel(`${import.meta.env.VITE_API}/grants/{page}/{pageSize}`),
 };

@@ -1,6 +1,6 @@
-import { ReactComponent as TBIcon } from "app/assets/vectors/TB.svg";
-import { ReactComponent as HIVIcon } from "app/assets/vectors/HIV.svg";
-import { ReactComponent as MalariaIcon } from "app/assets/vectors/Malaria.svg";
+import TBIcon from "app/assets/vectors/TB.svg?react";
+import HIVIcon from "app/assets/vectors/HIV.svg?react";
+import MalariaIcon from "app/assets/vectors/Malaria.svg?react";
 
 export interface StatCompProps {
   value: number;

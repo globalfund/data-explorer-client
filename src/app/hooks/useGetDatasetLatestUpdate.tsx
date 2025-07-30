@@ -1,4 +1,3 @@
-import React from "react";
 import get from "lodash/get";
 import find from "lodash/find";
 import { useStoreState } from "app/state/store/hooks";

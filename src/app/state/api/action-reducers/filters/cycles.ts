@@ -4,71 +4,71 @@ import { ApiCallModel } from "app/state/api/interfaces";
 // Global
 
 export const AllocationsCycles: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/allocations/cycles`),
+  ...APIModel(`${import.meta.env.VITE_API}/allocations/cycles`),
 };
 
 export const FundingRequestsCycles: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/funding-requests/cycles`),
+  ...APIModel(`${import.meta.env.VITE_API}/funding-requests/cycles`),
 };
 
 export const AnnualResultsCycles: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/results/cycles`),
+  ...APIModel(`${import.meta.env.VITE_API}/results/cycles`),
 };
 
 export const BudgetsCycles: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/budgets/cycles`),
+  ...APIModel(`${import.meta.env.VITE_API}/budgets/cycles`),
 };
 
 export const FinancialMetricsCycles: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/financial-metrics/cycles`),
+  ...APIModel(`${import.meta.env.VITE_API}/financial-metrics/cycles`),
 };
 
 export const PledgesContributionsCycles: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/pledges-contributions/cycles`),
+  ...APIModel(`${import.meta.env.VITE_API}/pledges-contributions/cycles`),
 };
 
 export const DisbursementsCycles: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/disbursements/cycles`),
+  ...APIModel(`${import.meta.env.VITE_API}/disbursements/cycles`),
 };
 
 export const ExpendituresCycles: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/expenditures/cycles`),
+  ...APIModel(`${import.meta.env.VITE_API}/expenditures/cycles`),
 };
 
 export const EligibilityCycles: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/eligibility/years`),
+  ...APIModel(`${import.meta.env.VITE_API}/eligibility/years`),
 };
 
 // Location/Geography
 
 export const GeographyAllocationsCycles: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/allocations/cycles`),
+  ...APIModel(`${import.meta.env.VITE_API}/allocations/cycles`),
 };
 
 export const GeographyFundingRequestsCycles: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/funding-requests/cycles`),
+  ...APIModel(`${import.meta.env.VITE_API}/funding-requests/cycles`),
 };
 
 export const GeographyAnnualResultsCycles: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/results/cycles`),
+  ...APIModel(`${import.meta.env.VITE_API}/results/cycles`),
 };
 
 export const GeographyBudgetsCycles: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/budgets/cycles`),
+  ...APIModel(`${import.meta.env.VITE_API}/budgets/cycles`),
 };
 
 export const GeographyPledgesContributionsCycles: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/pledges-contributions/cycles`),
+  ...APIModel(`${import.meta.env.VITE_API}/pledges-contributions/cycles`),
 };
 
 export const GeographyDisbursementsCycles: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/disbursements/cycles`),
+  ...APIModel(`${import.meta.env.VITE_API}/disbursements/cycles`),
 };
 
 export const GeographyExpendituresCycles: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/expenditures/cycles`),
+  ...APIModel(`${import.meta.env.VITE_API}/expenditures/cycles`),
 };
 
 export const GeographyEligibilityCycles: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/eligibility/years`),
+  ...APIModel(`${import.meta.env.VITE_API}/eligibility/years`),
 };

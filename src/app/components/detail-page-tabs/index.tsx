@@ -70,7 +70,7 @@ export const DetailPageTabs: React.FC<DetailPageTabsProps> = (
             dropdownSelected={props.dropdown.dropdownSelected}
             handleDropdownChange={props.dropdown.handleDropdownChange}
             width={
-              !mobile ? props.dropdown.width ?? 223 : window.innerWidth - 32
+              !mobile ? (props.dropdown.width ?? 223) : window.innerWidth - 32
             }
           />
         </Box>
