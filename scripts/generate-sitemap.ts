@@ -24,7 +24,7 @@ const PAGE_SIZE = 100;
 
 const extractStaticPaths = (
   routes: any[],
-  paths: Sitemap[] = [],
+  paths: Sitemap[] = []
 ): Sitemap[] => {
   for (const route of routes) {
     if (route?.path.includes(":") || route?.path.includes("*")) continue;
@@ -38,15 +38,17 @@ const extractStaticPaths = (
   }
   return paths;
 };
+
 const getGrantsCount = async () => {
   const { data } = await axios.get(`${API_BASE}/grants/1/all`);
   return get(data, "count", 0);
 };
 
 const fetchGrantsPerPage = async (
-  pageCount: number,
+  pageCount: number
 ): Promise<AxiosResponse<any>> => {
-  return await axios.get(`${API_BASE}/grants/${pageCount}/${PAGE_SIZE}`);
+  const data = await axios.get(`${API_BASE}/grants/${pageCount}/${PAGE_SIZE}`);
+  return data;
 };
 
 const fetchAllGrants = async () => {
@@ -110,8 +112,8 @@ const main = async () => {
           changefreq: "monthly",
           priority: 0.8,
         };
-      }),
-    ),
+      })
+    )
   );
 
   const locations = await fetchAllLocations();
