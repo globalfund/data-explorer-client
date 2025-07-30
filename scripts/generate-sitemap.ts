@@ -47,8 +47,7 @@ const getGrantsCount = async () => {
 const fetchGrantsPerPage = async (
   pageCount: number
 ): Promise<AxiosResponse<any>> => {
-  const data = await axios.get(`${API_BASE}/grants/${pageCount}/${PAGE_SIZE}`);
-  return data;
+  return axios.get(`${API_BASE}/grants/${pageCount}/${PAGE_SIZE}`);
 };
 
 const fetchAllGrants = async () => {
