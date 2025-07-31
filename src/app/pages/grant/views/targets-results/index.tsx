@@ -70,7 +70,7 @@ export const GrantTargetsResults: React.FC = () => {
   }, [params.id, params.ip, tab]);
 
   const columns = React.useMemo(() => {
-    let res = TABLE_VARIATION_4_COLUMNS.slice(0, 5);
+    const res = TABLE_VARIATION_4_COLUMNS.slice(0, 5);
     years.forEach((year) => {
       res.push({
         title: year,

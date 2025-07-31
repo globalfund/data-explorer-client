@@ -1,4 +1,3 @@
-import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { GrantImplementation } from "app/pages/grant/views/grant-implementation";

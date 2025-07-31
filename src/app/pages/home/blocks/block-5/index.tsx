@@ -62,8 +62,8 @@ export const HomeBlock5: React.FC = () => {
 
   const handleChartCycleChange = (cycle: CycleProps) => {
     let cycles = chart5Cycles;
-    let setCycle = setChart5Cycles;
-    let multi = false;
+    const setCycle = setChart5Cycles;
+    const multi = false;
 
     const cycleIndex = cycles.findIndex((c) => c.value === cycle.value);
     if (cycleIndex > -1) {

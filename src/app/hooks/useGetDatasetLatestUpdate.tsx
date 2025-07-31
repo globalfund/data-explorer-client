@@ -1,4 +1,3 @@
-import React from "react";
 import get from "lodash/get";
 import find from "lodash/find";
 import { useStoreState } from "app/state/store/hooks";
@@ -24,12 +23,9 @@ export const useGetDatasetLatestUpdate = (props: {
       }[],
   );
 
-  const value = React.useMemo(() => {
-    if (datasetsLatestUpdate) {
-      return find(datasetsLatestUpdate, { name: props.dataset })?.date;
-    }
-    return "";
-  }, [datasetsLatestUpdate, props.dataset]);
+  if (datasetsLatestUpdate) {
+    return find(datasetsLatestUpdate, { name: props.dataset })?.date;
+  }
 
-  return value;
+  return "";
 };

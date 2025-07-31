@@ -1,4 +1,3 @@
-import React from "react";
 import isEqual from "lodash/isEqual";
 import { useUnmount, useUpdateEffect } from "react-use";
 import { useNavigate, useLocation } from "react-router-dom";

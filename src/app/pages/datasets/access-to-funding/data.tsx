@@ -1,7 +1,7 @@
 import Divider from "@mui/material/Divider";
-import { ReactComponent as TableIcon } from "app/assets/vectors/Select_Table.svg";
-import { ReactComponent as TreemapIcon } from "app/assets/vectors/Select_Treemap.svg";
-import { ReactComponent as SunburstChartIcon } from "app/assets/vectors/Select_SunburstChart.svg";
+import TableIcon from "app/assets/vectors/Select_Table.svg?react";
+import TreemapIcon from "app/assets/vectors/Select_Treemap.svg?react";
+import SunburstChartIcon from "app/assets/vectors/Select_SunburstChart.svg?react";
 
 export const geographyGroupingOptions = [
   { value: "Portfolio View", label: "Portfolio View" },

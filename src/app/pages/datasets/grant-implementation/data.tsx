@@ -1,10 +1,10 @@
 import Divider from "@mui/material/Divider";
-import { ReactComponent as TableIcon } from "app/assets/vectors/Select_Table.svg";
-import { ReactComponent as TreemapIcon } from "app/assets/vectors/Select_Treemap.svg";
-import { ReactComponent as HeatmapIcon } from "app/assets/vectors/Select_Heatmap.svg";
-import { ReactComponent as BarChartIcon } from "app/assets/vectors/Select_BarChart.svg";
-import { ReactComponent as LineChartIcon } from "app/assets/vectors/Select_LineChart.svg";
-import { ReactComponent as SankeyChartIcon } from "app/assets/vectors/Select_SankeyChart.svg";
+import TableIcon from "app/assets/vectors/Select_Table.svg?react";
+import TreemapIcon from "app/assets/vectors/Select_Treemap.svg?react";
+import HeatmapIcon from "app/assets/vectors/Select_Heatmap.svg?react";
+import BarChartIcon from "app/assets/vectors/Select_BarChart.svg?react";
+import LineChartIcon from "app/assets/vectors/Select_LineChart.svg?react";
+import SankeyChartIcon from "app/assets/vectors/Select_SankeyChart.svg?react";
 
 export const geographyGroupingOptions = [
   { value: "Standard View", label: "Standard View" },

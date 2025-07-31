@@ -3,7 +3,7 @@ import { appColors } from "app/theme";
 import { styled } from "@mui/material/styles";
 import MenuItem from "@mui/material/MenuItem";
 import Menu, { MenuProps } from "@mui/material/Menu";
-import { ReactComponent as ChevronDown } from "app/assets/vectors/ChevronDown.svg";
+import ChevronDown from "app/assets/vectors/ChevronDown.svg?react";
 import { DropdownProps } from "app/components/dropdown/data";
 import { CategoryButton } from "app/components/search/styles";
 

@@ -1,9 +1,9 @@
 import React from "react";
 import get from "lodash/get";
-import { useTitle, useUnmount } from "react-use";
 import Grid from "@mui/material/Grid";
 import { Link } from "react-router-dom";
 import { Table } from "app/components/table";
+import { useTitle, useUnmount } from "react-use";
 import useDebounce from "react-use/lib/useDebounce";
 import { GrantCard } from "app/components/grant-card";
 import { GrantsLayout } from "app/pages/grants/layout";
@@ -17,6 +17,7 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import Pagination from "app/components/pagination";
 import isEqual from "lodash/isEqual";
+import { Helmet } from "react-helmet-async";
 
 export const Grants: React.FC = () => {
   useTitle("The Data Explorer - Grants");
@@ -41,6 +42,7 @@ export const Grants: React.FC = () => {
   const tempAppliedFiltersActions = useStoreActions(
     (actions) => actions.TempAppliedFiltersState,
   );
+
   useUnmount(() => {
     tempAppliedFiltersActions.clearAll();
   });
@@ -94,10 +96,7 @@ export const Grants: React.FC = () => {
   const tempAppliedFiltersData = useStoreState(
     (state) => state.TempAppliedFiltersState,
   );
-  const handlePageChange = (
-    event: React.ChangeEvent<unknown>,
-    value: number,
-  ) => {
+  const handlePageChange = (_e: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
     setPageSearchValue(value);
     fetch({
@@ -156,10 +155,12 @@ export const Grants: React.FC = () => {
   ) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleCancelFilters = () => {
     tempAppliedFiltersActions.setAll({ ...appliedFiltersData });
     setAnchorEl(null);
   };
+
   const handleFilterPanelClose = () => {
     handleCancelFilters();
     setAnchorEl(null);
@@ -376,29 +377,34 @@ export const Grants: React.FC = () => {
   }, [search]);
 
   return (
-    <GrantsLayout
-      view={view}
-      viewResult={viewResult}
-      pagination={pagination}
-      handleViewChange={handleViewChange}
-      search={search}
-      showSearch={showSearch}
-      handleSearch={handleSearch}
-      handleSearchIconClick={handleSearchIconClick}
-      handleFilterButtonClick={handleFilterButtonClick}
-      handleFilterPanelClose={handleFilterPanelClose}
-      filterGroups={filterGroups}
-      pageAppliedFilters={pageAppliedFilters}
-      handleResetFilters={handleResetFilters}
-      anchorEl={anchorEl}
-      loading={loading}
-      searchInputRef={searchInputRef}
-      latestUpdateDate={latestUpdateDate}
-      setPage={setPage}
-      page={page}
-      setPageSearchValue={setPageSearchValue}
-      handleCancelFilters={handleCancelFilters}
-      handleApplyFilters={handleApplyFilters}
-    />
+    <>
+      <Helmet>
+        <link rel="canonical" href={`${window.location.origin}/grants`} />
+      </Helmet>
+      <GrantsLayout
+        view={view}
+        viewResult={viewResult}
+        pagination={pagination}
+        handleViewChange={handleViewChange}
+        search={search}
+        showSearch={showSearch}
+        handleSearch={handleSearch}
+        handleSearchIconClick={handleSearchIconClick}
+        handleFilterButtonClick={handleFilterButtonClick}
+        handleFilterPanelClose={handleFilterPanelClose}
+        filterGroups={filterGroups}
+        pageAppliedFilters={pageAppliedFilters}
+        handleResetFilters={handleResetFilters}
+        anchorEl={anchorEl}
+        loading={loading}
+        searchInputRef={searchInputRef}
+        latestUpdateDate={latestUpdateDate}
+        setPage={setPage}
+        page={page}
+        setPageSearchValue={setPageSearchValue}
+        handleCancelFilters={handleCancelFilters}
+        handleApplyFilters={handleApplyFilters}
+      />
+    </>
   );
 };

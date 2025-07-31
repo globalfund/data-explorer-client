@@ -1,7 +1,7 @@
 import * as echarts from "echarts";
 
 export function onEchartResize(
-  chart: echarts.ECharts,
+  chart: echarts.EChartsType,
   id: string,
   height?: number,
 ) {

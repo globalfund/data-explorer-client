@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from "react";
 import get from "lodash/get";
 import Box from "@mui/material/Box";
@@ -171,10 +169,7 @@ export function SearchLayout(props: SearchLayoutProps) {
         <ClickAwayListener
           onClickAway={(event) => {
             console.log(event.target);
-            if (
-              // @ts-ignore
-              get(event.target, "tagName", "") !== "INPUT"
-            ) {
+            if ((get(event.target, "tagName", "") as string) !== "INPUT") {
               props.setValue("");
             }
           }}

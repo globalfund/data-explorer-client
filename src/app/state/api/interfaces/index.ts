@@ -37,15 +37,17 @@ export interface RequestValues<T> {
   addOnData?: boolean;
   isCMSfetch?: boolean;
   filterString?: string;
+  getCountOnly?: boolean;
   routeParams?: {
     [key: string]: string;
   };
 }
 
 export interface ResponseData<T> {
-  data: any[];
+  data: T[];
   count: number;
   addOnData?: boolean;
+  getCountOnly?: boolean;
 }
 
 export interface Errors {
@@ -72,15 +74,13 @@ export interface ApiModel<QueryModel, ResponseModel> {
   post: Thunk<ApiModel<QueryModel, ResponseModel>, RequestValues<QueryModel>>;
 }
 
-export interface ApiCallParams {}
-
 export interface ApiResponseModel {
   data: any[];
   count: number;
 }
 
 export type ApiCallModel = ApiModel<
-  ApiCallParams | ApiCallParams[] | string,
+  object | object[] | string,
   ApiResponseModel
 >;
 export interface CMSFormattedCollectionsModel {
@@ -98,7 +98,7 @@ export interface CMSFormattedCollectionsModel {
 }
 // CMS API Call model for
 export type CMSApiCallModel = ApiModel<
-  CMSApiCallParams,
+  object,
   | CMSApiComponentsChartsEligibility
   | CMSApiComponentsSearch
   | CMSApiComponentsHeader
@@ -125,8 +125,6 @@ export type CMSApiCallModel = ApiModel<
   | CMSApiPagesGrantTargetResults
   | CMSApiCountrySummary
 >;
-
-export interface CMSApiCallParams {}
 
 export interface StoreModel {
   // homepage

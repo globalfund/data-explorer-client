@@ -3,6 +3,6 @@ import { ApiCallModel } from "app/state/api/interfaces";
 
 export const FinancialInsightsExpendituresBarChart: ApiCallModel = {
   ...APIModel(
-    `${process.env.REACT_APP_API}/expenditures/expandable-bar/{componentField}/{geographyGrouping}`,
+    `${import.meta.env.VITE_API}/expenditures/expandable-bar/{componentField}/{geographyGrouping}`,
   ),
 };

@@ -1,5 +1,5 @@
 import JSPDF from "jspdf";
-// @ts-ignore
+// @ts-expect-error no types for dom-to-image
 import domtoimage from "dom-to-image";
 
 export async function exportChart(
@@ -83,8 +83,8 @@ export async function exportChart(
       const csv = [];
       csv.push(data.headers.join(","));
       const rows = data.data;
-      for (let i = 0; i < rows.length; i++) {
-        csv.push(Object.values(rows[i]).join(","));
+      for (const value of rows) {
+        csv.push(Object.values(value).join(","));
       }
       const csvString = csv.join("\n");
       const link = document.createElement("a");

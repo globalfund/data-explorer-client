@@ -20,14 +20,15 @@ import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { HomeResultsStats } from "app/pages/home/components/results-stats";
 import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import { PolylineTreeDataItem } from "app/components/charts/polyline-tree/data";
-import { ReactComponent as TableIcon } from "app/assets/vectors/Select_Table.svg";
+import TableIcon from "app/assets/vectors/Select_Table.svg?react";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
-import { ReactComponent as BarChartIcon } from "app/assets/vectors/Select_BarChart.svg";
+import BarChartIcon from "app/assets/vectors/Select_BarChart.svg?react";
 import {
   TABLE_VARIATION_9_COLUMNS,
   TABLE_VARIATION_6_COLUMNS as DOCUMENTS_TABLE_COLUMNS,
 } from "app/components/table/data";
 import isEqual from "lodash/isEqual";
+import { Helmet } from "react-helmet-async";
 
 const dropdownItems = [
   { label: "Polyline Tree", value: "Polyline Tree", icon: <BarChartIcon /> },
@@ -445,7 +446,7 @@ export const AnnualResultsPage: React.FC = () => {
       case dropdownItems[1].value:
         dataTable.forEach((year) => {
           if (year !== null) {
-            // @ts-ignore
+            // @ts-expect-error object is possibly null
             get(year, "_children", []).forEach((component: any) => {
               get(component, "_children", []).forEach((indicator: any) => {
                 result.push([
@@ -510,149 +511,158 @@ export const AnnualResultsPage: React.FC = () => {
       }
     }
   }, [location.hash]);
-
+  const canonicalUrl = `${window.location.origin}/annual-results`;
   return (
-    <DatasetPage
-      title={get(cmsData, "pagesDatasetsAnnualResults.title", "Annual Results")}
-      filterGroups={filterGroups}
-      appliedFilters={pageAppliedFilters}
-      handleResetFilters={handleResetFilters}
-      toolbarRightContent={toolbarRightContent}
-      subtitle={get(
-        cmsData,
-        "pagesDatasetsAnnualResults.subtitle",
-        "Indicator results reported as part of annual Results Report.",
-      )}
-      handleApplyFilters={handleApplyFilters}
-      handleCancelFilters={handleCancelFilters}
-    >
-      <Box width="100%" marginTop="50px">
-        <HomeResultsStats stats={dataStats} loading={loadingResults} />
-        <Box height="50px" />
-        <Divider
-          sx={{
-            left: 0,
-            width: "100vw",
-            position: "absolute",
-            borderColor: "#CFD4DA",
-            "@media (max-width: 767px)": {
-              display: "none",
-            },
-          }}
-        />
-        <Box
-          paddingTop="50px"
-          sx={{
-            "#content": {
-              padding: 0,
-            },
-          }}
-        >
-          <DatasetChartBlock
-            id="annual-results"
-            exportName="annual-results"
-            title={get(
-              cmsData,
-              "pagesDatasetsAnnualResults.chartTitle",
-              "Annual Results",
-            )}
-            subtitle=""
-            data={exportChartData}
-            loading={loadingResults}
-            dropdownItems={dropdownItems}
-            latestUpdate={latestUpdateDate}
-            dropdownSelected={dropdownSelected}
-            handleApplyFilters={handleApplyChartFilters}
-            handleCancelFilters={handleCancelChartFilters}
-            handleDropdownChange={handleSelectionChange}
-            disableCollapse={dropdownSelected === dropdownItems[1].value}
-            empty={chartEmpty}
-            filterGroups={filterGroups}
-            toggleFilter={handleToggleChartFilter}
-            removeFilter={handleRemoveChartFilter}
-            handleResetFilters={handleResetChartFilters}
-            appliedFilters={chartTempAppliedFilters}
-            tempAppliedFiltersData={chartTempAppliedFiltersData}
-            infoType="global"
+    <>
+      <Helmet>
+        <link rel="canonical" href={canonicalUrl} />
+      </Helmet>
+      <DatasetPage
+        title={get(
+          cmsData,
+          "pagesDatasetsAnnualResults.title",
+          "Annual Results",
+        )}
+        filterGroups={filterGroups}
+        appliedFilters={pageAppliedFilters}
+        handleResetFilters={handleResetFilters}
+        toolbarRightContent={toolbarRightContent}
+        subtitle={get(
+          cmsData,
+          "pagesDatasetsAnnualResults.subtitle",
+          "Indicator results reported as part of annual Results Report.",
+        )}
+        handleApplyFilters={handleApplyFilters}
+        handleCancelFilters={handleCancelFilters}
+      >
+        <Box width="100%" marginTop="50px">
+          <HomeResultsStats stats={dataStats} loading={loadingResults} />
+          <Box height="50px" />
+          <Divider
+            sx={{
+              left: 0,
+              width: "100vw",
+              position: "absolute",
+              borderColor: "#CFD4DA",
+              "@media (max-width: 767px)": {
+                display: "none",
+              },
+            }}
+          />
+          <Box
+            paddingTop="50px"
+            sx={{
+              "#content": {
+                padding: 0,
+              },
+            }}
           >
-            {chartContent}
-          </DatasetChartBlock>
-        </Box>
-        <Divider
-          sx={{
-            left: 0,
-            width: "100vw",
-            marginTop: "50px",
-            position: "absolute",
-            borderColor: "#CFD4DA",
-            "@media (max-width: 767px)": {
-              display: "none",
-            },
-          }}
-        />
-        <Box
-          paddingTop="50px"
-          sx={{
-            "#content": {
-              padding: 0,
-            },
-          }}
-        >
-          <Box id="documents" padding="50px 0" data-cy="documents-block">
-            <Typography variant="h2" lineHeight={1.2}>
-              {getCMSDataField(
+            <DatasetChartBlock
+              id="annual-results"
+              exportName="annual-results"
+              title={get(
                 cmsData,
-                "pagesDatasetsAnnualResults.documentsTitle",
-                "Documents",
+                "pagesDatasetsAnnualResults.chartTitle",
+                "Annual Results",
               )}
-            </Typography>
-            <Divider
-              sx={{
-                margin: "20px 0",
-                "@media (max-width: 767px)": {
-                  display: "none",
-                },
-              }}
-            />
-            {loadingDocumentsTable && (
-              <Box
-                width="100%"
-                height="100%"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <CircularProgress />
-              </Box>
-            )}
-            {dataDocumentsTable.length === 0 && tableSearch2.length === 0 ? (
-              <Box
-                width="100%"
-                height="100%"
-                minHeight="250px"
-                alignItems="center"
-                justifyContent="center"
-                display={!loadingDocumentsTable ? "flex" : "none"}
-              >
-                <Typography>No data available</Typography>
-              </Box>
-            ) : (
-              <React.Fragment>
-                <Box height="40px" />
-                <TableContainer
-                  dataTree
-                  id="documents-table"
-                  search={tableSearch2}
-                  dataTreeStartExpanded
-                  data={dataDocumentsTable}
-                  onSearchChange={onSearchChange2}
-                  columns={DOCUMENTS_TABLE_COLUMNS}
-                />
-              </React.Fragment>
-            )}
+              subtitle=""
+              data={exportChartData}
+              loading={loadingResults}
+              dropdownItems={dropdownItems}
+              latestUpdate={latestUpdateDate}
+              dropdownSelected={dropdownSelected}
+              handleApplyFilters={handleApplyChartFilters}
+              handleCancelFilters={handleCancelChartFilters}
+              handleDropdownChange={handleSelectionChange}
+              disableCollapse={dropdownSelected === dropdownItems[1].value}
+              empty={chartEmpty}
+              filterGroups={filterGroups}
+              toggleFilter={handleToggleChartFilter}
+              removeFilter={handleRemoveChartFilter}
+              handleResetFilters={handleResetChartFilters}
+              appliedFilters={chartTempAppliedFilters}
+              tempAppliedFiltersData={chartTempAppliedFiltersData}
+              infoType="global"
+            >
+              {chartContent}
+            </DatasetChartBlock>
+          </Box>
+          <Divider
+            sx={{
+              left: 0,
+              width: "100vw",
+              marginTop: "50px",
+              position: "absolute",
+              borderColor: "#CFD4DA",
+              "@media (max-width: 767px)": {
+                display: "none",
+              },
+            }}
+          />
+          <Box
+            paddingTop="50px"
+            sx={{
+              "#content": {
+                padding: 0,
+              },
+            }}
+          >
+            <Box id="documents" padding="50px 0" data-cy="documents-block">
+              <Typography variant="h2" lineHeight={1.2}>
+                {getCMSDataField(
+                  cmsData,
+                  "pagesDatasetsAnnualResults.documentsTitle",
+                  "Documents",
+                )}
+              </Typography>
+              <Divider
+                sx={{
+                  margin: "20px 0",
+                  "@media (max-width: 767px)": {
+                    display: "none",
+                  },
+                }}
+              />
+              {loadingDocumentsTable && (
+                <Box
+                  width="100%"
+                  height="100%"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  <CircularProgress />
+                </Box>
+              )}
+              {dataDocumentsTable.length === 0 && tableSearch2.length === 0 ? (
+                <Box
+                  width="100%"
+                  height="100%"
+                  minHeight="250px"
+                  alignItems="center"
+                  justifyContent="center"
+                  display={!loadingDocumentsTable ? "flex" : "none"}
+                >
+                  <Typography>No data available</Typography>
+                </Box>
+              ) : (
+                <React.Fragment>
+                  <Box height="40px" />
+                  <TableContainer
+                    dataTree
+                    id="documents-table"
+                    search={tableSearch2}
+                    dataTreeStartExpanded
+                    data={dataDocumentsTable}
+                    onSearchChange={onSearchChange2}
+                    columns={DOCUMENTS_TABLE_COLUMNS}
+                  />
+                </React.Fragment>
+              )}
+            </Box>
           </Box>
         </Box>
-      </Box>
-    </DatasetPage>
+      </DatasetPage>
+    </>
   );
 };

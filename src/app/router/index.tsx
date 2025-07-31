@@ -7,10 +7,8 @@ import {
   RouterProvider,
   createBrowserRouter,
 } from "react-router-dom";
-
 export default function Router() {
   useInitialLoad();
-
   const setUpRouter = () => {
     const result: RouteObject[] = ROUTES;
     return createBrowserRouter(result);

@@ -69,8 +69,8 @@ export const LocationGrantImplementationBlock3 = () => {
 
   const handleChartCycleChange = (cycle: CycleProps) => {
     let cycles: CycleProps[] = chart3Cycles;
-    let setCycle = setChart3Cycles;
-    let multi = false;
+    const setCycle = setChart3Cycles;
+    const multi = false;
 
     const cycleIndex = cycles.findIndex((c) => c.value === cycle.value);
     if (cycleIndex > -1) {

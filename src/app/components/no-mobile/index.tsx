@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Container from "@mui/material/Container";
-import { ReactComponent as HeaderToolbarLogo } from "app/assets/vectors/HeaderToolbarLogo.svg";
+import HeaderToolbarLogo from "app/assets/vectors/HeaderToolbarLogo.svg?react";
 
 export const NoMobile: React.FC = () => {
   return (

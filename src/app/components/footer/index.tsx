@@ -4,7 +4,7 @@ import { appColors } from "app/theme";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import { ReactComponent as FooterLogo } from "app/assets/vectors/FooterLogo.svg";
+import FooterLogo from "app/assets/vectors/FooterLogo.svg?react";
 import {
   SM,
   FooterSM,
@@ -198,7 +198,7 @@ export const Footer: React.FC = () => {
                 </FooterHeader>
                 <FooterExternalLink
                   target="_blank"
-                  href="http://www.theglobalfund.org"
+                  href="https://www.theglobalfund.org"
                 >
                   {getCMSDataField(
                     cmsData,

@@ -2,10 +2,10 @@ import React from "react";
 import { appColors } from "app/theme";
 import styled from "styled-components";
 import Typography from "@mui/material/Typography";
-import { ReactComponent as TwitterIcon } from "app/assets/vectors/SM_Twitter.svg";
-import { ReactComponent as FacebookIcon } from "app/assets/vectors/SM_Facebook.svg";
-import { ReactComponent as LinkedInIcon } from "app/assets/vectors/SM_LinkedIn.svg";
-import { ReactComponent as InstagramIcon } from "app/assets/vectors/SM_Instagram.svg";
+import TwitterIcon from "app/assets/vectors/SM_Twitter.svg?react";
+import FacebookIcon from "app/assets/vectors/SM_Facebook.svg?react";
+import LinkedInIcon from "app/assets/vectors/SM_LinkedIn.svg?react";
+import InstagramIcon from "app/assets/vectors/SM_Instagram.svg?react";
 
 export const FooterContainer = styled.footer`
   width: 100vw;

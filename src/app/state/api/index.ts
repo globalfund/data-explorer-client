@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import forEach from "lodash/forEach";
 import { action, thunk } from "easy-peasy";
 import axios, { AxiosResponse } from "axios";
@@ -24,19 +23,21 @@ export const APIModel = <QueryModel, ResponseModel>(
     state.errorData = payload;
   }),
   onSuccess: action((state, payload: ResponseData<ResponseModel>) => {
-    const { addOnData, ...actualPayload } = payload;
+    const { addOnData, getCountOnly, ...actualPayload } = payload;
     state.loading = false;
     state.success = true;
     if (addOnData) {
-      // @ts-ignore
       state.data = {
         ...state.data,
         count: actualPayload.count,
-        // @ts-ignore
-        data: [...state.data.data, ...actualPayload.data],
+        // @ts-expect-error TypeScript doesn't know that data can be an array
+        data: getCountOnly ? [] : [...state.data.data, ...actualPayload.data],
       };
     } else {
-      state.data = actualPayload;
+      state.data = {
+        ...actualPayload,
+        data: getCountOnly ? [] : actualPayload.data,
+      };
     }
   }),
   setSuccess: action((state) => {
@@ -52,9 +53,9 @@ export const APIModel = <QueryModel, ResponseModel>(
     let localUrl = url;
     const headers: any = {
       "Content-Type": "application/json",
-      ...(process.env.REACT_APP_CMS_API &&
-      localUrl.includes(process.env.REACT_APP_CMS_API)
-        ? { Authorization: `Bearer ${process.env.REACT_APP_CMS_TOKEN}` }
+      ...(import.meta.env.VITE_CMS_API &&
+      localUrl.includes(import.meta.env.VITE_CMS_API)
+        ? { Authorization: `Bearer ${import.meta.env.VITE_CMS_TOKEN}` }
         : {}),
     };
     if (query.routeParams) {
@@ -73,7 +74,11 @@ export const APIModel = <QueryModel, ResponseModel>(
       )
       .then(
         (resp: AxiosResponse) =>
-          actions.onSuccess({ ...resp.data, addOnData: false }),
+          actions.onSuccess({
+            ...resp.data,
+            addOnData: false,
+            getCountOnly: query.getCountOnly ?? false,
+          }),
         (error: any) => actions.onError(error.response),
       );
   }),

@@ -173,14 +173,14 @@ export function SunburstChart(props: SunburstProps) {
       (selection) => selection.dataIndex === item?.dataIndex,
     );
     if (index !== -1) {
-      const item = selections.slice(0, index + 1);
-      setSelections(item);
-      setCenterLabel("in " + item[item.length - 1].item.name);
+      const item2 = selections.slice(0, index + 1);
+      setSelections(item2);
+      setCenterLabel("in " + item2[item2.length - 1].item.name);
     }
   };
 
   const flattenData = React.useMemo(() => {
-    let data: any[] = [];
+    const data: any[] = [];
     props.data.forEach((item) => {
       data.push(item);
       if (item.children) {

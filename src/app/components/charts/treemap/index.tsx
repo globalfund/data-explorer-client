@@ -74,7 +74,7 @@ export const Treemap: React.FC<TreemapProps> = (props: TreemapProps) => {
       const option: echarts.ComposeOption<
         TreemapSeriesOption | TooltipComponentOption
       > = {
-        // @ts-ignore
+        // @ts-expect-error ECharts type mismatch
         series: {
           top: 0,
           left: 0,

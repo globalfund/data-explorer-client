@@ -57,7 +57,7 @@ export const DownloadPanel: React.FC<ChartBlockButtonToolbarProps> = (
       .then(() => {
         setFeedbackMessage(`Asset downloaded as ${type.toUpperCase()}.`);
       })
-      .catch((e) => {
+      .catch(() => {
         setFeedbackMessage("Oops, something went wrong.");
       });
   };
