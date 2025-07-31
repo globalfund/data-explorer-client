@@ -305,9 +305,7 @@ export const AccessToFundingBlock3: React.FC<AccessToFundingBlock3Props> = (
     value: string,
     type: string,
   ) => {
-    const state = structuredClone(
-      chart2TempAppliedFiltersData,
-    ) as typeof chart2TempAppliedFiltersData;
+    const state = structuredClone(chart2TempAppliedFiltersData);
     switch (type) {
       case "geography":
       case "geographyType":
@@ -328,16 +326,12 @@ export const AccessToFundingBlock3: React.FC<AccessToFundingBlock3Props> = (
       default:
         break;
     }
-    setChart2TempAppliedFiltersData(
-      structuredClone(state) as typeof chart2TempAppliedFiltersData,
-    );
+    setChart2TempAppliedFiltersData(structuredClone(state));
     setChart2TempAppliedFilters([...state.locations, ...state.components]);
   };
 
   const handleRemoveChartFilter = (value: string, types: string[]) => {
-    const state = structuredClone(
-      chart2TempAppliedFiltersData,
-    ) as typeof chart2TempAppliedFiltersData;
+    const state = structuredClone(chart2TempAppliedFiltersData);
     types.forEach((type) => {
       switch (type) {
         case "geography":
@@ -352,9 +346,7 @@ export const AccessToFundingBlock3: React.FC<AccessToFundingBlock3Props> = (
           break;
       }
     });
-    setChart2TempAppliedFiltersData(
-      structuredClone(state) as typeof chart2TempAppliedFiltersData,
-    );
+    setChart2TempAppliedFiltersData(structuredClone(state));
     setChart2TempAppliedFilters([...state.locations, ...state.components]);
   };
 
@@ -380,11 +372,7 @@ export const AccessToFundingBlock3: React.FC<AccessToFundingBlock3Props> = (
 
   const handleApplyChartFilters = () => {
     if (isEqual(chart2AppliedFilters, chart2TempAppliedFiltersData)) return;
-    setChart2AppliedFiltersData(
-      structuredClone(
-        chart2TempAppliedFiltersData,
-      ) as typeof chart2TempAppliedFiltersData,
-    );
+    setChart2AppliedFiltersData(structuredClone(chart2TempAppliedFiltersData));
     setChart2AppliedFilters(chart2TempAppliedFilters);
   };
 

@@ -178,17 +178,13 @@ export const AnnualResultsPage: React.FC = () => {
   };
 
   const handleCancelFilters = () => {
-    const clone = structuredClone(
-      appliedFiltersData,
-    ) as typeof appliedFiltersData;
+    const clone = structuredClone(appliedFiltersData);
     tempAppliedFiltersActions.setAll(clone);
   };
 
   const handleApplyFilters = () => {
     if (isEqual(appliedFiltersData, tempAppliedFiltersData)) return;
-    const clone = structuredClone(
-      tempAppliedFiltersData,
-    ) as typeof tempAppliedFiltersData;
+    const clone = structuredClone(tempAppliedFiltersData);
     appliedFiltersActions.setAll(clone);
   };
 
@@ -214,11 +210,7 @@ export const AnnualResultsPage: React.FC = () => {
 
   const handleApplyChartFilters = () => {
     if (isEqual(chartAppliedFilters, chartTempAppliedFiltersData)) return;
-    setChartAppliedFiltersData(
-      structuredClone(
-        chartTempAppliedFiltersData,
-      ) as typeof chartTempAppliedFiltersData,
-    );
+    setChartAppliedFiltersData(structuredClone(chartTempAppliedFiltersData));
     setChartAppliedFilters(chartTempAppliedFilters);
   };
 
@@ -227,9 +219,7 @@ export const AnnualResultsPage: React.FC = () => {
     value: string,
     type: string,
   ) => {
-    const state = structuredClone(
-      chartTempAppliedFiltersData,
-    ) as typeof chartTempAppliedFiltersData;
+    const state = structuredClone(chartTempAppliedFiltersData);
     switch (type) {
       case "geography":
       case "geographyType":
@@ -250,14 +240,12 @@ export const AnnualResultsPage: React.FC = () => {
       default:
         break;
     }
-    setChartTempAppliedFiltersData(structuredClone(state) as typeof state);
+    setChartTempAppliedFiltersData(structuredClone(state));
     setChartTempAppliedFilters([...state.locations, ...state.components]);
   };
 
   const handleRemoveChartFilter = (value: string, types: string[]) => {
-    const state = structuredClone(
-      chartTempAppliedFiltersData,
-    ) as typeof chartTempAppliedFiltersData;
+    const state = structuredClone(chartTempAppliedFiltersData);
     types.forEach((type) => {
       switch (type) {
         case "geography":
@@ -272,7 +260,7 @@ export const AnnualResultsPage: React.FC = () => {
           break;
       }
     });
-    setChartTempAppliedFiltersData(structuredClone(state) as typeof state);
+    setChartTempAppliedFiltersData(structuredClone(state));
     setChartTempAppliedFilters([...state.locations, ...state.components]);
   };
 
@@ -380,11 +368,11 @@ export const AnnualResultsPage: React.FC = () => {
 
   const onSearchChange = (search: string) => {
     setTableSearch(search);
-    let filterString = chartFilterString;
+    let localFilterString = chartFilterString;
     if (search) {
-      filterString += `${filterString.length > 0 ? "&" : ""}q=${search}`;
+      localFilterString += `${localFilterString.length > 0 ? "&" : ""}q=${search}`;
     }
-    fetchTable({ filterString });
+    fetchTable({ filterString: localFilterString });
   };
 
   const onSearchChange2 = (search: string) => {

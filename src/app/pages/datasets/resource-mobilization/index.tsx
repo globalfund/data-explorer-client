@@ -200,9 +200,7 @@ export const ResourceMobilizationPage: React.FC = () => {
     value: string,
     type: string,
   ) => {
-    const state = structuredClone(
-      chartTempAppliedFiltersData,
-    ) as typeof chartTempAppliedFiltersData;
+    const state = structuredClone(chartTempAppliedFiltersData);
     switch (type) {
       case "donor":
         if (checked) {
@@ -230,7 +228,7 @@ export const ResourceMobilizationPage: React.FC = () => {
       default:
         break;
     }
-    setChartTempAppliedFiltersData(structuredClone(state) as typeof state);
+    setChartTempAppliedFiltersData(structuredClone(state));
     setChartTempAppliedFilters([
       ...state.donorTypes,
       ...state.donors,
@@ -266,11 +264,7 @@ export const ResourceMobilizationPage: React.FC = () => {
 
   const handleApplyChartFilters = () => {
     if (isEqual(chartAppliedFilters, chartTempAppliedFiltersData)) return;
-    setChartAppliedFiltersData(
-      structuredClone(
-        chartTempAppliedFiltersData,
-      ) as typeof chartTempAppliedFiltersData,
-    );
+    setChartAppliedFiltersData(structuredClone(chartTempAppliedFiltersData));
     setChartAppliedFilters(chartTempAppliedFilters);
   };
 

@@ -75,9 +75,7 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
     value: string,
     type: string,
   ) => {
-    const state = structuredClone(
-      chart3TempAppliedFiltersData,
-    ) as typeof chart3TempAppliedFiltersData;
+    const state = structuredClone(chart3TempAppliedFiltersData);
     switch (type) {
       case "geography":
       case "geographyType":
@@ -98,14 +96,12 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
       default:
         break;
     }
-    setChart3TempAppliedFiltersData(structuredClone(state) as typeof state);
+    setChart3TempAppliedFiltersData(structuredClone(state));
     setChart3TempAppliedFilters([...state.locations, ...state.components]);
   };
 
   const handleRemoveChartFilter = (value: string, types: string[]) => {
-    const state = structuredClone(
-      chart3TempAppliedFiltersData,
-    ) as typeof chart3TempAppliedFiltersData;
+    const state = structuredClone(chart3TempAppliedFiltersData);
     types.forEach((type) => {
       switch (type) {
         case "geography":
@@ -120,7 +116,7 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
           break;
       }
     });
-    setChart3TempAppliedFiltersData(structuredClone(state) as typeof state);
+    setChart3TempAppliedFiltersData(structuredClone(state));
     setChart3TempAppliedFilters([...state.locations, ...state.components]);
   };
 
@@ -145,11 +141,7 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
   };
   const handleApplyChartFilters = () => {
     if (isEqual(chart3AppliedFilters, chart3TempAppliedFiltersData)) return;
-    setChart3AppliedFiltersData(
-      structuredClone(
-        chart3TempAppliedFiltersData,
-      ) as typeof chart3TempAppliedFiltersData,
-    );
+    setChart3AppliedFiltersData(structuredClone(chart3TempAppliedFiltersData));
     setChart3AppliedFilters(chart3TempAppliedFilters);
   };
 
