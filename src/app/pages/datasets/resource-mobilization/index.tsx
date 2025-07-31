@@ -20,9 +20,9 @@ import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
-import { ReactComponent as TableIcon } from "app/assets/vectors/Select_Table.svg";
+import TableIcon from "app/assets/vectors/Select_Table.svg?react";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
-import { ReactComponent as BarChartIcon } from "app/assets/vectors/Select_BarChart.svg";
+import BarChartIcon from "app/assets/vectors/Select_BarChart.svg?react";
 import { ExpandableHorizontalBar } from "app/components/charts/expandable-horizontal-bar";
 import { ExpandableHorizontalBarChartDataItem } from "app/components/charts/expandable-horizontal-bar/data";
 import isEqual from "lodash/isEqual";
@@ -415,7 +415,7 @@ export const ResourceMobilizationPage: React.FC = () => {
   }, [dropdownSelected, dataBarChart, dataTable, tableSearch]);
 
   const chartData = React.useMemo(() => {
-    let data: (string | number)[][] = [];
+    const data: (string | number)[][] = [];
     switch (dropdownSelected) {
       case dropdownItems[0].value:
         dataBarChart.forEach((item) => {

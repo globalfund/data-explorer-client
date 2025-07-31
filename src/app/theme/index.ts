@@ -327,7 +327,6 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           padding: "4px 0",
-          // userSelect: "none",
           alignItems: "flex-start",
         },
       },
@@ -442,8 +441,6 @@ const SECONDARY_COLOR_4 = "#98A1AA";
 const SECONDARY_COLOR_5 = "#ADB5BD";
 const SECONDARY_COLOR_6 = "#CFD4DA";
 const SECONDARY_COLOR_7 = "#DFE3E6";
-const SECONDARY_COLOR_8 = "#F1F3F5";
-const SECONDARY_COLOR_9 = "#FFFFFF";
 const SECONDARY_COLOR_10 = "#F5F5F7";
 const SECONDARY_COLOR_11 = "#C7CDD1";
 const SECONDARY_COLOR_12 = "#595c70";
@@ -477,8 +474,6 @@ const GRAPH_COLOR_20 = "#97FF46";
 const GRAPH_COLOR_21 = "#60FF46";
 const GRAPH_COLOR_22 = "#73D3CD";
 const GRAPH_COLOR_23 = "#11AD6B";
-
-const GRADIENT = "linear-gradient(90deg, #cdd4df 0%, #252c34 100%)";
 
 export const appColors = {
   COMMON: {

@@ -5,10 +5,10 @@ import Divider from "@mui/material/Divider";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
-import { ReactComponent as InfoIcon } from "app/assets/vectors/Info_GreyBG.svg";
-import { ReactComponent as ShareIcon } from "app/assets/vectors/Share_GreyBG.svg";
-import { ReactComponent as DownloadIcon } from "app/assets/vectors/Download_GreyBG.svg";
-// import { ReactComponent as FavoriteIcon } from "app/assets/vectors/Favorite_GreyBG.svg";
+import InfoIcon from "app/assets/vectors/Info_GreyBG.svg?react";
+import ShareIcon from "app/assets/vectors/Share_GreyBG.svg?react";
+import DownloadIcon from "app/assets/vectors/Download_GreyBG.svg?react";
+// import FavoriteIcon from "app/assets/vectors/Favorite_GreyBG.svg?react";
 import {
   InfoPanel,
   SharePanel,

@@ -11,13 +11,12 @@ import FormGroup from "@mui/material/FormGroup";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { TabulatorFull as Tabulator } from "tabulator-tables";
 import { TableContainerProps } from "app/components/table-container/data";
-import { ReactComponent as SearchIcon } from "app/assets/vectors/TableToolbarSearch.svg";
-import { ReactComponent as ColumnsIcon } from "app/assets/vectors/TableToolbarColumns.svg";
-// import { ReactComponent as FilterIcon } from "app/assets/vectors/TableToolbarFilter.svg";
-// import { ReactComponent as DownloadIcon } from "app/assets/vectors/TableToolbarDownload.svg";
-import { ReactComponent as FullscreenIcon } from "app/assets/vectors/TableToolbarFullscreen.svg";
+import SearchIcon from "app/assets/vectors/TableToolbarSearch.svg?react";
+import ColumnsIcon from "app/assets/vectors/TableToolbarColumns.svg?react";
+// import FilterIcon from "app/assets/vectors/TableToolbarFilter.svg?react";
+// import DownloadIcon from "app/assets/vectors/TableToolbarDownload.svg?react";
+import FullscreenIcon from "app/assets/vectors/TableToolbarFullscreen.svg?react";
 
 export const TableContainer: React.FC<TableContainerProps> = (
   props: TableContainerProps,

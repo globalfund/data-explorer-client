@@ -2,5 +2,5 @@ import { APIModel } from "app/state/api";
 import { ApiCallModel } from "app/state/api/interfaces";
 
 export const AnnualResultsTable: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/results/table`),
+  ...APIModel(`${import.meta.env.VITE_API}/results/table`),
 };

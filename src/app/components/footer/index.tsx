@@ -4,7 +4,7 @@ import { appColors } from "app/theme";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import { ReactComponent as FooterLogo } from "app/assets/vectors/FooterLogo.svg";
+import FooterLogo from "app/assets/vectors/FooterLogo.svg?react";
 import {
   SM,
   FooterSM,

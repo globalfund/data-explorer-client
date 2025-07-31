@@ -11,8 +11,8 @@ import { FilterPanel } from "app/components/filters/panel";
 // import UnfoldMoreIcon from "@mui/icons-material/UnfoldMore";
 import CircularProgress from "@mui/material/CircularProgress";
 import { DatasetChartBlockProps } from "app/pages/datasets/common/chart-block/data";
-// import { ReactComponent as CollapseIcon } from "app/assets/vectors/Collapse_ButtonIcon.svg";
-// import { ReactComponent as SettingsIcon } from "app/assets/vectors/Settings_ButtonIcon.svg";
+// import CollapseIcon from "app/assets/vectors/Collapse_ButtonIcon.svg?react";
+// import SettingsIcon from "app/assets/vectors/Settings_ButtonIcon.svg?react";
 import { ChartBlockButtonToolbar } from "app/components/chart-block/components/button-toolbar";
 
 export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (

@@ -2,19 +2,17 @@ import { APIModel } from "app/state/api";
 import { ApiCallModel } from "app/state/api/interfaces";
 
 const DisbursementsTimeCycle: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/disbursements/time-cycle`),
+  ...APIModel(`${import.meta.env.VITE_API}/disbursements/time-cycle`),
 };
 
 export default DisbursementsTimeCycle;
 
 export const DisbursementsTimeCycleDrilldown: ApiCallModel = {
-  ...APIModel(
-    `${process.env.REACT_APP_API}/disbursements/time-cycle/drilldown`,
-  ),
+  ...APIModel(`${import.meta.env.VITE_API}/disbursements/time-cycle/drilldown`),
 };
 
 export const DisbursementsTimeCycleDrilldown2: ApiCallModel = {
   ...APIModel(
-    `${process.env.REACT_APP_API}/disbursements/time-cycle/drilldown/2`,
+    `${import.meta.env.VITE_API}/disbursements/time-cycle/drilldown/2`,
   ),
 };

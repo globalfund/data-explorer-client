@@ -180,7 +180,7 @@ export function SunburstChart(props: SunburstProps) {
   };
 
   const flattenData = React.useMemo(() => {
-    let data: any[] = [];
+    const data: any[] = [];
     props.data.forEach((item) => {
       data.push(item);
       if (item.children) {

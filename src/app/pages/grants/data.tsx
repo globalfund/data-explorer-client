@@ -1,5 +1,5 @@
 import TableChartIcon from "@mui/icons-material/TableChart";
-import { ReactComponent as CardView } from "app/assets/vectors/CardView.svg";
+import CardView from "app/assets/vectors/CardView.svg?react";
 
 export interface GrantsLayoutProps {
   view: string;

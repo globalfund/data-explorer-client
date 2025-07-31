@@ -2,15 +2,15 @@ import { APIModel } from "app/state/api";
 import { ApiCallModel } from "app/state/api/interfaces";
 
 const ResultsList: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/results`),
+  ...APIModel(`${import.meta.env.VITE_API}/results`),
 };
 
 export default ResultsList;
 
 export const ResultsStats: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/results-stats`),
+  ...APIModel(`${import.meta.env.VITE_API}/results-stats`),
 };
 
 export const ResultsYears: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/results/cycles`),
+  ...APIModel(`${import.meta.env.VITE_API}/results/cycles`),
 };

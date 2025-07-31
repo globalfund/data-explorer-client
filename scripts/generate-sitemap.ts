@@ -17,14 +17,14 @@ interface LocationItem {
 }
 
 const isoDate = new Date().toISOString();
-const API_BASE = process.env.REACT_APP_API || "http://localhost:4200";
-const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3000";
+const API_BASE = import.meta.env.VITE_API || "http://localhost:4200";
+const BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:3000";
 
 const PAGE_SIZE = 100;
 
 const extractStaticPaths = (
   routes: any[],
-  paths: Sitemap[] = []
+  paths: Sitemap[] = [],
 ): Sitemap[] => {
   for (const route of routes) {
     if (route?.path.includes(":") || route?.path.includes("*")) continue;
@@ -45,7 +45,7 @@ const getGrantsCount = async () => {
 };
 
 const fetchGrantsPerPage = async (
-  pageCount: number
+  pageCount: number,
 ): Promise<AxiosResponse<any>> => {
   return axios.get(`${API_BASE}/grants/${pageCount}/${PAGE_SIZE}`);
 };
@@ -111,8 +111,8 @@ const main = async () => {
           changefreq: "monthly",
           priority: 0.8,
         };
-      })
-    )
+      }),
+    ),
   );
 
   const locations = await fetchAllLocations();

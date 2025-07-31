@@ -3,6 +3,6 @@ import { ApiCallModel } from "app/state/api/interfaces";
 
 export const ResourceMobilizationExpandableBarChart: ApiCallModel = {
   ...APIModel(
-    `${process.env.REACT_APP_API}/pledges-contributions/expandable-bar`,
+    `${import.meta.env.VITE_API}/pledges-contributions/expandable-bar`,
   ),
 };

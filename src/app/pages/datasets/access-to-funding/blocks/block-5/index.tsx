@@ -75,7 +75,7 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
     value: string,
     type: string,
   ) => {
-    let state = structuredClone(
+    const state = structuredClone(
       chart3TempAppliedFiltersData,
     ) as typeof chart3TempAppliedFiltersData;
     switch (type) {
@@ -103,7 +103,7 @@ export const AccessToFundingBlock5: React.FC<AccessToFundingBlock5Props> = (
   };
 
   const handleRemoveChartFilter = (value: string, types: string[]) => {
-    let state = structuredClone(
+    const state = structuredClone(
       chart3TempAppliedFiltersData,
     ) as typeof chart3TempAppliedFiltersData;
     types.forEach((type) => {

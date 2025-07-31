@@ -125,9 +125,9 @@ export const Geography: React.FC = () => {
   React.useEffect(() => {
     const updatedData = [...dataList];
     if (search.length > 0) {
-      for (let item of updatedData) {
-        for (let subItem of item.items) {
-          for (let subItemItem of subItem.items) {
+      for (const item of updatedData) {
+        for (const subItem of item.items) {
+          for (const subItemItem of subItem.items) {
             const highlighted = subItemItem.name
               .toLowerCase()
               .includes(search.toLowerCase());

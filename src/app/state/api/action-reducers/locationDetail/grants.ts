@@ -2,7 +2,7 @@ import { APIModel } from "app/state/api";
 import { ApiCallModel } from "app/state/api/interfaces";
 
 const LocationGrants: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/grants/radial`),
+  ...APIModel(`${import.meta.env.VITE_API}/grants/radial`),
 };
 
 export default LocationGrants;

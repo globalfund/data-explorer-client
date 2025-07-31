@@ -40,33 +40,33 @@ export interface CMSApiComponentsSearch {
 }
 
 export interface CMSApiComponentsFooter {
-  data: {};
+  data: { [key: string]: { [key: string]: string } };
 }
 
 export interface CMSApiComponentsHeader {
-  data: {};
+  data: { [key: string]: { [key: string]: string } };
 }
 export interface CMSApiPagesDatasets {
-  data: {};
+  data: { [key: string]: { [key: string]: string } };
 }
 
 export interface CMSApiPagesGeography {
-  data: {};
+  data: { [key: string]: { [key: string]: string } };
 }
 export interface CMSApiPagesGrantDetail {
-  data: {};
+  data: { [key: string]: { [key: string]: string } };
 }
 
 export interface CMSApiPagesGrants {
-  data: {};
+  data: { [key: string]: { [key: string]: string } };
 }
 
 export interface CMSApiPagesHome {
-  data: {};
+  data: { [key: string]: { [key: string]: string } };
 }
 
 export interface CMSApiPagesLocation {
-  data: {};
+  data: { [key: string]: { [key: string]: string } };
 }
 
 export interface CMSApiGeneral {
@@ -77,55 +77,55 @@ export interface CMSApiGeneral {
 }
 
 export interface CMSApiPagesDatatsetsAccessToFunding {
-  data: {};
+  data: { [key: string]: { [key: string]: string } };
 }
 
 export interface CMSApiPagesDatatsetsGrantImplementation {
-  data: {};
+  data: { [key: string]: { [key: string]: string } };
 }
 
 export interface CMSApiPagesDatatsetsAnnualResults {
-  data: {};
+  data: { [key: string]: { [key: string]: string } };
 }
 
 export interface CMSApiPagesDatatsetsResourceMobilization {
-  data: {};
+  data: { [key: string]: { [key: string]: string } };
 }
 
 export interface CMSApiPagesLocationAccessToFunding {
-  data: {};
+  data: { [key: string]: { [key: string]: string } };
 }
 
 export interface CMSApiPagesLocationGrantImplementation {
-  data: {};
+  data: { [key: string]: { [key: string]: string } };
 }
 
 export interface CMSApiPagesLocationOverview {
-  data: {};
+  data: { [key: string]: { [key: string]: string } };
 }
 
 export interface CMSApiPagesLocationResourceMobilization {
-  data: {};
+  data: { [key: string]: { [key: string]: string } };
 }
 
 export interface CMSApiPagesLocationResults {
-  data: {};
+  data: { [key: string]: { [key: string]: string } };
 }
 
 export interface CMSApiPagesGrantDocuments {
-  data: {};
+  data: { [key: string]: { [key: string]: string } };
 }
 
 export interface CMSApiPagesGrantGrantImplementation {
-  data: {};
+  data: { [key: string]: { [key: string]: string } };
 }
 
 export interface CMSApiPagesGrantOverview {
-  data: {};
+  data: { [key: string]: { [key: string]: string } };
 }
 
 export interface CMSApiPagesGrantTargetResults {
-  data: {};
+  data: { [key: string]: { [key: string]: string } };
 }
 
 export interface CMSApiCountrySummary {

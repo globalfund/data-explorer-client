@@ -8,8 +8,8 @@ export default defineConfig({
   viewportWidth: 1440,
   e2e: {
     env: {
-      api_url: process.env.REACT_APP_API,
+      api_url: process.env.VITE_API,
     },
-    baseUrl: process.env.REACT_APP_BASE_URL,
+    baseUrl: process.env.VITE_BASE_URL,
   },
 });
