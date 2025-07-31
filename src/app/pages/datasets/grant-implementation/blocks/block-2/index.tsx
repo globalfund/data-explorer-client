@@ -151,9 +151,7 @@ export const GrantImplementationPageBlock2: React.FC<
     value: string,
     type: string,
   ) => {
-    const state = structuredClone(
-      chart1TempAppliedFiltersData,
-    ) as typeof chart1TempAppliedFiltersData;
+    const state = structuredClone(chart1TempAppliedFiltersData);
     switch (type) {
       case "geography":
       case "geographyType":
@@ -214,7 +212,7 @@ export const GrantImplementationPageBlock2: React.FC<
       default:
         break;
     }
-    setChart1TempAppliedFiltersData(structuredClone(state) as typeof state);
+    setChart1TempAppliedFiltersData(structuredClone(state));
     setChart1TempAppliedFilters([
       ...state.locations,
       ...state.components,
@@ -227,9 +225,7 @@ export const GrantImplementationPageBlock2: React.FC<
   };
 
   const handleRemoveChartFilter = (value: string, types: string[]) => {
-    const state = structuredClone(
-      chart1TempAppliedFiltersData,
-    ) as typeof chart1TempAppliedFiltersData;
+    const state = structuredClone(chart1TempAppliedFiltersData);
     types.forEach((type) => {
       switch (type) {
         case "geography":
@@ -264,7 +260,7 @@ export const GrantImplementationPageBlock2: React.FC<
           break;
       }
     });
-    setChart1TempAppliedFiltersData(structuredClone(state) as typeof state);
+    setChart1TempAppliedFiltersData(structuredClone(state));
     setChart1TempAppliedFilters([
       ...state.locations,
       ...state.components,
@@ -283,11 +279,7 @@ export const GrantImplementationPageBlock2: React.FC<
 
   const handleApplyChartFilters = () => {
     if (isEqual(chart1AppliedFilters, chart1TempAppliedFiltersData)) return;
-    setChart1AppliedFiltersData(
-      structuredClone(
-        chart1TempAppliedFiltersData,
-      ) as typeof chart1TempAppliedFiltersData,
-    );
+    setChart1AppliedFiltersData(structuredClone(chart1TempAppliedFiltersData));
     setChart1AppliedFilters(chart1TempAppliedFilters);
   };
 
