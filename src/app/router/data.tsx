@@ -14,6 +14,7 @@ import { Geography } from "app/pages/geography";
 import { PreGrant, Grant } from "app/pages/grant";
 import { Grants } from "app/pages/grants";
 import { ROUTE_CONFIGS } from "./paths";
+import { ReportBuilder } from "app/pages/report-builder/main";
 
 const REDIRECT_ROUTES: RouteObject[] = [
   {
@@ -61,6 +62,7 @@ const COMPONENT_MAP: Record<string, React.ComponentType> = {
   AccessToFundingPage,
   GrantImplementationPage,
   AnnualResultsPage,
+  ReportBuilder,
 };
 
 const NON_REDIRECT_ROUTES = ROUTE_CONFIGS.map((config) => {
@@ -75,6 +77,13 @@ const NON_REDIRECT_ROUTES = ROUTE_CONFIGS.map((config) => {
   return {
     path: config.path,
     element: <Component />,
+    children: config.children?.map((child) => {
+      const ChildComponent = COMPONENT_MAP[child.componentName!];
+      return {
+        path: child.path,
+        element: <ChildComponent />,
+      };
+    }),
   };
 });
 

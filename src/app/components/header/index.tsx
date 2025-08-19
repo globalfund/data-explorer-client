@@ -1,6 +1,7 @@
 import React from "react";
 import { colors } from "app/theme";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
@@ -42,6 +43,7 @@ export const Header: React.FC = () => {
   };
 
   const searchContent = React.useMemo(() => {
+    const inReportBuilder = pathname.includes("/report-builder");
     if (mobile) {
       return (
         <Box
@@ -169,33 +171,51 @@ export const Header: React.FC = () => {
             <Search hocClose={() => setSearchOpen(false)} />
           </Box>
         )}
-        <Tooltip title={!searchOpen ? "Search" : "Close"}>
-          <IconButton
-            data-cy="header-search-btn"
-            onClick={onSearchBtnClick}
-            sx={{
-              padding: 0,
-              marginLeft: "-24px",
-              background: colors.primary.black,
-              "> svg": {
-                transform: "scale(0.7)",
-                color: colors.primary.white,
-              },
-              "&:hover": {
-                opacity: 0.8,
+        {!inReportBuilder && (
+          <Tooltip title={!searchOpen ? "Search" : "Close"}>
+            <IconButton
+              data-cy="header-search-btn"
+              onClick={onSearchBtnClick}
+              sx={{
+                padding: 0,
+                marginLeft: "-24px",
                 background: colors.primary.black,
                 "> svg": {
+                  transform: "scale(0.7)",
                   color: colors.primary.white,
                 },
-              },
-            }}
-          >
-            {!searchOpen ? <IconSearch /> : <IconClose />}
-          </IconButton>
-        </Tooltip>
+                "&:hover": {
+                  opacity: 0.8,
+                  background: colors.primary.black,
+                  "> svg": {
+                    color: colors.primary.white,
+                  },
+                },
+              }}
+            >
+              {!searchOpen ? <IconSearch /> : <IconClose />}
+            </IconButton>
+          </Tooltip>
+        )}
+        <Button
+          variant="contained"
+          component={NavLink}
+          to={!inReportBuilder ? "/report-builder" : "/"}
+          sx={{
+            fontWeight: "700",
+            marginLeft: "20px",
+            padding: "6px 10px",
+            lineHeight: "normal",
+            textTransform: "none",
+            color: colors.primary.white,
+            background: colors.primary.black,
+          }}
+        >
+          {inReportBuilder ? "Go Back to Explorer" : "Report Builder"}
+        </Button>
       </Box>
     );
-  }, [mobile, searchOpen]);
+  }, [mobile, searchOpen, pathname]);
 
   React.useEffect(() => {
     setTimeout(() => {

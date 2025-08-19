@@ -102,8 +102,10 @@ export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
         anchorEl={!!anchorEl}
         data-cy="category-dropdown-button"
       >
-        {dropdownSelectedIcon}
-        <span style={{ letterSpacing: "0", fontSize: "14px" }}>
+        {dropdownSelectedIcon ?? props.fixedIcon}
+        <span
+          style={{ letterSpacing: "0", fontSize: props.fontSize ?? "14px" }}
+        >
           {props.dropdownSelected}
         </span>
         <ChevronDown />
@@ -135,8 +137,9 @@ export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
             disableTouchRipple
             onClick={handleItemClick(item.label)}
             data-cy={`category-dropdown-item`}
-            sx={
-              props.dropdownSelected === item.label
+            sx={{
+              fontSize: props.fontSize ?? "14px",
+              ...(props.dropdownSelected === item.label
                 ? {
                     color: appColors.SEARCH.DROPDOWN_ITEM_ACTIVE_COLOR,
                     background:
@@ -145,8 +148,8 @@ export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
                       filter: "invert(1)",
                     },
                   }
-                : {}
-            }
+                : {}),
+            }}
           >
             {item.icon}
             <span>{item.label}</span>

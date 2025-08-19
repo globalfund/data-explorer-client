@@ -1,9 +1,9 @@
-// Abstract route definitions without components
 export interface RouteConfig {
   path: string;
+  importFrom?: string;
   redirectTo?: string;
   componentName?: string;
-  importFrom?: string; // Optional import path for the component
+  children?: RouteConfig[];
 }
 
 // types.ts
@@ -50,7 +50,6 @@ export const ROUTE_CONFIGS: RouteConfig[] = [
     componentName: "Location",
     importFrom: "app/pages/location",
   },
-
   {
     path: "/resource-mobilization",
     componentName: "ResourceMobilizationPage",
@@ -70,5 +69,10 @@ export const ROUTE_CONFIGS: RouteConfig[] = [
     path: "/annual-results",
     componentName: "AnnualResultsPage",
     importFrom: "app/pages/datasets/annual-results",
+  },
+  {
+    path: "/report-builder",
+    componentName: "ReportBuilder",
+    importFrom: "app/pages/report-builder/main",
   },
 ];
