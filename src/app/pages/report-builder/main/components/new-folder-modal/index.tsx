@@ -8,8 +8,10 @@ import IconButton from "@mui/material/IconButton";
 
 export const ReportBuilderNewFolderModal: React.FC<{
   open: boolean;
+  nameValue: string;
   onClose: () => void;
-}> = ({ open, onClose }) => {
+  setNameValue: (value: string) => void;
+}> = ({ open, onClose, nameValue, setNameValue }) => {
   return (
     <Modal open={open} onClose={onClose}>
       <Box
@@ -63,7 +65,12 @@ export const ReportBuilderNewFolderModal: React.FC<{
               },
             }}
           >
-            <input type="text" placeholder="Folder name" />
+            <input
+              type="text"
+              value={nameValue}
+              placeholder="Folder name"
+              onChange={(e) => setNameValue(e.target.value)}
+            />
           </Box>
           <Box
             sx={{
@@ -77,7 +84,18 @@ export const ReportBuilderNewFolderModal: React.FC<{
             <Button variant="outlined" onClick={onClose}>
               Cancel
             </Button>
-            <Button variant="outlined">Create Folder</Button>
+            <Button
+              variant="contained"
+              disabled={!nameValue}
+              sx={{
+                fontWeight: "400",
+                color: "#ffffff",
+                textTransform: "none",
+                background: "#3154f4",
+              }}
+            >
+              Create Folder
+            </Button>
           </Box>
         </Box>
       </Box>

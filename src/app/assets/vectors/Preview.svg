@@ -1,0 +1,15 @@
+<svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+  <g clip-path="url(#clip0_9325_2984)">
+    <path
+      d="M1.5 18V0L16.5 9L1.5 18Z"
+      stroke="#373D43"
+      stroke-width="1.35"
+      stroke-linejoin="round"
+    />
+  </g>
+  <defs>
+    <clipPath id="clip0_9325_2984">
+      <rect width="18" height="18" fill="white" />
+    </clipPath>
+  </defs>
+</svg>

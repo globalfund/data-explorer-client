@@ -5,11 +5,12 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
+import { Link } from "react-router-dom";
 
 export const ReportBuilderNewReportModal: React.FC<{
   open: boolean;
-  onClose: () => void;
   nameValue: string;
+  onClose: () => void;
   descriptionValue: string;
   setNameValue: (value: string) => void;
   setDescriptionValue: (value: string) => void;
@@ -155,7 +156,21 @@ export const ReportBuilderNewReportModal: React.FC<{
             <Button variant="outlined" onClick={onClose}>
               Cancel
             </Button>
-            <Button variant="outlined">Create Report</Button>
+            <Button
+              component={Link}
+              variant="contained"
+              LinkComponent={Link}
+              to={"/report-builder/new"}
+              disabled={!nameValue || !descriptionValue}
+              sx={{
+                fontWeight: "400",
+                color: "#ffffff",
+                textTransform: "none",
+                background: "#3154f4",
+              }}
+            >
+              Create Report
+            </Button>
           </Box>
         </Box>
       </Box>

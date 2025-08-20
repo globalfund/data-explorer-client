@@ -19,6 +19,8 @@ export const ReportBuilder: React.FC = () => {
   );
   const [selectedSort, setSelectedSort] = React.useState("Date Created");
   const [newFolderModalOpen, setNewFolderModalOpen] = React.useState(false);
+  const [newFolderModalNameValue, setNewFolderModalNameValue] =
+    React.useState("");
   const [newReportModalOpen, setNewReportModalOpen] = React.useState(false);
   const [newReportModalNameValue, setNewReportModalNameValue] =
     React.useState("");
@@ -130,6 +132,8 @@ export const ReportBuilder: React.FC = () => {
       <ReportBuilderNewFolderModal
         open={newFolderModalOpen}
         onClose={handleNewFolderModalClose}
+        nameValue={newFolderModalNameValue}
+        setNameValue={setNewFolderModalNameValue}
       />
       <ReportBuilderNewReportModal
         open={newReportModalOpen}
