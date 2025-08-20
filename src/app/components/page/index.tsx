@@ -8,13 +8,7 @@ import { useUrlFilters } from "app/hooks/useUrlFilters";
 import { useRouteListener } from "app/hooks/useRouteListener";
 import { useScrollToAnchor } from "app/hooks/useScrollToAnchor";
 import { ReportBuilderPageHeader } from "app/pages/report-builder/builder/components/header";
-
-const containerSx = {
-  minHeight: "calc(100vh - 58px - 256px - 150px)",
-  "@media (max-width: 1200px)": {
-    padding: "0 16px",
-  },
-};
+import { ReportBuilderPageToolbar } from "app/pages/report-builder/builder/components/toolbar";
 
 export const Page: React.FC = () => {
   useUrlFilters();
@@ -31,8 +25,17 @@ export const Page: React.FC = () => {
     return (
       <React.Fragment>
         <ReportBuilderPageHeader />
-        <Box sx={containerSx}>
-          <Box id="main">
+        <ReportBuilderPageToolbar />
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            padding: "20px 0",
+            bgcolor: "#f8f9fa",
+            minHeight: "calc(100vh - 58px - 58px)",
+          }}
+        >
+          <Box id="main" sx={{ width: "100%", minHeight: "100%" }}>
             <Outlet />
           </Box>
         </Box>
@@ -43,7 +46,16 @@ export const Page: React.FC = () => {
   return (
     <React.Fragment>
       <Header />
-      <Container maxWidth="lg" disableGutters sx={containerSx}>
+      <Container
+        maxWidth="lg"
+        disableGutters
+        sx={{
+          minHeight: "calc(100vh - 58px - 256px - 150px)",
+          "@media (max-width: 1200px)": {
+            padding: "0 16px",
+          },
+        }}
+      >
         <Box id="main">
           <Outlet />
         </Box>
