@@ -14,7 +14,7 @@ export const ReportBuilderPageHeader: React.FC = () => {
   const [nameValue, setNameValue] = React.useState("");
 
   return (
-    <Box sx={{ zIndex: 1000, flexGrow: 1, top: 0, position: "sticky" }}>
+    <Box sx={{ zIndex: 1400, flexGrow: 1, top: 0, position: "sticky" }}>
       <AppBar position="static" sx={{ background: "#F8F8F8" }}>
         <Toolbar
           sx={{

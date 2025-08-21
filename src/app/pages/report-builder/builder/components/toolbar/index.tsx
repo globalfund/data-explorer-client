@@ -42,7 +42,7 @@ export const ReportBuilderPageToolbar: React.FC = () => {
   const open = Boolean(anchorEl);
 
   return (
-    <Box sx={{ zIndex: 1000, flexGrow: 1, top: 58, position: "sticky" }}>
+    <Box sx={{ zIndex: 1400, flexGrow: 1, top: 58, position: "sticky" }}>
       <Toolbar
         sx={{
           padding: "10px !important",
@@ -115,6 +115,8 @@ export const ReportBuilderPageToolbar: React.FC = () => {
           </Button>
           <Menu
             open={open}
+            keepMounted
+            disableScrollLock
             anchorEl={anchorEl}
             onClose={handleClose}
             transformOrigin={{
