@@ -482,12 +482,19 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
 };
 
 export const RichEditor: React.FC<{
-  setEditor: (editor: Editor) => void;
-}> = ({ setEditor }) => {
+  setClicked: (clicked: boolean) => void;
+  setEditor: (editor: Editor | null) => void;
+}> = ({ setEditor, setClicked }) => {
   const editor = useEditor({
     extensions,
     autofocus: true,
     onFocus: () => setEditor(editor),
+    onBlur: () => {
+      setEditor(null);
+      if (editor.isEmpty) {
+        setClicked(false);
+      }
+    },
   });
 
   return (

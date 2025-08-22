@@ -1,9 +1,12 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Close from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
-import ArrowBack from "@mui/icons-material/ArrowBack";
+import IconButton from "@mui/material/IconButton";
 import { BarChart } from "app/components/charts/bar";
+import ArrowBack from "@mui/icons-material/ArrowBack";
+import { useStoreActions } from "app/state/store/hooks";
 import { DraggableModal } from "app/components/draggable-modal";
 import { STORY_DATA_VARIANT_1 } from "app/components/charts/bar/data";
 import {
@@ -11,10 +14,16 @@ import {
   CustomiseChartStep,
 } from "app/pages/report-builder/builder/components/chart/steps";
 
-export const ReportBuilderPageChart: React.FC = () => {
+export const ReportBuilderPageChart: React.FC<{
+  id: string;
+}> = ({ id }) => {
   const [step, setStep] = React.useState(1);
   const [clicked, setClicked] = React.useState(false);
   const [chartReady, setChartReady] = React.useState(false);
+
+  const removeItem = useStoreActions(
+    (actions) => actions.RBReportItemsState.removeItem,
+  );
 
   const title = React.useMemo(() => {
     if (step === 1) {
@@ -85,10 +94,15 @@ export const ReportBuilderPageChart: React.FC = () => {
   return (
     <Box
       sx={{
-        flex: 1,
         width: "100%",
         display: "flex",
+        position: "relative",
         flexDirection: "column",
+        "&:hover": {
+          ".top-right-actions": {
+            display: "flex",
+          },
+        },
       }}
     >
       {!chartReady && (
@@ -134,6 +148,11 @@ export const ReportBuilderPageChart: React.FC = () => {
           <BarChart data={STORY_DATA_VARIANT_1} valueLabels={{ value: "" }} />
         </Box>
       )}
+      <Box className="top-right-actions">
+        <IconButton onClick={() => removeItem(id)}>
+          <Close fontSize="small" />
+        </IconButton>
+      </Box>
       <DraggableModal
         width={550}
         title={title}

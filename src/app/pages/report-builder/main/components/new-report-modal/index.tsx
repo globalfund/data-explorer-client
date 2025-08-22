@@ -35,7 +35,7 @@ export const ReportBuilderNewReportModal: React.FC<{
   };
 
   return (
-    <Modal open={open} onClose={onClose}>
+    <Modal disableScrollLock open={open} onClose={onClose}>
       <Box
         sx={{
           top: "50%",

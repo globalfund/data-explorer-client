@@ -138,6 +138,10 @@ import { countrySummary } from "../api/action-reducers/cms/collections";
 import { formattedCollections } from "../api/action-reducers/cms/formatted";
 import componentHeader from "../api/action-reducers/cms/componentsHeader";
 import componentFooter from "../api/action-reducers/cms/componentsFooter";
+import {
+  RBReportItemsState,
+  RBReportRTEState,
+} from "../api/action-reducers/report-builder/sync";
 
 const storeContent: StoreModel = {
   // homepage
@@ -285,6 +289,9 @@ const storeContent: StoreModel = {
   AppliedFiltersState: persist(AppliedFiltersState),
   AppliedFilterStringState: persist(AppliedFilterStringState),
   TempAppliedFiltersState: persist(TempAppliedFiltersState),
+  // report builder
+  RBReportItemsState: persist(RBReportItemsState),
+  RBReportRTEState: persist(RBReportRTEState),
   // CMS API
   CMSData: persist(CMSData),
   cms: {

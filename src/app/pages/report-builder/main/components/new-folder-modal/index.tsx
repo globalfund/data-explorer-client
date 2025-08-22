@@ -13,7 +13,7 @@ export const ReportBuilderNewFolderModal: React.FC<{
   setNameValue: (value: string) => void;
 }> = ({ open, onClose, nameValue, setNameValue }) => {
   return (
-    <Modal open={open} onClose={onClose}>
+    <Modal disableScrollLock open={open} onClose={onClose}>
       <Box
         sx={{
           top: "50%",

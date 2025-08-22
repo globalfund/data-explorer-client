@@ -1,14 +1,32 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import { Editor } from "@tiptap/react";
 import Container from "@mui/material/Container";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { RTEToolbar } from "app/components/rich-text-editor";
-// import { Empty } from "app/pages/report-builder/builder/components/empty";
-import { ReportBuilderPageText } from "app/pages/report-builder/builder/components/text";
-import { ReportBuilderPageChart } from "app/pages/report-builder/builder/components/chart";
+import { Empty } from "app/pages/report-builder/builder/components/empty";
+import { RBReportItem } from "app/state/api/action-reducers/report-builder/sync";
+import { ReportBuilderPageText } from "./components/text";
+import { ReportBuilderPageChart } from "./components/chart";
 
 export const ReportBuilderPage: React.FC = () => {
-  const [activeRTE, setActiveRTE] = React.useState<Editor | null>(null);
+  const items = useStoreState((state) => state.RBReportItemsState.items);
+  const activeRTE = useStoreState((state) => state.RBReportRTEState.activeRTE);
+  const setActiveRTE = useStoreActions(
+    (actions) => actions.RBReportRTEState.setActiveRTE,
+  );
+
+  console.log("ReportBuilderPage items", items);
+
+  const getItemByType = (item: RBReportItem) => {
+    switch (item.type) {
+      case "text":
+        return <ReportBuilderPageText id={item.id} setEditor={setActiveRTE} />;
+      case "chart":
+        return <ReportBuilderPageChart id={item.id} />;
+      default:
+        return <React.Fragment key={item.id} />;
+    }
+  };
 
   return (
     <Container
@@ -39,11 +57,22 @@ export const ReportBuilderPage: React.FC = () => {
           alignItems: "flex-start",
           justifyContent: "flex-start",
           boxShadow: "0 0 10px 0 rgba(152, 161, 170, 0.60)",
+          ".top-right-actions": {
+            top: 4,
+            right: 4,
+            display: "none",
+            position: "absolute",
+            ".MuiIconButton-root": {
+              borderRadius: "4px",
+              border: "1px solid #cfd4da",
+            },
+          },
         }}
       >
-        {/* <Empty /> */}
-        <ReportBuilderPageText setEditor={setActiveRTE} />
-        <ReportBuilderPageChart />
+        {items.length === 0 && <Empty />}
+        {items.map((item) => (
+          <React.Fragment key={item.id}>{getItemByType(item)}</React.Fragment>
+        ))}
       </Box>
     </Container>
   );
