@@ -1,10 +1,10 @@
 import React from "react";
 import { colors } from "app/theme";
 import Box from "@mui/material/Box";
+import { styled } from "@mui/material";
 import Button from "@mui/material/Button";
 import Drawer from "@mui/material/Drawer";
 import Popover from "@mui/material/Popover";
-import { styled } from "@mui/material/styles";
 import Accordion from "@mui/material/Accordion";
 import Container from "@mui/material/Container";
 import IconClose from "@mui/icons-material/Close";

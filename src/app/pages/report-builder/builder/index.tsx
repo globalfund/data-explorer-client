@@ -5,6 +5,7 @@ import Container from "@mui/material/Container";
 import { RTEToolbar } from "app/components/rich-text-editor";
 // import { Empty } from "app/pages/report-builder/builder/components/empty";
 import { ReportBuilderPageText } from "app/pages/report-builder/builder/components/text";
+import { ReportBuilderPageChart } from "app/pages/report-builder/builder/components/chart";
 
 export const ReportBuilderPage: React.FC = () => {
   const [activeRTE, setActiveRTE] = React.useState<Editor | null>(null);
@@ -28,15 +29,21 @@ export const ReportBuilderPage: React.FC = () => {
       )}
       <Box
         sx={{
+          gap: "10px",
           width: "100%",
+          display: "flex",
           padding: "50px",
           minHeight: "1420px",
           bgcolor: "#ffffff",
+          flexDirection: "column",
+          alignItems: "flex-start",
+          justifyContent: "flex-start",
           boxShadow: "0 0 10px 0 rgba(152, 161, 170, 0.60)",
         }}
       >
         {/* <Empty /> */}
         <ReportBuilderPageText setEditor={setActiveRTE} />
+        <ReportBuilderPageChart />
       </Box>
     </Container>
   );

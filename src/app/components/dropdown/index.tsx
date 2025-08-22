@@ -1,6 +1,6 @@
 import React from "react";
 import { appColors } from "app/theme";
-import { styled } from "@mui/material/styles";
+import { styled } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import Menu, { MenuProps } from "@mui/material/Menu";
 import ChevronDown from "app/assets/vectors/ChevronDown.svg?react";
