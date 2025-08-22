@@ -15,8 +15,6 @@ export const ReportBuilderPage: React.FC = () => {
     (actions) => actions.RBReportRTEState.setActiveRTE,
   );
 
-  console.log("ReportBuilderPage items", items);
-
   const getItemByType = (item: RBReportItem) => {
     switch (item.type) {
       case "text":
