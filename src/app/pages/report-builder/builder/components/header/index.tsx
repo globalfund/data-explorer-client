@@ -45,6 +45,7 @@ export const ReportBuilderPageHeader: React.FC = () => {
                 borderStyle: "none",
                 padding: "11px 16px",
                 background: "transparent",
+                border: "2px solid transparent",
                 borderBottom: "2px solid #cfd4da",
                 "&:focus, &:active": {
                   borderStyle: "solid",

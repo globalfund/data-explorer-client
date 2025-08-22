@@ -56,6 +56,8 @@ export const ReportBuilderPageToolbar: React.FC = () => {
         newItem = { id: uniqueId(), type: "chart" };
         break;
       case "table":
+        newItem = { id: uniqueId(), type: "table" };
+        break;
       case "image":
       case "kpi_box":
       case "grid":

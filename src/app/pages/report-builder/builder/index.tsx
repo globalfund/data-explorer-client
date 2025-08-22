@@ -1,12 +1,13 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { RTEToolbar } from "app/components/rich-text-editor";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { Empty } from "app/pages/report-builder/builder/components/empty";
 import { RBReportItem } from "app/state/api/action-reducers/report-builder/sync";
-import { ReportBuilderPageText } from "./components/text";
-import { ReportBuilderPageChart } from "./components/chart";
+import { ReportBuilderPageText } from "app/pages/report-builder/builder/components/text";
+import { ReportBuilderPageChart } from "app/pages/report-builder/builder/components/chart";
+import { ReportBuilderPageTable } from "app/pages/report-builder/builder/components/table";
 
 export const ReportBuilderPage: React.FC = () => {
   const items = useStoreState((state) => state.RBReportItemsState.items);
@@ -21,6 +22,8 @@ export const ReportBuilderPage: React.FC = () => {
         return <ReportBuilderPageText id={item.id} setEditor={setActiveRTE} />;
       case "chart":
         return <ReportBuilderPageChart id={item.id} />;
+      case "table":
+        return <ReportBuilderPageTable id={item.id} />;
       default:
         return <React.Fragment key={item.id} />;
     }
@@ -61,8 +64,13 @@ export const ReportBuilderPage: React.FC = () => {
             display: "none",
             position: "absolute",
             ".MuiIconButton-root": {
+              bgcolor: "#fff",
               borderRadius: "4px",
               border: "1px solid #cfd4da",
+              "&:hover": {
+                bgcolor: "#f8f8f8",
+                borderColor: "#000000",
+              },
             },
           },
         }}
