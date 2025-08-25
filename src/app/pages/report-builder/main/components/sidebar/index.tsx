@@ -55,22 +55,32 @@ export const ReportBuilderSidebar: React.FC<{
               button: {
                 fontSize: "16px",
                 fontWeight: "400",
-                padding: "7px 12px",
+                padding: "12px 14px",
                 borderRadius: "4px",
                 lineHeight: "normal",
                 textTransform: "none",
                 justifyContent: "flex-start",
-                ":hover": {
-                  background: "#f1f3f5",
-                },
+                ".MuiButton-startIcon": { ml: 0, mr: "10px" },
               },
             }}
           >
             <Button
               startIcon={<AllReportsIcon />}
               sx={{
+                color: selectedItem === "All Reports" ? "#ffffff" : "#000000",
                 background:
-                  selectedItem === "All Reports" ? "#f1f3f5" : "transparent",
+                  selectedItem === "All Reports" ? "#000000" : "transparent",
+                svg: {
+                  path: {
+                    stroke:
+                      selectedItem === "All Reports" ? "#ffffff" : "#000000",
+                  },
+                },
+                "&:hover": {
+                  color: "#ffffff",
+                  background: "#000000",
+                  svg: { path: { stroke: "#ffffff" } },
+                },
               }}
               onClick={handleItemClick("All Reports")}
             >
@@ -79,8 +89,19 @@ export const ReportBuilderSidebar: React.FC<{
             <Button
               startIcon={<AllAssetsIcon />}
               sx={{
+                color: selectedItem === "All Assets" ? "#ffffff" : "#000000",
                 background:
-                  selectedItem === "All Assets" ? "#f1f3f5" : "transparent",
+                  selectedItem === "All Assets" ? "#000000" : "transparent",
+                svg: {
+                  path: {
+                    fill: selectedItem === "All Assets" ? "#ffffff" : "#000000",
+                  },
+                },
+                "&:hover": {
+                  color: "#ffffff",
+                  background: "#000000",
+                  svg: { path: { fill: "#ffffff" } },
+                },
               }}
               onClick={handleItemClick("All Assets")}
             >
@@ -89,8 +110,19 @@ export const ReportBuilderSidebar: React.FC<{
             <Button
               startIcon={<TutorialsIcon />}
               sx={{
+                color: selectedItem === "Tutorials" ? "#ffffff" : "#000000",
                 background:
-                  selectedItem === "Tutorials" ? "#f1f3f5" : "transparent",
+                  selectedItem === "Tutorials" ? "#000000" : "transparent",
+                svg: {
+                  path: {
+                    fill: selectedItem === "Tutorials" ? "#ffffff" : "#000000",
+                  },
+                },
+                "&:hover": {
+                  color: "#ffffff",
+                  background: "#000000",
+                  svg: { path: { fill: "#ffffff" } },
+                },
               }}
               onClick={handleItemClick("Tutorials")}
             >
@@ -99,10 +131,27 @@ export const ReportBuilderSidebar: React.FC<{
             <Button
               startIcon={<TemplatesLibrariesIcon />}
               sx={{
+                color:
+                  selectedItem === "Templates and Libraries"
+                    ? "#ffffff"
+                    : "#000000",
                 background:
                   selectedItem === "Templates and Libraries"
-                    ? "#f1f3f5"
+                    ? "#000000"
                     : "transparent",
+                svg: {
+                  path: {
+                    fill:
+                      selectedItem === "Templates and Libraries"
+                        ? "#ffffff"
+                        : "#000000",
+                  },
+                },
+                "&:hover": {
+                  color: "#ffffff",
+                  background: "#000000",
+                  svg: { path: { fill: "#ffffff" } },
+                },
               }}
               onClick={handleItemClick("Templates and Libraries")}
             >
