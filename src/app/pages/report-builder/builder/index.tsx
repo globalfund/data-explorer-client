@@ -8,6 +8,7 @@ import { RBReportItem } from "app/state/api/action-reducers/report-builder/sync"
 import { ReportBuilderPageText } from "app/pages/report-builder/builder/components/text";
 import { ReportBuilderPageChart } from "app/pages/report-builder/builder/components/chart";
 import { ReportBuilderPageTable } from "app/pages/report-builder/builder/components/table";
+import { ReportBuilderPageImage } from "app/pages/report-builder/builder/components/image";
 
 export const ReportBuilderPage: React.FC = () => {
   const items = useStoreState((state) => state.RBReportItemsState.items);
@@ -24,6 +25,8 @@ export const ReportBuilderPage: React.FC = () => {
         return <ReportBuilderPageChart id={item.id} />;
       case "table":
         return <ReportBuilderPageTable id={item.id} />;
+      case "image":
+        return <ReportBuilderPageImage id={item.id} />;
       default:
         return <React.Fragment key={item.id} />;
     }
