@@ -127,8 +127,5 @@ export function isNavButtonActive(id: string, path: string): boolean {
 }
 
 export const activeButtonStateStyle = {
-  borderRadius: "4px",
-  background: "transparent",
-  border: "1px solid #CFD4DA",
   borderBottom: `4px solid ${colors.primary.black}`,
 };
