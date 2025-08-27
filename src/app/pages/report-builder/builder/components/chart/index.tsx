@@ -139,14 +139,7 @@ export const ReportBuilderPageChart: React.FC<{
         </Box>
       )}
       {chartReady && (
-        <Box
-          sx={{
-            borderRadius: "4px",
-            border: "1px solid #3154f4",
-          }}
-        >
-          <BarChart data={STORY_DATA_VARIANT_1} valueLabels={{ value: "" }} />
-        </Box>
+        <BarChart data={STORY_DATA_VARIANT_1} valueLabels={{ value: "" }} />
       )}
       <Box className="top-right-actions">
         <IconButton onClick={() => removeItem(id)}>

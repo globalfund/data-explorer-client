@@ -485,12 +485,18 @@ export const RichEditor: React.FC<{
   setClicked: (clicked: boolean) => void;
   setEditor: (editor: Editor | null) => void;
 }> = ({ setEditor, setClicked }) => {
+  const [focused, setFocused] = React.useState(false);
+
   const editor = useEditor({
     extensions,
     autofocus: true,
-    onFocus: () => setEditor(editor),
+    onFocus: () => {
+      setFocused(true);
+      setEditor(editor);
+    },
     onBlur: () => {
       setEditor(null);
+      setFocused(false);
       if (editor.isEmpty) {
         setClicked(false);
       }
@@ -503,7 +509,7 @@ export const RichEditor: React.FC<{
         width: "100%",
         padding: "10px",
         borderRadius: "8px",
-        border: "1px solid #3154F4",
+        border: `1px ${focused ? "solid" : "none"} #3154F4`,
         "*": { margin: "0 !important" },
         blockquote: { margin: "0 40px !important" },
       }}

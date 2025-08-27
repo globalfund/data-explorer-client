@@ -139,6 +139,7 @@ import { formattedCollections } from "../api/action-reducers/cms/formatted";
 import componentHeader from "../api/action-reducers/cms/componentsHeader";
 import componentFooter from "../api/action-reducers/cms/componentsFooter";
 import {
+  RBReportItemOrderState,
   RBReportItemsState,
   RBReportRTEState,
 } from "../api/action-reducers/report-builder/sync";
@@ -292,6 +293,7 @@ const storeContent: StoreModel = {
   // report builder
   RBReportItemsState: persist(RBReportItemsState),
   RBReportRTEState: persist(RBReportRTEState),
+  RBReportItemOrderState: persist(RBReportItemOrderState),
   // CMS API
   CMSData: persist(CMSData),
   cms: {

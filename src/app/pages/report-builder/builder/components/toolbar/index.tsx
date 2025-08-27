@@ -61,10 +61,12 @@ export const ReportBuilderPageToolbar: React.FC = () => {
       case "image":
         newItem = { id: uniqueId(), type: "image" };
         break;
+      case "section_divider":
+        newItem = { id: uniqueId(), type: "section_divider" };
+        break;
       case "kpi_box":
       case "grid":
       case "column":
-      case "section_divider":
       default:
         break;
     }

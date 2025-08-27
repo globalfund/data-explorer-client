@@ -159,13 +159,7 @@ export const ReportBuilderPageImage: React.FC<{
         </Box>
       )}
       {imageReady && (
-        <Box
-          sx={{
-            height: "400px",
-            borderRadius: "4px",
-            border: "1px solid #3154f4",
-          }}
-        >
+        <Box sx={{ height: "400px" }}>
           <img
             alt="Uploaded"
             src="/static/images/ImagePlaceholder.png"

@@ -1,6 +1,10 @@
 import React from "react";
 import Box from "@mui/material/Box";
+import { DndProvider } from "react-dnd";
+import update from "immutability-helper";
+import Divider from "@mui/material/Divider";
 import Container from "@mui/material/Container";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import { RTEToolbar } from "app/components/rich-text-editor";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { Empty } from "app/pages/report-builder/builder/components/empty";
@@ -9,6 +13,7 @@ import { ReportBuilderPageText } from "app/pages/report-builder/builder/componen
 import { ReportBuilderPageChart } from "app/pages/report-builder/builder/components/chart";
 import { ReportBuilderPageTable } from "app/pages/report-builder/builder/components/table";
 import { ReportBuilderPageImage } from "app/pages/report-builder/builder/components/image";
+import { ItemComponent } from "app/pages/report-builder/builder/components/order-container";
 
 export const ReportBuilderPage: React.FC = () => {
   const items = useStoreState((state) => state.RBReportItemsState.items);
@@ -17,16 +22,81 @@ export const ReportBuilderPage: React.FC = () => {
     (actions) => actions.RBReportRTEState.setActiveRTE,
   );
 
-  const getItemByType = (item: RBReportItem) => {
+  const setItems = useStoreActions(
+    (actions) => actions.RBReportItemsState.setItems,
+  );
+
+  const moveItem = React.useCallback(
+    (dragIndex: number, hoverIndex: number) => {
+      setItems(
+        update(items, {
+          $splice: [
+            [dragIndex, 1],
+            [hoverIndex, 0, items[dragIndex] as RBReportItem],
+          ],
+        }),
+      );
+    },
+    [items],
+  );
+
+  const getItemByType = (item: RBReportItem, index: number) => {
     switch (item.type) {
       case "text":
-        return <ReportBuilderPageText id={item.id} setEditor={setActiveRTE} />;
+        return (
+          <ItemComponent
+            id={item.id}
+            index={index}
+            childrenData={[]}
+            moveItem={moveItem}
+          >
+            <ReportBuilderPageText id={item.id} setEditor={setActiveRTE} />
+          </ItemComponent>
+        );
       case "chart":
-        return <ReportBuilderPageChart id={item.id} />;
+        return (
+          <ItemComponent
+            id={item.id}
+            index={index}
+            childrenData={[]}
+            moveItem={moveItem}
+          >
+            <ReportBuilderPageChart id={item.id} />
+          </ItemComponent>
+        );
       case "table":
-        return <ReportBuilderPageTable id={item.id} />;
+        return (
+          <ItemComponent
+            id={item.id}
+            index={index}
+            childrenData={[]}
+            moveItem={moveItem}
+          >
+            <ReportBuilderPageTable id={item.id} />
+          </ItemComponent>
+        );
       case "image":
-        return <ReportBuilderPageImage id={item.id} />;
+        return (
+          <ItemComponent
+            id={item.id}
+            index={index}
+            childrenData={[]}
+            moveItem={moveItem}
+          >
+            <ReportBuilderPageImage id={item.id} />
+          </ItemComponent>
+        );
+      case "section_divider":
+        return (
+          <ItemComponent
+            id={item.id}
+            index={index}
+            childrenData={[]}
+            moveItem={moveItem}
+          >
+            <Divider key={item.id} flexItem />
+          </ItemComponent>
+        );
       default:
         return <React.Fragment key={item.id} />;
     }
@@ -49,40 +119,44 @@ export const ReportBuilderPage: React.FC = () => {
           <RTEToolbar editor={activeRTE} />
         </Box>
       )}
-      <Box
-        sx={{
-          gap: "10px",
-          width: "100%",
-          display: "flex",
-          padding: "50px",
-          minHeight: "1420px",
-          bgcolor: "#ffffff",
-          flexDirection: "column",
-          alignItems: "flex-start",
-          justifyContent: "flex-start",
-          boxShadow: "0 0 10px 0 rgba(152, 161, 170, 0.60)",
-          ".top-right-actions": {
-            top: 4,
-            right: 4,
-            display: "none",
-            position: "absolute",
-            ".MuiIconButton-root": {
-              bgcolor: "#fff",
-              borderRadius: "4px",
-              border: "1px solid #cfd4da",
-              "&:hover": {
-                bgcolor: "#f8f8f8",
-                borderColor: "#000000",
+      <DndProvider backend={HTML5Backend}>
+        <Box
+          sx={{
+            gap: "10px",
+            width: "100%",
+            display: "flex",
+            padding: "50px",
+            minHeight: "1420px",
+            bgcolor: "#ffffff",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            justifyContent: "flex-start",
+            boxShadow: "0 0 10px 0 rgba(152, 161, 170, 0.60)",
+            ".top-right-actions": {
+              top: 4,
+              right: 4,
+              display: "none",
+              position: "absolute",
+              ".MuiIconButton-root": {
+                bgcolor: "#fff",
+                borderRadius: "4px",
+                border: "1px solid #cfd4da",
+                "&:hover": {
+                  bgcolor: "#f8f8f8",
+                  borderColor: "#000000",
+                },
               },
             },
-          },
-        }}
-      >
-        {items.length === 0 && <Empty />}
-        {items.map((item) => (
-          <React.Fragment key={item.id}>{getItemByType(item)}</React.Fragment>
-        ))}
-      </Box>
+          }}
+        >
+          {items.length === 0 && <Empty />}
+          {items.map((item, index) => (
+            <React.Fragment key={item.id}>
+              {getItemByType(item, index)}
+            </React.Fragment>
+          ))}
+        </Box>
+      </DndProvider>
     </Container>
   );
 };

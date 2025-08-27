@@ -140,13 +140,7 @@ export const ReportBuilderPageTable: React.FC<{
         </Box>
       )}
       {tableReady && (
-        <Box
-          sx={{
-            padding: "10px",
-            borderRadius: "4px",
-            border: "1px solid #3154f4",
-          }}
-        >
+        <Box sx={{ padding: "10px" }}>
           <Table
             id={id}
             data={TABLE_VARIATION_8_DATA}
