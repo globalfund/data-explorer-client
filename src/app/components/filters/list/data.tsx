@@ -89,7 +89,7 @@ export const STORY_DATA_VARIANT_1: FilterGroupModel[] = [
 export const SearchInput = styled.input`
   width: 100%;
   outline: none;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 400;
   border-radius: 5px;
   border-style: none;
@@ -98,7 +98,7 @@ export const SearchInput = styled.input`
 
   &::placeholder {
     color: #373d43;
-    font-size: 12px;
+    font-size: 14px;
   }
 
   &:focus::placeholder {

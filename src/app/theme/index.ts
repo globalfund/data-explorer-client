@@ -393,9 +393,9 @@ const theme = createTheme({
         },
         outlined: {
           fontWeight: "400",
-          padding: "2px 12px",
+          padding: "4px 12px",
           textTransform: "none",
-          borderColor: "#DFE3E5",
+          borderColor: "#cfd4da",
         },
       },
     },

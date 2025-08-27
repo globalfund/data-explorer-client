@@ -34,7 +34,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
 
   const appliedFiltersContent = React.useMemo(() => {
     if (props.appliedFilters.length === 0) {
-      return <Typography fontSize="12px">No filters applied.</Typography>;
+      return <Typography fontSize="14px">No filters applied.</Typography>;
     }
     return (
       <FiltersApplied
@@ -151,7 +151,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
         indicatorColor="primary"
         aria-label="secondary tabs example"
         sx={{
-          minHeight: "32px",
+          minHeight: "35px",
         }}
         TabIndicatorProps={{
           sx: {
@@ -174,7 +174,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
               fontFamily: "Inter",
               textTransform: "none",
               marginRight: "15px",
-              minHeight: "32px",
+              minHeight: "35px",
             }}
           />
         ))}
@@ -191,7 +191,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
       gap="7px"
       display="flex"
       bgcolor="#FFFFFF"
-      padding="7px 12px"
+      padding="9px 12px"
       borderRadius="4px"
       flexDirection="column"
       border="1px solid #70777E"
@@ -237,7 +237,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
         gap="5px"
         display="flex"
         flexDirection="row"
-        alignItems="flex-start"
+        alignItems="center"
         justifyContent="space-between"
       >
         {appliedFiltersContent}
@@ -248,9 +248,9 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
           flexDirection="row"
           sx={{
             "& > button": {
-              fontSize: "12px",
+              fontSize: "14px",
               lineHeight: "1.5",
-              padding: "2px 12px",
+              padding: "7px 12px",
               svg: {
                 width: "14px",
                 height: "14px",
@@ -259,15 +259,15 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
           }}
         >
           <Box
-            display="flex"
-            gap="4px"
-            padding={"0px 8px"}
-            height={"100%"}
-            width={"219px"}
-            alignItems={"center"}
             sx={{
-              background: appColors.SEARCH.INPUT_BACKGROUND_COLOR,
+              gap: "6px",
+              width: "219px",
+              height: "100%",
+              display: "flex",
+              padding: "5px 10px",
               borderRadius: "5px",
+              alignItems: "center",
+              background: appColors.SEARCH.INPUT_BACKGROUND_COLOR,
             }}
           >
             <SearchIcon />
@@ -282,7 +282,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
           <Button
             variant="outlined"
             onClick={handleCollapseAll}
-            startIcon={<CollapseIcon fontSize="small" />}
+            endIcon={<CollapseIcon fontSize="small" />}
           >
             Collapse All
           </Button>
@@ -292,11 +292,14 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
         {/* tabs */}
         {FilterGroupsTabs}
       </Box>
+      {!props.toggleFilter && (
+        <Typography fontSize="14px">Filter the data page-wide.</Typography>
+      )}
       <Box
-        padding="20px"
-        maxHeight="450px"
         sx={{
           overflowY: "auto",
+          maxHeight: "450px",
+          padding: "5px 20px 20px 20px",
           "&::-webkit-scrollbar": {
             width: "4px",
           },
@@ -312,9 +315,6 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
           },
         }}
       >
-        {!props.toggleFilter && (
-          <Typography fontSize="12px">Filter the data page-wide.</Typography>
-        )}
         <FilterList
           collapseAll={collapseAll}
           groups={props.filterGroups}
@@ -330,110 +330,46 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
           shownOptions={shownOptions ?? []}
         />
       </Box>
-
       <Box
         sx={{
+          gap: "10px",
           display: "flex",
           justifyContent: "flex-end",
+          "& > button": {
+            fontSize: "14px",
+            lineHeight: "1.5",
+            padding: "7px 12px",
+          },
         }}
       >
-        <Box
+        <Button
+          onClick={props.handleResetFilters}
+          variant="outlined"
+          endIcon={
+            <svg width="16" height="17" viewBox="0 0 16 17" fill="none">
+              <path
+                d="M7.99556 13.5H7.99C6.77334 13.4989 5.60056 13.0544 4.68834 12.25L4.11111 11.7368V12.9444C4.11111 13.2517 3.86222 13.5 3.55556 13.5C3.24889 13.5 3 13.2517 3 12.9444V10.1667C3 9.85945 3.24889 9.61111 3.55556 9.61111H6.33333C6.64 9.61111 6.88889 9.85945 6.88889 10.1667C6.88889 10.4739 6.64 10.7222 6.33333 10.7222H4.64188L5.425 11.4183C6.13278 12.0428 7.045 12.3878 7.99111 12.3889H7.99556C10.1378 12.3889 11.8822 10.6472 11.8844 8.50445C11.8867 6.36 10.1439 4.61389 8 4.61111H7.96889C6.00778 4.61111 4.35222 6.06889 4.10722 8.01389C4.06889 8.31833 3.78778 8.52722 3.48667 8.49556C3.18222 8.45722 2.96667 8.17944 3.005 7.875C3.31945 5.37444 5.44834 3.5 7.965 3.5H8.00445C10.7578 3.50278 12.9983 5.74833 12.995 8.50556C12.9917 11.2606 10.7494 13.5 7.99556 13.5Z"
+                fill="#373D43"
+              />
+            </svg>
+          }
+        >
+          Reset Changes
+        </Button>
+        <Button onClick={props.handleCancelFilters} variant="outlined">
+          Cancel
+        </Button>
+        <Button
+          onClick={props.handleApplyFilters}
+          variant="outlined"
           sx={{
-            display: "flex",
-            gap: "10px",
+            color: "#fff",
+            bgcolor: "#3154f4",
+            "&:hover": { bgcolor: "#3154f4" },
           }}
         >
-          <Button
-            onClick={props.handleResetFilters}
-            variant="outlined"
-            sx={{
-              fontSize: "12px",
-              maxHeight: "26px",
-              lineHeight: "1.5",
-              padding: "2px 12px",
-              justifySelf: "flex-end",
-              display: "flex",
-            }}
-            startIcon={
-              <svg
-                width="6"
-                height="9"
-                viewBox="0 0 6 9"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M0.516113 1.54983L1.31594 0.75L5.31509 4.74915L1.31594 8.7483L0.516113 7.94847L3.71543 4.74915L0.516113 1.54983Z"
-                  fill="#373D43"
-                />
-              </svg>
-            }
-          >
-            Reset Changes
-          </Button>
-          <Button
-            onClick={props.handleCancelFilters}
-            variant="outlined"
-            sx={{
-              fontSize: "12px",
-              maxHeight: "26px",
-              lineHeight: "1.5",
-              padding: "2px 12px",
-              justifySelf: "flex-end",
-              display: "flex",
-            }}
-            endIcon={
-              <svg
-                width="8"
-                height="9"
-                viewBox="0 0 8 9"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M0.79541 7.52918L6.85389 1.4707M0.79541 1.4707L6.85389 7.52918"
-                  stroke="#373D43"
-                  strokeWidth="1.33333"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            }
-          >
-            Cancel
-          </Button>
-          <Button
-            onClick={props.handleApplyFilters}
-            variant="outlined"
-            sx={{
-              fontSize: "12px",
-              maxHeight: "26px",
-              lineHeight: "1.5",
-              padding: "2px 12px",
-              justifySelf: "flex-end",
-              display: "flex",
-            }}
-            endIcon={
-              <svg
-                width="10"
-                height="7"
-                viewBox="0 0 10 7"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M1.40747 4.00483L3.42696 6.02432L8.4757 0.975586"
-                  stroke="#373D43"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            }
-          >
-            Apply
-          </Button>
-        </Box>
+          Apply
+        </Button>
       </Box>
     </Box>
   );

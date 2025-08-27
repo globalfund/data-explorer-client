@@ -76,7 +76,7 @@ export const ChartBlockButtonToolbar: React.FC<ChartBlockButtonToolbarProps> = (
             "& > button": {
               padding: "0",
               width: "40px",
-              height: "30px",
+              height: "35px",
               borderRadius: "4px",
               background: "transparent",
               border: "1px solid #DFE3E5",
@@ -105,10 +105,10 @@ export const ChartBlockButtonToolbar: React.FC<ChartBlockButtonToolbarProps> = (
                 flexDirection="row"
                 sx={{
                   "& > button": {
-                    height: "30px",
+                    height: "35px",
                     fontSize: "14px",
                     fontWeight: "400",
-                    padding: "7px 12px",
+                    padding: "9px 12px",
                     borderRadius: "4px",
                     textTransform: "none",
                     color: appColors.CHART_BLOCK_CYCLES.BUTTON_TEXT_COLOR,
@@ -124,10 +124,10 @@ export const ChartBlockButtonToolbar: React.FC<ChartBlockButtonToolbarProps> = (
                     },
                   },
                   "& > div": {
-                    height: "30px",
+                    height: "35px",
                     fontSize: "14px",
                     fontWeight: "400",
-                    padding: "7px 12px",
+                    padding: "9px 12px",
                     borderRadius: "4px",
                     color: appColors.COMMON.WHITE,
                     background: appColors.COMMON.BLACK,

@@ -152,7 +152,7 @@ export const FilterListItemContent: React.FC<FilterListItemContentProps> = (
                   alignItems: "center",
                   "& .MuiFormControlLabel-label": {
                     zIndex: option.options ? -1 : 0,
-                    fontSize: "12px",
+                    fontSize: "14px",
                     marginLeft: "5px",
                   },
                 }}
@@ -161,7 +161,7 @@ export const FilterListItemContent: React.FC<FilterListItemContentProps> = (
                 <Typography
                   top="5px"
                   left="23px"
-                  fontSize="12px"
+                  fontSize="14px"
                   fontWeight="400"
                   position="absolute"
                 >

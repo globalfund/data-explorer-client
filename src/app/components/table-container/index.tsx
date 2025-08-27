@@ -152,7 +152,7 @@ export const TableContainer: React.FC<TableContainerProps> = (
                 flexWrap: "wrap",
               },
               "& > button": {
-                height: "32px",
+                height: "35px",
                 fontSize: "14px",
                 fontWeight: "400",
                 padding: "0px 12px",
@@ -190,7 +190,7 @@ export const TableContainer: React.FC<TableContainerProps> = (
             "& > button": {
               padding: "0",
               width: "40px",
-              height: "30px",
+              height: "35px",
               borderRadius: "4px",
               background: "transparent",
               border: "1px solid #DFE3E5",

@@ -59,7 +59,7 @@ export const CategoryButton = styled(Button)<CategoryButtonProps>`
   width: 200px;
   display: flex;
   font-size: 14px;
-  padding: 7px 12px;
+  padding: 9px 12px;
   border-radius: 4px;
   margin-right: 14px;
   text-transform: capitalize;
