@@ -134,7 +134,7 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
       <Typography variant={props.titleVariant ?? "h2"} lineHeight={1.2}>
         {props.title}
       </Typography>
-      <Typography variant={props.subtitleVariant ?? "body2"}>
+      <Typography variant={props.subtitleVariant ?? "body2"} fontSize="20px">
         {props.subtitle}
       </Typography>
       <Divider
@@ -256,7 +256,7 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
           justifyContent={props.latestUpdate ? "space-between" : "flex-end"}
         >
           {props.latestUpdate && (
-            <Typography variant="overline">
+            <Typography variant="overline" fontSize="14px">
               Latest Update: <b>{props.latestUpdate}</b>
             </Typography>
           )}

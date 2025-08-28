@@ -43,7 +43,7 @@ export const RowName = styled.div`
   z-index: 1;
   display: flex;
   margin-top: 2px;
-  font-size: 10px;
+  font-size: 14px;
   position: sticky;
   min-height: 30px;
   max-height: 30px;
@@ -66,7 +66,7 @@ export const RowName = styled.div`
 
 export const ColName = styled.div`
   display: flex;
-  font-size: 10px;
+  font-size: 14px;
   min-height: 36px;
   max-height: 36px;
   line-height: 12px;
@@ -79,7 +79,7 @@ export const ColName = styled.div`
 export const RowCol = styled.div`
   padding: 6px;
   display: flex;
-  font-size: 10px;
+  font-size: 14px;
   min-height: 30px;
   max-height: 30px;
   border-radius: 4px;

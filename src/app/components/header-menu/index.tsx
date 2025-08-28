@@ -279,6 +279,7 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (
                         width: "100%",
                         height: "100%",
                         paddingBottom: "10px",
+                        alignItems: "flex-start",
                         "&:hover": activeButtonStateStyle,
                         ...(isNavButtonActive(subPage.id, location.pathname)
                           ? activeButtonStateStyle

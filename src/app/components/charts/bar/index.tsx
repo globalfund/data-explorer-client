@@ -269,7 +269,7 @@ export const BarChart: React.FC<BarChartProps> = (props: BarChartProps) => {
           align: "left",
           show: seriesData.length > 1,
           textStyle: {
-            fontSize: "12px",
+            fontSize: "14px",
             fontFamily: "Inter, sans-serif",
             color: appColors.TIME_CYCLE.AXIS_TEXT_COLOR,
           },

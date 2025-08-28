@@ -101,7 +101,7 @@ export const FilterListItemContent: React.FC<FilterListItemContentProps> = (
   }, [props.collapseAll]);
 
   return (
-    <Box width="100%" position="relative">
+    <Box width="100%" position="relative" marginBottom="5px">
       <Box paddingLeft="20px">
         {props.shownOptions.map((option) => (
           <Accordion

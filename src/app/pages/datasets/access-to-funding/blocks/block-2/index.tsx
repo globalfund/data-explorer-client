@@ -296,7 +296,7 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
         empty={dataEligibilityTable.length === 0 && tableSearch.length === 0}
       >
         <Box
-          gap="20px"
+          gap="30px"
           width="100%"
           display="flex"
           marginBottom="20px"
@@ -331,7 +331,7 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
           }}
         >
           <Box>
-            <Typography fontSize="12px" fontWeight="700">
+            <Typography fontSize="14px" fontWeight="700">
               {getCMSDataField(
                 cmsData,
                 "componentsChartsEligibility.diseaseBurdenTitle",
@@ -344,7 +344,7 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
                   id="rectangle"
                   bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[0]}
                 />
-                <Typography fontSize="12px">
+                <Typography fontSize="14px">
                   {getCMSDataField(
                     cmsData,
                     "componentsChartsEligibility.diseaseBurdenExtreme",
@@ -357,7 +357,7 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
                   id="rectangle"
                   bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[1]}
                 />
-                <Typography fontSize="12px">
+                <Typography fontSize="14px">
                   {getCMSDataField(
                     cmsData,
                     "componentsChartsEligibility.diseaseBurdenSevere",
@@ -370,7 +370,7 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
                   id="rectangle"
                   bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[2]}
                 />
-                <Typography fontSize="12px">
+                <Typography fontSize="14px">
                   {getCMSDataField(
                     cmsData,
                     "componentsChartsEligibility.diseaseBurdenHigh",
@@ -383,7 +383,7 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
                   id="rectangle"
                   bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[3]}
                 />
-                <Typography fontSize="12px">
+                <Typography fontSize="14px">
                   {getCMSDataField(
                     cmsData,
                     "componentsChartsEligibility.diseaseBurdenModerate",
@@ -396,7 +396,7 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
                   id="rectangle"
                   bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[4]}
                 />
-                <Typography fontSize="12px">
+                <Typography fontSize="14px">
                   {getCMSDataField(
                     cmsData,
                     "componentsChartsEligibility.diseaseBurdenNotHigh",
@@ -409,7 +409,7 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
                   id="rectangle"
                   bgcolor={appColors.ELIGIBILITY.DISEASE_BURDEN_COLORS[5]}
                 />
-                <Typography fontSize="12px">
+                <Typography fontSize="14px">
                   {getCMSDataField(
                     cmsData,
                     "componentsChartsEligibility.diseaseBurdenLow",
@@ -419,7 +419,7 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
               </Box>
               <Box>
                 <Box id="rectangle" bgcolor="#FFFFFF" border="1px solid #ccc" />
-                <Typography fontSize="12px">
+                <Typography fontSize="14px">
                   {getCMSDataField(
                     cmsData,
                     "componentsChartsEligibility.diseaseBurdenNA",
@@ -430,7 +430,7 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
             </Box>
           </Box>
           <Box>
-            <Typography fontSize="12px" fontWeight="700">
+            <Typography fontSize="14px" fontWeight="700">
               {getCMSDataField(
                 cmsData,
                 "componentsChartsEligibility.statusTitle",
@@ -440,7 +440,7 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
             <Box>
               <Box>
                 <Box id="rectangle" bgcolor="#013E77" />
-                <Typography fontSize="12px">
+                <Typography fontSize="14px">
                   {getCMSDataField(
                     cmsData,
                     "componentsChartsEligibility.statusEligible",
@@ -450,7 +450,7 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
               </Box>
               <Box>
                 <Box id="rectangle" bgcolor="#00B5AE" />
-                <Typography fontSize="12px">
+                <Typography fontSize="14px">
                   {getCMSDataField(
                     cmsData,
                     "componentsChartsEligibility.statusTransitionFunding",
@@ -460,7 +460,7 @@ export const AccessToFundingBlock2: React.FC<AccessToFundingBlock2Props> = (
               </Box>
               <Box>
                 <Box id="rectangle" bgcolor="#D9D9D9" />
-                <Typography fontSize="12px">
+                <Typography fontSize="14px">
                   {getCMSDataField(
                     cmsData,
                     "componentsChartsEligibility.statusNotEligible",

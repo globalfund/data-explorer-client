@@ -175,6 +175,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
               textTransform: "none",
               marginRight: "15px",
               minHeight: "35px",
+              padding: "10px",
             }}
           />
         ))}
@@ -250,7 +251,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = (
             "& > button": {
               fontSize: "14px",
               lineHeight: "1.5",
-              padding: "7px 12px",
+              padding: "5px 12px",
               svg: {
                 width: "14px",
                 height: "14px",

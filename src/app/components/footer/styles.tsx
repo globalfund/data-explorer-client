@@ -22,7 +22,7 @@ export const FooterContainer = styled.footer`
 `;
 
 export const FooterHeader = styled(Typography)`
-  font-size: 10px;
+  font-size: 14px;
   font-weight: 900;
   margin-bottom: 23px;
   color: ${appColors.COMMON.BLACK};
@@ -30,14 +30,14 @@ export const FooterHeader = styled(Typography)`
 
 export const FooterExternalLink = styled.a`
   display: block;
-  font-size: 10px;
+  font-size: 14px;
   margin-bottom: 5px;
   text-decoration: none;
   color: ${appColors.COMMON.BLACK};
 `;
 
 export const FooterLinkSeparator = styled.div`
-  font-size: 10px;
+  font-size: 14px;
   margin-bottom: 5px;
 `;
 
@@ -49,7 +49,7 @@ export const FooterBottomBgBlock = styled.div`
   height: 150px;
   background-size: contain;
   background-repeat: no-repeat;
-  background-position-x: center;
+  background-position-x: right;
   background-position-y: bottom;
   background-image: url("/static/images/FooterOrnament2.png");
 

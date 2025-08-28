@@ -63,7 +63,7 @@ export default function Pagination(props: {
           },
         }}
       >
-        <Typography fontSize="12px">
+        <Typography fontSize="16px">
           {rangeFrom}-{rangeto} of {props.count}
         </Typography>
         <Box
@@ -175,7 +175,7 @@ export default function Pagination(props: {
           })}
         </Box>
         <Box display="flex" gap="10px" alignItems="center">
-          <Typography fontSize="14px">Page</Typography>
+          <Typography fontSize="16px">Page</Typography>
           <Box
             sx={{
               input: {
@@ -203,7 +203,7 @@ export default function Pagination(props: {
               borderRadius: "4px",
               background: "none",
               fontFamily: "Inter",
-              fontSize: "14px",
+              fontSize: "16px",
               fontWeight: "bold",
               padding: "none",
               color: "#000000",

@@ -86,7 +86,7 @@ export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
               "Eligible Countries by Numbers",
             )}
           </Typography>
-          <Typography variant="body2">
+          <Typography variant="body2" fontSize="20px">
             {getCMSDataField(
               cmsData,
               "pagesDatasetsAccessToFunding.statsSubtitle",
@@ -106,7 +106,7 @@ export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
             },
           }}
         >
-          <Typography fontSize="12px" fontWeight="700">
+          <Typography fontSize="16px" fontWeight="700">
             {getCMSDataField(
               cmsData,
               "pagesDatasetsAccessToFunding.statsDropDownLabel",
@@ -147,7 +147,7 @@ export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
           <Grid item key={item.name} xs={12} sm={6} md={3}>
             <Box padding="15px" bgcolor="#F1F3F5">
               <Typography variant="h4">{item.value}</Typography>
-              <Typography fontSize="12px">
+              <Typography fontSize="16px">
                 {getCMSDataField(
                   cmsData,
                   "pagesDatasetsAccessToFunding.countriesEligible",
@@ -159,7 +159,7 @@ export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
           </Grid>
         ))}
         <Grid item xs={12}>
-          <Typography variant="overline">
+          <Typography variant="overline" fontSize="14px">
             Latest Update: <b>{latestUpdateDate}</b>
           </Typography>
         </Grid>

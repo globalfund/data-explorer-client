@@ -475,6 +475,17 @@ const GRAPH_COLOR_21 = "#60FF46";
 const GRAPH_COLOR_22 = "#73D3CD";
 const GRAPH_COLOR_23 = "#11AD6B";
 
+const CHART_COLOR_1 = "#0A2840";
+const CHART_COLOR_2 = "#013E77";
+const CHART_COLOR_3 = "#00B5AE";
+const CHART_COLOR_4 = "#C3EDFD";
+const CHART_COLOR_5 = "#D9D9D9";
+const CHART_COLOR_6 = "#108E09";
+const CHART_COLOR_7 = "#144BC0";
+const CHART_COLOR_8 = "#06432A";
+const CHART_COLOR_9 = "#008A85";
+const CHART_COLOR_10 = "#007B50";
+
 export const appColors = {
   COMMON: {
     WHITE,
@@ -574,7 +585,7 @@ export const appColors = {
     Y_AXIS_TEXT_COLOR: PRIMARY_COLOR_1,
     LEGEND_TEXT_COLOR: PRIMARY_COLOR_1,
     AXIS_GRID_COLOR: "#ADB5BD",
-    AXIS_TEXT_COLOR: "#868E96",
+    AXIS_TEXT_COLOR: PRIMARY_COLOR_2,
     BAR_COLOR_1: "#0A2840",
     BAR_COLOR_2: "#013E77",
     BAR_COLOR_3: "#00B5AE",
@@ -950,4 +961,16 @@ export const appColors = {
       "#000000",
     ],
   },
+  CHART_COLORS: [
+    CHART_COLOR_1,
+    CHART_COLOR_2,
+    CHART_COLOR_3,
+    CHART_COLOR_4,
+    CHART_COLOR_5,
+    CHART_COLOR_6,
+    CHART_COLOR_7,
+    CHART_COLOR_8,
+    CHART_COLOR_9,
+    CHART_COLOR_10,
+  ],
 };

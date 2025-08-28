@@ -592,7 +592,7 @@ export const ResourceMobilizationPage: React.FC = () => {
                 <Typography variant="h3">
                   {formatFinancialValue(get(dataStats, "totalPledges", 0))}
                 </Typography>
-                <Typography fontSize="14px">
+                <Typography fontSize="16px">
                   {getCMSDataField(
                     cmsData,
                     "pagesDatasetsResourceMobilization.statsText2",
@@ -635,7 +635,7 @@ export const ResourceMobilizationPage: React.FC = () => {
                     "Number of Donors Mobilized",
                   )}
                 </Typography>
-                <Typography variant="body2">
+                <Typography variant="body2" fontSize="20px">
                   {getCMSDataField(
                     cmsData,
                     "pagesDatasetsResourceMobilization.statsText4Subtitle",
@@ -660,7 +660,7 @@ export const ResourceMobilizationPage: React.FC = () => {
                     <Typography fontSize="40px" fontWeight="700">
                       {sumBy(get(dataStats, "donorTypesCount", []), "value")}
                     </Typography>
-                    <Typography variant="body2">
+                    <Typography variant="body2" fontSize="14px">
                       {getCMSDataField(
                         cmsData,
                         "pagesDatasetsResourceMobilization.statsText5",
@@ -711,7 +711,7 @@ export const ResourceMobilizationPage: React.FC = () => {
               </Grid>
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="overline">
+              <Typography variant="overline" fontSize="14px">
                 Latest Update: <b>{latestUpdateDate}</b>
               </Typography>
             </Grid>

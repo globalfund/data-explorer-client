@@ -170,15 +170,15 @@ export const GrantOverview: React.FC = () => {
         }}
       >
         <Grid item xs={12} sm={6} md={4} lg={3}>
-          <Box gap="10px" display="flex" flexDirection="column">
-            <Typography variant="body2" fontWeight="700">
+          <Box gap="5px" display="flex" flexDirection="column">
+            <Typography variant="body2" fontWeight="700" fontSize="16px">
               {getCMSDataField(
                 cmsData,
                 "pagesGrantOverview.portfolioManager",
                 "Fund Portfolio Manager",
               )}
             </Typography>
-            <Typography variant="overline">
+            <Typography variant="body2">
               {dataGrant.FPMName}
               <br />
               <a href={`mailto:${dataGrant.FPMEmail}`}>{dataGrant.FPMEmail}</a>
@@ -186,8 +186,8 @@ export const GrantOverview: React.FC = () => {
           </Box>
         </Grid>
         <Grid item xs={12} sm={6} md={4} lg={2}>
-          <Box gap="10px" display="flex" flexDirection="column">
-            <Typography variant="body2" fontWeight="700">
+          <Box gap="5px" display="flex" flexDirection="column">
+            <Typography variant="body2" fontWeight="700" fontSize="16px">
               {getCMSDataField(
                 cmsData,
                 "pagesGrantOverview.grantStatus",
@@ -197,7 +197,7 @@ export const GrantOverview: React.FC = () => {
             <Typography
               gap="4px"
               display="flex"
-              variant="overline"
+              variant="body2"
               alignItems="center"
             >
               <Box
@@ -211,31 +211,31 @@ export const GrantOverview: React.FC = () => {
           </Box>
         </Grid>
         <Grid item xs={12} sm={6} md={4} lg={2}>
-          <Box gap="10px" display="flex" flexDirection="column">
-            <Typography variant="body2" fontWeight="700">
+          <Box gap="5px" display="flex" flexDirection="column">
+            <Typography variant="body2" fontWeight="700" fontSize="16px">
               {getCMSDataField(
                 cmsData,
                 "pagesGrantOverview.countryText",
                 "Country",
               )}
             </Typography>
-            <Typography variant="overline">{dataGrant.countryName}</Typography>
+            <Typography variant="body2">{dataGrant.countryName}</Typography>
           </Box>
         </Grid>
         <Grid item xs={12} sm={6} md={4} lg={2}>
-          <Box gap="10px" display="flex" flexDirection="column">
-            <Typography variant="body2" fontWeight="700">
+          <Box gap="5px" display="flex" flexDirection="column">
+            <Typography variant="body2" fontWeight="700" fontSize="16px">
               {getCMSDataField(
                 cmsData,
                 "pagesGrantOverview.componentText",
                 "Component",
               )}
             </Typography>
-            <Typography variant="overline">{dataGrant.component}</Typography>
+            <Typography variant="body2">{dataGrant.component}</Typography>
           </Box>
         </Grid>
         {/* <Grid item xs={12} sm={6} md={4} lg={2}>
-          <Box gap="10px" display="flex" flexDirection="column">
+          <Box gap="5px" display="flex" flexDirection="column">
             <Typography variant="body2" fontWeight="700">
               Rating
             </Typography>
@@ -243,15 +243,15 @@ export const GrantOverview: React.FC = () => {
           </Box>
         </Grid> */}
         <Grid item xs={12} sm={6} md={4} lg={3}>
-          <Box gap="10px" display="flex" flexDirection="column">
-            <Typography variant="body2" fontWeight="700">
+          <Box gap="5px" display="flex" flexDirection="column">
+            <Typography variant="body2" fontWeight="700" fontSize="16px">
               {getCMSDataField(
                 cmsData,
                 "pagesGrantOverview.principalRecipient",
                 "Principal Recipient",
               )}
             </Typography>
-            <Typography variant="overline">
+            <Typography variant="body2">
               {dataGrant.principalRecipientName}{" "}
               {dataGrant.principalRecipientShortrName}
             </Typography>
@@ -272,10 +272,10 @@ export const GrantOverview: React.FC = () => {
         />
       </Box>
       <Box>
-        <Typography variant="body2" fontWeight="700">
+        <Typography variant="body2" fontWeight="700" fontSize="16px">
           {getCMSDataField(cmsData, "pagesGrantOverview.goals", "Goals")}
         </Typography>
-        <Typography variant="body2">
+        <Typography variant="body2" fontSize="16px">
           {dataOverview.goals.map((goal: string, index: number) => (
             <React.Fragment key={index}>
               {goal}
@@ -286,14 +286,14 @@ export const GrantOverview: React.FC = () => {
         </Typography>
       </Box>
       <Box marginBottom="32px">
-        <Typography variant="body2" fontWeight="700">
+        <Typography variant="body2" fontWeight="700" fontSize="16px">
           {getCMSDataField(
             cmsData,
             "pagesGrantOverview.objectives",
             "Objectives",
           )}
         </Typography>
-        <Typography variant="body2">
+        <Typography variant="body2" fontSize="16px">
           {dataOverview.objectives.map((objective: string, index: number) => (
             <React.Fragment key={index}>
               {objective}
