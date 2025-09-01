@@ -67,7 +67,7 @@ export const Header: React.FC = () => {
                   height: "24px",
                   borderRadius: "23px",
                   input: {
-                    fontSize: "12px",
+                    fontSize: "14px",
                     borderRadius: "23px",
                     background: colors.primary.white,
                   },
@@ -147,7 +147,7 @@ export const Header: React.FC = () => {
                 height: "24px",
                 borderRadius: "23px",
                 input: {
-                  fontSize: "12px",
+                  fontSize: "14px",
                   borderRadius: "23px",
                   background: colors.primary.white,
                 },

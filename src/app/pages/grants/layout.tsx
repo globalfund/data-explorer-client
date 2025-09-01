@@ -159,7 +159,6 @@ export const GrantsLayout: React.FC<GrantsLayoutProps> = (
               handleSearchIconClick={handleSearchIconClick}
             />
           </Box>
-
           <Box gap="8px" display="flex" flexBasis={"auto"}>
             <Dropdown
               dropdownSelected={view}
@@ -197,7 +196,7 @@ export const GrantsLayout: React.FC<GrantsLayoutProps> = (
         {pagination}
       </Box>
       <Box>
-        <Typography variant="overline">
+        <Typography variant="overline" fontSize="14px">
           Latest Update: <b>{props.latestUpdateDate}</b>
         </Typography>
       </Box>

@@ -97,7 +97,7 @@ export const Dropdown: React.FC<DropdownProps> = (props: DropdownProps) => {
         style={{
           marginRight: 0,
           width: props.width ?? 134,
-          maxHeight: props.height ?? 32,
+          maxHeight: props.height ?? 35,
         }}
         anchorEl={!!anchorEl}
         data-cy="category-dropdown-button"

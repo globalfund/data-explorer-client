@@ -89,7 +89,7 @@ export const HomeBlock5: React.FC = () => {
         sx={{
           "& > button": {
             width: "40px",
-            height: "32px",
+            height: "35px",
             fontSize: "16px",
             borderRadius: "4px",
             border: `1px solid ${appColors.CHART_BLOCK_CYCLES.BUTTON_BORDER_COLOR}`,

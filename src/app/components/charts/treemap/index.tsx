@@ -141,7 +141,7 @@ export const Treemap: React.FC<TreemapProps> = (props: TreemapProps) => {
                     fontSize: isMultilevel ? "14px" : "16px",
                   },
                   value: {
-                    fontSize: isMultilevel ? "8px" : "12px",
+                    fontSize: isMultilevel ? "14px" : "16px",
                   },
                 },
               },

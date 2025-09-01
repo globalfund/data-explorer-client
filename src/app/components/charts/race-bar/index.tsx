@@ -31,7 +31,7 @@ export const RaceBarChart: React.FC<RaceBarChartProps> = (
             data-cy="race-bar-chart"
           >
             <Typography
-              fontSize="14px"
+              fontSize="16px"
               color="#333"
               minWidth="90px"
               textAlign="right"
@@ -44,7 +44,7 @@ export const RaceBarChart: React.FC<RaceBarChartProps> = (
               bgcolor={item.color}
               width={`calc(${item.sizePercentage ?? item.percentage}% - 120px)`}
             />
-            <Typography fontSize="14px" color="#333" whiteSpace="nowrap">
+            <Typography fontSize="16px" color="#333" whiteSpace="nowrap">
               {!props.noValuesFormat
                 ? `US$${getFinancialValueWithMetricPrefix(
                     item.value,

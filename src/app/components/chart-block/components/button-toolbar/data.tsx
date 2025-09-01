@@ -196,7 +196,7 @@ export const InfoPanel: React.FC<InfoPanelProps> = (props: InfoPanelProps) => {
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Typography
           color="#495057"
-          fontSize="12px"
+          fontSize="14px"
           fontWeight="700"
           marginBottom="8px"
         >
@@ -217,7 +217,7 @@ export const InfoPanel: React.FC<InfoPanelProps> = (props: InfoPanelProps) => {
         className="scrollbar"
         style={{
           color: "#495057",
-          fontSize: "12px",
+          fontSize: "14px",
           overflowY: "auto",
           maxHeight: "270px",
         }}

@@ -55,10 +55,10 @@ export const GrantCard: React.FC<GrantCardProps> = (props: GrantCardProps) => {
         flexDirection="row"
         justifyContent="space-between"
       >
-        <Typography fontSize="12px" fontWeight="700">
+        <Typography fontSize="14px" fontWeight="700">
           {props.status}
         </Typography>
-        <Typography fontSize="12px" fontWeight="700">
+        <Typography fontSize="14px" fontWeight="700">
           {props.component}
         </Typography>
       </Box>
@@ -71,7 +71,7 @@ export const GrantCard: React.FC<GrantCardProps> = (props: GrantCardProps) => {
       >
         <Box gap="4px" display="flex" alignItems="center" marginLeft="-4px">
           <LocationIcon fontSize="small" />
-          <Typography fontSize="12px" fontWeight="700">
+          <Typography fontSize="14px" fontWeight="700">
             {props.location}
           </Typography>
         </Box>
@@ -82,7 +82,7 @@ export const GrantCard: React.FC<GrantCardProps> = (props: GrantCardProps) => {
             </Typography>
           </Box> */}
       </Box>
-      <Typography variant="body1" fontWeight="700">
+      <Typography variant="body1" fontWeight="700" fontSize="16px">
         {props.number}
       </Typography>
       <Divider
@@ -92,25 +92,25 @@ export const GrantCard: React.FC<GrantCardProps> = (props: GrantCardProps) => {
       />
       <Box gap="6px" display="flex" flexDirection="column">
         <Box width="100%" display="flex" justifyContent="space-between">
-          <Typography width="122px" fontSize="12px" fontWeight="700">
+          <Typography width="140px" fontSize="14px" fontWeight="700">
             Principal recipient:
           </Typography>
           <Typography
-            fontSize="12px"
+            fontSize="14px"
             overflow="hidden"
             whiteSpace="nowrap"
             letterSpacing="normal"
             textOverflow="ellipsis"
-            maxWidth="calc(100% - 142px)"
+            maxWidth="calc(100% - 160px)"
           >
             {props.principalRecipient}
           </Typography>
         </Box>
         <Box width="100%" display="flex" justifyContent="space-between">
-          <Typography fontSize="12px" fontWeight="700">
+          <Typography fontSize="14px" fontWeight="700">
             Start / end date:
           </Typography>
-          <Typography fontSize="12px" letterSpacing="normal">
+          <Typography fontSize="14px" letterSpacing="normal">
             {dates.join(" / ")}
           </Typography>
         </Box>
@@ -122,18 +122,18 @@ export const GrantCard: React.FC<GrantCardProps> = (props: GrantCardProps) => {
       />
       <Box gap="6px" display="flex" flexDirection="column">
         <Box width="100%" display="flex" justifyContent="space-between">
-          <Typography fontSize="12px" fontWeight="700">
+          <Typography fontSize="14px" fontWeight="700">
             Signed
           </Typography>
-          <Typography fontSize="12px" letterSpacing="normal">
+          <Typography fontSize="14px" letterSpacing="normal">
             {formatFinancialValue(props.signed)}
           </Typography>
         </Box>
         <Box width="100%" display="flex" justifyContent="space-between">
-          <Typography fontSize="12px" fontWeight="700">
+          <Typography fontSize="14px" fontWeight="700">
             Disbursed · {props.percentage}%
           </Typography>
-          <Typography fontSize="12px" letterSpacing="normal">
+          <Typography fontSize="14px" letterSpacing="normal">
             {formatFinancialValue(props.disbursed)}
           </Typography>
         </Box>

@@ -3,7 +3,9 @@ import Box from "@mui/material/Box";
 import { appColors } from "app/theme";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
+import { useCMSData } from "app/hooks/useCMSData";
 import Typography from "@mui/material/Typography";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import FooterLogo from "app/assets/vectors/FooterLogo.svg?react";
 import {
   SM,
@@ -14,8 +16,6 @@ import {
   FooterBottomBgBlock,
   FooterLinkSeparator,
 } from "app/components/footer/styles";
-import { useCMSData } from "app/hooks/useCMSData";
-import { getCMSDataField } from "app/utils/getCMSDataField";
 
 export const Footer: React.FC = () => {
   const cmsData = useCMSData({ returnData: true });
@@ -53,7 +53,7 @@ export const Footer: React.FC = () => {
               </Box>
               <Typography
                 display="block"
-                fontSize="10px"
+                fontSize="14px"
                 marginTop="-5px"
                 variant="caption"
                 color={appColors.COMMON.BLACK}

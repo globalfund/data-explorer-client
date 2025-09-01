@@ -52,7 +52,7 @@ const StatComp: React.FC<StatCompProps> = (props: StatCompProps) => {
         </Typography>
         <Typography
           component="div"
-          maxWidth="190px"
+          fontSize="14px"
           variant="overline"
           lineHeight="normal"
         >

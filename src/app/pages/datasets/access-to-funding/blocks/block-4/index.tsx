@@ -73,14 +73,14 @@ export const AccessToFundingBlock4: React.FC<AccessToFundingBlock4Props> = (
       }}
       data-cy="allocation-block-2"
     >
-      <Typography variant="h4">
+      <Typography variant="h4" fontSize="36px">
         {getCMSDataField(
           cmsData,
           "pagesDatasetsAccessToFunding.cumulativeAllocationTitle",
           "Cumulative Allocation by Cycles",
         )}
       </Typography>
-      <Typography fontSize="14px">
+      <Typography fontSize="20px">
         {getCMSDataField(
           cmsData,
           "pagesDatasetsAccessToFunding.cumulativeAllocationSubtitle",
@@ -137,7 +137,7 @@ export const AccessToFundingBlock4: React.FC<AccessToFundingBlock4Props> = (
           </Box>
         )}
       </Box>
-      <Typography variant="overline">
+      <Typography variant="overline" fontSize="14px">
         Latest Update: <b>{latestUpdateDate}</b>
       </Typography>
     </Box>

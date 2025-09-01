@@ -57,18 +57,18 @@ export const PolylineTree: React.FC<PolylineTreeProps> = (
             backgroundColor: appColors.COMMON.WHITE,
             rich: {
               value: {
-                fontSize: 12,
-                fontWeight: "bold",
-              },
-              smallName: {
-                fontSize: 12,
-              },
-              name: {
                 fontSize: 14,
                 fontWeight: "bold",
               },
+              smallName: {
+                fontSize: 14,
+              },
+              name: {
+                fontSize: 16,
+                fontWeight: "bold",
+              },
               bigName: {
-                fontSize: 18,
+                fontSize: 20,
                 fontWeight: "bold",
               },
             },
@@ -101,10 +101,10 @@ export const PolylineTree: React.FC<PolylineTreeProps> = (
             label: {
               rich: {
                 value: {
-                  fontSize: 14,
+                  fontSize: 16,
                 },
                 smallName: {
-                  fontSize: 14,
+                  fontSize: 16,
                 },
               },
             },

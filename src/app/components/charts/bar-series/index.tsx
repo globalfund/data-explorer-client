@@ -174,7 +174,7 @@ export const BarSeriesChart: React.FC<BarSeriesChartProps> = (
             show: false,
           },
           nameTextStyle: {
-            fontSize: "10px",
+            fontSize: "12px",
             fontFamily: "Inter, sans-serif",
             color: appColors.TIME_CYCLE.AXIS_TEXT_COLOR,
           },
@@ -215,7 +215,7 @@ export const BarSeriesChart: React.FC<BarSeriesChartProps> = (
           align: "left",
           itemGap: 20,
           textStyle: {
-            fontSize: "12px",
+            fontSize: "14px",
             fontFamily: "Inter, sans-serif",
             color: appColors.TIME_CYCLE.AXIS_TEXT_COLOR,
           },
