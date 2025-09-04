@@ -16,7 +16,8 @@ import {
 
 export const ReportBuilderPageChart: React.FC<{
   id: string;
-}> = ({ id }) => {
+  extRemoveItem?: (e: React.MouseEvent) => void;
+}> = ({ id, extRemoveItem }) => {
   const [step, setStep] = React.useState(1);
   const [clicked, setClicked] = React.useState(false);
   const [chartReady, setChartReady] = React.useState(false);
@@ -142,7 +143,9 @@ export const ReportBuilderPageChart: React.FC<{
         <BarChart data={STORY_DATA_VARIANT_1} valueLabels={{ value: "" }} />
       )}
       <Box className="top-right-actions">
-        <IconButton onClick={() => removeItem(id)}>
+        <IconButton
+          onClick={extRemoveItem ? extRemoveItem : () => removeItem(id)}
+        >
           <Close fontSize="small" />
         </IconButton>
       </Box>

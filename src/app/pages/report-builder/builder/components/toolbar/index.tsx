@@ -66,7 +66,11 @@ export const ReportBuilderPageToolbar: React.FC = () => {
         break;
       case "kpi_box":
       case "grid":
+        newItem = { id: uniqueId(), type: "grid" };
+        break;
       case "column":
+        newItem = { id: uniqueId(), type: "column" };
+        break;
       default:
         break;
     }

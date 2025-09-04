@@ -10,7 +10,8 @@ import { useStoreActions } from "app/state/store/hooks";
 export const ReportBuilderPageText: React.FC<{
   id: string;
   setEditor: (editor: Editor | null) => void;
-}> = ({ id, setEditor }) => {
+  extRemoveItem?: (e: React.MouseEvent) => void;
+}> = ({ id, setEditor, extRemoveItem }) => {
   const [clicked, setClicked] = React.useState(false);
 
   const removeItem = useStoreActions(
@@ -54,7 +55,9 @@ export const ReportBuilderPageText: React.FC<{
       )}
       {clicked && <RichEditor setEditor={setEditor} setClicked={setClicked} />}
       <Box className="top-right-actions">
-        <IconButton onClick={() => removeItem(id)}>
+        <IconButton
+          onClick={extRemoveItem ? extRemoveItem : () => removeItem(id)}
+        >
           <Close fontSize="small" />
         </IconButton>
       </Box>

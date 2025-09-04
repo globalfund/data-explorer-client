@@ -9,6 +9,7 @@ import { RTEToolbar } from "app/components/rich-text-editor";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { Empty } from "app/pages/report-builder/builder/components/empty";
 import { RBReportItem } from "app/state/api/action-reducers/report-builder/sync";
+import { ReportBuilderPageGrid } from "app/pages/report-builder/builder/components/grid";
 import { ReportBuilderPageText } from "app/pages/report-builder/builder/components/text";
 import { ReportBuilderPageChart } from "app/pages/report-builder/builder/components/chart";
 import { ReportBuilderPageTable } from "app/pages/report-builder/builder/components/table";
@@ -84,6 +85,36 @@ export const ReportBuilderPage: React.FC = () => {
             moveItem={moveItem}
           >
             <ReportBuilderPageImage id={item.id} />
+          </ItemComponent>
+        );
+      case "grid":
+        return (
+          <ItemComponent
+            id={item.id}
+            index={index}
+            childrenData={[]}
+            moveItem={moveItem}
+          >
+            <ReportBuilderPageGrid
+              length={4}
+              id={item.id}
+              setEditor={setActiveRTE}
+            />
+          </ItemComponent>
+        );
+      case "column":
+        return (
+          <ItemComponent
+            id={item.id}
+            index={index}
+            childrenData={[]}
+            moveItem={moveItem}
+          >
+            <ReportBuilderPageGrid
+              length={2}
+              id={item.id}
+              setEditor={setActiveRTE}
+            />
           </ItemComponent>
         );
       case "section_divider":

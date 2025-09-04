@@ -17,7 +17,8 @@ import {
 
 export const ReportBuilderPageTable: React.FC<{
   id: string;
-}> = ({ id }) => {
+  extRemoveItem?: (e: React.MouseEvent) => void;
+}> = ({ id, extRemoveItem }) => {
   const [step, setStep] = React.useState(1);
   const [clicked, setClicked] = React.useState(false);
   const [tableReady, setTableReady] = React.useState(false);
@@ -149,7 +150,9 @@ export const ReportBuilderPageTable: React.FC<{
         </Box>
       )}
       <Box className="top-right-actions">
-        <IconButton onClick={() => removeItem(id)}>
+        <IconButton
+          onClick={extRemoveItem ? extRemoveItem : () => removeItem(id)}
+        >
           <Close fontSize="small" />
         </IconButton>
       </Box>

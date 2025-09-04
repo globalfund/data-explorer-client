@@ -18,7 +18,8 @@ import {
 
 export const ReportBuilderPageImage: React.FC<{
   id: string;
-}> = ({ id }) => {
+  extRemoveItem?: (e: React.MouseEvent) => void;
+}> = ({ id, extRemoveItem }) => {
   const [tab, setTab] = React.useState(0);
   const [clicked, setClicked] = React.useState(false);
   const [imageReady, setImageReady] = React.useState(false);
@@ -152,7 +153,6 @@ export const ReportBuilderPageImage: React.FC<{
               strokeLinejoin="round"
             />
           </svg>
-
           <Typography fontSize="16px" color="#3154f4">
             Click to add an image
           </Typography>
@@ -168,7 +168,9 @@ export const ReportBuilderPageImage: React.FC<{
         </Box>
       )}
       <Box className="top-right-actions">
-        <IconButton onClick={() => removeItem(id)}>
+        <IconButton
+          onClick={extRemoveItem ? extRemoveItem : () => removeItem(id)}
+        >
           <Close fontSize="small" />
         </IconButton>
       </Box>
