@@ -1,6 +1,7 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import Menu from "@mui/material/Menu";
+import Fade from "@mui/material/Fade";
 import Draggable from "react-draggable";
 import Close from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
@@ -15,7 +16,7 @@ const PaperComponent = React.forwardRef<HTMLDivElement, PaperProps>(
     React.useImperativeHandle(ref, () => nodeRef.current as HTMLDivElement, []);
 
     return (
-      <Draggable handle="#draggable-menu-title" nodeRef={nodeRef}>
+      <Draggable nodeRef={nodeRef} handle="#draggable-menu-title">
         <Paper {...props} ref={nodeRef} />
       </Draggable>
     );
@@ -54,6 +55,7 @@ export const DraggableMenu: React.FC<{
       open={open}
       disableScrollLock
       anchorEl={anchorEl}
+      TransitionComponent={Fade}
       anchorOrigin={anchorOrigin}
       onClose={() => setOpen(false)}
       transformOrigin={transformOrigin}
