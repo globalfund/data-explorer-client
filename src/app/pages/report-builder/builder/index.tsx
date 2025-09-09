@@ -3,7 +3,9 @@ import Box from "@mui/material/Box";
 import { DndProvider } from "react-dnd";
 import update from "immutability-helper";
 import Divider from "@mui/material/Divider";
+import Close from "@mui/icons-material/Close";
 import Container from "@mui/material/Container";
+import IconButton from "@mui/material/IconButton";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { RTEToolbar } from "app/components/rich-text-editor";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -25,6 +27,9 @@ export const ReportBuilderPage: React.FC = () => {
 
   const setItems = useStoreActions(
     (actions) => actions.RBReportItemsState.setItems,
+  );
+  const removeItem = useStoreActions(
+    (actions) => actions.RBReportItemsState.removeItem,
   );
 
   const moveItem = React.useCallback(
@@ -125,7 +130,29 @@ export const ReportBuilderPage: React.FC = () => {
             childrenData={[]}
             moveItem={moveItem}
           >
-            <Divider key={item.id} flexItem />
+            <Box
+              sx={{
+                width: "100%",
+                display: "flex",
+                position: "relative",
+                flexDirection: "column",
+                "&:hover": {
+                  ".top-right-actions": {
+                    top: -19,
+                    right: -35,
+                    display: "flex",
+                    height: "fit-content",
+                  },
+                },
+              }}
+            >
+              <Divider key={item.id} flexItem />
+              <Box className="top-right-actions">
+                <IconButton onClick={() => removeItem(item.id)}>
+                  <Close fontSize="small" />
+                </IconButton>
+              </Box>
+            </Box>
           </ItemComponent>
         );
       default:

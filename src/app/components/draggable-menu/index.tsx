@@ -1,52 +1,66 @@
 import React from "react";
 import Box from "@mui/material/Box";
+import Menu from "@mui/material/Menu";
 import Draggable from "react-draggable";
-import Paper from "@mui/material/Paper";
 import Close from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import DialogTitle from "@mui/material/DialogTitle";
+import Paper, { PaperProps } from "@mui/material/Paper";
 import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
-import Dialog, { DialogProps } from "@mui/material/Dialog";
 import DragIndicator from "@mui/icons-material/DragIndicator";
 
-const PaperComponent = (props: DialogProps["PaperProps"]) => {
-  const nodeRef = React.useRef<HTMLDivElement>(null);
+const PaperComponent = React.forwardRef<HTMLDivElement, PaperProps>(
+  (props, ref) => {
+    const nodeRef = React.useRef<HTMLDivElement>(null);
+    React.useImperativeHandle(ref, () => nodeRef.current as HTMLDivElement, []);
 
-  return (
-    <Draggable handle="#draggable-dialog-title" nodeRef={nodeRef}>
-      <Paper {...props} ref={nodeRef} />
-    </Draggable>
-  );
-};
+    return (
+      <Draggable handle="#draggable-menu-title" nodeRef={nodeRef}>
+        <Paper {...props} ref={nodeRef} />
+      </Draggable>
+    );
+  },
+);
 
-export const DraggableModal: React.FC<{
+PaperComponent.displayName = "PaperComponent";
+
+export const DraggableMenu: React.FC<{
   width: number;
   open: boolean;
   title: string;
   children: React.ReactNode;
-  actions?: React.ReactNode;
+  anchorEl: null | HTMLElement;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ width, open, setOpen, title, children, actions }) => {
+}> = ({ anchorEl, width, open, setOpen, title, children }) => {
   return (
-    <Dialog
+    <Menu
       open={open}
-      hideBackdrop
       disableScrollLock
-      disableEscapeKeyDown
-      PaperComponent={PaperComponent}
-      PaperProps={{
-        sx: {
-          width,
-          padding: 0,
-          maxWidth: "600px",
-          minHeight: "300px",
-          borderRadius: "8px",
-          boxShadow: "0 0 10px 0 rgba(152, 161, 170, 0.60)",
+      anchorEl={anchorEl}
+      onClose={() => setOpen(false)}
+      transformOrigin={{
+        vertical: -5,
+        horizontal: "left",
+      }}
+      slots={{ paper: PaperComponent }}
+      slotProps={{
+        paper: {
+          sx: {
+            width,
+            padding: 0,
+            maxWidth: "600px",
+            minHeight: "300px",
+            borderRadius: "8px",
+            position: "absolute",
+            boxShadow: "0 0 10px 0 rgba(152, 161, 170, 0.60)",
+          },
         },
       }}
       sx={{
         zIndex: 1400,
+        "& .MuiMenu-list": {
+          padding: 0,
+        },
       }}
     >
       <DialogTitle
@@ -73,7 +87,7 @@ export const DraggableModal: React.FC<{
           <DragIndicator
             fontSize="medium"
             htmlColor="#373d43"
-            id="draggable-dialog-title"
+            id="draggable-menu-title"
             sx={{ cursor: "move", transform: "rotate(90deg)" }}
           />
           <IconButton onClick={() => setOpen(false)} sx={{ padding: 0 }}>
@@ -84,20 +98,6 @@ export const DraggableModal: React.FC<{
       <DialogContent sx={{ padding: "10px !important" }}>
         {children}
       </DialogContent>
-      {actions && (
-        <DialogActions
-          sx={{
-            padding: "0 10px 10px 10px",
-            justifyContent: "space-between",
-            button: {
-              padding: "4px 12px",
-              textTransform: "none",
-            },
-          }}
-        >
-          {actions}
-        </DialogActions>
-      )}
-    </Dialog>
+    </Menu>
   );
 };

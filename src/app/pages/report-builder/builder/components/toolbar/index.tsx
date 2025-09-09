@@ -15,13 +15,14 @@ import FolderIcon from "app/assets/vectors/Folder.svg?react";
 import SettingsIcon from "app/assets/vectors/Settings_ButtonIcon.svg?react";
 import OptionPlaceholder from "app/assets/vectors/OptionPlaceholder.svg?react";
 import { RBReportItem } from "app/state/api/action-reducers/report-builder/sync";
+import { ReportBuilderPageReportSettings } from "app/pages/report-builder/builder/components/report-settings";
 
 const componentOptions = [
   { label: "Text", icon: <OptionPlaceholder />, value: "text" },
   { label: "Chart", icon: <OptionPlaceholder />, value: "chart" },
   { label: "Table", icon: <OptionPlaceholder />, value: "table" },
   { label: "Image", icon: <OptionPlaceholder />, value: "image" },
-  { label: "KPI Box", icon: <OptionPlaceholder />, value: "kpi_box" },
+  // { label: "KPI Box", icon: <OptionPlaceholder />, value: "kpi_box" },
   { label: "Grid", icon: <OptionPlaceholder />, value: "grid" },
   { label: "Column", icon: <OptionPlaceholder />, value: "column" },
   {
@@ -32,7 +33,10 @@ const componentOptions = [
 ];
 
 export const ReportBuilderPageToolbar: React.FC = () => {
+  const [settingsClicked, setSettingsClicked] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorElReportSettings, setAnchorElReportSettings] =
+    React.useState<null | HTMLElement>(null);
 
   const addItem = useStoreActions(
     (actions) => actions.RBReportItemsState.addItem,
@@ -44,6 +48,16 @@ export const ReportBuilderPageToolbar: React.FC = () => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleReportSettingsClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElReportSettings(event.currentTarget);
+    setSettingsClicked(true);
+  };
+
+  const handleReportSettingsClose = () => {
+    setAnchorElReportSettings(null);
+    setSettingsClicked(false);
   };
 
   const handleMenuItemClick = (value: string) => {
@@ -114,9 +128,15 @@ export const ReportBuilderPageToolbar: React.FC = () => {
             variant="outlined"
             startIcon={<SettingsIcon />}
             sx={{ padding: "5px 12px" }}
+            onClick={handleReportSettingsClick}
           >
             Report Settings
           </Button>
+          <ReportBuilderPageReportSettings
+            clicked={settingsClicked}
+            anchorEl={anchorElReportSettings}
+            setClicked={handleReportSettingsClose}
+          />
         </Box>
         <Box
           sx={{
@@ -164,6 +184,7 @@ export const ReportBuilderPageToolbar: React.FC = () => {
               horizontal: "left",
             }}
             sx={{
+              zIndex: 1400,
               "& .MuiPaper-root": {
                 borderRadius: "4px",
                 border: "1px solid #dfe3e5",
