@@ -53,6 +53,7 @@ export const ReportBuilderSidebar: React.FC<{
               display: "flex",
               flexDirection: "column",
               button: {
+                color: "#000",
                 fontSize: "16px",
                 fontWeight: "400",
                 padding: "12px 14px",
@@ -61,101 +62,64 @@ export const ReportBuilderSidebar: React.FC<{
                 textTransform: "none",
                 justifyContent: "flex-start",
                 ".MuiButton-startIcon": { ml: 0, mr: "10px" },
+                "&:hover": {
+                  background: "#f1f3f5",
+                },
               },
             }}
           >
             <Button
               startIcon={<AllReportsIcon />}
-              sx={{
-                color: selectedItem === "All Reports" ? "#ffffff" : "#000000",
-                background:
-                  selectedItem === "All Reports" ? "#000000" : "transparent",
-                svg: {
-                  path: {
-                    stroke:
-                      selectedItem === "All Reports" ? "#ffffff" : "#000000",
-                  },
-                },
-                "&:hover": {
-                  color: "#ffffff",
-                  background: "#000000",
-                  svg: { path: { stroke: "#ffffff" } },
-                },
-              }}
               onClick={handleItemClick("All Reports")}
+              sx={{
+                background:
+                  selectedItem === "All Reports" ? "#f1f3f5" : "transparent",
+                border:
+                  selectedItem === "All Reports" ? "1px solid #70777e" : "none",
+                path: { stroke: "#252c34" },
+              }}
             >
               All Reports
             </Button>
             <Button
               startIcon={<AllAssetsIcon />}
-              sx={{
-                color: selectedItem === "All Assets" ? "#ffffff" : "#000000",
-                background:
-                  selectedItem === "All Assets" ? "#000000" : "transparent",
-                svg: {
-                  path: {
-                    fill: selectedItem === "All Assets" ? "#ffffff" : "#000000",
-                  },
-                },
-                "&:hover": {
-                  color: "#ffffff",
-                  background: "#000000",
-                  svg: { path: { fill: "#ffffff" } },
-                },
-              }}
               onClick={handleItemClick("All Assets")}
+              sx={{
+                background:
+                  selectedItem === "All Assets" ? "#f1f3f5" : "transparent",
+                border:
+                  selectedItem === "All Assets" ? "1px solid #70777e" : "none",
+              }}
             >
               All Assets
             </Button>
             <Button
               startIcon={<TutorialsIcon />}
-              sx={{
-                color: selectedItem === "Tutorials" ? "#ffffff" : "#000000",
-                background:
-                  selectedItem === "Tutorials" ? "#000000" : "transparent",
-                svg: {
-                  path: {
-                    fill: selectedItem === "Tutorials" ? "#ffffff" : "#000000",
-                  },
-                },
-                "&:hover": {
-                  color: "#ffffff",
-                  background: "#000000",
-                  svg: { path: { fill: "#ffffff" } },
-                },
-              }}
               onClick={handleItemClick("Tutorials")}
+              sx={{
+                background:
+                  selectedItem === "Tutorials" ? "#f1f3f5" : "transparent",
+                border:
+                  selectedItem === "Tutorials" ? "1px solid #70777e" : "none",
+              }}
             >
               Tutorials
             </Button>
             <Button
               startIcon={<TemplatesLibrariesIcon />}
+              onClick={handleItemClick("Templates and Layouts")}
               sx={{
-                color:
-                  selectedItem === "Templates and Libraries"
-                    ? "#ffffff"
-                    : "#000000",
                 background:
-                  selectedItem === "Templates and Libraries"
-                    ? "#000000"
+                  selectedItem === "Templates and Layouts"
+                    ? "#f1f3f5"
                     : "transparent",
-                svg: {
-                  path: {
-                    fill:
-                      selectedItem === "Templates and Libraries"
-                        ? "#ffffff"
-                        : "#000000",
-                  },
-                },
-                "&:hover": {
-                  color: "#ffffff",
-                  background: "#000000",
-                  svg: { path: { fill: "#ffffff" } },
-                },
+                border:
+                  selectedItem === "Templates and Layouts"
+                    ? "1px solid #70777e"
+                    : "none",
               }}
-              onClick={handleItemClick("Templates and Libraries")}
             >
-              Templates and Libraries
+              Templates and Layouts
             </Button>
           </Box>
         </AccordionDetails>
