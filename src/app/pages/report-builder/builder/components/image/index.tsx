@@ -3,12 +3,13 @@ import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Button from "@mui/material/Button";
-import Close from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
+import MoreVert from "@mui/icons-material/MoreVert";
 import { useStoreActions } from "app/state/store/hooks";
 import { DraggableModal } from "app/components/draggable-modal";
 import { TabPlaceholderIcon } from "app/pages/report-builder/builder/components/image/data";
+import { ReportBuilderPageItemMenu } from "app/pages/report-builder/builder/components/item-menu";
 import {
   TabPanel,
   UploadTab,
@@ -24,10 +25,28 @@ export const ReportBuilderPageImage: React.FC<{
   const [clicked, setClicked] = React.useState(false);
   const [imageReady, setImageReady] = React.useState(false);
   const [applyEnabled, setApplyEnabled] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const removeItem = useStoreActions(
     (actions) => actions.RBReportItemsState.removeItem,
   );
+
+  const handleMoreVertClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleDeleteItem = (e: React.MouseEvent) => {
+    if (extRemoveItem) {
+      extRemoveItem(e);
+    } else {
+      removeItem(id);
+    }
+    handleClose();
+  };
 
   const content = React.useMemo(() => {
     return (
@@ -168,11 +187,15 @@ export const ReportBuilderPageImage: React.FC<{
         </Box>
       )}
       <Box className="top-right-actions">
-        <IconButton
-          onClick={extRemoveItem ? extRemoveItem : () => removeItem(id)}
-        >
-          <Close fontSize="small" />
+        <IconButton onClick={handleMoreVertClick}>
+          <MoreVert fontSize="small" />
         </IconButton>
+        <ReportBuilderPageItemMenu
+          title="Settings"
+          anchorEl={anchorEl}
+          deleteItem={handleDeleteItem}
+          setOpen={() => setAnchorEl(null)}
+        />
       </Box>
       <DraggableModal
         width={550}

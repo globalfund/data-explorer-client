@@ -136,13 +136,11 @@ export const ReportBuilderPage: React.FC = () => {
                 display: "flex",
                 position: "relative",
                 flexDirection: "column",
-                "&:hover": {
-                  ".top-right-actions": {
-                    top: -19,
-                    right: -35,
-                    display: "flex",
-                    height: "fit-content",
-                  },
+                ".top-right-actions": {
+                  top: -19,
+                  right: -45,
+                  display: "flex",
+                  height: "fit-content",
                 },
               }}
             >

@@ -3,14 +3,15 @@ import Box from "@mui/material/Box";
 import { Editor } from "@tiptap/react";
 import { uniqueId } from "app/utils/uniqueId";
 import Title from "@mui/icons-material/Title";
-import Close from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
+import MoreVert from "@mui/icons-material/MoreVert";
 import { useStoreActions } from "app/state/store/hooks";
 import { ReportBuilderPageText } from "app/pages/report-builder/builder/components/text";
 import { ReportBuilderPageChart } from "app/pages/report-builder/builder/components/chart";
 import { ReportBuilderPageImage } from "app/pages/report-builder/builder/components/image";
 import { ReportBuilderPageTable } from "app/pages/report-builder/builder/components/table";
+import { ReportBuilderPageItemMenu } from "app/pages/report-builder/builder/components/item-menu";
 
 const containerSx = {
   width: "100%",
@@ -208,6 +209,7 @@ export const ReportBuilderPageGrid: React.FC<{
   length: number;
   setEditor: (id: Editor | null) => void;
 }> = ({ id, length, setEditor }) => {
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [items, setItems] = React.useState<
     (null | "text" | "chart" | "table" | "image")[]
   >(Array(length).fill(null));
@@ -215,6 +217,19 @@ export const ReportBuilderPageGrid: React.FC<{
   const removeItem = useStoreActions(
     (actions) => actions.RBReportItemsState.removeItem,
   );
+
+  const handleMoreVertClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleDeleteItem = () => {
+    removeItem(id);
+    handleClose();
+  };
 
   const handleItemTypeChange = (
     index: number,
@@ -264,9 +279,15 @@ export const ReportBuilderPageGrid: React.FC<{
         ))}
       </Box>
       <Box className="top-right-actions">
-        <IconButton onClick={() => removeItem(id)}>
-          <Close fontSize="small" />
+        <IconButton onClick={handleMoreVertClick}>
+          <MoreVert fontSize="small" />
         </IconButton>
+        <ReportBuilderPageItemMenu
+          title="Settings"
+          anchorEl={anchorEl}
+          deleteItem={handleDeleteItem}
+          setOpen={() => setAnchorEl(null)}
+        />
       </Box>
     </Box>
   );

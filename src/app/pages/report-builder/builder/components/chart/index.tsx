@@ -1,14 +1,15 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Close from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
+import MoreVert from "@mui/icons-material/MoreVert";
 import { BarChart } from "app/components/charts/bar";
 import ArrowBack from "@mui/icons-material/ArrowBack";
 import { useStoreActions } from "app/state/store/hooks";
 import { DraggableModal } from "app/components/draggable-modal";
 import { STORY_DATA_VARIANT_1 } from "app/components/charts/bar/data";
+import { ReportBuilderPageItemMenu } from "app/pages/report-builder/builder/components/item-menu";
 import {
   SelectDatasetStep,
   CustomiseChartStep,
@@ -21,10 +22,28 @@ export const ReportBuilderPageChart: React.FC<{
   const [step, setStep] = React.useState(1);
   const [clicked, setClicked] = React.useState(false);
   const [chartReady, setChartReady] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const removeItem = useStoreActions(
     (actions) => actions.RBReportItemsState.removeItem,
   );
+
+  const handleMoreVertClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleDeleteItem = (e: React.MouseEvent) => {
+    if (extRemoveItem) {
+      extRemoveItem(e);
+    } else {
+      removeItem(id);
+    }
+    handleClose();
+  };
 
   const title = React.useMemo(() => {
     if (step === 1) {
@@ -143,11 +162,15 @@ export const ReportBuilderPageChart: React.FC<{
         <BarChart data={STORY_DATA_VARIANT_1} valueLabels={{ value: "" }} />
       )}
       <Box className="top-right-actions">
-        <IconButton
-          onClick={extRemoveItem ? extRemoveItem : () => removeItem(id)}
-        >
-          <Close fontSize="small" />
+        <IconButton onClick={handleMoreVertClick}>
+          <MoreVert fontSize="small" />
         </IconButton>
+        <ReportBuilderPageItemMenu
+          title="Settings"
+          anchorEl={anchorEl}
+          deleteItem={handleDeleteItem}
+          setOpen={() => setAnchorEl(null)}
+        />
       </Box>
       <DraggableModal
         width={550}

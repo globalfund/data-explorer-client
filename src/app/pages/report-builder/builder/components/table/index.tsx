@@ -2,14 +2,15 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { Table } from "app/components/table";
-import Close from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
+import MoreVert from "@mui/icons-material/MoreVert";
 import ArrowBack from "@mui/icons-material/ArrowBack";
 import { useStoreActions } from "app/state/store/hooks";
 import { DraggableModal } from "app/components/draggable-modal";
 import { SelectDatasetStep } from "app/pages/report-builder/builder/components/chart/steps";
 import { CustomiseTableStep } from "app/pages/report-builder/builder/components/table/steps";
+import { ReportBuilderPageItemMenu } from "app/pages/report-builder/builder/components/item-menu";
 import {
   TABLE_VARIATION_8_DATA,
   TABLE_VARIATION_8_COLUMNS,
@@ -22,10 +23,28 @@ export const ReportBuilderPageTable: React.FC<{
   const [step, setStep] = React.useState(1);
   const [clicked, setClicked] = React.useState(false);
   const [tableReady, setTableReady] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const removeItem = useStoreActions(
     (actions) => actions.RBReportItemsState.removeItem,
   );
+
+  const handleMoreVertClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleDeleteItem = (e: React.MouseEvent) => {
+    if (extRemoveItem) {
+      extRemoveItem(e);
+    } else {
+      removeItem(id);
+    }
+    handleClose();
+  };
 
   const title = React.useMemo(() => {
     if (step === 1) {
@@ -150,11 +169,15 @@ export const ReportBuilderPageTable: React.FC<{
         </Box>
       )}
       <Box className="top-right-actions">
-        <IconButton
-          onClick={extRemoveItem ? extRemoveItem : () => removeItem(id)}
-        >
-          <Close fontSize="small" />
+        <IconButton onClick={handleMoreVertClick}>
+          <MoreVert fontSize="small" />
         </IconButton>
+        <ReportBuilderPageItemMenu
+          title="Settings"
+          anchorEl={anchorEl}
+          deleteItem={handleDeleteItem}
+          setOpen={() => setAnchorEl(null)}
+        />
       </Box>
       <DraggableModal
         width={550}
