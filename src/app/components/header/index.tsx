@@ -11,9 +11,11 @@ import IconMenu from "@mui/icons-material/Menu";
 import IconButton from "@mui/material/IconButton";
 import IconClose from "@mui/icons-material/Close";
 import IconSearch from "@mui/icons-material/Search";
+import ArrowBack from "@mui/icons-material/ArrowBack";
 import { HeaderMenu } from "app/components/header-menu";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { NavLink, useLocation } from "react-router-dom";
+import Library from "app/assets/vectors/Library.svg?react";
 import HeaderToolbarLogo from "app/assets/vectors/HeaderToolbarLogo.svg?react";
 
 export const Header: React.FC = () => {
@@ -125,7 +127,6 @@ export const Header: React.FC = () => {
     return (
       <Box
         sx={{
-          top: "16px",
           right: "0px",
           display: "flex",
           flexDirection: "row",
@@ -141,14 +142,15 @@ export const Header: React.FC = () => {
           <Box
             sx={{
               width: "171px",
-              borderRadius: "23px",
+              marginRight: "12px",
+              borderRadius: "4px",
               "#search-container": {
                 width: "100%",
-                height: "24px",
-                borderRadius: "23px",
+                height: "38px",
+                borderRadius: "4px",
                 input: {
                   fontSize: "14px",
-                  borderRadius: "23px",
+                  borderRadius: "4px",
                   background: colors.primary.white,
                 },
               },
@@ -159,7 +161,7 @@ export const Header: React.FC = () => {
                 display: "none",
               },
               "#search-results-container": {
-                top: "35px",
+                top: "49px",
                 width: "500px",
               },
               "> div": {
@@ -177,19 +179,15 @@ export const Header: React.FC = () => {
               data-cy="header-search-btn"
               onClick={onSearchBtnClick}
               sx={{
-                padding: 0,
-                marginLeft: "-24px",
-                background: colors.primary.black,
+                padding: "6px",
+                borderRadius: "4px",
+                border: "1px solid #cfd4da",
                 "> svg": {
-                  transform: "scale(0.7)",
-                  color: colors.primary.white,
+                  transform: "scale(0.8)",
+                  color: colors.primary.black,
                 },
                 "&:hover": {
-                  opacity: 0.8,
-                  background: colors.primary.black,
-                  "> svg": {
-                    color: colors.primary.white,
-                  },
+                  borderColor: colors.primary.black,
                 },
               }}
             >
@@ -198,20 +196,22 @@ export const Header: React.FC = () => {
           </Tooltip>
         )}
         <Button
-          variant="contained"
+          variant="outlined"
           component={NavLink}
           to={!inReportBuilder ? "/report-builder" : "/"}
           sx={{
-            fontWeight: "700",
-            marginLeft: "20px",
-            padding: "6px 10px",
+            fontWeight: "400",
+            marginLeft: "12px",
+            padding: "9px 12px",
             lineHeight: "normal",
             textTransform: "none",
-            color: colors.primary.white,
-            background: colors.primary.black,
+            color: colors.primary.black,
           }}
+          startIcon={
+            inReportBuilder ? <ArrowBack fontSize="small" /> : <Library />
+          }
         >
-          {inReportBuilder ? "Go Back to Explorer" : "Report Builder"}
+          {inReportBuilder ? "Explorer" : "Report Library"}
         </Button>
       </Box>
     );
