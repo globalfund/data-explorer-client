@@ -193,7 +193,6 @@ export const ReportBuilderPage: React.FC = () => {
             ".top-right-actions": {
               top: 4,
               right: 4,
-              display: "none",
               position: "absolute",
               ".MuiIconButton-root": {
                 bgcolor: "#fff",

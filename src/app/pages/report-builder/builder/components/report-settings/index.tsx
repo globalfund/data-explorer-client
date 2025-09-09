@@ -32,6 +32,8 @@ export const ReportBuilderPageReportSettings: React.FC<{
       anchorEl={anchorEl}
       setOpen={setClicked}
       title="Report Settings"
+      transformOrigin={{ vertical: -5, horizontal: "left" }}
+      anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
     >
       <Box
         sx={{

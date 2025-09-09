@@ -31,17 +31,32 @@ export const DraggableMenu: React.FC<{
   children: React.ReactNode;
   anchorEl: null | HTMLElement;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ anchorEl, width, open, setOpen, title, children }) => {
+  anchorOrigin?: {
+    vertical: "top" | "bottom" | "center" | number;
+    horizontal: "left" | "right" | "center" | number;
+  };
+  transformOrigin?: {
+    vertical: "top" | "bottom" | "center" | number;
+    horizontal: "left" | "right" | "center" | number;
+  };
+}> = ({
+  anchorEl,
+  width,
+  open,
+  setOpen,
+  title,
+  children,
+  anchorOrigin,
+  transformOrigin,
+}) => {
   return (
     <Menu
       open={open}
       disableScrollLock
       anchorEl={anchorEl}
+      anchorOrigin={anchorOrigin}
       onClose={() => setOpen(false)}
-      transformOrigin={{
-        vertical: -5,
-        horizontal: "left",
-      }}
+      transformOrigin={transformOrigin}
       slots={{ paper: PaperComponent }}
       slotProps={{
         paper: {

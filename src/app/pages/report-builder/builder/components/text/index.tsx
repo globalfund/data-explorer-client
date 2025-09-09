@@ -2,10 +2,11 @@ import React from "react";
 import Box from "@mui/material/Box";
 import { Editor } from "@tiptap/react";
 import Typography from "@mui/material/Typography";
-import { RichEditor } from "app/components/rich-text-editor";
 import IconButton from "@mui/material/IconButton";
-import { Close } from "@mui/icons-material";
+import MoreVert from "@mui/icons-material/MoreVert";
 import { useStoreActions } from "app/state/store/hooks";
+import { RichEditor } from "app/components/rich-text-editor";
+import { ReportBuilderPageItemMenu } from "app/pages/report-builder/builder/components/item-menu";
 
 export const ReportBuilderPageText: React.FC<{
   id: string;
@@ -13,10 +14,28 @@ export const ReportBuilderPageText: React.FC<{
   extRemoveItem?: (e: React.MouseEvent) => void;
 }> = ({ id, setEditor, extRemoveItem }) => {
   const [clicked, setClicked] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const removeItem = useStoreActions(
     (actions) => actions.RBReportItemsState.removeItem,
   );
+
+  const handleMoreVertClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleDeleteItem = (e: React.MouseEvent) => {
+    if (extRemoveItem) {
+      extRemoveItem(e);
+    } else {
+      removeItem(id);
+    }
+    handleClose();
+  };
 
   return (
     <Box
@@ -55,11 +74,15 @@ export const ReportBuilderPageText: React.FC<{
       )}
       {clicked && <RichEditor setEditor={setEditor} setClicked={setClicked} />}
       <Box className="top-right-actions">
-        <IconButton
-          onClick={extRemoveItem ? extRemoveItem : () => removeItem(id)}
-        >
-          <Close fontSize="small" />
+        <IconButton onClick={handleMoreVertClick}>
+          <MoreVert fontSize="small" />
         </IconButton>
+        <ReportBuilderPageItemMenu
+          anchorEl={anchorEl}
+          title="Text Settings"
+          deleteItem={handleDeleteItem}
+          setOpen={() => setAnchorEl(null)}
+        />
       </Box>
     </Box>
   );
