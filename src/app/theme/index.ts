@@ -256,6 +256,13 @@ const theme = createTheme({
         },
       },
     },
+    MuiMenu: {
+      styleOverrides: {
+        root: {
+          zIndex: 1400,
+        },
+      },
+    },
     MuiContainer: {
       styleOverrides: {
         root: {

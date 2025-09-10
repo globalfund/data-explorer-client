@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import Menu from "@mui/material/Menu";
 import Button from "@mui/material/Button";
 import Add from "@mui/icons-material/Add";
+import Divider from "@mui/material/Divider";
 import Toolbar from "@mui/material/Toolbar";
 import MenuItem from "@mui/material/MenuItem";
 import { uniqueId } from "app/utils/uniqueId";
@@ -13,24 +14,9 @@ import RedoIcon from "app/assets/vectors/Redo.svg?react";
 import NotesIcon from "app/assets/vectors/Notes.svg?react";
 import FolderIcon from "app/assets/vectors/Folder.svg?react";
 import SettingsIcon from "app/assets/vectors/Settings_ButtonIcon.svg?react";
-import OptionPlaceholder from "app/assets/vectors/OptionPlaceholder.svg?react";
 import { RBReportItem } from "app/state/api/action-reducers/report-builder/sync";
+import { ComponentOptions } from "app/pages/report-builder/builder/components/toolbar/data";
 import { ReportBuilderPageReportSettings } from "app/pages/report-builder/builder/components/report-settings";
-
-const componentOptions = [
-  { label: "Text", icon: <OptionPlaceholder />, value: "text" },
-  { label: "Chart", icon: <OptionPlaceholder />, value: "chart" },
-  { label: "Table", icon: <OptionPlaceholder />, value: "table" },
-  { label: "Image", icon: <OptionPlaceholder />, value: "image" },
-  // { label: "KPI Box", icon: <OptionPlaceholder />, value: "kpi_box" },
-  { label: "Grid", icon: <OptionPlaceholder />, value: "grid" },
-  { label: "Column", icon: <OptionPlaceholder />, value: "column" },
-  {
-    label: "Section Divider",
-    icon: <OptionPlaceholder />,
-    value: "section_divider",
-  },
-];
 
 export const ReportBuilderPageToolbar: React.FC = () => {
   const [settingsClicked, setSettingsClicked] = React.useState(false);
@@ -189,21 +175,29 @@ export const ReportBuilderPageToolbar: React.FC = () => {
                 borderRadius: "4px",
                 border: "1px solid #dfe3e5",
               },
+              "& .MuiList-root": {
+                padding: "0px",
+              },
               "& .MuiMenuItem-root": {
                 gap: "5px",
                 display: "flex",
+                padding: "12px 16px",
                 alignItems: "center",
               },
             }}
           >
-            {componentOptions.map((option) => (
-              <MenuItem
-                key={option.value}
-                onClick={() => handleMenuItemClick(option.value)}
-              >
-                {option.icon}
-                {option.label}
-              </MenuItem>
+            {ComponentOptions.map((option, i) => (
+              <React.Fragment key={option.value}>
+                <MenuItem onClick={() => handleMenuItemClick(option.value)}>
+                  {option.icon}
+                  {option.label}
+                </MenuItem>
+                {i !== ComponentOptions.length - 1 && (
+                  <Box sx={{ margin: "0 16px" }}>
+                    <Divider sx={{ borderColor: "#c6c6c6" }} />
+                  </Box>
+                )}
+              </React.Fragment>
             ))}
           </Menu>
         </Box>
