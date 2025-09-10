@@ -25,4 +25,4 @@ export const stats: {
   },
 ];
 
-export const statsOrder = ["HIV", "TB", "Mosquito nets"];
+export const statsOrder = ["HIV", "TB", "mosquito nets"];
