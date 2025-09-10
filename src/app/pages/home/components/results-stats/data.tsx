@@ -31,4 +31,4 @@ export const stats: StatCompProps[] = [
   },
 ];
 
-export const statsOrder = ["HIV", "TB", "Mosquito nets"];
+export const statsOrder = ["HIV", "TB", "mosquito nets"];
