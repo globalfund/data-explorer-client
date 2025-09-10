@@ -26,7 +26,7 @@ export const stats: {
   },
   {
     value: "220 Million",
-    label: "Mosquito nets distributed in 2022.",
+    label: "Insecticide-treated mosquito nets distributed in 2022.",
   },
 ];
 

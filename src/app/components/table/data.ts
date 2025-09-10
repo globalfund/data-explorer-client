@@ -1092,7 +1092,7 @@ export const TABLE_VARIATION_7_DATA: {
     result: 1965401,
   },
   {
-    description: "Mosquito nets distributed",
+    description: "Insecticide-treated mosquito nets distributed",
     component: "Malaria",
     result: 10000000,
   },
@@ -2002,7 +2002,7 @@ export const TABLE_VARIATION_9_DATA: {
             value: 321018609,
           },
           {
-            name: "Mosquito nets distributed",
+            name: "Insecticide-treated mosquito nets distributed",
             value: 219678398,
           },
           {
@@ -2256,7 +2256,7 @@ export const TABLE_VARIATION_9_DATA: {
             value: 149071542,
           },
           {
-            name: "Mosquito nets distributed",
+            name: "Insecticide-treated mosquito nets distributed",
             value: 133391767,
           },
           {
@@ -2502,7 +2502,7 @@ export const TABLE_VARIATION_9_DATA: {
             value: 261406547,
           },
           {
-            name: "Mosquito nets distributed",
+            name: "Insecticide-treated mosquito nets distributed",
             value: 202005157,
           },
           {
@@ -2735,7 +2735,7 @@ export const TABLE_VARIATION_9_DATA: {
             value: 258888396,
           },
           {
-            name: "Mosquito nets distributed",
+            name: "Insecticide-treated mosquito nets distributed",
             value: 161677120,
           },
           {
@@ -2964,7 +2964,7 @@ export const TABLE_VARIATION_9_DATA: {
             value: 226498673,
           },
           {
-            name: "Mosquito nets distributed",
+            name: "Insecticide-treated mosquito nets distributed",
             value: 152867767,
           },
           {
@@ -3205,7 +3205,7 @@ export const TABLE_VARIATION_9_DATA: {
             value: 209779093,
           },
           {
-            name: "Mosquito nets distributed",
+            name: "Insecticide-treated mosquito nets distributed",
             value: 179114637,
           },
           {

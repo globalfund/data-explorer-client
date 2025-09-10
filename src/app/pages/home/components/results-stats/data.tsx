@@ -27,7 +27,7 @@ export const stats: StatCompProps[] = [
   {
     icon: <MalariaIcon />,
     value: 220000000,
-    label: "Mosquito nets distributed in 2022",
+    label: "Insecticide-treated mosquito nets distributed in 2022",
   },
 ];
 
