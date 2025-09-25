@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import Menu from "@mui/material/Menu";
 import Button from "@mui/material/Button";
 import Add from "@mui/icons-material/Add";
-import Divider from "@mui/material/Divider";
 import Toolbar from "@mui/material/Toolbar";
 import MenuItem from "@mui/material/MenuItem";
 import { uniqueId } from "app/utils/uniqueId";
@@ -183,21 +182,19 @@ export const ReportBuilderPageToolbar: React.FC = () => {
                 display: "flex",
                 padding: "12px 16px",
                 alignItems: "center",
+                borderBottom: "1px solid #c6c6c6",
+                "&:last-of-type": { borderBottomStyle: "none" },
               },
             }}
           >
-            {ComponentOptions.map((option, i) => (
-              <React.Fragment key={option.value}>
-                <MenuItem onClick={() => handleMenuItemClick(option.value)}>
-                  {option.icon}
-                  {option.label}
-                </MenuItem>
-                {i !== ComponentOptions.length - 1 && (
-                  <Box sx={{ margin: "0 16px" }}>
-                    <Divider sx={{ borderColor: "#c6c6c6" }} />
-                  </Box>
-                )}
-              </React.Fragment>
+            {ComponentOptions.map((option) => (
+              <MenuItem
+                key={option.value}
+                onClick={() => handleMenuItemClick(option.value)}
+              >
+                {option.icon}
+                {option.label}
+              </MenuItem>
             ))}
           </Menu>
         </Box>
