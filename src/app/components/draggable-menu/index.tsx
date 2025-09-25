@@ -12,12 +12,13 @@ import DragIndicator from "@mui/icons-material/DragIndicator";
 
 const PaperComponent = React.forwardRef<HTMLDivElement, PaperProps>(
   (props, ref) => {
+    const { id, ...restProps } = props;
     const nodeRef = React.useRef<HTMLDivElement>(null);
     React.useImperativeHandle(ref, () => nodeRef.current as HTMLDivElement, []);
 
     return (
-      <Draggable nodeRef={nodeRef} handle="#draggable-menu-title">
-        <Paper {...props} ref={nodeRef} />
+      <Draggable nodeRef={nodeRef} handle={`#${id}`}>
+        <Paper {...restProps} ref={nodeRef} />
       </Draggable>
     );
   },
@@ -26,6 +27,7 @@ const PaperComponent = React.forwardRef<HTMLDivElement, PaperProps>(
 PaperComponent.displayName = "PaperComponent";
 
 export const DraggableMenu: React.FC<{
+  id: string;
   width: number;
   open: boolean;
   title: string;
@@ -41,6 +43,7 @@ export const DraggableMenu: React.FC<{
     horizontal: "left" | "right" | "center" | number;
   };
 }> = ({
+  id,
   anchorEl,
   width,
   open,
@@ -62,6 +65,7 @@ export const DraggableMenu: React.FC<{
       slots={{ paper: PaperComponent }}
       slotProps={{
         paper: {
+          id,
           sx: {
             width,
             padding: 0,
@@ -102,9 +106,9 @@ export const DraggableMenu: React.FC<{
           }}
         >
           <DragIndicator
+            id={id}
             fontSize="medium"
             htmlColor="#373d43"
-            id="draggable-menu-title"
             sx={{ cursor: "move", transform: "rotate(90deg)" }}
           />
           <IconButton onClick={() => setOpen(false)} sx={{ padding: 0 }}>

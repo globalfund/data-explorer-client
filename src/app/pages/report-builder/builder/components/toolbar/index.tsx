@@ -16,12 +16,17 @@ import SettingsIcon from "app/assets/vectors/Settings_ButtonIcon.svg?react";
 import { RBReportItem } from "app/state/api/action-reducers/report-builder/sync";
 import { ComponentOptions } from "app/pages/report-builder/builder/components/toolbar/data";
 import { ReportBuilderPageReportSettings } from "app/pages/report-builder/builder/components/report-settings";
+import { ReportBuilderPageNotes } from "../notes";
 
 export const ReportBuilderPageToolbar: React.FC = () => {
   const [settingsClicked, setSettingsClicked] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [anchorElReportSettings, setAnchorElReportSettings] =
     React.useState<null | HTMLElement>(null);
+  const [anchorElNotes, setAnchorElNotes] = React.useState<null | HTMLElement>(
+    null,
+  );
+  const [notesClicked, setNotesClicked] = React.useState(false);
 
   const addItem = useStoreActions(
     (actions) => actions.RBReportItemsState.addItem,
@@ -78,6 +83,16 @@ export const ReportBuilderPageToolbar: React.FC = () => {
     }
   };
 
+  const handleNotesClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElNotes(event.currentTarget);
+    setNotesClicked(true);
+  };
+
+  const handleNotesClose = () => {
+    setAnchorElNotes(null);
+    setNotesClicked(false);
+  };
+
   const open = Boolean(anchorEl);
 
   return (
@@ -93,12 +108,22 @@ export const ReportBuilderPageToolbar: React.FC = () => {
           sx={{
             gap: "10px",
             display: "flex",
+            "> button": {
+              "&:hover": { background: "#f1f3f5", borderColor: "#000000" },
+            },
           }}
         >
           <Button
             variant="outlined"
             startIcon={<NotesIcon />}
-            sx={{ padding: "5px 12px" }}
+            onClick={handleNotesClick}
+            sx={{
+              padding: "5px 12px",
+              ...(anchorElNotes && {
+                bgcolor: "#f1f3f5",
+                borderColor: "#000000",
+              }),
+            }}
           >
             Notes
           </Button>
@@ -112,8 +137,14 @@ export const ReportBuilderPageToolbar: React.FC = () => {
           <Button
             variant="outlined"
             startIcon={<SettingsIcon />}
-            sx={{ padding: "5px 12px" }}
             onClick={handleReportSettingsClick}
+            sx={{
+              padding: "5px 12px",
+              ...(anchorElReportSettings && {
+                bgcolor: "#f1f3f5",
+                borderColor: "#000000",
+              }),
+            }}
           >
             Report Settings
           </Button>
@@ -121,6 +152,11 @@ export const ReportBuilderPageToolbar: React.FC = () => {
             clicked={settingsClicked}
             anchorEl={anchorElReportSettings}
             setClicked={handleReportSettingsClose}
+          />
+          <ReportBuilderPageNotes
+            clicked={notesClicked}
+            anchorEl={anchorElNotes}
+            setClicked={handleNotesClose}
           />
         </Box>
         <Box

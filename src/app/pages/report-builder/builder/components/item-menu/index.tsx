@@ -16,6 +16,7 @@ export const ReportBuilderPageItemMenu: React.FC<{
 }> = ({ anchorEl, title, setOpen, deleteItem }) => {
   return (
     <DraggableMenu
+      id="report-builder-item-menu"
       width={300}
       title={title}
       setOpen={setOpen}

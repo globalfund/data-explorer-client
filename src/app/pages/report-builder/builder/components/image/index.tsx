@@ -198,6 +198,7 @@ export const ReportBuilderPageImage: React.FC<{
         />
       </Box>
       <DraggableModal
+        id="report-builder-image-modal"
         width={550}
         open={clicked}
         actions={actions}

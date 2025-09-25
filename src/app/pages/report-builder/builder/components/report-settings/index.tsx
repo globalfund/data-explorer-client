@@ -4,9 +4,9 @@ import Divider from "@mui/material/Divider";
 import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
 import Typography from "@mui/material/Typography";
-import { DraggableMenu } from "app/components/draggable-menu";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import DownloadIcon from "app/assets/vectors/Download.svg?react";
+import { DraggablePopper } from "app/components/draggable-popper";
 import DuplicateIcon from "app/assets/vectors/Duplicate.svg?react";
 
 export const ReportBuilderPageReportSettings: React.FC<{
@@ -26,14 +26,13 @@ export const ReportBuilderPageReportSettings: React.FC<{
   };
 
   return (
-    <DraggableMenu
+    <DraggablePopper
+      id="report-builder-report-settings"
       width={360}
       open={clicked}
       anchorEl={anchorEl}
       setOpen={setClicked}
       title="Report Settings"
-      transformOrigin={{ vertical: -5, horizontal: "left" }}
-      anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
     >
       <Box
         sx={{
@@ -174,6 +173,6 @@ export const ReportBuilderPageReportSettings: React.FC<{
           Duplicate Report
         </MenuItem>
       </Box>
-    </DraggableMenu>
+    </DraggablePopper>
   );
 };

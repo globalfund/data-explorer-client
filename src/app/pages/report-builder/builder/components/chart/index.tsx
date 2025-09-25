@@ -173,6 +173,7 @@ export const ReportBuilderPageChart: React.FC<{
         />
       </Box>
       <DraggableModal
+        id="report-builder-chart-modal"
         width={550}
         title={title}
         open={clicked}

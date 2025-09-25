@@ -180,6 +180,7 @@ export const ReportBuilderPageTable: React.FC<{
         />
       </Box>
       <DraggableModal
+        id="report-builder-table-modal"
         width={550}
         title={title}
         open={clicked}
