@@ -90,11 +90,11 @@ export const ReportBuilderPageReportSettings: React.FC<{
             <input type="number" min={200} defaultValue={1520} />
           </Box>
           <Box>
-            <InputLabel id="padding-label">Padding</InputLabel>
+            <InputLabel id="h-padding-label">Horizontal Padding</InputLabel>
             <input type="number" min={0} max={50} defaultValue={0} />
           </Box>
           <Box>
-            <InputLabel id="margin-label">Margin</InputLabel>
+            <InputLabel id="v-padding-label">Vertical Padding</InputLabel>
             <input type="number" min={0} max={50} defaultValue={0} />
           </Box>
           <Box>

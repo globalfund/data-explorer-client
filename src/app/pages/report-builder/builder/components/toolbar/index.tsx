@@ -10,23 +10,12 @@ import IconButton from "@mui/material/IconButton";
 import { useStoreActions } from "app/state/store/hooks";
 import UndoIcon from "app/assets/vectors/Undo.svg?react";
 import RedoIcon from "app/assets/vectors/Redo.svg?react";
-import NotesIcon from "app/assets/vectors/Notes.svg?react";
-import FolderIcon from "app/assets/vectors/Folder.svg?react";
-import SettingsIcon from "app/assets/vectors/Settings_ButtonIcon.svg?react";
 import { RBReportItem } from "app/state/api/action-reducers/report-builder/sync";
 import { ComponentOptions } from "app/pages/report-builder/builder/components/toolbar/data";
-import { ReportBuilderPageReportSettings } from "app/pages/report-builder/builder/components/report-settings";
-import { ReportBuilderPageNotes } from "../notes";
 
 export const ReportBuilderPageToolbar: React.FC = () => {
-  const [settingsClicked, setSettingsClicked] = React.useState(false);
+  const [nameValue, setNameValue] = React.useState("");
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [anchorElReportSettings, setAnchorElReportSettings] =
-    React.useState<null | HTMLElement>(null);
-  const [anchorElNotes, setAnchorElNotes] = React.useState<null | HTMLElement>(
-    null,
-  );
-  const [notesClicked, setNotesClicked] = React.useState(false);
 
   const addItem = useStoreActions(
     (actions) => actions.RBReportItemsState.addItem,
@@ -38,16 +27,6 @@ export const ReportBuilderPageToolbar: React.FC = () => {
 
   const handleClose = () => {
     setAnchorEl(null);
-  };
-
-  const handleReportSettingsClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElReportSettings(event.currentTarget);
-    setSettingsClicked(true);
-  };
-
-  const handleReportSettingsClose = () => {
-    setAnchorElReportSettings(null);
-    setSettingsClicked(false);
   };
 
   const handleMenuItemClick = (value: string) => {
@@ -83,85 +62,43 @@ export const ReportBuilderPageToolbar: React.FC = () => {
     }
   };
 
-  const handleNotesClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNotes(event.currentTarget);
-    setNotesClicked(true);
-  };
-
-  const handleNotesClose = () => {
-    setAnchorElNotes(null);
-    setNotesClicked(false);
-  };
-
   const open = Boolean(anchorEl);
 
   return (
-    <Box sx={{ zIndex: 1400, flexGrow: 1, top: 58, position: "sticky" }}>
+    <Box sx={{ zIndex: 1400, flexGrow: 1, top: 71, position: "sticky" }}>
       <Toolbar
         sx={{
-          padding: "10px !important",
+          gap: "10px",
+          height: "63px",
+          padding: "10px 20px !important",
           justifyContent: "justify-content",
           borderBottom: "1px solid #cfd4da",
         }}
       >
         <Box
           sx={{
-            gap: "10px",
-            display: "flex",
-            "> button": {
-              "&:hover": { background: "#f1f3f5", borderColor: "#000000" },
+            flexGrow: 1,
+            input: {
+              width: "100%",
+              fontSize: "20px",
+              borderStyle: "none",
+              padding: "10px 16px",
+              background: "transparent",
+              borderBottom: `1px solid #98a1aa`,
             },
           }}
         >
-          <Button
-            variant="outlined"
-            startIcon={<NotesIcon />}
-            onClick={handleNotesClick}
-            sx={{
-              padding: "5px 12px",
-              ...(anchorElNotes && {
-                bgcolor: "#f1f3f5",
-                borderColor: "#000000",
-              }),
-            }}
-          >
-            Notes
-          </Button>
-          <Button
-            variant="outlined"
-            startIcon={<FolderIcon />}
-            sx={{ padding: "5px 12px" }}
-          >
-            Assets
-          </Button>
-          <Button
-            variant="outlined"
-            startIcon={<SettingsIcon />}
-            onClick={handleReportSettingsClick}
-            sx={{
-              padding: "5px 12px",
-              ...(anchorElReportSettings && {
-                bgcolor: "#f1f3f5",
-                borderColor: "#000000",
-              }),
-            }}
-          >
-            Report Settings
-          </Button>
-          <ReportBuilderPageReportSettings
-            clicked={settingsClicked}
-            anchorEl={anchorElReportSettings}
-            setClicked={handleReportSettingsClose}
-          />
-          <ReportBuilderPageNotes
-            clicked={notesClicked}
-            anchorEl={anchorElNotes}
-            setClicked={handleNotesClose}
+          <input
+            type="text"
+            id="report-title"
+            value={nameValue}
+            placeholder="Untitled Report"
+            onChange={(e) => setNameValue(e.target.value)}
           />
         </Box>
         <Box
           sx={{
-            gap: "5px",
+            gap: "10px",
             display: "flex",
             flexDirection: "row",
             ".MuiIconButton-root": {
