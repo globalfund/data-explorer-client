@@ -4,7 +4,6 @@ import { DndProvider } from "react-dnd";
 import update from "immutability-helper";
 import Divider from "@mui/material/Divider";
 import Close from "@mui/icons-material/Close";
-import Container from "@mui/material/Container";
 import IconButton from "@mui/material/IconButton";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { RTEToolbar } from "app/components/rich-text-editor";
@@ -30,6 +29,13 @@ export const ReportBuilderPage: React.FC = () => {
   );
   const removeItem = useStoreActions(
     (actions) => actions.RBReportItemsState.removeItem,
+  );
+  const reportSettings = useStoreState((state) => state.RBReportSettingsState);
+  const reportSettingsActions = useStoreActions(
+    (actions) => actions.RBReportSettingsState,
+  );
+  const setNotes = useStoreActions(
+    (actions) => actions.RBReportNotesState.setValue,
   );
 
   const moveItem = React.useCallback(
@@ -158,10 +164,28 @@ export const ReportBuilderPage: React.FC = () => {
     }
   };
 
+  React.useEffect(() => {
+    if (reportSettings.width < 200) {
+      reportSettingsActions.setWidth(
+        window.innerWidth > 1440 ? 1392 : window.innerWidth - 32,
+      );
+    }
+    if (reportSettings.height < 200) {
+      reportSettingsActions.setHeight(window.innerHeight - 174);
+    }
+
+    return () => setNotes("");
+  }, []);
+
   return (
-    <Container
-      maxWidth="lg"
-      sx={{ width: "100%", height: "100%", position: "relative" }}
+    <Box
+      sx={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        position: "relative",
+        justifyContent: "center",
+      }}
     >
       {activeRTE && (
         <Box
@@ -178,40 +202,49 @@ export const ReportBuilderPage: React.FC = () => {
       <DndProvider backend={HTML5Backend}>
         <Box
           sx={{
-            gap: "10px",
-            width: "100%",
-            display: "flex",
-            padding: "50px",
-            minHeight: "1420px",
-            bgcolor: "#ffffff",
-            flexDirection: "column",
-            alignItems: "flex-start",
-            justifyContent: "flex-start",
+            maxWidth: "100%",
+            overflow: "overlay",
             boxShadow: "0 0 10px 0 rgba(152, 161, 170, 0.60)",
-            ".top-right-actions": {
-              top: 4,
-              right: 4,
-              position: "absolute",
-              ".MuiIconButton-root": {
-                bgcolor: "#fff",
-                borderRadius: "4px",
-                border: "1px solid #cfd4da",
-                "&:hover": {
-                  bgcolor: "#f8f8f8",
-                  borderColor: "#000000",
-                },
-              },
-            },
           }}
         >
-          {items.length === 0 && <Empty />}
-          {items.map((item, index) => (
-            <React.Fragment key={item.id}>
-              {getItemByType(item, index)}
-            </React.Fragment>
-          ))}
+          <Box
+            id="report-builder-canvas"
+            sx={{
+              gap: "10px",
+              display: "flex",
+              bgcolor: "#ffffff",
+              flexDirection: "column",
+              alignItems: "flex-start",
+              justifyContent: "flex-start",
+              width: `${reportSettings.width}px`,
+              height: `${reportSettings.height}px`,
+              p: `${reportSettings.vPadding}px ${reportSettings.hPadding}px`,
+              border: `${reportSettings.stroke}px solid ${reportSettings.strokeColor}`,
+              ".top-right-actions": {
+                top: 4,
+                right: 4,
+                position: "absolute",
+                ".MuiIconButton-root": {
+                  bgcolor: "#fff",
+                  borderRadius: "4px",
+                  border: "1px solid #cfd4da",
+                  "&:hover": {
+                    bgcolor: "#f8f8f8",
+                    borderColor: "#000000",
+                  },
+                },
+              },
+            }}
+          >
+            {items.length === 0 && <Empty />}
+            {items.map((item, index) => (
+              <React.Fragment key={item.id}>
+                {getItemByType(item, index)}
+              </React.Fragment>
+            ))}
+          </Box>
         </Box>
       </DndProvider>
-    </Container>
+    </Box>
   );
 };

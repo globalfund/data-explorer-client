@@ -3,7 +3,9 @@ import { CMSDataModel } from "app/state/api/action-reducers/sync";
 import {
   RBReportItemOrderModel,
   RBReportItemsModel,
+  RBReportNotesModel,
   RBReportRTEModel,
+  RBReportSettingsModel,
 } from "app/state/api/action-reducers/report-builder/sync";
 import {
   AppliedFiltersStateModel,
@@ -249,6 +251,8 @@ export interface StoreModel {
   RBReportItemsState: RBReportItemsModel;
   RBReportRTEState: RBReportRTEModel;
   RBReportItemOrderState: RBReportItemOrderModel;
+  RBReportSettingsState: RBReportSettingsModel;
+  RBReportNotesState: RBReportNotesModel;
   // CMS
   CMSData: CMSDataModel;
   cms: {

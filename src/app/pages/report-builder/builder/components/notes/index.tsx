@@ -1,15 +1,19 @@
 import React from "react";
 import { DraggablePopper } from "app/components/draggable-popper";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 
 export const ReportBuilderPageNotes: React.FC<{
   clicked: boolean;
   anchorEl: null | HTMLElement;
   setClicked: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ anchorEl, clicked, setClicked }) => {
-  const [note, setNote] = React.useState("");
+  const value = useStoreState((state) => state.RBReportNotesState.value);
+  const setValue = useStoreActions(
+    (actions) => actions.RBReportNotesState.setValue,
+  );
 
   const handleNoteChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setNote(e.target.value);
+    setValue(e.target.value);
   };
 
   return (
@@ -24,7 +28,7 @@ export const ReportBuilderPageNotes: React.FC<{
     >
       <textarea
         autoFocus
-        value={note}
+        value={value}
         onChange={handleNoteChange}
         placeholder="Add notes and comments for this report. These are for internal use and won't appear in the final report."
         style={{

@@ -3,8 +3,10 @@ import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
+import FormHelperText from "@mui/material/FormHelperText";
 import { DraggablePopper } from "app/components/draggable-popper";
 import DuplicateIcon from "app/assets/vectors/Duplicate.svg?react";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import DeleteBackspace from "app/assets/vectors/DeleteBackspace.svg?react";
 
 export const ReportBuilderPageReportSettings: React.FC<{
@@ -12,6 +14,116 @@ export const ReportBuilderPageReportSettings: React.FC<{
   anchorEl: null | HTMLElement;
   setClicked: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ anchorEl, clicked, setClicked }) => {
+  const reportSettings = useStoreState((state) => state.RBReportSettingsState);
+  const reportSettingsActions = useStoreActions(
+    (actions) => actions.RBReportSettingsState,
+  );
+
+  const [widthError, setWidthError] = React.useState("");
+  const [width, setWidth] = React.useState(reportSettings.width.toString());
+  const [height, setHeight] = React.useState(reportSettings.height.toString());
+  const [heightError, setHeightError] = React.useState("");
+  const [hPadding, setHPadding] = React.useState(
+    reportSettings.hPadding.toString(),
+  );
+  const [hPaddingError, setHPaddingError] = React.useState("");
+  const [vPadding, setVPadding] = React.useState(
+    reportSettings.vPadding.toString(),
+  );
+  const [vPaddingError, setVPaddingError] = React.useState("");
+
+  const handleWidthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setWidth(e.target.value);
+  };
+
+  const handleWidthBlur = () => {
+    const value = parseInt(width.toString(), 10);
+    if (value && value >= 200) {
+      reportSettingsActions.setWidth(value);
+      setWidthError("");
+    } else {
+      setWidthError("Width must be at least 200px");
+      setTimeout(() => {
+        setWidthError("");
+      }, 4000);
+      setWidth(reportSettings.width.toString());
+    }
+  };
+
+  const handleHeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setHeight(e.target.value);
+  };
+
+  const handleHeightBlur = () => {
+    const value = parseInt(height.toString(), 10);
+    if (value && value >= 200) {
+      reportSettingsActions.setHeight(value);
+      setHeightError("");
+    } else {
+      setHeightError("Height must be at least 200px");
+      setTimeout(() => {
+        setHeightError("");
+      }, 4000);
+      setHeight(reportSettings.height.toString());
+    }
+  };
+
+  const handleHPaddingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setHPadding(e.target.value);
+  };
+
+  const handleHPaddingBlur = () => {
+    const value = parseInt(hPadding.toString(), 10);
+    if (value >= 0 && value <= 50) {
+      reportSettingsActions.setHPadding(value);
+    } else {
+      setHPaddingError("Horizontal padding must be between 0 and 50px");
+      setTimeout(() => {
+        setHPaddingError("");
+      }, 4000);
+      setHPadding(reportSettings.hPadding.toString());
+    }
+  };
+
+  const handleVPaddingChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setVPadding(e.target.value);
+  };
+
+  const handleVPaddingBlur = () => {
+    const value = parseInt(vPadding.toString(), 10);
+    if (value >= 0 && value <= 50) {
+      reportSettingsActions.setVPadding(value);
+    } else {
+      setVPaddingError("Vertical padding must be between 0 and 50px");
+      setTimeout(() => {
+        setVPaddingError("");
+      }, 4000);
+      setVPadding(reportSettings.vPadding.toString());
+    }
+  };
+
+  const handleStrokeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value);
+    if (value >= 0 && value <= 50) {
+      reportSettingsActions.setStroke(value);
+    }
+  };
+
+  const handleStrokeColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    reportSettingsActions.setStrokeColor(e.target.value);
+  };
+
+  React.useLayoutEffect(() => {
+    const canvas = document.getElementById("report-builder-canvas");
+    if (canvas) {
+      const styles = getComputedStyle(canvas);
+      const width = parseInt(styles.width);
+      const height = parseInt(styles.height);
+      reportSettingsActions.setWidth(width);
+      reportSettingsActions.setHeight(height);
+    }
+  }, [clicked]);
+
   return (
     <DraggablePopper
       id="report-builder-report-settings"
@@ -55,7 +167,7 @@ export const ReportBuilderPageReportSettings: React.FC<{
                 borderRadius: "4px",
                 border: "1px solid #868e96",
               },
-              "> input[type='number']": {
+              "> input[type='number'], > input[type='text']": {
                 width: "100%",
                 height: "40px",
                 fontSize: "14px",
@@ -83,27 +195,67 @@ export const ReportBuilderPageReportSettings: React.FC<{
         >
           <Box>
             <InputLabel id="width-label">Width</InputLabel>
-            <input type="number" min={200} defaultValue={1074} />
+            <input
+              type="text"
+              value={width}
+              onBlur={handleWidthBlur}
+              onChange={handleWidthChange}
+            />
+            {widthError && <FormHelperText error>{widthError}</FormHelperText>}
           </Box>
           <Box>
             <InputLabel id="height-label">Height</InputLabel>
-            <input type="number" min={200} defaultValue={1520} />
+            <input
+              type="text"
+              value={height}
+              onBlur={handleHeightBlur}
+              onChange={handleHeightChange}
+            />
+            {heightError && (
+              <FormHelperText error>{heightError}</FormHelperText>
+            )}
           </Box>
           <Box>
             <InputLabel id="h-padding-label">Horizontal Padding</InputLabel>
-            <input type="number" min={0} max={50} defaultValue={0} />
+            <input
+              type="text"
+              value={hPadding}
+              onBlur={handleHPaddingBlur}
+              onChange={handleHPaddingChange}
+            />
+            {hPaddingError && (
+              <FormHelperText error>{hPaddingError}</FormHelperText>
+            )}
           </Box>
           <Box>
             <InputLabel id="v-padding-label">Vertical Padding</InputLabel>
-            <input type="number" min={0} max={50} defaultValue={0} />
+            <input
+              type="text"
+              value={vPadding}
+              onBlur={handleVPaddingBlur}
+              onChange={handleVPaddingChange}
+            />
+            {vPaddingError && (
+              <FormHelperText error>{vPaddingError}</FormHelperText>
+            )}
           </Box>
           <Box>
             <InputLabel id="stroke-label">Stroke</InputLabel>
-            <input type="number" min={0} max={50} defaultValue={0} />
+            <input
+              type="number"
+              min={0}
+              max={50}
+              value={reportSettings.stroke}
+              onChange={handleStrokeChange}
+            />
           </Box>
           <Box>
             <InputLabel id="stroke-color-label">Stroke Color</InputLabel>
-            <input type="color" />
+            <input
+              type="color"
+              value={reportSettings.strokeColor}
+              onChange={handleStrokeColorChange}
+            />
           </Box>
         </Box>
         <Divider sx={{ mt: "8px", mb: "4px" }} />

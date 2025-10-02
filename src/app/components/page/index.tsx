@@ -32,7 +32,7 @@ export const Page: React.FC = () => {
             display: "flex",
             padding: "20px 0",
             bgcolor: "#f8f9fa",
-            minHeight: "calc(100vh - 58px - 58px)",
+            minHeight: "calc(100vh - 71px - 64px)",
           }}
         >
           <Box id="main" sx={{ width: "100%", minHeight: "100%" }}>

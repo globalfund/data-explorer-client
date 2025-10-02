@@ -141,7 +141,9 @@ import componentFooter from "../api/action-reducers/cms/componentsFooter";
 import {
   RBReportItemOrderState,
   RBReportItemsState,
+  RBReportNotesState,
   RBReportRTEState,
+  RBReportSettings,
 } from "../api/action-reducers/report-builder/sync";
 
 const storeContent: StoreModel = {
@@ -294,6 +296,8 @@ const storeContent: StoreModel = {
   RBReportItemsState: persist(RBReportItemsState),
   RBReportRTEState: persist(RBReportRTEState),
   RBReportItemOrderState: persist(RBReportItemOrderState),
+  RBReportSettingsState: persist(RBReportSettings),
+  RBReportNotesState: persist(RBReportNotesState),
   // CMS API
   CMSData: persist(CMSData),
   cms: {
