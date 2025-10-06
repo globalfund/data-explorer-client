@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import { DndProvider } from "react-dnd";
 import update from "immutability-helper";
 import Divider from "@mui/material/Divider";
+import { uniqueId } from "app/utils/uniqueId";
 import Close from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -24,6 +25,8 @@ export const ReportBuilderPage: React.FC = () => {
     (actions) => actions.RBReportRTEState.setActiveRTE,
   );
 
+  const addedItemRef = React.useRef(items.length > 0);
+
   const setItems = useStoreActions(
     (actions) => actions.RBReportItemsState.setItems,
   );
@@ -36,6 +39,9 @@ export const ReportBuilderPage: React.FC = () => {
   );
   const setNotes = useStoreActions(
     (actions) => actions.RBReportNotesState.setValue,
+  );
+  const addItem = useStoreActions(
+    (actions) => actions.RBReportItemsState.addItem,
   );
 
   const moveItem = React.useCallback(
@@ -62,7 +68,12 @@ export const ReportBuilderPage: React.FC = () => {
             childrenData={[]}
             moveItem={moveItem}
           >
-            <ReportBuilderPageText id={item.id} setEditor={setActiveRTE} />
+            <ReportBuilderPageText
+              id={item.id}
+              setEditor={setActiveRTE}
+              focus={item.extra?.focus}
+              initialKey={item.extra?.key}
+            />
           </ItemComponent>
         );
       case "chart":
@@ -164,6 +175,24 @@ export const ReportBuilderPage: React.FC = () => {
     }
   };
 
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (
+      !e.metaKey &&
+      !e.altKey &&
+      !e.ctrlKey &&
+      !addedItemRef.current &&
+      /^[a-zA-Z0-9]$/.test(e.key) &&
+      document.activeElement?.tagName !== "INPUT"
+    ) {
+      addItem({
+        id: uniqueId(),
+        type: "text",
+        extra: { focus: true, key: e.key },
+      });
+      addedItemRef.current = true;
+    }
+  };
+
   React.useEffect(() => {
     if (reportSettings.width < 200) {
       reportSettingsActions.setWidth(
@@ -174,8 +203,21 @@ export const ReportBuilderPage: React.FC = () => {
       reportSettingsActions.setHeight(window.innerHeight - 174);
     }
 
-    return () => setNotes("");
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      setNotes("");
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, []);
+
+  React.useEffect(() => {
+    if (items.length === 0) {
+      addedItemRef.current = false;
+    } else {
+      addedItemRef.current = true;
+    }
+  }, [items.length]);
 
   return (
     <Box
@@ -191,9 +233,16 @@ export const ReportBuilderPage: React.FC = () => {
         <Box
           sx={{
             top: -10,
-            left: 24,
+            bgcolor: "#f8f9fa",
+            left:
+              reportSettings.width > window.innerWidth
+                ? 24
+                : (window.innerWidth - reportSettings.width) / 2,
             position: "absolute",
-            width: "calc(100% - 48px)",
+            width:
+              reportSettings.width > window.innerWidth
+                ? window.innerWidth - 48
+                : reportSettings.width,
           }}
         >
           <RTEToolbar editor={activeRTE} />

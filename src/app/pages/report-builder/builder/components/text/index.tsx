@@ -10,9 +10,12 @@ import { ReportBuilderPageItemMenu } from "app/pages/report-builder/builder/comp
 
 export const ReportBuilderPageText: React.FC<{
   id: string;
+  focus?: boolean;
+  initialKey?: string;
   setEditor: (editor: Editor | null) => void;
   extRemoveItem?: (e: React.MouseEvent) => void;
-}> = ({ id, setEditor, extRemoveItem }) => {
+}> = ({ id, setEditor, extRemoveItem, focus, initialKey }) => {
+  const isMounted = React.useRef(false);
   const [clicked, setClicked] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -36,6 +39,18 @@ export const ReportBuilderPageText: React.FC<{
     }
     handleClose();
   };
+
+  React.useEffect(() => {
+    if (focus) {
+      setClicked(true);
+    }
+  }, [focus]);
+
+  React.useEffect(() => {
+    if (clicked) {
+      isMounted.current = true;
+    }
+  }, [clicked]);
 
   return (
     <Box
@@ -72,7 +87,14 @@ export const ReportBuilderPageText: React.FC<{
           </Typography>
         </Box>
       )}
-      {clicked && <RichEditor setEditor={setEditor} setClicked={setClicked} />}
+      {clicked && (
+        <RichEditor
+          itemId={id}
+          setEditor={setEditor}
+          setClicked={setClicked}
+          initialContent={!isMounted.current ? initialKey : undefined}
+        />
+      )}
       <Box className="top-right-actions">
         <IconButton onClick={handleMoreVertClick}>
           <MoreVert fontSize="small" />

@@ -9,6 +9,7 @@ import { Level } from "@tiptap/extension-heading";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import HighlightIcon from "app/assets/vectors/Highlighter.svg?react";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { extensions } from "app/components/rich-text-editor/extensions";
 import {
   headingOptions,
@@ -23,6 +24,7 @@ import {
 import {
   Add,
   Link,
+  Check,
   Remove,
   FormatBold,
   FormatQuote,
@@ -33,11 +35,10 @@ import {
   FormatUnderlined,
   FormatAlignRight,
   FormatAlignCenter,
+  KeyboardArrowDown,
   FormatAlignJustify,
   FormatListBulleted,
   FormatListNumbered,
-  KeyboardArrowDown,
-  Check,
 } from "@mui/icons-material";
 
 export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
@@ -175,10 +176,9 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
   const open = Boolean(anchorEl);
   const open2 = Boolean(anchorEl2);
 
-  console.log(editorState);
-
   return (
     <Box
+      id="rte-toolbar"
       sx={{
         gap: "16px",
         width: "100%",
@@ -186,7 +186,7 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
         borderRadius: "8px",
         padding: "5px 10px",
         flexDirection: "row",
-        bgcolor: "#ffffff",
+        bgcolor: "#f8f9fa",
         border: "1px solid #3154F4",
         ".MuiIconButton-root": {
           padding: "0px 8px",
@@ -209,7 +209,7 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
           fontWeight: "400",
           textTransform: "none",
           color: open ? "#fff" : "#000",
-          background: open ? "#3154f4" : "#fff",
+          bgcolor: open ? "#3154f4" : "#f8f9fa",
         }}
       >
         {headingValue}
@@ -262,7 +262,7 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
           fontWeight: "400",
           textTransform: "none",
           color: open2 ? "#fff" : "#000",
-          background: open2 ? "#3154f4" : "#fff",
+          bgcolor: open2 ? "#3154f4" : "#f8f9fa",
         }}
       >
         {fontFamilyValue}
@@ -482,10 +482,17 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
 };
 
 export const RichEditor: React.FC<{
+  itemId: string;
+  initialContent?: string;
   setClicked: (clicked: boolean) => void;
   setEditor: (editor: Editor | null) => void;
-}> = ({ setEditor, setClicked }) => {
+}> = ({ setEditor, setClicked, initialContent }) => {
   const [focused, setFocused] = React.useState(false);
+
+  const items = useStoreState((state) => state.RBReportItemsState.items);
+  const editItem = useStoreActions(
+    (actions) => actions.RBReportItemsState.editItem,
+  );
 
   const editor = useEditor({
     extensions,
@@ -494,11 +501,27 @@ export const RichEditor: React.FC<{
       setFocused(true);
       setEditor(editor);
     },
-    onBlur: () => {
-      setEditor(null);
+    onBlur: (e) => {
+      const RTEToolbar = document.getElementById("rte-toolbar");
+      if (!RTEToolbar || !RTEToolbar.contains(e.event.relatedTarget as Node)) {
+        setEditor(null);
+      }
       setFocused(false);
       if (editor.isEmpty) {
         setClicked(false);
+      }
+    },
+    onUpdate: () => {
+      const item = items.find((item) => item.type === "text" && item.extra);
+      if (item) {
+        editItem({ id: item.id, type: item.type });
+      }
+    },
+    onMount: ({ editor }) => {
+      if (initialContent && editor && editor.isEmpty) {
+        setTimeout(() => {
+          editor.commands.setContent(initialContent);
+        }, 1);
       }
     },
   });

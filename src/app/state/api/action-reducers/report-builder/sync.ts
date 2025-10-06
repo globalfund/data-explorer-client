@@ -12,6 +12,7 @@ export interface RBReportItem {
     | "grid"
     | "column"
     | "section_divider";
+  extra?: any;
 }
 
 export interface RBReportItemsModel {
@@ -20,6 +21,7 @@ export interface RBReportItemsModel {
   addItem: Action<RBReportItemsModel, RBReportItem>;
   removeItem: Action<RBReportItemsModel, string>;
   setItems: Action<RBReportItemsModel, RBReportItem[]>;
+  editItem: Action<RBReportItemsModel, RBReportItem>;
 }
 
 export interface RBReportRTEModel {
@@ -72,6 +74,12 @@ export const RBReportItemsState: RBReportItemsModel = {
   }),
   clearItems: action((state) => {
     state.items = [];
+  }),
+  editItem: action((state, payload) => {
+    const index = state.items.findIndex((item) => item.id === payload.id);
+    if (index !== -1) {
+      state.items[index] = payload;
+    }
   }),
 };
 
