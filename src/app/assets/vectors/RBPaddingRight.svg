@@ -1,0 +1,16 @@
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+  <rect
+    width="20"
+    height="20"
+    fill="white"
+    fill-opacity="0.01"
+    style="mix-blend-mode: multiply"
+  />
+  <path
+    d="M14.1667 10.0003H2.5M14.1667 10.0003L9.16667 15.0003M14.1667 10.0003L9.16667 5.00033M17.5 4.16699V15.8337"
+    stroke="#373D43"
+    stroke-width="1.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+</svg>

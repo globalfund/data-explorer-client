@@ -30,7 +30,7 @@ export const Page: React.FC = () => {
           sx={{
             width: "100%",
             display: "flex",
-            padding: "20px 0",
+            padding: "50px 0",
             bgcolor: "#f8f9fa",
             minHeight: "calc(100vh - 71px - 64px)",
           }}

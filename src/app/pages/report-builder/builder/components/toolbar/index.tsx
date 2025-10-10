@@ -33,7 +33,20 @@ export const ReportBuilderPageToolbar: React.FC = () => {
     let newItem: RBReportItem | null = null;
     switch (value) {
       case "text":
-        newItem = { id: uniqueId(), type: "text" };
+        newItem = {
+          id: uniqueId(),
+          type: "text",
+          settings: {
+            paddingTop: 10,
+            paddingLeft: 10,
+            paddingRight: 10,
+            paddingBottom: 10,
+            stroke: 0,
+            strokeColor: "#000000",
+            cornerRadius: 8,
+            backgroundColor: "transparent",
+          },
+        };
         break;
       case "chart":
         newItem = { id: uniqueId(), type: "chart" };

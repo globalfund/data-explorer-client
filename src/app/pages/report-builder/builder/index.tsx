@@ -69,8 +69,10 @@ export const ReportBuilderPage: React.FC = () => {
             moveItem={moveItem}
           >
             <ReportBuilderPageText
+              item={item}
               id={item.id}
               setEditor={setActiveRTE}
+              settings={item.settings}
               focus={item.extra?.focus}
               initialKey={item.extra?.key}
             />
@@ -188,19 +190,29 @@ export const ReportBuilderPage: React.FC = () => {
         id: uniqueId(),
         type: "text",
         extra: { focus: true, key: e.key },
+        settings: {
+          paddingTop: 10,
+          paddingLeft: 10,
+          paddingRight: 10,
+          paddingBottom: 10,
+          stroke: 0,
+          strokeColor: "#000000",
+          cornerRadius: 8,
+          backgroundColor: "transparent",
+        },
       });
       addedItemRef.current = true;
     }
   };
 
   React.useEffect(() => {
-    if (reportSettings.width < 200) {
+    if (parseInt(reportSettings.width, 10) < 300) {
       reportSettingsActions.setWidth(
-        window.innerWidth > 1440 ? 1392 : window.innerWidth - 32,
+        (window.innerWidth > 1440 ? 1392 : window.innerWidth - 32).toString(),
       );
     }
-    if (reportSettings.height < 200) {
-      reportSettingsActions.setHeight(window.innerHeight - 174);
+    if (parseInt(reportSettings.height, 10) < 300) {
+      reportSettingsActions.setHeight((window.innerHeight - 174).toString());
     }
 
     window.addEventListener("keydown", handleKeyDown);
@@ -219,6 +231,32 @@ export const ReportBuilderPage: React.FC = () => {
     }
   }, [items.length]);
 
+  const parsedReportSettings = React.useMemo(() => {
+    return {
+      width:
+        parseInt(reportSettings.width, 10) < 300
+          ? 300
+          : parseInt(reportSettings.width, 10),
+      height:
+        parseInt(reportSettings.height, 10) < 300
+          ? 300
+          : parseInt(reportSettings.height, 10),
+      hPadding:
+        parseInt(reportSettings.hPadding, 10) < 0
+          ? 0
+          : parseInt(reportSettings.hPadding, 10),
+      vPadding:
+        parseInt(reportSettings.vPadding, 10) < 0
+          ? 0
+          : parseInt(reportSettings.vPadding, 10),
+      stroke:
+        parseInt(reportSettings.stroke, 10) < 0
+          ? 0
+          : parseInt(reportSettings.stroke, 10),
+      strokeColor: reportSettings.strokeColor,
+    };
+  }, [reportSettings]);
+
   return (
     <Box
       sx={{
@@ -232,17 +270,21 @@ export const ReportBuilderPage: React.FC = () => {
       {activeRTE && (
         <Box
           sx={{
-            top: -10,
+            top: -50,
             bgcolor: "#f8f9fa",
             left:
-              reportSettings.width > window.innerWidth
+              (parsedReportSettings.width > window.innerWidth ||
+              parsedReportSettings.width < 1200
                 ? 24
-                : (window.innerWidth - reportSettings.width) / 2,
+                : (window.innerWidth - parsedReportSettings.width) / 2) +
+              parsedReportSettings.hPadding,
             position: "absolute",
             width:
-              reportSettings.width > window.innerWidth
+              (parsedReportSettings.width > window.innerWidth ||
+              parsedReportSettings.width < 1200
                 ? window.innerWidth - 48
-                : reportSettings.width,
+                : parsedReportSettings.width) -
+              parsedReportSettings.hPadding * 2,
           }}
         >
           <RTEToolbar editor={activeRTE} />
@@ -253,6 +295,8 @@ export const ReportBuilderPage: React.FC = () => {
           sx={{
             maxWidth: "100%",
             overflow: "overlay",
+            bgcolor: "#ffffff",
+            height: "fit-content",
             boxShadow: "0 0 10px 0 rgba(152, 161, 170, 0.60)",
           }}
         >
@@ -261,7 +305,6 @@ export const ReportBuilderPage: React.FC = () => {
             sx={{
               gap: "10px",
               display: "flex",
-              bgcolor: "#ffffff",
               flexDirection: "column",
               alignItems: "flex-start",
               justifyContent: "flex-start",
@@ -274,6 +317,8 @@ export const ReportBuilderPage: React.FC = () => {
                 right: 4,
                 position: "absolute",
                 ".MuiIconButton-root": {
+                  width: "38px",
+                  height: "38px",
                   bgcolor: "#fff",
                   borderRadius: "4px",
                   border: "1px solid #cfd4da",

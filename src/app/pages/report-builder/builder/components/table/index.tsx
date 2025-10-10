@@ -2,6 +2,7 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { Table } from "app/components/table";
+import Close from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import MoreVert from "@mui/icons-material/MoreVert";
@@ -162,22 +163,31 @@ export const ReportBuilderPageTable: React.FC<{
       {tableReady && (
         <Box sx={{ padding: "10px" }}>
           <Table
-            id={id}
+            id={`table-${id}`}
             data={TABLE_VARIATION_8_DATA}
             columns={TABLE_VARIATION_8_COLUMNS}
           />
         </Box>
       )}
       <Box className="top-right-actions">
-        <IconButton onClick={handleMoreVertClick}>
-          <MoreVert fontSize="small" />
-        </IconButton>
-        <ReportBuilderPageItemMenu
-          title="Settings"
-          anchorEl={anchorEl}
-          deleteItem={handleDeleteItem}
-          setOpen={() => setAnchorEl(null)}
-        />
+        {tableReady && (
+          <React.Fragment>
+            <IconButton onClick={handleMoreVertClick}>
+              <MoreVert fontSize="small" />
+            </IconButton>
+            <ReportBuilderPageItemMenu
+              anchorEl={anchorEl}
+              deleteItem={handleDeleteItem}
+              itemId={id}
+              handleClose={() => setAnchorEl(null)}
+            />
+          </React.Fragment>
+        )}
+        {!tableReady && (
+          <IconButton onClick={handleDeleteItem}>
+            <Close fontSize="small" htmlColor="#ea1541" />
+          </IconButton>
+        )}
       </Box>
       <DraggableModal
         id="report-builder-table-modal"

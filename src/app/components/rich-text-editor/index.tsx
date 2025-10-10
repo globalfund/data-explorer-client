@@ -187,7 +187,7 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
         padding: "5px 10px",
         flexDirection: "row",
         bgcolor: "#f8f9fa",
-        border: "1px solid #3154F4",
+        border: "1px solid #98a1aa",
         ".MuiIconButton-root": {
           padding: "0px 8px",
           borderRadius: "4px",
@@ -483,10 +483,12 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
 
 export const RichEditor: React.FC<{
   itemId: string;
+  visualSettings: any;
   initialContent?: string;
+  setValue: (value: string) => void;
   setClicked: (clicked: boolean) => void;
   setEditor: (editor: Editor | null) => void;
-}> = ({ setEditor, setClicked, initialContent }) => {
+}> = ({ setEditor, setClicked, initialContent, setValue, visualSettings }) => {
   const [focused, setFocused] = React.useState(false);
 
   const items = useStoreState((state) => state.RBReportItemsState.items);
@@ -512,9 +514,10 @@ export const RichEditor: React.FC<{
       }
     },
     onUpdate: () => {
+      setValue(editor.getText());
       const item = items.find((item) => item.type === "text" && item.extra);
       if (item) {
-        editItem({ id: item.id, type: item.type });
+        editItem({ id: item.id, type: item.type, settings: item.settings });
       }
     },
     onMount: ({ editor }) => {
@@ -526,13 +529,27 @@ export const RichEditor: React.FC<{
     },
   });
 
+  const visualSettingsStyle = React.useMemo(() => {
+    return {
+      paddingTop: `${visualSettings?.paddingTop || 10}px`,
+      paddingLeft: `${visualSettings?.paddingLeft || 10}px`,
+      paddingRight: `${visualSettings?.paddingRight || 10}px`,
+      paddingBottom: `${visualSettings?.paddingBottom || 10}px`,
+      borderRadius: `${visualSettings?.cornerRadius || 8}px`,
+      backgroundColor: visualSettings?.backgroundColor || "transparent",
+      border: focused
+        ? "1px solid #3154f4"
+        : visualSettings && visualSettings.stroke > 0
+          ? `${visualSettings.stroke}px solid ${visualSettings.strokeColor}`
+          : "none",
+    };
+  }, [visualSettings]);
+
   return (
     <Box
       sx={{
+        ...visualSettingsStyle,
         width: "100%",
-        padding: "10px",
-        borderRadius: "8px",
-        border: `1px ${focused ? "solid" : "none"} #3154F4`,
         "*": { margin: "0 !important" },
         blockquote: { margin: "0 40px !important" },
       }}

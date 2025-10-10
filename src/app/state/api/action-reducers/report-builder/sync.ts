@@ -1,4 +1,5 @@
 import { Editor } from "@tiptap/react";
+import { uniqueId } from "app/utils/uniqueId";
 import { action, Action } from "easy-peasy";
 
 export interface RBReportItem {
@@ -13,6 +14,7 @@ export interface RBReportItem {
     | "column"
     | "section_divider";
   extra?: any;
+  settings?: any;
 }
 
 export interface RBReportItemsModel {
@@ -22,6 +24,7 @@ export interface RBReportItemsModel {
   removeItem: Action<RBReportItemsModel, string>;
   setItems: Action<RBReportItemsModel, RBReportItem[]>;
   editItem: Action<RBReportItemsModel, RBReportItem>;
+  duplicateItem: Action<RBReportItemsModel, string>;
 }
 
 export interface RBReportRTEModel {
@@ -41,16 +44,16 @@ export interface RBReportItemOrderModel {
 }
 
 export interface RBReportSettingsModel {
-  width: number;
-  setWidth: Action<RBReportSettingsModel, number>;
-  height: number;
-  setHeight: Action<RBReportSettingsModel, number>;
-  vPadding: number;
-  setVPadding: Action<RBReportSettingsModel, number>;
-  hPadding: number;
-  setHPadding: Action<RBReportSettingsModel, number>;
-  stroke: number;
-  setStroke: Action<RBReportSettingsModel, number>;
+  width: string;
+  setWidth: Action<RBReportSettingsModel, string>;
+  height: string;
+  setHeight: Action<RBReportSettingsModel, string>;
+  vPadding: string;
+  setVPadding: Action<RBReportSettingsModel, string>;
+  hPadding: string;
+  setHPadding: Action<RBReportSettingsModel, string>;
+  stroke: string;
+  setStroke: Action<RBReportSettingsModel, string>;
   strokeColor: string;
   setStrokeColor: Action<RBReportSettingsModel, string>;
   resetSettings: Action<RBReportSettingsModel>;
@@ -81,6 +84,16 @@ export const RBReportItemsState: RBReportItemsModel = {
       state.items[index] = payload;
     }
   }),
+  duplicateItem: action((state, payload) => {
+    const index = state.items.findIndex((item) => item.id === payload);
+    if (index !== -1) {
+      const newItem = {
+        ...state.items[index],
+        id: uniqueId(),
+      };
+      state.items.splice(index + 1, 0, newItem);
+    }
+  }),
 };
 
 export const RBReportRTEState: RBReportRTEModel = {
@@ -104,23 +117,23 @@ export const RBReportItemOrderState: RBReportItemOrderModel = {
 };
 
 export const RBReportSettings: RBReportSettingsModel = {
-  width: 0,
+  width: "0",
   setWidth: action((state, payload) => {
     state.width = payload;
   }),
-  height: 0,
+  height: "0",
   setHeight: action((state, payload) => {
     state.height = payload;
   }),
-  vPadding: 50,
+  vPadding: "50",
   setVPadding: action((state, payload) => {
     state.vPadding = payload;
   }),
-  hPadding: 50,
+  hPadding: "50",
   setHPadding: action((state, payload) => {
     state.hPadding = payload;
   }),
-  stroke: 0,
+  stroke: "0",
   setStroke: action((state, payload) => {
     state.stroke = payload;
   }),
@@ -129,11 +142,11 @@ export const RBReportSettings: RBReportSettingsModel = {
     state.strokeColor = payload;
   }),
   resetSettings: action((state) => {
-    state.width = 0;
-    state.height = 0;
-    state.vPadding = 50;
-    state.hPadding = 50;
-    state.stroke = 0;
+    state.width = "0";
+    state.height = "0";
+    state.vPadding = "50";
+    state.hPadding = "50";
+    state.stroke = "0";
     state.strokeColor = "#000000";
   }),
 };

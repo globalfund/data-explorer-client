@@ -1,66 +1,56 @@
 import React from "react";
-import Box from "@mui/material/Box";
-import Divider from "@mui/material/Divider";
+import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import Folder from "app/assets/vectors/Folder.svg?react";
-import { DraggableMenu } from "app/components/draggable-menu";
-import Highlighter from "app/assets/vectors/Highlighter.svg?react";
+import Folder from "app/assets/vectors/Folder2.svg?react";
+import CopyIcon from "app/assets/vectors/Duplicate.svg?react";
 import DeleteBackspace from "app/assets/vectors/DeleteBackspace.svg?react";
-import OptionPlaceholder from "app/assets/vectors/OptionPlaceholder.svg?react";
+import { menuSx } from "app/pages/report-builder/builder/components/header";
+import { useStoreActions } from "app/state/store/hooks";
 
 export const ReportBuilderPageItemMenu: React.FC<{
-  title: string;
-  setOpen: () => void;
+  itemId: string;
+  handleClose: () => void;
   anchorEl: null | HTMLElement;
   deleteItem: (e: React.MouseEvent) => void;
-}> = ({ anchorEl, title, setOpen, deleteItem }) => {
+}> = ({ itemId, anchorEl, handleClose, deleteItem }) => {
+  const duplicateItem = useStoreActions(
+    (actions) => actions.RBReportItemsState.duplicateItem,
+  );
+
+  const handleDuplicateItem = () => {
+    duplicateItem(itemId);
+    handleClose();
+  };
+
   return (
-    <DraggableMenu
-      id="report-builder-item-menu"
-      width={300}
-      title={title}
-      setOpen={setOpen}
-      anchorEl={anchorEl}
+    <Menu
       open={Boolean(anchorEl)}
-      transformOrigin={{ vertical: -5, horizontal: "right" }}
-      anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      keepMounted
+      disableScrollLock
+      anchorEl={anchorEl}
+      onClose={handleClose}
+      transformOrigin={{
+        vertical: -5,
+        horizontal: "right",
+      }}
+      anchorOrigin={{
+        vertical: "bottom",
+        horizontal: "right",
+      }}
+      sx={menuSx}
     >
-      <Box
-        sx={{
-          "& .MuiMenuItem-root": {
-            gap: "8px",
-            display: "flex",
-            padding: "12px 4px",
-            alignItems: "center",
-          },
-        }}
-      >
-        <MenuItem>
-          <OptionPlaceholder />
-          Edit Padding & Margins
-        </MenuItem>
-        <MenuItem>
-          <Highlighter />
-          Background color
-        </MenuItem>
-        <MenuItem>
-          <OptionPlaceholder />
-          Borders
-        </MenuItem>
-        <MenuItem>
-          <OptionPlaceholder />
-          Corner radius
-        </MenuItem>
-        <Divider />
-        <MenuItem>
-          <Folder />
-          Save as an Asset
-        </MenuItem>
-        <MenuItem onClick={deleteItem}>
-          <DeleteBackspace />
-          Delete this component
-        </MenuItem>
-      </Box>
-    </DraggableMenu>
+      <MenuItem onClick={handleDuplicateItem}>
+        <CopyIcon />
+        Duplicate
+      </MenuItem>
+      <MenuItem>
+        <Folder />
+        Save as an Asset
+      </MenuItem>
+      <MenuItem onClick={deleteItem}>
+        <DeleteBackspace />
+        Delete
+      </MenuItem>
+    </Menu>
   );
 };

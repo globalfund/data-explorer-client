@@ -2,6 +2,7 @@ import React from "react";
 import Box from "@mui/material/Box";
 import { Editor } from "@tiptap/react";
 import { uniqueId } from "app/utils/uniqueId";
+import Close from "@mui/icons-material/Close";
 import Title from "@mui/icons-material/Title";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
@@ -240,6 +241,11 @@ export const ReportBuilderPageGrid: React.FC<{
     setItems(newItems);
   };
 
+  const gridReady = React.useMemo(
+    () => items.some((item) => item !== null),
+    [items],
+  );
+
   return (
     <Box
       sx={{
@@ -279,15 +285,24 @@ export const ReportBuilderPageGrid: React.FC<{
         ))}
       </Box>
       <Box className="top-right-actions">
-        <IconButton onClick={handleMoreVertClick}>
-          <MoreVert fontSize="small" />
-        </IconButton>
-        <ReportBuilderPageItemMenu
-          title="Settings"
-          anchorEl={anchorEl}
-          deleteItem={handleDeleteItem}
-          setOpen={() => setAnchorEl(null)}
-        />
+        {gridReady && (
+          <React.Fragment>
+            <IconButton onClick={handleMoreVertClick}>
+              <MoreVert fontSize="small" />
+            </IconButton>
+            <ReportBuilderPageItemMenu
+              itemId={id}
+              anchorEl={anchorEl}
+              deleteItem={handleDeleteItem}
+              handleClose={() => setAnchorEl(null)}
+            />
+          </React.Fragment>
+        )}
+        {!gridReady && (
+          <IconButton onClick={handleDeleteItem}>
+            <Close fontSize="small" htmlColor="#ea1541" />
+          </IconButton>
+        )}
       </Box>
     </Box>
   );

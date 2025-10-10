@@ -3,6 +3,7 @@ import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Button from "@mui/material/Button";
+import Close from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import MoreVert from "@mui/icons-material/MoreVert";
@@ -187,15 +188,24 @@ export const ReportBuilderPageImage: React.FC<{
         </Box>
       )}
       <Box className="top-right-actions">
-        <IconButton onClick={handleMoreVertClick}>
-          <MoreVert fontSize="small" />
-        </IconButton>
-        <ReportBuilderPageItemMenu
-          title="Settings"
-          anchorEl={anchorEl}
-          deleteItem={handleDeleteItem}
-          setOpen={() => setAnchorEl(null)}
-        />
+        {imageReady && (
+          <React.Fragment>
+            <IconButton onClick={handleMoreVertClick}>
+              <MoreVert fontSize="small" />
+            </IconButton>
+            <ReportBuilderPageItemMenu
+              itemId={id}
+              anchorEl={anchorEl}
+              deleteItem={handleDeleteItem}
+              handleClose={() => setAnchorEl(null)}
+            />
+          </React.Fragment>
+        )}
+        {!imageReady && (
+          <IconButton onClick={handleDeleteItem}>
+            <Close fontSize="small" htmlColor="#ea1541" />
+          </IconButton>
+        )}
       </Box>
       <DraggableModal
         id="report-builder-image-modal"

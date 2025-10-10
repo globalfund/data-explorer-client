@@ -1,6 +1,7 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import { Close } from "@mui/icons-material";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import MoreVert from "@mui/icons-material/MoreVert";
@@ -162,15 +163,24 @@ export const ReportBuilderPageChart: React.FC<{
         <BarChart data={STORY_DATA_VARIANT_1} valueLabels={{ value: "" }} />
       )}
       <Box className="top-right-actions">
-        <IconButton onClick={handleMoreVertClick}>
-          <MoreVert fontSize="small" />
-        </IconButton>
-        <ReportBuilderPageItemMenu
-          title="Settings"
-          anchorEl={anchorEl}
-          deleteItem={handleDeleteItem}
-          setOpen={() => setAnchorEl(null)}
-        />
+        {chartReady && (
+          <React.Fragment>
+            <IconButton onClick={handleMoreVertClick}>
+              <MoreVert fontSize="small" />
+            </IconButton>
+            <ReportBuilderPageItemMenu
+              itemId={id}
+              anchorEl={anchorEl}
+              deleteItem={handleDeleteItem}
+              handleClose={() => setAnchorEl(null)}
+            />
+          </React.Fragment>
+        )}
+        {!chartReady && (
+          <IconButton onClick={handleDeleteItem}>
+            <Close fontSize="small" htmlColor="#ea1541" />
+          </IconButton>
+        )}
       </Box>
       <DraggableModal
         id="report-builder-chart-modal"

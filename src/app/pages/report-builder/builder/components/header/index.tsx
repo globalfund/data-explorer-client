@@ -26,12 +26,13 @@ import HeaderToolbarMiniLogo from "app/assets/vectors/HeaderToolbarMiniLogo.svg?
 import { ReportBuilderPageNotes } from "app/pages/report-builder/builder/components/notes";
 import { ReportBuilderPageReportSettings } from "app/pages/report-builder/builder/components/report-settings";
 
-const menuSx = {
+export const menuSx = {
   zIndex: 1400,
   "& .MuiPaper-root": {
     borderRadius: "4px",
     background: "#f8f9fa",
     border: "1px solid #dfe3e5",
+    boxShadow: "0 2px 6px 0 rgba(0, 0, 0, 0.30)",
   },
   "& .MuiList-root": {
     padding: "0px",

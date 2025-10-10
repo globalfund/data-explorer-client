@@ -1,6 +1,6 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import { Popper } from "@mui/material";
+import { Popper, PopperPlacementType } from "@mui/material";
 import Close from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -27,8 +27,18 @@ const PaperComponent = React.forwardRef<HTMLDivElement, PaperProps>(
       setTimeout(() => {
         const popper = document.getElementById(`draggable-popper-paper-${id}`);
         if (popper) {
-          const rect = popper.getBoundingClientRect();
-          setPosition({ x: rect.left, y: rect.top });
+          const transform = popper.style.transform;
+          const transformValues = { x: 0, y: 0 };
+          if (transform) {
+            const match = transform.match(
+              /translate3d\(([-\d.]+)px,\s*([-\d.]+)px,\s*([-\d.]+)px\)/,
+            );
+            if (match) {
+              transformValues.x = parseFloat(match[1]);
+              transformValues.y = parseFloat(match[2]);
+            }
+          }
+          setPosition(transformValues);
         }
       }, 100);
     }, []);
@@ -64,16 +74,27 @@ export const DraggablePopper: React.FC<{
   resizable?: boolean;
   children: React.ReactNode;
   anchorEl: null | HTMLElement;
+  placement?: PopperPlacementType;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ id, anchorEl, width, open, setOpen, title, children, resizable }) => {
+}> = ({
+  id,
+  open,
+  title,
+  width,
+  setOpen,
+  anchorEl,
+  children,
+  resizable,
+  placement,
+}) => {
   return (
     <Popper
       id="draggable-popper"
       open={open}
       anchorEl={anchorEl}
       sx={{ zIndex: 1400 }}
-      placement="bottom-start"
       slots={{ root: PaperComponent }}
+      placement={placement ?? "bottom-start"}
       slotProps={{
         root: {
           id,
