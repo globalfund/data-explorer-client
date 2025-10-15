@@ -330,7 +330,7 @@ export const ExpandableHorizontalBar: React.FC<
       setStateChart(chart);
       isMounted.current = true;
     }
-  }, [containerRef.current]);
+  }, [containerRef.current, range]);
 
   React.useEffect(() => {
     if (expandedBars.length > 0) {
@@ -386,12 +386,6 @@ export const ExpandableHorizontalBar: React.FC<
   React.useEffect(() => {
     if (stateChart) {
       stateChart.setOption({
-        xAxis: {
-          name: range.abbr,
-          formattter: (value: number) => {
-            return getFinancialValueWithMetricPrefix(value, range.index);
-          },
-        },
         yAxis: {
           data: xAxisKeys,
         },
@@ -400,7 +394,7 @@ export const ExpandableHorizontalBar: React.FC<
         })),
       });
     }
-  }, [stateChart, seriesData, xAxisKeys, range]);
+  }, [stateChart, seriesData, xAxisKeys]);
 
   return (
     <React.Fragment>
