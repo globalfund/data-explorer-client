@@ -61,5 +61,5 @@ export default tseslint.config(
       "no-case-declarations": "off",
       "jsx-a11y/no-autofocus": "off",
     },
-  }
+  },
 );

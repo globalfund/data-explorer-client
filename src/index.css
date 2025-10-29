@@ -102,14 +102,16 @@ input[type="text"] {
 .tabulator-row:hover > div {
   background: #f6f7f7 !important;
 }
-.tabulator-cell, .tabulator-col-title {
+.tabulator-cell,
+.tabulator-col-title {
   font-size: 14px !important;
   font-family: "Inter", "Helvetica Neue", sans-serif !important;
 }
 .tabulator-cell > .table-download-icon {
   display: none;
 }
-.tabulator-col-content, .tabulator-cell {
+.tabulator-col-content,
+.tabulator-cell {
   padding: 6px 4px !important;
   vertical-align: middle !important;
 }
