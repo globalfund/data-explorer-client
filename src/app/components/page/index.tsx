@@ -8,7 +8,6 @@ import { useUrlFilters } from "app/hooks/useUrlFilters";
 import { useRouteListener } from "app/hooks/useRouteListener";
 import { useScrollToAnchor } from "app/hooks/useScrollToAnchor";
 import { ReportBuilderPageHeader } from "app/pages/report-builder/builder/components/header";
-import { ReportBuilderPageToolbar } from "app/pages/report-builder/builder/components/toolbar";
 
 export const Page: React.FC = () => {
   useUrlFilters();
@@ -25,7 +24,6 @@ export const Page: React.FC = () => {
     return (
       <React.Fragment>
         <ReportBuilderPageHeader />
-        <ReportBuilderPageToolbar />
         <Box
           sx={{
             width: "100%",

@@ -4,7 +4,6 @@ import Button from "@mui/material/Button";
 import Add from "@mui/icons-material/Add";
 import MenuItem from "@mui/material/MenuItem";
 import { uniqueId } from "app/utils/uniqueId";
-
 import { RBReportItem } from "app/state/api/action-reducers/report-builder/sync";
 import { ComponentOptions } from "app/pages/report-builder/builder/components/toolbar/data";
 import { useStoreActions } from "app/state/store/hooks";
@@ -12,7 +11,7 @@ import { useStoreActions } from "app/state/store/hooks";
 export default function AddComponent() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const addItem = useStoreActions(
-    (actions) => actions.RBReportItemsState.addItem,
+    (actions) => actions.RBReportItemsState.addItem
   );
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
