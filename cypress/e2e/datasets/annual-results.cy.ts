@@ -28,14 +28,14 @@ describe("Testing The Location page", () => {
     it("displays the header", () => {
       cy.get("h1").should("have.text", "Annual Results");
       cy.contains(
-        "Indicator results reported as part of annual Results Report."
+        "Indicator results reported as part of annual Results Report.",
       ).should("be.visible");
       cy.contains("People on antiretroviral therapy for HIV in 2022").should(
-        "be.visible"
+        "be.visible",
       );
       cy.contains("People with TB treated in 2022").should("be.visible");
       cy.contains(
-        "Insecticide-treated mosquito nets distributed in 2022"
+        "Insecticide-treated mosquito nets distributed in 2022",
       ).should("be.visible");
     });
 
@@ -51,17 +51,17 @@ describe("Testing The Location page", () => {
             .type("Europe");
           cy.contains(
             '[data-cy="filter-list-content-accordion-summary"]',
-            "Europe"
+            "Europe",
           ).within(() => {
             cy.get('[data-cy="filter-list-content-checkbox"]').click();
             waitData(4);
           });
-        }
+        },
       );
 
       cy.get('[data-cy="filter-panel"]').within(() => {
         cy.contains('[data-cy="applied-filter"]', "Europe").should(
-          "be.visible"
+          "be.visible",
         );
       });
     });
@@ -82,11 +82,11 @@ describe("Testing The Location page", () => {
       waitData(4);
 
       cy.contains('[data-cy="category-dropdown-button"]', "2021").should(
-        "be.visible"
+        "be.visible",
       );
 
       cy.contains("People on antiretroviral therapy for HIV in 2021").should(
-        "be.visible"
+        "be.visible",
       );
     });
 
@@ -101,7 +101,7 @@ describe("Testing The Location page", () => {
 
             cy.contains(
               '[data-cy="category-dropdown-button"]',
-              "Polyline Tree"
+              "Polyline Tree",
             ).click();
           });
 
@@ -112,16 +112,16 @@ describe("Testing The Location page", () => {
           .within(() => {
             cy.contains(
               '[data-cy="category-dropdown-item"]',
-              "Table View"
+              "Table View",
             ).click();
           });
 
         cy.contains("[data-cy=dataset-chart-block]", "Annual Results").within(
           () => {
             cy.get('[data-cy="table"]').should("be.visible");
-          }
+          },
         );
-      }
+      },
     );
 
     it("Shows the Documents block ", { scrollBehavior: "nearest" }, () => {
