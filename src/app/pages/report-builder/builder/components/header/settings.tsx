@@ -3,11 +3,10 @@ import { ReportBuilderPageReportSettings } from "app/pages/report-builder/builde
 import SettingsIcon from "app/assets/vectors/Settings_ButtonIcon.svg?react";
 import Button from "@mui/material/Button";
 
-const [anchorElReportSettings, setAnchorElReportSettings] =
-  React.useState<null | HTMLElement>(null);
-const [settingsClicked, setSettingsClicked] = React.useState(false);
-
 export default function Settings() {
+  const [anchorElReportSettings, setAnchorElReportSettings] =
+    React.useState<null | HTMLElement>(null);
+  const [settingsClicked, setSettingsClicked] = React.useState(false);
   const handleReportSettingsClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElReportSettings(event.currentTarget);
     setSettingsClicked(true);
