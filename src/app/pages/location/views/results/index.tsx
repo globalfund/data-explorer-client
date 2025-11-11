@@ -54,6 +54,7 @@ export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
         value: string;
       }[],
   );
+
   const loadingResultsTable = useStoreState(
     (state) => state.GeographyResultsTable.loading,
   );

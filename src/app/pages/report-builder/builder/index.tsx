@@ -212,7 +212,7 @@ export const ReportBuilderPage: React.FC = () => {
       );
     }
     if (parseInt(reportSettings.height, 10) < 300) {
-      reportSettingsActions.setHeight((window.innerHeight - 174).toString());
+      reportSettingsActions.setHeight((window.innerHeight - 110).toString());
     }
 
     window.addEventListener("keydown", handleKeyDown);

@@ -24,10 +24,19 @@ export const Location: React.FC = () => {
   const paramsId = params.id?.replace("|", "%2F") as string;
 
   const cmsData = useCMSData({ returnData: true });
-
-  const [resultsYear, setResultsYear] = React.useState(
-    RESULT_YEARS[RESULT_YEARS.length - 1],
+  const cyclesResultsTable = useStoreState(
+    (state) =>
+      get(state.AnnualResultsCycles, "data.data", []).map(
+        (c: { name: number; value: number }) => ({
+          name: c.name.toString(),
+          value: c.value.toString(),
+        }),
+      ) as {
+        name: string;
+        value: string;
+      }[],
   );
+  const [resultsYear, setResultsYear] = React.useState(cyclesResultsTable[0]);
 
   const dataOverview = useStoreState((state) =>
     get(state.GeographyOverview, "data.data[0]", {
