@@ -118,6 +118,7 @@ export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
   const showResults = dataResultsTable.length > 0 || tableSearch.length > 0;
   const showDocuments =
     dataDocumentsTable.length > 0 || tableSearch2.length > 0;
+
   return (
     <Box gap="24px" display="flex" flexDirection="column">
       {showStats && <HomeResultsStats stats={dataResultStats} />}
