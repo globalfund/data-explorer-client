@@ -28,9 +28,9 @@ export const Page: React.FC = () => {
           sx={{
             width: "100%",
             display: "flex",
-            padding: "50px 0",
-            bgcolor: "#f8f9fa",
-            minHeight: "calc(100vh - 71px - 64px)",
+            paddingTop: "50px",
+            bgcolor: "#495057",
+            minHeight: "calc(100vh - 60px)",
           }}
         >
           <Box id="main" sx={{ width: "100%", minHeight: "100%" }}>
