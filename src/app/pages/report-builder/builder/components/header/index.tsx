@@ -14,17 +14,15 @@ import EmailIcon from "app/assets/vectors/Email.svg?react";
 import PNGIcon from "app/assets/vectors/PngIcon.svg?react";
 import SVGIcon from "app/assets/vectors/SvgIcon.svg?react";
 import PDFIcon from "app/assets/vectors/PdfIcon.svg?react";
-import NotesIcon from "app/assets/vectors/Notes.svg?react";
 import ShareIcon from "app/assets/vectors/Share2.svg?react";
-import FolderIcon from "app/assets/vectors/Folder.svg?react";
+import FolderIcon from "app/assets/vectors/Folder2.svg?react";
 import PreviewIcon from "app/assets/vectors/Preview.svg?react";
 import LibraryIcon from "app/assets/vectors/Library.svg?react";
 import DownloadIcon from "app/assets/vectors/Download.svg?react";
 import ChevronRight from "@mui/icons-material/ChevronRightOutlined";
-import SettingsIcon from "app/assets/vectors/Settings_ButtonIcon.svg?react";
 import HeaderToolbarMiniLogo from "app/assets/vectors/HeaderToolbarMiniLogo.svg?react";
-import { ReportBuilderPageNotes } from "app/pages/report-builder/builder/components/notes";
-import { ReportBuilderPageReportSettings } from "app/pages/report-builder/builder/components/report-settings";
+import AddComponent from "./add-component";
+import { Divider } from "@mui/material";
 
 export const menuSx = {
   zIndex: 1400,
@@ -50,16 +48,9 @@ export const menuSx = {
 
 export const ReportBuilderPageHeader: React.FC = () => {
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
-  const [notesClicked, setNotesClicked] = React.useState(false);
   const [snackbarMessage, setSnackbarMessage] = React.useState("");
-  const [settingsClicked, setSettingsClicked] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [anchorEl2, setAnchorEl2] = React.useState<null | HTMLElement>(null);
-  const [anchorElReportSettings, setAnchorElReportSettings] =
-    React.useState<null | HTMLElement>(null);
-  const [anchorElNotes, setAnchorElNotes] = React.useState<null | HTMLElement>(
-    null,
-  );
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -107,26 +98,6 @@ export const ReportBuilderPageHeader: React.FC = () => {
     }, 200);
   };
 
-  const handleNotesClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNotes(event.currentTarget);
-    setNotesClicked(true);
-  };
-
-  const handleNotesClose = () => {
-    setAnchorElNotes(null);
-    setNotesClicked(false);
-  };
-
-  const handleReportSettingsClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElReportSettings(event.currentTarget);
-    setSettingsClicked(true);
-  };
-
-  const handleReportSettingsClose = () => {
-    setAnchorElReportSettings(null);
-    setSettingsClicked(false);
-  };
-
   const open = Boolean(anchorEl);
   const open2 = Boolean(anchorEl2);
 
@@ -137,73 +108,57 @@ export const ReportBuilderPageHeader: React.FC = () => {
           <Toolbar
             sx={{
               gap: "20px",
-              height: "70px",
+              height: "59px",
               padding: "10px 20px !important",
               justifyContent: "space-between",
-              ".MuiButtonBase-root": {
-                fontSize: "16px",
-                padding: "6px 14px",
-                borderRadius: "4px",
-                border: "1px solid #dfe3e5",
-                "&:hover": {
-                  background: "#f1f3f5",
-                  borderColor: "#70777e",
-                },
-              },
-              ".MuiIconButton-root": {
-                padding: "6px 12px",
-              },
             }}
           >
             <Box
               sx={{
-                gap: "10px",
+                gap: "8px",
                 display: "flex",
                 alignItems: "center",
               }}
             >
-              <NavLink to="/" style={{ display: "flex", marginRight: "10px" }}>
-                <HeaderToolbarMiniLogo />
-              </NavLink>
-              <Button
-                variant="outlined"
-                startIcon={<NotesIcon />}
-                onClick={handleNotesClick}
+              <Box
                 sx={{
-                  ...(anchorElNotes && {
-                    bgcolor: "#f1f3f5",
-                    borderColor: "#000000",
-                  }),
+                  gap: "16px",
+                  display: "flex",
+                  alignItems: "center",
                 }}
               >
-                Notes
-              </Button>
-              <Button variant="outlined" startIcon={<FolderIcon />}>
-                Assets
-              </Button>
-              <Button
-                variant="outlined"
-                startIcon={<SettingsIcon />}
-                onClick={handleReportSettingsClick}
+                <NavLink
+                  to="/"
+                  style={{ display: "flex", marginRight: "10px" }}
+                >
+                  <HeaderToolbarMiniLogo />
+                </NavLink>
+                <Divider
+                  orientation="vertical"
+                  flexItem
+                  sx={{ borderColor: "#98A1AA" }}
+                />
+              </Box>
+              <Box
                 sx={{
-                  ...(anchorElReportSettings && {
-                    bgcolor: "#f1f3f5",
-                    borderColor: "#000000",
-                  }),
+                  gap: "20px",
+                  display: "flex",
+                  alignItems: "center",
+                  ".MuiButtonBase-root": {
+                    fontSize: "16px",
+                    fontWeight: "700",
+                    padding: "6px 12px",
+                    border: "none",
+                  },
                 }}
               >
-                Report Settings
-              </Button>
-              <ReportBuilderPageReportSettings
-                clicked={settingsClicked}
-                anchorEl={anchorElReportSettings}
-                setClicked={handleReportSettingsClose}
-              />
-              <ReportBuilderPageNotes
-                clicked={notesClicked}
-                anchorEl={anchorElNotes}
-                setClicked={handleNotesClose}
-              />
+                <Button variant="outlined" startIcon={<LibraryIcon />}>
+                  My Reports
+                </Button>
+                <Button variant="outlined" startIcon={<FolderIcon />}>
+                  Assets
+                </Button>
+              </Box>
             </Box>
             <Box
               sx={{
@@ -212,32 +167,48 @@ export const ReportBuilderPageHeader: React.FC = () => {
                 flexDirection: "row",
               }}
             >
-              <IconButton>
-                <PreviewIcon />
-              </IconButton>
-              <Tooltip title="Export" enterDelay={500} leaveDelay={200}>
-                <IconButton
-                  onClick={handleClick}
-                  sx={
-                    open
-                      ? {
-                          bgcolor: "#f1f3f5",
-                          borderColor: "#70777e !important",
-                        }
-                      : {}
-                  }
-                >
-                  <ShareIcon />
-                </IconButton>
-              </Tooltip>
-              <Button
-                variant="outlined"
-                component={NavLink}
-                to="/report-builder"
-                startIcon={<LibraryIcon />}
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: "10px",
+                  alignItems: "center",
+                  ".MuiButtonBase-root": {
+                    fontSize: "16px",
+                    padding: "9px 12px",
+                    borderRadius: "4px",
+                    border: "1px solid #dfe3e5",
+                    "&:hover": {
+                      background: "#f1f3f5",
+                      borderColor: "#70777e",
+                    },
+                  },
+                  ".MuiIconButton-root": {
+                    padding: "6px 12px",
+                  },
+                }}
               >
-                Library
-              </Button>
+                <IconButton>
+                  <PreviewIcon />
+                </IconButton>
+                <Tooltip title="Export" enterDelay={500} leaveDelay={200}>
+                  <IconButton
+                    onClick={handleClick}
+                    sx={
+                      open
+                        ? {
+                            bgcolor: "#f1f3f5",
+                            borderColor: "#70777e !important",
+                          }
+                        : {}
+                    }
+                  >
+                    <ShareIcon />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+
+              <AddComponent />
+
               <Menu
                 open={open}
                 keepMounted

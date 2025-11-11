@@ -1,0 +1,131 @@
+import React from "react";
+import Menu from "@mui/material/Menu";
+import Button from "@mui/material/Button";
+import Add from "@mui/icons-material/Add";
+import MenuItem from "@mui/material/MenuItem";
+import { uniqueId } from "app/utils/uniqueId";
+import { RBReportItem } from "app/state/api/action-reducers/report-builder/sync";
+import { ComponentOptions } from "app/pages/report-builder/builder/components/toolbar/data";
+import { useStoreActions } from "app/state/store/hooks";
+
+export default function AddComponent() {
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const addItem = useStoreActions(
+    (actions) => actions.RBReportItemsState.addItem,
+  );
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleMenuItemClick = (value: string) => {
+    let newItem: RBReportItem | null = null;
+    switch (value) {
+      case "text":
+        newItem = {
+          id: uniqueId(),
+          type: "text",
+          settings: {
+            paddingTop: 10,
+            paddingLeft: 10,
+            paddingRight: 10,
+            paddingBottom: 10,
+            stroke: 0,
+            strokeColor: "#000000",
+            cornerRadius: 8,
+            backgroundColor: "transparent",
+          },
+        };
+        break;
+      case "chart":
+        newItem = { id: uniqueId(), type: "chart" };
+        break;
+      case "table":
+        newItem = { id: uniqueId(), type: "table" };
+        break;
+      case "image":
+        newItem = { id: uniqueId(), type: "image" };
+        break;
+      case "section_divider":
+        newItem = { id: uniqueId(), type: "section_divider" };
+        break;
+      case "kpi_box":
+      case "grid":
+        newItem = { id: uniqueId(), type: "grid" };
+        break;
+      case "column":
+        newItem = { id: uniqueId(), type: "column" };
+        break;
+      default:
+        break;
+    }
+    if (newItem) {
+      addItem(newItem);
+    }
+  };
+
+  const open = Boolean(anchorEl);
+  return (
+    <React.Fragment>
+      <Button
+        variant="contained"
+        startIcon={<Add />}
+        sx={{
+          fontWeight: "400",
+          color: "#ffffff",
+          textTransform: "none",
+          background: open ? "#000" : "#3154f4",
+          borderRadius: "4px",
+          padding: "9px 12px",
+          height: "35px",
+        }}
+        onClick={handleClick}
+      >
+        Add a Component
+      </Button>
+      <Menu
+        open={open}
+        keepMounted
+        disableScrollLock
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        transformOrigin={{
+          vertical: -5,
+          horizontal: "left",
+        }}
+        sx={{
+          zIndex: 1400,
+          "& .MuiPaper-root": {
+            borderRadius: "4px",
+            border: "1px solid #dfe3e5",
+          },
+          "& .MuiList-root": {
+            padding: "0px",
+          },
+          "& .MuiMenuItem-root": {
+            gap: "5px",
+            display: "flex",
+            padding: "12px 16px",
+            alignItems: "center",
+            borderBottom: "1px solid #c6c6c6",
+            "&:last-of-type": { borderBottomStyle: "none" },
+          },
+        }}
+      >
+        {ComponentOptions.map((option) => (
+          <MenuItem
+            key={option.value}
+            onClick={() => handleMenuItemClick(option.value)}
+          >
+            {option.icon}
+            {option.label}
+          </MenuItem>
+        ))}
+      </Menu>
+    </React.Fragment>
+  );
+}
