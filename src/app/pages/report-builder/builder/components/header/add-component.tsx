@@ -11,7 +11,7 @@ import { useStoreActions } from "app/state/store/hooks";
 export default function AddComponent() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const addItem = useStoreActions(
-    (actions) => actions.RBReportItemsState.addItem
+    (actions) => actions.RBReportItemsState.addItem,
   );
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
