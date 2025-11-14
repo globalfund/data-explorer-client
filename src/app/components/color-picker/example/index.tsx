@@ -1,0 +1,309 @@
+import React from "react";
+
+import { ColorInput, OpacityInput, SelectColorType } from "./components/fields";
+import { useLocalStorage } from "react-use";
+import Tabs from "./components/tabs";
+import { IColor } from "../types";
+import { ColorPickerWrapper } from "app/components/color-picker/example/styles";
+import Box from "@mui/material/Box";
+import { Popover, Typography } from "@mui/material";
+import { ColorService } from "../utils/color";
+import Saturation from "./saturation";
+import Alpha from "./alpha";
+import Hue from "./hue";
+import ResetIcon from "./assets/reset-icon";
+import Trigger from "./components/trigger";
+
+const swatches = [
+  {
+    label: "Dataxplorer",
+    value: ["#6061E5", "#73D3CD", "#F6C445", "#E492BD", "#E75656"],
+  },
+  {
+    label: "Sunset coast",
+    value: ["#05405B", "#58528C", "#BB5390", "#FD6565", "#FDA529"],
+  },
+  {
+    label: "Nordic Aurora",
+    value: ["#175A5C", "#23768C", "#5291BC", "#94A8E4", "#E0BAFD"],
+  },
+  {
+    label: "Warm tone",
+    value: ["#5B0C0E", "#8A3C49", "#B26E87", "#D3A4C5", "#F5DCFE"],
+  },
+  {
+    label: "Sprint forest",
+    value: ["#2B5B16", "#538137", "#7BA95A", "#A4D37E", "#D0FEA3"],
+  },
+  {
+    label: "Purple Gradient",
+    value: ["#231D2C", "#655579", "#B194D1", "#DAB5FF", "#DADAF8"],
+  },
+  {
+    label: "Grey Gradient",
+    value: ["#373D43", "#70777E", "#98A1AA", "#CFD4DA", "#F1F3F5"],
+  },
+];
+
+interface IColorPickerProps {
+  readonly height?: number;
+  readonly color: IColor;
+  readonly disabled?: boolean;
+  readonly onChange: (color: IColor) => void;
+  readonly onChangeComplete?: (color: IColor) => void;
+  readonly onResetColor: () => void; // Added onreset prop for reset functionality
+}
+
+export const ColorPicker = ({
+  height = 105,
+  color,
+  disabled,
+  onChange: onChangeColor,
+  onChangeComplete,
+  onResetColor = () => {}, // Added onreset prop for reset functionality
+}: IColorPickerProps) => {
+  const [colorType, setColorType] = React.useState("hex");
+  const [recentlyUsedColors, setRecentlyUsedColors] = useLocalStorage(
+    "recentlyUsedColors",
+    [] as string[],
+  );
+  const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
+
+  const onChange = React.useCallback(
+    (color: IColor) => {
+      onChangeColor(color);
+      const newColors = [color.hex, ...(recentlyUsedColors ?? [])];
+      setRecentlyUsedColors(Array.from(new Set(newColors)).slice(0, 5));
+    },
+    [onChangeColor, color],
+  );
+  const [activeTab, setActiveTab] = React.useState("color");
+  const handleTriggerColorPicker = (e: any) => {
+    setAnchorEl(anchorEl ? null : e.currentTarget);
+  };
+  const handleTriggerInputChange = (color: string) => {
+    onChangeColor(ColorService.convert("hex", color));
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  return (
+    <Box sx={{ position: "relative" }}>
+      <Trigger
+        color={color.hex}
+        onChange={handleTriggerInputChange}
+        onClick={handleTriggerColorPicker}
+      />
+
+      <Popover
+        open={Boolean(anchorEl)}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+      >
+        <ColorPickerWrapper>
+          <Box className="rcp">
+            <Tabs
+              activeTab={activeTab}
+              tabs={[
+                {
+                  value: "color",
+                  label: "Color Picker",
+                },
+                {
+                  value: "swatches",
+                  label: "Swatches",
+                },
+              ]}
+              handleSwitch={setActiveTab}
+            />
+            {activeTab === "swatches" ? (
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "5px",
+                }}
+              >
+                {swatches.map((swatch) => (
+                  <Box
+                    key={swatch.label}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        fontSize: "12px",
+                        fontFamily: "'GothamNarrow-Book', sans-serif",
+                        fontWeight: 325,
+                        color: "#231D2C",
+                        lineHeight: "normal",
+                        margin: 0,
+                      }}
+                    >
+                      {swatch.label}
+                    </Typography>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        gap: "5px",
+                      }}
+                    >
+                      {swatch.value.map((c) => (
+                        <Box
+                          key={c}
+                          className="rcp-recently-used-color"
+                          sx={{
+                            backgroundColor: c,
+                            border:
+                              c === color.hex ? "2px solid #0026FF" : "none",
+                            cursor: disabled ? "auto" : "pointer",
+                          }}
+                          onClick={() => {
+                            if (disabled) return;
+                            onChange(ColorService.convert("hex", c));
+                          }}
+                        />
+                      ))}
+                    </Box>
+                  </Box>
+                ))}
+              </Box>
+            ) : (
+              <Box className="rcp-section">
+                <Saturation
+                  height={height}
+                  color={color}
+                  disabled={disabled}
+                  onChange={onChange}
+                  onChangeComplete={onChangeComplete}
+                />
+                <Box className="rcp-body">
+                  <Box className="rcp-section">
+                    <Hue
+                      color={color}
+                      disabled={disabled}
+                      onChange={onChange}
+                      onChangeComplete={onChangeComplete}
+                    />
+
+                    <Alpha
+                      color={color}
+                      disabled={disabled}
+                      onChange={onChange}
+                      onChangeComplete={onChangeComplete}
+                    />
+
+                    <Box className="rcp-input-section">
+                      <Box
+                        className="rcp-sample-circle"
+                        sx={{
+                          backgroundColor: color.hex,
+                        }}
+                      />
+
+                      <SelectColorType
+                        value={colorType}
+                        onChange={setColorType}
+                        options={["hex", "rgb"]}
+                      />
+
+                      <ColorInput
+                        onChange={onChange}
+                        color={color}
+                        colorType={colorType}
+                        disabled={disabled}
+                      />
+                      <OpacityInput
+                        onChange={onChange}
+                        color={color}
+                        disabled={disabled}
+                      />
+                    </Box>
+
+                    <Box>
+                      <Typography
+                        sx={{
+                          margin: 0,
+                          fontSize: "12px",
+                          fontFamily: "GothamNarrow-Bold, sans-serif",
+                          fontWeight: 400,
+                          color: "#373D43",
+                          lineHeight: "normal",
+                        }}
+                      >
+                        Recently Used
+                      </Typography>
+                      <Box
+                        sx={{
+                          marginTop: "8px",
+                          display: "flex",
+                          gap: "4px",
+                        }}
+                      >
+                        {recentlyUsedColors?.map((c) => (
+                          <Box
+                            key={c}
+                            className="rcp-recently-used-color"
+                            sx={{
+                              backgroundColor: c,
+                              cursor: disabled ? "auto" : "pointer",
+                            }}
+                            onClick={() => {
+                              if (disabled) return;
+                              onChange(ColorService.convert("hex", c));
+                            }}
+                          />
+                        ))}
+                      </Box>
+                    </Box>
+                  </Box>
+                </Box>
+              </Box>
+            )}
+            <Box sx={{ paddding: "0 16px" }}>
+              <Box
+                sx={{
+                  padding: "7px 0",
+                  borderTop: "1px solid #cfd4da",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  svg: {
+                    cursor: "pointer",
+                  },
+                }}
+              >
+                <Box
+                  component={"span"}
+                  sx={{
+                    margin: 0,
+                    fontSize: "12px",
+                    fontFamily: "GothamNarrow-Book, sans-serif",
+                    fontWeight: 325,
+                    lineHeight: "normal",
+                    cursor: disabled ? "auto" : "pointer",
+                  }}
+                >
+                  Reset
+                </Box>
+                <ResetIcon onClick={onResetColor} />
+              </Box>
+            </Box>
+          </Box>
+        </ColorPickerWrapper>
+      </Popover>
+    </Box>
+  );
+};

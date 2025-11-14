@@ -140,6 +140,7 @@ import componentHeader from "../api/action-reducers/cms/componentsHeader";
 import componentFooter from "../api/action-reducers/cms/componentsFooter";
 import {
   RBReportItemOrderState,
+  RBReportItemsControllerState,
   RBReportItemsState,
   RBReportNotesState,
   RBReportRTEState,
@@ -294,6 +295,7 @@ const storeContent: StoreModel = {
   TempAppliedFiltersState: persist(TempAppliedFiltersState),
   // report builder
   RBReportItemsState: persist(RBReportItemsState),
+  RBReportItemsControllerState: persist(RBReportItemsControllerState),
   RBReportRTEState: persist(RBReportRTEState),
   RBReportItemOrderState: persist(RBReportItemOrderState),
   RBReportSettingsState: persist(RBReportSettings),

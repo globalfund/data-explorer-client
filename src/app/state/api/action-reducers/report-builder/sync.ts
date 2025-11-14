@@ -2,21 +2,31 @@ import { Editor } from "@tiptap/react";
 import { uniqueId } from "app/utils/uniqueId";
 import { action, Action } from "easy-peasy";
 
+export type RBReportItemTypes =
+  | "text"
+  | "chart"
+  | "table"
+  | "image"
+  | "kpi_box"
+  | "grid"
+  | "column"
+  | "section_divider";
 export interface RBReportItem {
   id: string;
-  type:
-    | "text"
-    | "chart"
-    | "table"
-    | "image"
-    | "kpi_box"
-    | "grid"
-    | "column"
-    | "section_divider";
+  type: RBReportItemTypes;
   extra?: any;
   settings?: any;
 }
 
+export interface RBReportItemController {
+  open: boolean;
+  type: RBReportItemTypes;
+}
+export interface RBReportItemControllerModel {
+  item: RBReportItemController | null;
+  clearItem: Action<RBReportItemControllerModel>;
+  setItem: Action<RBReportItemControllerModel, RBReportItemController>;
+}
 export interface RBReportItemsModel {
   items: RBReportItem[];
   clearItems: Action<RBReportItemsModel>;
@@ -93,6 +103,16 @@ export const RBReportItemsState: RBReportItemsModel = {
       };
       state.items.splice(index + 1, 0, newItem);
     }
+  }),
+};
+
+export const RBReportItemsControllerState: RBReportItemControllerModel = {
+  item: null,
+  setItem: action((state, payload) => {
+    state.item = payload;
+  }),
+  clearItem: action((state) => {
+    state.item = null;
   }),
 };
 

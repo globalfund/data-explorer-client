@@ -7,7 +7,6 @@ import { uniqueId } from "app/utils/uniqueId";
 import Close from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { RTEToolbar } from "app/components/rich-text-editor";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { Empty } from "app/pages/report-builder/builder/components/empty";
 import { RBReportItem } from "app/state/api/action-reducers/report-builder/sync";
@@ -17,10 +16,11 @@ import { ReportBuilderPageChart } from "app/pages/report-builder/builder/compone
 import { ReportBuilderPageTable } from "app/pages/report-builder/builder/components/table";
 import { ReportBuilderPageImage } from "app/pages/report-builder/builder/components/image";
 import { ItemComponent } from "app/pages/report-builder/builder/components/order-container";
+import ElementsController from "./components/panel/elements-controller";
 
 export const ReportBuilderPage: React.FC = () => {
   const items = useStoreState((state) => state.RBReportItemsState.items);
-  const activeRTE = useStoreState((state) => state.RBReportRTEState.activeRTE);
+  // const activeRTE = useStoreState((state) => state.RBReportRTEState.activeRTE);
   const setActiveRTE = useStoreActions(
     (actions) => actions.RBReportRTEState.setActiveRTE,
   );
@@ -231,31 +231,31 @@ export const ReportBuilderPage: React.FC = () => {
     }
   }, [items.length]);
 
-  const parsedReportSettings = React.useMemo(() => {
-    return {
-      width:
-        parseInt(reportSettings.width, 10) < 300
-          ? 300
-          : parseInt(reportSettings.width, 10),
-      height:
-        parseInt(reportSettings.height, 10) < 300
-          ? 300
-          : parseInt(reportSettings.height, 10),
-      hPadding:
-        parseInt(reportSettings.hPadding, 10) < 0
-          ? 0
-          : parseInt(reportSettings.hPadding, 10),
-      vPadding:
-        parseInt(reportSettings.vPadding, 10) < 0
-          ? 0
-          : parseInt(reportSettings.vPadding, 10),
-      stroke:
-        parseInt(reportSettings.stroke, 10) < 0
-          ? 0
-          : parseInt(reportSettings.stroke, 10),
-      strokeColor: reportSettings.strokeColor,
-    };
-  }, [reportSettings]);
+  // const parsedReportSettings = React.useMemo(() => {
+  //   return {
+  //     width:
+  //       parseInt(reportSettings.width, 10) < 300
+  //         ? 300
+  //         : parseInt(reportSettings.width, 10),
+  //     height:
+  //       parseInt(reportSettings.height, 10) < 300
+  //         ? 300
+  //         : parseInt(reportSettings.height, 10),
+  //     hPadding:
+  //       parseInt(reportSettings.hPadding, 10) < 0
+  //         ? 0
+  //         : parseInt(reportSettings.hPadding, 10),
+  //     vPadding:
+  //       parseInt(reportSettings.vPadding, 10) < 0
+  //         ? 0
+  //         : parseInt(reportSettings.vPadding, 10),
+  //     stroke:
+  //       parseInt(reportSettings.stroke, 10) < 0
+  //         ? 0
+  //         : parseInt(reportSettings.stroke, 10),
+  //     strokeColor: reportSettings.strokeColor,
+  //   };
+  // }, [reportSettings]);
 
   return (
     <Box
@@ -267,7 +267,7 @@ export const ReportBuilderPage: React.FC = () => {
         justifyContent: "center",
       }}
     >
-      {activeRTE && (
+      {/* {activeRTE && (
         <Box
           sx={{
             top: -50,
@@ -289,7 +289,20 @@ export const ReportBuilderPage: React.FC = () => {
         >
           <RTEToolbar editor={activeRTE} />
         </Box>
-      )}
+      )} */}
+
+      <Box
+        sx={{
+          top: -50,
+          bgcolor: "#f8f9fa",
+          right: "4px",
+          position: "absolute",
+          width: "300px",
+          zIndex: 2,
+        }}
+      >
+        <ElementsController />
+      </Box>
       <DndProvider backend={HTML5Backend}>
         <Box
           sx={{
