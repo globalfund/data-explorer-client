@@ -474,17 +474,21 @@ export const RichEditor: React.FC<{
       setEditor(editor);
       setSelectedItem({ type: "text", open: true });
     },
-    onBlur: (e) => {
-      const RTEToolbar = document.getElementById("rte-toolbar");
-      if (!RTEToolbar || !RTEToolbar.contains(e.event.relatedTarget as Node)) {
-        setEditor(null);
-        clearSelectedItem();
-      }
-      setFocused(false);
-      if (editor.isEmpty) {
-        setClicked(false);
-      }
-    },
+    // onBlur: (e) => {
+    //   const RTEToolbar = document.getElementById("rte-toolbar");
+
+    //   console.log(RTEToolbar, "RTE Toolbar in onBlur");
+    //   console.log(e.event.relatedTarget, "relatedTarget in onBlur");
+    //   console.log(e.event.target, "target in onBlur");
+    //   if (!RTEToolbar || !RTEToolbar.contains(e.event.relatedTarget as Node)) {
+    //     setEditor(null);
+    //     clearSelectedItem();
+    //   }
+    //   setFocused(false);
+    //   if (editor.isEmpty) {
+    //     setClicked(false);
+    //   }
+    // },
     onUpdate: () => {
       setValue(editor.getText());
       const item = items.find((item) => item.type === "text" && item.extra);
@@ -500,6 +504,47 @@ export const RichEditor: React.FC<{
       }
     },
   });
+
+  // This is what keeps the editor open when clicking outside
+  // Should be put in a custom hook later
+  React.useEffect(() => {
+    function handleMouseDown(e: MouseEvent) {
+      const editorEl = document.getElementById("rte-editor");
+      const toolbarEl = document.getElementById("rte-toolbar");
+
+      if (!editorEl || !toolbarEl) return;
+
+      const clickedInsideEditor = editorEl.contains(e.target as Node);
+      const clickedInsideToolbar = toolbarEl.contains(e.target as Node);
+      const insidePortal = !!(e.target as HTMLElement).closest(
+        ".rte-keep-open",
+      );
+      const isBackdrop =
+        (e.target as HTMLElement).classList.contains("MuiBackdrop-root") ||
+        (e.target as HTMLElement).classList.contains("MuiModal-backdrop");
+
+      if (
+        !clickedInsideEditor &&
+        !clickedInsideToolbar &&
+        !insidePortal &&
+        !isBackdrop
+      ) {
+        // Clicked outside → close editor
+        setEditor(null);
+        clearSelectedItem();
+        setFocused(false);
+        if (editor.isEmpty) {
+          setClicked(false);
+        }
+      }
+    }
+
+    document.addEventListener("mousedown", handleMouseDown);
+
+    return () => {
+      document.removeEventListener("mousedown", handleMouseDown);
+    };
+  }, [editor]);
 
   const visualSettingsStyle = React.useMemo(() => {
     return {
@@ -525,6 +570,7 @@ export const RichEditor: React.FC<{
         "*": { margin: "0 !important" },
         blockquote: { margin: "0 40px !important" },
       }}
+      id="rte-editor"
     >
       <EditorContent editor={editor} width="100%" />
     </Box>

@@ -79,6 +79,7 @@ export const ColorPicker = ({
   );
   const [activeTab, setActiveTab] = React.useState("color");
   const handleTriggerColorPicker = (e: any) => {
+    console.log("trigger clicked");
     setAnchorEl(anchorEl ? null : e.currentTarget);
   };
   const handleTriggerInputChange = (color: string) => {
@@ -107,6 +108,9 @@ export const ColorPicker = ({
         transformOrigin={{
           vertical: "top",
           horizontal: "right",
+        }}
+        classes={{
+          paper: "rte-keep-open",
         }}
       >
         <ColorPickerWrapper>

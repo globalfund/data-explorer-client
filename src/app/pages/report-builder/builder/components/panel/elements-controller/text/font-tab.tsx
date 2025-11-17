@@ -239,6 +239,7 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
               justifyContent: "space-between",
             },
           }}
+          classes={{ paper: "rte-keep-open" }}
         >
           {fontFamilyOptions.map((option) => (
             <MenuItem
@@ -299,6 +300,7 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
                 justifyContent: "space-between",
               },
             }}
+            classes={{ paper: "rte-keep-open" }}
           >
             {headingOptions.map((option) => (
               <MenuItem
@@ -359,6 +361,7 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
                 justifyContent: "space-between",
               },
             }}
+            classes={{ paper: "rte-keep-open" }}
           >
             {headingOptions.map((option) => (
               <MenuItem
@@ -441,6 +444,7 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
                 justifyContent: "space-between",
               },
             }}
+            classes={{ paper: "rte-keep-open" }}
           >
             {headingOptions.map((option) => (
               <MenuItem
