@@ -6,13 +6,14 @@ export default function ElementsController() {
   const selectedItem = useStoreState(
     (state) => state.RBReportItemsControllerState.item,
   );
+  const activeRTE = useStoreState((state) => state.RBReportRTEState.activeRTE);
 
   const renderItem = () => {
     switch (selectedItem?.type) {
       case "text":
-        return <TextController />;
+        return activeRTE && <TextController />;
       default:
-        return <div>No Controller Available</div>;
+        return null;
     }
   };
 

@@ -1,50 +1,81 @@
-import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import React from "react";
+import NullColor from "app/assets/vectors/RBNullColor.svg?react";
+import HexIcon from "app/assets/vectors/RBHex.svg?react";
+
+import { Button, IconButton } from "@mui/material";
 
 interface ITrigger {
-  color: string;
+  color: string | null;
   onChange: (color: string) => void;
   onClick: (event: React.MouseEvent<HTMLElement>) => void;
+  triggerWidth?: string;
 }
 export default function Trigger(props: Readonly<ITrigger>) {
   return (
     <Box
       sx={{
-        width: "134px",
+        width: props.triggerWidth ?? "134px",
         height: "40px",
         display: "flex",
         alignItems: "center",
         gap: "10px",
         borderRadius: "4px",
         border: "0.5px solid #98A1AA",
+        backgroundColor: "#FFF",
         padding: "5px",
       }}
     >
-      <Button
-        onClick={props.onClick}
+      {props.color ? (
+        <Button
+          onClick={props.onClick}
+          sx={{
+            height: "30px",
+            width: "30px",
+            minWidth: "30px",
+            border: "0.75px solid #252C34",
+            backgroundColor: props.color,
+            borderRadius: "4px",
+            padding: "0px",
+          }}
+        />
+      ) : (
+        <IconButton
+          onClick={props.onClick}
+          sx={{
+            backgroundColor: "",
+            border: "none",
+            padding: "0",
+            outline: "none",
+            "&:hover": { backgroundColor: "transparent" },
+          }}
+        >
+          <NullColor />
+        </IconButton>
+      )}
+
+      <Box
         sx={{
-          height: "30px",
-          width: "30px",
-          minWidth: "30px",
-          border: "0.75px solid #252C34",
-          backgroundColor: props.color,
-          borderRadius: "4px",
-          padding: "0px",
+          display: "flex",
+          alignItems: "center",
+          height: "16px",
+          ".MuiInputBase-root": {
+            height: "16px",
+            "&:before": {
+              borderBottom: props.color ? "none" : "1px solid #98A1AA",
+            },
+          },
         }}
-      />
-      <Box sx={{ display: "flex" }}>
-        <Typography sx={{ fontSize: "14px", color: "#70777E" }}>#</Typography>
+      >
+        <HexIcon />
         <TextField
           variant="standard"
           onChange={(e) => props.onChange(e.target.value)}
-          value={props.color.replace("#", "")}
+          value={props.color?.replace("#", "")}
           sx={{
             borderColor: " #98A1AA",
-            width: "51px",
-            height: "16px",
+            width: props.color ? "70px" : "50px",
             color: "#70777E",
           }}
         />

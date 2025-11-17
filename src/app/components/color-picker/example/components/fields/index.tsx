@@ -82,7 +82,7 @@ export const SelectColorType = ({
 };
 
 interface IColorInputProps {
-  color: IColor;
+  color: IColor | null;
   colorType: string;
   onChange: (color: IColor) => void;
   disabled?: boolean;
@@ -96,14 +96,38 @@ export const ColorInput = ({
 }: IColorInputProps) => {
   const [fields, setFields] = useState({
     hex: {
-      value: color.hex,
+      value: color?.hex,
       inputted: false,
     },
     rgb: {
-      value: color.rgb,
+      value: color?.rgb,
       inputted: false,
     },
   });
+
+  useEffect(() => {
+    if (!color) {
+      return;
+    }
+    if (!fields.hex.inputted) {
+      setFields((fields) => ({
+        ...fields,
+        hex: { ...fields.hex, value: color.hex },
+      }));
+    }
+  }, [fields.hex.inputted, color?.hex]);
+
+  useEffect(() => {
+    if (!color) {
+      return;
+    }
+    if (!fields.rgb.inputted) {
+      setFields((fields) => ({
+        ...fields,
+        rgb: { ...fields.rgb, value: color.rgb },
+      }));
+    }
+  }, [fields.rgb.inputted, color?.rgb]);
 
   const onInputFocus = useCallback(
     <T extends keyof typeof fields>(field: T) =>
@@ -116,39 +140,13 @@ export const ColorInput = ({
     [],
   );
 
-  // const onInputBlur = useCallback(
-  //   <T extends keyof typeof fields>(field: T) =>
-  //     (event: React.ChangeEvent<HTMLInputElement>) => {
-  //       setFields((fields) => ({
-  //         ...fields,
-  //         [field]: { ...fields[field], inputted: false },
-  //       }));
-  //     },
-  //   []
-  // );
-
-  useEffect(() => {
-    if (!fields.hex.inputted) {
-      setFields((fields) => ({
-        ...fields,
-        hex: { ...fields.hex, value: color.hex },
-      }));
-    }
-  }, [fields.hex.inputted, color.hex]);
-
-  useEffect(() => {
-    if (!fields.rgb.inputted) {
-      setFields((fields) => ({
-        ...fields,
-        rgb: { ...fields.rgb, value: color.rgb },
-      }));
-    }
-  }, [fields.rgb.inputted, color.rgb]);
-
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     rgbOption: string = "",
   ) => {
+    if (!color) {
+      return;
+    }
     const value = event.target.value;
     if (colorType === "hex") {
       const newColor = ColorService.convert("hex", value);
@@ -162,7 +160,7 @@ export const ColorInput = ({
       const newValue = parseInt(value);
 
       const newColor = ColorService.convert("rgb", {
-        ...color.rgb,
+        ...color?.rgb,
         [rgbOption]: newValue,
       });
       setFields((fields) => ({
@@ -193,7 +191,7 @@ export const ColorInput = ({
             width: "100%",
           }}
         >
-          {Object.entries(fields.rgb.value)
+          {Object.entries(fields.rgb.value ?? {})
             ?.slice(0, -1)
             ?.map(([key, value], index) => (
               <React.Fragment key={key}>
@@ -213,7 +211,7 @@ export const ColorInput = ({
                   // onBlur={onInputBlur("rgb")}
                 />
                 {index <
-                Object.keys(fields.rgb.value)?.slice(0, -1).length - 1 ? (
+                Object.keys(fields.rgb.value ?? {})?.slice(0, -1).length - 1 ? (
                   <Box
                     component={"span"}
                     sx={{
@@ -252,7 +250,7 @@ export const ColorInput = ({
 };
 
 interface OpacityInputProps {
-  color: IColor;
+  color: IColor | null;
   onChange: (color: IColor) => void;
   disabled?: boolean;
 }
@@ -262,6 +260,9 @@ export const OpacityInput = ({
   onChange,
   disabled,
 }: OpacityInputProps) => {
+  if (!color) {
+    return null;
+  }
   const opacityPercent = Math.round(color?.rgb?.a * 100);
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     let value = event.target.value;
@@ -309,7 +310,6 @@ export const OpacityInput = ({
         }}
         disabled={disabled}
         onChange={handleChange}
-
         // maxLength={4}
         // minLength={1}
       />

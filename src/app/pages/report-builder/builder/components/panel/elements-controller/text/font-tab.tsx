@@ -1,43 +1,55 @@
 import React from "react";
-import get from "lodash/get";
 import Box from "@mui/material/Box";
-import Menu from "@mui/material/Menu";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
-import MenuItem from "@mui/material/MenuItem";
 import { Level } from "@tiptap/extension-heading";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import {
   headingOptions,
   fontFamilyOptions,
+  fontSizeOptions,
+  lineHeightOptions,
 } from "app/components/rich-text-editor/data";
-import PaddingTop from "app/assets/vectors/RBPaddingTop.svg?react";
+import AlignTop from "app/assets/vectors/RBAlignTop.svg?react";
+import AlignCenter from "app/assets/vectors/RBAlignCenter.svg?react";
+import AlignBottom from "app/assets/vectors/RBAlignBottom.svg?react";
+import ParagraphAdd from "app/assets/vectors/RBParagraphAdd.svg?react";
+import ParagraphRemove from "app/assets/vectors/RBParagraphRemove.svg?react";
+import ListBulleted from "app/assets/vectors/RBListBulleted.svg?react";
+import ListNumbered from "app/assets/vectors/RBListNumbered.svg?react";
+import Strikethrough from "app/assets/vectors/RBStrikethrough.svg?react";
+import Underline from "app/assets/vectors/RBUnderline.svg?react";
+import Blockquotes from "app/assets/vectors/RBBlockquotes.svg?react";
+import LinkIcon from "app/assets/vectors/RBLink.svg?react";
 
-import PaddingBottom from "app/assets/vectors/RBPaddingBottom.svg?react";
 import { Editor, useEditorState } from "@tiptap/react";
 import {
-  Link,
-  Check,
-  FormatBold,
-  FormatQuote,
-  FormatItalic,
   FormatAlignLeft,
   KeyboardArrowUp,
-  FormatUnderlined,
   FormatAlignRight,
   FormatAlignCenter,
   KeyboardArrowDown,
-  FormatListBulleted,
-  FormatListNumbered,
 } from "@mui/icons-material";
 import { ColorPicker } from "app/components/color-picker/example";
 import { ColorService } from "app/components/color-picker/utils/color";
+import StyledMenu from "./menu-popup";
+import TextField from "@mui/material/TextField";
 
 export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [anchorEl2, setAnchorEl2] = React.useState<null | HTMLElement>(null);
+  const [fontFamilyAnchorEl, setFontFamilyAnchorEl] =
+    React.useState<null | HTMLElement>(null);
+  const [fontWeightAnchorEl, setFontWeightAnchorEl] =
+    React.useState<null | HTMLElement>(null);
+  const [fontSizeAnchorEl, setFontSizeAnchorEl] =
+    React.useState<null | HTMLElement>(null);
+  const [lineHeightAnchorEl, setLineHeightAnchorEl] =
+    React.useState<null | HTMLElement>(null);
 
+  const isFontFamilyMenuActive = Boolean(fontFamilyAnchorEl);
+  const isFontWeightMenuActive = Boolean(fontWeightAnchorEl);
+  const isFontSizeMenuActive = Boolean(fontSizeAnchorEl);
+  const isLineHeightMenuActive = Boolean(lineHeightAnchorEl);
   const editorState = useEditorState({
     editor,
     selector: (ctx) => {
@@ -49,6 +61,7 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
         bgColor:
           ctx.editor.getAttributes("textStyle").backgroundColor ?? "#ffffff",
         fontSize: ctx.editor.getAttributes("textStyle").fontSize ?? "16px",
+        lineHeight: ctx.editor.getAttributes("textStyle").lineHeight ?? "auto",
         isNormalText: ctx.editor.isActive("paragraph"),
         isTitle: ctx.editor.isActive("heading", { level: 10 }),
         isSubtitle: ctx.editor.isActive("heading", { level: 11 }),
@@ -77,21 +90,41 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
       };
     },
   });
-
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
+  const handleClick = (
+    event: React.MouseEvent<HTMLElement>,
+    menuType: string,
+  ) => {
+    switch (menuType) {
+      case "fontFamily":
+        setFontFamilyAnchorEl(event.currentTarget);
+        break;
+      case "fontWeight":
+        setFontWeightAnchorEl(event.currentTarget);
+        break;
+      case "fontSize":
+        setFontSizeAnchorEl(event.currentTarget);
+        break;
+      case "lineHeight":
+        setLineHeightAnchorEl(event.currentTarget);
+        break;
+    }
   };
 
-  const handleClick2 = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl2(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleClose2 = () => {
-    setAnchorEl2(null);
+  const handleClose = (menuType: string) => {
+    switch (menuType) {
+      case "fontFamily":
+        setFontFamilyAnchorEl(null);
+        break;
+      case "fontWeight":
+        setFontWeightAnchorEl(null);
+        break;
+      case "fontSize":
+        setFontSizeAnchorEl(null);
+        break;
+      case "lineHeight":
+        setLineHeightAnchorEl(null);
+        break;
+    }
   };
 
   const onHeadingChange = (value: string) => () => {
@@ -113,26 +146,37 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
       editor
         .chain()
         .focus()
-        .setHeading({ level: parseInt(value, 10) as Level })
+        .setHeading({ level: Number(value) as Level })
         .run();
     }
   };
 
-  // const onFontSizeChange = (action: "minus" | "plus") => {
-  //   const value = editor.getAttributes("textStyle").fontSize ?? "16px";
-  //   const valueNumber = parseInt(value.replace("px", ""), 10);
-  //   const newValue = action === "minus" ? valueNumber - 1 : valueNumber + 1;
-  //   if (newValue < 1) return;
-  //   editor
-  //     .chain()
-  //     .focus()
-  //     .setFontSize(newValue.toString() + "px")
-  //     .run();
-  // };
+  const onFontSizeChange = () => {
+    const value = editor.getAttributes("textStyle").fontSize ?? "16px";
+    const valueNumber = Number(value.replace("px", ""));
+    if (valueNumber < 1) return;
+    editor
+      .chain()
+      .focus()
+      .setFontSize(valueNumber.toString() + "px")
+      .run();
+  };
+  const fontSizeValue = React.useMemo(() => {
+    return editor.getAttributes("textStyle").fontSize ?? "16px";
+  }, [editor]);
 
   const onFontFamilyChange = (value: string) => () => {
+    console.log("value", value);
     editor.chain().focus().setFontFamily(value).run();
   };
+
+  const onLineHeightChange = (value: string) => () => {
+    editor.chain().focus().setLineHeight(value).run();
+  };
+
+  const lineHeightValue = React.useMemo(() => {
+    return editor.getAttributes("textStyle").lineHeight ?? "auto";
+  }, [editor]);
 
   const setLink = () => {
     const url = prompt("Enter URL:");
@@ -165,10 +209,6 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
   const fontFamilyValue = React.useMemo(() => {
     return editor.getAttributes("textStyle").fontFamily ?? "Inter";
   }, [editor]);
-
-  const open = Boolean(anchorEl);
-  const open2 = Boolean(anchorEl2);
-
   return (
     <Box
       sx={{
@@ -176,16 +216,17 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
         width: "100%",
         display: "flex",
         borderRadius: "8px",
-        padding: "16px 8px 0 8px",
+        padding: "16px 8px 16px 8px",
         flexDirection: "column",
         bgcolor: "#f8f9fa",
-        border: "1px solid #98a1aa",
-        ".MuiIconButton-root": {
+
+        ".icon-button": {
           padding: "0 5.143px",
           borderRadius: "3.6px",
           border: "0.5px solid #98A1AA",
           width: "36px",
           height: "36px",
+          background: "#fff",
         },
         ".active-icon-button": {
           background: "#3154F4",
@@ -196,19 +237,23 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
       }}
     >
       <Box>
-        <Typography sx={{ color: "#373D43", fontSize: "14px" }}>
+        <Typography
+          sx={{ color: "#373D43", fontSize: "14px", marginBottom: "8px" }}
+        >
           Font
         </Typography>
         {/* Font family */}
         <Button
           variant="text"
-          onClick={handleClick2}
-          endIcon={open2 ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+          onClick={(event) => handleClick(event, "fontFamily")}
+          endIcon={
+            isFontWeightMenuActive ? <KeyboardArrowUp /> : <KeyboardArrowDown />
+          }
           sx={{
             fontWeight: "400",
             textTransform: "none",
             color: "#000",
-            bgcolor: "transparent",
+            bgcolor: "#fff",
             width: "100%",
             justifyContent: "space-between",
             borderRadius: "4px",
@@ -217,59 +262,47 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
         >
           {fontFamilyValue}
         </Button>
-        <Menu
-          open={open2}
-          keepMounted
-          disableScrollLock
-          anchorEl={anchorEl2}
-          onClose={handleClose2}
-          transformOrigin={{
-            vertical: -5,
-            horizontal: "left",
-          }}
-          sx={{
-            "& .MuiPaper-root": {
-              width: "200px",
-              borderRadius: "4px",
-              border: "1px solid #dfe3e5",
-            },
-            "& .MuiMenuItem-root": {
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            },
-          }}
-        >
-          {fontFamilyOptions.map((option) => (
-            <MenuItem
-              key={option.value}
-              onClick={onFontFamilyChange(option.value)}
-            >
-              {option.label}
-              {get(editorState, option.stateVar, false) && (
-                <Check fontSize="small" htmlColor="#495057" />
-              )}
-            </MenuItem>
-          ))}
-        </Menu>
+
+        <StyledMenu
+          open={isFontFamilyMenuActive}
+          anchorEl={fontFamilyAnchorEl}
+          onClose={() => handleClose("fontFamily")}
+          options={fontFamilyOptions}
+          activeValue={fontFamilyValue}
+          onSelect={onFontFamilyChange}
+        />
       </Box>
 
-      <Box sx={{ display: "flex", alignItems: "center", gap: "16px" }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
         <Box>
           {/* Paragraph / Headings */}
-          <Typography sx={{ color: "#373D43", fontSize: "14px" }}>
+          <Typography
+            sx={{ color: "#373D43", fontSize: "14px", marginBottom: "8px" }}
+          >
             Weight
           </Typography>
           <Button
             variant="text"
-            onClick={handleClick}
-            endIcon={open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+            onClick={(event) => handleClick(event, "fontWeight")}
+            endIcon={
+              isFontFamilyMenuActive ? (
+                <KeyboardArrowUp />
+              ) : (
+                <KeyboardArrowDown />
+              )
+            }
             sx={{
               fontWeight: "400",
               textTransform: "none",
               color: "#000",
-              bgcolor: "transparent",
-              width: "100%",
+              bgcolor: "#fff",
+              width: "134px",
               justifyContent: "space-between",
               borderRadius: "4px",
               border: "0.5px solid #98A1AA",
@@ -277,206 +310,126 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
           >
             {headingValue}
           </Button>
-          <Menu
-            open={open}
-            keepMounted
-            disableScrollLock
-            anchorEl={anchorEl}
-            onClose={handleClose}
-            transformOrigin={{
-              vertical: -5,
-              horizontal: "left",
-            }}
-            sx={{
-              "& .MuiPaper-root": {
-                width: "200px",
-                borderRadius: "4px",
-                border: "1px solid #dfe3e5",
-              },
-              "& .MuiMenuItem-root": {
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-              },
-            }}
-          >
-            {headingOptions.map((option) => (
-              <MenuItem
-                sx={option.style}
-                key={option.value}
-                onClick={onHeadingChange(option.value)}
-              >
-                {option.label}
-                {headingValue === option.label && (
-                  <Check fontSize="small" htmlColor="#495057" />
-                )}
-              </MenuItem>
-            ))}
-          </Menu>
+
+          <StyledMenu
+            open={isFontWeightMenuActive}
+            anchorEl={fontWeightAnchorEl}
+            onClose={() => handleClose("fontWeight")}
+            options={headingOptions}
+            activeValue={headingValue}
+            onSelect={onHeadingChange}
+          />
         </Box>
 
         <Box>
-          {/* Paragraph / Headings */}
-          <Typography sx={{ color: "#373D43", fontSize: "14px" }}>
+          <Typography
+            sx={{ color: "#373D43", fontSize: "14px", marginBottom: "8px" }}
+          >
             Size
           </Typography>
           <Button
             variant="text"
-            onClick={handleClick}
-            endIcon={open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+            onClick={(event) => handleClick(event, "fontSize")}
+            endIcon={
+              isFontSizeMenuActive ? <KeyboardArrowUp /> : <KeyboardArrowDown />
+            }
             sx={{
               fontWeight: "400",
               textTransform: "none",
               color: "#000",
-              bgcolor: "transparent",
-              width: "100%",
+              bgcolor: "#fff",
+              width: "134px",
               justifyContent: "space-between",
               borderRadius: "4px",
               border: "0.5px solid #98A1AA",
             }}
           >
-            {headingValue}
+            {editorState.fontSize}
           </Button>
-          <Menu
-            open={open}
-            keepMounted
-            disableScrollLock
-            anchorEl={anchorEl}
-            onClose={handleClose}
-            transformOrigin={{
-              vertical: -5,
-              horizontal: "left",
-            }}
-            sx={{
-              "& .MuiPaper-root": {
-                width: "200px",
-                borderRadius: "4px",
-                border: "1px solid #dfe3e5",
-              },
-              "& .MuiMenuItem-root": {
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-              },
-            }}
-          >
-            {headingOptions.map((option) => (
-              <MenuItem
-                sx={option.style}
-                key={option.value}
-                onClick={onHeadingChange(option.value)}
-              >
-                {option.label}
-                {headingValue === option.label && (
-                  <Check fontSize="small" htmlColor="#495057" />
-                )}
-              </MenuItem>
-            ))}
-          </Menu>
+
+          <StyledMenu
+            open={isFontSizeMenuActive}
+            anchorEl={fontSizeAnchorEl}
+            onClose={() => handleClose("fontSize")}
+            options={fontSizeOptions}
+            activeValue={fontSizeValue.replace("px", "")}
+            onSelect={onFontSizeChange}
+          />
         </Box>
-        {/* Font size */}
-        {/* <Box
-          sx={{
-            gap: "15px",
-            display: "flex",
-            borderRadius: "4px",
-            alignItems: "center",
-            border: "1px solid #cfd4da",
-            boxShadow: "0 1px 2px 0 rgba(26, 26, 26, 0.08)",
-          }}
-        >
-          <IconButton onClick={() => onFontSizeChange("minus")}>
-            <Remove fontSize="small" htmlColor="#495057" />
-          </IconButton>
-          <Typography fontSize="14px">
-            {editorState.fontSize.replace("px", "")}
-          </Typography>
-          <IconButton onClick={() => onFontSizeChange("plus")}>
-            <Add fontSize="small" htmlColor="#495057" />
-          </IconButton>
-        </Box> */}
       </Box>
 
-      <Box sx={{ display: "flex", alignItems: "center", gap: "16px" }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
         <Box>
-          <Typography sx={{ color: "#373D43", fontSize: "14px" }}>
+          <Typography
+            sx={{ color: "#373D43", fontSize: "14px", marginBottom: "8px" }}
+          >
             Line Height
           </Typography>
           <Button
             variant="text"
-            onClick={handleClick}
-            endIcon={open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+            onClick={(event) => handleClick(event, "lineHeight")}
+            endIcon={
+              isLineHeightMenuActive ? (
+                <KeyboardArrowUp />
+              ) : (
+                <KeyboardArrowDown />
+              )
+            }
             sx={{
               fontWeight: "400",
               textTransform: "none",
               color: "#000",
-              bgcolor: "transparent",
-              width: "100%",
+              bgcolor: "#fff",
+              width: "134px",
               justifyContent: "space-between",
               borderRadius: "4px",
               border: "0.5px solid #98A1AA",
             }}
           >
-            {headingValue}
+            {lineHeightValue}
           </Button>
-          <Menu
-            open={open}
-            keepMounted
-            disableScrollLock
-            anchorEl={anchorEl}
-            onClose={handleClose}
-            transformOrigin={{
-              vertical: -5,
-              horizontal: "left",
-            }}
-            sx={{
-              "& .MuiPaper-root": {
-                width: "200px",
-                borderRadius: "4px",
-                border: "1px solid #dfe3e5",
-              },
-              "& .MuiMenuItem-root": {
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-              },
-            }}
-          >
-            {headingOptions.map((option) => (
-              <MenuItem
-                sx={option.style}
-                key={option.value}
-                onClick={onHeadingChange(option.value)}
-              >
-                {option.label}
-                {headingValue === option.label && (
-                  <Check fontSize="small" htmlColor="#495057" />
-                )}
-              </MenuItem>
-            ))}
-          </Menu>
+
+          <StyledMenu
+            open={isLineHeightMenuActive}
+            anchorEl={lineHeightAnchorEl}
+            onClose={() => handleClose("lineHeight")}
+            options={lineHeightOptions}
+            activeValue={lineHeightValue}
+            onSelect={onLineHeightChange}
+          />
         </Box>
         <Box>
-          <Typography sx={{ color: "#373D43", fontSize: "14px" }}>
+          <Typography
+            sx={{ color: "#373D43", fontSize: "14px", marginBottom: "8px" }}
+          >
             Letter Spacing
           </Typography>
-          <Button
-            variant="text"
-            onClick={handleClick}
-            endIcon={open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+          <Box
             sx={{
-              fontWeight: "400",
-              textTransform: "none",
-              color: "#000",
-              bgcolor: "transparent",
-              width: "100%",
-              justifyContent: "space-between",
-              borderRadius: "4px",
+              width: "134px",
+              height: "40px",
+              display: "flex",
+              alignItems: "center",
               border: "0.5px solid #98A1AA",
+              backgroundColor: "#FFF",
+              borderRadius: "4px",
+              padding: "0 16px",
             }}
           >
-            {headingValue}
-          </Button>
+            <TextField
+              variant="standard"
+              value={"0px"}
+              slotProps={{
+                input: { disableUnderline: true },
+              }}
+            />
+          </Box>
         </Box>
       </Box>
       <Box sx={{ display: "flex", alignItems: "center", gap: "16px" }}>
@@ -484,43 +437,54 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
           {/* Alignment */}
           <IconButton
             onClick={() => editor.chain().focus().setTextAlign("left").run()}
-            className={editorState.isAlignLeft ? "active-icon-button" : ""}
+            className={
+              editorState.isAlignLeft ? "active-icon-button" : "icon-button"
+            }
           >
             <FormatAlignLeft fontSize="small" htmlColor="#495057" />
           </IconButton>
           <IconButton
             onClick={() => editor.chain().focus().setTextAlign("center").run()}
-            className={editorState.isAlignCenter ? "active-icon-button" : ""}
+            className={
+              editorState.isAlignCenter ? "active-icon-button" : "icon-button"
+            }
           >
             <FormatAlignCenter fontSize="small" htmlColor="#495057" />
           </IconButton>
           <IconButton
             onClick={() => editor.chain().focus().setTextAlign("right").run()}
-            className={editorState.isAlignRight ? "active-icon-button" : ""}
+            className={
+              editorState.isAlignRight ? "active-icon-button" : "icon-button"
+            }
           >
             <FormatAlignRight fontSize="small" htmlColor="#495057" />
           </IconButton>
         </Box>
-        {/* Padding */}
         <Box sx={{ display: "flex", alignItems: "center", gap: "13px" }}>
           <IconButton
             onClick={() => editor.chain().focus().setTextAlign("justify").run()}
-            className={editorState.isAlignJustify ? "active-icon-button" : ""}
+            className={
+              editorState.isAlignJustify ? "active-icon-button" : "icon-button"
+            }
           >
-            <PaddingTop />
+            <AlignTop />
           </IconButton>
           <IconButton
             onClick={() => editor.chain().focus().setTextAlign("justify").run()}
-            className={editorState.isAlignJustify ? "active-icon-button" : ""}
+            className={
+              editorState.isAlignJustify ? "active-icon-button" : "icon-button"
+            }
           >
-            <PaddingBottom />
+            <AlignCenter />
           </IconButton>
 
           <IconButton
             onClick={() => editor.chain().focus().setTextAlign("justify").run()}
-            className={editorState.isAlignJustify ? "active-icon-button" : ""}
+            className={
+              editorState.isAlignJustify ? "active-icon-button" : "icon-button"
+            }
           >
-            <PaddingBottom />
+            <AlignBottom />
           </IconButton>
         </Box>
       </Box>
@@ -571,51 +535,83 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
           display: "flex",
           alignItems: "center",
           gap: "16px",
-          flexWrap: "wrap",
         }}
       >
-        {/* Bold / Italic / Underline / Text Color / Highlight */}
+        <Box sx={{ display: "flex", alignItems: "center", gap: "13px" }}>
+          {/* Bold / Italic / Underline / Text Color / Highlight */}
+          <IconButton
+            onClick={() => editor.chain().focus().toggleBold().run()}
+            className={
+              editorState.isBold ? "active-icon-button" : "icon-button"
+            }
+          >
+            <ParagraphAdd />
+          </IconButton>
+          <IconButton
+            onClick={() => editor.chain().focus().toggleItalic().run()}
+            className={
+              editorState.isItalic ? "active-icon-button" : "icon-button"
+            }
+          >
+            <ParagraphRemove />
+          </IconButton>
+          <IconButton
+            onClick={() => editor.chain().focus().toggleBulletList().run()}
+            className={
+              editorState.isBulletList ? "active-icon-button" : "icon-button"
+            }
+          >
+            <ListBulleted />
+          </IconButton>
+        </Box>
+        <Box sx={{ display: "flex", alignItems: "center", gap: "13px" }}>
+          {/* Lists */}
+
+          <IconButton
+            onClick={() => editor.chain().focus().toggleOrderedList().run()}
+            className={
+              editorState.isOrderedList ? "active-icon-button" : "icon-button"
+            }
+          >
+            <ListNumbered />
+          </IconButton>
+
+          <IconButton
+            onClick={() => editor.chain().focus().toggleOrderedList().run()}
+            className={
+              editorState.isOrderedList ? "active-icon-button" : "icon-button"
+            }
+          >
+            <Strikethrough />
+          </IconButton>
+          <IconButton
+            onClick={() => editor.chain().focus().toggleOrderedList().run()}
+            className={
+              editorState.isOrderedList ? "active-icon-button" : "icon-button"
+            }
+          >
+            <Underline />
+          </IconButton>
+        </Box>
+      </Box>
+      <Box sx={{ display: "flex", alignItems: "center", gap: "13px" }}>
+        {/* Link */}
         <IconButton
-          onClick={() => editor.chain().focus().toggleBold().run()}
-          className={editorState.isBold ? "active-icon-button" : ""}
+          onClick={setLink}
+          className={
+            editorState.isBlockquote ? "active-icon-button" : "icon-button"
+          }
         >
-          <FormatBold fontSize="small" htmlColor="#495057" />
-        </IconButton>
-        <IconButton
-          onClick={() => editor.chain().focus().toggleItalic().run()}
-          className={editorState.isItalic ? "active-icon-button" : ""}
-        >
-          <FormatItalic fontSize="small" htmlColor="#495057" />
-        </IconButton>
-        <IconButton
-          onClick={() => editor.chain().focus().toggleUnderline().run()}
-          className={editorState.isUnderlined ? "active-icon-button" : ""}
-        >
-          <FormatUnderlined fontSize="small" htmlColor="#495057" />
-        </IconButton>
-        {/* Lists */}
-        <IconButton
-          onClick={() => editor.chain().focus().toggleBulletList().run()}
-          className={editorState.isBulletList ? "active-icon-button" : ""}
-        >
-          <FormatListBulleted fontSize="small" htmlColor="#495057" />
-        </IconButton>
-        <IconButton
-          onClick={() => editor.chain().focus().toggleOrderedList().run()}
-          className={editorState.isOrderedList ? "active-icon-button" : ""}
-        >
-          <FormatListNumbered fontSize="small" htmlColor="#495057" />
+          <LinkIcon />
         </IconButton>
         {/* Blockquote */}
         <IconButton
           onClick={() => editor.chain().focus().toggleBlockquote().run()}
-          className={editorState.isBlockquote ? "active-icon-button" : ""}
+          className={
+            editorState.isBlockquote ? "active-icon-button" : "icon-button"
+          }
         >
-          <FormatQuote fontSize="small" htmlColor="#495057" />
-        </IconButton>
-        {/* Link */}
-        <IconButton onClick={setLink}>
-          <Link fontSize="small" htmlColor="#495057" />
+          <Blockquotes />
         </IconButton>
       </Box>
 

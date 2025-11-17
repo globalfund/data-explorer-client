@@ -46,12 +46,13 @@ const swatches = [
 ];
 
 interface IColorPickerProps {
-  readonly height?: number;
-  readonly color: IColor;
-  readonly disabled?: boolean;
-  readonly onChange: (color: IColor) => void;
-  readonly onChangeComplete?: (color: IColor) => void;
-  readonly onResetColor: () => void; // Added onreset prop for reset functionality
+  height?: number;
+  triggerWidth?: string;
+  color: IColor | null;
+  disabled?: boolean;
+  onChange: (color: IColor) => void;
+  onChangeComplete?: (color: IColor) => void;
+  onResetColor: () => void; // Added onreset prop for reset functionality
 }
 
 export const ColorPicker = ({
@@ -60,6 +61,7 @@ export const ColorPicker = ({
   disabled,
   onChange: onChangeColor,
   onChangeComplete,
+  triggerWidth,
   onResetColor = () => {}, // Added onreset prop for reset functionality
 }: IColorPickerProps) => {
   const [colorType, setColorType] = React.useState("hex");
@@ -71,6 +73,7 @@ export const ColorPicker = ({
 
   const onChange = React.useCallback(
     (color: IColor) => {
+      if (!color) return;
       onChangeColor(color);
       const newColors = [color.hex, ...(recentlyUsedColors ?? [])];
       setRecentlyUsedColors(Array.from(new Set(newColors)).slice(0, 5));
@@ -91,9 +94,10 @@ export const ColorPicker = ({
   return (
     <Box sx={{ position: "relative" }}>
       <Trigger
-        color={color.hex}
+        color={color?.hex ?? null}
         onChange={handleTriggerInputChange}
         onClick={handleTriggerColorPicker}
+        triggerWidth={triggerWidth}
       />
 
       <Popover
@@ -209,7 +213,7 @@ export const ColorPicker = ({
                       <Box
                         className="rcp-sample-circle"
                         sx={{
-                          backgroundColor: color.hex,
+                          backgroundColor: color?.hex,
                         }}
                       />
 

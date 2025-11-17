@@ -20,7 +20,6 @@ import ElementsController from "./components/panel/elements-controller";
 
 export const ReportBuilderPage: React.FC = () => {
   const items = useStoreState((state) => state.RBReportItemsState.items);
-  // const activeRTE = useStoreState((state) => state.RBReportRTEState.activeRTE);
   const setActiveRTE = useStoreActions(
     (actions) => actions.RBReportRTEState.setActiveRTE,
   );
@@ -267,35 +266,10 @@ export const ReportBuilderPage: React.FC = () => {
         justifyContent: "center",
       }}
     >
-      {/* {activeRTE && (
-        <Box
-          sx={{
-            top: -50,
-            bgcolor: "#f8f9fa",
-            left:
-              (parsedReportSettings.width > window.innerWidth ||
-              parsedReportSettings.width < 1200
-                ? 24
-                : (window.innerWidth - parsedReportSettings.width) / 2) +
-              parsedReportSettings.hPadding,
-            position: "absolute",
-            width:
-              (parsedReportSettings.width > window.innerWidth ||
-              parsedReportSettings.width < 1200
-                ? window.innerWidth - 48
-                : parsedReportSettings.width) -
-              parsedReportSettings.hPadding * 2,
-          }}
-        >
-          <RTEToolbar editor={activeRTE} />
-        </Box>
-      )} */}
-
       <Box
         sx={{
-          top: -50,
-          bgcolor: "#f8f9fa",
-          right: "4px",
+          top: -35,
+          right: "20px",
           position: "absolute",
           width: "300px",
           zIndex: 2,

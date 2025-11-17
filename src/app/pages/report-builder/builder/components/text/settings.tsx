@@ -3,10 +3,10 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import InputLabel from "@mui/material/InputLabel";
 import { DraggablePopper } from "app/components/draggable-popper";
-import PaddingTop from "app/assets/vectors/RBPaddingTop.svg?react";
+import PaddingTop from "app/assets/vectors/RBAlignTop.svg?react";
 import PaddingLeft from "app/assets/vectors/RBPaddingLeft.svg?react";
 import PaddingRight from "app/assets/vectors/RBPaddingRight.svg?react";
-import PaddingBottom from "app/assets/vectors/RBPaddingBottom.svg?react";
+import PaddingBottom from "app/assets/vectors/RBAlignBottom.svg?react";
 
 export const ReportBuilderPageTextSettings: React.FC<{
   handleClose: () => void;

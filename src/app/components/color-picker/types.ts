@@ -49,21 +49,21 @@ export type TMoveEvent =
 
 export interface ISaturationProps {
   height: number;
-  color: IColor;
+  color: IColor | null;
   disabled?: boolean;
   onChange: (color: IColor) => void;
   onChangeComplete?: (color: IColor) => void;
 }
 
 export interface IHueProps {
-  color: IColor;
+  color: IColor | null;
   disabled?: boolean;
   onChange: (color: IColor) => void;
   onChangeComplete?: (color: IColor) => void;
 }
 
 export interface IAlphaProps {
-  color: IColor;
+  color: IColor | null;
   disabled?: boolean;
   onChange: (color: IColor) => void;
   onChangeComplete?: (color: IColor) => void;

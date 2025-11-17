@@ -6,9 +6,11 @@ import LetterTextIcon from "app/assets/vectors/Letter_Text.svg?react";
 import TypeIcon from "app/assets/vectors/Type.svg?react";
 import PaintBucketIcon from "app/assets/vectors/Paint_Bucket.svg?react";
 import LayoutTemplateIcon from "app/assets/vectors/Layout_Template.svg?react";
-import MoreVert from "@mui/icons-material/MoreVert";
 import { RTEToolbar } from "./font-tab";
 import { useStoreState } from "app/state/store/hooks";
+import StyleTab from "./style-tab";
+import LayoutTab from "./layout-tab";
+import TextOptions from "./textOptions";
 
 type TextControllerTab = "font" | "style" | "layout";
 export default function TextController() {
@@ -29,18 +31,26 @@ export default function TextController() {
   const renderTabPanel = () => {
     switch (value) {
       case "font":
-        return <Box>{activeRTE && <RTEToolbar editor={activeRTE} />}</Box>;
+        return <Box>{<RTEToolbar editor={activeRTE!} />}</Box>;
       case "style":
-        return <Box>Style Settings</Box>;
+        return <StyleTab />;
       case "layout":
-        return <Box>Layout Settings</Box>;
+        return <LayoutTab />;
       default:
         return null;
     }
   };
 
   return (
-    <Box id="rte-toolbar">
+    <Box
+      id="rte-toolbar"
+      sx={{
+        border: "1px solid #98A1AA",
+        borderRadius: "4px",
+        boxShadow: "0 0 10px 0 rgba(152, 161, 170, 0.60);",
+        bgcolor: "#F8F9FA",
+      }}
+    >
       <Box
         sx={{
           display: "flex",
@@ -49,6 +59,16 @@ export default function TextController() {
           height: "50px",
           padding: "8px",
           borderBottom: "1px solid #CFD4DA",
+          ".MuiIconButton-root": {
+            backgroundColor: "#FFFFFF",
+            borderRadius: "4px",
+            border: "1px solid #CFD4DA",
+            width: "34px",
+            height: "34px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          },
         }}
       >
         <Box
@@ -63,15 +83,14 @@ export default function TextController() {
             {isExpanded ? <MinimizeIcon /> : <MaximizeIcon />}
           </IconButton>
           <LetterTextIcon />
-          <Typography fontSize="16px" color="#3154f4">
+          <Typography fontSize="16px" color="#000000" fontWeight={700}>
             Text
           </Typography>
         </Box>
-        <IconButton>
-          <MoreVert htmlColor="#252C34" />
-        </IconButton>
+        <TextOptions />
       </Box>
-      <Box>
+
+      <Box sx={{ display: isExpanded ? "block" : "none" }}>
         <Box>
           <Tabs
             value={value}
@@ -79,7 +98,14 @@ export default function TextController() {
             textColor="secondary"
             indicatorColor="primary"
             aria-label="secondary tabs example"
-            sx={{ gap: "8px", display: "flex" }}
+            sx={{
+              gap: "8px",
+              display: "flex",
+              "& .MuiTabs-indicator": {
+                backgroundColor: "#0F62FE",
+                height: "2px",
+              },
+            }}
           >
             <Tab
               value="font"
