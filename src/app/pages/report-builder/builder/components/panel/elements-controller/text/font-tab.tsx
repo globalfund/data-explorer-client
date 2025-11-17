@@ -33,7 +33,7 @@ import {
 } from "@mui/icons-material";
 import { ColorPicker } from "app/components/color-picker/example";
 import { ColorService } from "app/components/color-picker/utils/color";
-import StyledMenu from "./menu-popup";
+import StyledMenu from "./components/menu-popup";
 import TextField from "@mui/material/TextField";
 
 export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {

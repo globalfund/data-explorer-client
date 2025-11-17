@@ -10,7 +10,7 @@ import { RTEToolbar } from "./font-tab";
 import { useStoreState } from "app/state/store/hooks";
 import StyleTab from "./style-tab";
 import LayoutTab from "./layout-tab";
-import TextOptions from "./textOptions";
+import TextOptions from "./components/textOptions";
 
 type TextControllerTab = "font" | "style" | "layout";
 export default function TextController() {

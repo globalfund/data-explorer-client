@@ -21,6 +21,7 @@ export interface RBReportItem {
 export interface RBReportItemController {
   open: boolean;
   type: RBReportItemTypes;
+  id: string;
 }
 export interface RBReportItemControllerModel {
   item: RBReportItemController | null;

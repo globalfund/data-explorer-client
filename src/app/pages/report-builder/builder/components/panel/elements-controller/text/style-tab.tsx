@@ -1,7 +1,8 @@
-import { Box, TextField, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { ColorPicker } from "app/components/color-picker/example";
 import { ColorService } from "app/components/color-picker/utils/color";
 import React from "react";
+import CustomTextField from "./components/textField";
 
 export default function StyleTab() {
   return (
@@ -33,20 +34,7 @@ export default function StyleTab() {
             >
               Stroke
             </Typography>
-            <Box
-              sx={{
-                width: "138px",
-                height: "40px",
-                display: "flex",
-                alignItems: "center",
-                border: "0.5px solid #98A1AA",
-                backgroundColor: "#FFF",
-                borderRadius: "4px",
-                padding: "0 16px",
-              }}
-            >
-              <TextField variant="standard" value={"0px"} />
-            </Box>
+            <CustomTextField type="borderWidth" />
           </Box>
           <Box>
             <Typography
@@ -78,20 +66,7 @@ export default function StyleTab() {
             >
               Corner Radius
             </Typography>
-            <Box
-              sx={{
-                width: "138px",
-                height: "40px",
-                display: "flex",
-                alignItems: "center",
-                border: "0.5px solid #98A1AA",
-                backgroundColor: "#FFF",
-                borderRadius: "4px",
-                padding: "0 16px",
-              }}
-            >
-              <TextField variant="standard" value={"0px"} />
-            </Box>
+            <CustomTextField type="borderRadius" />
           </Box>
           <Box>
             <Typography

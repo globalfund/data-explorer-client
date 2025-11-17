@@ -1,6 +1,6 @@
-import { Box, TextField, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import Direction from "app/assets/vectors/RBAlignBottom.svg?react";
-
+import CustomTextField from "./components/textField";
 import React from "react";
 
 export default function LayoutTab() {
@@ -45,20 +45,7 @@ export default function LayoutTab() {
                 Left
               </Typography>
             </Box>
-            <Box
-              sx={{
-                width: "134px",
-                height: "40px",
-                display: "flex",
-                alignItems: "center",
-                border: "0.5px solid #98A1AA",
-                backgroundColor: "#FFF",
-                borderRadius: "4px",
-                padding: "0 16px",
-              }}
-            >
-              <TextField variant="standard" value={"0px"} />
-            </Box>
+            <CustomTextField type="paddingLeft" />
           </Box>
 
           <Box>
@@ -78,20 +65,7 @@ export default function LayoutTab() {
                 Top
               </Typography>
             </Box>
-            <Box
-              sx={{
-                width: "134px",
-                height: "40px",
-                display: "flex",
-                alignItems: "center",
-                border: "0.5px solid #98A1AA",
-                backgroundColor: "#FFF",
-                borderRadius: "4px",
-                padding: "0 16px",
-              }}
-            >
-              <TextField variant="standard" value={"0px"} />
-            </Box>
+            <CustomTextField type="paddingTop" />
           </Box>
         </Box>
 
@@ -118,20 +92,7 @@ export default function LayoutTab() {
                 Right
               </Typography>
             </Box>
-            <Box
-              sx={{
-                width: "134px",
-                height: "40px",
-                display: "flex",
-                alignItems: "center",
-                border: "0.5px solid #98A1AA",
-                backgroundColor: "#FFF",
-                borderRadius: "4px",
-                padding: "0 16px",
-              }}
-            >
-              <TextField variant="standard" value={"0px"} />
-            </Box>
+            <CustomTextField type="paddingRight" />
           </Box>
 
           <Box>
@@ -148,20 +109,7 @@ export default function LayoutTab() {
                 Bottom
               </Typography>
             </Box>
-            <Box
-              sx={{
-                width: "134px",
-                height: "40px",
-                display: "flex",
-                alignItems: "center",
-                border: "0.5px solid #98A1AA",
-                backgroundColor: "#FFF",
-                borderRadius: "4px",
-                padding: "0 16px",
-              }}
-            >
-              <TextField variant="standard" value={"0px"} />
-            </Box>
+            <CustomTextField type="paddingBottom" />
           </Box>
         </Box>
 
@@ -182,20 +130,7 @@ export default function LayoutTab() {
               >
                 Width
               </Typography>
-              <Box
-                sx={{
-                  width: "134px",
-                  height: "40px",
-                  display: "flex",
-                  alignItems: "center",
-                  border: "0.5px solid #98A1AA",
-                  backgroundColor: "#FFF",
-                  borderRadius: "4px",
-                  padding: "0 16px",
-                }}
-              >
-                <TextField variant="standard" value={"0px"} />
-              </Box>
+              <CustomTextField type="width" />
             </Box>
 
             <Box>
@@ -205,20 +140,7 @@ export default function LayoutTab() {
               >
                 Height
               </Typography>
-              <Box
-                sx={{
-                  width: "134px",
-                  height: "40px",
-                  display: "flex",
-                  alignItems: "center",
-                  border: "0.5px solid #98A1AA",
-                  backgroundColor: "#FFF",
-                  borderRadius: "4px",
-                  padding: "0 16px",
-                }}
-              >
-                <TextField variant="standard" value={"0px"} />
-              </Box>
+              <CustomTextField type="height" />
             </Box>
           </Box>
         </Box>

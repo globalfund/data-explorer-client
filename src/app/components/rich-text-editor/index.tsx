@@ -452,15 +452,24 @@ export const RichEditor: React.FC<{
   setValue: (value: string) => void;
   setClicked: (clicked: boolean) => void;
   setEditor: (editor: Editor | null) => void;
-}> = ({ setEditor, setClicked, initialContent, setValue, visualSettings }) => {
-  const [focused, setFocused] = React.useState(false);
+}> = ({
+  setEditor,
+  setClicked,
+  initialContent,
+  setValue,
+  // visualSettings,
+  itemId,
+}) => {
+  // const [focused, setFocused] = React.useState(false);
 
+  const setSelectedController = useStoreActions(
+    (actions) => actions.RBReportItemsControllerState.setItem,
+  );
   const items = useStoreState((state) => state.RBReportItemsState.items);
+  const selectedItem = items.find((i) => i.id === itemId);
+
   const editItem = useStoreActions(
     (actions) => actions.RBReportItemsState.editItem,
-  );
-  const setSelectedItem = useStoreActions(
-    (actions) => actions.RBReportItemsControllerState.setItem,
   );
   const clearSelectedItem = useStoreActions(
     (actions) => actions.RBReportItemsControllerState.clearItem,
@@ -470,9 +479,9 @@ export const RichEditor: React.FC<{
     extensions,
     autofocus: true,
     onFocus: () => {
-      setFocused(true);
+      // setFocused(true);
       setEditor(editor);
-      setSelectedItem({ type: "text", open: true });
+      setSelectedController({ type: "text", open: true, id: itemId });
     },
     onBlur: (e) => {
       const RTEToolbar = document.getElementById("rte-toolbar");
@@ -480,7 +489,7 @@ export const RichEditor: React.FC<{
         setEditor(null);
         clearSelectedItem();
       }
-      setFocused(false);
+      // setFocused(false);
       if (editor.isEmpty) {
         setClicked(false);
       }
@@ -501,26 +510,26 @@ export const RichEditor: React.FC<{
     },
   });
 
-  const visualSettingsStyle = React.useMemo(() => {
-    return {
-      paddingTop: `${visualSettings?.paddingTop || 10}px`,
-      paddingLeft: `${visualSettings?.paddingLeft || 10}px`,
-      paddingRight: `${visualSettings?.paddingRight || 10}px`,
-      paddingBottom: `${visualSettings?.paddingBottom || 10}px`,
-      borderRadius: `${visualSettings?.cornerRadius || 8}px`,
-      backgroundColor: visualSettings?.backgroundColor || "transparent",
-      border: focused
-        ? "1px solid #3154f4"
-        : visualSettings && visualSettings.stroke > 0
-          ? `${visualSettings.stroke}px solid ${visualSettings.strokeColor}`
-          : "none",
-    };
-  }, [visualSettings]);
+  // const visualSettingsStyle = React.useMemo(() => {
+  //   return {
+  //     paddingTop: `${visualSettings?.paddingTop || 10}px`,
+  //     paddingLeft: `${visualSettings?.paddingLeft || 10}px`,
+  //     paddingRight: `${visualSettings?.paddingRight || 10}px`,
+  //     paddingBottom: `${visualSettings?.paddingBottom || 10}px`,
+  //     borderRadius: `${visualSettings?.cornerRadius || 8}px`,
+  //     backgroundColor: visualSettings?.backgroundColor || "transparent",
+  //     border: focused
+  //       ? "1px solid #3154f4"
+  //       : visualSettings && visualSettings.stroke > 0
+  //         ? `${visualSettings.stroke}px solid ${visualSettings.strokeColor}`
+  //         : "none",
+  //   };
+  // }, [visualSettings]);
 
   return (
     <Box
       sx={{
-        ...visualSettingsStyle,
+        ...selectedItem?.settings,
         width: "100%",
         "*": { margin: "0 !important" },
         blockquote: { margin: "0 40px !important" },
