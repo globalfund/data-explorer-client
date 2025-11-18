@@ -2,18 +2,15 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
-import { Level } from "@tiptap/extension-heading";
+
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import {
-  headingOptions,
+  weightOptions,
   fontFamilyOptions,
   fontSizeOptions,
   lineHeightOptions,
 } from "app/components/rich-text-editor/data";
-import AlignTop from "app/assets/vectors/RBAlignTop.svg?react";
-import AlignCenter from "app/assets/vectors/RBAlignCenter.svg?react";
-import AlignBottom from "app/assets/vectors/RBAlignBottom.svg?react";
 import ParagraphAdd from "app/assets/vectors/RBParagraphAdd.svg?react";
 import ParagraphRemove from "app/assets/vectors/RBParagraphRemove.svg?react";
 import ListBulleted from "app/assets/vectors/RBListBulleted.svg?react";
@@ -33,8 +30,9 @@ import {
 } from "@mui/icons-material";
 import { ColorPicker } from "app/components/color-picker/example";
 import { ColorService } from "app/components/color-picker/utils/color";
-import StyledMenu from "./components/menu-popup";
-import TextField from "@mui/material/TextField";
+import StyledMenu from "../components/menu-popup";
+import AlignButtons from "./align-buttons";
+import TextField from "../components/textField";
 
 export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
   const [fontFamilyAnchorEl, setFontFamilyAnchorEl] =
@@ -75,6 +73,8 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
         isBulletList: ctx.editor.isActive("bulletList") ?? false,
         isOrderedList: ctx.editor.isActive("orderedList") ?? false,
         isBlockquote: ctx.editor.isActive("blockquote") ?? false,
+        isStrikethrough: ctx.editor.isActive("strike") ?? false,
+        isLink: ctx.editor.isActive("link") ?? false,
         isFontFamilyInter: ctx.editor.isActive("textStyle", {
           fontFamily: "Inter",
         }),
@@ -87,6 +87,10 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
         isFontFamilyCourierNew: ctx.editor.isActive("textStyle", {
           fontFamily: "Courier New",
         }),
+        fontFamily: ctx.editor.getAttributes("textStyle").fontFamily ?? "Inter",
+        fontWeight: ctx.editor.getAttributes("textStyle").fontWeight ?? "400",
+        letterSpacing:
+          ctx.editor.getAttributes("textStyle").letterSpacing ?? "0px",
       };
     },
   });
@@ -127,32 +131,22 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
     }
   };
 
-  const onHeadingChange = (value: string) => () => {
-    if (value === "paragraph") {
-      editor.chain().focus().setParagraph().run();
-    } else if (value === "title") {
+  const onWeightChange = (value: string) => {
+    const weight = weightOptions.find((option) => option.value === value);
+    if (!weight) return;
+    if (weight?.value.includes("italic")) {
       editor
         .chain()
         .focus()
-        .setHeading({ level: 10 as Level })
-        .run();
-    } else if (value === "subtitle") {
-      editor
-        .chain()
-        .focus()
-        .setHeading({ level: 11 as Level })
+        .setItalic()
+        .setFontWeight(weight.value.split("+")[0])
         .run();
     } else {
-      editor
-        .chain()
-        .focus()
-        .setHeading({ level: Number(value) as Level })
-        .run();
+      editor.chain().focus().unsetItalic().setFontWeight(weight.value).run();
     }
   };
 
-  const onFontSizeChange = () => {
-    const value = editor.getAttributes("textStyle").fontSize ?? "16px";
+  const onFontSizeChange = (value: string) => {
     const valueNumber = Number(value.replace("px", ""));
     if (valueNumber < 1) return;
     editor
@@ -161,12 +155,12 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
       .setFontSize(valueNumber.toString() + "px")
       .run();
   };
-  const fontSizeValue = React.useMemo(() => {
-    return editor.getAttributes("textStyle").fontSize ?? "16px";
-  }, [editor]);
 
-  const onFontFamilyChange = (value: string) => () => {
-    console.log("value", value);
+  const onLetterSpacingChange = (value: string) => {
+    editor.chain().setLetterSpacing(value).run();
+  };
+
+  const onFontFamilyChange = (value: string) => {
     editor.chain().focus().setFontFamily(value).run();
   };
 
@@ -177,6 +171,14 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
   const lineHeightValue = React.useMemo(() => {
     return editor.getAttributes("textStyle").lineHeight ?? "auto";
   }, [editor]);
+
+  const addIndent = () => {
+    // editor.chain().focus().setHeading({ level:  }).run();
+  };
+
+  const removeIndent = () => {
+    editor.chain().focus().liftListItem("bulletList").run();
+  };
 
   const setLink = () => {
     const url = prompt("Enter URL:");
@@ -190,25 +192,23 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
     }
   };
 
-  const headingValue = React.useMemo(() => {
-    if (editorState.isTitle) return "Title";
-    if (editorState.isSubtitle) return "Subtitle";
-    if (editorState.isH1) return "Heading 1";
-    if (editorState.isH2) return "Heading 2";
-    if (editorState.isH3) return "Heading 3";
-    return "Normal Text";
-  }, [
-    editorState.isNormalText,
-    editorState.isTitle,
-    editorState.isSubtitle,
-    editorState.isH1,
-    editorState.isH2,
-    editorState.isH3,
-  ]);
+  const fontWeightValue = React.useMemo(() => {
+    const selected = weightOptions.find(
+      (option) =>
+        option.value ===
+        editorState.fontWeight + (editorState.isItalic ? "+italic" : ""),
+    );
+    return selected ? selected.value : "";
+  }, [editorState.fontWeight]);
 
   const fontFamilyValue = React.useMemo(() => {
-    return editor.getAttributes("textStyle").fontFamily ?? "Inter";
-  }, [editor]);
+    return (
+      fontFamilyOptions.find(
+        (option) => option.value === editorState.fontFamily,
+      )?.value ?? "Inter"
+    );
+  }, [editorState.fontFamily]);
+
   return (
     <Box
       sx={{
@@ -227,11 +227,18 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
           width: "36px",
           height: "36px",
           background: "#fff",
+          ":hover": { background: "#f1f3f5" },
         },
         ".active-icon-button": {
           background: "#3154F4",
-          path: {
-            color: "#fff",
+          borderRadius: "3.6px",
+          width: "36px",
+          height: "36px",
+          svg: {
+            path: {
+              fill: "#fff",
+              stroke: "#fff",
+            },
           },
         },
       }}
@@ -308,16 +315,19 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
               border: "0.5px solid #98A1AA",
             }}
           >
-            {headingValue}
+            {
+              weightOptions.find((option) => option.value === fontWeightValue)
+                ?.label
+            }
           </Button>
 
           <StyledMenu
             open={isFontWeightMenuActive}
             anchorEl={fontWeightAnchorEl}
             onClose={() => handleClose("fontWeight")}
-            options={headingOptions}
-            activeValue={headingValue}
-            onSelect={onHeadingChange}
+            options={weightOptions}
+            activeValue={fontWeightValue}
+            onSelect={onWeightChange}
           />
         </Box>
 
@@ -352,7 +362,7 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
             anchorEl={fontSizeAnchorEl}
             onClose={() => handleClose("fontSize")}
             options={fontSizeOptions}
-            activeValue={fontSizeValue.replace("px", "")}
+            activeValue={editorState.fontSize.replace("px", "")}
             onSelect={onFontSizeChange}
           />
         </Box>
@@ -371,29 +381,12 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
           >
             Line Height
           </Typography>
-          <Button
-            variant="text"
-            onClick={(event) => handleClick(event, "lineHeight")}
-            endIcon={
-              isLineHeightMenuActive ? (
-                <KeyboardArrowUp />
-              ) : (
-                <KeyboardArrowDown />
-              )
-            }
-            sx={{
-              fontWeight: "400",
-              textTransform: "none",
-              color: "#000",
-              bgcolor: "#fff",
-              width: "134px",
-              justifyContent: "space-between",
-              borderRadius: "4px",
-              border: "0.5px solid #98A1AA",
-            }}
-          >
-            {lineHeightValue}
-          </Button>
+
+          <TextField
+            type="lineHeight"
+            value={lineHeightValue}
+            onChange={(value) => onLineHeightChange(value)}
+          />
 
           <StyledMenu
             open={isLineHeightMenuActive}
@@ -410,26 +403,12 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
           >
             Letter Spacing
           </Typography>
-          <Box
-            sx={{
-              width: "134px",
-              height: "40px",
-              display: "flex",
-              alignItems: "center",
-              border: "0.5px solid #98A1AA",
-              backgroundColor: "#FFF",
-              borderRadius: "4px",
-              padding: "0 16px",
-            }}
-          >
-            <TextField
-              variant="standard"
-              value={"0px"}
-              slotProps={{
-                input: { disableUnderline: true },
-              }}
-            />
-          </Box>
+
+          <TextField
+            type="letterSpacing"
+            value={editorState.letterSpacing}
+            onChange={onLetterSpacingChange}
+          />
         </Box>
       </Box>
       <Box sx={{ display: "flex", alignItems: "center", gap: "16px" }}>
@@ -460,33 +439,7 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
             <FormatAlignRight fontSize="small" htmlColor="#495057" />
           </IconButton>
         </Box>
-        <Box sx={{ display: "flex", alignItems: "center", gap: "13px" }}>
-          <IconButton
-            onClick={() => editor.chain().focus().setTextAlign("justify").run()}
-            className={
-              editorState.isAlignJustify ? "active-icon-button" : "icon-button"
-            }
-          >
-            <AlignTop />
-          </IconButton>
-          <IconButton
-            onClick={() => editor.chain().focus().setTextAlign("justify").run()}
-            className={
-              editorState.isAlignJustify ? "active-icon-button" : "icon-button"
-            }
-          >
-            <AlignCenter />
-          </IconButton>
-
-          <IconButton
-            onClick={() => editor.chain().focus().setTextAlign("justify").run()}
-            className={
-              editorState.isAlignJustify ? "active-icon-button" : "icon-button"
-            }
-          >
-            <AlignBottom />
-          </IconButton>
-        </Box>
+        <AlignButtons />
       </Box>
 
       <Divider orientation="vertical" flexItem />
@@ -540,7 +493,7 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
         <Box sx={{ display: "flex", alignItems: "center", gap: "13px" }}>
           {/* Bold / Italic / Underline / Text Color / Highlight */}
           <IconButton
-            onClick={() => editor.chain().focus().toggleBold().run()}
+            onClick={() => addIndent()}
             className={
               editorState.isBold ? "active-icon-button" : "icon-button"
             }
@@ -548,7 +501,7 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
             <ParagraphAdd />
           </IconButton>
           <IconButton
-            onClick={() => editor.chain().focus().toggleItalic().run()}
+            onClick={() => removeIndent()}
             className={
               editorState.isItalic ? "active-icon-button" : "icon-button"
             }
@@ -576,18 +529,21 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
             <ListNumbered />
           </IconButton>
 
+          {/* Strikethrough */}
           <IconButton
-            onClick={() => editor.chain().focus().toggleOrderedList().run()}
+            onClick={() => editor.chain().focus().toggleStrike().run()}
             className={
-              editorState.isOrderedList ? "active-icon-button" : "icon-button"
+              editorState.isStrikethrough ? "active-icon-button" : "icon-button"
             }
           >
             <Strikethrough />
           </IconButton>
+          {/* Underline */}
+
           <IconButton
-            onClick={() => editor.chain().focus().toggleOrderedList().run()}
+            onClick={() => editor.chain().focus().toggleUnderline().run()}
             className={
-              editorState.isOrderedList ? "active-icon-button" : "icon-button"
+              editorState.isUnderlined ? "active-icon-button" : "icon-button"
             }
           >
             <Underline />
@@ -598,9 +554,7 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
         {/* Link */}
         <IconButton
           onClick={setLink}
-          className={
-            editorState.isBlockquote ? "active-icon-button" : "icon-button"
-          }
+          className={editorState.isLink ? "active-icon-button" : "icon-button"}
         >
           <LinkIcon />
         </IconButton>
@@ -614,79 +568,6 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
           <Blockquotes />
         </IconButton>
       </Box>
-
-      {/* <IconButton
-        onClick={() => {
-          const colorPicker = document.getElementById(
-            "colorPicker"
-          ) as HTMLInputElement;
-          colorPicker.click();
-        }}
-        sx={
-          editorState.color !== "#000000"
-            ? {
-                bgcolor: editorState.color,
-                "&:hover": { bgcolor: editorState.color },
-              }
-            : {}
-        }
-      >
-        <FormatColorText
-          fontSize="small"
-          htmlColor={editorState.color !== "#000000" ? "#ffffff" : "#495057"}
-        />
-        <input
-          type="color"
-          id="colorPicker"
-          value={editorState.color}
-          onInput={(event) =>
-            editor.chain().focus().setColor(event.currentTarget.value).run()
-          }
-          style={{
-            width: 0,
-            height: 0,
-            position: "absolute",
-            visibility: "hidden",
-          }}
-        />
-      </IconButton> */}
-      {/* <IconButton
-        onClick={() => {
-          const colorPicker = document.getElementById(
-            "bgColorPicker"
-          ) as HTMLInputElement;
-          colorPicker.click();
-        }}
-        sx={
-          editorState.bgColor !== "#ffffff"
-            ? {
-                bgcolor: editorState.bgColor,
-                path: { fill: "#ffffff" },
-                "&:hover": { bgcolor: editorState.bgColor },
-              }
-            : {}
-        }
-      >
-        <HighlightIcon />
-        <input
-          type="color"
-          id="bgColorPicker"
-          value={editorState.bgColor}
-          onInput={(event) =>
-            editor
-              .chain()
-              .focus()
-              .setBackgroundColor(event.currentTarget.value)
-              .run()
-          }
-          style={{
-            width: 0,
-            height: 0,
-            position: "absolute",
-            visibility: "hidden",
-          }}
-        />
-      </IconButton> */}
     </Box>
   );
 };

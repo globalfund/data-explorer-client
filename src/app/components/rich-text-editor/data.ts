@@ -1,43 +1,35 @@
-export const headingOptions = [
+export const weightOptions = [
   {
     label: "Light",
-    value: "paragraph",
-    // style: { fontWeight: "400", fontSize: "16px" },
+    value: "400",
   },
   {
     label: "Medium",
-    value: "title",
-    // style: { fontWeight: "700", fontSize: "48px" },
+    value: "500",
   },
   {
     label: "Bold",
-    value: "subtitle",
-    style: { fontWeight: "700", fontSize: "24px" },
+    value: "600",
   },
   {
     label: "Extra Bold",
-    value: "1",
-    style: { fontWeight: "700", fontSize: "18px" },
+    value: "700",
   },
   {
     label: "Thin Italic",
-    value: "2",
-    style: { fontWeight: "700", fontSize: "14px" },
+    value: "400+italic",
   },
   {
     label: "Medium Italic",
-    value: "3",
-    style: { fontWeight: "400", fontSize: "12px" },
+    value: "500+italic",
   },
   {
     label: "Bold Italic",
-    value: "3",
-    style: { fontWeight: "400", fontSize: "12px" },
+    value: "600+italic",
   },
   {
     label: "Extra Bold Italic",
-    value: "3",
-    style: { fontWeight: "400", fontSize: "12px" },
+    value: "700+italic",
   },
 ];
 

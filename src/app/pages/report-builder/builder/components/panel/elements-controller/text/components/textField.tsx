@@ -7,6 +7,7 @@ type InputEvent = React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
 interface Props {
   type:
     | "letterSpacing"
+    | "lineHeight"
     | "borderWidth"
     | "borderRadius"
     | "paddingLeft"
@@ -15,6 +16,8 @@ interface Props {
     | "paddingBottom"
     | "width"
     | "height";
+  onChange?: (value: string) => void;
+  value?: string;
 }
 export default function TextField(props: Readonly<Props>) {
   const selectedController = useStoreState(
@@ -29,8 +32,16 @@ export default function TextField(props: Readonly<Props>) {
   const inputFunction = React.useMemo(
     () => ({
       letterSpacing: {
-        value: item?.settings?.letterSpacing || "0px",
-        action: () => {},
+        value: props.value ?? "0px",
+        action: (e: InputEvent) => {
+          props.onChange?.(e.target.value);
+        },
+      },
+      lineHeight: {
+        value: props.value ?? "0px",
+        action: (e: InputEvent) => {
+          props.onChange?.(e.target.value);
+        },
       },
       borderWidth: {
         value: item?.settings?.borderWidth || "0px",
@@ -41,6 +52,7 @@ export default function TextField(props: Readonly<Props>) {
             settings: {
               ...item?.settings,
               borderWidth: e.target.value,
+              borderStyle: "solid",
             },
           });
         },
@@ -137,7 +149,7 @@ export default function TextField(props: Readonly<Props>) {
         },
       },
     }),
-    [editItem, item?.settings, selectedController?.id],
+    [editItem, item?.settings, selectedController?.id, props.value],
   );
   const handleChange = (type: keyof typeof inputFunction, e: InputEvent) => {
     inputFunction[type].action(e);

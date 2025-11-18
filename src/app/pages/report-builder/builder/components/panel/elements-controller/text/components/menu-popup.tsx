@@ -28,7 +28,6 @@ export default function StyledMenu({
   onSelect,
   width,
 }: Readonly<StyledMenuProps>) {
-  console.log(activeValue, "optionsmenu");
   const activeIndex = options.findIndex((o) => o.value === activeValue);
 
   return (
@@ -67,6 +66,7 @@ export default function StyledMenu({
           paddingTop: "0px",
         },
       }}
+      classes={{ paper: "rte-keep-open" }}
     >
       {options.map((option, i) => {
         const isActive = activeValue === option.value;
@@ -75,7 +75,8 @@ export default function StyledMenu({
 
         return (
           <MenuItem
-            key={option.value}
+            key={option.label}
+            value={option.value}
             onClick={() => onSelect(option.value)}
             id={`styled-menu-item-${option.value}`}
             sx={{

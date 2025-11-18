@@ -13,6 +13,8 @@ import {
   TextStyle,
   BackgroundColor,
 } from "@tiptap/extension-text-style";
+import FontWeight from "../tiptap-extensions/font-weight";
+import LetterSpacing from "../tiptap-extensions/letter-spacing";
 
 const FontSize = Extension.create({
   name: "fontSize",
@@ -147,4 +149,6 @@ export const extensions = [
   Link,
   Color,
   BackgroundColor,
+  FontWeight,
+  LetterSpacing,
 ];

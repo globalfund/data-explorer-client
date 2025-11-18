@@ -7,7 +7,6 @@ export default function ElementsController() {
     (state) => state.RBReportItemsControllerState.item,
   );
   const activeRTE = useStoreState((state) => state.RBReportRTEState.activeRTE);
-
   const renderItem = () => {
     switch (selectedItem?.type) {
       case "text":

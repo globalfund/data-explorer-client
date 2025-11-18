@@ -6,11 +6,11 @@ import LetterTextIcon from "app/assets/vectors/Letter_Text.svg?react";
 import TypeIcon from "app/assets/vectors/Type.svg?react";
 import PaintBucketIcon from "app/assets/vectors/Paint_Bucket.svg?react";
 import LayoutTemplateIcon from "app/assets/vectors/Layout_Template.svg?react";
-import { RTEToolbar } from "./font-tab";
 import { useStoreState } from "app/state/store/hooks";
-import StyleTab from "./style-tab";
-import LayoutTab from "./layout-tab";
+import StyleTab from "./border-fill-tab";
+import LayoutTab from "./padding-size-tab";
 import TextOptions from "./components/textOptions";
+import { RTEToolbar } from "./font-style-tab";
 
 type TextControllerTab = "font" | "style" | "layout";
 export default function TextController() {
