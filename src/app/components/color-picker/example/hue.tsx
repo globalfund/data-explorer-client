@@ -4,7 +4,7 @@ import { IHueProps } from "../types";
 import Box from "@mui/material/Box";
 
 const Hue = ({ color, disabled, onChange, onChangeComplete }: IHueProps) => {
-  const { ref, hsl, position, getInteractiveProps } = useHue({
+  const { ref, hsl, position, getInteractiveProps, interactiveRef } = useHue({
     color,
     disabled,
     onChange,
@@ -12,7 +12,7 @@ const Hue = ({ color, disabled, onChange, onChangeComplete }: IHueProps) => {
   });
 
   return (
-    <Box {...getInteractiveProps()} className="rcp-hue">
+    <Box ref={interactiveRef} {...getInteractiveProps()}>
       <Box
         ref={ref}
         className="rcp-hue-track"

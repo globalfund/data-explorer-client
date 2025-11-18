@@ -82,7 +82,7 @@ export const SelectColorType = ({
 };
 
 interface IColorInputProps {
-  color: IColor | null;
+  color: IColor;
   colorType: string;
   onChange: (color: IColor) => void;
   disabled?: boolean;
@@ -250,7 +250,7 @@ export const ColorInput = ({
 };
 
 interface OpacityInputProps {
-  color: IColor | null;
+  color: IColor;
   onChange: (color: IColor) => void;
   disabled?: boolean;
 }
@@ -269,7 +269,7 @@ export const OpacityInput = ({
 
     if (value.endsWith("%")) {
       value = value?.slice(0, -1);
-      const newOpacity = parseFloat(value) / 100;
+      const newOpacity = Number(value) / 100;
       const newColor = {
         ...color,
         rgb: {

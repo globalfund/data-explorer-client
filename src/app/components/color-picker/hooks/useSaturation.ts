@@ -36,7 +36,6 @@ export function useSaturation({
         s: (x / width) * 100,
         v: 100 - (y / height) * 100,
       });
-      console.log("nextColor", nextColor.hex);
       onChange(nextColor);
       if (final) onChangeComplete?.(nextColor);
     },

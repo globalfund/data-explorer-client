@@ -38,11 +38,13 @@ export function useHue({
     [color.hsv, width, onChange, onChangeComplete],
   );
 
-  const { getProps: getInteractiveProps } = useInteractive({
-    onCoordinateChange: updateColor,
-    disabled,
-    axis: "x", // hue only moves horizontally
-  });
+  const { getProps: getInteractiveProps, ref: interactiveRef } = useInteractive(
+    {
+      onCoordinateChange: updateColor,
+      disabled,
+      axis: "x", // hue only moves horizontally
+    },
+  );
 
   const hsl = useMemo(
     () => [color.hsv.h, "100%", "50%"].join(" "),
@@ -55,5 +57,6 @@ export function useHue({
     hsl,
     position,
     getInteractiveProps,
+    interactiveRef,
   };
 }

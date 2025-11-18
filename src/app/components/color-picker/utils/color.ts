@@ -59,7 +59,7 @@ export function convert<M extends keyof IColor, C extends IColor[M]>(
  * @returns A normalized hex string (e.g., "#RRGGBB").
  */
 export function toHex(value: string): IColor["hex"] {
-  if (!value.startsWith("#")) {
+  if (!value?.startsWith("#")) {
     // Attempt to convert named color to hex using canvas context
     const ctx = document.createElement("canvas").getContext("2d");
 
@@ -154,14 +154,24 @@ export function rgb2hsv({ r, g, b, a }: IColor["rgb"]): IColor["hsv"] {
 
   const max = Math.max(r, g, b);
   const d = max - Math.min(r, g, b);
-
-  const h = d
-    ? (max === r
-        ? (g - b) / d + (g < b ? 6 : 0)
-        : max === g
-          ? 2 + (b - r) / d
-          : 4 + (r - g) / d) * 60
-    : 0;
+  let h: number;
+  if (d) {
+    if (max === r) {
+      h = (g - b) / d;
+      if (g < b) {
+        h += 6;
+      }
+      h *= 60;
+    } else if (max === g) {
+      h = 2 + (b - r) / d;
+      h *= 60;
+    } else {
+      h = 4 + (r - g) / d;
+      h *= 60;
+    }
+  } else {
+    h = 0;
+  }
   const s = max ? (d / max) * 100 : 0;
   const v = max * 100;
 
@@ -177,7 +187,7 @@ export function hsv2rgb({ h, s, v, a }: IColor["hsv"]): IColor["rgb"] {
   s /= 100;
   v /= 100;
 
-  const i = ~~(h / 60);
+  const i = Math.trunc(h / 60);
   const f = h / 60 - i;
   const p = v * (1 - s);
   const q = v * (1 - s * f);

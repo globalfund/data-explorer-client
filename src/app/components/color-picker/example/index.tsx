@@ -48,7 +48,7 @@ const swatches = [
 interface IColorPickerProps {
   height?: number;
   triggerWidth?: string;
-  color: IColor | null;
+  color: IColor;
   disabled?: boolean;
   onChange: (color: IColor) => void;
   onChangeComplete?: (color: IColor) => void;
@@ -90,7 +90,6 @@ export const ColorPicker = ({
   const handleClose = () => {
     setAnchorEl(null);
   };
-
   return (
     <Box sx={{ position: "relative" }}>
       <Trigger
@@ -111,6 +110,9 @@ export const ColorPicker = ({
         transformOrigin={{
           vertical: "top",
           horizontal: "right",
+        }}
+        classes={{
+          paper: "rte-keep-open",
         }}
       >
         <ColorPickerWrapper>
@@ -171,7 +173,7 @@ export const ColorPicker = ({
                           sx={{
                             backgroundColor: c,
                             border:
-                              c === color.hex ? "2px solid #0026FF" : "none",
+                              c === color?.hex ? "2px solid #0026FF" : "none",
                             cursor: disabled ? "auto" : "pointer",
                           }}
                           onClick={() => {

@@ -38,11 +38,13 @@ export function useAlpha({
     [color.hsv, width, onChange, onChangeComplete],
   );
 
-  const { getProps: getInteractiveProps } = useInteractive({
-    onCoordinateChange: updateColor,
-    disabled,
-    axis: "x",
-  });
+  const { getProps: getInteractiveProps, ref: interactiveRef } = useInteractive(
+    {
+      onCoordinateChange: updateColor,
+      disabled,
+      axis: "x",
+    },
+  );
 
   const rgb = useMemo(
     () => [color.rgb.r, color.rgb.g, color.rgb.b].join(" "),
@@ -61,5 +63,6 @@ export function useAlpha({
     rgba,
     width,
     getInteractiveProps,
+    interactiveRef,
   };
 }
