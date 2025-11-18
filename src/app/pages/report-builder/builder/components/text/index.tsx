@@ -4,12 +4,12 @@ import { Editor } from "@tiptap/react";
 import Close from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
-import MoreVert from "@mui/icons-material/MoreVert";
+// import MoreVert from "@mui/icons-material/MoreVert";
 import { useStoreActions } from "app/state/store/hooks";
 import { RichEditor } from "app/components/rich-text-editor";
-import SettingsIcon from "app/assets/vectors/Settings_ButtonIcon.svg?react";
-import { ReportBuilderPageItemMenu } from "app/pages/report-builder/builder/components/item-menu";
-import { ReportBuilderPageTextSettings } from "app/pages/report-builder/builder/components/text/settings";
+// import SettingsIcon from "app/assets/vectors/Settings_ButtonIcon.svg?react";
+// import { ReportBuilderPageItemMenu } from "app/pages/report-builder/builder/components/item-menu";
+// import { ReportBuilderPageTextSettings } from "app/pages/report-builder/builder/components/text/settings";
 import { RBReportItem } from "app/state/api/action-reducers/report-builder/sync";
 
 export const ReportBuilderPageText: React.FC<{
@@ -20,38 +20,38 @@ export const ReportBuilderPageText: React.FC<{
   initialKey?: string;
   setEditor: (editor: Editor | null) => void;
   extRemoveItem?: (e: React.MouseEvent) => void;
-}> = ({ id, setEditor, extRemoveItem, focus, initialKey, settings, item }) => {
+}> = ({ id, setEditor, extRemoveItem, focus, initialKey, settings }) => {
   const isMounted = React.useRef(false);
   const [value, setValue] = React.useState("");
   const [clicked, setClicked] = React.useState(false);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [anchorElSettings, setAnchorElSettings] =
-    React.useState<null | HTMLElement>(null);
+  // const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  // const [anchorElSettings, setAnchorElSettings] =
+  React.useState<null | HTMLElement>(null);
 
   const removeItem = useStoreActions(
     (actions) => actions.RBReportItemsState.removeItem,
   );
-  const editItem = useStoreActions(
-    (actions) => actions.RBReportItemsState.editItem,
-  );
+  // const editItem = useStoreActions(
+  //   (actions) => actions.RBReportItemsState.editItem,
+  // );
 
-  const setVisualSettings = (newSettings: any) => {
-    editItem({
-      ...item,
-      settings: {
-        ...item.settings,
-        ...newSettings,
-      },
-    });
-  };
+  // const setVisualSettings = (newSettings: any) => {
+  //   editItem({
+  //     ...item,
+  //     settings: {
+  //       ...item.settings,
+  //       ...newSettings,
+  //     },
+  //   });
+  // };
 
-  const handleMoreVertClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+  // const handleMoreVertClick = (event: React.MouseEvent<HTMLElement>) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  // const handleClose = () => {
+  //   setAnchorEl(null);
+  // };
 
   const handleDeleteItem = (e: React.MouseEvent) => {
     if (extRemoveItem) {
@@ -59,16 +59,16 @@ export const ReportBuilderPageText: React.FC<{
     } else {
       removeItem(id);
     }
-    handleClose();
+    // handleClose();
   };
 
-  const handleSettingsClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElSettings(event.currentTarget);
-  };
+  // const handleSettingsClick = (event: React.MouseEvent<HTMLElement>) => {
+  //   setAnchorElSettings(event.currentTarget);
+  // };
 
-  const handleSettingsClose = () => {
-    setAnchorElSettings(null);
-  };
+  // const handleSettingsClose = () => {
+  //   setAnchorElSettings(null);
+  // };
 
   React.useEffect(() => {
     if (focus) {
@@ -132,7 +132,7 @@ export const ReportBuilderPageText: React.FC<{
         />
       )}
       <Box className="top-right-actions">
-        {showActionButtons && (
+        {/* {showActionButtons && (
           <React.Fragment>
             <IconButton onClick={handleSettingsClick}>
               <SettingsIcon />
@@ -153,7 +153,7 @@ export const ReportBuilderPageText: React.FC<{
               setVisualSettings={setVisualSettings}
             />
           </React.Fragment>
-        )}
+        )} */}
         {!showActionButtons && (
           <IconButton onClick={handleDeleteItem}>
             <Close fontSize="small" htmlColor="#ea1541" />

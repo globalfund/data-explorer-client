@@ -23,7 +23,6 @@ export const ReportBuilderPage: React.FC = () => {
   const setActiveRTE = useStoreActions(
     (actions) => actions.RBReportRTEState.setActiveRTE,
   );
-
   const addedItemRef = React.useRef(items.length > 0);
 
   const setItems = useStoreActions(
@@ -190,14 +189,15 @@ export const ReportBuilderPage: React.FC = () => {
         type: "text",
         extra: { focus: true, key: e.key },
         settings: {
-          paddingTop: 10,
-          paddingLeft: 10,
-          paddingRight: 10,
-          paddingBottom: 10,
-          stroke: 0,
-          strokeColor: "#000000",
-          cornerRadius: 8,
-          backgroundColor: "transparent",
+          paddingTop: "10px",
+          paddingLeft: "10px",
+          paddingRight: "10px",
+          paddingBottom: "10px",
+          borderWidth: "0px",
+          borderColor: "#000000",
+          borderRadius: "8px",
+          backgroundColor: "#ffffff00",
+          width: "100%",
         },
       });
       addedItemRef.current = true;

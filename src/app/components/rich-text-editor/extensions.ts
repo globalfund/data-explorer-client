@@ -12,6 +12,7 @@ import {
   Color,
   TextStyle,
   BackgroundColor,
+  LineHeight,
 } from "@tiptap/extension-text-style";
 import FontWeight from "../tiptap-extensions/font-weight";
 import LetterSpacing from "../tiptap-extensions/letter-spacing";
@@ -151,4 +152,5 @@ export const extensions = [
   BackgroundColor,
   FontWeight,
   LetterSpacing,
+  LineHeight,
 ];

@@ -22,6 +22,7 @@ export default function AlignButtons() {
       settings: {
         ...item?.settings,
         alignItems: align,
+        display: "flex",
       },
     });
   };

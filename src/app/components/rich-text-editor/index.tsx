@@ -75,8 +75,6 @@ export const RichEditor: React.FC<{
       id="rte-editor"
       sx={{
         ...selectedItem?.settings,
-        // display: "flex",
-        width: "100%",
         "*": { margin: "0 !important" },
         blockquote: { margin: "0 40px !important" },
       }}

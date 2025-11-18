@@ -30,14 +30,15 @@ export default function AddComponent() {
           id: uniqueId(),
           type: "text",
           settings: {
-            paddingTop: 10,
-            paddingLeft: 10,
-            paddingRight: 10,
-            paddingBottom: 10,
-            stroke: 0,
-            strokeColor: "#000000",
-            cornerRadius: 8,
-            backgroundColor: "transparent",
+            paddingTop: "10px",
+            paddingLeft: "10px",
+            paddingRight: "10px",
+            paddingBottom: "10px",
+            borderWidth: "0px",
+            borderColor: "#000000",
+            borderRadius: "8px",
+            backgroundColor: "#ffffff00",
+            width: "100%",
           },
         };
         break;

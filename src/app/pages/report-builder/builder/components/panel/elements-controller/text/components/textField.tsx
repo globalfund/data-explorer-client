@@ -18,6 +18,7 @@ interface Props {
     | "height";
   onChange?: (value: string) => void;
   value?: string;
+  width?: string;
 }
 export default function TextField(props: Readonly<Props>) {
   const selectedController = useStoreState(
@@ -32,13 +33,13 @@ export default function TextField(props: Readonly<Props>) {
   const inputFunction = React.useMemo(
     () => ({
       letterSpacing: {
-        value: props.value ?? "0px",
+        value: props.value || "0px",
         action: (e: InputEvent) => {
           props.onChange?.(e.target.value);
         },
       },
       lineHeight: {
-        value: props.value ?? "0px",
+        value: props.value || "0px",
         action: (e: InputEvent) => {
           props.onChange?.(e.target.value);
         },
@@ -149,7 +150,13 @@ export default function TextField(props: Readonly<Props>) {
         },
       },
     }),
-    [editItem, item?.settings, selectedController?.id, props.value],
+    [
+      editItem,
+      item?.settings,
+      selectedController?.id,
+      props.value,
+      props.onChange,
+    ],
   );
   const handleChange = (type: keyof typeof inputFunction, e: InputEvent) => {
     inputFunction[type].action(e);
@@ -157,7 +164,7 @@ export default function TextField(props: Readonly<Props>) {
   return (
     <Box
       sx={{
-        width: "138px",
+        width: props.width ?? "138px",
         height: "40px",
         display: "flex",
         alignItems: "center",

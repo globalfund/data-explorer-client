@@ -9,7 +9,6 @@ import {
   weightOptions,
   fontFamilyOptions,
   fontSizeOptions,
-  lineHeightOptions,
 } from "app/components/rich-text-editor/data";
 import ParagraphAdd from "app/assets/vectors/RBParagraphAdd.svg?react";
 import ParagraphRemove from "app/assets/vectors/RBParagraphRemove.svg?react";
@@ -41,13 +40,10 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
     React.useState<null | HTMLElement>(null);
   const [fontSizeAnchorEl, setFontSizeAnchorEl] =
     React.useState<null | HTMLElement>(null);
-  const [lineHeightAnchorEl, setLineHeightAnchorEl] =
-    React.useState<null | HTMLElement>(null);
 
   const isFontFamilyMenuActive = Boolean(fontFamilyAnchorEl);
   const isFontWeightMenuActive = Boolean(fontWeightAnchorEl);
   const isFontSizeMenuActive = Boolean(fontSizeAnchorEl);
-  const isLineHeightMenuActive = Boolean(lineHeightAnchorEl);
   const editorState = useEditorState({
     editor,
     selector: (ctx) => {
@@ -59,7 +55,6 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
         bgColor:
           ctx.editor.getAttributes("textStyle").backgroundColor ?? "#ffffff",
         fontSize: ctx.editor.getAttributes("textStyle").fontSize ?? "16px",
-        lineHeight: ctx.editor.getAttributes("textStyle").lineHeight ?? "auto",
         isNormalText: ctx.editor.isActive("paragraph"),
         isTitle: ctx.editor.isActive("heading", { level: 10 }),
         isSubtitle: ctx.editor.isActive("heading", { level: 11 }),
@@ -91,6 +86,7 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
         fontWeight: ctx.editor.getAttributes("textStyle").fontWeight ?? "400",
         letterSpacing:
           ctx.editor.getAttributes("textStyle").letterSpacing ?? "0px",
+        lineHeight: ctx.editor.getAttributes("textStyle").lineHeight ?? "Auto",
       };
     },
   });
@@ -108,9 +104,6 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
       case "fontSize":
         setFontSizeAnchorEl(event.currentTarget);
         break;
-      case "lineHeight":
-        setLineHeightAnchorEl(event.currentTarget);
-        break;
     }
   };
 
@@ -124,9 +117,6 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
         break;
       case "fontSize":
         setFontSizeAnchorEl(null);
-        break;
-      case "lineHeight":
-        setLineHeightAnchorEl(null);
         break;
     }
   };
@@ -159,26 +149,17 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
   const onLetterSpacingChange = (value: string) => {
     editor.chain().setLetterSpacing(value).run();
   };
+  const onLineHeightChange = (value: string) => {
+    editor.chain().setLineHeight(value).run();
+  };
 
   const onFontFamilyChange = (value: string) => {
     editor.chain().focus().setFontFamily(value).run();
   };
 
-  const onLineHeightChange = (value: string) => () => {
-    editor.chain().focus().setLineHeight(value).run();
-  };
+  const addIndent = () => {};
 
-  const lineHeightValue = React.useMemo(() => {
-    return editor.getAttributes("textStyle").lineHeight ?? "auto";
-  }, [editor]);
-
-  const addIndent = () => {
-    // editor.chain().focus().setHeading({ level:  }).run();
-  };
-
-  const removeIndent = () => {
-    editor.chain().focus().liftListItem("bulletList").run();
-  };
+  const removeIndent = () => {};
 
   const setLink = () => {
     const url = prompt("Enter URL:");
@@ -383,18 +364,10 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
           </Typography>
 
           <TextField
-            type="lineHeight"
-            value={lineHeightValue}
-            onChange={(value) => onLineHeightChange(value)}
-          />
-
-          <StyledMenu
-            open={isLineHeightMenuActive}
-            anchorEl={lineHeightAnchorEl}
-            onClose={() => handleClose("lineHeight")}
-            options={lineHeightOptions}
-            activeValue={lineHeightValue}
-            onSelect={onLineHeightChange}
+            type="letterSpacing"
+            value={editorState.lineHeight}
+            onChange={onLineHeightChange}
+            width="134px"
           />
         </Box>
         <Box>
@@ -408,6 +381,7 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
             type="letterSpacing"
             value={editorState.letterSpacing}
             onChange={onLetterSpacingChange}
+            width="134px"
           />
         </Box>
       </Box>
