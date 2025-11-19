@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import Direction from "app/assets/vectors/RBAlignBottom.svg?react";
-import CustomTextField from "./components/textField";
+import CustomTextField from "../common/textField";
 import React from "react";
 
 export default function LayoutTab() {

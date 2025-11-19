@@ -1,138 +1,34 @@
 import React from "react";
-import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
-import Tabs from "@mui/material/Tabs";
-import Button from "@mui/material/Button";
-import Close from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import MoreVert from "@mui/icons-material/MoreVert";
 import { useStoreActions } from "app/state/store/hooks";
-import { DraggableModal } from "app/components/draggable-modal";
-import { TabPlaceholderIcon } from "app/pages/report-builder/builder/components/image/data";
-import { ReportBuilderPageItemMenu } from "app/pages/report-builder/builder/components/item-menu";
-import {
-  TabPanel,
-  UploadTab,
-  UnsplashTab,
-  MyAssetsTab,
-} from "app/pages/report-builder/builder/components/image/tabs";
+import { useClickOutsideEditor } from "app/hooks/useClickOutsideEditorComponent";
 
 export const ReportBuilderPageImage: React.FC<{
   id: string;
-  extRemoveItem?: (e: React.MouseEvent) => void;
-}> = ({ id, extRemoveItem }) => {
-  const [tab, setTab] = React.useState(0);
-  const [clicked, setClicked] = React.useState(false);
-  const [imageReady, setImageReady] = React.useState(false);
-  const [applyEnabled, setApplyEnabled] = React.useState(false);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
-  const removeItem = useStoreActions(
-    (actions) => actions.RBReportItemsState.removeItem,
+}> = ({ id }) => {
+  const imageReady = false;
+  const setSelectedController = useStoreActions(
+    (actions) => actions.RBReportItemsControllerState.setItem,
   );
+  const clearSelectedItem = useStoreActions(
+    (actions) => actions.RBReportItemsControllerState.clearItem,
+  );
+  useClickOutsideEditor({
+    editorId: "image-render",
+    toolbarId: "image-controller",
+    onOutsideClick: () => {
+      clearSelectedItem();
+    },
+  });
 
-  const handleMoreVertClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
+  const triggerImageController = (open: boolean) => {
+    setSelectedController({ id, type: "image", open });
   };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleDeleteItem = (e: React.MouseEvent) => {
-    if (extRemoveItem) {
-      extRemoveItem(e);
-    } else {
-      removeItem(id);
-    }
-    handleClose();
-  };
-
-  const content = React.useMemo(() => {
-    return (
-      <React.Fragment>
-        <Typography fontSize="16px" color="#525252" mb="5px">
-          Choose your method for upload
-        </Typography>
-        <Tabs
-          value={tab}
-          onChange={(_, newValue) => setTab(newValue)}
-          sx={{
-            button: {
-              flex: 1,
-              gap: "8px",
-              height: "40px",
-              minHeight: "40px",
-              maxHeight: "40px",
-              fontWeight: "400",
-              textTransform: "none",
-              justifyContent: "flex-end",
-              flexDirection: "row-reverse",
-            },
-            ".Mui-selected": {
-              fontWeight: "700",
-            },
-            ".MuiTabs-flexContainer": {
-              mt: "6px",
-              borderBottom: "2px solid #c6c6c6",
-            },
-            ".MuiTabs-indicator": {
-              background: "#3154f4",
-            },
-          }}
-        >
-          <Tab label="Unsplash" icon={<TabPlaceholderIcon />} />
-          <Tab label="Upload" icon={<TabPlaceholderIcon />} />
-          <Tab label="My Assets" icon={<TabPlaceholderIcon />} />
-        </Tabs>
-        <TabPanel value={tab} index={0}>
-          <UnsplashTab setApplyEnabled={setApplyEnabled} />
-        </TabPanel>
-        <TabPanel value={tab} index={1}>
-          <UploadTab setApplyEnabled={setApplyEnabled} />
-        </TabPanel>
-        <TabPanel value={tab} index={2}>
-          <MyAssetsTab setApplyEnabled={setApplyEnabled} />
-        </TabPanel>
-      </React.Fragment>
-    );
-  }, [tab]);
-
-  const actions = React.useMemo(() => {
-    return (
-      <React.Fragment>
-        <Button variant="outlined" onClick={() => setClicked(false)}>
-          Cancel
-        </Button>
-        <Button
-          variant="contained"
-          disabled={!applyEnabled}
-          onClick={() => {
-            setClicked(false);
-            setImageReady(true);
-          }}
-          sx={{
-            color: "#fff",
-            fontWeight: "400",
-            bgcolor: "#3154f4",
-            "&:hover": {
-              bgcolor: "#2548c4",
-            },
-          }}
-        >
-          Apply
-        </Button>
-      </React.Fragment>
-    );
-  }, [applyEnabled]);
-
-  React.useEffect(() => {
-    setApplyEnabled(false);
-  }, [tab]);
 
   return (
     <Box
+      id="image-render"
       sx={{
         width: "100%",
         display: "flex",
@@ -162,7 +58,7 @@ export const ReportBuilderPageImage: React.FC<{
             border: "1px dashed #3154f4",
             transition: "all 0.3s ease-in-out",
           }}
-          onClick={() => setClicked(true)}
+          onClick={() => triggerImageController(true)}
         >
           <svg width="24" height="25" viewBox="0 0 24 25" fill="none">
             <path
@@ -187,36 +83,6 @@ export const ReportBuilderPageImage: React.FC<{
           />
         </Box>
       )}
-      <Box className="top-right-actions">
-        {imageReady && (
-          <React.Fragment>
-            <IconButton onClick={handleMoreVertClick}>
-              <MoreVert fontSize="small" />
-            </IconButton>
-            <ReportBuilderPageItemMenu
-              itemId={id}
-              anchorEl={anchorEl}
-              deleteItem={handleDeleteItem}
-              handleClose={() => setAnchorEl(null)}
-            />
-          </React.Fragment>
-        )}
-        {!imageReady && (
-          <IconButton onClick={handleDeleteItem}>
-            <Close fontSize="small" htmlColor="#ea1541" />
-          </IconButton>
-        )}
-      </Box>
-      <DraggableModal
-        id="report-builder-image-modal"
-        width={550}
-        open={clicked}
-        actions={actions}
-        setOpen={setClicked}
-        title="Add an Image"
-      >
-        {content}
-      </DraggableModal>
     </Box>
   );
 };

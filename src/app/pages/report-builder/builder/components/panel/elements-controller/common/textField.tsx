@@ -15,7 +15,14 @@ interface Props {
     | "paddingTop"
     | "paddingBottom"
     | "width"
-    | "height";
+    | "height"
+    | "imagePaddingLeft"
+    | "imagePaddingRight"
+    | "imagePaddingTop"
+    | "imagePaddingBottom"
+    | "imageWidth"
+    | "imageHeight";
+
   onChange?: (value: string) => void;
   value?: string;
   width?: string;
@@ -44,6 +51,43 @@ export default function TextField(props: Readonly<Props>) {
           props.onChange?.(e.target.value);
         },
       },
+      imagePaddingRight: {
+        value: props.value || "0px",
+        action: (e: InputEvent) => {
+          props.onChange?.(e.target.value);
+        },
+      },
+      imagePaddingLeft: {
+        value: props.value || "0px",
+        action: (e: InputEvent) => {
+          props.onChange?.(e.target.value);
+        },
+      },
+      imagePaddingBottom: {
+        value: props.value || "0px",
+        action: (e: InputEvent) => {
+          props.onChange?.(e.target.value);
+        },
+      },
+      imagePaddingTop: {
+        value: props.value || "0px",
+        action: (e: InputEvent) => {
+          props.onChange?.(e.target.value);
+        },
+      },
+      imageWidth: {
+        value: props.value || "0px",
+        action: (e: InputEvent) => {
+          props.onChange?.(e.target.value);
+        },
+      },
+      imageHeight: {
+        value: props.value || "0px",
+        action: (e: InputEvent) => {
+          props.onChange?.(e.target.value);
+        },
+      },
+
       borderWidth: {
         value: item?.settings?.borderWidth || "0px",
         action: (e: InputEvent) => {
@@ -158,6 +202,7 @@ export default function TextField(props: Readonly<Props>) {
       props.onChange,
     ],
   );
+
   const handleChange = (type: keyof typeof inputFunction, e: InputEvent) => {
     inputFunction[type].action(e);
   };

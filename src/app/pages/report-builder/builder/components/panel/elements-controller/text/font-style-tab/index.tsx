@@ -29,9 +29,9 @@ import {
 } from "@mui/icons-material";
 import { ColorPicker } from "app/components/color-picker/example";
 import { ColorService } from "app/components/color-picker/utils/color";
-import StyledMenu from "../components/menu-popup";
+import StyledMenu from "../../common/menu-popup";
 import AlignButtons from "./align-buttons";
-import TextField from "../components/textField";
+import TextField from "../../common/textField";
 
 export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
   const [fontFamilyAnchorEl, setFontFamilyAnchorEl] =

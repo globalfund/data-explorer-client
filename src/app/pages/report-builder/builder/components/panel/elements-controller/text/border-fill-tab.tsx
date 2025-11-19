@@ -2,7 +2,7 @@ import { Box, Typography } from "@mui/material";
 import { ColorPicker } from "app/components/color-picker/example";
 import { ColorService } from "app/components/color-picker/utils/color";
 import React from "react";
-import CustomTextField from "./components/textField";
+import CustomTextField from "../common/textField";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { IColor } from "app/components/color-picker/types";
 

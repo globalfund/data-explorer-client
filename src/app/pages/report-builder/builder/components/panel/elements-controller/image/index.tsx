@@ -2,40 +2,38 @@ import { Box, IconButton, Tab, Tabs, Typography } from "@mui/material";
 import React from "react";
 import MinimizeIcon from "app/assets/vectors/Minimize.svg?react";
 import MaximizeIcon from "app/assets/vectors/Maximize.svg?react";
-import LetterTextIcon from "app/assets/vectors/Letter_Text.svg?react";
-import TypeIcon from "app/assets/vectors/Type.svg?react";
+import UploadIcon from "app/assets/vectors/RBUpload.svg?react";
+import ImageIcon from "app/assets/vectors/RBImage.svg?react";
 import PaintBucketIcon from "app/assets/vectors/Paint_Bucket.svg?react";
 import LayoutTemplateIcon from "app/assets/vectors/Layout_Template.svg?react";
-import { useStoreState } from "app/state/store/hooks";
-import StyleTab from "./border-fill-tab";
-import LayoutTab from "./padding-size-tab";
+import { ImageSource } from "./image-source";
+import { PaddingSize } from "./padding-size";
+import { BorderFill } from "./border-fill";
 import { Options } from "../common/elementOptions";
-import { RTEToolbar } from "./font-style-tab";
 
-type TextControllerTab = "font" | "style" | "layout";
-export default function TextController() {
-  const [value, setValue] = React.useState<TextControllerTab>("font");
+type ImageControllerTab = "source" | "style" | "layout";
+export default function ImageController() {
+  const [value, setValue] = React.useState<ImageControllerTab>("source");
   const [isExpanded, setIsExpanded] = React.useState(true);
-  const activeRTE = useStoreState((state) => state.RBReportRTEState.activeRTE);
 
   const handleExpandToggle = () => {
     setIsExpanded(!isExpanded);
   };
   const handleChange = (
     event: React.SyntheticEvent,
-    newValue: TextControllerTab,
+    newValue: ImageControllerTab,
   ) => {
     setValue(newValue);
   };
 
   const renderTabPanel = () => {
     switch (value) {
-      case "font":
-        return <Box>{<RTEToolbar editor={activeRTE!} />}</Box>;
+      case "source":
+        return <ImageSource />;
       case "style":
-        return <StyleTab />;
+        return <BorderFill />;
       case "layout":
-        return <LayoutTab />;
+        return <PaddingSize />;
       default:
         return null;
     }
@@ -43,7 +41,7 @@ export default function TextController() {
 
   return (
     <Box
-      id="rte-toolbar"
+      id="image-controller"
       sx={{
         border: "1px solid #98A1AA",
         borderRadius: "4px",
@@ -82,9 +80,9 @@ export default function TextController() {
           <IconButton onClick={handleExpandToggle}>
             {isExpanded ? <MinimizeIcon /> : <MaximizeIcon />}
           </IconButton>
-          <LetterTextIcon />
+          <ImageIcon />
           <Typography fontSize="16px" color="#000000" fontWeight={700}>
-            Text
+            Image
           </Typography>
         </Box>
         <Options />
@@ -108,21 +106,21 @@ export default function TextController() {
             }}
           >
             <Tab
-              value="font"
+              value="source"
               aria-label="Text"
               sx={{ borderBottom: "2px solid #98A1AA" }}
-              icon={<TypeIcon />}
-            />
-            <Tab
-              value="style"
-              aria-label="Style"
-              icon={<PaintBucketIcon />}
-              sx={{ borderBottom: "2px solid #98A1AA", marginLeft: "8px" }}
+              icon={<UploadIcon />}
             />
             <Tab
               value="layout"
               aria-label="Layout"
               icon={<LayoutTemplateIcon />}
+              sx={{ borderBottom: "2px solid #98A1AA", marginLeft: "8px" }}
+            />
+            <Tab
+              value="style"
+              aria-label="Style"
+              icon={<PaintBucketIcon />}
               sx={{ borderBottom: "2px solid #98A1AA", marginLeft: "8px" }}
             />
           </Tabs>

@@ -67,7 +67,6 @@ export const ReportBuilderPage: React.FC = () => {
             moveItem={moveItem}
           >
             <ReportBuilderPageText
-              item={item}
               id={item.id}
               setEditor={setActiveRTE}
               settings={item.settings}

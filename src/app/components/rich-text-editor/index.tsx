@@ -10,14 +10,12 @@ export const RichEditor: React.FC<{
   itemId: string;
   visualSettings: any;
   initialContent?: string;
-  setValue: (value: string) => void;
   setClicked: (clicked: boolean) => void;
   setEditor: (editor: Editor | null) => void;
 }> = ({
   setEditor,
   setClicked,
   initialContent,
-  setValue,
   // visualSettings,
   itemId,
 }) => {
@@ -38,7 +36,6 @@ export const RichEditor: React.FC<{
     extensions,
     autofocus: true,
     onUpdate: () => {
-      setValue(editor.getText());
       const item = items.find((item) => item.type === "text" && item.extra);
       if (item) {
         editItem({ id: item.id, type: item.type, settings: item.settings });
@@ -78,7 +75,6 @@ export const RichEditor: React.FC<{
         "*": { margin: "0 !important" },
         blockquote: { margin: "0 40px !important" },
       }}
-      onClick={() => setEditorStateAndController()}
       onFocus={() => setEditorStateAndController()}
     >
       <EditorContent editor={editor} width="100%" />

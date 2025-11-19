@@ -30,7 +30,7 @@ const DeleteIcon = (
     />
   </svg>
 );
-export default function TextOptions() {
+export function Options() {
   const optionsItems = [
     {
       icon: <Copy />,

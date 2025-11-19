@@ -1,6 +1,7 @@
 import { useStoreState } from "app/state/store/hooks";
 import React from "react";
 import TextController from "./text";
+import ImageController from "./image";
 
 export default function ElementsController() {
   const selectedItem = useStoreState(
@@ -11,10 +12,12 @@ export default function ElementsController() {
     switch (selectedItem?.type) {
       case "text":
         return activeRTE && <TextController />;
+      case "image":
+        return <ImageController />;
       default:
         return null;
     }
   };
 
-  return renderItem();
+  return selectedItem?.open ? renderItem() : null;
 }
