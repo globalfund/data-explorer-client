@@ -19,10 +19,9 @@ export function convert<M extends keyof IColor, C extends IColor[M]>(
   model: M,
   color: C,
 ): IColor {
-  let hex: IColor["hex"] = toHex("#000000");
+  let hex: IColor["hex"] = toHex(color as string);
   let rgb: IColor["rgb"] = hex2rgb(hex);
   let hsv: IColor["hsv"] = rgb2hsv(rgb);
-
   if (model === "hex") {
     const value = color as IColor["hex"];
 

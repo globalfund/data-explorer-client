@@ -73,6 +73,9 @@ export default function Trigger(props: Readonly<ITrigger>) {
           variant="standard"
           onChange={(e) => props.onChange(e.target.value)}
           value={props.color?.replace("#", "")}
+          slotProps={{
+            input: { disableUnderline: !!props.color },
+          }}
           sx={{
             borderColor: " #98A1AA",
             width: props.color ? "70px" : "50px",

@@ -90,6 +90,8 @@ export const ColorPicker = ({
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const [collor, setCollor] = React.useState(color);
   return (
     <Box sx={{ position: "relative" }}>
       <Trigger
@@ -190,9 +192,9 @@ export const ColorPicker = ({
               <Box className="rcp-section">
                 <Saturation
                   height={height}
-                  color={color}
+                  color={collor}
                   disabled={disabled}
-                  onChange={onChange}
+                  onChange={setCollor}
                   onChangeComplete={onChangeComplete}
                 />
                 <Box className="rcp-body">

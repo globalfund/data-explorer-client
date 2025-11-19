@@ -12,7 +12,11 @@ const Hue = ({ color, disabled, onChange, onChangeComplete }: IHueProps) => {
   });
 
   return (
-    <Box ref={interactiveRef} {...getInteractiveProps()}>
+    <Box
+      ref={interactiveRef}
+      {...getInteractiveProps()}
+      className="rcp-interactive"
+    >
       <Box
         ref={ref}
         className="rcp-hue-track"
