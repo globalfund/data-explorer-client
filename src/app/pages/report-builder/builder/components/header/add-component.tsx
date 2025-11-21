@@ -39,6 +39,7 @@ export default function AddComponent() {
             borderRadius: "8px",
             backgroundColor: "#ffffff00",
             width: "100%",
+            height: "39px",
           },
         };
         break;
@@ -49,7 +50,22 @@ export default function AddComponent() {
         newItem = { id: uniqueId(), type: "table" };
         break;
       case "image":
-        newItem = { id: uniqueId(), type: "image" };
+        newItem = {
+          id: uniqueId(),
+          type: "image",
+          settings: {
+            paddingTop: "10px",
+            paddingLeft: "10px",
+            paddingRight: "10px",
+            paddingBottom: "10px",
+            borderWidth: "0px",
+            borderColor: "#000000",
+            borderRadius: "8px",
+            backgroundColor: "#ffffff00",
+            width: "100%",
+            height: "400px",
+          },
+        };
         break;
       case "section_divider":
         newItem = { id: uniqueId(), type: "section_divider" };

@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import { Editor } from "@tiptap/react";
 import Typography from "@mui/material/Typography";
 import { RichEditor } from "app/components/rich-text-editor";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
 
 export const ReportBuilderPageText: React.FC<{
   id: string;
@@ -13,19 +12,7 @@ export const ReportBuilderPageText: React.FC<{
   setEditor: (editor: Editor | null) => void;
 }> = ({ id, setEditor, initialKey, settings }) => {
   const isMounted = React.useRef(false);
-  const setSelectedController = useStoreActions(
-    (actions) => actions.RBReportItemsControllerState.setItem,
-  );
-  const selectedItem = useStoreState(
-    (state) => state.RBReportItemsControllerState.item,
-  );
-
-  const triggerTextController = (open: boolean) => {
-    setSelectedController({ id, type: "text", open });
-  };
-  const clicked = selectedItem?.id === id && selectedItem.open;
-
-  console.log(selectedItem, "selectedItem in text component");
+  const [clicked, setClicked] = React.useState(false);
 
   return (
     <Box
@@ -55,7 +42,7 @@ export const ReportBuilderPageText: React.FC<{
             bgcolor: "#d6ddfd",
             border: "1px dashed #3154f4",
           }}
-          onClick={() => triggerTextController(true)}
+          onClick={() => setClicked(true)}
         >
           <Typography fontSize="16px" color="#3154f4">
             Click to start writing...
@@ -66,7 +53,7 @@ export const ReportBuilderPageText: React.FC<{
         <RichEditor
           itemId={id}
           setEditor={setEditor}
-          setClicked={triggerTextController}
+          setClicked={setClicked}
           visualSettings={settings}
           initialContent={!isMounted.current ? initialKey : undefined}
         />

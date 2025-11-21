@@ -1,19 +1,23 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { useStoreActions } from "app/state/store/hooks";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { useClickOutsideEditor } from "app/hooks/useClickOutsideEditorComponent";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 export const ReportBuilderPageImage: React.FC<{
   id: string;
 }> = ({ id }) => {
-  const imageReady = false;
   const setSelectedController = useStoreActions(
     (actions) => actions.RBReportItemsControllerState.setItem,
   );
   const clearSelectedItem = useStoreActions(
     (actions) => actions.RBReportItemsControllerState.clearItem,
   );
+  const items = useStoreState((state) => state.RBReportItemsState.items);
+  const selectedItem = items.find((i) => i.id === id);
+  const { src: imageSrc, img, ...settings } = selectedItem?.settings || {};
+
   useClickOutsideEditor({
     editorId: "image-render",
     toolbarId: "image-controller",
@@ -29,8 +33,10 @@ export const ReportBuilderPageImage: React.FC<{
   return (
     <Box
       id="image-render"
+      onClick={() => triggerImageController(true)}
       sx={{
         width: "100%",
+        backgroundColor: "pink",
         display: "flex",
         position: "relative",
         flexDirection: "column",
@@ -39,14 +45,15 @@ export const ReportBuilderPageImage: React.FC<{
             display: "flex",
           },
         },
+        ...settings,
       }}
     >
-      {!imageReady && (
+      {!imageSrc && (
         <Box
           sx={{
             gap: "10px",
             width: "100%",
-            height: "130px",
+            height: "220px",
             display: "flex",
             padding: "10px",
             cursor: "pointer",
@@ -58,7 +65,6 @@ export const ReportBuilderPageImage: React.FC<{
             border: "1px dashed #3154f4",
             transition: "all 0.3s ease-in-out",
           }}
-          onClick={() => triggerImageController(true)}
         >
           <svg width="24" height="25" viewBox="0 0 24 25" fill="none">
             <path
@@ -74,15 +80,11 @@ export const ReportBuilderPageImage: React.FC<{
           </Typography>
         </Box>
       )}
-      {imageReady && (
-        <Box sx={{ height: "400px" }}>
-          <img
-            alt="Uploaded"
-            src="/static/images/ImagePlaceholder.png"
-            style={{ width: "100%", height: "100%" }}
-          />
-        </Box>
-      )}
+      <TransformWrapper>
+        <TransformComponent>
+          {imageSrc && <img src={imageSrc} alt="random" style={{ ...img }} />}
+        </TransformComponent>
+      </TransformWrapper>
     </Box>
   );
 };

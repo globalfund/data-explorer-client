@@ -17,13 +17,7 @@ const Hue = ({ color, disabled, onChange, onChangeComplete }: IHueProps) => {
       {...getInteractiveProps()}
       className="rcp-interactive"
     >
-      <Box
-        ref={ref}
-        className="rcp-hue-track"
-        sx={{
-          background: `linear-gradient(to right, red, yellow, lime, cyan, blue, magenta, red)`,
-        }}
-      >
+      <Box ref={ref} className="rcp-hue">
         <Box
           className="rcp-hue-cursor"
           sx={{

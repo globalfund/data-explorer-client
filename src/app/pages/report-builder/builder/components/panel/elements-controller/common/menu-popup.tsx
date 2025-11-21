@@ -15,7 +15,7 @@ interface StyledMenuProps {
   onClose: () => void;
   options: StyledMenuOption[];
   activeValue: string;
-  onSelect: (value: string) => void;
+  onSelect: (value: any) => void;
   width?: number | string;
 }
 

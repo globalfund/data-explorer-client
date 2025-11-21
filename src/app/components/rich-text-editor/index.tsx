@@ -76,6 +76,7 @@ export const RichEditor: React.FC<{
         blockquote: { margin: "0 40px !important" },
       }}
       onFocus={() => setEditorStateAndController()}
+      onClick={() => setEditorStateAndController()}
     >
       <EditorContent editor={editor} width="100%" />
     </Box>

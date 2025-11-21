@@ -3,16 +3,36 @@ import Direction from "app/assets/vectors/RBAlignBottom.svg?react";
 import Button from "@mui/material/Button";
 import { KeyboardArrowUp, KeyboardArrowDown } from "@mui/icons-material";
 import React from "react";
-import { alignHOptions, alignVOptions, sizingModes } from "../data";
+import {
+  alignHOptions,
+  alignVOptions,
+  objectFitMap,
+  sizingModes,
+} from "../data";
 import StyledMenu from "../../common/menu-popup";
 import CustomTextField from "../../common/textField";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 
 export function PaddingSize() {
-  const [selectedSizingMode, setSelectedSizingMode] = React.useState(
-    sizingModes[0].value,
+  const selectedItemController = useStoreState(
+    (state) => state.RBReportItemsControllerState.item,
   );
-  const [alignHorizontal, setAlignHorizontal] = React.useState("left");
-  const [alignVertical, setAlignVertical] = React.useState("top");
+  const editItem = useStoreActions(
+    (actions) => actions.RBReportItemsState.editItem,
+  );
+  const items = useStoreState((state) => state.RBReportItemsState.items);
+  const selectedItem = items.find((i) => i.id === selectedItemController?.id);
+  console.log(selectedItem?.extra, "selectedItem extra in padding size");
+
+  const [selectedSizingMode, setSelectedSizingMode] = React.useState(
+    selectedItem?.extra?.image?.sizingMode || "fit-proportional",
+  );
+  const [alignHorizontal, setAlignHorizontal] = React.useState(
+    selectedItem?.extra?.image?.alignHorizontal || "left",
+  );
+  const [alignVertical, setAlignVertical] = React.useState(
+    selectedItem?.extra?.image?.alignVertical || "top",
+  );
   const [alignHorizontalAnchorEl, setAlignHorizontalAnchorEl] =
     React.useState<null | HTMLElement>(null);
   const isAlignHorizontalMenuActive = Boolean(alignHorizontalAnchorEl);
@@ -25,14 +45,98 @@ export function PaddingSize() {
     React.useState<null | HTMLElement>(null);
   const isSizingModeMenuActive = Boolean(sizingModeAnchorEl);
 
-  const handleSelectSizingMode = (value: string) => {
+  React.useEffect(() => {
+    setSelectedSizingMode(
+      selectedItem?.extra?.image?.sizingMode || "fit-proportional",
+    );
+    setAlignHorizontal(selectedItem?.extra?.image?.alignHorizontal || "left");
+    setAlignVertical(selectedItem?.extra?.image?.alignVertical || "top");
+  }, [selectedItem]);
+
+  const handleSelectSizingMode = (
+    value: "fit-proportional" | "fill" | "crop" | "auto",
+  ) => {
+    editItem({
+      id: selectedItemController?.id || "",
+      type: "image",
+      settings: {
+        ...selectedItem?.settings,
+        img: {
+          ...selectedItem?.settings.img,
+          objectFit: objectFitMap[value],
+        },
+      },
+      extra: {
+        ...selectedItem?.extra,
+        image: {
+          ...selectedItem?.extra?.image,
+          sizingMode: value,
+        },
+      },
+    });
     setSelectedSizingMode(value);
   };
-  const handleSelectAlignHorizontal = (value: string) => {
+  const handleSelectAlignHorizontal = (value: "left" | "center" | "right") => {
+    let justifyContent = "";
+    switch (value) {
+      case "left":
+        justifyContent = "start";
+        break;
+      case "center":
+        justifyContent = "center";
+        break;
+      case "right":
+        justifyContent = "end";
+        break;
+    }
+    editItem({
+      id: selectedItemController?.id || "",
+      type: "image",
+      settings: {
+        ...selectedItem?.settings,
+        display: "flex",
+        justifyContent,
+      },
+      extra: {
+        ...selectedItem?.extra,
+        image: {
+          ...selectedItem?.extra?.image,
+          alignHorizontal: value,
+        },
+      },
+    });
     setAlignHorizontal(value);
   };
 
-  const handleSelectAlignVertical = (value: string) => {
+  const handleSelectAlignVertical = (value: "top" | "middle" | "bottom") => {
+    let alignItems = "";
+    switch (value) {
+      case "top":
+        alignItems = "start";
+        break;
+      case "middle":
+        alignItems = "center";
+        break;
+      case "bottom":
+        alignItems = "end";
+        break;
+    }
+    editItem({
+      id: selectedItemController?.id || "",
+      type: "image",
+      settings: {
+        ...selectedItem?.settings,
+        display: "flex",
+        alignItems,
+      },
+      extra: {
+        ...selectedItem?.extra,
+        image: {
+          ...selectedItem?.extra?.image,
+          alignVertical: value,
+        },
+      },
+    });
     setAlignVertical(value);
   };
 
@@ -241,7 +345,7 @@ export function PaddingSize() {
                 Left
               </Typography>
             </Box>
-            <CustomTextField type="imagePaddingLeft" />
+            <CustomTextField type="paddingLeft" item="image" />
           </Box>
 
           <Box>
@@ -261,7 +365,7 @@ export function PaddingSize() {
                 Top
               </Typography>
             </Box>
-            <CustomTextField type="imagePaddingTop" />
+            <CustomTextField type="paddingTop" item="image" />
           </Box>
         </Box>
 
@@ -288,7 +392,7 @@ export function PaddingSize() {
                 Right
               </Typography>
             </Box>
-            <CustomTextField type="imagePaddingRight" />
+            <CustomTextField type="paddingRight" item="image" />
           </Box>
 
           <Box>
@@ -305,7 +409,7 @@ export function PaddingSize() {
                 Bottom
               </Typography>
             </Box>
-            <CustomTextField type="imagePaddingBottom" />
+            <CustomTextField type="paddingBottom" item="image" />
           </Box>
         </Box>
 
@@ -326,7 +430,7 @@ export function PaddingSize() {
               >
                 Width
               </Typography>
-              <CustomTextField type="imageWidth" />
+              <CustomTextField type="width" item="image" />
             </Box>
 
             <Box>
@@ -336,7 +440,7 @@ export function PaddingSize() {
               >
                 Height
               </Typography>
-              <CustomTextField type="imageHeight" />
+              <CustomTextField type="height" item="image" />
             </Box>
           </Box>
         </Box>

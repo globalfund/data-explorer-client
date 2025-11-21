@@ -66,7 +66,7 @@ export default function StyleTab() {
             >
               Stroke
             </Typography>
-            <CustomTextField type="borderWidth" />
+            <CustomTextField type="borderWidth" item="text" />
           </Box>
           <Box>
             <Typography
@@ -101,7 +101,7 @@ export default function StyleTab() {
             >
               Corner Radius
             </Typography>
-            <CustomTextField type="borderRadius" />
+            <CustomTextField type="borderRadius" item="text" />
           </Box>
           <Box>
             <Typography

@@ -5,6 +5,7 @@ import React from "react";
 
 type InputEvent = React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
 interface Props {
+  item: "text" | "image";
   type:
     | "letterSpacing"
     | "lineHeight"
@@ -93,7 +94,7 @@ export default function TextField(props: Readonly<Props>) {
         action: (e: InputEvent) => {
           editItem({
             id: selectedController?.id || "",
-            type: "text",
+            type: props.item,
             settings: {
               ...item?.settings,
               borderWidth: e.target.value,
@@ -107,7 +108,7 @@ export default function TextField(props: Readonly<Props>) {
         action: (e: InputEvent) => {
           editItem({
             id: selectedController?.id || "",
-            type: "text",
+            type: props.item,
             settings: {
               ...item?.settings,
               borderRadius: e.target.value,
@@ -120,7 +121,7 @@ export default function TextField(props: Readonly<Props>) {
         action: (e: InputEvent) => {
           editItem({
             id: selectedController?.id || "",
-            type: "text",
+            type: props.item,
             settings: {
               ...item?.settings,
               paddingLeft: e.target.value,
@@ -133,7 +134,7 @@ export default function TextField(props: Readonly<Props>) {
         action: (e: InputEvent) => {
           editItem({
             id: selectedController?.id || "",
-            type: "text",
+            type: props.item,
             settings: {
               ...item?.settings,
               paddingRight: e.target.value,
@@ -146,7 +147,7 @@ export default function TextField(props: Readonly<Props>) {
         action: (e: InputEvent) => {
           editItem({
             id: selectedController?.id || "",
-            type: "text",
+            type: props.item,
             settings: {
               ...item?.settings,
               paddingTop: e.target.value,
@@ -159,7 +160,7 @@ export default function TextField(props: Readonly<Props>) {
         action: (e: InputEvent) => {
           editItem({
             id: selectedController?.id || "",
-            type: "text",
+            type: props.item,
             settings: {
               ...item?.settings,
               paddingBottom: e.target.value,
@@ -172,7 +173,7 @@ export default function TextField(props: Readonly<Props>) {
         action: (e: InputEvent) => {
           editItem({
             id: selectedController?.id || "",
-            type: "text",
+            type: props.item,
             settings: {
               ...item?.settings,
               width: e.target.value,
@@ -185,7 +186,7 @@ export default function TextField(props: Readonly<Props>) {
         action: (e: InputEvent) => {
           editItem({
             id: selectedController?.id || "",
-            type: "text",
+            type: props.item,
             settings: {
               ...item?.settings,
               height: e.target.value,

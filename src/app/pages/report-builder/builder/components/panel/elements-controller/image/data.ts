@@ -5,6 +5,13 @@ export const sizingModes = [
   { label: "Auto-Size (Grow)", value: "auto" },
 ];
 
+export const objectFitMap: Record<string, string> = {
+  "fit-proportional": "contain",
+  fill: "cover",
+  crop: "none",
+  auto: "none",
+};
+
 export const alignHOptions = [
   { label: "Left", value: "left" },
   { label: "Center", value: "center" },

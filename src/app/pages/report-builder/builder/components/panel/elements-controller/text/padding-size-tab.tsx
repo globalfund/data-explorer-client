@@ -45,7 +45,7 @@ export default function LayoutTab() {
                 Left
               </Typography>
             </Box>
-            <CustomTextField type="paddingLeft" />
+            <CustomTextField type="paddingLeft" item="text" />
           </Box>
 
           <Box>
@@ -65,7 +65,7 @@ export default function LayoutTab() {
                 Top
               </Typography>
             </Box>
-            <CustomTextField type="paddingTop" />
+            <CustomTextField type="paddingTop" item="text" />
           </Box>
         </Box>
 
@@ -92,7 +92,7 @@ export default function LayoutTab() {
                 Right
               </Typography>
             </Box>
-            <CustomTextField type="paddingRight" />
+            <CustomTextField type="paddingRight" item="text" />
           </Box>
 
           <Box>
@@ -109,7 +109,7 @@ export default function LayoutTab() {
                 Bottom
               </Typography>
             </Box>
-            <CustomTextField type="paddingBottom" />
+            <CustomTextField type="paddingBottom" item="text" />
           </Box>
         </Box>
 
@@ -130,7 +130,7 @@ export default function LayoutTab() {
               >
                 Width
               </Typography>
-              <CustomTextField type="width" />
+              <CustomTextField type="width" item="text" />
             </Box>
 
             <Box>
@@ -140,7 +140,7 @@ export default function LayoutTab() {
               >
                 Height
               </Typography>
-              <CustomTextField type="height" />
+              <CustomTextField type="height" item="text" />
             </Box>
           </Box>
         </Box>

@@ -368,6 +368,7 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
             value={editorState.lineHeight}
             onChange={onLineHeightChange}
             width="134px"
+            item="text"
           />
         </Box>
         <Box>
@@ -382,6 +383,7 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
             value={editorState.letterSpacing}
             onChange={onLetterSpacingChange}
             width="134px"
+            item="text"
           />
         </Box>
       </Box>
@@ -428,11 +430,11 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
           <ColorPicker
             color={ColorService.convert("hex", editorState.color)}
             onChange={(color) => {
-              editor.chain().focus().setColor(color.hex).run();
+              editor.chain().setColor(color.hex).run();
             }}
             disabled={false}
             onResetColor={() => {
-              editor.chain().focus().setColor("#ffffff").run();
+              editor.chain().setColor("#000000").run();
             }}
             onChangeComplete={() => {}}
           />
@@ -447,11 +449,11 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
           <ColorPicker
             color={ColorService.convert("hex", editorState.bgColor)}
             onChange={(color) => {
-              editor.chain().focus().setBackgroundColor(color.hex).run();
+              editor.chain().setBackgroundColor(color.hex).run();
             }}
             disabled={false}
             onResetColor={() => {
-              editor.chain().focus().setBackgroundColor("#ffffff").run();
+              editor.chain().setBackgroundColor("#ffffff").run();
             }}
             onChangeComplete={() => {}}
           />

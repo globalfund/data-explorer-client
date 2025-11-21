@@ -1,9 +1,26 @@
 import { Box, TextField, Typography } from "@mui/material";
 import SearchIcon from "app/assets/vectors/Search_grants.svg?react";
-
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import React from "react";
+import { remoteImages } from "app/pages/report-builder/builder/components/image/data";
 
 export function ImageSource() {
+  const selectedItemController = useStoreState(
+    (state) => state.RBReportItemsControllerState.item,
+  );
+  const editItem = useStoreActions(
+    (actions) => actions.RBReportItemsState.editItem,
+  );
+  const items = useStoreState((state) => state.RBReportItemsState.items);
+  const selectedItem = items.find((i) => i.id === selectedItemController?.id);
+
+  const handleImageSelect = (url: string) => {
+    editItem({
+      id: selectedItemController?.id || "",
+      type: "image",
+      settings: { ...selectedItem?.settings, src: url },
+    });
+  };
   return (
     <Box sx={{ py: "16px", px: "8px" }}>
       <Typography sx={{ color: "#373D43" }}>
@@ -44,10 +61,10 @@ export function ImageSource() {
           flexDirection: "column",
         }}
       >
-        {Array.from({ length: 4 }).map((_, i) => (
+        {remoteImages.map((src) => (
           <Box
-            key={i}
-            // onClick={handleSelect(i.toString())}
+            key={src}
+            onClick={() => handleImageSelect(src)}
             sx={{
               width: "284px",
               height: "136px",

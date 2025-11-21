@@ -18,7 +18,7 @@ export function BorderFill() {
   const handleBackgroundColorChange = (color: IColor) => {
     editItem({
       id: selectedController?.id || "",
-      type: "text",
+      type: "image",
       settings: {
         ...item?.settings,
         backgroundColor: ColorService.convert("hex", color.hex).hex,
@@ -28,11 +28,21 @@ export function BorderFill() {
   const handleBorderColorChange = (color: IColor) => {
     editItem({
       id: selectedController?.id || "",
-      type: "text",
+      type: "image",
       settings: {
         ...item?.settings,
         borderColor: ColorService.convert("hex", color.hex).hex,
         borderStyle: "solid",
+      },
+    });
+  };
+  const handleOpacityChange = (event: Event, value: number | number[]) => {
+    editItem({
+      id: selectedController?.id || "",
+      type: "image",
+      settings: {
+        ...item?.settings,
+        opacity: (value as number) / 100,
       },
     });
   };
@@ -64,6 +74,7 @@ export function BorderFill() {
             defaultValue={70}
             aria-label="Small"
             valueLabelDisplay="auto"
+            onChange={handleOpacityChange}
             slotProps={{
               track: {
                 style: { color: "#373D43" },
@@ -103,7 +114,7 @@ export function BorderFill() {
               >
                 Stroke
               </Typography>
-              <CustomTextField type="borderWidth" />
+              <CustomTextField type="borderWidth" item="image" />
             </Box>
             <Box>
               <Typography
@@ -138,7 +149,7 @@ export function BorderFill() {
               >
                 Corner Radius
               </Typography>
-              <CustomTextField type="borderRadius" />
+              <CustomTextField type="borderRadius" item="image" />
             </Box>
             <Box>
               <Typography
