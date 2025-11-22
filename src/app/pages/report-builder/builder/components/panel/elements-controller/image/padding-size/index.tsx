@@ -22,7 +22,6 @@ export function PaddingSize() {
   );
   const items = useStoreState((state) => state.RBReportItemsState.items);
   const selectedItem = items.find((i) => i.id === selectedItemController?.id);
-  console.log(selectedItem?.extra, "selectedItem extra in padding size");
 
   const [selectedSizingMode, setSelectedSizingMode] = React.useState(
     selectedItem?.extra?.image?.sizingMode || "fit-proportional",
@@ -57,6 +56,7 @@ export function PaddingSize() {
     value: "fit-proportional" | "fill" | "crop" | "auto",
   ) => {
     editItem({
+      ...selectedItem,
       id: selectedItemController?.id || "",
       type: "image",
       settings: {
@@ -90,6 +90,7 @@ export function PaddingSize() {
         break;
     }
     editItem({
+      ...selectedItem,
       id: selectedItemController?.id || "",
       type: "image",
       settings: {
@@ -122,6 +123,7 @@ export function PaddingSize() {
         break;
     }
     editItem({
+      ...selectedItem,
       id: selectedItemController?.id || "",
       type: "image",
       settings: {

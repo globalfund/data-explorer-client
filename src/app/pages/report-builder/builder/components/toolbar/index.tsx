@@ -41,12 +41,13 @@ export const ReportBuilderPageToolbar: React.FC = () => {
             paddingLeft: "10px",
             paddingRight: "10px",
             paddingBottom: "10px",
-            borderWidth: "0px",
-            borderColor: "#000000",
-            borderRadius: "8px",
+            borderWidth: "0.5px",
+            borderColor: "#3154F4",
+            borderRadius: "4px",
+            borderStyle: "solid",
             backgroundColor: "#ffffff00",
             width: "100%",
-            height: "39px",
+            height: "100%",
           },
         };
         break;
@@ -65,12 +66,21 @@ export const ReportBuilderPageToolbar: React.FC = () => {
             paddingLeft: "10px",
             paddingRight: "10px",
             paddingBottom: "10px",
-            borderWidth: "0px",
-            borderColor: "#000000",
-            borderRadius: "8px",
+            borderWidth: "0.5px",
+            borderColor: "#3154F4",
+            borderStyle: "solid",
+            borderRadius: "4px",
             backgroundColor: "#ffffff00",
             width: "100%",
             height: "400px",
+            img: {
+              objectFit: "contain",
+            },
+          },
+          extra: {
+            image: {
+              sizingMode: "fit-proportional",
+            },
           },
         };
         break;

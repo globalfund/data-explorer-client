@@ -16,13 +16,7 @@ interface Props {
     | "paddingTop"
     | "paddingBottom"
     | "width"
-    | "height"
-    | "imagePaddingLeft"
-    | "imagePaddingRight"
-    | "imagePaddingTop"
-    | "imagePaddingBottom"
-    | "imageWidth"
-    | "imageHeight";
+    | "height";
 
   onChange?: (value: string) => void;
   value?: string;
@@ -52,47 +46,12 @@ export default function TextField(props: Readonly<Props>) {
           props.onChange?.(e.target.value);
         },
       },
-      imagePaddingRight: {
-        value: props.value || "0px",
-        action: (e: InputEvent) => {
-          props.onChange?.(e.target.value);
-        },
-      },
-      imagePaddingLeft: {
-        value: props.value || "0px",
-        action: (e: InputEvent) => {
-          props.onChange?.(e.target.value);
-        },
-      },
-      imagePaddingBottom: {
-        value: props.value || "0px",
-        action: (e: InputEvent) => {
-          props.onChange?.(e.target.value);
-        },
-      },
-      imagePaddingTop: {
-        value: props.value || "0px",
-        action: (e: InputEvent) => {
-          props.onChange?.(e.target.value);
-        },
-      },
-      imageWidth: {
-        value: props.value || "0px",
-        action: (e: InputEvent) => {
-          props.onChange?.(e.target.value);
-        },
-      },
-      imageHeight: {
-        value: props.value || "0px",
-        action: (e: InputEvent) => {
-          props.onChange?.(e.target.value);
-        },
-      },
 
       borderWidth: {
         value: item?.settings?.borderWidth || "0px",
         action: (e: InputEvent) => {
           editItem({
+            ...item,
             id: selectedController?.id || "",
             type: props.item,
             settings: {
@@ -107,6 +66,7 @@ export default function TextField(props: Readonly<Props>) {
         value: item?.settings?.borderRadius || "0px",
         action: (e: InputEvent) => {
           editItem({
+            ...item,
             id: selectedController?.id || "",
             type: props.item,
             settings: {
@@ -120,6 +80,7 @@ export default function TextField(props: Readonly<Props>) {
         value: item?.settings?.paddingLeft || "0px",
         action: (e: InputEvent) => {
           editItem({
+            ...item,
             id: selectedController?.id || "",
             type: props.item,
             settings: {
@@ -133,6 +94,7 @@ export default function TextField(props: Readonly<Props>) {
         value: item?.settings?.paddingRight || "0px",
         action: (e: InputEvent) => {
           editItem({
+            ...item,
             id: selectedController?.id || "",
             type: props.item,
             settings: {
@@ -146,6 +108,7 @@ export default function TextField(props: Readonly<Props>) {
         value: item?.settings?.paddingTop || "0px",
         action: (e: InputEvent) => {
           editItem({
+            ...item,
             id: selectedController?.id || "",
             type: props.item,
             settings: {
@@ -159,6 +122,7 @@ export default function TextField(props: Readonly<Props>) {
         value: item?.settings?.paddingBottom || "0px",
         action: (e: InputEvent) => {
           editItem({
+            ...item,
             id: selectedController?.id || "",
             type: props.item,
             settings: {
@@ -172,6 +136,7 @@ export default function TextField(props: Readonly<Props>) {
         value: item?.settings?.width || "0px",
         action: (e: InputEvent) => {
           editItem({
+            ...item,
             id: selectedController?.id || "",
             type: props.item,
             settings: {
@@ -185,6 +150,7 @@ export default function TextField(props: Readonly<Props>) {
         value: item?.settings?.height || "0px",
         action: (e: InputEvent) => {
           editItem({
+            ...item,
             id: selectedController?.id || "",
             type: props.item,
             settings: {
