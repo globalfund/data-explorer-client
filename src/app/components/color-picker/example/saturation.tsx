@@ -50,11 +50,10 @@ export default function Saturation({
             top: position.y,
             position: "absolute",
             backgroundColor: `rgb(${rgb})`,
-            width: 10,
-            height: 10,
+            width: 8,
+            height: 8,
             borderRadius: "50%",
             border: "2px solid #fff",
-            boxShadow: "0 0 2px rgba(0,0,0,0.6)",
             pointerEvents: "none",
           }}
         />

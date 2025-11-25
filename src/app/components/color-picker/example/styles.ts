@@ -4,12 +4,13 @@ export const ColorPickerWrapper = styled.div`
   .rcp {
     display: flex;
     flex-direction: column;
-    border-radius: 10px;
+    border-radius: 5px;
     background: var(--Secondary-Grey-Grey-8, #f1f3f5);
-    box-shadow: 0px 0px 10px 0px rgba(152, 161, 170, 0.6);
-    width: 286px;
-    padding: 6px;
+    box-shadow: 0 0 10px 0 rgba(152, 161, 170, 0.6);
+    width: 230px;
+    padding: 5px;
     gap: 10px;
+    height: 331px;
   }
 
   .rcp-body {
@@ -45,21 +46,18 @@ export const ColorPickerWrapper = styled.div`
       linear-gradient(to bottom, transparent, black),
       linear-gradient(to right, white, transparent);
     border-radius: 4px;
+    height: 105px;
   }
 
   .rcp-saturation-cursor {
-    position: absolute;
-    width: 16px;
-    height: 16px;
-    border: 2px solid white;
     border-radius: 100%;
-    filter: drop-shadow(0px 1.447px 2.894px rgba(97, 97, 97, 0.2))
-      drop-shadow(0px 0.723px 1.447px rgba(97, 97, 97, 0.2));
+    filter: drop-shadow(0 1.447px 2.894px rgba(97, 97, 97, 0.2))
+      drop-shadow(0 0.723px 1.447px rgba(97, 97, 97, 0.2));
     transform: translate(-10px, -10px);
   }
 
   .rcp-hue {
-    cursor: ew-resize;
+    cursor: pointer;
     position: relative;
     width: 100%;
     height: 8px;
@@ -73,36 +71,37 @@ export const ColorPickerWrapper = styled.div`
       rgb(255, 0, 255),
       rgb(255, 0, 0)
     );
-    border-radius: 10px;
+    border-radius: 100px;
   }
 
   .rcp-hue-cursor {
     position: absolute;
-    width: 16px;
-    height: 16px;
+    width: 8px;
+    height: 8px;
     border: 2px solid white;
-    border-radius: 100%;
-    filter: drop-shadow(0px 1.447px 2.894px rgba(97, 97, 97, 0.2))
-      drop-shadow(0px 0.723px 1.447px rgba(97, 97, 97, 0.2));
+    border-radius: 8px;
+    box-shadow:
+      0 0.723px 1.447px 0 rgba(97, 97, 97, 0.2),
+      0 1.447px 2.894px 0 rgba(97, 97, 97, 0.2);
     transform: translate(-10px, -4px);
   }
 
   .rcp-alpha {
-    cursor: ew-resize;
+    cursor: pointer;
     position: relative;
     width: 100%;
     height: 8px;
-    border-radius: 10px;
+    border-radius: 100px;
   }
 
   .rcp-alpha-cursor {
     position: absolute;
-    width: 16px;
-    height: 16px;
+    width: 8px;
+    height: 8px;
     border: 2px solid white;
-    border-radius: 100%;
-    filter: drop-shadow(0px 1.447px 2.894px rgba(97, 97, 97, 0.2))
-      drop-shadow(0px 0.723px 1.447px rgba(97, 97, 97, 0.2));
+    border-radius: 8px;
+    filter: drop-shadow(0 1.447px 2.894px rgba(97, 97, 97, 0.2))
+      drop-shadow(0 0.723px 1.447px rgba(97, 97, 97, 0.2));
     transform: translate(-10px, -4px);
   }
 
@@ -115,15 +114,13 @@ export const ColorPickerWrapper = styled.div`
   .rcp-sample-circle {
     width: 28px;
     height: 28px;
-    border-radius: 100%;
+    border-radius: 5px;
     flex-shrink: 0;
-    filter: drop-shadow(0px 1.447px 2.894px rgba(97, 97, 97, 0.2))
-      drop-shadow(0px 0.723px 1.447px rgba(97, 97, 97, 0.2));
   }
 
   .rcp-input {
-    border-radius: 10px;
-    border: 1px solid var(--coolGray-200, #e5e7eb);
+    border-radius: 5px;
+    border: 0.5px solid #e5e7eb;
     background: var(--white, #fff);
     /* shadow-base */
     box-shadow: 0px 1px 2px 0px rgba(31, 41, 55, 0.08);
@@ -131,9 +128,9 @@ export const ColorPickerWrapper = styled.div`
   }
 
   .rcp-recently-used-color {
-    width: 22px;
-    height: 22px;
-    border-radius: 100%;
+    width: 18px;
+    height: 18px;
+    border-radius: 3.2px;
     cursor: pointer;
   }
 `;

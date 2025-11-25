@@ -23,6 +23,7 @@ const Hue = ({ color, disabled, onChange, onChangeComplete }: IHueProps) => {
           sx={{
             position: "absolute",
             left: position.x,
+            top: 4,
             backgroundColor: `hsl(${hsl})`,
           }}
         />

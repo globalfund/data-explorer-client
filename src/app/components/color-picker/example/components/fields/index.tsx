@@ -4,6 +4,7 @@ import ExpandSelectIcon from "../../assets/expand-select";
 import { IColor } from "app/components/color-picker/types";
 import { Box, TextField } from "@mui/material";
 import { ColorService } from "app/components/color-picker/utils/color";
+import NullColor from "app/assets/vectors/RBNullColor.svg?react";
 
 interface ISelectColorTypeProps {
   options: string[];
@@ -83,17 +84,11 @@ export const SelectColorType = ({
 
 interface IColorInputProps {
   color: IColor;
-  colorType: string;
   onChange: (color: IColor) => void;
   disabled?: boolean;
 }
 
-export const ColorInput = ({
-  color,
-  colorType,
-  onChange,
-  disabled,
-}: IColorInputProps) => {
+export const ColorInput = ({ color, onChange, disabled }: IColorInputProps) => {
   const [fields, setFields] = useState({
     hex: {
       value: color?.hex,
@@ -142,34 +137,18 @@ export const ColorInput = ({
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    rgbOption: string = "",
   ) => {
     if (!color) {
       return;
     }
     const value = event.target.value;
-    if (colorType === "hex") {
-      const newColor = ColorService.convert("hex", value);
+    const newColor = ColorService.convert("hex", value);
 
-      setFields((fields) => ({
-        ...fields,
-        hex: { ...fields["hex"], value },
-      }));
-      onChange(newColor);
-    } else {
-      const newValue = parseInt(value);
-
-      const newColor = ColorService.convert("rgb", {
-        ...color?.rgb,
-        [rgbOption]: newValue,
-      });
-      setFields((fields) => ({
-        ...fields,
-        rgb: { ...fields["rgb"], value: newColor.rgb },
-      }));
-
-      onChange(newColor);
-    }
+    setFields((fields) => ({
+      ...fields,
+      hex: { ...fields["hex"], value },
+    }));
+    onChange(newColor);
   };
 
   return (
@@ -178,73 +157,37 @@ export const ColorInput = ({
       sx={{
         display: "flex",
         alignItems: "center",
-        width: "87px",
-        height: "34px",
+        width: "120px",
+        height: "28px",
+        padding: "4px 6px",
       }}
     >
-      {colorType === "rgb" ? (
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            width: "100%",
-          }}
-        >
-          {Object.entries(fields.rgb.value ?? {})
-            ?.slice(0, -1)
-            ?.map(([key, value], index) => (
-              <React.Fragment key={key}>
-                <TextField
-                  value={value}
-                  sx={{
-                    width: 22,
-                    fontSize: "12px",
-                    border: "none",
-                    background: "transparent",
-                    outline: "none",
-                  }}
-                  disabled={disabled}
-                  onFocus={onInputFocus("rgb")}
-                  // maxLength={3}
-                  onChange={(event) => handleChange(event, key)}
-                  // onBlur={onInputBlur("rgb")}
-                />
-                {index <
-                Object.keys(fields.rgb.value ?? {})?.slice(0, -1).length - 1 ? (
-                  <Box
-                    component={"span"}
-                    sx={{
-                      color: "#adb5bd",
-                      margin: 0,
-                    }}
-                  >
-                    |
-                  </Box>
-                ) : null}
-              </React.Fragment>
-            ))}
-        </Box>
-      ) : (
+      {
         <TextField
           value={`#${fields.hex.value?.slice(1, 7)}`}
+          variant="standard"
+          slotProps={{
+            input: {
+              disableUnderline: true,
+              sx: {
+                fontSize: "12px",
+              },
+            },
+          }}
           sx={{
             textTransform: "uppercase",
             height: "100%",
             outline: "none",
             border: "none",
-            fontSize: "12px",
             background: "transparent",
             width: "100%",
+            color: "#374151",
           }}
           disabled={disabled}
-          // maxLength={7}
-          // minLength={1}
           onChange={handleChange}
           onFocus={onInputFocus("hex")}
-          // onBlur={onInputBlur("hex")}
         />
-      )}
+      }
     </Box>
   );
 };
@@ -294,19 +237,30 @@ export const OpacityInput = ({
       sx={{
         display: "flex",
         alignItems: "center",
-        width: "60px",
-        height: "34px",
+        width: "48px",
+        height: "28px",
+        padding: "4px 6px",
       }}
     >
       <TextField
         value={`${opacityPercent}%`}
+        variant="standard"
+        slotProps={{
+          input: {
+            disableUnderline: true,
+            sx: {
+              fontSize: "12px",
+            },
+          },
+        }}
         sx={{
           width: "100%",
-          fontSize: "12px",
           border: "none",
           background: "transparent",
           outline: "none",
           height: "100%",
+          padding: 0,
+          color: "#374151",
         }}
         disabled={disabled}
         onChange={handleChange}
@@ -314,5 +268,24 @@ export const OpacityInput = ({
         // minLength={1}
       />
     </Box>
+  );
+};
+
+export const ColorPreview = ({ color }: { color: IColor }) => {
+  const opacityPercent = Math.round(color?.rgb?.a * 100);
+
+  return (
+    <React.Fragment>
+      {opacityPercent === 0 ? (
+        <NullColor width={28} height={28} />
+      ) : (
+        <Box
+          className="rcp-sample-circle"
+          sx={{
+            backgroundColor: color?.hex,
+          }}
+        />
+      )}
+    </React.Fragment>
   );
 };

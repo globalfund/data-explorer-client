@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ColorInput, OpacityInput, SelectColorType } from "./components/fields";
+import { ColorInput, ColorPreview, OpacityInput } from "./components/fields";
 import { useLocalStorage } from "react-use";
 import Tabs from "./components/tabs";
 import { IColor } from "../types";
@@ -64,13 +64,11 @@ export const ColorPicker = ({
   triggerWidth,
   onResetColor = () => {}, // Added onreset prop for reset functionality
 }: IColorPickerProps) => {
-  const [colorType, setColorType] = React.useState("hex");
   const [recentlyUsedColors, setRecentlyUsedColors] = useLocalStorage(
     "recentlyUsedColors",
     [] as string[],
   );
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
-
   // Handle hue for grayscale colors
   // hue is lost when converting to hex and back, so we store a fallback hue
   // this only happens with grayscale colors (saturation = 0)
@@ -84,7 +82,6 @@ export const ColorPicker = ({
       h: safeHue,
     },
   };
-  // Handle hue for grayscale colors
 
   const onChange = React.useCallback(
     (color: IColor) => {
@@ -159,7 +156,7 @@ export const ColorPicker = ({
                     >
                       <Typography
                         sx={{
-                          fontSize: "12px",
+                          fontSize: "14px",
                           fontFamily: "'GothamNarrow-Book', sans-serif",
                           fontWeight: 325,
                           color: "#231D2C",
@@ -221,23 +218,11 @@ export const ColorPicker = ({
                       />
 
                       <Box className="rcp-input-section">
-                        <Box
-                          className="rcp-sample-circle"
-                          sx={{
-                            backgroundColor: color?.hex,
-                          }}
-                        />
-
-                        <SelectColorType
-                          value={colorType}
-                          onChange={setColorType}
-                          options={["hex", "rgb"]}
-                        />
+                        <ColorPreview color={color} />
 
                         <ColorInput
                           onChange={onChange}
                           color={color}
-                          colorType={colorType}
                           disabled={disabled}
                         />
                         <OpacityInput
