@@ -12,6 +12,7 @@ import {
 import StyledMenu from "../../common/menu-popup";
 import CustomTextField from "../../common/textField";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { ObjectFitTypes } from "app/state/api/action-reducers/report-builder/sync";
 
 export function PaddingSize() {
   const selectedItemController = useStoreState(
@@ -19,6 +20,9 @@ export function PaddingSize() {
   );
   const editItem = useStoreActions(
     (actions) => actions.RBReportItemsState.editItem,
+  );
+  const setTooltipTrigger = useStoreActions(
+    (actions) => actions.RBTooltipTriggerState.setValue,
   );
   const items = useStoreState((state) => state.RBReportItemsState.items);
   const selectedItem = items.find((i) => i.id === selectedItemController?.id);
@@ -62,8 +66,9 @@ export function PaddingSize() {
       settings: {
         ...selectedItem?.settings,
         img: {
-          ...selectedItem?.settings.img,
-          objectFit: objectFitMap[value],
+          ...selectedItem?.settings?.img,
+          objectFit: objectFitMap[value] as ObjectFitTypes,
+          width: value === "auto" ? "100%" : "initial",
         },
       },
       extra: {
@@ -75,6 +80,9 @@ export function PaddingSize() {
       },
     });
     setSelectedSizingMode(value);
+    if (value === "fill") {
+      setTooltipTrigger({ id: selectedItem?.id || null, visible: true });
+    }
   };
   const handleSelectAlignHorizontal = (value: "left" | "center" | "right") => {
     let justifyContent = "";

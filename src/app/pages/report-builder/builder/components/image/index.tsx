@@ -4,10 +4,22 @@ import Typography from "@mui/material/Typography";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { useClickOutsideEditor } from "app/hooks/useClickOutsideEditorComponent";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import { useTooltip } from "app/hooks/useTooltip";
+import { createPortal } from "react-dom";
 
 export const ReportBuilderPageImage: React.FC<{
   id: string;
 }> = ({ id }) => {
+  const { visible, coords, triggerTooltip, setAnchor } = useTooltip({
+    hideAfter: 5000,
+    position: "bottom",
+  });
+  const triggeredTooltip = useStoreState(
+    (state) => state.RBTooltipTriggerState.tooltip,
+  );
+  const setTooltipTrigger = useStoreActions(
+    (actions) => actions.RBTooltipTriggerState.setValue,
+  );
   const setSelectedController = useStoreActions(
     (actions) => actions.RBReportItemsControllerState.setItem,
   );
@@ -15,6 +27,7 @@ export const ReportBuilderPageImage: React.FC<{
     (actions) => actions.RBReportItemsControllerState.clearItem,
   );
   const items = useStoreState((state) => state.RBReportItemsState.items);
+
   const selectedItem = items.find((i) => i.id === id);
   const editItem = useStoreActions(
     (actions) => actions.RBReportItemsState.editItem,
@@ -25,18 +38,12 @@ export const ReportBuilderPageImage: React.FC<{
     ...settings
   } = selectedItem?.settings || {};
   const { image: imageExtra } = selectedItem?.extra || {};
-  const autoImgRef = React.useRef<HTMLImageElement | null>(null);
+  const tooltipWidth =
+    document.getElementById("tooltip-image-move-pan")?.clientWidth || 0;
 
+  // Adjust image size when sizing mode is auto
   React.useEffect(() => {
-    if (imageExtra?.sizingMode === "auto" && autoImgRef.current) {
-      const img = autoImgRef.current;
-      let parentHeight;
-      if (img.clientHeight) {
-        parentHeight = `calc(${img.clientHeight}px + ${settings.paddingTop} + ${settings.paddingBottom})`;
-      } else {
-        parentHeight = settings.height || 0;
-      }
-
+    if (imageExtra?.sizingMode === "auto") {
       editItem({
         ...selectedItem,
         id,
@@ -44,11 +51,22 @@ export const ReportBuilderPageImage: React.FC<{
         settings: {
           ...selectedItem?.settings,
           width: `100%`,
-          height: parentHeight,
+          height: "auto",
         },
       });
     }
   }, [imageExtra?.sizingMode]);
+
+  React.useEffect(() => {
+    if (triggeredTooltip.visible && triggeredTooltip.id === id) {
+      triggerTooltip();
+    }
+    return () => {
+      if (triggeredTooltip.visible) {
+        setTooltipTrigger({ visible: false, id: null });
+      }
+    };
+  }, [triggeredTooltip]);
 
   useClickOutsideEditor({
     editorId: "image-render",
@@ -62,11 +80,18 @@ export const ReportBuilderPageImage: React.FC<{
     setSelectedController({ id, type: "image", open });
   };
 
-  const getTemplateStyle = () => {
-    if (!imageSrc) {
+  const getUniqueStyle = () => {
+    if (imageExtra?.sizingMode === "fill") {
       return {
-        border: "none",
-        height: "auto",
+        display: "block",
+        height: `calc(${settings.height} + ${settings.paddingTop} + ${
+          settings.paddingBottom
+        })`,
+      };
+    }
+    if (imageExtra?.sizingMode === "auto") {
+      return {
+        display: "block",
       };
     }
     return {};
@@ -104,14 +129,7 @@ export const ReportBuilderPageImage: React.FC<{
         case "crop":
           return <img src={imageSrc} alt="random" style={{ ...imgStyle }} />;
         case "auto":
-          return (
-            <img
-              ref={autoImgRef}
-              src={imageSrc}
-              alt="random"
-              style={{ ...imgStyle }}
-            />
-          );
+          return <img src={imageSrc} alt="random" style={{ ...imgStyle }} />;
         default:
           return null;
       }
@@ -130,57 +148,93 @@ export const ReportBuilderPageImage: React.FC<{
   );
 
   return (
-    <Box
-      id="image-render"
-      onClick={() => triggerImageController(true)}
-      sx={{
-        width: "100%",
-        backgroundColor: "pink",
-        display: "flex",
-        position: "relative",
-        flexDirection: "column",
-        "&:hover": {
-          ".top-right-actions": {
-            display: "flex",
-          },
-        },
-        ...settings,
-        ...getTemplateStyle(),
-      }}
-    >
-      {!imageSrc && (
-        <Box
-          sx={{
-            gap: "10px",
-            width: "100%",
-            height: "220px",
-            display: "flex",
-            padding: "10px",
-            cursor: "pointer",
-            borderRadius: "4px",
-            alignItems: "center",
-            bgcolor: "#d6ddfd",
-            flexDirection: "column",
-            justifyContent: "center",
-            border: "1px dashed #3154f4",
-            transition: "all 0.3s ease-in-out",
-          }}
-        >
-          <svg width="24" height="25" viewBox="0 0 24 25" fill="none">
-            <path
-              d="M21 15.4999L17.914 12.4139C17.5389 12.039 17.0303 11.8284 16.5 11.8284C15.9697 11.8284 15.4611 12.039 15.086 12.4139L6 21.4999M5 3.5H19C20.1046 3.5 21 4.39543 21 5.5V19.5C21 20.6046 20.1046 21.5 19 21.5H5C3.89543 21.5 3 20.6046 3 19.5V5.5C3 4.39543 3.89543 3.5 5 3.5ZM11 9.5C11 10.6046 10.1046 11.5 9 11.5C7.89543 11.5 7 10.6046 7 9.5C7 8.39543 7.89543 7.5 9 7.5C10.1046 7.5 11 8.39543 11 9.5Z"
-              stroke="#3154F4"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          <Typography fontSize="16px" color="#3154f4">
-            Click to add an image
-          </Typography>
-        </Box>
-      )}
-      {renderImage(imageExtra?.sizingMode || "fit-proportional")}
-    </Box>
+    <React.Fragment>
+      <Box
+        ref={setAnchor}
+        id="image-render"
+        onClick={() => triggerImageController(true)}
+      >
+        {!imageSrc && (
+          <Box
+            sx={{
+              gap: "10px",
+              width: "100%",
+              height: "220px",
+              display: "flex",
+              cursor: "pointer",
+              borderRadius: "4px",
+              alignItems: "center",
+              bgcolor: "#d6ddfd",
+              flexDirection: "column",
+              justifyContent: "center",
+              border: "1px dashed #3154f4",
+              transition: "all 0.3s ease-in-out",
+            }}
+          >
+            <svg width="24" height="25" viewBox="0 0 24 25" fill="none">
+              <path
+                d="M21 15.4999L17.914 12.4139C17.5389 12.039 17.0303 11.8284 16.5 11.8284C15.9697 11.8284 15.4611 12.039 15.086 12.4139L6 21.4999M5 3.5H19C20.1046 3.5 21 4.39543 21 5.5V19.5C21 20.6046 20.1046 21.5 19 21.5H5C3.89543 21.5 3 20.6046 3 19.5V5.5C3 4.39543 3.89543 3.5 5 3.5ZM11 9.5C11 10.6046 10.1046 11.5 9 11.5C7.89543 11.5 7 10.6046 7 9.5C7 8.39543 7.89543 7.5 9 7.5C10.1046 7.5 11 8.39543 11 9.5Z"
+                stroke="#3154F4"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            <Typography fontSize="16px" color="#3154f4">
+              Click to add an image
+            </Typography>
+          </Box>
+        )}
+        {imageSrc && (
+          <Box
+            sx={{
+              backgroundColor: "#fff",
+
+              ...settings,
+              ...getUniqueStyle(),
+            }}
+          >
+            {renderImage(imageExtra?.sizingMode || "fit-proportional")}
+          </Box>
+        )}
+      </Box>
+      {visible &&
+        coords &&
+        createPortal(
+          <Box
+            id="tooltip-image-move-pan"
+            sx={{
+              position: "fixed",
+              top: (coords.top ?? 0) + 10,
+              left: coords.left - tooltipWidth,
+              transform: "translate(-50%, 0)",
+              width: "371px",
+              height: "62px",
+              p: "10px",
+              borderRadius: "4px",
+              bgcolor: "#000",
+              boxShadow: "0 2px 7px 0 rgba(0, 0, 0, 0.12)",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              gap: "8px",
+              zIndex: 1,
+            }}
+          >
+            <Typography
+              fontWeight={700}
+              color="#fff"
+              fontSize={"14px"}
+              margin={0}
+            >
+              Pan and move to customise
+            </Typography>
+            <Typography color="#fff" fontSize={"14px"} margin={0}>
+              Hold the image and move to select the perfect frame
+            </Typography>
+          </Box>,
+          document.body,
+        )}
+    </React.Fragment>
   );
 };

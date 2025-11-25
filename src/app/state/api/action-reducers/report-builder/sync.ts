@@ -11,11 +11,46 @@ export type RBReportItemTypes =
   | "grid"
   | "column"
   | "section_divider";
+
+export type ObjectFitTypes =
+  | "contain"
+  | "cover"
+  | "fill"
+  | "none"
+  | "scale-down";
 export interface RBReportItem {
   id: string;
   type: RBReportItemTypes;
-  extra?: any;
-  settings?: any;
+  extra?: {
+    focus?: boolean;
+    key?: string;
+    image?: {
+      sizingMode?: "fit-proportional" | "fill" | "crop" | "auto";
+      alignVertical?: "top" | "middle" | "bottom";
+      alignHorizontal?: "left" | "center" | "right";
+    };
+  };
+  settings?: {
+    width?: string;
+    height?: string;
+    paddingTop?: string;
+    paddingBottom?: string;
+    paddingLeft?: string;
+    paddingRight?: string;
+    borderWidth?: string;
+    borderColor?: string;
+    borderRadius?: string;
+    borderStyle?: string;
+    backgroundColor?: string;
+    display?: string;
+    alignItems?: string;
+    justifyContent?: string;
+    src?: string;
+    img?: {
+      objectFit?: ObjectFitTypes;
+      width?: string;
+    };
+  };
 }
 
 export interface RBReportItemController {
@@ -73,6 +108,17 @@ export interface RBReportSettingsModel {
 export interface RBReportNotesModel {
   value: string;
   setValue: Action<RBReportNotesModel, string>;
+}
+
+export interface RBReportTooltipModel {
+  tooltip: {
+    visible: boolean;
+    id: string | null;
+  };
+  setValue: Action<
+    RBReportTooltipModel,
+    { visible: boolean; id: string | null }
+  >;
 }
 
 export const RBReportItemsState: RBReportItemsModel = {
@@ -176,5 +222,15 @@ export const RBReportNotesState: RBReportNotesModel = {
   value: "",
   setValue: action((state, payload) => {
     state.value = payload;
+  }),
+};
+
+export const RBTooltipTriggerState: RBReportTooltipModel = {
+  tooltip: {
+    visible: false,
+    id: null,
+  },
+  setValue: action((state, payload) => {
+    state.tooltip = payload;
   }),
 };

@@ -267,9 +267,9 @@ export const ReportBuilderPage: React.FC = () => {
     >
       <Box
         sx={{
-          top: -35,
+          top: 68,
           right: "20px",
-          position: "absolute",
+          position: "fixed",
           width: "300px",
           zIndex: 2,
         }}
@@ -283,6 +283,7 @@ export const ReportBuilderPage: React.FC = () => {
             overflow: "overlay",
             bgcolor: "#ffffff",
             height: "fit-content",
+            paddingBottom: "40px",
             boxShadow: "0 0 10px 0 rgba(152, 161, 170, 0.60)",
           }}
         >
