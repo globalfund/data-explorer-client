@@ -175,12 +175,12 @@ export const ExpandableHorizontalBar: React.FC<
           position: "top",
           alignTicks: true,
           nameTextStyle: {
-            fontSize: "12px",
+            fontSize: "14px",
             fontFamily: "Inter, sans-serif",
             color: appColors.TIME_CYCLE.X_AXIS_TEXT_COLOR,
           },
           axisLabel: {
-            fontSize: "12px",
+            fontSize: "14px",
             fontFamily: "Inter, sans-serif",
             color: appColors.TIME_CYCLE.AXIS_TEXT_COLOR,
             formatter: (value: number) => {
@@ -221,13 +221,13 @@ export const ExpandableHorizontalBar: React.FC<
             },
           },
           nameTextStyle: {
-            fontSize: "12px",
+            fontSize: "14px",
             fontFamily: "Inter, sans-serif",
             color: appColors.TIME_CYCLE.Y_AXIS_TEXT_COLOR,
           },
           axisLabel: {
             align: "right",
-            fontSize: "12px",
+            fontSize: "14px",
             fontFamily: "Inter, sans-serif",
             color: appColors.TIME_CYCLE.Y_AXIS_TEXT_COLOR,
             // margin: chart.getWidth() / 6,
@@ -299,7 +299,7 @@ export const ExpandableHorizontalBar: React.FC<
           itemHeight: 11,
           show: seriesData.length > 1,
           textStyle: {
-            fontSize: "12px",
+            fontSize: "14px",
             fontFamily: "Inter, sans-serif",
             color: appColors.TIME_CYCLE.LEGEND_TEXT_COLOR,
           },
@@ -330,7 +330,7 @@ export const ExpandableHorizontalBar: React.FC<
       setStateChart(chart);
       isMounted.current = true;
     }
-  }, [containerRef.current]);
+  }, [containerRef.current, range]);
 
   React.useEffect(() => {
     if (expandedBars.length > 0) {
@@ -386,12 +386,6 @@ export const ExpandableHorizontalBar: React.FC<
   React.useEffect(() => {
     if (stateChart) {
       stateChart.setOption({
-        xAxis: {
-          name: range.abbr,
-          formattter: (value: number) => {
-            return getFinancialValueWithMetricPrefix(value, range.index);
-          },
-        },
         yAxis: {
           data: xAxisKeys,
         },
@@ -400,12 +394,12 @@ export const ExpandableHorizontalBar: React.FC<
         })),
       });
     }
-  }, [stateChart, seriesData, xAxisKeys, range]);
+  }, [stateChart, seriesData, xAxisKeys]);
 
   return (
     <React.Fragment>
       <Typography
-        fontSize="12px"
+        fontSize="14px"
         sx={{
           top: "0px",
           position: "absolute",
@@ -426,7 +420,7 @@ export const ExpandableHorizontalBar: React.FC<
         )}
       </Typography>
       <Typography
-        fontSize="12px"
+        fontSize="14px"
         sx={{
           right: 0,
           top: "20px",

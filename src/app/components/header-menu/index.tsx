@@ -27,7 +27,8 @@ import { useCMSData } from "app/hooks/useCMSData";
 const HeaderMenuButton = styled(Button)({
   height: "100%",
   borderRadius: 0,
-  minWidth: "160px",
+  fontSize: "16px",
+  padding: "6px 15px",
   textTransform: "none",
   color: colors.primary.black,
   border: "1px solid transparent",
@@ -180,6 +181,7 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (
     <Box
       id="header-menu-tabs-container"
       sx={{
+        gap: "50px",
         width: "100%",
         height: "100%",
         display: "flex",
@@ -196,20 +198,18 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (
           endIcon={
             page.subPages ? (
               <ChevronRight
-                sx={{ rotate: `${selectedPage === page.id ? -90 : 90}deg` }}
+                sx={{
+                  scale: "1.5",
+                  rotate: `${selectedPage === page.id ? -90 : 90}deg`,
+                }}
               />
             ) : null
           }
           sx={
-            isNavButtonActive(page.id, location.pathname)
-              ? {
-                  borderBottom: `4px solid ${colors.primary.black}`,
-                }
-              : {
-                  "&:hover": {
-                    borderBottom: `4px solid ${colors.primary.black}`,
-                  },
-                }
+            isNavButtonActive(page.id, location.pathname) ||
+            (page.subPages && Boolean(anchorEl))
+              ? activeButtonStateStyle
+              : { "&:hover": activeButtonStateStyle }
           }
           data-cy="header-menu-button"
         >
@@ -241,7 +241,7 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (
           sx={{
             width: "100vw",
             height: "100%",
-            paddingTop: "10px",
+            padding: "10px 0 1px 0",
             background: "#F8F8F8",
           }}
         >
@@ -262,7 +262,7 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (
                   <Box
                     key={subPage.id}
                     sx={{
-                      height: "100%",
+                      height: "92px",
                       display: "flex",
                       flexDirection: "column",
                       alignItems: "flex-start",
@@ -279,6 +279,7 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (
                         width: "100%",
                         height: "100%",
                         paddingBottom: "10px",
+                        alignItems: "flex-start",
                         "&:hover": activeButtonStateStyle,
                         ...(isNavButtonActive(subPage.id, location.pathname)
                           ? activeButtonStateStyle
@@ -297,10 +298,10 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (
                           },
                         }}
                       >
-                        <Typography fontSize="14px" fontWeight="700">
+                        <Typography fontSize="16px" fontWeight="700">
                           {subPage.label}
                         </Typography>
-                        <Typography fontSize="10px">
+                        <Typography fontSize="14px">
                           {subPage.description}
                         </Typography>
                       </Box>

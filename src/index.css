@@ -75,7 +75,7 @@ input[type="text"] {
 }
 
 .chart-tooltip-text {
-  font-size: 12px;
+  font-size: 14px;
   color: #262c34;
   line-height: 1;
 }
@@ -102,7 +102,16 @@ input[type="text"] {
 .tabulator-row:hover > div {
   background: #f6f7f7 !important;
 }
-
+.tabulator-cell,
+.tabulator-col-title {
+  font-size: 14px !important;
+  font-family: "Inter", "Helvetica Neue", sans-serif !important;
+}
 .tabulator-cell > .table-download-icon {
   display: none;
+}
+.tabulator-col-content,
+.tabulator-cell {
+  padding: 6px 4px !important;
+  vertical-align: middle !important;
 }

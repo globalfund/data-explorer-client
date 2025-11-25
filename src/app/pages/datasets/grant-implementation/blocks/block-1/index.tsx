@@ -109,7 +109,7 @@ export const GrantImplementationPageBlock1: React.FC<
           <Typography variant="h3">
             {formatFinancialValue(dataFinancialInsightsStats.signed)}
           </Typography>
-          <Typography fontSize="14px">
+          <Typography fontSize="16px">
             {getCMSDataField(
               cmsData,
               "pagesDatasetsGrantImplementation.statsText1",
@@ -121,7 +121,7 @@ export const GrantImplementationPageBlock1: React.FC<
           <Typography variant="h3">
             {formatFinancialValue(dataFinancialInsightsStats.committed)}
           </Typography>
-          <Typography fontSize="14px">
+          <Typography fontSize="16px">
             {getCMSDataField(
               cmsData,
               "pagesDatasetsGrantImplementation.statsText2",
@@ -133,7 +133,7 @@ export const GrantImplementationPageBlock1: React.FC<
           <Typography variant="h3">
             {formatFinancialValue(dataFinancialInsightsStats.disbursed)}
           </Typography>
-          <Typography fontSize="14px">
+          <Typography fontSize="16px">
             {getCMSDataField(
               cmsData,
               "pagesDatasetsGrantImplementation.statsText3",
@@ -143,7 +143,7 @@ export const GrantImplementationPageBlock1: React.FC<
         </Box>
       </Box>
       <Box marginBottom="50px">
-        <Typography variant="overline">
+        <Typography variant="overline" fontSize="14px">
           {getCMSDataField(
             cmsData,
             "pagesDatasetsGrantImplementation.latestUpdateText",

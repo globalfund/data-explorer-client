@@ -244,7 +244,7 @@ export const Geography: React.FC = () => {
           </Box>
         </Box>
         <Box>
-          <Typography variant="overline">
+          <Typography variant="overline" fontSize="14px">
             Latest Update: <b>{latestUpdateDate}</b>
           </Typography>
         </Box>

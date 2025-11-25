@@ -2,7 +2,7 @@ import { Page } from "app/components/page";
 import React from "react";
 import { Header } from "app/components/header";
 import { Footer } from "app/components/footer";
-import { RouteObject } from "react-router-dom";
+import { Navigate, RouteObject, useParams } from "react-router-dom";
 import { Redirect } from "app/components/redirect";
 import { Location } from "app/pages/location";
 import { Home } from "app/pages/home";
@@ -14,6 +14,15 @@ import { Geography } from "app/pages/geography";
 import { PreGrant, Grant } from "app/pages/grant";
 import { Grants } from "app/pages/grants";
 import { ROUTE_CONFIGS } from "./paths";
+import { Debug } from "app/pages/debug";
+
+const DetailPageRedirect: React.FC<{
+  type: "location" | "partner" | "grant";
+}> = (props) => {
+  const { code } = useParams<{ code: string }>();
+  if (!code) return null;
+  return <Navigate to={`/${props.type}/${code}`} replace />;
+};
 
 const REDIRECT_ROUTES: RouteObject[] = [
   {
@@ -38,15 +47,27 @@ const REDIRECT_ROUTES: RouteObject[] = [
   },
   {
     path: "/location/:code/:vizType?/:subType?",
-    element: <Redirect to="/geography" />,
+    element: <DetailPageRedirect type="location" />,
+  },
+  {
+    path: "/locations/:code/:vizType?/:subType?",
+    element: <DetailPageRedirect type="location" />,
   },
   {
     path: "/partner/:code/:vizType?/:subType?",
-    element: <Redirect to="/" />,
+    element: <DetailPageRedirect type="partner" />,
+  },
+  {
+    path: "/partners/:code/:vizType?/:subType?",
+    element: <DetailPageRedirect type="partner" />,
   },
   {
     path: "/grant/:id/:period?/:vizType?/:subType?",
-    element: <Redirect to="/grants" />,
+    element: <DetailPageRedirect type="grant" />,
+  },
+  {
+    path: "/grants/:id/:period?/:vizType?/:subType?",
+    element: <DetailPageRedirect type="grant" />,
   },
 ];
 
@@ -61,6 +82,7 @@ const COMPONENT_MAP: Record<string, React.ComponentType> = {
   AccessToFundingPage,
   GrantImplementationPage,
   AnnualResultsPage,
+  Debug,
 };
 
 const NON_REDIRECT_ROUTES = ROUTE_CONFIGS.map((config) => {

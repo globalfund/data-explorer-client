@@ -145,7 +145,7 @@ export const RadialChart: React.FC<RadialChartProps> = (
           radius: ["60%", "100%"],
           label: {
             show: true,
-            fontSize: "10px",
+            fontSize: "16px",
             minMargin: 0,
             fontFamily: "'Inter', sans-serif",
             formatter: (params) => {
@@ -153,7 +153,7 @@ export const RadialChart: React.FC<RadialChartProps> = (
             },
             rich: {
               boldName: {
-                fontSize: "14px",
+                fontSize: "16px",
                 fontWeight: "bold",
               },
             },

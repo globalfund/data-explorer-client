@@ -19,7 +19,7 @@ const StatComp: React.FC<StatCompProps> = (props: StatCompProps) => {
     if (props.icon) return props.icon;
     if (props.label.includes("HIV")) return <HIVIcon />;
     if (props.label.includes("TB")) return <TBIcon />;
-    if (props.label.includes("Mosquito nets")) return <MalariaIcon />;
+    if (props.label.includes("mosquito nets")) return <MalariaIcon />;
     return <React.Fragment />;
   }, [props.icon, props.label]);
 
@@ -52,7 +52,7 @@ const StatComp: React.FC<StatCompProps> = (props: StatCompProps) => {
         </Typography>
         <Typography
           component="div"
-          maxWidth="190px"
+          fontSize="14px"
           variant="overline"
           lineHeight="normal"
         >

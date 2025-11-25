@@ -24,10 +24,10 @@ export const ChartBlockCycles: React.FC<ChartBlockCyclesProps> = (
       position="relative"
       sx={{
         "& > button": {
-          height: "32px",
+          height: "35px",
           fontSize: "14px",
           fontWeight: "400",
-          padding: "7px 12px",
+          padding: "9px 12px",
           borderRadius: "4px",
           textTransform: "none",
           border: "1px solid #DFE3E5",

@@ -63,7 +63,7 @@ export default function Pagination(props: {
           },
         }}
       >
-        <Typography fontSize="12px">
+        <Typography fontSize="16px">
           {rangeFrom}-{rangeto} of {props.count}
         </Typography>
         <Box
@@ -92,7 +92,7 @@ export default function Pagination(props: {
                     borderRadius: "4px",
                     border: "1px solid #DFE3E5",
                     display: "flex",
-                    padding: "7px 12px",
+                    padding: "9px 12px",
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "5px",
@@ -116,7 +116,7 @@ export default function Pagination(props: {
                     borderRadius: "4px",
                     border: "1px solid #DFE3E5",
                     display: "flex",
-                    padding: "7px 12px",
+                    padding: "9px 12px",
                     justifyContent: "center",
                     alignItems: "center",
                     gap: "5px",
@@ -149,7 +149,7 @@ export default function Pagination(props: {
                     borderRadius: "4px",
                     border: "1px solid #DFE3E5",
                     display: "flex",
-                    padding: "7px 12px",
+                    padding: "9px 12px",
                     justifyContent: "center",
                     alignItems: "center",
                     fontWeight: "normal",
@@ -175,7 +175,7 @@ export default function Pagination(props: {
           })}
         </Box>
         <Box display="flex" gap="10px" alignItems="center">
-          <Typography fontSize="14px">Page</Typography>
+          <Typography fontSize="16px">Page</Typography>
           <Box
             sx={{
               input: {
@@ -203,7 +203,7 @@ export default function Pagination(props: {
               borderRadius: "4px",
               background: "none",
               fontFamily: "Inter",
-              fontSize: "14px",
+              fontSize: "16px",
               fontWeight: "bold",
               padding: "none",
               color: "#000000",

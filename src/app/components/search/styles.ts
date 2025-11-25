@@ -30,7 +30,7 @@ export const MobileContainer = styled(Box)`
 export const Input = styled.input`
   width: 100%;
   outline: none;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 400;
   border-style: none;
   padding: 8px 12px !important;
@@ -59,7 +59,7 @@ export const CategoryButton = styled(Button)<CategoryButtonProps>`
   width: 200px;
   display: flex;
   font-size: 14px;
-  padding: 7px 12px;
+  padding: 9px 12px;
   border-radius: 4px;
   margin-right: 14px;
   text-transform: capitalize;

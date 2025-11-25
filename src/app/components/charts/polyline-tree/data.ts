@@ -257,7 +257,7 @@ export const STORY_DATA_VARIANT_1: PolylineTreeDataItem = {
           },
         },
         {
-          name: "Mosquito nets distributed",
+          name: "Insecticide-treated mosquito nets distributed",
           value: 219678398,
           itemStyle: {
             color: "#013E77",

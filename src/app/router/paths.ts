@@ -71,4 +71,9 @@ export const ROUTE_CONFIGS: RouteConfig[] = [
     componentName: "AnnualResultsPage",
     importFrom: "app/pages/datasets/annual-results",
   },
+  {
+    path: "/test/:id/:ip",
+    componentName: "Debug",
+    importFrom: "app/pages/debug",
+  },
 ];

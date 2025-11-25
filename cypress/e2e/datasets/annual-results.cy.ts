@@ -34,7 +34,9 @@ describe("Testing The Location page", () => {
         "be.visible",
       );
       cy.contains("People with TB treated in 2022").should("be.visible");
-      cy.contains("Mosquito nets distributed in 2022").should("be.visible");
+      cy.contains(
+        "Insecticide-treated mosquito nets distributed in 2022",
+      ).should("be.visible");
     });
 
     it("Can filter page data", { scrollBehavior: false }, () => {

@@ -25,12 +25,12 @@ export default function Searchbox(props: SearchboxProps) {
           color: "#000",
           outline: "none",
           padding: "0 8px",
-          fontSize: "12px",
+          fontSize: "14px",
           height: "100%",
           border: "none",
           borderRadius: "4px",
           "::placeholder": {
-            color: "#CFD4DA",
+            color: "#495057",
           },
         },
         "@media (max-width: 1024px)": {

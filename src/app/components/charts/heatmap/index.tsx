@@ -282,7 +282,7 @@ export function Heatmap(props: HeatmapProps) {
                 bgcolor={item.color}
                 border={item.label === "N/A" ? "1px solid #DADADA" : ""}
               />
-              <Typography fontSize="12px" color="#495057">
+              <Typography fontSize="14px" color="#495057">
                 {item.label}
               </Typography>
             </Box>
@@ -302,7 +302,7 @@ export function Heatmap(props: HeatmapProps) {
           <Typography
             top="5px"
             right="20px"
-            fontSize="10px"
+            fontSize="12px"
             fontWeight="700"
             position="absolute"
           >
@@ -323,7 +323,7 @@ export function Heatmap(props: HeatmapProps) {
             >
               <RowName
                 theme={{ width: rowNameWidth }}
-                style={{ fontWeight: "700" }}
+                style={{ fontWeight: "700", fontSize: "12px" }}
               >
                 {props.columnHeader}
               </RowName>
@@ -338,7 +338,7 @@ export function Heatmap(props: HeatmapProps) {
                   <ColName
                     key={column.name}
                     style={{
-                      fontWeight: column.expanded ? 700 : 400,
+                      // fontWeight: column.expanded ? 700 : 400,
                       // background: appColors.HEATMAP.CHART_BG_COLOR,
                       width: props.itemWidth
                         ? `${props.itemWidth}px`

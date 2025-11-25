@@ -2,14 +2,14 @@ import React from "react";
 import Box from "@mui/material/Box";
 import uniqueId from "lodash/uniqueId";
 import Divider from "@mui/material/Divider";
+import { useCMSData } from "app/hooks/useCMSData";
 import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import CircularProgress from "@mui/material/CircularProgress";
 import { ChartBlockProps } from "app/components/chart-block/data";
 import { ChartBlockCycles } from "app/components/chart-block/components/cycles";
 import { ChartBlockButtonToolbar } from "app/components/chart-block/components/button-toolbar";
-import { useCMSData } from "app/hooks/useCMSData";
-import { getCMSDataField } from "app/utils/getCMSDataField";
 
 export const ChartBlock: React.FC<ChartBlockProps> = (
   props: ChartBlockProps,
@@ -82,7 +82,12 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
         {props.subtitle}
       </Typography>
       {props.text && props.text.length > 0 && (
-        <Typography variant="subtitle2" lineHeight="normal" marginBottom="20px">
+        <Typography
+          fontSize="18px"
+          variant="subtitle2"
+          lineHeight="normal"
+          marginBottom="20px"
+        >
           <Box
             sx={{
               a: { textDecoration: "none", fontWeight: "700", color: "#000" },
@@ -181,7 +186,7 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
         justifyContent={props.latestUpdate ? "space-between" : "flex-end"}
       >
         {props.latestUpdate && (
-          <Typography variant="overline">
+          <Typography variant="overline" fontSize="14px">
             {getCMSDataField(
               cmsData,
               "pagesHome.latestUpdateText",
