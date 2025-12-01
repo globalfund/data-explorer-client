@@ -87,7 +87,7 @@ export default function StyledMenu({
               background: isActive ? "#F8F9FA" : "transparent",
               display: "flex",
               alignItems: "center",
-              justifyContent: "start",
+              justifyContent: "space-between",
               gap: "8px",
               borderTop: isActive ? "1px solid #E0E0E0" : "none",
               borderBottom: "none",

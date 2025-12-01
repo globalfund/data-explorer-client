@@ -1,11 +1,15 @@
 import Box from "@mui/material/Box";
 import Input from "@mui/material/TextField";
+import {
+  RBRKPIBoxField,
+  RBRKPIFieldFormatting,
+} from "app/state/api/action-reducers/report-builder/sync";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import React from "react";
 
 type InputEvent = React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
 interface Props {
-  item: "text" | "image";
+  item: "text" | "image" | "kpi_box";
   type:
     | "letterSpacing"
     | "lineHeight"
@@ -16,11 +20,17 @@ interface Props {
     | "paddingTop"
     | "paddingBottom"
     | "width"
-    | "height";
+    | "height"
+    | "bigNumberText"
+    | "topLabel"
+    | "bottomLabel"
+    | "optionalText";
 
   onChange?: (value: string) => void;
   value?: string;
   width?: string;
+  sx?: Record<string, any>;
+  disabled?: boolean;
 }
 export default function TextField(props: Readonly<Props>) {
   const selectedController = useStoreState(
@@ -32,8 +42,75 @@ export default function TextField(props: Readonly<Props>) {
   const items = useStoreState((state) => state.RBReportItemsState.items);
   const item = items.find((i) => i.id === selectedController?.id);
 
-  const inputFunction = React.useMemo(
-    () => ({
+  const inputFunction = React.useMemo(() => {
+    const updateSetting = (newSetting: Record<any, string>) => {
+      editItem({
+        ...item,
+        id: selectedController?.id || "",
+        type: props.item,
+        settings: {
+          ...item?.settings,
+          ...newSetting,
+        },
+      });
+    };
+
+    const getKPIBoxFields = () => {
+      const fieldTypes = [
+        "bigNumberText",
+        "topLabel",
+        "bottomLabel",
+        "optionalText",
+      ];
+      const kpiBox = item?.extra?.kpi_box?.field || {};
+
+      const getKPIBoxValue = (kpiBox: RBRKPIBoxField, field: string) => {
+        const fieldObj = kpiBox[
+          field as keyof RBRKPIBoxField
+        ] as RBRKPIFieldFormatting;
+        return fieldObj?.value || "";
+      };
+      const createKPIBoxUpdater = (fieldType: string, e: InputEvent) => {
+        const value = e.target.value;
+        const updatedItem = buildUpdatedItem(fieldType, value);
+        editItem(updatedItem);
+      };
+
+      const buildUpdatedItem = (fieldType: string, value: string) => {
+        const currentField = item?.extra?.kpi_box?.field?.[
+          fieldType as keyof RBRKPIBoxField
+        ] as RBRKPIFieldFormatting;
+
+        const updatedField = { ...currentField, value };
+
+        const updatedKPIBox = {
+          ...item?.extra?.kpi_box?.field,
+          [fieldType]: updatedField,
+        };
+
+        return {
+          ...item,
+          id: selectedController?.id || "",
+          type: props.item,
+          extra: {
+            ...item?.extra,
+            kpi_box: {
+              ...item?.extra?.kpi_box,
+              label: updatedKPIBox,
+            },
+          },
+        };
+      };
+
+      return fieldTypes.map((fieldType) => ({
+        [fieldType]: {
+          value: getKPIBoxValue(kpiBox, fieldType),
+          action: (e: InputEvent) => createKPIBoxUpdater(fieldType, e),
+        },
+      }));
+    };
+
+    return {
       letterSpacing: {
         value: props.value || "0px",
         action: (e: InputEvent) => {
@@ -50,127 +127,64 @@ export default function TextField(props: Readonly<Props>) {
       borderWidth: {
         value: item?.settings?.borderWidth || "0px",
         action: (e: InputEvent) => {
-          editItem({
-            ...item,
-            id: selectedController?.id || "",
-            type: props.item,
-            settings: {
-              ...item?.settings,
-              borderWidth: e.target.value,
-              borderStyle: "solid",
-            },
-          });
+          updateSetting({ borderWidth: e.target.value, borderStyle: "solid" });
         },
       },
       borderRadius: {
         value: item?.settings?.borderRadius || "0px",
         action: (e: InputEvent) => {
-          editItem({
-            ...item,
-            id: selectedController?.id || "",
-            type: props.item,
-            settings: {
-              ...item?.settings,
-              borderRadius: e.target.value,
-            },
-          });
+          updateSetting({ borderRadius: e.target.value });
         },
       },
       paddingLeft: {
         value: item?.settings?.paddingLeft || "0px",
         action: (e: InputEvent) => {
-          editItem({
-            ...item,
-            id: selectedController?.id || "",
-            type: props.item,
-            settings: {
-              ...item?.settings,
-              paddingLeft: e.target.value,
-            },
-          });
+          updateSetting({ paddingLeft: e.target.value });
         },
       },
       paddingRight: {
         value: item?.settings?.paddingRight || "0px",
         action: (e: InputEvent) => {
-          editItem({
-            ...item,
-            id: selectedController?.id || "",
-            type: props.item,
-            settings: {
-              ...item?.settings,
-              paddingRight: e.target.value,
-            },
-          });
+          updateSetting({ paddingRight: e.target.value });
         },
       },
       paddingTop: {
         value: item?.settings?.paddingTop || "0px",
         action: (e: InputEvent) => {
-          editItem({
-            ...item,
-            id: selectedController?.id || "",
-            type: props.item,
-            settings: {
-              ...item?.settings,
-              paddingTop: e.target.value,
-            },
-          });
+          updateSetting({ paddingTop: e.target.value });
         },
       },
       paddingBottom: {
         value: item?.settings?.paddingBottom || "0px",
         action: (e: InputEvent) => {
-          editItem({
-            ...item,
-            id: selectedController?.id || "",
-            type: props.item,
-            settings: {
-              ...item?.settings,
-              paddingBottom: e.target.value,
-            },
-          });
+          updateSetting({ paddingBottom: e.target.value });
         },
       },
       width: {
         value: item?.settings?.width || "0px",
         action: (e: InputEvent) => {
-          editItem({
-            ...item,
-            id: selectedController?.id || "",
-            type: props.item,
-            settings: {
-              ...item?.settings,
-              width: e.target.value,
-            },
-          });
+          updateSetting({ width: e.target.value });
         },
       },
       height: {
         value: item?.settings?.height || "0px",
         action: (e: InputEvent) => {
-          editItem({
-            ...item,
-            id: selectedController?.id || "",
-            type: props.item,
-            settings: {
-              ...item?.settings,
-              height: e.target.value,
-            },
-          });
+          updateSetting({ height: e.target.value });
         },
       },
-    }),
-    [
-      editItem,
-      item?.settings,
-      selectedController?.id,
-      props.value,
-      props.onChange,
-    ],
-  );
+      ...Object.assign({}, ...getKPIBoxFields()),
+    };
+  }, [
+    editItem,
+    item?.settings,
+    item?.extra,
 
+    selectedController?.id,
+    props.value,
+    props.onChange,
+  ]);
   const handleChange = (type: keyof typeof inputFunction, e: InputEvent) => {
+    console.log("handling change", e.target.value);
     inputFunction[type].action(e);
   };
   return (
@@ -184,15 +198,17 @@ export default function TextField(props: Readonly<Props>) {
         backgroundColor: "#FFF",
         borderRadius: "4px",
         padding: "0 16px",
+        ...props.sx,
       }}
     >
       <Input
         variant="standard"
-        value={inputFunction[props.type].value}
+        value={inputFunction[props.type]?.value}
         slotProps={{
           input: { disableUnderline: true },
         }}
         onChange={(e) => handleChange(props.type, e)}
+        disabled={props.disabled}
       />
     </Box>
   );

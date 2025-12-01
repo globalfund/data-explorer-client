@@ -12,13 +12,7 @@ export const RichEditor: React.FC<{
   initialContent?: string;
   setClicked: (clicked: boolean) => void;
   setEditor: (editor: Editor | null) => void;
-}> = ({
-  setEditor,
-  setClicked,
-  initialContent,
-  // visualSettings,
-  itemId,
-}) => {
+}> = ({ setEditor, setClicked, initialContent, itemId }) => {
   const setSelectedController = useStoreActions(
     (actions) => actions.RBReportItemsControllerState.setItem,
   );
@@ -38,7 +32,11 @@ export const RichEditor: React.FC<{
     onUpdate: () => {
       const item = items.find((item) => item.type === "text" && item.extra);
       if (item) {
-        editItem({ id: item.id, type: item.type, settings: item.settings });
+        editItem({
+          id: item.id,
+          type: item.type,
+          settings: item.settings,
+        });
       }
     },
     onMount: ({ editor }) => {

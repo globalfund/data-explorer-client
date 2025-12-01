@@ -18,6 +18,21 @@ export type ObjectFitTypes =
   | "fill"
   | "none"
   | "scale-down";
+export interface RBRKPIFieldFormatting {
+  value: string;
+  fontFamily: string;
+  fontWeight: string;
+  fontSize: string;
+  color: string;
+  bgColor: string;
+  enabled: boolean;
+}
+export interface RBRKPIBoxField {
+  topLabel?: RBRKPIFieldFormatting;
+  bigNumberText?: RBRKPIFieldFormatting;
+  bottomLabel?: RBRKPIFieldFormatting;
+  optionalText?: RBRKPIFieldFormatting;
+}
 export interface RBReportItem {
   id: string;
   type: RBReportItemTypes;
@@ -25,9 +40,17 @@ export interface RBReportItem {
     focus?: boolean;
     key?: string;
     image?: {
+      src?: string;
       sizingMode?: "fit-proportional" | "fill" | "crop" | "auto";
       alignVertical?: "top" | "middle" | "bottom";
       alignHorizontal?: "left" | "center" | "right";
+    };
+    kpi_box?: {
+      field?: RBRKPIBoxField;
+      options?: {
+        alignVertical?: "top" | "middle" | "bottom";
+        lineOption?: "line" | "box" | "simple";
+      };
     };
   };
   settings?: {
@@ -45,7 +68,6 @@ export interface RBReportItem {
     display?: string;
     alignItems?: string;
     justifyContent?: string;
-    src?: string;
     img?: {
       objectFit?: ObjectFitTypes;
       width?: string;

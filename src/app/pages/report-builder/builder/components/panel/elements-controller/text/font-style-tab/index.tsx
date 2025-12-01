@@ -279,7 +279,7 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
             variant="text"
             onClick={(event) => handleClick(event, "fontWeight")}
             endIcon={
-              isFontFamilyMenuActive ? (
+              isFontWeightMenuActive ? (
                 <KeyboardArrowUp />
               ) : (
                 <KeyboardArrowDown />

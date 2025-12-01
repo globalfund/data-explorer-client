@@ -16,9 +16,15 @@ export function ImageSource() {
 
   const handleImageSelect = (url: string) => {
     editItem({
+      ...selectedItem,
       id: selectedItemController?.id || "",
       type: "image",
-      settings: { ...selectedItem?.settings, src: url },
+      settings: { ...selectedItem?.settings },
+      extra: {
+        image: {
+          src: url,
+        },
+      },
     });
   };
   return (

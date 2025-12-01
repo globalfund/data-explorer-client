@@ -17,6 +17,7 @@ import { ReportBuilderPageTable } from "app/pages/report-builder/builder/compone
 import { ReportBuilderPageImage } from "app/pages/report-builder/builder/components/image";
 import { ItemComponent } from "app/pages/report-builder/builder/components/order-container";
 import ElementsController from "./components/panel/elements-controller";
+import KPIBox from "./components/kpi";
 
 export const ReportBuilderPage: React.FC = () => {
   const items = useStoreState((state) => state.RBReportItemsState.items);
@@ -121,6 +122,17 @@ export const ReportBuilderPage: React.FC = () => {
               id={item.id}
               setEditor={setActiveRTE}
             />
+          </ItemComponent>
+        );
+      case "kpi_box":
+        return (
+          <ItemComponent
+            id={item.id}
+            index={index}
+            childrenData={[]}
+            moveItem={moveItem}
+          >
+            <KPIBox id={item.id} />
           </ItemComponent>
         );
       case "column":

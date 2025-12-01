@@ -36,7 +36,7 @@ export default function LayoutTab() {
                 gap: "4px",
                 marginBottom: "8px",
                 svg: {
-                  transform: "rotate(270deg)",
+                  transform: "rotate(90deg)",
                 },
               }}
             >

@@ -35,7 +35,7 @@ export default function AddComponent() {
             paddingRight: "10px",
             paddingBottom: "10px",
             borderWidth: "0.5px",
-            borderColor: "#3154F4",
+            borderColor: "#98A1AA",
             borderRadius: "4px",
             borderStyle: "solid",
             backgroundColor: "#ffffff00",
@@ -60,7 +60,7 @@ export default function AddComponent() {
             paddingRight: "10px",
             paddingBottom: "10px",
             borderWidth: "0.5px",
-            borderColor: "#3154F4",
+            borderColor: "#98A1AA",
             borderRadius: "4px",
             backgroundColor: "#ffffff00",
             borderStyle: "solid",
@@ -81,6 +81,69 @@ export default function AddComponent() {
         newItem = { id: uniqueId(), type: "section_divider" };
         break;
       case "kpi_box":
+        newItem = {
+          id: uniqueId(),
+          type: "kpi_box",
+          settings: {
+            paddingTop: "10px",
+            paddingLeft: "10px",
+            paddingRight: "10px",
+            paddingBottom: "10px",
+            borderWidth: "0.5px",
+            borderColor: "#98A1AA",
+            borderRadius: "4px",
+            backgroundColor: "#ffffff00",
+            borderStyle: "solid",
+            width: "100%",
+            height: "141px",
+          },
+          extra: {
+            kpi_box: {
+              options: {
+                alignVertical: "middle",
+              },
+              field: {
+                topLabel: {
+                  value: "Top Label",
+                  fontFamily: "Arial",
+                  fontWeight: "400",
+                  fontSize: "14px",
+                  color: "#70777E",
+                  bgColor: "#ffffff00",
+                  enabled: true,
+                },
+                bigNumberText: {
+                  value: "BN",
+                  fontFamily: "Arial",
+                  fontWeight: "700",
+                  fontSize: "44px",
+                  color: "#000000",
+                  bgColor: "#ffffff00",
+                  enabled: true,
+                },
+                bottomLabel: {
+                  value: "Bottom Label",
+                  fontFamily: "Arial",
+                  fontWeight: "400",
+                  fontSize: "16px",
+                  color: "#70777E",
+                  bgColor: "#ffffff00",
+                  enabled: true,
+                },
+                optionalText: {
+                  value: "Optional Text",
+                  fontFamily: "Arial",
+                  fontWeight: "400",
+                  fontSize: "14px",
+                  color: "#70777E",
+                  bgColor: "#ffffff00",
+                  enabled: true,
+                },
+              },
+            },
+          },
+        };
+        break;
       case "grid":
         newItem = { id: uniqueId(), type: "grid" };
         break;

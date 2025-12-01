@@ -2,6 +2,7 @@ import { useStoreState } from "app/state/store/hooks";
 import React from "react";
 import TextController from "./text";
 import ImageController from "./image";
+import KPIController from "./kpi";
 
 export default function ElementsController() {
   const selectedItem = useStoreState(
@@ -14,6 +15,8 @@ export default function ElementsController() {
         return activeRTE && <TextController />;
       case "image":
         return <ImageController />;
+      case "kpi_box":
+        return <KPIController />;
       default:
         return null;
     }

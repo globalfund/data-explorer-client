@@ -32,12 +32,10 @@ export const ReportBuilderPageImage: React.FC<{
   const editItem = useStoreActions(
     (actions) => actions.RBReportItemsState.editItem,
   );
-  const {
-    src: imageSrc,
-    img: imgStyle,
-    ...settings
-  } = selectedItem?.settings || {};
+  const { img: imgStyle, ...settings } = selectedItem?.settings || {};
+
   const { image: imageExtra } = selectedItem?.extra || {};
+  const imageSrc = imageExtra?.src;
   const tooltipWidth =
     document.getElementById("tooltip-image-move-pan")?.clientWidth || 0;
 
