@@ -34,8 +34,8 @@ export default function KPITextFormatting() {
             field: {
               ...selectedItem.extra?.kpi_box?.field,
               [option]: {
-                ...selectedItem.extra?.kpi_box?.[
-                  option as keyof typeof selectedItem.extra.kpi_box
+                ...selectedItem.extra?.kpi_box?.field?.[
+                  option as keyof typeof selectedItem.extra.kpi_box.field
                 ],
                 enabled: e.target.checked,
               },

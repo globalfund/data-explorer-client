@@ -34,16 +34,16 @@ export function PaddingSize() {
   }, [selectedItem]);
 
   const handleSelectAlignVertical = (value: "left" | "center" | "right") => {
-    let alignItems = "";
+    let justifyContent = "";
     switch (value) {
       case "left":
-        alignItems = "start";
+        justifyContent = "start";
         break;
       case "center":
-        alignItems = "center";
+        justifyContent = "center";
         break;
       case "right":
-        alignItems = "end";
+        justifyContent = "end";
         break;
     }
     editItem({
@@ -54,7 +54,7 @@ export function PaddingSize() {
       settings: {
         ...selectedItem?.settings,
         display: "flex",
-        alignItems,
+        justifyContent,
       },
       extra: {
         ...selectedItem?.extra,

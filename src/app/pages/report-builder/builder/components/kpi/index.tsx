@@ -98,7 +98,6 @@ export default function KPIBox({ id }: Readonly<Props>) {
             border: isActive ? "0.5px solid #3154F4" : border,
             borderRadius: "4px",
             display: "flex",
-            flexDirection: "column",
             gap: "8px",
             ...settings,
           }}
@@ -108,6 +107,7 @@ export default function KPIBox({ id }: Readonly<Props>) {
               display: "flex",
               flexDirection: "column",
               gap: "8px",
+              width: "100%",
             }}
           >
             <Box
@@ -115,6 +115,8 @@ export default function KPIBox({ id }: Readonly<Props>) {
                 height: "25px",
                 paddingBottom: "8px",
                 borderBottom: "1px solid #98A1AA",
+                justifyContent: settings.justifyContent || "flex-start",
+                display: settings.display || "flex",
               }}
             >
               <Typography
@@ -148,8 +150,7 @@ export default function KPIBox({ id }: Readonly<Props>) {
                   "normal"
                 }
               >
-                {selectedItem?.extra?.kpi_box?.field?.topLabel?.value ??
-                  "Top Label"}
+                {selectedItem?.extra?.kpi_box?.field?.topLabel?.value}
               </Typography>
             </Box>
 
@@ -157,9 +158,12 @@ export default function KPIBox({ id }: Readonly<Props>) {
               sx={{
                 minWidth: "162px",
                 display: "flex",
-                gap: "15px",
+                gap: settings.justifyContent === "left" ? "15px" : "0px",
                 alignItems: "flex-end",
                 borderBottom: "1px solid #98A1AA",
+                justifyContent: settings.justifyContent || "flex-start",
+                flexDirection:
+                  settings.justifyContent === "left" ? "row" : "column",
               }}
             >
               <Typography
@@ -196,8 +200,7 @@ export default function KPIBox({ id }: Readonly<Props>) {
                 // py={"9px"}
                 lineHeight={"normal"}
               >
-                {selectedItem?.extra?.kpi_box?.field?.bigNumberText?.value ??
-                  "BN"}
+                {selectedItem?.extra?.kpi_box?.field?.bigNumberText?.value}
               </Typography>
               <Typography
                 display={
@@ -229,15 +232,20 @@ export default function KPIBox({ id }: Readonly<Props>) {
                   selectedItem?.extra?.kpi_box?.field?.optionalText?.bgColor ??
                   "transparent"
                 }
-                height={"35px"}
-                py={"9px"}
+                height={settings.justifyContent === "left" ? "35px" : "auto"}
+                py={settings.justifyContent === "left" ? "9px" : "0px"}
                 lineHeight={"normal"}
               >
-                {selectedItem?.extra?.kpi_box?.field?.optionalText?.value ??
-                  "Optional Text"}
+                {selectedItem?.extra?.kpi_box?.field?.optionalText?.value}
               </Typography>
             </Box>
-            <Box sx={{ height: "27px" }}>
+            <Box
+              sx={{
+                height: "27px",
+                justifyContent: settings.justifyContent || "flex-start",
+                display: settings.display || "flex",
+              }}
+            >
               <Typography
                 display={
                   selectedItem?.extra?.kpi_box?.field?.bottomLabel?.enabled
@@ -269,8 +277,7 @@ export default function KPIBox({ id }: Readonly<Props>) {
                     ?.fontFamily ?? "Inter"
                 }
               >
-                {selectedItem?.extra?.kpi_box?.field?.bottomLabel?.value ??
-                  "Bottom Label"}
+                {selectedItem?.extra?.kpi_box?.field?.bottomLabel?.value}
               </Typography>
             </Box>
           </Box>

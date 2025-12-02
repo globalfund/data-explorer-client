@@ -190,9 +190,9 @@ export default function TextField(props: Readonly<Props>) {
     props.type,
   ]);
   const handleChange = (type: keyof typeof inputFunction, e: InputEvent) => {
-    console.log("handling change", e.target.value);
     inputFunction[type].action(e);
   };
+
   return (
     <Box
       sx={{

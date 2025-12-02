@@ -32,7 +32,6 @@ export function useTooltip(options: UseTooltipOptions = {}) {
     if (!anchor) return;
 
     const rect = anchor.getBoundingClientRect();
-    console.log("rect", rect);
 
     let top = 0;
     let left = 0;
