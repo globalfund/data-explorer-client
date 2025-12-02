@@ -15,14 +15,24 @@ export default function AlignButtons() {
   );
   const items = useStoreState((state) => state.RBReportItemsState.items);
   const item = items.find((i) => i.id === selectedController?.id);
+
   const handleAlignChange = (align: "start" | "center" | "end") => {
+    if (!item) return;
+
+    const currentAlign = item?.settings?.alignItems;
+    const isRemoving = currentAlign === align;
+    const newAlign = isRemoving ? undefined : align;
+    const newDisplay = isRemoving ? "block" : "flex";
+
     editItem({
+      ...item,
+      open: selectedController?.open || false,
       id: selectedController?.id || "",
       type: "text",
       settings: {
         ...item?.settings,
-        alignItems: align,
-        display: "flex",
+        alignItems: newAlign,
+        display: newDisplay,
       },
     });
   };

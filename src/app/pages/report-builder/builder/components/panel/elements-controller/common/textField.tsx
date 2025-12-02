@@ -1,6 +1,7 @@
 import Box from "@mui/material/Box";
 import Input from "@mui/material/TextField";
 import {
+  RBReportItem,
   RBRKPIBoxField,
   RBRKPIFieldFormatting,
 } from "app/state/api/action-reducers/report-builder/sync";
@@ -46,6 +47,7 @@ export default function TextField(props: Readonly<Props>) {
     const updateSetting = (newSetting: Record<any, string>) => {
       editItem({
         ...item,
+        open: item?.open || false,
         id: selectedController?.id || "",
         type: props.item,
         settings: {
@@ -76,27 +78,29 @@ export default function TextField(props: Readonly<Props>) {
         editItem(updatedItem);
       };
 
-      const buildUpdatedItem = (fieldType: string, value: string) => {
+      const buildUpdatedItem = (
+        fieldType: string,
+        value: string,
+      ): RBReportItem => {
         const currentField = item?.extra?.kpi_box?.field?.[
           fieldType as keyof RBRKPIBoxField
         ] as RBRKPIFieldFormatting;
 
         const updatedField = { ...currentField, value };
 
-        const updatedKPIBox = {
-          ...item?.extra?.kpi_box?.field,
-          [fieldType]: updatedField,
-        };
-
         return {
           ...item,
           id: selectedController?.id || "",
           type: props.item,
+          open: item?.open || false,
           extra: {
             ...item?.extra,
             kpi_box: {
               ...item?.extra?.kpi_box,
-              label: updatedKPIBox,
+              field: {
+                ...item?.extra?.kpi_box?.field,
+                [fieldType]: updatedField,
+              },
             },
           },
         };
@@ -178,10 +182,12 @@ export default function TextField(props: Readonly<Props>) {
     editItem,
     item?.settings,
     item?.extra,
-
+    item?.extra?.kpi_box?.field?.topLabel?.value,
     selectedController?.id,
     props.value,
     props.onChange,
+    props.item,
+    props.type,
   ]);
   const handleChange = (type: keyof typeof inputFunction, e: InputEvent) => {
     console.log("handling change", e.target.value);

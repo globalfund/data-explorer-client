@@ -1,6 +1,7 @@
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Check from "@mui/icons-material/Check";
+import { Typography } from "@mui/material";
 
 export interface StyledMenuOption {
   label: string;
@@ -111,7 +112,18 @@ export default function StyledMenu({
             }}
           >
             {option?.icon ?? null}
-            {option.label}
+            <Typography
+              title={option.label}
+              component={"span"}
+              sx={{
+                maxWidth: "calc(100% - 24px)",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {option.label}
+            </Typography>
             {isActive && <Check fontSize="small" htmlColor="#495057" />}
           </MenuItem>
         );

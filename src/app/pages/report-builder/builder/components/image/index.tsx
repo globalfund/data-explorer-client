@@ -44,6 +44,7 @@ export const ReportBuilderPageImage: React.FC<{
     if (imageExtra?.sizingMode === "auto") {
       editItem({
         ...selectedItem,
+        open: selectedItem!.open,
         id,
         type: "image",
         settings: {

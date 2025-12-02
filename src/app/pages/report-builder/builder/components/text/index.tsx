@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import { Editor } from "@tiptap/react";
 import Typography from "@mui/material/Typography";
 import { RichEditor } from "app/components/rich-text-editor";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 
 export const ReportBuilderPageText: React.FC<{
   id: string;
@@ -10,10 +11,15 @@ export const ReportBuilderPageText: React.FC<{
   focus?: boolean;
   initialKey?: string;
   setEditor: (editor: Editor | null) => void;
-}> = ({ id, setEditor, initialKey, settings }) => {
-  const isMounted = React.useRef(false);
-  const [clicked, setClicked] = React.useState(false);
-
+}> = ({ id, setEditor, settings }) => {
+  const items = useStoreState((state) => state.RBReportItemsState.items);
+  const setSelectedController = useStoreActions(
+    (actions) => actions.RBReportItemsControllerState.setItem,
+  );
+  const selectedItem = items.find((i) => i.id === id);
+  const editItem = useStoreActions(
+    (actions) => actions.RBReportItemsState.editItem,
+  );
   return (
     <Box
       sx={{
@@ -27,8 +33,17 @@ export const ReportBuilderPageText: React.FC<{
           },
         },
       }}
+      onClick={() => {
+        editItem({
+          ...selectedItem,
+          id,
+          type: "text",
+          open: true,
+        });
+        setSelectedController({ type: "text", open: true, id });
+      }}
     >
-      {!clicked && (
+      {!selectedItem?.open && (
         <Box
           sx={{
             width: "100%",
@@ -42,20 +57,18 @@ export const ReportBuilderPageText: React.FC<{
             bgcolor: "#d6ddfd",
             border: "1px dashed #3154f4",
           }}
-          onClick={() => setClicked(true)}
         >
           <Typography fontSize="16px" color="#3154f4">
             Click to start writing...
           </Typography>
         </Box>
       )}
-      {clicked && (
+      {selectedItem?.open && (
         <RichEditor
           itemId={id}
           setEditor={setEditor}
-          setClicked={setClicked}
           visualSettings={settings}
-          initialContent={!isMounted.current ? initialKey : undefined}
+          initialContent={undefined}
         />
       )}
     </Box>

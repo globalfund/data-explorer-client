@@ -156,7 +156,6 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
   const onFontFamilyChange = (value: string) => {
     editor.chain().focus().setFontFamily(value).run();
   };
-
   const addIndent = () => {};
 
   const removeIndent = () => {};
@@ -181,6 +180,9 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
     );
     return selected ? selected.value : "";
   }, [editorState.fontWeight]);
+  const fontWeightLabel = weightOptions.find(
+    (option) => option.value === fontWeightValue,
+  )?.label;
 
   const fontFamilyValue = React.useMemo(() => {
     return (
@@ -296,10 +298,17 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
               border: "0.5px solid #98A1AA",
             }}
           >
-            {
-              weightOptions.find((option) => option.value === fontWeightValue)
-                ?.label
-            }
+            <Typography
+              title={fontWeightLabel}
+              sx={{
+                maxWidth: "calc(100% - 24px)",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {fontWeightLabel}
+            </Typography>
           </Button>
 
           <StyledMenu

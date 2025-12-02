@@ -1,5 +1,6 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import { useClickOutsideEditor } from "app/hooks/useClickOutsideEditorComponent";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import React from "react";
 
@@ -16,15 +17,34 @@ export default function KPIBox({ id }: Readonly<Props>) {
   );
   const selectedItem = items.find((i) => i.id === id);
   const isActive = selectedItemController?.id === id;
-  const [clicked, setClicked] = React.useState(false);
   const border = `${selectedItem?.settings?.borderWidth || "0.5px"} solid ${
     selectedItem?.settings?.borderColor || "#000000"
   }`;
   const settings = selectedItem?.settings || {};
+  const clearSelectedItem = useStoreActions(
+    (actions) => actions.RBReportItemsControllerState.clearItem,
+  );
+  const editItem = useStoreActions(
+    (actions) => actions.RBReportItemsState.editItem,
+  );
+
+  useClickOutsideEditor({
+    editorId: "kpi-render",
+    toolbarId: "kpi-controller",
+    onOutsideClick: () => {
+      clearSelectedItem();
+    },
+  });
   return (
     <Box
+      id="kpi-render"
       onClick={() => {
-        setClicked(true);
+        editItem({
+          ...selectedItem,
+          id,
+          type: "kpi_box",
+          open: true,
+        });
         setSelectedController({
           id,
           type: "kpi_box",
@@ -32,7 +52,7 @@ export default function KPIBox({ id }: Readonly<Props>) {
         });
       }}
     >
-      {!clicked && (
+      {!selectedItem?.open && (
         <Box
           sx={{
             gap: "10px",
@@ -70,7 +90,7 @@ export default function KPIBox({ id }: Readonly<Props>) {
           </Typography>
         </Box>
       )}
-      {clicked && (
+      {selectedItem?.open && (
         <Box
           sx={{
             height: "141px",
@@ -78,6 +98,7 @@ export default function KPIBox({ id }: Readonly<Props>) {
             border: isActive ? "0.5px solid #3154F4" : border,
             borderRadius: "4px",
             display: "flex",
+            flexDirection: "column",
             gap: "8px",
             ...settings,
           }}
@@ -122,6 +143,10 @@ export default function KPIBox({ id }: Readonly<Props>) {
                   selectedItem?.extra?.kpi_box?.field?.topLabel?.fontWeight ??
                   400
                 }
+                fontStyle={
+                  selectedItem?.extra?.kpi_box?.field?.topLabel?.fontStyle ??
+                  "normal"
+                }
               >
                 {selectedItem?.extra?.kpi_box?.field?.topLabel?.value ??
                   "Top Label"}
@@ -163,6 +188,10 @@ export default function KPIBox({ id }: Readonly<Props>) {
                   selectedItem?.extra?.kpi_box?.field?.bigNumberText?.bgColor ??
                   "transparent"
                 }
+                fontStyle={
+                  selectedItem?.extra?.kpi_box?.field?.bigNumberText
+                    ?.fontStyle ?? "normal"
+                }
                 height={"53px"}
                 // py={"9px"}
                 lineHeight={"normal"}
@@ -187,6 +216,10 @@ export default function KPIBox({ id }: Readonly<Props>) {
                 fontWeight={
                   selectedItem?.extra?.kpi_box?.field?.optionalText
                     ?.fontWeight ?? 400
+                }
+                fontStyle={
+                  selectedItem?.extra?.kpi_box?.field?.optionalText
+                    ?.fontStyle ?? "normal"
                 }
                 fontFamily={
                   selectedItem?.extra?.kpi_box?.field?.optionalText
@@ -222,6 +255,10 @@ export default function KPIBox({ id }: Readonly<Props>) {
                 bgcolor={
                   selectedItem?.extra?.kpi_box?.field?.bottomLabel?.bgColor ??
                   "transparent"
+                }
+                fontStyle={
+                  selectedItem?.extra?.kpi_box?.field?.bottomLabel?.fontStyle ??
+                  "normal"
                 }
                 fontWeight={
                   selectedItem?.extra?.kpi_box?.field?.bottomLabel

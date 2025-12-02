@@ -39,7 +39,7 @@ export default function AdvancedOptions(props: Readonly<AdvancedOptionsProps>) {
     React.useState<null | HTMLElement>(null);
   const [isFontSizeMenuActive, setIsFontSizeMenuActive] = React.useState(false);
   const weightValue =
-    selectedItem?.extra?.kpi_box?.field?.[props.type]?.fontWeight || "400";
+    selectedItem?.extra?.kpi_box?.field?.[props.type]?.fontWeightLabel || "400";
   const fontFamilyValue =
     selectedItem?.extra?.kpi_box?.field?.[props.type]?.fontFamily || "Arial";
   const fontSizeValue =
@@ -49,9 +49,28 @@ export default function AdvancedOptions(props: Readonly<AdvancedOptionsProps>) {
   const bgColorValue =
     selectedItem?.extra?.kpi_box?.field?.[props.type]?.bgColor || "#FFFFFF";
 
+  const weightLabel = weightOptions.find(
+    (option) => option.value === weightValue,
+  )?.label;
+
   const handleWeightChange = (value: string) => {
+    let fontWeight = {};
+    if (value.includes("italic")) {
+      fontWeight = {
+        fontStyle: "italic",
+        fontWeight: value.split("+")[0],
+        fontWeightLabel: value,
+      };
+    } else {
+      fontWeight = {
+        fontStyle: "normal",
+        fontWeight: value,
+        fontWeightLabel: value,
+      };
+    }
     editItem({
       ...selectedItem,
+      open: selectedItem?.open || false,
       id: selectedItem?.id || "",
       type: "kpi_box",
       extra: {
@@ -62,7 +81,7 @@ export default function AdvancedOptions(props: Readonly<AdvancedOptionsProps>) {
             ...selectedItem?.extra?.kpi_box?.field,
             [props.type]: {
               ...selectedItem?.extra?.kpi_box?.field?.[props.type],
-              fontWeight: value,
+              ...fontWeight,
             },
           },
         },
@@ -72,6 +91,7 @@ export default function AdvancedOptions(props: Readonly<AdvancedOptionsProps>) {
   const handleSizeChange = (value: string) => {
     editItem({
       ...selectedItem,
+      open: selectedItem?.open || false,
       id: selectedItem?.id || "",
       type: "kpi_box",
       extra: {
@@ -92,6 +112,7 @@ export default function AdvancedOptions(props: Readonly<AdvancedOptionsProps>) {
   const handleFontFamilyChange = (value: string) => {
     editItem({
       ...selectedItem,
+      open: selectedItem?.open || false,
       id: selectedItem?.id || "",
       type: "kpi_box",
       extra: {
@@ -122,6 +143,7 @@ export default function AdvancedOptions(props: Readonly<AdvancedOptionsProps>) {
 
     editItem({
       ...selectedItem,
+      open: selectedItem?.open || false,
       id: selectedItem?.id || "",
       type: "kpi_box",
       extra: {
@@ -270,10 +292,18 @@ export default function AdvancedOptions(props: Readonly<AdvancedOptionsProps>) {
                   border: "0.5px solid #98A1AA",
                 }}
               >
-                {
-                  weightOptions.find((option) => option.value === weightValue)
-                    ?.label
-                }
+                <Typography
+                  title={weightLabel}
+                  fontSize={"14px"}
+                  sx={{
+                    maxWidth: "calc(100% - 24px)",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {weightLabel}
+                </Typography>
               </Button>
 
               <StyledMenu

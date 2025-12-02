@@ -198,6 +198,7 @@ export const ReportBuilderPage: React.FC = () => {
       addItem({
         id: uniqueId(),
         type: "text",
+        open: true,
         extra: { focus: true, key: e.key },
         settings: {
           paddingTop: "10px",

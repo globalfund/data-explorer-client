@@ -5,6 +5,7 @@ import React from "react";
 import StyledMenu from "./menu-popup";
 import Copy from "app/assets/vectors/Duplicate.svg?react";
 import Folder from "app/assets/vectors/Folder2.svg?react";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 
 const DeleteIcon = (
   <svg
@@ -36,16 +37,25 @@ export function Options() {
       icon: <Copy />,
       label: "Duplicate",
       value: "duplicate",
+      sx: {
+        justifyContent: "start",
+      },
     },
     {
       icon: <Folder />,
-      label: "Save as an aseet",
+      label: "Save as an asset",
       value: "save",
+      sx: {
+        justifyContent: "start",
+      },
     },
     {
       icon: DeleteIcon,
       label: "Delete",
       value: "delete",
+      sx: {
+        justifyContent: "start",
+      },
     },
   ];
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
@@ -54,11 +64,25 @@ export function Options() {
   const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
+  const selectedItemController = useStoreState(
+    (state) => state.RBReportItemsControllerState.item,
+  );
+  const setSelectedItemController = useStoreActions(
+    (actions) => actions.RBReportItemsControllerState.setItem,
+  );
+  const removeItem = useStoreActions(
+    (actions) => actions.RBReportItemsState.removeItem,
+  );
 
   const handleClose = () => {
     setAnchorEl(null);
   };
   const handleChange = (value: string) => {
+    if (value === "delete") {
+      removeItem(selectedItemController?.id as string);
+      setSelectedItemController({ id: "", type: null, open: false });
+      handleClose();
+    }
     setSelectedValue(value);
   };
 

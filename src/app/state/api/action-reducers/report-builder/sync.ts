@@ -22,7 +22,9 @@ export interface RBRKPIFieldFormatting {
   value: string;
   fontFamily: string;
   fontWeight: string;
+  fontWeightLabel: string;
   fontSize: string;
+  fontStyle: string;
   color: string;
   bgColor: string;
   enabled: boolean;
@@ -36,9 +38,13 @@ export interface RBRKPIBoxField {
 export interface RBReportItem {
   id: string;
   type: RBReportItemTypes;
+  open: boolean;
   extra?: {
     focus?: boolean;
     key?: string;
+    text?: {
+      rte: any;
+    };
     image?: {
       src?: string;
       sizingMode?: "fit-proportional" | "fill" | "crop" | "auto";
@@ -49,6 +55,7 @@ export interface RBReportItem {
       field?: RBRKPIBoxField;
       options?: {
         alignVertical?: "top" | "middle" | "bottom";
+        alignHorizontal?: "left" | "center" | "right";
         lineOption?: "line" | "box" | "simple";
       };
     };
@@ -69,6 +76,7 @@ export interface RBReportItem {
     alignItems?: string;
     justifyContent?: string;
     img?: {
+      opacity?: number;
       objectFit?: ObjectFitTypes;
       width?: string;
     };
@@ -77,7 +85,7 @@ export interface RBReportItem {
 
 export interface RBReportItemController {
   open: boolean;
-  type: RBReportItemTypes;
+  type: RBReportItemTypes | null;
   id: string;
 }
 export interface RBReportItemControllerModel {

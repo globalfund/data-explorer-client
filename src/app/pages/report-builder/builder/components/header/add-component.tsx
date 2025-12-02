@@ -29,6 +29,7 @@ export default function AddComponent() {
         newItem = {
           id: uniqueId(),
           type: "text",
+          open: false,
           settings: {
             paddingTop: "10px",
             paddingLeft: "10px",
@@ -45,15 +46,16 @@ export default function AddComponent() {
         };
         break;
       case "chart":
-        newItem = { id: uniqueId(), type: "chart" };
+        newItem = { id: uniqueId(), type: "chart", open: false };
         break;
       case "table":
-        newItem = { id: uniqueId(), type: "table" };
+        newItem = { id: uniqueId(), type: "table", open: false };
         break;
       case "image":
         newItem = {
           id: uniqueId(),
           type: "image",
+          open: false,
           settings: {
             paddingTop: "10px",
             paddingLeft: "10px",
@@ -68,6 +70,7 @@ export default function AddComponent() {
             height: "400px",
             img: {
               objectFit: "contain",
+              opacity: 1,
             },
           },
           extra: {
@@ -78,12 +81,13 @@ export default function AddComponent() {
         };
         break;
       case "section_divider":
-        newItem = { id: uniqueId(), type: "section_divider" };
+        newItem = { id: uniqueId(), type: "section_divider", open: false };
         break;
       case "kpi_box":
         newItem = {
           id: uniqueId(),
           type: "kpi_box",
+          open: false,
           settings: {
             paddingTop: "10px",
             paddingLeft: "10px",
@@ -106,6 +110,8 @@ export default function AddComponent() {
                 topLabel: {
                   value: "Top Label",
                   fontFamily: "Arial",
+                  fontWeightLabel: "400",
+                  fontStyle: "normal",
                   fontWeight: "400",
                   fontSize: "14px",
                   color: "#70777E",
@@ -116,6 +122,8 @@ export default function AddComponent() {
                   value: "BN",
                   fontFamily: "Arial",
                   fontWeight: "700",
+                  fontWeightLabel: "400",
+                  fontStyle: "normal",
                   fontSize: "44px",
                   color: "#000000",
                   bgColor: "#ffffff00",
@@ -124,6 +132,8 @@ export default function AddComponent() {
                 bottomLabel: {
                   value: "Bottom Label",
                   fontFamily: "Arial",
+                  fontWeightLabel: "400",
+                  fontStyle: "normal",
                   fontWeight: "400",
                   fontSize: "16px",
                   color: "#70777E",
@@ -133,6 +143,8 @@ export default function AddComponent() {
                 optionalText: {
                   value: "Optional Text",
                   fontFamily: "Arial",
+                  fontWeightLabel: "400",
+                  fontStyle: "normal",
                   fontWeight: "400",
                   fontSize: "14px",
                   color: "#70777E",
@@ -145,10 +157,10 @@ export default function AddComponent() {
         };
         break;
       case "grid":
-        newItem = { id: uniqueId(), type: "grid" };
+        newItem = { id: uniqueId(), type: "grid", open: false };
         break;
       case "column":
-        newItem = { id: uniqueId(), type: "column" };
+        newItem = { id: uniqueId(), type: "column", open: false };
         break;
       default:
         break;

@@ -4,9 +4,9 @@ import Button from "@mui/material/Button";
 import { KeyboardArrowUp, KeyboardArrowDown } from "@mui/icons-material";
 import React from "react";
 import StyledMenu from "../../common/menu-popup";
-import { alignVOptions } from "../../image/data";
 import CustomTextField from "../../common/textField";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { alignHOptions } from "../data";
 
 export function PaddingSize() {
   const selectedItemController = useStoreState(
@@ -19,8 +19,8 @@ export function PaddingSize() {
   const items = useStoreState((state) => state.RBReportItemsState.items);
   const selectedItem = items.find((i) => i.id === selectedItemController?.id);
 
-  const [alignVertical, setAlignVertical] = React.useState(
-    selectedItem?.extra?.kpi_box?.options?.alignVertical || "top",
+  const [alignHorizontal, setAlignHorizontal] = React.useState(
+    selectedItem?.extra?.kpi_box?.options?.alignHorizontal || "left",
   );
 
   const [alignVerticalAnchorEl, setAlignVerticalAnchorEl] =
@@ -28,26 +28,27 @@ export function PaddingSize() {
   const isAlignVerticalMenuActive = Boolean(alignVerticalAnchorEl);
 
   React.useEffect(() => {
-    setAlignVertical(
-      selectedItem?.extra?.kpi_box?.options?.alignVertical || "top",
+    setAlignHorizontal(
+      selectedItem?.extra?.kpi_box?.options?.alignHorizontal || "left",
     );
   }, [selectedItem]);
 
-  const handleSelectAlignVertical = (value: "top" | "middle" | "bottom") => {
+  const handleSelectAlignVertical = (value: "left" | "center" | "right") => {
     let alignItems = "";
     switch (value) {
-      case "top":
+      case "left":
         alignItems = "start";
         break;
-      case "middle":
+      case "center":
         alignItems = "center";
         break;
-      case "bottom":
+      case "right":
         alignItems = "end";
         break;
     }
     editItem({
       ...selectedItem,
+      open: selectedItem?.open || false,
       id: selectedItemController?.id || "",
       type: "kpi_box",
       settings: {
@@ -61,12 +62,12 @@ export function PaddingSize() {
           ...selectedItem?.extra?.kpi_box,
           options: {
             ...selectedItem?.extra?.kpi_box?.options,
-            alignVertical: value,
+            alignHorizontal: value,
           },
         },
       },
     });
-    setAlignVertical(value);
+    setAlignHorizontal(value);
   };
 
   const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -115,7 +116,7 @@ export function PaddingSize() {
           }}
         >
           {
-            alignVOptions.find((option) => option.value === alignVertical)
+            alignHOptions.find((option) => option.value === alignHorizontal)
               ?.label
           }
         </Button>
@@ -124,8 +125,8 @@ export function PaddingSize() {
           open={isAlignVerticalMenuActive}
           anchorEl={alignVerticalAnchorEl}
           onClose={() => handleCloseMenu()}
-          options={alignVOptions}
-          activeValue={alignVertical}
+          options={alignHOptions}
+          activeValue={alignHorizontal}
           onSelect={handleSelectAlignVertical}
         />
       </Box>

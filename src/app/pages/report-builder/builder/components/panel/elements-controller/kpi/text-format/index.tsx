@@ -24,6 +24,7 @@ export default function KPITextFormatting() {
     (option: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
       editItem({
         ...selectedItem,
+        open: selectedItem?.open || false,
         id: selectedItemController?.id || "",
         type: "kpi_box",
         extra: {

@@ -17,7 +17,9 @@ export function BorderFill() {
   const item = items.find((i) => i.id === selectedController?.id);
   const handleBackgroundColorChange = (color: IColor) => {
     editItem({
+      ...item,
       id: selectedController?.id || "",
+      open: item?.open || false,
       type: "image",
       settings: {
         ...item?.settings,
@@ -27,7 +29,9 @@ export function BorderFill() {
   };
   const handleBorderColorChange = (color: IColor) => {
     editItem({
+      ...item,
       id: selectedController?.id || "",
+      open: item?.open || false,
       type: "image",
       settings: {
         ...item?.settings,
@@ -38,11 +42,16 @@ export function BorderFill() {
   };
   const handleOpacityChange = (event: Event, value: number | number[]) => {
     editItem({
+      ...item,
       id: selectedController?.id || "",
+      open: item?.open || false,
       type: "image",
       settings: {
         ...item?.settings,
-        opacity: (value as number) / 100,
+        img: {
+          ...item?.settings?.img,
+          opacity: (value as number) / 100,
+        },
       },
     });
   };

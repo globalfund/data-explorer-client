@@ -62,6 +62,7 @@ export function PaddingSize() {
     editItem({
       ...selectedItem,
       id: selectedItemController?.id || "",
+      open: selectedItem?.open || false,
       type: "image",
       settings: {
         ...selectedItem?.settings,
@@ -100,6 +101,7 @@ export function PaddingSize() {
     editItem({
       ...selectedItem,
       id: selectedItemController?.id || "",
+      open: selectedItem?.open || false,
       type: "image",
       settings: {
         ...selectedItem?.settings,
@@ -134,6 +136,7 @@ export function PaddingSize() {
       ...selectedItem,
       id: selectedItemController?.id || "",
       type: "image",
+      open: selectedItem?.open || false,
       settings: {
         ...selectedItem?.settings,
         display: "flex",

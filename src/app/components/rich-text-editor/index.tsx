@@ -2,7 +2,6 @@ import React from "react";
 import Box from "@mui/material/Box";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { extensions } from "app/components/rich-text-editor/extensions";
-
 import { Editor, useEditor, EditorContent } from "@tiptap/react";
 import { useClickOutsideEditor } from "app/hooks/useClickOutsideEditorComponent";
 
@@ -10,15 +9,10 @@ export const RichEditor: React.FC<{
   itemId: string;
   visualSettings: any;
   initialContent?: string;
-  setClicked: (clicked: boolean) => void;
   setEditor: (editor: Editor | null) => void;
-}> = ({ setEditor, setClicked, initialContent, itemId }) => {
-  const setSelectedController = useStoreActions(
-    (actions) => actions.RBReportItemsControllerState.setItem,
-  );
+}> = ({ setEditor, itemId }) => {
   const items = useStoreState((state) => state.RBReportItemsState.items);
   const selectedItem = items.find((i) => i.id === itemId);
-
   const editItem = useStoreActions(
     (actions) => actions.RBReportItemsState.editItem,
   );
@@ -29,21 +23,19 @@ export const RichEditor: React.FC<{
   const editor = useEditor({
     extensions,
     autofocus: true,
-    onUpdate: () => {
-      const item = items.find((item) => item.type === "text" && item.extra);
-      if (item) {
+    content: selectedItem?.extra?.text?.rte || "",
+
+    onUpdate: ({ editor }) => {
+      if (selectedItem) {
         editItem({
-          id: item.id,
-          type: item.type,
-          settings: item.settings,
+          ...selectedItem,
+          extra: {
+            ...selectedItem.extra,
+            text: {
+              rte: editor.getJSON(),
+            },
+          },
         });
-      }
-    },
-    onMount: ({ editor }) => {
-      if (initialContent && editor && editor.isEmpty) {
-        setTimeout(() => {
-          editor.commands.setContent(initialContent);
-        }, 1);
       }
     },
   });
@@ -54,15 +46,10 @@ export const RichEditor: React.FC<{
     onOutsideClick: () => {
       setEditor(null);
       clearSelectedItem();
-
-      if (editor.isEmpty) {
-        setClicked(false);
-      }
     },
   });
   const setEditorStateAndController = () => {
     setEditor(editor);
-    setSelectedController({ type: "text", open: true, id: itemId });
   };
 
   return (

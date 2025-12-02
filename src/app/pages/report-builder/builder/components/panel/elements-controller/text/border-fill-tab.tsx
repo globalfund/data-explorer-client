@@ -17,6 +17,8 @@ export default function StyleTab() {
   const item = items.find((i) => i.id === selectedController?.id);
   const handleBackgroundColorChange = (color: IColor) => {
     editItem({
+      ...item,
+      open: selectedController?.open || false,
       id: selectedController?.id || "",
       type: "text",
       settings: {
@@ -27,6 +29,8 @@ export default function StyleTab() {
   };
   const handleBorderColorChange = (color: IColor) => {
     editItem({
+      ...item,
+      open: selectedController?.open || false,
       id: selectedController?.id || "",
       type: "text",
       settings: {

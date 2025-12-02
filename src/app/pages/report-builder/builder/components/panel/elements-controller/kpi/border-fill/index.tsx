@@ -22,6 +22,7 @@ export function BorderFill() {
   const handleBackgroundColorChange = (color: IColor) => {
     editItem({
       ...selectedItem,
+      open: selectedItem?.open || false,
       id: selectedController?.id || "",
       type: "kpi_box",
       settings: {
@@ -33,6 +34,7 @@ export function BorderFill() {
   const handleBorderColorChange = (color: IColor) => {
     editItem({
       ...selectedItem,
+      open: selectedItem?.open || false,
       id: selectedController?.id || "",
       type: "kpi_box",
       settings: {
@@ -72,6 +74,7 @@ export function BorderFill() {
     }
     editItem({
       ...selectedItem,
+      open: selectedItem?.open || false,
       id: selectedController?.id || "",
       type: "kpi_box",
       settings: {
