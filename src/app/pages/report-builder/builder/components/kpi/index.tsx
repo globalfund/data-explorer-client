@@ -21,13 +21,14 @@ export default function KPIBox({ id }: Readonly<Props>) {
     selectedItem?.settings?.borderColor || "#000000"
   }`;
   const settings = selectedItem?.settings || {};
+  const alignHorizontal =
+    selectedItem?.extra?.kpi_box?.options?.alignHorizontal;
   const clearSelectedItem = useStoreActions(
     (actions) => actions.RBReportItemsControllerState.clearItem,
   );
   const editItem = useStoreActions(
     (actions) => actions.RBReportItemsState.editItem,
   );
-
   useClickOutsideEditor({
     editorId: "kpi-render",
     toolbarId: "kpi-controller",
@@ -158,12 +159,14 @@ export default function KPIBox({ id }: Readonly<Props>) {
               sx={{
                 minWidth: "162px",
                 display: "flex",
-                gap: settings.justifyContent === "left" ? "15px" : "0px",
-                alignItems: "flex-end",
+                gap: alignHorizontal === "left" ? "15px" : "0px",
+                alignItems:
+                  alignHorizontal === "left"
+                    ? "center"
+                    : settings.justifyContent,
                 borderBottom: "1px solid #98A1AA",
-                justifyContent: settings.justifyContent || "flex-start",
-                flexDirection:
-                  settings.justifyContent === "left" ? "row" : "column",
+                justifyContent: "start",
+                flexDirection: alignHorizontal === "left" ? "row" : "column",
               }}
             >
               <Typography
@@ -244,6 +247,7 @@ export default function KPIBox({ id }: Readonly<Props>) {
                 height: "27px",
                 justifyContent: settings.justifyContent || "flex-start",
                 display: settings.display || "flex",
+                alignItems: "center",
               }}
             >
               <Typography

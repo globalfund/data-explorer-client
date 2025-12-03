@@ -100,11 +100,13 @@ export default function AddComponent() {
             borderStyle: "solid",
             width: "100%",
             height: "141px",
+            justifyContent: "start",
           },
           extra: {
             kpi_box: {
               options: {
                 alignVertical: "middle",
+                alignHorizontal: "left",
               },
               field: {
                 topLabel: {
