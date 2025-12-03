@@ -25,7 +25,8 @@ interface Props {
     | "bigNumberText"
     | "topLabel"
     | "bottomLabel"
-    | "optionalText";
+    | "optionalText"
+    | "innerBorderWidth";
 
   onChange?: (value: string) => void;
   value?: string;
@@ -114,6 +115,27 @@ export default function TextField(props: Readonly<Props>) {
       }));
     };
 
+    const innerBorderLineStyle = (borderStyle: Record<any, string>) => {
+      editItem({
+        ...item,
+        open: item?.open || false,
+        id: selectedController?.id || "",
+        type: "kpi_box",
+        extra: {
+          ...item?.extra,
+          kpi_box: {
+            ...item?.extra?.kpi_box,
+            options: {
+              ...item?.extra?.kpi_box?.options,
+              innerLine: {
+                ...item?.extra?.kpi_box?.options?.innerLine,
+                ...borderStyle,
+              },
+            },
+          },
+        },
+      });
+    };
     return {
       letterSpacing: {
         value: props.value || "0px",
@@ -134,6 +156,13 @@ export default function TextField(props: Readonly<Props>) {
           updateSetting({ borderWidth: e.target.value, borderStyle: "solid" });
         },
       },
+      innerBorderWidth: {
+        value: item?.extra?.kpi_box?.options?.innerLine?.borderWidth || "0px",
+        action: (e: InputEvent) => {
+          innerBorderLineStyle({ borderWidth: e.target.value });
+        },
+      },
+
       borderRadius: {
         value: item?.settings?.borderRadius || "0px",
         action: (e: InputEvent) => {

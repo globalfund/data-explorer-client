@@ -107,6 +107,11 @@ export default function AddComponent() {
               options: {
                 alignVertical: "middle",
                 alignHorizontal: "left",
+                innerLine: {
+                  type: "line",
+                  borderWidth: "0.5px",
+                  borderColor: "#98A1AA",
+                },
               },
               field: {
                 topLabel: {

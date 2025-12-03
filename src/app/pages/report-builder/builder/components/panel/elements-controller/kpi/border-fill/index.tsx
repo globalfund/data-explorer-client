@@ -44,9 +44,30 @@ export function BorderFill() {
       },
     });
   };
+  const handleInnerBorderColorChange = (color: IColor) => {
+    editItem({
+      ...selectedItem,
+      open: selectedItem?.open || false,
+      id: selectedController?.id || "",
+      type: "kpi_box",
+      extra: {
+        ...selectedItem?.extra,
+        kpi_box: {
+          ...selectedItem?.extra?.kpi_box,
+          options: {
+            ...selectedItem?.extra?.kpi_box?.options,
+            innerLine: {
+              ...selectedItem?.extra?.kpi_box?.options?.innerLine,
+              borderColor: ColorService.convert("hex", color.hex).hex,
+            },
+          },
+        },
+      },
+    });
+  };
 
   const [lineMenuOption, setLineMenuOption] = React.useState(
-    selectedItem?.extra?.kpi_box?.options?.lineOption || "line",
+    selectedItem?.extra?.kpi_box?.options?.innerLine?.type || "line",
   );
 
   const [lineMenuAnchorEl, setLineMenuAnchorEl] =
@@ -55,7 +76,7 @@ export function BorderFill() {
 
   React.useEffect(() => {
     setLineMenuOption(
-      selectedItem?.extra?.kpi_box?.options?.lineOption || "line",
+      selectedItem?.extra?.kpi_box?.options?.innerLine?.type || "line",
     );
   }, [selectedItem]);
 
@@ -88,7 +109,9 @@ export function BorderFill() {
           ...selectedItem?.extra?.kpi_box,
           options: {
             ...selectedItem?.extra?.kpi_box?.options,
-            lineOption: value,
+            innerLine: {
+              type: value,
+            },
           },
         },
       },
@@ -162,7 +185,7 @@ export function BorderFill() {
           >
             Line Stroke
           </Typography>
-          <CustomTextField type="borderWidth" item="kpi_box" />
+          <CustomTextField type="innerBorderWidth" item="kpi_box" />
         </Box>
         <Box>
           <Typography
@@ -173,9 +196,10 @@ export function BorderFill() {
           <ColorPicker
             color={ColorService.convert(
               "hex",
-              selectedItem?.settings?.borderColor || "#000000",
+              selectedItem?.extra?.kpi_box?.options?.innerLine?.borderColor ||
+                "#000000",
             )}
-            onChange={handleBorderColorChange}
+            onChange={handleInnerBorderColorChange}
             disabled={false}
             onResetColor={() => {}}
             onChangeComplete={() => {}}

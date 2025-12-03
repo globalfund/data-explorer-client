@@ -56,7 +56,11 @@ export interface RBReportItem {
       options?: {
         alignVertical?: "top" | "middle" | "bottom";
         alignHorizontal?: "left" | "center" | "right";
-        lineOption?: "line" | "box" | "simple";
+        innerLine?: {
+          type?: "line" | "box" | "simple";
+          borderWidth?: string;
+          borderColor?: string;
+        };
       };
     };
   };

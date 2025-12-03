@@ -23,6 +23,7 @@ export default function KPIBox({ id }: Readonly<Props>) {
   const settings = selectedItem?.settings || {};
   const alignHorizontal =
     selectedItem?.extra?.kpi_box?.options?.alignHorizontal;
+  const innerLine = selectedItem?.extra?.kpi_box?.options?.innerLine;
   const clearSelectedItem = useStoreActions(
     (actions) => actions.RBReportItemsControllerState.clearItem,
   );
@@ -115,7 +116,9 @@ export default function KPIBox({ id }: Readonly<Props>) {
               sx={{
                 height: "25px",
                 paddingBottom: "8px",
-                borderBottom: "1px solid #98A1AA",
+                borderBottomWidth: innerLine?.borderWidth,
+                borderBottomStyle: "solid",
+                borderBottomColor: innerLine?.borderColor,
                 justifyContent: settings.justifyContent || "flex-start",
                 display: settings.display || "flex",
               }}
@@ -164,7 +167,9 @@ export default function KPIBox({ id }: Readonly<Props>) {
                   alignHorizontal === "left"
                     ? "center"
                     : settings.justifyContent,
-                borderBottom: "1px solid #98A1AA",
+                borderBottomWidth: innerLine?.borderWidth,
+                borderBottomStyle: "solid",
+                borderBottomColor: innerLine?.borderColor,
                 justifyContent: "start",
                 flexDirection: alignHorizontal === "left" ? "row" : "column",
               }}
