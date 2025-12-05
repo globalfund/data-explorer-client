@@ -18,6 +18,9 @@ export type ObjectFitTypes =
   | "fill"
   | "none"
   | "scale-down";
+
+export type ChartProperty = "dataset" | "chartType";
+
 export interface RBRKPIFieldFormatting {
   value: string;
   fontFamily: string;
@@ -63,6 +66,10 @@ export interface RBReportItem {
         };
       };
     };
+    chart?: {
+      dataset?: string | null;
+      chartType?: string | null;
+    };
   };
   settings?: {
     width?: string;
@@ -91,6 +98,12 @@ export interface RBReportItemController {
   open: boolean;
   type: RBReportItemTypes | null;
   id: string;
+  extra?: {
+    chart?: {
+      isDatasetExpanded?: boolean;
+      listToDisplay?: ChartProperty | null;
+    };
+  };
 }
 export interface RBReportItemControllerModel {
   item: RBReportItemController | null;

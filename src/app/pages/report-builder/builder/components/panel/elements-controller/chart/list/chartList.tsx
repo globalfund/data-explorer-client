@@ -1,0 +1,194 @@
+import React from "react";
+import Box from "@mui/material/Box";
+import { Typography, Button } from "@mui/material";
+import { chartTypes } from "../../../../chart/data";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
+
+export default function ChartList() {
+  const [chartTypesState, setChartTypesState] = React.useState(chartTypes);
+  const setSelectedController = useStoreActions(
+    (actions) => actions.RBReportItemsControllerState.setItem,
+  );
+  const selectedController = useStoreState(
+    (state) => state.RBReportItemsControllerState.item,
+  );
+  const editItem = useStoreActions(
+    (actions) => actions.RBReportItemsState.editItem,
+  );
+  const items = useStoreState((state) => state.RBReportItemsState.items);
+  const item = items.find((i) => i.id === selectedController?.id);
+
+  const handleSelectChartType = (id: number) => {
+    setChartTypesState((prevState) =>
+      prevState.map((chartType) => {
+        if (chartType.id === id) {
+          return { ...chartType, isSelected: !chartType.isSelected };
+        }
+        return chartType;
+      }),
+    );
+  };
+  const handleApply = () => {
+    const selectedChartType = chartTypesState.find((item) => item.isSelected);
+    if (!item || !selectedChartType) return;
+    editItem({
+      ...item,
+      id: selectedController?.id || "",
+      type: "chart",
+      extra: {
+        ...item?.extra,
+        chart: {
+          ...item?.extra?.chart,
+          chartType: selectedChartType?.chartType,
+        },
+      },
+    });
+
+    handleBack();
+  };
+
+  const handleBack = () => {
+    if (!selectedController) return;
+    setSelectedController({
+      ...selectedController,
+      extra: {
+        chart: {
+          listToDisplay: null,
+        },
+      },
+    });
+  };
+
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        gap: "8px",
+        flexDirection: "column",
+        padding: "8px",
+      }}
+    >
+      <Typography color="#000" fontSize="14px">
+        Select Chart Type
+      </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "8px",
+        }}
+      >
+        {chartTypesState.map((item) => (
+          <Box
+            onClick={() => handleSelectChartType(item.id)}
+            key={item.id}
+            sx={{
+              display: "flex",
+              height: "61px",
+              border: "0.5px solid #ADB5BD",
+              borderColor: item.isSelected ? "#3154F4" : "#ADB5BD",
+              borderRadius: "4px",
+              background: "#FFFFFF",
+            }}
+          >
+            <Box
+              sx={{
+                background: "#F1F3F5",
+                borderRight: "0.5px solid #ADB5BD",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "4px 8px",
+                width: "40px",
+                borderTopLeftRadius: "4px",
+                borderBottomLeftRadius: "4px",
+              }}
+            >
+              {item.icon}
+            </Box>
+
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "start",
+                gap: "2px",
+                paddingTop: "4px",
+                paddingLeft: "8px",
+              }}
+            >
+              <Typography
+                fontSize={"14px"}
+                color={"#000"}
+                fontWeight={700}
+                lineHeight={"normal"}
+              >
+                {item.chartType}
+              </Typography>
+              <Typography
+                fontSize={"14px"}
+                color={"#373D43"}
+                lineHeight={"normal"}
+              >
+                {item.description}
+              </Typography>
+            </Box>
+          </Box>
+        ))}
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          borderTop: "0.5px solid #98A1AA",
+          borderTopLeftRadius: "4px",
+          borderTopRightRadius: "4px",
+          paddingTop: "8px",
+        }}
+      >
+        <Button
+          onClick={() => handleBack()}
+          sx={{
+            width: "71px",
+            height: "35px",
+            borderRadius: "4px",
+            border: "1px solid #CFD4DA",
+            bgcolor: "#fff",
+            color: "#000",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: "14px",
+            textTransform: "none",
+          }}
+        >
+          Back
+        </Button>
+        <Button
+          disabled={!chartTypesState.some((item) => item.isSelected)}
+          onClick={handleApply}
+          sx={{
+            width: "71px",
+            height: "35px",
+            borderRadius: "4px",
+            bgcolor: "#3154F4",
+            color: "#fff",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: "14px",
+            textTransform: "none",
+            //disabled styles
+            "&.Mui-disabled": {
+              color: "#FFFFFF",
+              cursor: "not-allowed",
+            },
+          }}
+        >
+          Apply
+        </Button>
+      </Box>
+    </Box>
+  );
+}
