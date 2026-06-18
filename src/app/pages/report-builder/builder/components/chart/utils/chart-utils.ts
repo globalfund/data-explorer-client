@@ -95,8 +95,12 @@ export function parseBarWidth(
 
 // -------------------- your formatter (kept as-is) --------------------
 
-export const valueFormatter3 = (params: any, isMonetaryValue: boolean) => {
-  return `${params.name}: ${
+export const valueFormatter3 = (
+  params: any,
+  isMonetaryValue: boolean,
+  useSeriesName?: boolean,
+) => {
+  return `${useSeriesName ? params.seriesName : params.name}: ${
     isMonetaryValue ? formatFinancialValue(params.value, true) : params.value
   }`;
 };

@@ -163,7 +163,8 @@ export function useEcharts({
         show: !!showTooltip,
         trigger: showTooltip ? "item" : "none",
         confine: true,
-        formatter: (params: any) => valueFormatter3(params, isMonetaryValue),
+        formatter: (params: any) =>
+          valueFormatter3(params, isMonetaryValue, !!mapping?.breakdown?.value),
       },
       colorBy: mapping?.breakdown?.value ? "series" : "data",
       series: data.series?.map((d: any) => {
