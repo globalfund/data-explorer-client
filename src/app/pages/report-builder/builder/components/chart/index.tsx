@@ -37,10 +37,6 @@ export const ReportBuilderPageChart: React.FC<{
     (actions) => actions.RBReportItemsControllerState.setItem,
   );
 
-  const selectedController = useStoreState(
-    (state) => state.RBReportItemsControllerState.item,
-  );
-
   const setFilterOptionGroups = useStoreActions(
     (actions) => actions.FilterOptionGroupsState.setValue,
   );
