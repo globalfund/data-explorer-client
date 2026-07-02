@@ -187,7 +187,7 @@ export const DatasetSelectModal: React.FC<{
                 id: col.id,
                 type: getColumnType(dataTypes[col.name]),
               }))
-            : columns,
+            : [],
         );
       }
     }
