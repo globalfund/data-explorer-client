@@ -19,24 +19,6 @@ import {
 } from "./options";
 import ColumnHeader from "./column-header";
 
-const otherRowLabel = "Other";
-
-const buildOtherRow = (columns: TableColumn[]) => {
-  return columns.reduce<Record<string, any>>((otherRow, column, index) => {
-    if (index === 0) {
-      otherRow[column.id] = otherRowLabel;
-      otherRow[column.name] = otherRowLabel;
-      return otherRow;
-    }
-
-    otherRow[column.id] = "";
-
-    otherRow[column.name] = otherRow[column.id];
-
-    return otherRow;
-  }, {});
-};
-
 export const ReportBuilderPageTable: React.FC<{
   id: string;
   extRemoveItem?: (e: React.MouseEvent) => void;
@@ -70,14 +52,15 @@ export const ReportBuilderPageTable: React.FC<{
     filters: selectedItem?.data?.filters || {},
     sorting: selectedItem?.data?.sorting || [],
     pageSize,
+    limitToTop: tableOptions.limitToTop,
+    limitToTopValue: tableOptions.limitToTopValue,
+    groupRemainderAsOther: tableOptions.groupRemainderAsOther,
   });
   const datasetRows = React.useMemo(
     () =>
       datasetQuery.data?.pages.flatMap((page) => page.data?.result ?? []) ?? [],
     [datasetQuery.data],
   );
-  const totalRowCount =
-    datasetQuery.data?.pages[0]?.data?.count ?? datasetRows.length;
 
   useClickOutsideEditor({
     editorId: "table-render",
@@ -150,28 +133,6 @@ export const ReportBuilderPageTable: React.FC<{
       },
     });
   };
-
-  const visibleRows = React.useMemo(() => {
-    const rows = [...datasetRows];
-
-    if (!tableOptions.limitToTop) return rows;
-
-    const topRows = rows.slice(0, tableRowLimit);
-    const hasRemainderRows = totalRowCount > tableRowLimit;
-
-    if (!tableOptions.groupRemainderAsOther || !hasRemainderRows) {
-      return topRows;
-    }
-
-    return [...topRows, buildOtherRow(columns)];
-  }, [
-    columns,
-    datasetRows,
-    tableOptions.groupRemainderAsOther,
-    tableOptions.limitToTop,
-    tableRowLimit,
-    totalRowCount,
-  ]);
 
   const palette =
     tablePaletteOptions[tableOptions.colorPalette] ??
@@ -381,7 +342,7 @@ export const ReportBuilderPageTable: React.FC<{
                     </Box>
                   </Box>
                 ) : null}
-                {!datasetQuery.isLoading && visibleRows.length === 0 ? (
+                {!datasetQuery.isLoading && datasetRows.length === 0 ? (
                   <Box component="tr">
                     <Box
                       component="td"
@@ -401,7 +362,7 @@ export const ReportBuilderPageTable: React.FC<{
                   </Box>
                 ) : null}
                 {!datasetQuery.isLoading
-                  ? visibleRows.map((row, rowIndex) => {
+                  ? datasetRows.map((row, rowIndex) => {
                       const rowStriped =
                         tableOptions.rowStripping === "zebra" &&
                         rowIndex % 2 === 0;
@@ -428,7 +389,7 @@ export const ReportBuilderPageTable: React.FC<{
                                 color: "#373D43",
                                 textAlign: "center",
                                 bgcolor: indexCellBg,
-                                ...(rowIndex === visibleRows.length - 1
+                                ...(rowIndex === datasetRows.length - 1
                                   ? { borderBottomLeftRadius: "4px" }
                                   : {}),
                               }}
@@ -445,11 +406,11 @@ export const ReportBuilderPageTable: React.FC<{
                                 color: "#373D43",
                                 bgcolor: textCellBg,
                                 ...(!tableOptions.showRowNumbers &&
-                                rowIndex === visibleRows.length - 1 &&
+                                rowIndex === datasetRows.length - 1 &&
                                 columnIndex === 0
                                   ? { borderBottomLeftRadius: "4px" }
                                   : {}),
-                                ...(rowIndex === visibleRows.length - 1 &&
+                                ...(rowIndex === datasetRows.length - 1 &&
                                 columnIndex === columns.length - 1
                                   ? { borderBottomRightRadius: "4px" }
                                   : {}),

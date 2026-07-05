@@ -128,13 +128,14 @@ export default function Mapping() {
       className="scrollbar"
     >
       <ControlAccordion title="Columns">
-        <Box sx={{ p: "8px" }}>
+        <Box sx={{ p: "8px", width: "100%" }}>
           <Box
             sx={{
               gap: "8px",
               display: "flex",
               flexWrap: "wrap",
               alignItems: "flex-start",
+              width: "100%",
             }}
           >
             {columns.map((column, index) => {

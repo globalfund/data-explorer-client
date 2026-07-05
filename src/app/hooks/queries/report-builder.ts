@@ -435,15 +435,30 @@ export const useFilteredDataset = ({
   filters,
   sorting = [],
   pageSize = 50,
+  limitToTop,
+  limitToTopValue,
+  groupRemainderAsOther,
 }: {
   datasetId: string;
   filters: Record<string, any[]>;
   sorting: { column: string; order: "asc" | "desc" }[];
   pageSize: number;
+  limitToTop: boolean;
+  limitToTopValue: string;
+  groupRemainderAsOther: boolean;
 }) => {
   return useInfiniteQuery({
     initialPageParam: 1,
-    queryKey: ["ReportBuilderFilteredDataset", datasetId, pageSize],
+    queryKey: [
+      "ReportBuilderFilteredDataset",
+      datasetId,
+      pageSize,
+      filters,
+      sorting,
+      limitToTop,
+      limitToTopValue,
+      groupRemainderAsOther,
+    ],
     queryFn: ({ pageParam }) =>
       axiosInstance.post<RBFilteredDatasetResponse>(
         `/report/filter-dataset`,
@@ -451,6 +466,9 @@ export const useFilteredDataset = ({
           filters,
           datasetId,
           sorting,
+          limitToTop,
+          limitToTopValue,
+          groupRemainderAsOther,
         },
         { params: { page: pageParam, pageSize } },
       ),
