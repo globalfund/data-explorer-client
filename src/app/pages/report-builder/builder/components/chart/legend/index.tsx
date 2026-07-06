@@ -2,10 +2,10 @@ import { Box } from "@mui/material";
 import React, { useCallback } from "react";
 import { EChartsType } from "echarts/core";
 import { DragIndicator } from "@mui/icons-material";
-import { useDrag } from "react-dnd";
 import GeomapLegend from "../geomap-legend";
 import { colorPaletteSequentialData } from "../../panel/elements-controller/common/data";
 import { generateHeatmapLegends } from "../utils/chart-utils";
+import { useSortable } from "@dnd-kit/react/sortable";
 
 interface LegendContentProps {
   items: Array<{
@@ -94,45 +94,41 @@ const LegendContent: React.FC<LegendContentProps> = ({
 
 const DraggableLegendContent: React.FC<
   LegendContentProps & {
-    position?: string;
     setIsDragging?: (isDragging: boolean) => void;
     visualOptions?: any;
     chartType?: string;
     mappedData?: any;
     mapping?: any;
+    index: number;
   }
 > = ({
   items,
   legendTextOptions,
-  position,
   setIsDragging,
   visualOptions,
   chartType,
   mappedData,
   mapping,
+  index,
 }) => {
   const dragRef = React.useRef<HTMLDivElement>(null);
 
   const [isOver, setIsOver] = React.useState(false);
 
-  const [{ isDragging }, drag] = useDrag({
+  const [element, setElement] = React.useState<Element | null>(null);
+
+  const { isDragging } = useSortable({
+    id: "legend",
+    element,
+    handle: dragRef,
+    accept: ["title", "chart", "legend"],
+    index,
     type: "legend",
-    item: () => {
-      return { position };
-    },
-    collect: (monitor: any) => ({
-      isDragging: monitor.isDragging(),
-    }),
   });
-  drag(dragRef);
 
   React.useEffect(() => {
     setIsDragging?.(isDragging);
   }, [isDragging]);
-
-  if (visualOptions?.legendPosition !== position) {
-    return null;
-  }
 
   return (
     <Box
@@ -140,7 +136,7 @@ const DraggableLegendContent: React.FC<
         display: "flex",
         alignItems: "center",
       }}
-      ref={dragRef}
+      ref={setElement}
       onMouseOver={(e) => {
         if (e.currentTarget.contains(e.relatedTarget as Node)) {
           return;
@@ -162,6 +158,7 @@ const DraggableLegendContent: React.FC<
           alignItems: "center",
           marginRight: "8px",
         }}
+        ref={dragRef}
       >
         <DragIndicator />
       </Box>
@@ -178,22 +175,22 @@ const DraggableLegendContent: React.FC<
 };
 
 interface LegendProps {
+  index: number;
   chart: EChartsType | null;
   chartType?: string;
   visualOptions?: any;
   viewMode?: boolean;
-  position?: string;
   setIsDragging?: (isDragging: boolean) => void;
   mappedData?: any;
   mapping?: any;
 }
 
 const Legend: React.FC<LegendProps> = ({
+  index,
   chart,
   chartType,
   visualOptions,
   viewMode,
-  position,
   setIsDragging,
   mappedData,
   mapping,
@@ -209,9 +206,9 @@ const Legend: React.FC<LegendProps> = ({
   const [treemapPath, setTreemapPath] = React.useState<string[]>([]);
 
   const getLegendItems = useCallback(
-    (chart: EChartsType | null) => {
-      if (!chart) return [];
-      const option: any = chart.getOption();
+    (chartProp: EChartsType | null) => {
+      if (!chartProp) return [];
+      const option: any = chartProp.getOption();
 
       switch (chartType) {
         case "bar":
@@ -240,24 +237,21 @@ const Legend: React.FC<LegendProps> = ({
           return [];
         case "radar":
         case "pie":
-          return (option.series?.[0]?.data || []).map(
-            (s: any, index: number) => ({
-              name: s.name,
-              color: option.color?.[index % option.color?.length] || "#000000",
-              type: option.series?.[0]?.type,
-            }),
-          );
-
+          return (option.series?.[0]?.data || []).map((s: any, i: number) => ({
+            name: s.name,
+            color: option.color?.[i % option.color?.length] || "#000000",
+            type: option.series?.[0]?.type,
+          }));
         case "line":
         case "scatter":
           return (option.series || [])
             ?.filter((s: any) => s.name)
-            .map((s: any, index: number) => ({
+            .map((s: any, i: number) => ({
               name: s.name,
               color:
                 s.lineStyle?.color ||
                 s.itemStyle?.color?.substring(0, 7) ||
-                option.color?.[index % option.color?.length],
+                option.color?.[i % option.color?.length],
               type: s.type,
             }));
         case "treemap": {
@@ -266,11 +260,11 @@ const Legend: React.FC<LegendProps> = ({
           const getItems = (nodes: any[]) =>
             nodes
               .sort((a: any, b: any) => b.value - a.value)
-              .map((n: any, index: number) => ({
+              .map((n: any, i: number) => ({
                 name: n.name,
                 color:
                   n.itemStyle?.color ||
-                  option.color?.[index % option.color?.length] ||
+                  option.color?.[i % option.color?.length] ||
                   "#000000",
                 type: "treemap",
               }));
@@ -298,12 +292,12 @@ const Legend: React.FC<LegendProps> = ({
         default:
           return (option.series || [])
             ?.filter((s: any) => s.name)
-            .map((s: any, index: number) => ({
+            .map((s: any, i: number) => ({
               name: s.name,
               color:
                 s.lineStyle?.color ||
                 s.itemStyle?.color ||
-                option.color?.[index % option.color?.length],
+                option.color?.[i % option.color?.length],
               type: s.type,
             }));
       }
@@ -355,10 +349,6 @@ const Legend: React.FC<LegendProps> = ({
     return null;
   }
 
-  if (visualOptions?.legendPosition !== position && viewMode) {
-    return null;
-  }
-
   return viewMode ? (
     <Box
       sx={{
@@ -387,9 +377,9 @@ const Legend: React.FC<LegendProps> = ({
     </Box>
   ) : (
     <DraggableLegendContent
+      index={index}
       items={legendItems}
       legendTextOptions={visualOptions?.legendTextOptions}
-      position={position}
       setIsDragging={setIsDragging}
       visualOptions={visualOptions}
       chartType={chartType}

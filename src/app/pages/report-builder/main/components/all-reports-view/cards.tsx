@@ -1,6 +1,8 @@
 import React from "react";
+import { format } from "date-fns";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Add from "@mui/icons-material/Add";
 import capitalize from "lodash/capitalize";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
@@ -14,9 +16,10 @@ import FolderIcon from "app/assets/vectors/FolderBig.svg?react";
 import LetterTextIcon from "app/assets/vectors/Letter_Text.svg?react";
 import EmptyFolderIcon from "app/assets/vectors/EmptyFolder.svg?react";
 import {
+  AssetCardProps,
   ReportCardProps,
   FolderCardProps,
-  AssetCardProps,
+  getFolderContentText,
 } from "app/pages/report-builder/main/components/all-reports-view/data";
 
 export const ReportCard: React.FC<ReportCardProps> = ({
@@ -150,12 +153,14 @@ export const AssetCard: React.FC<AssetCardProps> = ({
   id,
   name,
   type,
-  description,
+  createdDate,
+  imageVersion,
   handleItemClick,
   handleRenameEnter,
   handleItemMenuClick,
   selectedItemForRenaming,
   setSelectedItemForRenaming,
+  handleUseAsset,
 }) => {
   const iconMap: Record<string, React.ReactNode> = {
     chart: <ChartIcon />,
@@ -172,19 +177,26 @@ export const AssetCard: React.FC<AssetCardProps> = ({
           width: "100%",
           height: "180px",
           display: "flex",
+          paddingTop: "8px",
           cursor: "pointer",
-          borderRadius: "2px",
           justifyContent: "center",
+          div: {
+            width: "calc(100% - 10px)",
+            backgroundImage: `url(${import.meta.env.VITE_API}/asset-thumbnail/${id}.png?v=${imageVersion})`,
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
+            backgroundSize: "contain",
+          },
         }}
         onClick={handleItemClick(id, "asset")}
       >
-        <img src="/static/images/layout-placeholder.png" alt={name} />
+        <div />
       </Box>
       <Box
         sx={{
           width: "100%",
           display: "flex",
-          margin: "10px 0 5px 0",
+          marginTop: "12px",
           alignItems: "flex-start",
           justifyContent: "space-between",
         }}
@@ -206,17 +218,10 @@ export const AssetCard: React.FC<AssetCardProps> = ({
             </Typography>
           </Box>
         )}
-        <IconButton
-          id={id}
-          onClick={handleItemMenuClick}
-          sx={{ padding: 0, marginLeft: "10px" }}
-        >
-          <MoreVert />
-        </IconButton>
       </Box>
       <Box
         sx={{
-          margin: "10px 0 5px 0",
+          marginTop: "12px",
         }}
       >
         {selectedItemForRenaming === id ? (
@@ -267,11 +272,42 @@ export const AssetCard: React.FC<AssetCardProps> = ({
       <Typography
         variant="body2"
         width="calc(100% - 40px)"
-        sx={{ cursor: "pointer" }}
+        sx={{ cursor: "pointer", lineHeight: "normal", marginTop: "4px" }}
         onClick={handleItemClick(id, "asset")}
       >
-        {description}
+        Saved on {format(createdDate, "dd-MM-yyyy")}
       </Typography>
+      <Box
+        sx={{
+          gap: "10px",
+          width: "100%",
+          display: "flex",
+          marginTop: "12px",
+          alignItems: "center",
+          "> button:not(:last-child)": {
+            flex: "1",
+            fontSize: "14px",
+            bgcolor: "#fff",
+            fontWeight: "400",
+            height: "36px",
+            borderRadius: "4px",
+            lineHeight: "normal",
+            textTransform: "none",
+            border: "1px solid #98a1aa",
+            ":hover": {
+              borderColor: "#3154f4",
+            },
+          },
+        }}
+      >
+        <Button startIcon={<Add />} onClick={() => handleUseAsset(id)}>
+          Use Asset
+        </Button>
+        <Button onClick={handleItemClick(id, "asset")}>Preview</Button>
+        <IconButton id={id} onClick={handleItemMenuClick} sx={{ p: "0px" }}>
+          <MoreVert htmlColor="#454545" />
+        </IconButton>
+      </Box>
     </React.Fragment>
   );
 };
@@ -289,25 +325,7 @@ export const FolderCard: React.FC<FolderCardProps> = ({
   setSelectedItemForRenaming,
 }) => {
   const text = React.useMemo(() => {
-    if (assetCount === 0 && reportCount === 0 && folderCount === 0) {
-      return "Empty Folder";
-    }
-    if (assetCount > 0 && reportCount === 0 && folderCount === 0) {
-      return `${assetCount} ${assetCount === 1 ? "Asset" : "Assets"} inside`;
-    }
-    if (assetCount > 0 && reportCount > 0 && folderCount === 0) {
-      return `${reportCount} ${reportCount === 1 ? "Report" : "Reports"} and ${assetCount} ${assetCount === 1 ? "Asset" : "Assets"} inside`;
-    }
-    if (assetCount > 0 && reportCount === 0 && folderCount > 0) {
-      return `${folderCount} ${folderCount === 1 ? "Folder" : "Folders"} and ${assetCount} ${assetCount === 1 ? "Asset" : "Assets"} inside`;
-    }
-    if (assetCount === 0 && reportCount > 0 && folderCount === 0) {
-      return `${reportCount} ${reportCount === 1 ? "Report" : "Reports"} inside`;
-    }
-    if (assetCount === 0 && reportCount > 0 && folderCount > 0) {
-      return `${reportCount} ${reportCount === 1 ? "Report" : "Reports"} and ${folderCount} ${folderCount === 1 ? "Folder" : "Folders"} inside`;
-    }
-    return `${reportCount} ${reportCount === 1 ? "Report" : "Reports"}, ${assetCount} ${assetCount === 1 ? "Asset" : "Assets"} and ${folderCount} ${folderCount === 1 ? "Folder" : "Folders"} inside`;
+    return getFolderContentText({ assetCount, reportCount, folderCount });
   }, [assetCount, reportCount, folderCount]);
 
   const disableClick = React.useMemo(() => {

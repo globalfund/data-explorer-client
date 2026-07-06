@@ -1,3 +1,4 @@
+import { RBItemTypes } from "app/pages/report-builder/data";
 import { RBReportItemTypes } from "app/state/api/action-reducers/report-builder/sync";
 
 export interface AllAssetsViewProps {
@@ -23,6 +24,7 @@ export interface AllAssetsViewProps {
   handleFolderOpen: (id: string) => void;
   onDeleteAsset: (id: string, name: string) => void;
   onDeleteFolder: (id: string, name: string) => void;
+  handleUseAsset: (assetId: string) => void;
   onMoveItemToFolder: (
     id: string,
     name: string,
@@ -34,11 +36,15 @@ export interface AllAssetsViewProps {
     description: string;
     createdDate: string;
     updatedDate: string;
-    type: "report" | "asset" | "folder";
+    type: RBItemTypes;
     content?: {
       assetCount: number;
       reportCount: number;
       folderCount: number;
     };
   }) => void;
+  checkedItems: { id: string; type: "folder" | "report" | "asset" }[];
+  setCheckedItems: React.Dispatch<
+    React.SetStateAction<{ id: string; type: "folder" | "report" | "asset" }[]>
+  >;
 }
