@@ -2,6 +2,7 @@ import Mapping from "../mapping";
 import Filtering from "../filtering";
 import ControlAccordion from "../../components/accordion";
 import { Box } from "@mui/system";
+import LimitToTopN from "../limit-to-top-n";
 
 const DataSettings = () => {
   return (
@@ -23,6 +24,7 @@ const DataSettings = () => {
       <ControlAccordion title="Sort">
         <Box sx={{ padding: "8px" }}>No sort applied.</Box>
       </ControlAccordion>
+      <LimitToTopN />
     </Box>
   );
 };

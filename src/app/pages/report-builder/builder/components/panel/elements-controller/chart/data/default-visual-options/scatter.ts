@@ -14,13 +14,13 @@ const options: IDefaultChartVisualOptions = {
   },
   symbolSize: {
     type: "slider",
-    default: 10,
+    default: 20,
     label: "Symbol Size",
     tab: "layout",
   },
   showDataZoom: {
     type: "boolean",
-    default: true,
+    default: false,
     label: "Show Data Zoom",
     tab: "layout",
   },

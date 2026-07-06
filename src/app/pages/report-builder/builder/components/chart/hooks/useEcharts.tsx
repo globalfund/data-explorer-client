@@ -30,7 +30,6 @@ import {
 import { transform } from "echarts-stat";
 import { debounce, get } from "lodash";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
-import { ChartType } from "../data";
 import {
   colorPaletteCategoricalData,
   colorPaletteSequentialData,
@@ -41,6 +40,9 @@ import {
   parseFontSize,
   valueFormatter3,
 } from "../utils/chart-utils";
+import { ChartType } from "app/state/api/action-reducers/report-builder/sync";
+import { limitXAxisValues } from "../utils/bar";
+import { limitChartDataItems } from "../utils/pie";
 
 echarts.use([
   BarChart,
@@ -110,18 +112,31 @@ export function useEcharts({
       monetaryValueTooltip,
 
       chartOrientation,
+
+      limitToTop,
+      limitToTopValue,
+      groupRemainderAsOther,
+      otherBarPosition,
     } = vo;
 
     const paletteColors: string[] =
       colorPaletteCategoricalData.find((item) => item.name === colorPalette)
         ?.colors ?? [];
 
+    let dataToUse = data;
+    if (limitToTop && limitToTopValue) {
+      dataToUse = limitXAxisValues(data, limitToTopValue, {
+        groupAsOther: !!groupRemainderAsOther,
+        otherPosition: otherBarPosition,
+      });
+    }
+
     const totalData: number[] = [];
 
-    for (let i = 0; i < data.series[0].values.length; ++i) {
+    for (let i = 0; i < dataToUse.series[0].values.length; ++i) {
       let sum = 0;
-      for (let j = 0; j < data.series.length; ++j) {
-        sum += data.series[j].values[i];
+      for (let j = 0; j < dataToUse.series.length; ++j) {
+        sum += dataToUse.series[j].values[i];
       }
       totalData.push(sum);
     }
@@ -142,7 +157,7 @@ export function useEcharts({
       xAxis: {
         ...(chartOrientation === "horizontal"
           ? { type: logarithmicYAxis ? "log" : "value" }
-          : { type: "category", data: data.xAxisValues }),
+          : { type: "category", data: dataToUse.xAxisValues }),
         splitLine: { show: true },
         axisTick: { show: false },
         axisLine: { show: true, lineStyle: { color: "#8D8D8D", width: 1 } },
@@ -151,7 +166,7 @@ export function useEcharts({
 
       yAxis: {
         ...(chartOrientation === "horizontal"
-          ? { type: "category", data: data.yAxisValues }
+          ? { type: "category", data: dataToUse.yAxisValues }
           : { type: logarithmicYAxis ? "log" : "value" }),
         splitLine: { show: true },
         axisTick: { show: false },
@@ -166,7 +181,7 @@ export function useEcharts({
         formatter: (params: any) => valueFormatter3(params, isMonetaryValue),
       },
       colorBy: mapping?.breakdown?.value ? "series" : "data",
-      series: data.series?.map((d: any) => {
+      series: dataToUse.series?.map((d: any) => {
         return {
           type: "bar",
           name: d?.name,
@@ -207,6 +222,10 @@ export function useEcharts({
       // tooltip
       showTooltip,
       monetaryValueTooltip,
+      limitToTop,
+      limitToTopValue,
+      groupRemainderAsOther,
+      otherSlicePosition,
     } = vo;
 
     const paletteColors: string[] =
@@ -224,6 +243,15 @@ export function useEcharts({
       0,
       Math.min(outer, outer - Number(donutThickness ?? 50)),
     );
+
+    const dataToUse =
+      limitToTop && limitToTopValue
+        ? limitChartDataItems(data, limitToTopValue, {
+            groupAsOther: !!groupRemainderAsOther,
+            otherLabel: "Other",
+            otherPosition: otherSlicePosition,
+          })
+        : data;
 
     const radius = drawAsDonuts
       ? [`${inner}%`, `${outer}%`]
@@ -282,7 +310,7 @@ export function useEcharts({
             },
           },
 
-          data: data ?? [],
+          data: dataToUse ?? [],
         },
       ],
     };
@@ -474,8 +502,8 @@ export function useEcharts({
       symbolColor, // default point color if item.color missing
 
       // behavior
-      showDataZoom,
-
+      // showDataZoom,
+      limitToTop,
       // tooltip
       showTooltip,
       monetaryValueTooltip,
@@ -539,9 +567,9 @@ export function useEcharts({
         axisLabel: { show: true, color: "#6F6F6F", fontSize: 12 },
       },
 
-      dataZoom: showDataZoom
-        ? [{ type: "inside", start: 0, end: 100 }, { show: true }]
-        : null,
+      // dataZoom: showDataZoom
+      //   ? [{ type: "inside", start: 0, end: 100 }, { show: true }]
+      //   : null,
 
       tooltip: {
         show: !!showTooltip,
@@ -587,7 +615,11 @@ export function useEcharts({
           }),
 
           symbolSize: (singleData: any) => singleData?.[2] ?? 0,
-
+          label: {
+            show: !!limitToTop,
+            position: "top",
+            formatter: (param: any) => param?.data?.[3] ?? "",
+          },
           itemStyle: {
             color: itemColor + "80",
             borderWidth: 2,

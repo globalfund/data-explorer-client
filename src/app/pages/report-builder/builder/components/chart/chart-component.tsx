@@ -1,7 +1,9 @@
-import { MappedDimension } from "app/state/api/action-reducers/report-builder/sync";
+import {
+  MappedDimension,
+  ChartType,
+} from "app/state/api/action-reducers/report-builder/sync";
 import React from "react";
 import { useEcharts } from "./hooks/useEcharts";
-import { ChartType } from "./data";
 import { Box } from "@mui/material";
 import HeatmapChartComponent from "./heatmap-chart-component";
 import TitleArea from "./title/title-area";
