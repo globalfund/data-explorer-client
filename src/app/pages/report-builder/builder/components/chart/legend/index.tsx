@@ -216,23 +216,20 @@ const Legend: React.FC<LegendProps> = ({
             if (option.colorBy === "series") {
               return (option.series || [])
                 .filter((s: any) => s.name)
-                .map((s: any, index: number) => ({
+                .map((s: any, i: number) => ({
                   name: s.name,
                   color:
                     s.itemStyle?.color ||
-                    option.color?.[index % option.color?.length] ||
+                    option.color?.[i % option.color?.length] ||
                     "#000000",
                   type: s.type,
                 }));
             }
-            return (option.xAxis?.[0]?.data || []).map(
-              (s: any, index: number) => ({
-                name: s,
-                color:
-                  option.color?.[index % option.color?.length] || "#000000",
-                type: option.series?.[0]?.type,
-              }),
-            );
+            return (option.xAxis?.[0]?.data || []).map((s: any, i: number) => ({
+              name: s,
+              color: option.color?.[i % option.color?.length] || "#000000",
+              type: option.series?.[0]?.type,
+            }));
           }
           return [];
         case "radar":
