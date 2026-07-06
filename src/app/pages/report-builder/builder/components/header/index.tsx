@@ -43,6 +43,7 @@ import { AssetLibraryModal } from "app/pages/report-builder/builder/components/a
 import { Add } from "@mui/icons-material";
 import { ReportBuilderUseAssetModal } from "app/pages/report-builder/main/components/use-asset-modal";
 import { ReportBuilderNewReportModal } from "app/pages/report-builder/main/components/new-report-modal";
+import { ReportBuilderReportIssueModal } from "app/pages/report-builder/main/components/report-issue-modal";
 
 export const menuSx = {
   zIndex: 1400,
@@ -91,6 +92,8 @@ export const ReportBuilderPageHeader: React.FC = () => {
   const [anchorEl2, setAnchorEl2] = React.useState<null | HTMLElement>(null);
   const [signedIn] = React.useState(true); // Replace with actual authentication state
   const [assetLibraryOpen, setAssetLibraryOpen] = React.useState(false);
+
+  const [reportIssueModalOpen, setReportIssueModalOpen] = React.useState(false);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -220,6 +223,8 @@ export const ReportBuilderPageHeader: React.FC = () => {
 
   const nameInputRef = React.useRef<HTMLInputElement>(null);
 
+  console.log(updateReport.error, "updateReport.error");
+
   return (
     <React.Fragment>
       <Box
@@ -346,6 +351,21 @@ export const ReportBuilderPageHeader: React.FC = () => {
                             "pagesReportBuilderBuilder.saveErrorStatus",
                             "Couldn't save changes",
                           )}
+                          ,
+                          <Box
+                            component="button"
+                            sx={{
+                              textDecoration: "underline",
+                              padding: "0px",
+                              margin: "0px",
+                              border: "none",
+                              background: "none",
+                              cursor: "pointer",
+                            }}
+                            onClick={() => setReportIssueModalOpen(true)}
+                          >
+                            report this issue
+                          </Box>
                         </Box>
                       ) : updateReport.isPaused ? (
                         <Box component={"span"}>
@@ -596,6 +616,21 @@ export const ReportBuilderPageHeader: React.FC = () => {
       <AssetLibraryModal
         open={assetLibraryOpen}
         onClose={handleCloseAssetLibrary}
+      />
+      <ReportBuilderReportIssueModal
+        open={reportIssueModalOpen}
+        onClose={() => setReportIssueModalOpen(false)}
+        reportId={id}
+        reportName={name}
+        error={updateReport.error}
+        onSubmit={(payload) => {
+          console.log("Report issue submitted:", payload);
+          setSnackbarMessage(
+            "Thank you for reporting the issue. We will look into it.",
+          );
+          setSnackbarOpen(true);
+          setReportIssueModalOpen(false);
+        }}
       />
     </React.Fragment>
   );
