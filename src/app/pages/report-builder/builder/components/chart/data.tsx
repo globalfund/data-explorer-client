@@ -106,15 +106,3 @@ export const chartTypes = [
     icon: <RadarChartIcon />,
   },
 ];
-
-export type ChartType =
-  | "bar"
-  | "line"
-  | "pie"
-  | "scatter"
-  | "geomap"
-  | "sankey"
-  | "treemap"
-  | "heatmap"
-  | "radar"
-  | "bigNumber";

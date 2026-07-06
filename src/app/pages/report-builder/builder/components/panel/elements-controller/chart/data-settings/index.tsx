@@ -2,6 +2,7 @@ import Mapping from "../mapping";
 import FilterIcon from "app/assets/vectors/RBTableFilter.svg?react";
 import ControlAccordion from "../../components/accordion";
 import { Box } from "@mui/system";
+import LimitToTopN from "../limit-to-top-n";
 import { Button, Typography } from "@mui/material";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import useGetReportItemState from "app/pages/report-builder/hooks/useGetReportItemState";
@@ -106,6 +107,7 @@ const DataSettings = () => {
       <ControlAccordion title="Sort">
         <Box sx={{ padding: "8px" }}>No sort applied.</Box>
       </ControlAccordion>
+      <LimitToTopN />
     </Box>
   );
 };

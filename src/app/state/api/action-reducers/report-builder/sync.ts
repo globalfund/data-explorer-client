@@ -22,13 +22,16 @@ export type ObjectFitTypes =
   | "scale-down";
 
 export type ChartType =
-  | "bigNumber"
-  | "line"
   | "bar"
+  | "line"
   | "pie"
+  | "scatter"
+  | "geomap"
   | "sankey"
   | "treemap"
-  | "geomap";
+  | "heatmap"
+  | "radar"
+  | "bigNumber";
 
 export type ChartProperty = "dataset" | "chartType";
 

@@ -1,7 +1,9 @@
 import React from "react";
-import { ChartType } from "./data";
 import { HeatmapDataItem } from "app/components/charts/heatmap/data";
-import { MappedDimension } from "app/state/api/action-reducers/report-builder/sync";
+import {
+  MappedDimension,
+  ChartType,
+} from "app/state/api/action-reducers/report-builder/sync";
 import { colorPaletteSequentialData } from "../panel/elements-controller/common/data";
 import {
   Box,
@@ -26,6 +28,7 @@ import {
 } from "app/components/charts/heatmap/styles";
 import { appColors } from "app/theme";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
+import { limitHeatmapData } from "./utils/heatmap";
 
 const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip describeChild {...props} classes={{ popper: className }} />
@@ -101,16 +104,32 @@ interface HeatmapChartComponentProps {
 }
 
 const HeatmapChartComponent = (props: HeatmapChartComponentProps) => {
-  const { colorPalette } = props.visualOptions;
+  const {
+    colorPalette,
+    limitRowsToTop,
+    limitColumnsToTop,
+    limitRowsToTopValue,
+    limitColumnsToTopValue,
+    groupRemainderAsOther,
+  } = props.visualOptions;
   const resolvedXAxisName = props.mapping?.x?.value?.[0] ?? "";
 
   const resolvedYAxisName = props.mapping?.y?.value?.[0] ?? "";
 
-  const data = props.data.map((item: any) => ({
-    column: item.x,
-    row: item.y,
-    value: item.size,
-  }));
+  const data =
+    limitRowsToTop || limitColumnsToTop
+      ? limitHeatmapData(props.data, {
+          limitRowsToTop,
+          limitColumnsToTop,
+          limitRowsToTopValue,
+          limitColumnsToTopValue,
+          groupRemainderAsOther,
+        })
+      : props.data.map((item: any) => ({
+          column: item.x,
+          row: item.y,
+          value: item.size,
+        }));
 
   const paletteColors: string[] =
     colorPaletteSequentialData.find((item) => item.name === colorPalette)
