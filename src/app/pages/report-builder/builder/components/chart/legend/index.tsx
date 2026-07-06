@@ -213,6 +213,18 @@ const Legend: React.FC<LegendProps> = ({
       switch (chartType) {
         case "bar":
           if (option.series?.[0]?.type === "bar") {
+            if (option.colorBy === "series") {
+              return (option.series || [])
+                .filter((s: any) => s.name)
+                .map((s: any, i: number) => ({
+                  name: s.name,
+                  color:
+                    s.itemStyle?.color ||
+                    option.color?.[i % option.color?.length] ||
+                    "#000000",
+                  type: s.type,
+                }));
+            }
             return (option.xAxis?.[0]?.data || []).map((s: any, i: number) => ({
               name: s,
               color: option.color?.[i % option.color?.length] || "#000000",
