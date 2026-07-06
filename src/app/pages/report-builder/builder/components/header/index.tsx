@@ -24,7 +24,7 @@ import { exportReportFromServer } from "app/utils/exportReport";
 import { useCMSData } from "app/hooks/useCMSData";
 import { getCMSDataField } from "app/utils/getCMSDataField";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import DownloadIcon from "app/assets/vectors/Download.svg?react";
+import UploadIcon from "app/assets/vectors/Upload.svg?react";
 import {
   useGetAsset,
   useGetReport,
@@ -43,6 +43,8 @@ import { AssetLibraryModal } from "app/pages/report-builder/builder/components/a
 import { Add } from "@mui/icons-material";
 import { ReportBuilderUseAssetModal } from "app/pages/report-builder/main/components/use-asset-modal";
 import { ReportBuilderNewReportModal } from "app/pages/report-builder/main/components/new-report-modal";
+import { checkEmptyItem } from "app/utils/checkEmptyRBItem";
+import { ReportBuilderReportIssueModal } from "app/pages/report-builder/main/components/report-issue-modal";
 
 export const menuSx = {
   zIndex: 1400,
@@ -91,6 +93,8 @@ export const ReportBuilderPageHeader: React.FC = () => {
   const [anchorEl2, setAnchorEl2] = React.useState<null | HTMLElement>(null);
   const [signedIn] = React.useState(true); // Replace with actual authentication state
   const [assetLibraryOpen, setAssetLibraryOpen] = React.useState(false);
+
+  const [reportIssueModalOpen, setReportIssueModalOpen] = React.useState(false);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -189,6 +193,12 @@ export const ReportBuilderPageHeader: React.FC = () => {
     );
   }, [location.pathname]);
 
+  const items = React.useMemo(() => {
+    return reportState.items.filter((item) => {
+      return checkEmptyItem(item);
+    });
+  }, [reportState.items]);
+
   useDebounce(
     () => {
       if (!previewMode) {
@@ -219,6 +229,8 @@ export const ReportBuilderPageHeader: React.FC = () => {
   const open2 = Boolean(anchorEl2);
 
   const nameInputRef = React.useRef<HTMLInputElement>(null);
+
+  console.log(updateReport.error, "updateReport.error");
 
   return (
     <React.Fragment>
@@ -346,6 +358,21 @@ export const ReportBuilderPageHeader: React.FC = () => {
                             "pagesReportBuilderBuilder.saveErrorStatus",
                             "Couldn't save changes",
                           )}
+                          ,
+                          <Box
+                            component="button"
+                            sx={{
+                              textDecoration: "underline",
+                              padding: "0px",
+                              margin: "0px",
+                              border: "none",
+                              background: "none",
+                              cursor: "pointer",
+                            }}
+                            onClick={() => setReportIssueModalOpen(true)}
+                          >
+                            report this issue
+                          </Box>
                         </Box>
                       ) : updateReport.isPaused ? (
                         <Box component={"span"}>
@@ -431,7 +458,15 @@ export const ReportBuilderPageHeader: React.FC = () => {
                       </Button>
                       <Button
                         onClick={handleClick2}
-                        startIcon={<DownloadIcon />}
+                        startIcon={
+                          <UploadIcon width="10.667px" height="13.333px" />
+                        }
+                        disabled={items.length === 0}
+                        sx={{
+                          ":disabled": {
+                            svg: { path: { stroke: "#70777e !important" } },
+                          },
+                        }}
                       >
                         Export
                       </Button>
@@ -442,7 +477,14 @@ export const ReportBuilderPageHeader: React.FC = () => {
                           color: "#fff !important",
                           bgcolor: "#3154f4 !important",
                           svg: { path: { fill: "#fff !important" } },
+
+                          ":disabled": {
+                            bgcolor: "#dfe3e5 !important",
+                            color: "#70777e !important",
+                            svg: { path: { fill: "#70777e !important" } },
+                          },
                         }}
+                        disabled={items.length === 0}
                       >
                         Share
                       </Button>
@@ -596,6 +638,21 @@ export const ReportBuilderPageHeader: React.FC = () => {
       <AssetLibraryModal
         open={assetLibraryOpen}
         onClose={handleCloseAssetLibrary}
+      />
+      <ReportBuilderReportIssueModal
+        open={reportIssueModalOpen}
+        onClose={() => setReportIssueModalOpen(false)}
+        reportId={id}
+        reportName={name}
+        error={updateReport.error}
+        onSubmit={(payload) => {
+          console.log("Report issue submitted:", payload);
+          setSnackbarMessage(
+            "Thank you for reporting the issue. We will look into it.",
+          );
+          setSnackbarOpen(true);
+          setReportIssueModalOpen(false);
+        }}
       />
     </React.Fragment>
   );
@@ -798,7 +855,12 @@ export const ReportBuilderAssetPageHeader: React.FC = () => {
                     >
                       Back to Assets
                     </Button>
-                    <Button onClick={handleClick2} startIcon={<DownloadIcon />}>
+                    <Button
+                      onClick={handleClick2}
+                      startIcon={
+                        <UploadIcon width="10.667px" height="13.333px" />
+                      }
+                    >
                       Export
                     </Button>
                     <Button onClick={handleClick} startIcon={<ShareIcon />}>
