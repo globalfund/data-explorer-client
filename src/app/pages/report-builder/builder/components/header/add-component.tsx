@@ -12,6 +12,7 @@ import { ReportBuilderSelectColumnModal } from "app/pages/report-builder/main/co
 import { useCMSData } from "app/hooks/useCMSData";
 import { getCMSDataField } from "app/utils/getCMSDataField";
 import { DEFAULT_TABLE_OPTIONS } from "../table/options";
+import useMediaQuery from "@mui/system/useMediaQuery";
 
 export default function AddComponent({
   onOpenAssets,
@@ -20,6 +21,7 @@ export default function AddComponent({
 }) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const cmsData = useCMSData({ returnData: true });
+  const isMobile = useMediaQuery("(max-width: 600px)");
   const addItem = useStoreActions(
     (actions) => actions.RBReportItemsState.addItem,
   );
@@ -351,11 +353,13 @@ export default function AddComponent({
         }}
         onClick={handleClick}
       >
-        {getCMSDataField(
-          cmsData,
-          "pagesReportBuilderBuilder.addComponentButton",
-          "Add a Component",
-        )}
+        {isMobile
+          ? "Add"
+          : getCMSDataField(
+              cmsData,
+              "pagesReportBuilderBuilder.addComponentButton",
+              "Add a Component",
+            )}
       </Button>
       <Menu
         open={open}

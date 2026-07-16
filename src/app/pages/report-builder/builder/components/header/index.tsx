@@ -45,6 +45,7 @@ import { ReportBuilderUseAssetModal } from "app/pages/report-builder/main/compon
 import { ReportBuilderNewReportModal } from "app/pages/report-builder/main/components/new-report-modal";
 import { checkEmptyItem } from "app/utils/checkEmptyRBItem";
 import { ReportBuilderReportIssueModal } from "app/pages/report-builder/main/components/report-issue-modal";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 export const menuSx = {
   zIndex: 1400,
@@ -81,6 +82,7 @@ export const ReportBuilderPageHeader: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const cmsData = useCMSData({ returnData: true });
+  const isMobile = useMediaQuery("(max-width: 600px)");
   const reportState = useStoreState((state) => state.RBReportItemsState);
 
   const reportData = useGetReport(id);
@@ -95,6 +97,11 @@ export const ReportBuilderPageHeader: React.FC = () => {
   const [assetLibraryOpen, setAssetLibraryOpen] = React.useState(false);
 
   const [reportIssueModalOpen, setReportIssueModalOpen] = React.useState(false);
+
+  const nameInputRef = React.useRef<HTMLInputElement>(null);
+
+  const open = Boolean(anchorEl);
+  const open2 = Boolean(anchorEl2);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -199,50 +206,395 @@ export const ReportBuilderPageHeader: React.FC = () => {
     });
   }, [reportState.items]);
 
-  useDebounce(
-    () => {
-      if (!previewMode) {
-        updateReport.mutate({
-          name,
-          items: reportState.items,
-          settings: reportState.settings,
-        });
-      }
-    },
-    2000,
-    [name, reportState.items, reportState.settings, previewMode],
-  );
+  const toolbar = React.useMemo(() => {
+    if (isMobile) {
+      return (
+        <Toolbar
+          sx={{
+            gap: "20px",
+            height: "auto",
+            padding: "10px 20px !important",
+            justifyContent: "space-between",
+            bgcolor: signedIn ? "#f8f9fa" : "#fff6d8",
+          }}
+        >
+          {signedIn && (
+            <Box
+              sx={{
+                gap: "5px",
+                width: "100%",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-start",
+              }}
+            >
+              <Box
+                sx={{
+                  gap: "5px",
+                  display: "flex",
+                  alignItems: "center",
+                  "> *": { fontSize: "16px", color: "#000" },
+                  "> input": {
+                    fontWeight: "700",
+                    borderStyle: "none",
+                    bgcolor: "transparent",
+                  },
+                }}
+              >
+                <Link to="/report-builder">
+                  {getCMSDataField(
+                    cmsData,
+                    "pagesReportBuilderBuilder.myReportsButton",
+                    "My Reports",
+                  )}
+                </Link>
+                <Typography>/</Typography>
+                <input
+                  type="text"
+                  value={name}
+                  ref={nameInputRef}
+                  disabled={previewMode}
+                  size={name.length ?? 1}
+                  onInput={handleNameOnInputEvent}
+                  onChange={handleNameOnChangeEvent}
+                />
+                {!previewMode && (
+                  <IconButton onClick={handlePencilButtonClick}>
+                    <Pencil />
+                  </IconButton>
+                )}
+                {previewMode && (
+                  <Typography
+                    sx={{
+                      fontSize: "14px",
+                      padding: "5px 8px",
+                      borderRadius: "4px",
+                      bgcolor: "#d6ddfd",
+                    }}
+                  >
+                    Preview
+                  </Typography>
+                )}
+              </Box>
+              <Box
+                sx={{
+                  gap: "10px",
+                  width: "100%",
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "flex-end",
+                }}
+              >
+                {!previewMode && (
+                  <React.Fragment>
+                    <Typography
+                      variant="body1"
+                      component="span"
+                      fontSize="14px"
+                      marginRight={"14px"}
+                      sx={{
+                        span: {
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "8px",
+                        },
+                      }}
+                    >
+                      {updateReport.isPending ? (
+                        <Box component={"span"}>
+                          <Box
+                            sx={{
+                              display: "inline-flex",
+                              animation: `${spin} 1s linear infinite`,
+                            }}
+                          >
+                            <LoaderSpinner />
+                          </Box>
+                          {getCMSDataField(
+                            cmsData,
+                            "pagesReportBuilderBuilder.savingStatus",
+                            "Saving...",
+                          )}
+                        </Box>
+                      ) : updateReport.isSuccess ? (
+                        <Box component="span">
+                          <CompleteIcon />{" "}
+                          {getCMSDataField(
+                            cmsData,
+                            "pagesReportBuilderBuilder.savedStatus",
+                            "Saved",
+                          )}
+                        </Box>
+                      ) : updateReport.isError ? (
+                        <Box component={"span"}>
+                          <ErrorIcon />{" "}
+                          {getCMSDataField(
+                            cmsData,
+                            "pagesReportBuilderBuilder.saveErrorStatus",
+                            "Couldn't save changes",
+                          )}
+                          ,
+                          <Box
+                            component="button"
+                            sx={{
+                              textDecoration: "underline",
+                              padding: "0px",
+                              margin: "0px",
+                              border: "none",
+                              background: "none",
+                              cursor: "pointer",
+                            }}
+                            onClick={() => setReportIssueModalOpen(true)}
+                          >
+                            report this issue
+                          </Box>
+                        </Box>
+                      ) : updateReport.isPaused ? (
+                        <Box component={"span"}>
+                          <WarningIcon />
+                          {getCMSDataField(
+                            cmsData,
+                            "pagesReportBuilderBuilder.offlineStatus",
+                            "Offline — changes will sync when connection is restored",
+                          )}
+                        </Box>
+                      ) : null}
+                    </Typography>
+                    <Box
+                      sx={{
+                        gap: "10px",
+                        display: "flex",
+                        alignItems: "center",
+                        ".MuiButtonBase-root": {
+                          height: "35px",
+                          fontSize: "14px",
+                          bgcolor: "#fff",
+                          fontWeight: "400",
+                          padding: "6px 12px",
+                          borderRadius: "4px",
+                          textTransform: "none",
+                          border: "1px solid #dfe3e5",
+                          "&:hover": {
+                            bgcolor: "#f1f3f5",
+                            borderColor: "#70777e",
+                          },
+                        },
+                      }}
+                    >
+                      <Button
+                        startIcon={<LibraryIcon />}
+                        onClick={handleOpenAssetLibrary}
+                      >
+                        {getCMSDataField(
+                          cmsData,
+                          "pagesReportBuilderBuilder.assetsButton",
+                          "Assets",
+                        )}
+                      </Button>
+                      <Button
+                        component={Link}
+                        startIcon={<PreviewIcon />}
+                        to={`/report-builder/reports/${id}`}
+                      >
+                        Preview
+                      </Button>
+                    </Box>
+                    <AddComponent onOpenAssets={handleOpenAssetLibrary} />
+                  </React.Fragment>
+                )}
+                {previewMode && (
+                  <React.Fragment>
+                    <Box
+                      sx={{
+                        gap: "10px",
+                        display: "flex",
+                        alignItems: "center",
+                        ".MuiButtonBase-root": {
+                          height: "35px",
+                          fontSize: "14px",
+                          bgcolor: "#fff",
+                          fontWeight: "400",
+                          padding: "6px 12px",
+                          borderRadius: "4px",
+                          textTransform: "none",
+                          border: "1px solid #dfe3e5",
+                          "&:hover": {
+                            bgcolor: "#f1f3f5",
+                            borderColor: "#70777e",
+                          },
+                        },
+                      }}
+                    >
+                      <Button
+                        startIcon={<BackArrowIcon />}
+                        onClick={handleBackToEditClick}
+                      >
+                        Back to Edit
+                      </Button>
+                      <Button
+                        onClick={handleClick2}
+                        startIcon={
+                          <UploadIcon width="10.667px" height="13.333px" />
+                        }
+                        disabled={items.length === 0}
+                        sx={{
+                          ":disabled": {
+                            svg: { path: { stroke: "#70777e !important" } },
+                          },
+                        }}
+                      >
+                        Export
+                      </Button>
+                      <Button
+                        onClick={handleClick}
+                        startIcon={<ShareIcon />}
+                        sx={{
+                          color: "#fff !important",
+                          bgcolor: "#3154f4 !important",
+                          svg: { path: { fill: "#fff !important" } },
 
-  React.useEffect(() => {
-    if (updateReport.isSuccess) {
-      setTimeout(() => {
-        updateReport.reset();
-      }, 5000);
-    }
-  }, [updateReport.isSuccess]);
-
-  React.useEffect(() => {
-    setName(reportData.data?.data.name ?? "");
-  }, [reportData.data?.data.name]);
-
-  const open = Boolean(anchorEl);
-  const open2 = Boolean(anchorEl2);
-
-  const nameInputRef = React.useRef<HTMLInputElement>(null);
-
-  console.log(updateReport.error, "updateReport.error");
-
-  return (
-    <React.Fragment>
-      <Box
-        sx={{
-          top: 59,
-          zIndex: 999,
-          flexGrow: 1,
-          position: "sticky",
-          borderBottom: "1px solid #cfd4da",
-        }}
-      >
+                          ":disabled": {
+                            bgcolor: "#dfe3e5 !important",
+                            color: "#70777e !important",
+                            svg: { path: { fill: "#70777e !important" } },
+                          },
+                        }}
+                        disabled={items.length === 0}
+                      >
+                        Share
+                      </Button>
+                    </Box>
+                    <Menu
+                      open={open}
+                      keepMounted
+                      disableScrollLock
+                      anchorEl={anchorEl}
+                      onClose={handleClose}
+                      transformOrigin={{
+                        vertical: -5,
+                        horizontal: "right",
+                      }}
+                      anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "right",
+                      }}
+                      sx={menuSx}
+                    >
+                      <MenuItem onClick={handleCopyUrlLink}>
+                        <CopyIcon />
+                        {getCMSDataField(
+                          cmsData,
+                          "pagesReportBuilderBuilder.copyUrlLinkMenuItem",
+                          "Copy URL Link",
+                        )}
+                      </MenuItem>
+                      <MenuItem onClick={handleSendViaEmail}>
+                        <EmailIcon />
+                        {getCMSDataField(
+                          cmsData,
+                          "pagesReportBuilderBuilder.sendViaEmailMenuItem",
+                          "Send via Email",
+                        )}
+                      </MenuItem>
+                    </Menu>
+                    <Menu
+                      keepMounted
+                      open={open2}
+                      disableScrollLock
+                      anchorEl={anchorEl2}
+                      onClose={handleClose2}
+                      transformOrigin={{
+                        vertical: -5,
+                        horizontal: "right",
+                      }}
+                      anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "right",
+                      }}
+                      sx={menuSx}
+                    >
+                      <MenuItem onClick={handleDownloadShareableFile("png")}>
+                        <PNGIcon />
+                        {getCMSDataField(
+                          cmsData,
+                          "pagesReportBuilderBuilder.pngFileMenuItem",
+                          "PNG",
+                        )}
+                      </MenuItem>
+                      <MenuItem onClick={handleDownloadShareableFile("svg")}>
+                        <SVGIcon />
+                        {getCMSDataField(
+                          cmsData,
+                          "pagesReportBuilderBuilder.svgFileMenuItem",
+                          "SVG",
+                        )}
+                      </MenuItem>
+                      <MenuItem onClick={handleDownloadShareableFile("pdf")}>
+                        <PDFIcon />
+                        {getCMSDataField(
+                          cmsData,
+                          "pagesReportBuilderBuilder.pdfFileMenuItem",
+                          "PDF",
+                        )}
+                      </MenuItem>
+                    </Menu>
+                  </React.Fragment>
+                )}
+              </Box>
+            </Box>
+          )}
+          {!signedIn && (
+            <Container maxWidth="lg" disableGutters>
+              <Box
+                sx={{
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Box
+                  sx={{
+                    gap: "12px",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <InfoIcon />
+                  <Box>
+                    <Typography
+                      fontSize="16px"
+                      fontWeight="700"
+                      color="#684e00"
+                    >
+                      This report was created by a user with the Global Fund
+                      Report Builder.
+                    </Typography>
+                    <Typography fontSize="16px" color="#684e00">
+                      It is not an official Global Fund publication.
+                    </Typography>
+                  </Box>
+                </Box>
+                <Box
+                  sx={{
+                    p: "6px 8px",
+                    fontSize: "14px",
+                    borderRadius: "4px",
+                    bgcolor: "#fff1bf",
+                    height: "fit-content",
+                    border: "1px solid #be8e00",
+                  }}
+                >
+                  User-generated Report
+                </Box>
+              </Box>
+            </Container>
+          )}
+        </Toolbar>
+      );
+    } else {
+      return (
         <Toolbar
           sx={{
             gap: "20px",
@@ -616,6 +968,65 @@ export const ReportBuilderPageHeader: React.FC = () => {
             </Container>
           )}
         </Toolbar>
+      );
+    }
+  }, [
+    reportState.items,
+    reportState.settings,
+    name,
+    previewMode,
+    isMobile,
+    signedIn,
+    anchorEl,
+    anchorEl2,
+    cmsData,
+    id,
+    nameInputRef,
+    updateReport.isPending,
+    updateReport.isSuccess,
+    updateReport.isError,
+    updateReport.isPaused,
+    assetLibraryOpen,
+  ]);
+
+  useDebounce(
+    () => {
+      if (!previewMode) {
+        updateReport.mutate({
+          name,
+          items: reportState.items,
+          settings: reportState.settings,
+        });
+      }
+    },
+    2000,
+    [name, reportState.items, reportState.settings, previewMode],
+  );
+
+  React.useEffect(() => {
+    if (updateReport.isSuccess) {
+      setTimeout(() => {
+        updateReport.reset();
+      }, 5000);
+    }
+  }, [updateReport.isSuccess]);
+
+  React.useEffect(() => {
+    setName(reportData.data?.data.name ?? "");
+  }, [reportData.data?.data.name]);
+
+  return (
+    <React.Fragment>
+      <Box
+        sx={{
+          top: 59,
+          zIndex: 999,
+          flexGrow: 1,
+          position: "sticky",
+          borderBottom: "1px solid #cfd4da",
+        }}
+      >
+        {toolbar}
       </Box>
       <Snackbar
         open={snackbarOpen}

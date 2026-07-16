@@ -33,6 +33,7 @@ import {
   useGetFolders,
   useGetReports,
 } from "app/hooks/queries/report-builder";
+import { ReportBuilderResponsiveTopbar } from "./components/responsive-topbar";
 
 export const ReportBuilder: React.FC = () => {
   useTitle("The Data Explorer - Report Builder");
@@ -491,15 +492,57 @@ export const ReportBuilder: React.FC = () => {
 
   return (
     <React.Fragment>
-      <Box padding="50px 0">
+      <Box
+        padding={{
+          xs: "16px 0",
+          sm: "16px 0",
+          md: "16px 0",
+          lg: "50px 0",
+          xl: "50px 0",
+        }}
+      >
         <Grid container spacing="14px">
-          <Grid item xs={12} md={3.5} lg={2.3}>
+          <Grid
+            item
+            lg={2.3}
+            sx={{
+              display: {
+                xs: "none",
+                sm: "none",
+                md: "none",
+                lg: "block",
+                xl: "block",
+              },
+            }}
+          >
             <ReportBuilderSidebar
               selectedItem={sidebarSelectedItem}
               setSelectedItem={setSidebarSelectedItem}
             />
           </Grid>
-          <Grid item xs={12} md={8.5} lg={9.7}>
+          <Grid
+            item
+            md={12}
+            sx={{
+              width: "100%",
+              display: {
+                xs: "block",
+                sm: "block",
+                md: "block",
+                lg: "none",
+                xl: "none",
+              },
+            }}
+          >
+            <ReportBuilderResponsiveTopbar
+              search={search}
+              setSearch={setSearch}
+              selectedItem={sidebarSelectedItem}
+              setSelectedItem={setSidebarSelectedItem}
+              onNewReportClick={handleNewReportModalOpen}
+            />
+          </Grid>
+          <Grid item md={12} lg={9.7} sx={{ width: "100%" }}>
             <ReportBuilderToolbar
               search={search}
               setSearch={setSearch}

@@ -48,6 +48,9 @@ export const SaveAsAssetModal: React.FC<{
           position: "absolute",
           background: "#ffffff",
           transform: "translate(-50%, -50%)",
+          "@media (max-width: 600px)": {
+            width: "90%",
+          },
         }}
         id={"save-as-asset-modal"}
       >

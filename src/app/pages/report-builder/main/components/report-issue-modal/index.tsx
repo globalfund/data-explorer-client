@@ -79,6 +79,9 @@ export const ReportBuilderReportIssueModal: React.FC<
           borderRadius: "4px",
           boxShadow: "0px 0px 5px rgba(152, 161, 170, 0.6)",
           transform: "translate(-50%, -50%)",
+          "@media (max-width: 600px)": {
+            width: "90%",
+          },
         }}
       >
         <Box

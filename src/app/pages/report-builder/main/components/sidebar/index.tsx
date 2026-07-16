@@ -3,22 +3,25 @@ import Box from "@mui/material/Box";
 import { appColors } from "app/theme";
 import Button from "@mui/material/Button";
 import Accordion from "@mui/material/Accordion";
+import { useCMSData } from "app/hooks/useCMSData";
 import Typography from "@mui/material/Typography";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
-import { useCMSData } from "app/hooks/useCMSData";
 import AllAssetsIcon from "app/assets/vectors/ReportBuilderSidebarAllAssets.svg?react";
 import TutorialsIcon from "app/assets/vectors/ReportBuilderSidebarTutorials.svg?react";
 import AllReportsIcon from "app/assets/vectors/ReportBuilderSidebarAllReports.svg?react";
 import TemplatesLibrariesIcon from "app/assets/vectors/ReportBuilderSidebarTemplatesLibraries.svg?react";
-import { getCMSDataField } from "app/utils/getCMSDataField";
 
 export const ReportBuilderSidebar: React.FC<{
   selectedItem: string | null;
   setSelectedItem: (item: string) => void;
 }> = ({ selectedItem, setSelectedItem }) => {
+  const isTabletOrMobile = useMediaQuery("(max-width: 1024px)");
   const cmsData = useCMSData({ returnData: true });
+
   const handleItemClick = (item: string) => () => {
     if (item !== selectedItem) {
       setSelectedItem(item);
@@ -65,6 +68,10 @@ export const ReportBuilderSidebar: React.FC<{
       disabled: true,
     },
   ];
+
+  if (isTabletOrMobile) {
+    return null;
+  }
 
   return (
     <Box>

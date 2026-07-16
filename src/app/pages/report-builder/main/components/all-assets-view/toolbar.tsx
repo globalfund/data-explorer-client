@@ -80,6 +80,7 @@ export const ReportBuilderAssetsToolbar: React.FC<{
       value: "grid",
     },
   ];
+
   return (
     <Box
       sx={{
@@ -101,6 +102,10 @@ export const ReportBuilderAssetsToolbar: React.FC<{
             textTransform: "none",
             width: "fit-content",
             minWidth: "94px",
+          },
+          "@media (max-width: 768px)": {
+            width: "100%",
+            overflowX: "auto",
           },
         }}
       >

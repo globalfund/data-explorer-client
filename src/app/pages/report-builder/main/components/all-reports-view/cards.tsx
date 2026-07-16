@@ -8,6 +8,7 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import MoreVert from "@mui/icons-material/MoreVert";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import GridIcon from "app/assets/vectors/RBGrid.svg?react";
 import ChartIcon from "app/assets/vectors/RBChart.svg?react";
 import ImageIcon from "app/assets/vectors/RBImage.svg?react";
@@ -34,6 +35,8 @@ export const ReportCard: React.FC<ReportCardProps> = ({
   selectedItemForRenaming,
   setSelectedItemForRenaming,
 }) => {
+  const isMobile = useMediaQuery("(max-width: 600px)");
+
   return (
     <React.Fragment>
       <Box>
@@ -139,7 +142,9 @@ export const ReportCard: React.FC<ReportCardProps> = ({
           },
         }}
       >
-        <Button onClick={handleEditClick(id)}>Edit</Button>
+        <Button onClick={handleEditClick(id)} disabled={isMobile}>
+          Edit
+        </Button>
         <Button onClick={handleItemClick(id, "report")}>Preview</Button>
         <IconButton id={id} onClick={handleItemMenuClick} sx={{ p: "0px" }}>
           <MoreVert htmlColor="#454545" />

@@ -4,15 +4,16 @@ import Input from "@mui/material/Input";
 import Add from "@mui/icons-material/Add";
 import Button from "@mui/material/Button";
 import Search from "@mui/icons-material/Search";
+import { useCMSData } from "app/hooks/useCMSData";
 import IconButton from "@mui/material/IconButton";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import CardIcon from "app/assets/vectors/Card.svg?react";
 import ListIcon from "app/assets/vectors/List.svg?react";
 import InputAdornment from "@mui/material/InputAdornment";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 import NewFolderIcon from "app/assets/vectors/NewFolder.svg?react";
-import { useCMSData } from "app/hooks/useCMSData";
 import { RBDropdown } from "app/pages/report-builder/components/dropdown";
 import SettingsIcon from "app/assets/vectors/Settings_ButtonIcon.svg?react";
-import { getCMSDataField } from "app/utils/getCMSDataField";
 
 export const ReportBuilderToolbar: React.FC<{
   search: string;
@@ -34,6 +35,8 @@ export const ReportBuilderToolbar: React.FC<{
   onNewReportClick,
 }) => {
   const cmsData = useCMSData({ returnData: true });
+  const isMobile = useMediaQuery("(max-width: 600px)");
+  const isTabletOrMobile = useMediaQuery("(max-width: 1024px)");
   const dropdownItems = React.useMemo(
     () => [
       {
@@ -87,29 +90,31 @@ export const ReportBuilderToolbar: React.FC<{
         },
       }}
     >
-      <Input
-        value={search}
-        disableUnderline
-        placeholder={getCMSDataField(
-          cmsData,
-          "pagesReportBuilderMain.searchPlaceholder",
-          "Search",
-        )}
-        onChange={(e) => setSearch(e.target.value)}
-        startAdornment={
-          <InputAdornment position="start">
-            <Search fontSize="small" />
-          </InputAdornment>
-        }
-        sx={{
-          flexGrow: 1,
-          fontSize: "14px",
-          padding: "5px 8px",
-          borderRadius: "4px",
-          background: "#f1f3f5",
-          border: "1px solid #98a1aa",
-        }}
-      />
+      {!isTabletOrMobile && (
+        <Input
+          value={search}
+          disableUnderline
+          placeholder={getCMSDataField(
+            cmsData,
+            "pagesReportBuilderMain.searchPlaceholder",
+            "Search",
+          )}
+          onChange={(e) => setSearch(e.target.value)}
+          startAdornment={
+            <InputAdornment position="start">
+              <Search fontSize="small" />
+            </InputAdornment>
+          }
+          sx={{
+            flexGrow: 1,
+            fontSize: "14px",
+            padding: "5px 8px",
+            borderRadius: "4px",
+            background: "#f1f3f5",
+            border: "1px solid #98a1aa",
+          }}
+        />
+      )}
       <Box
         sx={{
           gap: "1px",
@@ -128,11 +133,13 @@ export const ReportBuilderToolbar: React.FC<{
             borderBottom: `2px solid ${selectedView === "cards" ? "#0f62fe" : "#cfd4da"}`,
           }}
         >
-          {getCMSDataField(
-            cmsData,
-            "pagesReportBuilderMain.cardViewButton",
-            "Card",
-          )}
+          {!isMobile
+            ? getCMSDataField(
+                cmsData,
+                "pagesReportBuilderMain.cardViewButton",
+                "Card",
+              )
+            : null}
         </Button>
         <Button
           endIcon={<ListIcon />}
@@ -141,52 +148,66 @@ export const ReportBuilderToolbar: React.FC<{
             borderBottom: `2px solid ${selectedView === "list" ? "#0f62fe" : "#cfd4da"}`,
           }}
         >
-          {getCMSDataField(
-            cmsData,
-            "pagesReportBuilderMain.listViewButton",
-            "List",
-          )}
+          {!isMobile
+            ? getCMSDataField(
+                cmsData,
+                "pagesReportBuilderMain.listViewButton",
+                "List",
+              )
+            : null}
         </Button>
       </Box>
-      <RBDropdown
-        height={45}
-        width={220}
-        fontSize="16px"
-        fixedIcon={<SettingsIcon />}
-        dropdownItems={dropdownItems}
-        dropdownSelected={selectedSort}
-        handleDropdownChange={(value) => setSelectedSort(value)}
-      />
-      <IconButton
+      <Box
         sx={{
-          borderRadius: "4px",
-          padding: "12px 14px",
-          border: "1px solid #dfe3e5",
-          "&:hover": {
-            borderColor: "#3154f4",
-            background: "transparent",
+          gap: "20px",
+          display: "flex",
+          "@media (max-width: 1024px)": {
+            alignItems: "flex-end",
           },
         }}
-        onClick={onNewFolderClick}
       >
-        <NewFolderIcon />
-      </IconButton>
-      <Button
-        variant="contained"
-        startIcon={<Add />}
-        sx={{
-          fontWeight: "400",
-          color: "#ffffff",
-          background: "#3154f4",
-        }}
-        onClick={onNewReportClick}
-      >
-        {getCMSDataField(
-          cmsData,
-          "pagesReportBuilderMain.newReportButton",
-          "New Report",
+        <RBDropdown
+          height={45}
+          width={220}
+          fontSize="16px"
+          fixedIcon={<SettingsIcon />}
+          dropdownItems={dropdownItems}
+          dropdownSelected={selectedSort}
+          handleDropdownChange={(value) => setSelectedSort(value)}
+        />
+        <IconButton
+          sx={{
+            borderRadius: "4px",
+            padding: "12px 14px",
+            border: "1px solid #dfe3e5",
+            "&:hover": {
+              borderColor: "#3154f4",
+              background: "transparent",
+            },
+          }}
+          onClick={onNewFolderClick}
+        >
+          <NewFolderIcon />
+        </IconButton>
+        {!isTabletOrMobile && (
+          <Button
+            variant="contained"
+            startIcon={<Add />}
+            sx={{
+              fontWeight: "400",
+              color: "#ffffff",
+              background: "#3154f4",
+            }}
+            onClick={onNewReportClick}
+          >
+            {getCMSDataField(
+              cmsData,
+              "pagesReportBuilderMain.newReportButton",
+              "New Report",
+            )}
+          </Button>
         )}
-      </Button>
+      </Box>
     </Box>
   );
 };
