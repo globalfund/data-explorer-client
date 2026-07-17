@@ -12,13 +12,14 @@ import {
   ReportBuilderReportIssueModalProps,
 } from "app/pages/report-builder/main/components/report-issue-modal/data";
 import { format } from "date-fns";
+import { useSendErrorReport } from "app/hooks/queries/report-builder";
 
 export const ReportBuilderReportIssueModal: React.FC<
   ReportBuilderReportIssueModalProps
 > = ({
   open,
   onClose,
-  onSubmit,
+  onSubmitted,
   reportId,
   reportName,
   error,
@@ -36,6 +37,8 @@ export const ReportBuilderReportIssueModal: React.FC<
     );
   };
 
+  const sendErrorReport = useSendErrorReport();
+
   const handleDetailsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (e.target.value.length <= maxDetailsLength) {
       setDetails(e.target.value);
@@ -43,10 +46,15 @@ export const ReportBuilderReportIssueModal: React.FC<
   };
 
   const handleSubmit = () => {
-    onSubmit?.({
-      activity: selectedActivity,
+    const payload = {
+      action: selectedActivity,
       details,
-    });
+      reportId,
+      reportName,
+      errorMessage: error?.message || null,
+    };
+    sendErrorReport.mutate(payload);
+    onSubmitted?.();
   };
 
   React.useEffect(() => {
@@ -342,7 +350,7 @@ export const ReportBuilderReportIssueModal: React.FC<
                 },
               }}
             >
-              Send Report
+              {sendErrorReport.isPending ? "Reporting..." : "Send Report"}
             </Button>
           </Box>
         </Box>

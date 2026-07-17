@@ -651,3 +651,16 @@ export const useFilteredDatasetPage = ({
     placeholderData: (previousData) => previousData,
   });
 };
+
+export const useSendErrorReport = () => {
+  return useMutation({
+    mutationKey: ["ReportBuilderSendErrorReport"],
+    mutationFn: (data: {
+      action: string | null;
+      details: string;
+      reportId: string | undefined;
+      reportName: string | undefined;
+      errorMessage: string | null;
+    }) => axiosInstance.post(`/report/report-an-error`, data),
+  });
+};
