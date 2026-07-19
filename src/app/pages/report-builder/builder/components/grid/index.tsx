@@ -68,7 +68,7 @@ const GridItem: React.FC<{
         cursor: "pointer",
         borderRadius: "4px",
         alignItems: "center",
-        bgcolor: "#d6ddfd",
+        bgcolor: active ? "#F8F9FA" : "#d6ddfd",
         flexDirection: "row",
         position: "relative",
         padding: "10px",
@@ -228,11 +228,12 @@ export const ReportBuilderPageGrid: React.FC<{
   const handleDeleteItem = () => {
     removeItem(id);
     handleClose();
+    setSelectedController({ id: "", type: null, open: false });
   };
 
   const gridReady = React.useMemo(
-    () => items.some((item) => item !== null),
-    [items],
+    () => selectedItem.data.items?.some((item) => item.type !== "unknown"),
+    [selectedItem.data.items],
   );
 
   const clearSelectedController = useStoreActions(

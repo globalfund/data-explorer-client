@@ -6,15 +6,24 @@ import {
 type GridLikeData = ReportItemOf<"grid" | "column">;
 type GridItem = RBReportItem;
 
-const MIN_SIZE = 1;
+const MIN_SIZE = 0;
 
 const parseSize = (size: string | number | undefined, fallback = 0): number => {
-  if (typeof size === "number") return size;
-  if (typeof size === "string") {
-    if (size.endsWith("%")) return Number(size.slice(0, -1));
-    return isNaN(Number(size)) ? fallback : Number(size);
+  let parsedSize = fallback;
+
+  if (typeof size === "number") {
+    parsedSize = size;
   }
-  return fallback;
+  if (typeof size === "string") {
+    if (size === "%") {
+      parsedSize = fallback;
+    } else if (size.endsWith("%")) {
+      parsedSize = Number(size.slice(0, -1));
+    } else {
+      parsedSize = isNaN(Number(size)) ? fallback : Number(size);
+    }
+  }
+  return isNaN(parsedSize) ? fallback : parsedSize;
 };
 
 const toPercent = (value: number) => `${Number(value.toFixed(2))}%`;
@@ -182,13 +191,13 @@ export const syncGridSize = (
     prevItem.options?.width,
     getDefaultColumnWidth(columns),
   );
-  const nextWidth = parseSize(newItem.options?.width, prevWidth);
+  const nextWidth = parseSize(newItem.options?.width);
 
   const prevHeight = parseSize(
     prevItem.options?.height,
     getDefaultRowHeight(rows),
   );
-  const nextHeight = parseSize(newItem.options?.height, prevHeight);
+  const nextHeight = parseSize(newItem.options?.height);
 
   if (nextWidth !== prevWidth) {
     syncColumnWidth(items, itemColumn, nextWidth, columns, rows);
@@ -209,6 +218,10 @@ export const syncGridSize = (
     options: {
       ...items[itemIndex]?.options, // ← keeps clamped width/height
       ...restOptions, // ← only apply other props
+      width:
+        items[itemIndex]?.options?.width === "0%"
+          ? "%"
+          : items[itemIndex]?.options?.width,
     },
   };
 

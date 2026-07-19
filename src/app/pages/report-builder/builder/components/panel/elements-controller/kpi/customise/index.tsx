@@ -11,6 +11,7 @@ import { lineOptions } from "../data";
 import TextField from "../../components/textfield";
 import { set } from "lodash";
 import useGetReportItemState from "app/pages/report-builder/hooks/useGetReportItemState";
+import { appendPx, removePx } from "app/utils/formatPx";
 
 export function Customise() {
   const selectedController = useStoreState(
@@ -166,10 +167,13 @@ export function Customise() {
         <Box>
           <TextField
             label="Line Stroke"
-            value={selectedItem?.options?.innerLine?.borderWidth || ""}
+            value={removePx(
+              selectedItem?.options?.innerLine?.borderWidth || "",
+            )}
             onChange={(value) => {
-              handleChange("options.innerLine.borderWidth", value);
+              handleChange("options.innerLine.borderWidth", appendPx(value));
             }}
+            type="number"
           />
         </Box>
         <Box>

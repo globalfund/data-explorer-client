@@ -51,6 +51,10 @@ export const TabPlaceholderIcon = () => (
 );
 
 export const remoteImages = [
+  "/static/images/sample-image-1.png",
+  "/static/images/sample-image-2.png",
+  "/static/images/sample-image-3.png",
+  "/static/images/woman.png",
   "https://images.unsplash.com/photo-1516117172878-fd2c41f4a759",
   "https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d",
   "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e",

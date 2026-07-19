@@ -137,6 +137,16 @@ export default function ChartController() {
     }
   }, [chartConfigured, item?.data?.dataset, item?.data?.chartType]);
 
+  React.useEffect(() => {
+    if (selectedController?.parent?.type === "grid") {
+      setValue("grid");
+    } else if (selectedController?.parent?.type === "column") {
+      setValue("column");
+    } else {
+      setValue("data-settings");
+    }
+  }, [selectedController?.id]);
+
   return (
     <Box
       id="chart-controller"
