@@ -18,6 +18,9 @@ import {
 import { ActionCreator } from "easy-peasy";
 import { useClickOutsideEditor } from "app/hooks/useClickOutsideEditorComponent";
 import KPIBox from "../kpi";
+import ResizableGrid, { IGridItem } from "./resizable";
+import { useDebounce } from "react-use";
+import { isEqual } from "lodash";
 
 const GridItem: React.FC<{
   index: number;
@@ -44,6 +47,7 @@ const GridItem: React.FC<{
     border:
       active && !viewMode ? "0.5px solid #3154F4" : "0.5px solid transparent",
     borderRadius: "4px",
+    overflow: "hidden",
   };
 
   const empty = (
@@ -213,6 +217,12 @@ export const ReportBuilderPageGrid: React.FC<{
     "grid" | "column"
   >;
 
+  const containerRef = React.useRef<HTMLDivElement>(null);
+
+  const editItem = useStoreActions(
+    (actions) => actions.RBReportItemsState.editItem,
+  );
+
   const removeItem = useStoreActions(
     (actions) => actions.RBReportItemsState.removeItem,
   );
@@ -240,6 +250,96 @@ export const ReportBuilderPageGrid: React.FC<{
     (actions) => actions.RBReportItemsControllerState.clearItem,
   );
 
+  const gap = 10; // Gap between items in pixels
+
+  const containerHeight = React.useMemo(() => {
+    if (!containerRef.current) return 0;
+    const verticalPadding =
+      parseFloat(selectedItem?.options?.paddingTop?.replace("px", "") || "0") +
+      parseFloat(
+        selectedItem?.options?.paddingBottom?.replace("px", "") || "0",
+      );
+
+    const totalGap = gap * (rows - 1);
+    return containerRef.current.offsetHeight - totalGap - verticalPadding * 2; // Subtract padding from available size
+  }, [
+    containerRef.current,
+    selectedItem?.options?.paddingTop,
+    selectedItem?.options?.paddingBottom,
+    rows,
+  ]);
+
+  const containerWidth = React.useMemo(() => {
+    if (!containerRef.current) return 0;
+    const horizontalPadding =
+      parseFloat(selectedItem?.options?.paddingLeft?.replace("px", "") || "0") +
+      parseFloat(selectedItem?.options?.paddingRight?.replace("px", "") || "0");
+    const totalGap = gap * (columns - 1);
+    return containerRef.current.offsetWidth - totalGap - horizontalPadding * 2; // Subtract padding from available size
+  }, [
+    containerRef.current,
+    columns,
+    selectedItem?.options?.paddingLeft,
+    selectedItem?.options?.paddingRight,
+  ]);
+
+  console.log("containerWidth", containerWidth);
+  console.log("containerHeight", containerHeight);
+
+  const [localGridItems, setLocalGridItems] = React.useState<IGridItem<any>[]>(
+    [],
+  );
+
+  const setGridItems = (newGridItems: IGridItem<any>[]) => {
+    if (!selectedItem) return;
+    const updatedItems = selectedItem.data.items?.map((item, index) => {
+      const updatedItem = newGridItems[index];
+      if (updatedItem) {
+        return {
+          ...item,
+          options: {
+            ...item.options,
+            width: updatedItem.width,
+            height: updatedItem.height,
+          },
+        };
+      }
+      return item;
+    });
+    editItem({
+      ...selectedItem,
+      id: selectedItem.id,
+      type: selectedItem.type as any,
+      open: selectedItem.open || false,
+      data: {
+        ...selectedItem.data,
+        items: updatedItems || [],
+      },
+    });
+  };
+
+  React.useEffect(() => {
+    if (!selectedItem?.data?.items) return;
+    const newGridItems =
+      selectedItem.data.items?.map((item) => ({
+        id: item.id,
+        width: item?.options?.width || "100%",
+        height: item?.options?.height || "100%",
+      })) || [];
+
+    if (!isEqual(newGridItems, localGridItems)) {
+      setLocalGridItems(newGridItems);
+    }
+  }, [selectedItem?.data?.items]);
+
+  useDebounce(
+    () => {
+      setGridItems(localGridItems);
+    },
+    500,
+    [localGridItems],
+  );
+
   useClickOutsideEditor({
     editorId: "grid-container",
     toolbarId: "rte-toolbar",
@@ -265,34 +365,40 @@ export const ReportBuilderPageGrid: React.FC<{
           },
         },
       }}
+      ref={containerRef}
     >
-      <Box
+      <ResizableGrid
+        columns={columns}
+        minWidth={"10%"}
+        minHeight={"10%"}
+        setGridItems={setLocalGridItems}
+        gridItems={localGridItems}
         sx={{
           display: "flex",
           flexWrap: "wrap",
           gap: `10px`,
-          padding: `10px`,
           boxSizing: "border-box",
           transition: "all 0.3s ease-in-out",
           ...selectedItem?.options,
           width: "100%",
           height: "100%",
         }}
+        availableWidth={containerWidth}
+        availableHeight={containerHeight}
       >
-        {Array.from({ length: rows * columns }).map((_, i) => {
-          const item = selectedItem.data.items?.[i];
-
+        {(resizableItem, index) => {
+          const item = selectedItem.data.items?.[index];
           return (
             <Box
-              key={i}
+              key={index}
               sx={{
-                width: `calc(${item?.options?.width} - ${((columns - 1) * 10) / columns}px)`,
-                height: `calc(${item?.options?.height} - ${((rows - 1) * 10) / rows}px)`,
+                width: `calc(${resizableItem?.width} - ${((columns - 1) * 10) / columns}px)`,
+                height: `calc(${resizableItem?.height} - ${((rows - 1) * 10) / rows}px)`,
                 minWidth: 0,
               }}
             >
               <GridItem
-                index={i}
+                index={index}
                 item={item}
                 viewMode={viewMode}
                 setSelectedController={setSelectedController}
@@ -300,8 +406,9 @@ export const ReportBuilderPageGrid: React.FC<{
               />
             </Box>
           );
-        })}
-      </Box>
+        }}
+      </ResizableGrid>
+
       {viewMode ? null : (
         <Box className="top-right-actions">
           {gridReady && (
