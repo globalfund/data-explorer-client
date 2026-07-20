@@ -5,6 +5,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import { useSessionStorage, useTitle } from "react-use";
+import { useSearchParams } from "react-router-dom";
 import { RBItemTypes } from "app/pages/report-builder/data";
 import NavigateNext from "@mui/icons-material/NavigateNext";
 import { ReportBuilderSidebar } from "app/pages/report-builder/main/components/sidebar";
@@ -37,9 +38,14 @@ import { ReportBuilderResponsiveTopbar } from "./components/responsive-topbar";
 
 export const ReportBuilder: React.FC = () => {
   useTitle("The Data Explorer - Report Builder");
+  const [searchParams] = useSearchParams();
 
-  const [sidebarSelectedItem, setSidebarSelectedItem] =
-    React.useState("allReports");
+  const [sidebarSelectedItem, setSidebarSelectedItem] = React.useState(() => {
+    const section = searchParams.get("section");
+    return section === "allAssets" || section === "templatesAndLayouts"
+      ? section
+      : "allReports";
+  });
   const [search, setSearch] = React.useState("");
   const [selectedView, setSelectedView] = useSessionStorage<"cards" | "list">(
     "cards",
@@ -494,7 +500,7 @@ export const ReportBuilder: React.FC = () => {
     <React.Fragment>
       <Box
         padding={{
-          xs: "16px 0",
+          xs: "16px 0 96px",
           sm: "16px 0",
           md: "16px 0",
           lg: "50px 0",
@@ -544,6 +550,7 @@ export const ReportBuilder: React.FC = () => {
           </Grid>
           <Grid item md={12} lg={9.7} sx={{ width: "100%" }}>
             <ReportBuilderToolbar
+              section={sidebarSelectedItem}
               search={search}
               setSearch={setSearch}
               selectedSort={selectedSort}
@@ -553,7 +560,16 @@ export const ReportBuilder: React.FC = () => {
               onNewFolderClick={handleNewFolderModalOpen}
               onNewReportClick={handleNewReportModalOpen}
             />
-            <Box width="100%" height="20px" />
+            <Box
+              width="100%"
+              height={{
+                xs: "16px",
+                sm:
+                  sidebarSelectedItem === "templatesAndLayouts"
+                    ? "0px"
+                    : "20px",
+              }}
+            />
             {openedFolders.length > 0 && (
               <Breadcrumbs
                 separator={
@@ -595,7 +611,20 @@ export const ReportBuilder: React.FC = () => {
               />
             )}
             <Box sx={{ display: "flex", flexDirection: "row", gap: "20px" }}>
-              {view}
+              <Box
+                sx={{
+                  width: "100%",
+                  minWidth: 0,
+                  overflow: selectedView === "list" ? "hidden" : "visible",
+                  ...(selectedView === "list" && {
+                    ".tabulator": {
+                      minWidth: { xs: "700px", sm: "100%" },
+                    },
+                  }),
+                }}
+              >
+                {view}
+              </Box>
               {detailsSidePanelOpen && (
                 <ReportBuilderDetailsSidePanel
                   details={detailsSidePanelInfo}

@@ -464,7 +464,7 @@ export const AllAssetsView: React.FC<AllAssetsViewProps> = ({
         data={assets.data.map((item) => {
           const cdate = new Date(item.createdDate);
           const edate = new Date(item.updatedDate);
-          const type = item.isFolder ? "Folder" : "Report";
+          const type = item.isFolder ? "Folder" : (item.type ?? "Asset");
           let description = item.description;
           if (type === "Folder") {
             description = getFolderContentText({
@@ -486,26 +486,11 @@ export const AllAssetsView: React.FC<AllAssetsViewProps> = ({
           { title: "", field: "id", visible: false },
           {
             title: "",
-            field: "selected",
+            field: "rowNumber",
+            width: 34,
+            headerSort: false,
             formatter: (cell) => {
-              const id = cell.getRow().getData()?.id;
-              return renderToString(
-                <div
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <input
-                    type="checkbox"
-                    id={`checkbox-${id}`}
-                    checked={checkedItems.some((i) => i.id === id)}
-                  />
-                </div>,
-              );
+              return String(cell.getRow().getPosition());
             },
           },
           {

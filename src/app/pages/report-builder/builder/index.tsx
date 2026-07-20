@@ -4,8 +4,14 @@ import Box from "@mui/material/Box";
 import { useTitle } from "react-use";
 import { uniqueId } from "app/utils/uniqueId";
 import SectionDivider from "./components/section-divider";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import CopyIcon from "app/assets/vectors/report-builder-responsive/copy.svg?react";
+import MonitorIcon from "app/assets/vectors/report-builder-responsive/monitor.svg?react";
+import { ReportBuilderMobileBottomBar } from "app/pages/report-builder/main/components/mobile-bottom-bar";
 import { useGetReport } from "app/hooks/queries/report-builder";
 import KPIBox from "app/pages/report-builder/builder/components/kpi";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -22,7 +28,7 @@ import ElementsController from "app/pages/report-builder/builder/components/pane
 import { DragDropProvider } from "@dnd-kit/react";
 import { move } from "@dnd-kit/helpers";
 
-export const ReportBuilderPage: React.FC = () => {
+const ReportBuilderDesktopPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [searchParams] = useSearchParams();
 
@@ -308,5 +314,125 @@ export const ReportBuilderPage: React.FC = () => {
         </DragDropProvider>
       </Box>
     </React.Fragment>
+  );
+};
+
+const MobileReportBuilderHandoff: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const editUrl = `${window.location.origin}/report-builder/reports/${id}/edit`;
+
+  return (
+    <Box
+      sx={{
+        minHeight: "calc(100vh - 62px)",
+        px: "20px",
+        pb: "96px",
+        display: "flex",
+        textAlign: "center",
+        alignItems: "center",
+        flexDirection: "column",
+        justifyContent: "center",
+        bgcolor: "#f8f9fa",
+      }}
+    >
+      <Box sx={{ width: 55, height: 55, mb: "26px" }}>
+        <MonitorIcon width={55} height={55} />
+      </Box>
+      <Typography fontSize="20px" fontWeight={700} mb="14px">
+        Best built on a bigger screen
+      </Typography>
+      <Typography fontSize="16px" lineHeight="20px" mb="32px">
+        Report editing works best on tablet and desktop. Copy the link to pick
+        up where you left off on another device.
+      </Typography>
+      <Box sx={{ width: "100%", display: "flex", gap: "16px" }}>
+        <Box
+          sx={{
+            height: "42px",
+            flex: 1,
+            px: "8px",
+            display: "block",
+            overflow: "hidden",
+            fontSize: "14px",
+            lineHeight: "40px",
+            textAlign: "left",
+            borderRadius: "4px",
+            whiteSpace: "nowrap",
+            textOverflow: "ellipsis",
+            border: "1px solid #98a1aa",
+          }}
+        >
+          {editUrl}
+        </Box>
+        <Button
+          variant="outlined"
+          startIcon={<CopyIcon width={18} height={18} />}
+          onClick={() => navigator.clipboard.writeText(editUrl)}
+          sx={{ minWidth: "94px", color: "#252c34", textTransform: "none" }}
+        >
+          Copy
+        </Button>
+      </Box>
+      <Typography
+        width="100%"
+        mt="8px"
+        mb="32px"
+        fontSize="14px"
+        textAlign="left"
+        color="#59616a"
+      >
+        Open this link on your desktop or tablet to edit.
+      </Typography>
+      <Button
+        fullWidth
+        variant="contained"
+        onClick={() => navigate(`/report-builder/reports/${id}`)}
+        sx={{
+          height: "42px",
+          maxWidth: "248px",
+          mb: "16px",
+          fontSize: "16px",
+          bgcolor: "#3154f4",
+          textTransform: "none",
+          color: "#fff",
+        }}
+      >
+        View report (read-only)
+      </Button>
+      <Button
+        fullWidth
+        variant="outlined"
+        onClick={() => navigate("/report-builder")}
+        sx={{
+          height: "42px",
+          maxWidth: "248px",
+          fontSize: "16px",
+          color: "#252c34",
+          textTransform: "none",
+        }}
+      >
+        Back to Dashboard
+      </Button>
+      <ReportBuilderMobileBottomBar
+        value="allReports"
+        onChange={(value) => {
+          navigate(
+            value === "allReports"
+              ? "/report-builder"
+              : `/report-builder?section=${value}`,
+          );
+        }}
+      />
+    </Box>
+  );
+};
+
+export const ReportBuilderPage: React.FC = () => {
+  const isMobile = useMediaQuery("(max-width: 600px)");
+  return isMobile ? (
+    <MobileReportBuilderHandoff />
+  ) : (
+    <ReportBuilderDesktopPage />
   );
 };
