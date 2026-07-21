@@ -34,13 +34,13 @@ export const RichEditor: React.FC<{
     autofocus: true,
     content: selectedItem?.data?.rte || "",
     editable: !viewMode,
-    onUpdate: ({ editor }) => {
+    onUpdate: ({ editor: updatedEditor }) => {
       if (selectedItem) {
         editItem({
           ...selectedItem,
           data: {
             ...selectedItem.data,
-            rte: editor.getJSON(),
+            rte: updatedEditor.getJSON(),
           },
         });
       }
