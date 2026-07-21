@@ -479,26 +479,11 @@ export const AllReportsView: React.FC<AllReportsViewProps> = ({
           { title: "", field: "id", visible: false },
           {
             title: "",
-            field: "selected",
+            field: "rowNumber",
+            width: 34,
+            headerSort: false,
             formatter: (cell) => {
-              const id = cell.getRow().getData()?.id;
-              return renderToString(
-                <div
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <input
-                    type="checkbox"
-                    id={`checkbox-${id}`}
-                    checked={checkedItems.some((i) => i.id === id)}
-                  />
-                </div>,
-              );
+              return String(cell.getRow().getPosition());
             },
           },
           {
