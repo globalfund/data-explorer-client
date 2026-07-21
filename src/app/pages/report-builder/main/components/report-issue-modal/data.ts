@@ -14,7 +14,7 @@ export interface ReportBuilderReportIssueSubmitPayload {
 export interface ReportBuilderReportIssueModalProps {
   open: boolean;
   onClose: () => void;
-  onSubmit?: (payload: ReportBuilderReportIssueSubmitPayload) => void;
+  onSubmitted?: () => void;
   activityOptions?: string[];
   maxDetailsLength?: number;
   reportId?: string;
