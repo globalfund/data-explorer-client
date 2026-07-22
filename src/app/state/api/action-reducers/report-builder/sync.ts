@@ -572,11 +572,8 @@ export const RBReportItemsState: RBReportItemsModel = {
   duplicateGridItem: action((state, payload) => {
     const { gridId, itemId } = payload;
     const gridIndex = state.items.findIndex((i) => i.id === gridId);
-    if (
-      gridIndex !== -1 &&
-      (state.items[gridIndex].type === "grid" ||
-        state.items[gridIndex].type === "column")
-    ) {
+    // TODO: handle duplication for grid type as well
+    if (gridIndex !== -1 && state.items[gridIndex].type === "column") {
       const itemIndex = state.items[gridIndex].data.items.findIndex(
         (i) => i?.id === itemId,
       );

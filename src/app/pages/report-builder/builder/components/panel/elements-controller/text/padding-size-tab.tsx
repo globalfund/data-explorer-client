@@ -174,12 +174,14 @@ export default function LayoutTab() {
               label="Width"
               value={selectedItem?.options?.width ?? ""}
               onChange={(value) => handleChange("options.width", value)}
+              disabled={!!selectedItemController?.parent}
             />
 
             <TextField
               label="Height"
               value={selectedItem?.options?.height ?? ""}
               onChange={(value) => handleChange("options.height", value)}
+              disabled={!!selectedItemController?.parent}
             />
           </Box>
         </Box>

@@ -20,6 +20,7 @@ export default function LayoutTab() {
     <VisualOptions
       defaultOptionsToDisplay={defaultOptionsToDisplay}
       tab="layout"
+      disableSizeFields={!!selectedItemController?.parent}
     />
   );
 }

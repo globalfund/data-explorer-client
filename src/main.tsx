@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import "react-resizable/css/styles.css";
 import App from "app";
 import Providers from "app/Providers";
 import reportWebVitals from "./reportWebVitals";

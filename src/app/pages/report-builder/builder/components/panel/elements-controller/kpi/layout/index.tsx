@@ -276,6 +276,7 @@ export function PaddingSize() {
             value={selectedItem?.options?.width ?? ""}
             onChange={(value) => handleChange("options.width", value)}
             width={"100%"}
+            disabled={!!selectedItemController?.parent}
           />
 
           <TextField
@@ -283,6 +284,7 @@ export function PaddingSize() {
             value={selectedItem?.options?.height ?? ""}
             onChange={(value) => handleChange("options.height", value)}
             width={"100%"}
+            disabled={!!selectedItemController?.parent}
           />
         </Box>
       </Box>

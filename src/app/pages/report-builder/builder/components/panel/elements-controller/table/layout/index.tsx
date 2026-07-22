@@ -79,13 +79,18 @@ export default function LayoutTab() {
     </Box>
   );
 
-  const renderSizeField = (key: "width" | "height", label: string) => (
+  const renderSizeField = (
+    key: "width" | "height",
+    label: string,
+    disabled: boolean = false,
+  ) => (
     <Box sx={{ flex: 1, minWidth: 0 }}>
       <TextField
         width="100%"
         label={label}
         value={tableOptions[key]}
         onChange={(value) => updateOptions({ [key]: value })}
+        disabled={disabled}
       />
     </Box>
   );
@@ -147,8 +152,8 @@ export default function LayoutTab() {
           Size
         </Typography>
         <Box sx={{ display: "flex", gap: "16px" }}>
-          {renderSizeField("width", "Width")}
-          {renderSizeField("height", "Height")}
+          {renderSizeField("width", "Width", !!selectedController?.parent)}
+          {renderSizeField("height", "Height", !!selectedController?.parent)}
         </Box>
       </Box>
     </Box>

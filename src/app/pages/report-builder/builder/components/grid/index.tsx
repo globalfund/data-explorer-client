@@ -283,9 +283,6 @@ export const ReportBuilderPageGrid: React.FC<{
     selectedItem?.options?.paddingRight,
   ]);
 
-  console.log("containerWidth", containerWidth);
-  console.log("containerHeight", containerHeight);
-
   const [localGridItems, setLocalGridItems] = React.useState<IGridItem<any>[]>(
     [],
   );
@@ -336,7 +333,7 @@ export const ReportBuilderPageGrid: React.FC<{
     () => {
       setGridItems(localGridItems);
     },
-    500,
+    1000,
     [localGridItems],
   );
 
@@ -385,6 +382,7 @@ export const ReportBuilderPageGrid: React.FC<{
         }}
         availableWidth={containerWidth}
         availableHeight={containerHeight}
+        disabled={viewMode}
       >
         {(resizableItem, index) => {
           const item = selectedItem.data.items?.[index];

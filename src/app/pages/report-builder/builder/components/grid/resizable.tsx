@@ -1,7 +1,8 @@
 import { Resizable } from "react-resizable";
-
+import "react-resizable/css/styles.css";
 import React from "react";
 import { Box, SxProps } from "@mui/system";
+import "./resizable.css";
 
 export interface IGridItem<TData> {
   id: any;
@@ -24,6 +25,7 @@ export interface ResizeableGridProps<TData> {
   ref?: React.Ref<HTMLDivElement>;
   availableWidth: number;
   availableHeight: number;
+  disabled?: boolean;
 }
 
 const ResizableGrid = <TData,>({
@@ -37,6 +39,7 @@ const ResizableGrid = <TData,>({
   ref,
   availableWidth,
   availableHeight,
+  disabled,
 }: ResizeableGridProps<TData>) => {
   const MIN_WIDTH = (parseFloat(minWidth) / 100) * availableWidth; // Convert percentage to decimal
   const MIN_HEIGHT = (parseFloat(minHeight) / 100) * availableHeight; // Convert percentage to decimal
@@ -236,14 +239,21 @@ const ResizableGrid = <TData,>({
 
         return (
           <Resizable
+            className="resizable-panel"
             key={item.id}
+            // TODO: using numbers can cause issues with precision, consider using a more robust method for handling sizes
             height={(parseFloat(item.height) * availableHeight) / 100} // Convert height from percentage string to number
             width={(parseFloat(item.width) * availableWidth) / 100} // Convert width from percentage string to number
             onResize={handleResize(rowindex, columnIndex)}
-            resizeHandles={Object.entries(handles)
-              .filter(([, value]) => value)
-              .map(([key]) => key as "s" | "e" | "se")}
+            resizeHandles={
+              disabled
+                ? []
+                : Object.entries(handles)
+                    .filter(([, value]) => value)
+                    .map(([key]) => key as "s" | "e" | "se")
+            }
             minConstraints={[MIN_WIDTH, MIN_HEIGHT]} // Minimum width and height
+            axis={disabled ? "none" : "both"} // Disable resizing if the disabled prop is true
           >
             {children(item, index)}
           </Resizable>

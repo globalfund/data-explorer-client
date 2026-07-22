@@ -23,9 +23,11 @@ import useGetReportItemState from "app/pages/report-builder/hooks/useGetReportIt
 const VisualOptions = ({
   defaultOptionsToDisplay,
   tab,
+  disableSizeFields = false,
 }: {
   defaultOptionsToDisplay: IDefaultChartVisualOptions;
   tab?: string;
+  disableSizeFields?: boolean;
 }) => {
   const selectedItemController = useStoreState(
     (state) => state.RBReportItemsControllerState.item,
@@ -200,7 +202,11 @@ const VisualOptions = ({
             label={optionLabel}
             width={"100%"}
             onChange={onChange}
-            disabled={optionDisabled}
+            disabled={
+              optionDisabled ||
+              (disableSizeFields &&
+                (option.key === "width" || option.key === "height"))
+            }
             value={optionValue}
             placeholder={option.placeholder}
           />
