@@ -25,6 +25,7 @@ import { ChangelogPage } from "app/pages/changelog";
 import { ReportBuilderExportViewPage } from "app/pages/report-builder/export-view";
 import { SignIn } from "app/pages/sign-in";
 import { SignUp } from "app/pages/sign-up";
+import { AuthCallback } from "app/pages/auth-callback";
 
 const DetailPageRedirect: React.FC<{
   type: "location" | "partner" | "grant";
@@ -103,6 +104,7 @@ const COMPONENT_MAP: Record<string, React.ComponentType> = {
   Debug,
   SignIn,
   SignUp,
+  AuthCallback,
 };
 
 const NON_REDIRECT_ROUTES = ROUTE_CONFIGS.map((config) => {

@@ -3,11 +3,13 @@ import get from "lodash/get";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import { useSearchParams } from "react-router-dom";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import { useSessionStorage, useTitle } from "react-use";
-import { useSearchParams } from "react-router-dom";
+import { PageLoader } from "app/components/page-loader";
 import { RBItemTypes } from "app/pages/report-builder/data";
 import NavigateNext from "@mui/icons-material/NavigateNext";
+import { withAuthenticationRequired } from "@auth0/auth0-react";
 import { ReportBuilderSidebar } from "app/pages/report-builder/main/components/sidebar";
 import { ReportBuilderToolbar } from "app/pages/report-builder/main/components/toolbar";
 import { AllAssetsView } from "app/pages/report-builder/main/components/all-assets-view";
@@ -18,6 +20,7 @@ import { CheckboxSelectionBar } from "app/pages/report-builder/main/components/c
 import { TemplatesLayoutsView } from "app/pages/report-builder/main/components/templates-layouts-view";
 import { ReportBuilderNewFolderModal } from "app/pages/report-builder/main/components/new-folder-modal";
 import { ReportBuilderNewReportModal } from "app/pages/report-builder/main/components/new-report-modal";
+import { ReportBuilderResponsiveTopbar } from "app/pages/report-builder/main/components/responsive-topbar";
 import { ReportBuilderDetailsSidePanel } from "app/pages/report-builder/main/components/details-side-panel";
 import { ReportBuilderDeleteAssetModal } from "app/pages/report-builder/main/components/delete-asset-modal";
 import { ReportBuilderMultiDeleteModal } from "app/pages/report-builder/main/components/multi-delete-modal";
@@ -34,9 +37,8 @@ import {
   useGetFolders,
   useGetReports,
 } from "app/hooks/queries/report-builder";
-import { ReportBuilderResponsiveTopbar } from "./components/responsive-topbar";
 
-export const ReportBuilder: React.FC = () => {
+const Component: React.FC = () => {
   useTitle("The Data Explorer - Report Builder");
   const [searchParams] = useSearchParams();
 
@@ -699,3 +701,12 @@ export const ReportBuilder: React.FC = () => {
     </React.Fragment>
   );
 };
+
+const AuthenticatedComponent = withAuthenticationRequired(Component, {
+  onRedirecting: () => {
+    localStorage.setItem("redirectTo", window.location.pathname);
+    return <PageLoader />;
+  },
+});
+
+export { AuthenticatedComponent as ReportBuilder };

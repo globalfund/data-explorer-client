@@ -15,17 +15,18 @@ import { getCMSDataField } from "app/utils/getCMSDataField";
 import { DatasetPage } from "app/pages/datasets/common/page";
 import CircularProgress from "@mui/material/CircularProgress";
 import { TableContainer } from "app/components/table-container";
+import TableIcon from "app/assets/vectors/Select_Table.svg?react";
 import { PolylineTree } from "app/components/charts/polyline-tree";
 import { FilterGroupModel } from "app/components/filters/list/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import BarChartIcon from "app/assets/vectors/Select_BarChart.svg?react";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { HomeResultsStats } from "app/pages/home/components/results-stats";
 import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import { PolylineTreeDataItem } from "app/components/charts/polyline-tree/data";
-import TableIcon from "app/assets/vectors/Select_Table.svg?react";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
-import BarChartIcon from "app/assets/vectors/Select_BarChart.svg?react";
 import {
+  TableDataItem,
   TABLE_VARIATION_9_COLUMNS,
   TABLE_VARIATION_6_COLUMNS as DOCUMENTS_TABLE_COLUMNS,
 } from "app/components/table/data";
@@ -120,12 +121,7 @@ export const AnnualResultsPage: React.FC = () => {
     (state) =>
       get(state.AnnualResultsTable, "data.data", []) as {
         [key: string]:
-          | string
-          | number
-          | boolean
-          | null
-          | object
-          | Array<object>;
+          string | number | boolean | null | object | Array<object>;
       }[],
   );
   const fetchTable = useStoreActions(
@@ -143,7 +139,9 @@ export const AnnualResultsPage: React.FC = () => {
   });
   const dataDocumentsTable = useStoreState((state) =>
     get(state.AnnualResultsDocumentsTable, "data.data", []),
-  );
+  ) as {
+    [key: string]: TableDataItem;
+  }[];
   const loadingDocumentsTable = useStoreState(
     (state) => state.AnnualResultsDocumentsTable.loading,
   );
@@ -518,7 +516,9 @@ export const AnnualResultsPage: React.FC = () => {
       }
     }
   }, [location.hash]);
+
   const canonicalUrl = `${window.location.origin}/annual-results`;
+
   return (
     <>
       <Helmet>

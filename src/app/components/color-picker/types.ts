@@ -42,10 +42,7 @@ export type TInteractionEvent =
   | MouseEvent
   | TouchEvent;
 export type TMoveEvent =
-  | React.MouseEvent<HTMLDivElement>
-  | React.Touch
-  | MouseEvent
-  | Touch;
+  React.MouseEvent<HTMLDivElement> | React.Touch | MouseEvent | Touch;
 
 export interface ISaturationProps {
   height: number;

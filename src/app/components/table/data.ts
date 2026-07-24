@@ -8,12 +8,7 @@ import {
 } from "tabulator-tables";
 
 export type TableDataItem =
-  | string
-  | number
-  | boolean
-  | null
-  | object
-  | Array<object>;
+  string | number | boolean | null | object | Array<object>;
 
 export interface TableProps {
   id: string;

@@ -15,11 +15,7 @@ export type RBReportItemTypes =
   | "unknown";
 
 export type ObjectFitTypes =
-  | "contain"
-  | "cover"
-  | "fill"
-  | "none"
-  | "scale-down";
+  "contain" | "cover" | "fill" | "none" | "scale-down";
 
 export type ChartType =
   | "bar"
@@ -426,12 +422,7 @@ interface IStat {
 }
 
 export type DataType =
-  | "string"
-  | "date"
-  | "number"
-  | "geographical"
-  | "date-time"
-  | "boolean";
+  "string" | "date" | "number" | "geographical" | "date-time" | "boolean";
 
 export interface RBSampledDatasetResponse {
   data: {

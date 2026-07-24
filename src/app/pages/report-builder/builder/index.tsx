@@ -2,22 +2,25 @@ import React from "react";
 import { colors } from "app/theme";
 import Box from "@mui/material/Box";
 import { useTitle } from "react-use";
-import { uniqueId } from "app/utils/uniqueId";
-import SectionDivider from "./components/section-divider";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import CircularProgress from "@mui/material/CircularProgress";
+import { move } from "@dnd-kit/helpers";
 import Button from "@mui/material/Button";
+import { uniqueId } from "app/utils/uniqueId";
 import Typography from "@mui/material/Typography";
+import { DragDropProvider } from "@dnd-kit/react";
+import { PageLoader } from "app/components/page-loader";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import CopyIcon from "app/assets/vectors/report-builder-responsive/copy.svg?react";
-import MonitorIcon from "app/assets/vectors/report-builder-responsive/monitor.svg?react";
-import { ReportBuilderMobileBottomBar } from "app/pages/report-builder/main/components/mobile-bottom-bar";
+import SectionDivider from "./components/section-divider";
+import CircularProgress from "@mui/material/CircularProgress";
 import { useGetReport } from "app/hooks/queries/report-builder";
+import { withAuthenticationRequired } from "@auth0/auth0-react";
 import KPIBox from "app/pages/report-builder/builder/components/kpi";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { Empty } from "app/pages/report-builder/builder/components/empty";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { ReportBuilderPageReportSettings } from "./components/report-settings";
 import { RBReportItem } from "app/state/api/action-reducers/report-builder/sync";
+import CopyIcon from "app/assets/vectors/report-builder-responsive/copy.svg?react";
+import MonitorIcon from "app/assets/vectors/report-builder-responsive/monitor.svg?react";
 import { ReportBuilderPageGrid } from "app/pages/report-builder/builder/components/grid";
 import { ReportBuilderPageText } from "app/pages/report-builder/builder/components/text";
 import { ReportBuilderPageChart } from "app/pages/report-builder/builder/components/chart";
@@ -25,8 +28,7 @@ import { ReportBuilderPageTable } from "app/pages/report-builder/builder/compone
 import { ReportBuilderPageImage } from "app/pages/report-builder/builder/components/image";
 import { ItemComponent } from "app/pages/report-builder/builder/components/order-container";
 import ElementsController from "app/pages/report-builder/builder/components/panel/elements-controller";
-import { DragDropProvider } from "@dnd-kit/react";
-import { move } from "@dnd-kit/helpers";
+import { ReportBuilderMobileBottomBar } from "app/pages/report-builder/main/components/mobile-bottom-bar";
 
 const ReportBuilderDesktopPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -428,7 +430,7 @@ const MobileReportBuilderHandoff: React.FC = () => {
   );
 };
 
-export const ReportBuilderPage: React.FC = () => {
+export const Component: React.FC = () => {
   const isMobile = useMediaQuery("(max-width: 600px)");
   return isMobile ? (
     <MobileReportBuilderHandoff />
@@ -436,3 +438,12 @@ export const ReportBuilderPage: React.FC = () => {
     <ReportBuilderDesktopPage />
   );
 };
+
+const AuthenticatedComponent = withAuthenticationRequired(Component, {
+  onRedirecting: () => {
+    localStorage.setItem("redirectTo", window.location.pathname);
+    return <PageLoader />;
+  },
+});
+
+export { AuthenticatedComponent as ReportBuilderPage };

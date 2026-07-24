@@ -7,10 +7,29 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { PageLoader } from "app/components/page-loader";
 import { StoreProvider, useStoreRehydrated } from "easy-peasy";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  AppState,
+  Auth0Provider,
+  Auth0ProviderOptions,
+} from "@auth0/auth0-react";
 
 interface ProviderProps {
   children?: any;
 }
+
+const Auth0ProviderWithRedirectCallback = (props: Auth0ProviderOptions) => {
+  const { children, ...restProps } = props;
+  const onRedirectCallback = (appState?: AppState) => {
+    window.location.href =
+      (appState && appState.returnTo) ?? window.location.pathname;
+  };
+
+  return (
+    <Auth0Provider onRedirectCallback={onRedirectCallback} {...restProps}>
+      {children}
+    </Auth0Provider>
+  );
+};
 
 function Providers(props: ProviderProps) {
   const queryClient = new QueryClient();
@@ -18,10 +37,20 @@ function Providers(props: ProviderProps) {
     <HelmetProvider>
       <StoreProvider store={store}>
         <QueryClientProvider client={queryClient}>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <AppContainer>{props.children}</AppContainer>
-          </ThemeProvider>
+          <Auth0ProviderWithRedirectCallback
+            domain={import.meta.env.VITE_AUTH0_DOMAIN!}
+            clientId={import.meta.env.VITE_AUTH0_CLIENT_ID!}
+            authorizationParams={{
+              scope: "openid profile email offline_access",
+              audience: import.meta.env.VITE_AUTH0_AUDIENCE,
+              redirect_uri: `${window.location.origin}/callback`,
+            }}
+          >
+            <ThemeProvider theme={theme}>
+              <CssBaseline />
+              <AppContainer>{props.children}</AppContainer>
+            </ThemeProvider>
+          </Auth0ProviderWithRedirectCallback>
         </QueryClientProvider>
       </StoreProvider>
     </HelmetProvider>

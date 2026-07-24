@@ -14,12 +14,7 @@ import ImageIcon from "app/assets/vectors/RBImage.svg?react";
 import { getCMSDataField } from "app/utils/getCMSDataField";
 
 export type AssetViewType =
-  | "all"
-  | "chart"
-  | "column"
-  | "text"
-  | "grid"
-  | "image";
+  "all" | "chart" | "column" | "text" | "grid" | "image";
 
 export const ReportBuilderAssetsToolbar: React.FC<{
   selectedView: AssetViewType;

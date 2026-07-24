@@ -23,12 +23,7 @@ import { extraTabs } from "../common/tabOptions";
 import DataSettings from "./data-settings";
 
 type ChartControllerTab =
-  | "data-settings"
-  | "layout"
-  | "style"
-  | "advanced"
-  | "grid"
-  | "column";
+  "data-settings" | "layout" | "style" | "advanced" | "grid" | "column";
 
 export default function ChartController() {
   const [isExpanded, setIsExpanded] = React.useState(true);

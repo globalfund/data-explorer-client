@@ -27,7 +27,11 @@ export const useCreateReport = () => {
   return useMutation({
     mutationKey: ["ReportBuilderCreateReport"],
     mutationFn: (data: RBReportModel) =>
-      axiosInstance.post<RBReportModel>(`/report`, data),
+      axiosInstance.post<RBReportModel>(`/report`, data, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }),
   });
 };
 
@@ -36,7 +40,11 @@ export const useCreateAsset = () => {
   return useMutation({
     mutationKey: ["ReportBuilderCreateAsset"],
     mutationFn: (data: RBAssetModel) =>
-      axiosInstance.post<RBAssetModel>(`/asset`, data),
+      axiosInstance.post<RBAssetModel>(`/asset`, data, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["ReportBuilderGetAssets"] });
     },
@@ -47,14 +55,23 @@ export const useCreateFolder = () => {
   return useMutation({
     mutationKey: ["ReportBuilderCreateFolder"],
     mutationFn: (data: RBFolderModel) =>
-      axiosInstance.post<RBFolderModel>(`/folder`, data),
+      axiosInstance.post<RBFolderModel>(`/folder`, data, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }),
   });
 };
 
 export const useGetReport = (reportId?: string) => {
   return useQuery({
     queryKey: ["ReportBuilderGetReport", reportId],
-    queryFn: () => axiosInstance.get<RBReportModel>(`/report/${reportId}`),
+    queryFn: () =>
+      axiosInstance.get<RBReportModel>(`/report/${reportId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }),
     enabled: !!reportId,
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
@@ -63,7 +80,12 @@ export const useGetReport = (reportId?: string) => {
 export const useGetAsset = (assetId?: string) => {
   return useQuery({
     queryKey: ["ReportBuilderGetAsset", assetId],
-    queryFn: () => axiosInstance.get<RBAssetModelResponse>(`/asset/${assetId}`),
+    queryFn: () =>
+      axiosInstance.get<RBAssetModelResponse>(`/asset/${assetId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }),
     enabled: !!assetId,
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
@@ -73,7 +95,11 @@ export const useGetFolder = (folderId?: string) => {
   return useQuery({
     queryKey: ["ReportBuilderGetFolder", folderId],
     queryFn: () =>
-      axiosInstance.get<RBFolderModelResponse>(`/folder/${folderId}`),
+      axiosInstance.get<RBFolderModelResponse>(`/folder/${folderId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }),
     enabled: !!folderId,
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
@@ -113,6 +139,9 @@ export const useGetReports = (params: {
           folderFilter,
           onlyRootLevel: params.onlyRootLevel,
           includeFolders: params.includeFolders,
+        },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       }),
     staleTime: 1000 * 60 * 5,
@@ -159,6 +188,9 @@ export const useGetAssets = (params: {
           onlyRootLevel: params.onlyRootLevel,
           includeFolders: params.includeFolders,
         },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
       }),
     staleTime: 1000 * 60 * 5,
   });
@@ -189,6 +221,9 @@ export const useGetFolders = (params: {
           filter,
           includeSubFolders: Boolean(params.includeSubFolders),
         },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
       }),
     staleTime: 1000 * 60 * 5,
   });
@@ -201,6 +236,9 @@ export const useAddReportToFolder = () => {
     mutationFn: (data: { folderId: string; reportId: string }) =>
       axiosInstance.get(`/folder/add-report/${data.folderId}`, {
         params: { reportId: data.reportId },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
       }),
     onSuccess: async () => {
       await queryClient.invalidateQueries({
@@ -220,6 +258,9 @@ export const useAddAssetToFolder = () => {
     mutationFn: (data: { folderId: string; assetId: string }) =>
       axiosInstance.get(`/folder/add-asset/${data.folderId}`, {
         params: { assetId: data.assetId },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
       }),
     onSuccess: async () => {
       await queryClient.invalidateQueries({
@@ -239,6 +280,9 @@ export const useAddFolderToFolder = () => {
     mutationFn: (data: { folderId: string; folderIdToAdd: string }) =>
       axiosInstance.get(`/folder/add-folder/${data.folderId}`, {
         params: { folderId: data.folderIdToAdd },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
       }),
     onSuccess: async () => {
       await queryClient.invalidateQueries({
@@ -263,14 +307,23 @@ export const useMultiAddItemsToFolder = () => {
         if (item.type === "report") {
           return axiosInstance.get(`/folder/add-report/${data.folderId}`, {
             params: { reportId: item.id },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
           });
         } else if (item.type === "folder") {
           return axiosInstance.get(`/folder/add-folder/${data.folderId}`, {
             params: { folderId: item.id },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
           });
         } else if (item.type === "asset") {
           return axiosInstance.get(`/folder/add-asset/${data.folderId}`, {
             params: { assetId: item.id },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
           });
         }
       });
@@ -295,7 +348,11 @@ export const usePatchReport = (reportId: string | undefined) => {
   return useMutation({
     mutationKey: ["ReportBuilderPatchReport", reportId],
     mutationFn: (data: RBReportPatchModel) =>
-      axiosInstance.patch<RBReportPatchModel>(`/report/${reportId}`, data),
+      axiosInstance.patch<RBReportPatchModel>(`/report/${reportId}`, data, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }),
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: ["ReportBuilderGetReports"],
@@ -312,7 +369,11 @@ export const usePatchReport2 = () => {
   return useMutation({
     mutationKey: ["ReportBuilderPatchReport"],
     mutationFn: (data: RBReportPatchModel) =>
-      axiosInstance.patch<RBReportPatchModel>(`/report/${data.id}`, data),
+      axiosInstance.patch<RBReportPatchModel>(`/report/${data.id}`, data, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }),
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: ["ReportBuilderGetReports"],
@@ -326,7 +387,11 @@ export const usePatchAsset = (assetId?: string) => {
   return useMutation({
     mutationKey: ["ReportBuilderPatchAsset", assetId],
     mutationFn: (data: Partial<RBAssetModel>) =>
-      axiosInstance.patch<RBAssetModel>(`/asset/${assetId}`, data),
+      axiosInstance.patch<RBAssetModel>(`/asset/${assetId}`, data, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["ReportBuilderGetAssets"] });
       queryClient.invalidateQueries({
@@ -341,7 +406,11 @@ export const usePatchAsset2 = () => {
   return useMutation({
     mutationKey: ["ReportBuilderPatchAsset"],
     mutationFn: (data: Partial<RBAssetModel>) =>
-      axiosInstance.patch<RBAssetModel>(`/asset/${data.id}`, data),
+      axiosInstance.patch<RBAssetModel>(`/asset/${data.id}`, data, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["ReportBuilderGetAssets"] });
     },
@@ -353,7 +422,11 @@ export const usePatchFolder = (folderId?: string) => {
   return useMutation({
     mutationKey: ["ReportBuilderPatchFolder", folderId],
     mutationFn: (data: Partial<RBFolderModel>) =>
-      axiosInstance.patch<RBFolderModel>(`/folder/${folderId}`, data),
+      axiosInstance.patch<RBFolderModel>(`/folder/${folderId}`, data, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["ReportBuilderGetFolders"] });
       queryClient.invalidateQueries({
@@ -368,7 +441,11 @@ export const usePatchFolder2 = () => {
   return useMutation({
     mutationKey: ["ReportBuilderPatchFolder"],
     mutationFn: (data: Partial<RBFolderModel>) =>
-      axiosInstance.patch<RBFolderModel>(`/folder/${data.id}`, data),
+      axiosInstance.patch<RBFolderModel>(`/folder/${data.id}`, data, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["ReportBuilderGetFolders"] });
     },
@@ -378,7 +455,12 @@ export const usePatchFolder2 = () => {
 export const useDeleteReport = () => {
   return useMutation({
     mutationKey: ["ReportBuilderDeleteReport"],
-    mutationFn: (id: string) => axiosInstance.delete(`/report/${id}`),
+    mutationFn: (id: string) =>
+      axiosInstance.delete(`/report/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }),
   });
 };
 
@@ -388,11 +470,23 @@ export const useMultiDeleteReportsFolders = () => {
     mutationFn: (items: { id: string; type: RBItemTypes }[]) => {
       const deletePromises = items.map((item) => {
         if (item.type === "report") {
-          return axiosInstance.delete(`/report/${item.id}`);
+          return axiosInstance.delete(`/report/${item.id}`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          });
         } else if (item.type === "folder") {
-          return axiosInstance.delete(`/folder/${item.id}`);
+          return axiosInstance.delete(`/folder/${item.id}`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          });
         } else if (item.type === "asset") {
-          return axiosInstance.delete(`/asset/${item.id}`);
+          return axiosInstance.delete(`/asset/${item.id}`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          });
         }
       });
       return Promise.all(deletePromises);
@@ -404,7 +498,12 @@ export const useDeleteAsset = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ["ReportBuilderDeleteAsset"],
-    mutationFn: (id: string) => axiosInstance.delete(`/asset/${id}`),
+    mutationFn: (id: string) =>
+      axiosInstance.delete(`/asset/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["ReportBuilderGetAssets"] });
     },
@@ -415,7 +514,12 @@ export const useDeleteFolder = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ["ReportBuilderDeleteFolder"],
-    mutationFn: (id: string) => axiosInstance.delete(`/folder/${id}`),
+    mutationFn: (id: string) =>
+      axiosInstance.delete(`/folder/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["ReportBuilderGetFolders"] });
     },
@@ -425,7 +529,12 @@ export const useDeleteFolder = () => {
 export const useDuplicateReport = () => {
   return useMutation({
     mutationKey: ["ReportBuilderDuplicateReport"],
-    mutationFn: (id: string) => axiosInstance.get(`/report/duplicate/${id}`),
+    mutationFn: (id: string) =>
+      axiosInstance.get(`/report/duplicate/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }),
   });
 };
 
@@ -433,7 +542,12 @@ export const useDuplicateAsset = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ["ReportBuilderDuplicateAsset"],
-    mutationFn: (id: string) => axiosInstance.get(`/asset/duplicate/${id}`),
+    mutationFn: (id: string) =>
+      axiosInstance.get(`/asset/duplicate/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["ReportBuilderGetAssets"] });
     },
@@ -444,7 +558,12 @@ export const useDuplicateFolder = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ["ReportBuilderDuplicateFolder"],
-    mutationFn: (id: string) => axiosInstance.get(`/folder/duplicate/${id}`),
+    mutationFn: (id: string) =>
+      axiosInstance.get(`/folder/duplicate/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["ReportBuilderGetFolders"] });
     },
@@ -458,6 +577,11 @@ export const useRenderChartData = () => {
       axiosInstance.post<RBRenderedChartData>(
         `/report/render-chart-data`,
         data,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        },
       ),
   });
 };
@@ -468,6 +592,11 @@ export const useGFSampleDataset = (datasetId: string) => {
     queryFn: () =>
       axiosInstance.get<RBSampledDatasetResponse>(
         `/report-builder/gf-sample-dataset/${datasetId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        },
       ),
     enabled: !!datasetId,
   });
@@ -480,10 +609,18 @@ export const useDatasetFilterOptions = (
   return useQuery({
     queryKey: ["ReportBuilderDatasetFilterOptions", datasetId],
     queryFn: () =>
-      axiosInstance.post<FilterGroupModel[]>(`/report/filter-options`, {
-        datasetId,
-        appliedFilters,
-      }),
+      axiosInstance.post<FilterGroupModel[]>(
+        `/report/filter-options`,
+        {
+          datasetId,
+          appliedFilters,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        },
+      ),
     enabled: !!datasetId,
   });
 };
@@ -528,7 +665,12 @@ export const useFilteredDataset = ({
           limitToTopValue,
           groupRemainderAsOther,
         },
-        { params: { page: pageParam, pageSize } },
+        {
+          params: { page: pageParam, pageSize },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        },
       ),
     getNextPageParam: (lastPage, allPages) => {
       const loadedDataCount = allPages.reduce(
@@ -563,6 +705,9 @@ export const useGFDataset = (datasetId: string, pageSize = 50) => {
           params: {
             page: pageParam,
             pageSize,
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         },
       ),
@@ -603,6 +748,9 @@ export const useGFDatasetPage = (
             page,
             pageSize,
           },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
         },
       ),
     enabled: !!datasetId,
@@ -625,7 +773,7 @@ export const useFilteredDatasetPage = ({
 }) => {
   return useQuery({
     queryKey: [
-      "ReportBuilderGFDatasetPage",
+      "ReportBuilderFilteredDatasetPage",
       datasetId,
       pageSize,
       filters,
@@ -645,6 +793,9 @@ export const useFilteredDatasetPage = ({
             page,
             pageSize,
           },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
         },
       ),
     enabled: !!datasetId,
@@ -661,6 +812,11 @@ export const useSendErrorReport = () => {
       reportId: string | undefined;
       reportName: string | undefined;
       errorMessage: string | null;
-    }) => axiosInstance.post(`/report/report-an-error`, data),
+    }) =>
+      axiosInstance.post(`/report/report-an-error`, data, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }),
   });
 };

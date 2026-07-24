@@ -3,22 +3,24 @@ import Box from "@mui/material/Box";
 import { useTitle } from "react-use";
 import { useParams } from "react-router-dom";
 import Typography from "@mui/material/Typography";
+import { PageLoader } from "app/components/page-loader";
+import { checkEmptyItem } from "app/utils/checkEmptyRBItem";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useGetReport } from "app/hooks/queries/report-builder";
+import { withAuthenticationRequired } from "@auth0/auth0-react";
 import KPIBox from "app/pages/report-builder/builder/components/kpi";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { RBReportItem } from "app/state/api/action-reducers/report-builder/sync";
 import { ReportBuilderPageGrid } from "app/pages/report-builder/builder/components/grid";
 import { ReportBuilderPageText } from "app/pages/report-builder/builder/components/text";
 import SectionDivider from "app/pages/report-builder/builder/components/section-divider";
+import { EmptyPreview } from "app/pages/report-builder/builder/components/empty-preview";
 import { ReportBuilderPageChart } from "app/pages/report-builder/builder/components/chart";
 import { ReportBuilderPageTable } from "app/pages/report-builder/builder/components/table";
 import { ReportBuilderPageImage } from "app/pages/report-builder/builder/components/image";
 import ViewModeContainer from "app/pages/report-builder/builder/components/order-container/view";
-import { EmptyPreview } from "../builder/components/empty-preview";
-import { checkEmptyItem } from "app/utils/checkEmptyRBItem";
 
-export const ReportBuilderPreviewPage: React.FC = () => {
+export const Component: React.FC = () => {
   const { id } = useParams<{ id: string }>();
 
   const reportQuery = useGetReport(id);
@@ -243,3 +245,12 @@ export const ReportBuilderPreviewPage: React.FC = () => {
     </Box>
   );
 };
+
+const AuthenticatedComponent = withAuthenticationRequired(Component, {
+  onRedirecting: () => {
+    localStorage.setItem("redirectTo", window.location.pathname);
+    return <PageLoader />;
+  },
+});
+
+export { AuthenticatedComponent as ReportBuilderPreviewPage };

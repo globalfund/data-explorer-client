@@ -21,7 +21,8 @@ export type RouteComponentName =
   | "GlossaryPage"
   | "ChangelogPage"
   | "SignIn"
-  | "SignUp";
+  | "SignUp"
+  | "AuthCallback";
 
 export const ROUTE_CONFIGS: RouteConfig[] = [
   { path: "/", componentName: "Home", importFrom: "app/pages/home" },
@@ -113,6 +114,11 @@ export const ROUTE_CONFIGS: RouteConfig[] = [
     path: "/changelog",
     componentName: "ChangelogPage",
     importFrom: "app/pages/changelog",
+  },
+  {
+    path: "/callback",
+    componentName: "AuthCallback",
+    importFrom: "app/pages/auth-callback",
   },
   {
     path: "/test/:id/:ip",

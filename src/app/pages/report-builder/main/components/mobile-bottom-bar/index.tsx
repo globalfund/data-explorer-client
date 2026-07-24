@@ -9,9 +9,7 @@ import ReportsDefaultIcon from "app/assets/vectors/report-builder-responsive/rep
 import TemplatesActiveIcon from "app/assets/vectors/report-builder-responsive/templates-active.svg?react";
 
 export type ReportBuilderMobileSection =
-  | "allReports"
-  | "allAssets"
-  | "templatesAndLayouts";
+  "allReports" | "allAssets" | "templatesAndLayouts";
 
 const items: {
   value: ReportBuilderMobileSection;
