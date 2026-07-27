@@ -171,6 +171,7 @@ export interface RBReportItemController {
     };
     kpi_box?: {
       showDatasetModal?: boolean;
+      datasetModalStep?: "select" | "view" | "preview" | null;
     };
   };
 }

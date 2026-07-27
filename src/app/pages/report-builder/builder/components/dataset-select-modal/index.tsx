@@ -84,7 +84,9 @@ export const DatasetSelectModal: React.FC<{
   const selectedController = useStoreState(
     (state) => state.RBReportItemsControllerState.item,
   );
-  const { selectedItem: item } = useGetReportItemState<"table">({
+  const { selectedItem: item } = useGetReportItemState<
+    "table" | "chart" | "kpi_box"
+  >({
     id: selectedController?.id || "",
     parent: selectedController?.parent ?? undefined,
   });
@@ -107,20 +109,23 @@ export const DatasetSelectModal: React.FC<{
       setSelectedType("all");
       setSelectedDataset(item?.data?.dataset ?? "");
       setRowsPerPage("10");
-      setStep("select");
     }
   }, [item?.data?.dataset, open]);
 
   React.useEffect(() => {
     if (selectedController?.extra?.table?.datasetModalStep) {
       setStep(selectedController.extra.table.datasetModalStep);
-    }
-    if (selectedController?.extra?.chart?.datasetModalStep) {
+    } else if (selectedController?.extra?.chart?.datasetModalStep) {
       setStep(selectedController.extra.chart.datasetModalStep);
+    } else if (selectedController?.extra?.kpi_box?.datasetModalStep) {
+      setStep(selectedController.extra.kpi_box.datasetModalStep);
+    } else {
+      setStep("select");
     }
   }, [
     selectedController?.extra?.table?.datasetModalStep,
     selectedController?.extra?.chart?.datasetModalStep,
+    selectedController?.extra?.kpi_box?.datasetModalStep,
   ]);
 
   const getDatasetLatestUpdate = React.useCallback(
@@ -163,9 +168,16 @@ export const DatasetSelectModal: React.FC<{
   }, [getDatasetLatestUpdate, search, selectedSort, selectedType]);
 
   const initialSelectedColumns = React.useMemo(() => {
+    if (item?.type !== "table") {
+      return [];
+    }
     if (selectedDataset !== item?.data?.dataset) return [];
     return item?.data?.columns ?? [];
-  }, [item?.data?.dataset, item?.data?.columns, selectedDataset]);
+  }, [
+    item?.data?.dataset,
+    (item?.data as { columns?: any[] })?.columns,
+    selectedDataset,
+  ]);
 
   React.useEffect(() => {
     if (sampledDataset) {
@@ -192,6 +204,24 @@ export const DatasetSelectModal: React.FC<{
       }
     }
   }, [initialSelectedColumns, sampledDataset, skipColumnSelection]);
+
+  React.useEffect(() => {
+    if (item?.type === "table") {
+      setPreviewFilters(item?.data?.filters || {});
+      setPreviewSorting(item?.data?.sorting || []);
+    }
+    if (item?.type === "chart") {
+      setPreviewFilters(item?.data?.appliedFilters || {});
+    }
+    if (item?.type === "kpi_box") {
+      setPreviewFilters(item?.data?.appliedFilters || {});
+    }
+  }, [
+    (item?.data as any)?.appliedFilters,
+    (item?.data as any)?.filters,
+    (item?.data as any)?.sorting,
+    sampledDataset,
+  ]);
 
   const handleOpenView = () => {
     if (!selectedDataset) return;

@@ -279,7 +279,6 @@ const ChartSelectModal: React.FC<{
         ...item.data,
         mapping: chartTypeUnchanged ? item.data?.mapping : {},
         chartType: selectedType as ChartType,
-        appliedFilters: chartTypeUnchanged ? item.data?.appliedFilters : {},
       },
       options: chartTypeUnchanged
         ? item.options
