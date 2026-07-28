@@ -7,12 +7,12 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import InputAdornment from "@mui/material/InputAdornment";
 import { getCMSDataField } from "app/utils/getCMSDataField";
 import { RBDropdown } from "app/pages/report-builder/components/dropdown";
-import {
-  ReportBuilderMobileBottomBar,
-  ReportBuilderMobileSection,
-} from "app/pages/report-builder/main/components/mobile-bottom-bar";
 import PlusIcon from "app/assets/vectors/report-builder-responsive/plus.svg?react";
 import SearchIcon from "app/assets/vectors/report-builder-responsive/search.svg?react";
+import {
+  ReportBuilderMobileSection,
+  ReportBuilderMobileBottomBar,
+} from "app/pages/report-builder/main/components/mobile-bottom-bar";
 
 export const ReportBuilderResponsiveTopbar: React.FC<{
   search: string;
@@ -30,6 +30,25 @@ export const ReportBuilderResponsiveTopbar: React.FC<{
   const cmsData = useCMSData({ returnData: true });
   const isMobile = useMediaQuery("(max-width: 600px)");
   const isTabletOrMobile = useMediaQuery("(max-width: 1024px)");
+
+  const items = [
+    {
+      value: "allReports",
+      label: getCMSDataField(
+        cmsData,
+        "pagesReportBuilderMain.allReportsSidebarItem",
+        "All Reports",
+      ),
+    },
+    {
+      value: "allAssets",
+      label: getCMSDataField(
+        cmsData,
+        "pagesReportBuilderMain.allAssetsSidebarItem",
+        "All Assets",
+      ),
+    },
+  ];
 
   const handleItemClick = (item: string) => {
     if (item !== selectedItem) {
@@ -95,16 +114,7 @@ export const ReportBuilderResponsiveTopbar: React.FC<{
         height={45}
         width={223}
         fontSize="16px"
-        dropdownItems={[
-          {
-            value: selectedItem || "allReports",
-            label: getCMSDataField(
-              cmsData,
-              "pagesReportBuilderMain.workspaceTitle",
-              "Jane's Workspace",
-            ),
-          },
-        ]}
+        dropdownItems={items}
         handleDropdownChange={handleItemClick}
         dropdownSelected={selectedItem || "allReports"}
       />

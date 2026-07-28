@@ -174,6 +174,7 @@ export const ReportBuilderToolbar: React.FC<{
             gap: "20px",
             display: "flex",
             "@media (max-width: 1024px)": {
+              gap: "10px",
               alignItems: "flex-end",
             },
           }}

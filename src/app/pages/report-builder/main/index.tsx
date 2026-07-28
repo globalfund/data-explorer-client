@@ -612,7 +612,14 @@ const Component: React.FC = () => {
                 onMoveToFolderCheckedItems={handleMoveToFolderCheckedItems}
               />
             )}
-            <Box sx={{ display: "flex", flexDirection: "row", gap: "20px" }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                gap: "20px",
+                "@media (max-width: 1024px)": { gap: 0 },
+              }}
+            >
               <Box
                 sx={{
                   width: "100%",
