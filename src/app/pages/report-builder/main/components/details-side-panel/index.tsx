@@ -82,6 +82,12 @@ export const ReportBuilderDetailsSidePanel: React.FC<{
         border: "1px solid #cfd4da",
         minHeight: "calc(100% - 194px)",
         maxHeight: "calc(100% - 194px)",
+        "@media (max-width: 1024px)": {
+          zIndex: 1000,
+        },
+        "@media (max-width: 600px)": {
+          minWidth: "100%",
+        },
       }}
     >
       <Box

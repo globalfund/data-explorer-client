@@ -1056,8 +1056,7 @@ export const ReportBuilderPageHeader: React.FC = () => {
         reportId={id}
         reportName={name}
         error={updateReport.error}
-        onSubmit={(payload) => {
-          console.log("Report issue submitted:", payload);
+        onSubmitted={() => {
           setSnackbarMessage(
             "Thank you for reporting the issue. We will look into it.",
           );

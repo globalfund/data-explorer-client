@@ -3,8 +3,10 @@ import Box from "@mui/material/Box";
 import { useTitle } from "react-use";
 import { useParams } from "react-router-dom";
 import Typography from "@mui/material/Typography";
+import { PageLoader } from "app/components/page-loader";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useGetAsset } from "app/hooks/queries/report-builder";
+import { withAuthenticationRequired } from "@auth0/auth0-react";
 import KPIBox from "app/pages/report-builder/builder/components/kpi";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { RBReportItem } from "app/state/api/action-reducers/report-builder/sync";
@@ -16,7 +18,7 @@ import { ReportBuilderPageTable } from "app/pages/report-builder/builder/compone
 import { ReportBuilderPageImage } from "app/pages/report-builder/builder/components/image";
 import ViewModeContainer from "app/pages/report-builder/builder/components/order-container/view";
 
-export const ReportBuilderAssetPreviewPage: React.FC = () => {
+export const Component: React.FC = () => {
   const { id } = useParams<{ id: string }>();
 
   const assetQuery = useGetAsset(id);
@@ -277,3 +279,12 @@ export const ReportBuilderAssetPreviewPage: React.FC = () => {
     </Box>
   );
 };
+
+const AuthenticatedComponent = withAuthenticationRequired(Component, {
+  onRedirecting: () => {
+    localStorage.setItem("redirectTo", window.location.pathname);
+    return <PageLoader />;
+  },
+});
+
+export { AuthenticatedComponent as ReportBuilderAssetPreviewPage };

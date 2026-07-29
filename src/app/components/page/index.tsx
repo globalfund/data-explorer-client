@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import { Header } from "app/components/header";
 import { Footer } from "app/components/footer";
 import Container from "@mui/material/Container";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { Outlet, useLocation } from "react-router-dom";
 import { useUrlFilters } from "app/hooks/useUrlFilters";
 import { useRouteListener } from "app/hooks/useRouteListener";
@@ -18,6 +19,7 @@ export const Page: React.FC = () => {
   useScrollToAnchor();
 
   const location = useLocation();
+  const isMobile = useMediaQuery("(max-width: 600px)");
 
   const inReportBuilder = React.useMemo(() => {
     return location.pathname.startsWith("/report-builder/");
@@ -42,7 +44,9 @@ export const Page: React.FC = () => {
         ) : (
           <React.Fragment>
             <Header />
-            <ReportBuilderPageHeader />
+            {!(isMobile && location.pathname.endsWith("/edit")) && (
+              <ReportBuilderPageHeader />
+            )}
           </React.Fragment>
         )}
         <Box id="main" sx={{ width: "100%", minHeight: "100%" }}>

@@ -11,8 +11,8 @@ import { SkipToMainButton } from "app/components/skip-to-main-btn";
 import HeaderToolbarLogo from "app/assets/vectors/HeaderToolbarLogo.svg?react";
 
 export const Header: React.FC = () => {
-  const mobile = useMediaQuery("(max-width: 767px)");
   const [searchOpen, setSearchOpen] = React.useState(false);
+  const isTabletOrMobile = useMediaQuery("(max-width: 1024px)");
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
   const location = useLocation();
@@ -24,14 +24,16 @@ export const Header: React.FC = () => {
   return (
     <Box sx={{ zIndex: 1000, flexGrow: 1, top: 0, position: "sticky" }}>
       <SkipToMainButton />
-      <AppBar position="static" sx={{ background: "#F8F8F8" }}>
-        <Container maxWidth="lg" disableGutters sx={{ background: "#F8F8F8" }}>
+      <AppBar position="static" sx={{ background: "#FFFFFF" }}>
+        <Container maxWidth="lg" disableGutters sx={{ background: "#FFFFFF" }}>
           <Toolbar
             sx={{
-              height: "58px",
-              background: "#F8F8F8",
+              height: "62px",
+              minHeight: "62px !important",
+              background: "#FFFFFF",
               "@media (max-width: 1279px)": {
                 width: "100%",
+                padding: "0 16px",
               },
               "@media (max-width: 767px)": {
                 padding: "0 16px",
@@ -39,7 +41,7 @@ export const Header: React.FC = () => {
               },
             }}
           >
-            {(!mobile || !searchOpen) && (
+            {(!isTabletOrMobile || !searchOpen) && (
               <NavLink
                 to="/"
                 aria-label="App logo link"
@@ -48,7 +50,6 @@ export const Header: React.FC = () => {
                 <HeaderToolbarLogo />
               </NavLink>
             )}
-
             {isAuthPage ? null : (
               <HeaderMenu
                 mobileMenuOpen={mobileMenuOpen}

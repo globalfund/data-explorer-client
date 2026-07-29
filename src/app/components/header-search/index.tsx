@@ -3,13 +3,15 @@ import { colors } from "app/theme";
 import Box from "@mui/material/Box";
 import Tooltip from "@mui/material/Tooltip";
 import Collapse from "@mui/material/Collapse";
-import { useLocation } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 import { Search } from "app/components/search";
+import { useLocation } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import ArrowBack from "@mui/icons-material/ArrowBack";
 import useMediaQuery from "@mui/material/useMediaQuery";
-// import UserIcon from "app/assets/vectors/UserIcon.svg?react";
+import UserIcon from "app/assets/vectors/UserIcon.svg?react";
+import LogoutIcon from "app/assets/vectors/Logout.svg?react";
 import HeaderMenuIcon from "app/assets/vectors/HeaderMenu.svg?react";
 import { HeaderSearchProps } from "app/components/header-search/data";
 import HeaderCloseIcon from "app/assets/vectors/HeaderClose.svg?react";
@@ -17,7 +19,8 @@ import HeaderSearchIcon from "app/assets/vectors/HeaderSearch.svg?react";
 
 export const HeaderSearch: React.FC<HeaderSearchProps> = (props) => {
   const { pathname, hash } = useLocation();
-  const mobile = useMediaQuery("(max-width: 767px)");
+  const isTabletOrMobile = useMediaQuery("(max-width: 1024px)");
+  const { isAuthenticated, logout, loginWithRedirect } = useAuth0();
 
   const isAuthPage = React.useMemo(() => {
     return pathname === "/sign-in" || pathname === "/sign-up";
@@ -48,6 +51,14 @@ export const HeaderSearch: React.FC<HeaderSearchProps> = (props) => {
     [props.mobileMenuOpen],
   );
 
+  const handleUserIconClick = () => {
+    if (isAuthenticated) {
+      logout();
+    } else {
+      loginWithRedirect();
+    }
+  };
+
   React.useEffect(() => {
     setTimeout(() => {
       if (!hash) {
@@ -64,7 +75,7 @@ export const HeaderSearch: React.FC<HeaderSearchProps> = (props) => {
     return () => document.removeEventListener("keypress", handleKeyPress);
   }, []);
 
-  if (mobile) {
+  if (isTabletOrMobile) {
     return (
       <React.Fragment>
         <Box
@@ -149,6 +160,9 @@ export const HeaderSearch: React.FC<HeaderSearchProps> = (props) => {
               >
                 <HeaderMenuIcon />
               </IconButton>
+              <IconButton onClick={handleUserIconClick} sx={{ p: 0 }}>
+                {!isAuthenticated ? <UserIcon /> : <LogoutIcon />}
+              </IconButton>
             </React.Fragment>
           )}
         </Box>
@@ -231,7 +245,6 @@ export const HeaderSearch: React.FC<HeaderSearchProps> = (props) => {
           <Search hocClose={() => props.setSearchOpen(false)} />
         </Box>
       )}
-
       {isAuthPage ? null : (
         <Tooltip title={!props.searchOpen ? "Search" : "Close"}>
           <IconButton
@@ -243,20 +256,9 @@ export const HeaderSearch: React.FC<HeaderSearchProps> = (props) => {
           </IconButton>
         </Tooltip>
       )}
-      {/* <IconButton
-        sx={{
-          marginLeft: "12px",
-          path: {
-            stroke: pathname.startsWith("/sign-")
-              ? "#3154f4"
-              : colors.primary.black,
-          },
-        }}
-        component={Link}
-        to="/sign-in"
-      >
-        <UserIcon />
-      </IconButton> */}
+      <IconButton onClick={handleUserIconClick} sx={{ marginLeft: "12px" }}>
+        {!isAuthenticated ? <UserIcon /> : <LogoutIcon />}
+      </IconButton>
     </Box>
   );
 };

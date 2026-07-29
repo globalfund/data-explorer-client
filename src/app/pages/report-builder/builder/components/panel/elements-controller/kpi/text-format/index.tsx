@@ -114,10 +114,7 @@ export default function KPITextFormatting({ source }: KPITextFormattingProps) {
   ]);
 
   type TextOption =
-    | "bigNumberText"
-    | "topLabel"
-    | "bottomLabel"
-    | "optionalText";
+    "bigNumberText" | "topLabel" | "bottomLabel" | "optionalText";
   const handleCheck =
     (option: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
       editItem({

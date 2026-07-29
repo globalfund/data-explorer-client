@@ -17,6 +17,12 @@ export const EmptyAssetsView: React.FC = () => {
         padding: "50px 20px",
         flexDirection: "column",
         justifyContent: "center",
+        textAlign: "center",
+        minHeight: "500px",
+        "@media (max-width: 600px)": {
+          padding: "56px 0 100px",
+          justifyContent: "flex-start",
+        },
       }}
     >
       <svg
@@ -62,6 +68,16 @@ export const EmptyAssetsView: React.FC = () => {
             alignItems: "center",
             flexDirection: "column",
             justifyContent: "flex-start",
+          },
+          "@media (max-width: 600px)": {
+            width: "100%",
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            rowGap: "28px",
+            "> div": {
+              gap: "10px",
+              width: "100%",
+            },
           },
         }}
       >

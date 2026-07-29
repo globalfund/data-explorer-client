@@ -3,10 +3,13 @@ import get from "lodash/get";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import { useSearchParams } from "react-router-dom";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import { useSessionStorage, useTitle } from "react-use";
+import { PageLoader } from "app/components/page-loader";
 import { RBItemTypes } from "app/pages/report-builder/data";
 import NavigateNext from "@mui/icons-material/NavigateNext";
+import { withAuthenticationRequired } from "@auth0/auth0-react";
 import { ReportBuilderSidebar } from "app/pages/report-builder/main/components/sidebar";
 import { ReportBuilderToolbar } from "app/pages/report-builder/main/components/toolbar";
 import { AllAssetsView } from "app/pages/report-builder/main/components/all-assets-view";
@@ -17,6 +20,7 @@ import { CheckboxSelectionBar } from "app/pages/report-builder/main/components/c
 import { TemplatesLayoutsView } from "app/pages/report-builder/main/components/templates-layouts-view";
 import { ReportBuilderNewFolderModal } from "app/pages/report-builder/main/components/new-folder-modal";
 import { ReportBuilderNewReportModal } from "app/pages/report-builder/main/components/new-report-modal";
+import { ReportBuilderResponsiveTopbar } from "app/pages/report-builder/main/components/responsive-topbar";
 import { ReportBuilderDetailsSidePanel } from "app/pages/report-builder/main/components/details-side-panel";
 import { ReportBuilderDeleteAssetModal } from "app/pages/report-builder/main/components/delete-asset-modal";
 import { ReportBuilderMultiDeleteModal } from "app/pages/report-builder/main/components/multi-delete-modal";
@@ -33,13 +37,17 @@ import {
   useGetFolders,
   useGetReports,
 } from "app/hooks/queries/report-builder";
-import { ReportBuilderResponsiveTopbar } from "./components/responsive-topbar";
 
-export const ReportBuilder: React.FC = () => {
+const Component: React.FC = () => {
   useTitle("The Data Explorer - Report Builder");
+  const [searchParams] = useSearchParams();
 
-  const [sidebarSelectedItem, setSidebarSelectedItem] =
-    React.useState("allReports");
+  const [sidebarSelectedItem, setSidebarSelectedItem] = React.useState(() => {
+    const section = searchParams.get("section");
+    return section === "allAssets" || section === "templatesAndLayouts"
+      ? section
+      : "allReports";
+  });
   const [search, setSearch] = React.useState("");
   const [selectedView, setSelectedView] = useSessionStorage<"cards" | "list">(
     "cards",
@@ -494,7 +502,7 @@ export const ReportBuilder: React.FC = () => {
     <React.Fragment>
       <Box
         padding={{
-          xs: "16px 0",
+          xs: "16px 0 96px",
           sm: "16px 0",
           md: "16px 0",
           lg: "50px 0",
@@ -544,6 +552,7 @@ export const ReportBuilder: React.FC = () => {
           </Grid>
           <Grid item md={12} lg={9.7} sx={{ width: "100%" }}>
             <ReportBuilderToolbar
+              section={sidebarSelectedItem}
               search={search}
               setSearch={setSearch}
               selectedSort={selectedSort}
@@ -553,7 +562,16 @@ export const ReportBuilder: React.FC = () => {
               onNewFolderClick={handleNewFolderModalOpen}
               onNewReportClick={handleNewReportModalOpen}
             />
-            <Box width="100%" height="20px" />
+            <Box
+              width="100%"
+              height={{
+                xs: "16px",
+                sm:
+                  sidebarSelectedItem === "templatesAndLayouts"
+                    ? "0px"
+                    : "20px",
+              }}
+            />
             {openedFolders.length > 0 && (
               <Breadcrumbs
                 separator={
@@ -594,8 +612,28 @@ export const ReportBuilder: React.FC = () => {
                 onMoveToFolderCheckedItems={handleMoveToFolderCheckedItems}
               />
             )}
-            <Box sx={{ display: "flex", flexDirection: "row", gap: "20px" }}>
-              {view}
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                gap: "20px",
+                "@media (max-width: 1024px)": { gap: 0 },
+              }}
+            >
+              <Box
+                sx={{
+                  width: "100%",
+                  minWidth: 0,
+                  overflow: selectedView === "list" ? "hidden" : "visible",
+                  ...(selectedView === "list" && {
+                    ".tabulator": {
+                      minWidth: { xs: "700px", sm: "100%" },
+                    },
+                  }),
+                }}
+              >
+                {view}
+              </Box>
               {detailsSidePanelOpen && (
                 <ReportBuilderDetailsSidePanel
                   details={detailsSidePanelInfo}
@@ -670,3 +708,12 @@ export const ReportBuilder: React.FC = () => {
     </React.Fragment>
   );
 };
+
+const AuthenticatedComponent = withAuthenticationRequired(Component, {
+  onRedirecting: () => {
+    localStorage.setItem("redirectTo", window.location.pathname);
+    return <PageLoader />;
+  },
+});
+
+export { AuthenticatedComponent as ReportBuilder };
