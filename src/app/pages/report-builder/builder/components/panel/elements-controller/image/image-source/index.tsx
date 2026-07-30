@@ -60,6 +60,7 @@ export function ImageSource() {
       </Box>
 
       <Box
+        className="scrollbar"
         sx={{
           gap: "16px",
           display: "flex",
@@ -73,7 +74,7 @@ export function ImageSource() {
             key={src}
             onClick={() => handleImageSelect(src)}
             sx={{
-              width: "284px",
+              width: "100%",
               height: "136px",
               display: "flex",
               cursor: "pointer",
@@ -92,7 +93,7 @@ export function ImageSource() {
                 height: "100%",
                 bgcolor: "#fff",
                 borderRadius: "8px",
-                objectFit: "cover",
+                objectFit: "contain",
               }}
               alt="Image preview"
               src={src}

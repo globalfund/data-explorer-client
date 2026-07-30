@@ -92,6 +92,16 @@ export default function TableController() {
     }
   }, [tableConfigured, item?.data?.dataset]);
 
+  React.useEffect(() => {
+    if (selectedController?.parent?.type === "grid") {
+      setValue("grid");
+    } else if (selectedController?.parent?.type === "column") {
+      setValue("column");
+    } else {
+      setValue("mapping");
+    }
+  }, [selectedController?.id]);
+
   return (
     <Box
       id="table-controller"

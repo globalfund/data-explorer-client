@@ -45,7 +45,7 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (
   const navigate = useNavigate();
   const location = useLocation();
 
-  const mobile = useMediaQuery("(max-width: 767px)");
+  const isTabletOrMobile = useMediaQuery("(max-width: 1024px)");
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [selectedPage, setSelectedPage] = React.useState<string | null>(null);
@@ -78,7 +78,7 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (
     };
   }, []);
 
-  if (mobile) {
+  if (isTabletOrMobile) {
     return (
       <Collapse
         sx={{

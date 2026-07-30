@@ -2,7 +2,6 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { appColors } from "app/theme";
-import womanImage from "app/assets/images/woman.png";
 
 interface AuthWrapperProps {
   title: string;
@@ -101,7 +100,7 @@ export const AuthWrapper: React.FC<AuthWrapperProps> = (props) => {
       >
         <Box
           component="img"
-          src={womanImage}
+          src={"/static/images/woman.png"}
           alt=""
           sx={{
             width: "100%",

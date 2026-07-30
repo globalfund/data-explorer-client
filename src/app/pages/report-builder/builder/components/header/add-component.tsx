@@ -307,6 +307,7 @@ export default function AddComponent({
             width: "100%",
             height: "141px",
             justifyContent: "start",
+            alignItems: "center",
             alignVertical: "middle",
             alignHorizontal: "left",
             innerLine: {

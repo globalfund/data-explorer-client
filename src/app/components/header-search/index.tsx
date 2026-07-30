@@ -19,7 +19,7 @@ import HeaderSearchIcon from "app/assets/vectors/HeaderSearch.svg?react";
 
 export const HeaderSearch: React.FC<HeaderSearchProps> = (props) => {
   const { pathname, hash } = useLocation();
-  const mobile = useMediaQuery("(max-width: 767px)");
+  const isTabletOrMobile = useMediaQuery("(max-width: 1024px)");
   const { isAuthenticated, logout, loginWithRedirect } = useAuth0();
 
   const isAuthPage = React.useMemo(() => {
@@ -75,7 +75,7 @@ export const HeaderSearch: React.FC<HeaderSearchProps> = (props) => {
     return () => document.removeEventListener("keypress", handleKeyPress);
   }, []);
 
-  if (mobile) {
+  if (isTabletOrMobile) {
     return (
       <React.Fragment>
         <Box
@@ -160,6 +160,9 @@ export const HeaderSearch: React.FC<HeaderSearchProps> = (props) => {
               >
                 <HeaderMenuIcon />
               </IconButton>
+              <IconButton onClick={handleUserIconClick} sx={{ p: 0 }}>
+                {!isAuthenticated ? <UserIcon /> : <LogoutIcon />}
+              </IconButton>
             </React.Fragment>
           )}
         </Box>
@@ -242,7 +245,6 @@ export const HeaderSearch: React.FC<HeaderSearchProps> = (props) => {
           <Search hocClose={() => props.setSearchOpen(false)} />
         </Box>
       )}
-
       {isAuthPage ? null : (
         <Tooltip title={!props.searchOpen ? "Search" : "Close"}>
           <IconButton

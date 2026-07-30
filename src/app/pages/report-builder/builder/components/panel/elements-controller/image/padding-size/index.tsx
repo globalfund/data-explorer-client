@@ -276,13 +276,17 @@ export function PaddingSize() {
               label="Width"
               value={selectedItem?.options?.width ?? ""}
               onChange={(value) => handleChange("options.width", value)}
+              disabled={!!selectedItemController?.parent}
             />
 
             <TextField
               label="Height"
               value={selectedItem?.options?.height ?? ""}
               onChange={(value) => handleChange("options.height", value)}
-              disabled={selectedItem?.options?.sizingMode === "auto"}
+              disabled={
+                selectedItem?.options?.sizingMode === "auto" ||
+                !!selectedItemController?.parent
+              }
             />
           </Box>
         </Box>

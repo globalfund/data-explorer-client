@@ -11,8 +11,8 @@ import { SkipToMainButton } from "app/components/skip-to-main-btn";
 import HeaderToolbarLogo from "app/assets/vectors/HeaderToolbarLogo.svg?react";
 
 export const Header: React.FC = () => {
-  const mobile = useMediaQuery("(max-width: 767px)");
   const [searchOpen, setSearchOpen] = React.useState(false);
+  const isTabletOrMobile = useMediaQuery("(max-width: 1024px)");
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
   const location = useLocation();
@@ -41,7 +41,7 @@ export const Header: React.FC = () => {
               },
             }}
           >
-            {(!mobile || !searchOpen) && (
+            {(!isTabletOrMobile || !searchOpen) && (
               <NavLink
                 to="/"
                 aria-label="App logo link"
@@ -50,7 +50,6 @@ export const Header: React.FC = () => {
                 <HeaderToolbarLogo />
               </NavLink>
             )}
-
             {isAuthPage ? null : (
               <HeaderMenu
                 mobileMenuOpen={mobileMenuOpen}
