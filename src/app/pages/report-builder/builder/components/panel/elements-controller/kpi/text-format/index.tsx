@@ -41,6 +41,8 @@ export default function KPITextFormatting({ source }: KPITextFormattingProps) {
     parent: selectedItemController?.parent ?? undefined,
   });
 
+  const filters = selectedItem?.data?.appliedFilters || {};
+
   const renderChartData = useRenderChartData();
 
   const setSelectedItemController = useStoreActions(
@@ -259,6 +261,19 @@ export default function KPITextFormatting({ source }: KPITextFormattingProps) {
     });
   };
 
+  const handleEditFilters = () => {
+    if (!selectedItemController) return;
+    setSelectedItemController({
+      ...selectedItemController,
+      extra: {
+        kpi_box: {
+          showDatasetModal: true,
+          datasetModalStep: "preview",
+        },
+      },
+    });
+  };
+
   const labelMap = {
     bigNumberText: "Big Number Text",
     topLabel: "Top Label Text",
@@ -462,12 +477,28 @@ export default function KPITextFormatting({ source }: KPITextFormattingProps) {
                 width: "100%",
               }}
             >
-              <Typography fontSize="14px" color="#373D43">
-                No filters are active.
-              </Typography>
+              <Box sx={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                {Object.values(filters).flat().length > 0 ? (
+                  <>
+                    <Box
+                      sx={{ width: "1px", height: 20, bgcolor: "#cfd4da" }}
+                    />
+                    <Typography fontSize="14px" color="#3154F4">
+                      {Object.values(filters).flat().length} Filter
+                      {Object.values(filters).flat().length > 1 ? "s" : ""}{" "}
+                      active
+                    </Typography>
+                  </>
+                ) : (
+                  <Typography fontSize="14px" color="#373D43">
+                    No filters active.
+                  </Typography>
+                )}
+              </Box>
               <Button
                 variant="outlined"
                 startIcon={<FilterIcon />}
+                onClick={handleEditFilters}
                 sx={{
                   px: "12px",
                   py: "9px",
@@ -478,8 +509,6 @@ export default function KPITextFormatting({ source }: KPITextFormattingProps) {
                   borderRadius: "4px",
                   textTransform: "none",
                   borderColor: "#98A1AA",
-                  width: "100%",
-                  display: "flex",
                   bgcolor: "#fff",
                   ".MuiButton-startIcon": {
                     mr: "5px",
@@ -488,10 +517,11 @@ export default function KPITextFormatting({ source }: KPITextFormattingProps) {
                     borderColor: "#3154F4",
                     bgcolor: "#fff",
                   },
-                  justifyContent: "flex-start",
                 }}
               >
-                Edit Filters
+                {Object.values(filters).flat().length > 0
+                  ? "Edit Filters"
+                  : "Add Filter"}
               </Button>
             </Box>
           </ControlAccordion>
@@ -529,7 +559,7 @@ export default function KPITextFormatting({ source }: KPITextFormattingProps) {
       <DatasetSelectModal
         open={!!selectedItemController?.extra?.kpi_box?.showDatasetModal}
         onClose={handleBack}
-        handleSelectDataset={({ selectedDataset }) => {
+        handleSelectDataset={({ selectedDataset, filters }) => {
           editItem({
             ...selectedItem,
             id: selectedItemController?.id || "",
@@ -537,6 +567,7 @@ export default function KPITextFormatting({ source }: KPITextFormattingProps) {
             data: {
               ...selectedItem.data,
               dataset: selectedDataset,
+              appliedFilters: filters,
             },
           });
         }}
