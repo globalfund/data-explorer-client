@@ -37,6 +37,16 @@ export default function KPIController() {
     setIsExpanded(!isExpanded);
   };
 
+  React.useEffect(() => {
+    if (selectedController?.parent?.type === "grid") {
+      setValue("grid");
+    } else if (selectedController?.parent?.type === "column") {
+      setValue("column");
+    } else {
+      setValue("text");
+    }
+  }, [selectedController?.id]);
+
   const handleChange = (
     _event: React.SyntheticEvent,
     newValue: KPIControllerTab,
@@ -91,6 +101,9 @@ export default function KPIController() {
         sx={{
           padding: "8px",
           borderBottom: "1px solid #CFD4DA",
+          display: "flex",
+          flexDirection: "column",
+          gap: "8px",
         }}
       >
         <Box
@@ -176,7 +189,6 @@ export default function KPIController() {
         </Box>
         <Box
           sx={{
-            marginTop: "8px",
             display: "flex",
             border: "0.5px dashed #0E8410",
             padding: "8px",

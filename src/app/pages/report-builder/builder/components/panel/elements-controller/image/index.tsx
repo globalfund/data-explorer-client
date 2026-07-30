@@ -52,6 +52,16 @@ export default function ImageController() {
     }
   };
 
+  React.useEffect(() => {
+    if (selectedItemController?.parent?.type === "grid") {
+      setValue("grid");
+    } else if (selectedItemController?.parent?.type === "column") {
+      setValue("column");
+    } else {
+      setValue("source");
+    }
+  }, [selectedItemController?.id]);
+
   return (
     <Box
       id="image-controller"

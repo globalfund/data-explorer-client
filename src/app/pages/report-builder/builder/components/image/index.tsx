@@ -239,7 +239,7 @@ export const ReportBuilderPageImage: React.FC<{
               cursor: "pointer",
               borderRadius: "4px",
               alignItems: "center",
-              bgcolor: "#d6ddfd",
+              bgcolor: "#F8F9FA",
               flexDirection: "column",
               justifyContent: "center",
               border: "1px dashed #3154f4",

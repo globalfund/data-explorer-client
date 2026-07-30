@@ -55,6 +55,16 @@ export default function TextController() {
     }
   };
 
+  React.useEffect(() => {
+    if (selectedController?.parent?.type === "grid") {
+      setValue("grid");
+    } else if (selectedController?.parent?.type === "column") {
+      setValue("column");
+    } else {
+      setValue("font");
+    }
+  }, [selectedController?.id]);
+
   return (
     <Box
       id="rte-toolbar"

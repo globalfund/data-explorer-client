@@ -282,6 +282,7 @@ export default function GridElementsList(props: { type: "grid" | "column" }) {
             width: "100%",
             height: "100%",
             justifyContent: "start",
+            alignItems: "center",
             alignVertical: "middle",
             alignHorizontal: "left",
             innerLine: {

@@ -14,10 +14,7 @@ export default defineConfig({
     inconsistentCjsInterop: true,
   },
   optimizeDeps: {
-    include: [
-      "@emotion/react",
-      "@emotion/styled",
-    ],
+    include: ["@emotion/react", "@emotion/styled"],
     rolldownOptions: {
       output: {
         manualChunks(id) {
@@ -45,4 +42,7 @@ export default defineConfig({
     outDir: "build",
   },
   publicDir: "public",
+  define: {
+    "process.env": {},
+  },
 });

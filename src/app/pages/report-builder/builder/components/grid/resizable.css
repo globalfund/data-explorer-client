@@ -1,0 +1,87 @@
+.resizable-panel {
+  position: relative;
+  box-sizing: border-box;
+  border: 1px solid transparent; /* Transparent border to maintain size during resizing */
+}
+
+/* Remove the library's corner icon */
+.resizable-panel > .react-resizable-handle {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  background-image: none;
+  transform: none;
+  z-index: 10;
+}
+
+/* Left and right borders */
+.resizable-panel > .react-resizable-handle-w,
+.resizable-panel > .react-resizable-handle-e {
+  top: 8px;
+  bottom: 8px;
+  width: 8px;
+  height: auto;
+}
+
+.resizable-panel > .react-resizable-handle-w {
+  left: -4px;
+  cursor: ew-resize;
+}
+
+.resizable-panel > .react-resizable-handle-e {
+  right: -4px;
+  cursor: ew-resize;
+}
+
+/* Top and bottom borders */
+.resizable-panel > .react-resizable-handle-n,
+.resizable-panel > .react-resizable-handle-s {
+  left: 8px;
+  right: 8px;
+  width: auto;
+  height: 8px;
+}
+
+.resizable-panel > .react-resizable-handle-n {
+  top: -4px;
+  cursor: ns-resize;
+}
+
+.resizable-panel > .react-resizable-handle-s {
+  bottom: -4px;
+  cursor: ns-resize;
+}
+
+/* Corners */
+.resizable-panel > .react-resizable-handle-nw,
+.resizable-panel > .react-resizable-handle-ne,
+.resizable-panel > .react-resizable-handle-sw,
+.resizable-panel > .react-resizable-handle-se {
+  width: 12px;
+  height: 12px;
+  z-index: 11;
+}
+
+.resizable-panel > .react-resizable-handle-nw {
+  top: -6px;
+  left: -6px;
+  cursor: nwse-resize;
+}
+
+.resizable-panel > .react-resizable-handle-ne {
+  top: -6px;
+  right: -6px;
+  cursor: nesw-resize;
+}
+
+.resizable-panel > .react-resizable-handle-sw {
+  bottom: -6px;
+  left: -6px;
+  cursor: nesw-resize;
+}
+
+.resizable-panel > .react-resizable-handle-se {
+  right: -6px;
+  bottom: -6px;
+  cursor: nwse-resize;
+}

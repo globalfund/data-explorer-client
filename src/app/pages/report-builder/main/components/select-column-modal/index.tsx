@@ -1,4 +1,5 @@
 import React from "react";
+import { styled, TooltipProps } from "@mui/material";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
@@ -7,6 +8,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
 import { useCMSData } from "app/hooks/useCMSData";
 import { getCMSDataField } from "app/utils/getCMSDataField";
+import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import SelectField from "app/pages/report-builder/builder/components/panel/elements-controller/components/selectfield";
 
 export const ReportBuilderSelectColumnModal: React.FC<{
@@ -23,6 +25,19 @@ export const ReportBuilderSelectColumnModal: React.FC<{
       setColumns(parsedValue);
     }
   };
+
+  const DarkTooltip = styled(({ className, ...props }: TooltipProps) => (
+    <Tooltip describeChild {...props} classes={{ popper: className }} />
+  ))(({ theme }) => ({
+    [`& .${tooltipClasses.arrow}`]: {
+      color: theme.palette.common.black,
+    },
+    [`& .${tooltipClasses.tooltip}`]: {
+      backgroundColor: theme.palette.common.black,
+      color: theme.palette.common.white,
+      width: "343px",
+    },
+  }));
 
   return (
     <Modal disableScrollLock open={open} onClose={onClose}>
@@ -105,25 +120,40 @@ export const ReportBuilderSelectColumnModal: React.FC<{
                 "Cancel",
               )}
             </Button>
-            <Button
-              variant="contained"
-              sx={{
-                fontWeight: "400",
-                color: "#ffffff",
-                textTransform: "none",
-                background: "#3154f4",
-              }}
-              onClick={() => {
-                onSelect(columns);
-                onClose();
-              }}
+            <DarkTooltip
+              placement="bottom-end"
+              title={
+                <Box>
+                  <Typography fontSize="14px" fontWeight="700" color="#ffffff">
+                    Column structure selection required.
+                  </Typography>
+                  <Typography fontSize="14px" fontWeight="400" color="#ffffff">
+                    Please select a column structure to continue.
+                  </Typography>
+                </Box>
+              }
+              arrow
             >
-              {getCMSDataField(
-                cmsData,
-                "componentsRBSelectColumnModal.applyButton",
-                "Apply",
-              )}
-            </Button>
+              <Button
+                variant="contained"
+                sx={{
+                  fontWeight: "400",
+                  color: "#ffffff",
+                  textTransform: "none",
+                  background: "#3154f4",
+                }}
+                onClick={() => {
+                  onSelect(columns);
+                  onClose();
+                }}
+              >
+                {getCMSDataField(
+                  cmsData,
+                  "componentsRBSelectColumnModal.applyButton",
+                  "Apply",
+                )}
+              </Button>
+            </DarkTooltip>
           </Box>
         </Box>
       </Box>

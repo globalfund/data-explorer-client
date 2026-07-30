@@ -563,29 +563,33 @@ export const RBReportItemsState: RBReportItemsModel = {
   duplicateGridItem: action((state, payload) => {
     const { gridId, itemId } = payload;
     const gridIndex = state.items.findIndex((i) => i.id === gridId);
-    if (
-      gridIndex !== -1 &&
-      (state.items[gridIndex].type === "grid" ||
-        state.items[gridIndex].type === "column")
-    ) {
+    // TODO: handle duplication for grid type as well
+    if (gridIndex !== -1 && state.items[gridIndex].type === "column") {
       const itemIndex = state.items[gridIndex].data.items.findIndex(
         (i) => i?.id === itemId,
       );
-      const newWidth = "100%";
-      const newHeight = `${("rows" in state.items[gridIndex].data ? state.items[gridIndex].data.rows : 1) * 280}px`;
       if (itemIndex !== -1) {
         const currentItem = state.items[gridIndex].data.items[itemIndex];
         const newItem = {
           ...currentItem,
           id: uniqueId(),
-          options: {
-            ...currentItem?.options,
-            width: newWidth,
-            height: newHeight,
-          },
         };
+        const columns = (state.items[gridIndex].data.columns || 1) + 1;
 
-        state.items.splice(gridIndex + 1, 0, newItem as RBReportItem);
+        const prevData = debug(state.items[gridIndex].data);
+
+        prevData.items.splice(itemIndex + 1, 0, newItem as RBReportItem);
+        state.items[gridIndex].data = {
+          ...prevData,
+          columns,
+          items: prevData.items.map((i) => ({
+            ...i,
+            options: {
+              ...i?.options,
+              width: `${(100 / columns).toFixed(2)}%`,
+            },
+          })),
+        };
       }
     }
   }),
