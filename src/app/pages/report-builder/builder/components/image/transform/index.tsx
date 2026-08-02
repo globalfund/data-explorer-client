@@ -1,5 +1,6 @@
 import { ReportItemOf } from "app/state/api/action-reducers/report-builder/sync";
 import React from "react";
+import isEqual from "lodash/isEqual";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 type SavedTransform = {
@@ -75,7 +76,7 @@ const PanComponent: React.FC<{
           positionX: state.positionX,
           positionY: state.positionY,
         };
-        if (isReady) {
+        if (isReady && !isEqual(nextValue, transform)) {
           setTransform(nextValue);
           handleChangeTransformCoordinates(nextValue);
         }
