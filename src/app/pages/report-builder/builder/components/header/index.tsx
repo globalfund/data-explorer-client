@@ -11,7 +11,7 @@ import Container from "@mui/material/Container";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { Pencil } from "../report-settings/icons";
-import { useStoreState } from "app/state/store/hooks";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import CopyIcon from "app/assets/vectors/Copy.svg?react";
 import EmailIcon from "app/assets/vectors/Email.svg?react";
 import PNGIcon from "app/assets/vectors/PngIcon.svg?react";
@@ -25,11 +25,7 @@ import { useCMSData } from "app/hooks/useCMSData";
 import { getCMSDataField } from "app/utils/getCMSDataField";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import UploadIcon from "app/assets/vectors/Upload.svg?react";
-import {
-  useGetAsset,
-  useGetReport,
-  usePatchReport,
-} from "app/hooks/queries/report-builder";
+import { useGetAsset, usePatchReport } from "app/hooks/queries/report-builder";
 import ErrorIcon from "app/assets/vectors/ReportBuilderAutoSaveError.svg?react";
 import CompleteIcon from "app/assets/vectors/ReportBuilderCompleteIcon.svg?react";
 import WarningIcon from "app/assets/vectors/ReportBuilderAutoSaveWarning.svg?react";
@@ -84,14 +80,14 @@ export const ReportBuilderPageHeader: React.FC = () => {
   const cmsData = useCMSData({ returnData: true });
   const isMobile = useMediaQuery("(max-width: 600px)");
   const reportState = useStoreState((state) => state.RBReportItemsState);
+  const setName = useStoreActions((state) => state.RBReportItemsState.setName);
 
-  const reportData = useGetReport(id);
   const updateReport = usePatchReport(id);
 
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const [snackbarMessage, setSnackbarMessage] = React.useState("");
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [name, setName] = React.useState(reportData?.data?.data.name ?? "");
+
   const [anchorEl2, setAnchorEl2] = React.useState<null | HTMLElement>(null);
   const [signedIn] = React.useState(true); // Replace with actual authentication state
   const [assetLibraryOpen, setAssetLibraryOpen] = React.useState(false);
@@ -251,10 +247,10 @@ export const ReportBuilderPageHeader: React.FC = () => {
                 <Typography>/</Typography>
                 <input
                   type="text"
-                  value={name}
+                  value={reportState.name}
                   ref={nameInputRef}
                   disabled={previewMode}
-                  size={name.length ?? 1}
+                  size={reportState.name.length ?? 1}
                   onInput={handleNameOnInputEvent}
                   onChange={handleNameOnChangeEvent}
                 />
@@ -629,10 +625,10 @@ export const ReportBuilderPageHeader: React.FC = () => {
                 <Typography>/</Typography>
                 <input
                   type="text"
-                  value={name}
+                  value={reportState.name}
                   ref={nameInputRef}
                   disabled={previewMode}
-                  size={name.length ?? 1}
+                  size={reportState.name.length ?? 1}
                   onInput={handleNameOnInputEvent}
                   onChange={handleNameOnChangeEvent}
                 />
@@ -973,7 +969,7 @@ export const ReportBuilderPageHeader: React.FC = () => {
   }, [
     reportState.items,
     reportState.settings,
-    name,
+    reportState.name,
     previewMode,
     isMobile,
     signedIn,
@@ -991,16 +987,24 @@ export const ReportBuilderPageHeader: React.FC = () => {
 
   useDebounce(
     () => {
-      if (!previewMode) {
+      if (!previewMode && reportState.id === id) {
         updateReport.mutate({
-          name,
+          name: reportState.name,
+          description: reportState.description,
           items: reportState.items,
           settings: reportState.settings,
         });
       }
     },
     2000,
-    [name, reportState.items, reportState.settings, previewMode],
+    [
+      reportState.id,
+      reportState.name,
+      reportState.description,
+      reportState.items,
+      reportState.settings,
+      previewMode,
+    ],
   );
 
   React.useEffect(() => {
@@ -1010,10 +1014,6 @@ export const ReportBuilderPageHeader: React.FC = () => {
       }, 5000);
     }
   }, [updateReport.isSuccess]);
-
-  React.useEffect(() => {
-    setName(reportData.data?.data.name ?? "");
-  }, [reportData.data?.data.name]);
 
   return (
     <React.Fragment>
@@ -1054,7 +1054,7 @@ export const ReportBuilderPageHeader: React.FC = () => {
         open={reportIssueModalOpen}
         onClose={() => setReportIssueModalOpen(false)}
         reportId={id}
-        reportName={name}
+        reportName={reportState.name}
         error={updateReport.error}
         onSubmitted={() => {
           setSnackbarMessage(

@@ -183,6 +183,7 @@ export interface RBReportItemControllerModel {
 }
 
 export interface RBReportItemsModel {
+  id: string;
   items: RBReportItem[];
   settings: {
     width: string;
@@ -194,6 +195,7 @@ export interface RBReportItemsModel {
     borderRadius: string;
   };
   name: string;
+  setName: Action<RBReportItemsModel, string>;
   description: string;
   clearItems: Action<RBReportItemsModel>;
   addItem: Action<RBReportItemsModel, RBReportItem>;
@@ -306,7 +308,7 @@ export interface RBRenderChartDataRequest {
 }
 
 export interface RBReportModel {
-  id?: string;
+  id: string;
   items: RBReportItem[];
   settings: RBReportItemsModel["settings"];
   name: string;
@@ -457,6 +459,7 @@ export interface RBFilteredDatasetResponse {
 }
 
 export const RBReportItemsState: RBReportItemsModel = {
+  id: "",
   items: [],
   settings: {
     width: "0",
@@ -468,6 +471,9 @@ export const RBReportItemsState: RBReportItemsModel = {
     borderRadius: "0",
   },
   name: "",
+  setName: action((state, payload) => {
+    state.name = payload;
+  }),
   description: "",
   addItem: action((state, payload) => {
     state.items.push(payload);
@@ -606,12 +612,14 @@ export const RBReportItemsState: RBReportItemsModel = {
     };
   }),
   setReport: action((state, payload) => {
+    state.id = payload.id;
     state.settings = payload.settings;
     state.name = payload.name;
     state.description = payload.description;
     state.items = payload.items;
   }),
   resetReport: action((state) => {
+    state.id = "";
     state.items = [];
     state.name = "";
     state.description = "";

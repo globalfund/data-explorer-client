@@ -1,5 +1,4 @@
 import React from "react";
-import get from "lodash/get";
 import { colors } from "app/theme";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -7,7 +6,6 @@ import { useParams } from "react-router-dom";
 import InputLabel from "@mui/material/InputLabel";
 import Typography from "@mui/material/Typography";
 import FormHelperText from "@mui/material/FormHelperText";
-import { useGetReport, usePatchReport } from "app/hooks/queries/report-builder";
 import {
   TopPadding,
   LeftPadding,
@@ -16,6 +14,7 @@ import {
 } from "app/pages/report-builder/builder/components/report-settings/icons";
 import { useCMSData } from "app/hooks/useCMSData";
 import { getCMSDataField } from "app/utils/getCMSDataField";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 
 const panelSx = {
   gap: "8px",
@@ -73,12 +72,15 @@ export const RenamePanel: React.FC<{ closePanel: () => void }> = (props) => {
   const { id } = useParams<{ id: string }>();
   const cmsData = useCMSData({ returnData: true });
 
-  const reportData = useGetReport(id);
-  const updateReport = usePatchReport(id);
+  const setReport = useStoreActions(
+    (actions) => actions.RBReportItemsState.setReport,
+  );
 
-  const [name, setName] = React.useState(reportData?.data?.data.name ?? "");
+  const report = useStoreState((state) => state.RBReportItemsState);
+
+  const [name, setName] = React.useState(report?.name ?? "");
   const [description, setDescription] = React.useState(
-    reportData?.data?.data.description ?? "",
+    report?.description ?? "",
   );
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -88,23 +90,16 @@ export const RenamePanel: React.FC<{ closePanel: () => void }> = (props) => {
     setDescription(e.target.value);
 
   const handleApply = () => {
-    if (id) {
-      updateReport.mutate(
-        { name, description },
-        {
-          onSuccess: () => {
-            console.log("Report updated successfully");
-            props.closePanel();
-          },
-        },
-      );
+    if (id === report.id) {
+      setReport({ ...report, name, description });
+      props.closePanel();
     }
   };
 
   React.useEffect(() => {
-    setName(reportData.data?.data.name ?? "");
-    setDescription(reportData.data?.data.description ?? "");
-  }, [reportData.data?.data.name, reportData.data?.data.description]);
+    setName(report?.name ?? "");
+    setDescription(report?.description ?? "");
+  }, [report?.name, report?.description]);
 
   return (
     <React.Fragment>
@@ -195,19 +190,16 @@ export const SizePaddingPanel: React.FC<{ closePanel: () => void }> = (
   const { id } = useParams<{ id: string }>();
   const cmsData = useCMSData({ returnData: true });
 
-  const reportData = useGetReport(id);
-  const updateReport = usePatchReport(id);
+  const setReport = useStoreActions(
+    (actions) => actions.RBReportItemsState.setReport,
+  );
+
+  const report = useStoreState((state) => state.RBReportItemsState);
 
   const [widthError, setWidthError] = React.useState("");
-  const [width, setWidth] = React.useState(
-    reportData?.data?.data.settings.width,
-  );
-  const [height, setHeight] = React.useState(
-    reportData?.data?.data.settings.height,
-  );
-  const [padding, setPadding] = React.useState(
-    reportData?.data?.data.settings.padding,
-  );
+  const [width, setWidth] = React.useState(report.settings.width);
+  const [height, setHeight] = React.useState(report.settings.height);
+  const [padding, setPadding] = React.useState(report.settings.padding);
 
   const handleWidthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -239,7 +231,7 @@ export const SizePaddingPanel: React.FC<{ closePanel: () => void }> = (
   };
 
   const setPaddingNewValueChange = (i: number, value: string) => {
-    const newValue = [...get(reportData, "data.data.settings.padding", [])];
+    const newValue = [...report.settings.padding];
     if (value === "") {
       newValue[i] = "0";
       setPadding(newValue);
@@ -255,7 +247,7 @@ export const SizePaddingPanel: React.FC<{ closePanel: () => void }> = (
 
   const setPaddingBlur = (i: number, value: string) => {
     if (value === "") {
-      const newValue = [...get(reportData, "data.data.settings.padding", [])];
+      const newValue = [...report.settings.padding];
       newValue[i] = "0";
       setPadding(newValue);
     }
@@ -296,38 +288,20 @@ export const SizePaddingPanel: React.FC<{ closePanel: () => void }> = (
   };
 
   const handleApply = () => {
-    if (id) {
-      updateReport.mutate(
-        {
-          settings: {
-            width,
-            height,
-            padding,
-            stroke: reportData.data?.data.settings.stroke,
-            strokeColor: reportData.data?.data.settings.strokeColor,
-            borderRadius: reportData.data?.data.settings.borderRadius,
-            backgroundColor: reportData.data?.data.settings.backgroundColor,
-          },
-        },
-        {
-          onSuccess: () => {
-            console.log("Report updated successfully");
-            props.closePanel();
-          },
-        },
-      );
+    if (id === report.id) {
+      setReport({
+        ...report,
+        settings: { ...report.settings, width, height, padding },
+      });
+      props.closePanel();
     }
   };
 
   React.useEffect(() => {
-    setWidth(reportData.data?.data.settings.width);
-    setHeight(reportData.data?.data.settings.height);
-    setPadding(reportData.data?.data.settings.padding);
-  }, [
-    reportData.data?.data.settings.width,
-    reportData.data?.data.settings.height,
-    reportData.data?.data.settings.padding,
-  ]);
+    setWidth(report.settings.width);
+    setHeight(report.settings.height);
+    setPadding(report.settings.padding);
+  }, [report.settings.width, report.settings.height, report.settings.padding]);
 
   return (
     <React.Fragment>
@@ -493,20 +467,21 @@ export const BorderFillPanel: React.FC<{ closePanel: () => void }> = (
   const { id } = useParams<{ id: string }>();
   const cmsData = useCMSData({ returnData: true });
 
-  const reportData = useGetReport(id);
-  const updateReport = usePatchReport(id);
-
-  const [stroke, setStroke] = React.useState(
-    reportData?.data?.data.settings.stroke,
+  const setReport = useStoreActions(
+    (actions) => actions.RBReportItemsState.setReport,
   );
+
+  const report = useStoreState((state) => state.RBReportItemsState);
+
+  const [stroke, setStroke] = React.useState(report.settings.stroke);
   const [strokeColor, setStrokeColor] = React.useState(
-    reportData?.data?.data.settings.strokeColor,
+    report.settings.strokeColor,
   );
   const [borderRadius, setBorderRadius] = React.useState(
-    reportData?.data?.data.settings.borderRadius,
+    report.settings.borderRadius,
   );
   const [backgroundColor, setBackgroundColor] = React.useState(
-    reportData?.data?.data.settings.backgroundColor,
+    report.settings.backgroundColor,
   );
 
   const handleStrokeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -558,39 +533,31 @@ export const BorderFillPanel: React.FC<{ closePanel: () => void }> = (
   };
 
   const handleApply = () => {
-    if (id) {
-      updateReport.mutate(
-        {
-          settings: {
-            stroke,
-            strokeColor,
-            borderRadius,
-            backgroundColor,
-            width: reportData.data?.data.settings.width,
-            height: reportData.data?.data.settings.height,
-            padding: reportData.data?.data.settings.padding,
-          },
+    if (id === report.id) {
+      setReport({
+        ...report,
+        settings: {
+          ...report.settings,
+          stroke,
+          strokeColor,
+          borderRadius,
+          backgroundColor,
         },
-        {
-          onSuccess: () => {
-            console.log("Report updated successfully");
-            props.closePanel();
-          },
-        },
-      );
+      });
+      props.closePanel();
     }
   };
 
   React.useEffect(() => {
-    setStroke(reportData.data?.data.settings.stroke);
-    setStrokeColor(reportData.data?.data.settings.strokeColor);
-    setBorderRadius(reportData.data?.data.settings.borderRadius);
-    setBackgroundColor(reportData.data?.data.settings.backgroundColor);
+    setStroke(report.settings.stroke);
+    setStrokeColor(report.settings.strokeColor);
+    setBorderRadius(report.settings.borderRadius);
+    setBackgroundColor(report.settings.backgroundColor);
   }, [
-    reportData.data?.data.settings.stroke,
-    reportData.data?.data.settings.strokeColor,
-    reportData.data?.data.settings.borderRadius,
-    reportData.data?.data.settings.backgroundColor,
+    report.settings.stroke,
+    report.settings.strokeColor,
+    report.settings.borderRadius,
+    report.settings.backgroundColor,
   ]);
 
   return (
