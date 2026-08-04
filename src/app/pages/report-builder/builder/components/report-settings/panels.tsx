@@ -72,8 +72,8 @@ export const RenamePanel: React.FC<{ closePanel: () => void }> = (props) => {
   const { id } = useParams<{ id: string }>();
   const cmsData = useCMSData({ returnData: true });
 
-  const setReport = useStoreActions(
-    (actions) => actions.RBReportItemsState.setReport,
+  const setReportSettings = useStoreActions(
+    (actions) => actions.RBReportItemsState.setReportSettings,
   );
 
   const report = useStoreState((state) => state.RBReportItemsState);
@@ -91,7 +91,7 @@ export const RenamePanel: React.FC<{ closePanel: () => void }> = (props) => {
 
   const handleApply = () => {
     if (id === report.id) {
-      setReport({ ...report, name, description });
+      setReportSettings({ ...report, name, description });
       props.closePanel();
     }
   };
@@ -190,8 +190,8 @@ export const SizePaddingPanel: React.FC<{ closePanel: () => void }> = (
   const { id } = useParams<{ id: string }>();
   const cmsData = useCMSData({ returnData: true });
 
-  const setReport = useStoreActions(
-    (actions) => actions.RBReportItemsState.setReport,
+  const setReportSettings = useStoreActions(
+    (actions) => actions.RBReportItemsState.setReportSettings,
   );
 
   const report = useStoreState((state) => state.RBReportItemsState);
@@ -289,7 +289,7 @@ export const SizePaddingPanel: React.FC<{ closePanel: () => void }> = (
 
   const handleApply = () => {
     if (id === report.id) {
-      setReport({
+      setReportSettings({
         ...report,
         settings: { ...report.settings, width, height, padding },
       });
@@ -467,8 +467,8 @@ export const BorderFillPanel: React.FC<{ closePanel: () => void }> = (
   const { id } = useParams<{ id: string }>();
   const cmsData = useCMSData({ returnData: true });
 
-  const setReport = useStoreActions(
-    (actions) => actions.RBReportItemsState.setReport,
+  const setReportSettings = useStoreActions(
+    (actions) => actions.RBReportItemsState.setReportSettings,
   );
 
   const report = useStoreState((state) => state.RBReportItemsState);
@@ -534,7 +534,7 @@ export const BorderFillPanel: React.FC<{ closePanel: () => void }> = (
 
   const handleApply = () => {
     if (id === report.id) {
-      setReport({
+      setReportSettings({
         ...report,
         settings: {
           ...report.settings,

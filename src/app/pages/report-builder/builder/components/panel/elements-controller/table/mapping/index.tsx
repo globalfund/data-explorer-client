@@ -46,7 +46,7 @@ export default function Mapping() {
       ...selectedItem,
       id: selectedController?.id || "",
       type: "table",
-      open: selectedItem.open || false,
+      initialized: selectedItem?.initialized || false,
       options: {
         ...tableOptions,
         ...options,
@@ -61,7 +61,7 @@ export default function Mapping() {
       ...selectedItem,
       id: selectedController?.id || "",
       type: "table",
-      open: selectedItem.open || false,
+      initialized: selectedItem?.initialized || false,
       data: {
         ...selectedItem.data,
         columns: validColumns.map((column) => ({

@@ -39,8 +39,8 @@ const ReportBuilderDesktopPage: React.FC = () => {
 
   useTitle(`The Data Explorer - ${reportData?.name ?? "Report"}`);
 
-  const setActiveReport = useStoreActions(
-    (actions) => actions.RBReportItemsState.setReport,
+  const hydrateActiveReport = useStoreActions(
+    (actions) => actions.RBReportItemsState.hydrateReport,
   );
   const reportState = useStoreState((state) => state.RBReportItemsState);
   const items = reportState.items;
@@ -63,19 +63,14 @@ const ReportBuilderDesktopPage: React.FC = () => {
       if (assetToInsert) {
         const { asset, reportId } = JSON.parse(assetToInsert);
         if (reportId === reportData.id) {
-          setActiveReport({
-            ...reportData,
-            items: [
-              ...reportData.items,
-              { ...asset, open: false, id: uniqueId() },
-            ],
-          });
+          hydrateActiveReport(reportData);
+          addItem({ ...asset, open: false, id: uniqueId() });
         } else {
-          setActiveReport(reportData);
+          hydrateActiveReport(reportData);
         }
         localStorage.removeItem("assetToInsert");
       } else {
-        setActiveReport(reportData);
+        hydrateActiveReport(reportData);
       }
     }
   }, [reportData]);
@@ -85,11 +80,7 @@ const ReportBuilderDesktopPage: React.FC = () => {
       case "text":
         return (
           <ItemComponent id={item.id} index={index} childrenData={[]}>
-            <ReportBuilderPageText
-              id={item.id}
-              focus={item.focus}
-              initialKey={item.key}
-            />
+            <ReportBuilderPageText id={item.id} />
           </ItemComponent>
         );
       case "chart":
@@ -159,9 +150,7 @@ const ReportBuilderDesktopPage: React.FC = () => {
       addItem({
         id: uniqueId(),
         type: "text",
-        open: true,
-        focus: true,
-        key: e.key,
+        initialized: true,
         data: { rte: null },
         options: {
           paddingTop: "10px",

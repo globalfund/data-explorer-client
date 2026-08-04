@@ -19,7 +19,6 @@ import { ActionCreator } from "easy-peasy";
 import { useClickOutsideEditor } from "app/hooks/useClickOutsideEditorComponent";
 import KPIBox from "../kpi";
 import ResizableGrid, { IGridItem } from "./resizable";
-import { useDebounce } from "react-use";
 import { isEqual } from "lodash";
 
 const GridItem: React.FC<{
@@ -261,7 +260,7 @@ export const ReportBuilderPageGrid: React.FC<{
       );
 
     const totalGap = gap * (rows - 1);
-    return containerRef.current.offsetHeight - totalGap - verticalPadding * 2; // Subtract padding from available size
+    return containerRef.current.offsetHeight - totalGap - verticalPadding; // Subtract padding from available size
   }, [
     containerRef.current,
     selectedItem?.options?.paddingTop,
@@ -275,7 +274,7 @@ export const ReportBuilderPageGrid: React.FC<{
       parseFloat(selectedItem?.options?.paddingLeft?.replace("px", "") || "0") +
       parseFloat(selectedItem?.options?.paddingRight?.replace("px", "") || "0");
     const totalGap = gap * (columns - 1);
-    return containerRef.current.offsetWidth - totalGap - horizontalPadding * 2; // Subtract padding from available size
+    return containerRef.current.offsetWidth - totalGap - horizontalPadding; // Subtract padding from available size
   }, [
     containerRef.current,
     columns,
@@ -307,7 +306,7 @@ export const ReportBuilderPageGrid: React.FC<{
       ...selectedItem,
       id: selectedItem.id,
       type: selectedItem.type as any,
-      open: selectedItem.open || false,
+      initialized: selectedItem.initialized || false,
       data: {
         ...selectedItem.data,
         items: updatedItems || [],
@@ -328,14 +327,6 @@ export const ReportBuilderPageGrid: React.FC<{
       setLocalGridItems(newGridItems);
     }
   }, [selectedItem?.data?.items]);
-
-  useDebounce(
-    () => {
-      setGridItems(localGridItems);
-    },
-    1000,
-    [localGridItems],
-  );
 
   useClickOutsideEditor({
     editorId: "grid-container",
@@ -369,6 +360,7 @@ export const ReportBuilderPageGrid: React.FC<{
         minWidth={"10%"}
         minHeight={"10%"}
         setGridItems={setLocalGridItems}
+        setFinalGridItems={setGridItems}
         gridItems={localGridItems}
         sx={{
           display: "flex",

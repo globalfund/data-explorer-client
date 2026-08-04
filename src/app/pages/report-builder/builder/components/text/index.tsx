@@ -7,8 +7,6 @@ import useGetReportItemState from "app/pages/report-builder/hooks/useGetReportIt
 
 export const ReportBuilderPageText: React.FC<{
   id: string;
-  focus?: boolean;
-  initialKey?: string;
   viewMode?: boolean;
   parent?: {
     id: string;
@@ -46,7 +44,7 @@ export const ReportBuilderPageText: React.FC<{
           ...selectedItem,
           id,
           type: "text",
-          open: true,
+          initialized: true,
         });
         if (parent?.id) {
           setSelectedController({
@@ -68,7 +66,7 @@ export const ReportBuilderPageText: React.FC<{
         }
       }}
     >
-      {!selectedItem?.open && (
+      {!selectedItem?.initialized && (
         <Box
           sx={{
             width: "100%",
@@ -88,10 +86,9 @@ export const ReportBuilderPageText: React.FC<{
           </Typography>
         </Box>
       )}
-      {selectedItem?.open && (
+      {selectedItem?.initialized && (
         <RichEditor
           itemId={id}
-          initialContent={undefined}
           viewMode={viewMode}
           editItem={editItem}
           selectedItem={selectedItem}

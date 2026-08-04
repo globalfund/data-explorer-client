@@ -26,7 +26,7 @@ export function ColumnLayoutTab() {
     editItem({
       ...currentItem,
       id: selectedItemController?.parent?.id || "",
-      open: currentItem?.open || false,
+      initialized: currentItem?.initialized || false,
       type: "column",
     });
   };
@@ -45,13 +45,18 @@ export function ColumnLayoutTab() {
       newItems = items.slice(0, required);
     } else if (items.length < required) {
       // expand
-      const extra: RBReportItem[] = Array(required - items.length).fill({
-        id: uniqueId(),
-        type: "unknown",
-        open: false,
-        data: null,
-        options: {},
-      });
+      const extra: RBReportItem[] = Array.from(
+        {
+          length: required - items.length,
+        },
+        () => ({
+          id: uniqueId(),
+          type: "unknown",
+          initialized: false,
+          data: null,
+          options: {},
+        }),
+      );
       newItems = [...items, ...extra];
     } else {
       newItems = items;
@@ -60,7 +65,7 @@ export function ColumnLayoutTab() {
     editItem({
       ...selectedItem,
       id: selectedItemController?.parent?.id || "",
-      open: selectedItem?.open || false,
+      initialized: selectedItem?.initialized || false,
       type: "column",
       data: {
         ...selectedItem.data,

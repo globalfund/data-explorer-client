@@ -104,7 +104,7 @@ export default function GridElementsList(props: { type: "grid" | "column" }) {
       case "text":
         newItem = {
           type: "text",
-          open: false,
+          initialized: false,
           data: { rte: null },
           options: {
             paddingTop: "10px",
@@ -126,7 +126,7 @@ export default function GridElementsList(props: { type: "grid" | "column" }) {
       case "chart":
         newItem = {
           type: "chart",
-          open: false,
+          initialized: false,
           options: {
             paddingTop: "10px",
             paddingLeft: "10px",
@@ -152,7 +152,7 @@ export default function GridElementsList(props: { type: "grid" | "column" }) {
       case "table":
         newItem = {
           type: "table",
-          open: false,
+          initialized: false,
           options: DEFAULT_TABLE_OPTIONS,
           data: {
             dataset: null,
@@ -163,7 +163,7 @@ export default function GridElementsList(props: { type: "grid" | "column" }) {
       case "image":
         newItem = {
           type: "image",
-          open: false,
+          initialized: false,
           options: {
             paddingTop: "10px",
             paddingLeft: "10px",
@@ -199,7 +199,7 @@ export default function GridElementsList(props: { type: "grid" | "column" }) {
       case "section_divider":
         newItem = {
           type: "section_divider",
-          open: false,
+          initialized: false,
           data: null,
           options: {
             paddingLeft: "10px",
@@ -218,7 +218,7 @@ export default function GridElementsList(props: { type: "grid" | "column" }) {
       case "kpi_box":
         newItem = {
           type: "kpi_box",
-          open: false,
+          initialized: false,
           data: {
             topLabel: {
               value: "Top Label",

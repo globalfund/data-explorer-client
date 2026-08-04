@@ -95,7 +95,7 @@ export default function KPITextFormatting({ source }: KPITextFormattingProps) {
               ...selectedItem,
               id: selectedItemController?.id || "",
               type: "kpi_box",
-              open: selectedItem?.open || true,
+              initialized: selectedItem?.initialized || true,
               data: {
                 ...selectedItem?.data,
                 // @ts-expect-error - need to update types
@@ -121,7 +121,7 @@ export default function KPITextFormatting({ source }: KPITextFormattingProps) {
     (option: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
       editItem({
         ...selectedItem,
-        open: selectedItem?.open || false,
+        initialized: selectedItem?.initialized || false,
         id: selectedItemController?.id || "",
         type: "kpi_box",
         data: {
@@ -151,7 +151,7 @@ export default function KPITextFormatting({ source }: KPITextFormattingProps) {
     }
     editItem({
       ...selectedItem,
-      open: selectedItem?.open || false,
+      initialized: selectedItem?.initialized || false,
       id: selectedItem?.id || "",
       type: "kpi_box",
       data: {
@@ -167,7 +167,7 @@ export default function KPITextFormatting({ source }: KPITextFormattingProps) {
   const handleSizeChange = (value: string, type: string) => {
     editItem({
       ...selectedItem,
-      open: selectedItem?.open || false,
+      initialized: selectedItem?.initialized || false,
       id: selectedItem?.id || "",
       type: "kpi_box",
       data: {
@@ -182,7 +182,7 @@ export default function KPITextFormatting({ source }: KPITextFormattingProps) {
   const handleFontFamilyChange = (value: string, type: string) => {
     editItem({
       ...selectedItem,
-      open: selectedItem?.open || false,
+      initialized: selectedItem?.initialized || false,
       id: selectedItem?.id || "",
       type: "kpi_box",
       data: {
@@ -198,7 +198,7 @@ export default function KPITextFormatting({ source }: KPITextFormattingProps) {
   const handleDatasetColumnChange = (value: string) => {
     editItem({
       ...selectedItem,
-      open: selectedItem?.open || false,
+      initialized: selectedItem?.initialized || false,
       id: selectedItem?.id || "",
       type: "kpi_box",
       data: {
@@ -221,7 +221,7 @@ export default function KPITextFormatting({ source }: KPITextFormattingProps) {
 
     editItem({
       ...selectedItem,
-      open: selectedItem?.open || false,
+      initialized: selectedItem?.initialized || false,
       id: selectedItem?.id || "",
       type: "kpi_box",
       data: {
@@ -237,7 +237,7 @@ export default function KPITextFormatting({ source }: KPITextFormattingProps) {
   const handleAggregationChange = (value: string) => {
     editItem({
       ...selectedItem,
-      open: selectedItem?.open || false,
+      initialized: selectedItem?.initialized || false,
       id: selectedItem?.id || "",
       type: "kpi_box",
       data: {
@@ -328,7 +328,7 @@ export default function KPITextFormatting({ source }: KPITextFormattingProps) {
                 onChange={(value) =>
                   editItem({
                     ...selectedItem,
-                    open: selectedItem?.open || false,
+                    initialized: selectedItem?.initialized || false,
                     id: selectedItem?.id || "",
                     type: "kpi_box",
                     data: {

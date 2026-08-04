@@ -25,7 +25,7 @@ export default function AlignButtons() {
 
     editItem({
       ...item,
-      open: selectedController?.open || false,
+      initialized: item?.initialized || false,
       id: selectedController?.id || "",
       type: "text",
       options: {

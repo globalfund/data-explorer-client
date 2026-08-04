@@ -42,6 +42,7 @@ import { ReportBuilderNewReportModal } from "app/pages/report-builder/main/compo
 import { checkEmptyItem } from "app/utils/checkEmptyRBItem";
 import { ReportBuilderReportIssueModal } from "app/pages/report-builder/main/components/report-issue-modal";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { prepareReportItemsForSave } from "app/utils/reportBuilderState";
 
 export const menuSx = {
   zIndex: 1400,
@@ -81,6 +82,9 @@ export const ReportBuilderPageHeader: React.FC = () => {
   const isMobile = useMediaQuery("(max-width: 600px)");
   const reportState = useStoreState((state) => state.RBReportItemsState);
   const setName = useStoreActions((state) => state.RBReportItemsState.setName);
+  const markClean = useStoreActions(
+    (state) => state.RBReportItemsState.markClean,
+  );
 
   const updateReport = usePatchReport(id);
 
@@ -985,26 +989,44 @@ export const ReportBuilderPageHeader: React.FC = () => {
     assetLibraryOpen,
   ]);
 
-  useDebounce(
-    () => {
-      if (!previewMode && reportState.id === id) {
-        updateReport.mutate({
-          name: reportState.name,
-          description: reportState.description,
-          items: reportState.items,
-          settings: reportState.settings,
-        });
-      }
-    },
-    2000,
+  const reportPayload = React.useMemo(
+    () => ({
+      name: reportState.name,
+      description: reportState.description,
+      items: prepareReportItemsForSave(reportState.items),
+      settings: reportState.settings,
+    }),
     [
-      reportState.id,
       reportState.name,
       reportState.description,
       reportState.items,
       reportState.settings,
-      previewMode,
     ],
+  );
+
+  const reportPayloadFingerprint = React.useMemo(
+    () => JSON.stringify(reportPayload),
+    [reportPayload],
+  );
+  const latestPayloadFingerprint = React.useRef(reportPayloadFingerprint);
+  latestPayloadFingerprint.current = reportPayloadFingerprint;
+
+  useDebounce(
+    () => {
+      if (!previewMode && reportState.id === id && reportState.dirty) {
+        const savedFingerprint = reportPayloadFingerprint;
+
+        updateReport.mutate(reportPayload, {
+          onSuccess: () => {
+            if (latestPayloadFingerprint.current === savedFingerprint) {
+              markClean();
+            }
+          },
+        });
+      }
+    },
+    2000,
+    [reportState.id, reportState.dirty, reportPayloadFingerprint, previewMode],
   );
 
   React.useEffect(() => {

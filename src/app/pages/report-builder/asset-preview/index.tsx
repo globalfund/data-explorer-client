@@ -17,6 +17,7 @@ import { ReportBuilderPageChart } from "app/pages/report-builder/builder/compone
 import { ReportBuilderPageTable } from "app/pages/report-builder/builder/components/table";
 import { ReportBuilderPageImage } from "app/pages/report-builder/builder/components/image";
 import ViewModeContainer from "app/pages/report-builder/builder/components/order-container/view";
+import { checkEmptyItem } from "app/utils/checkEmptyRBItem";
 
 export const Component: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -26,8 +27,8 @@ export const Component: React.FC = () => {
 
   useTitle(`The Data Explorer - ${assetData?.name ?? "Asset"}`);
 
-  const setActiveReport = useStoreActions(
-    (actions) => actions.RBReportItemsState.setReport,
+  const hydrateActiveReport = useStoreActions(
+    (actions) => actions.RBReportItemsState.hydrateReport,
   );
 
   const resetReport = useStoreActions(
@@ -36,43 +37,12 @@ export const Component: React.FC = () => {
 
   const reportState = useStoreState((state) => state.RBReportItemsState);
 
-  const checkEmptyItem = (item: RBReportItem): boolean => {
-    if (item.type === "unknown") return false;
-    switch (item.type) {
-      case "text":
-        return !!item.data.rte;
-      case "chart":
-        return (
-          !!item.data.chartType &&
-          !!item.data.dataset &&
-          !!item.data.renderedChartData
-        );
-      case "kpi_box":
-        return item.open;
-      case "table":
-        return !!item.data?.dataset;
-      case "grid":
-        return item.data.items.some((child) => checkEmptyItem(child));
-      case "column":
-        return item.data.items.some((child) => checkEmptyItem(child));
-      case "image":
-        return !!item.data.src;
-      default:
-        return false;
-    }
-  };
-
   const getItemByType = (item: RBReportItem) => {
     switch (item.type) {
       case "text":
         return (
           <ViewModeContainer>
-            <ReportBuilderPageText
-              id={item.id}
-              focus={item.focus}
-              initialKey={item.key}
-              viewMode
-            />
+            <ReportBuilderPageText id={item.id} viewMode />
           </ViewModeContainer>
         );
       case "chart":
@@ -140,7 +110,8 @@ export const Component: React.FC = () => {
 
   React.useEffect(() => {
     if (assetData) {
-      setActiveReport({
+      hydrateActiveReport({
+        id: assetData.id,
         name: assetData.name,
         description: assetData.description,
         settings: {
@@ -158,7 +129,7 @@ export const Component: React.FC = () => {
         items: [
           {
             ...assetData,
-            open: false,
+            initialized: false,
           },
         ],
       });

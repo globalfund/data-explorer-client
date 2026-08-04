@@ -49,14 +49,14 @@ export default function AddComponent({
     const newItem: RBReportItem = {
       id: uniqueId(),
       type: "grid",
-      open: false,
+      initialized: false,
       data: {
         rows,
         columns,
         items: Array.from({ length: rows * columns }, () => ({
           id: uniqueId(),
           type: "unknown",
-          open: false,
+          initialized: false,
           data: null,
           options: {
             width: `${Math.floor(100 / columns)}%`,
@@ -85,13 +85,13 @@ export default function AddComponent({
     const newItem: RBReportItem = {
       id: uniqueId(),
       type: "column",
-      open: false,
+      initialized: false,
       data: {
         columns,
         items: Array.from({ length: columns }, () => ({
           id: uniqueId(),
           type: "unknown",
-          open: false,
+          initialized: false,
           data: null,
           options: {
             width: `${Math.floor(100 / columns)}%`,
@@ -123,7 +123,7 @@ export default function AddComponent({
         newItem = {
           id: uniqueId(),
           type: "text",
-          open: false,
+          initialized: false,
           data: { rte: null },
           options: {
             paddingTop: "10px",
@@ -146,7 +146,7 @@ export default function AddComponent({
         newItem = {
           id: uniqueId(),
           type: "chart",
-          open: false,
+          initialized: false,
           options: {
             paddingTop: "10px",
             paddingLeft: "10px",
@@ -173,7 +173,7 @@ export default function AddComponent({
         newItem = {
           id: uniqueId(),
           type: "table",
-          open: false,
+          initialized: false,
           options: DEFAULT_TABLE_OPTIONS,
           data: {
             dataset: null,
@@ -185,7 +185,7 @@ export default function AddComponent({
         newItem = {
           id: uniqueId(),
           type: "image",
-          open: false,
+          initialized: false,
           options: {
             paddingTop: "10px",
             paddingLeft: "10px",
@@ -223,7 +223,7 @@ export default function AddComponent({
         newItem = {
           id: uniqueId(),
           type: "section_divider",
-          open: false,
+          initialized: false,
           data: null,
           options: {
             paddingLeft: "10px",
@@ -243,7 +243,7 @@ export default function AddComponent({
         newItem = {
           id: uniqueId(),
           type: "kpi_box",
-          open: false,
+          initialized: false,
           data: {
             topLabel: {
               value: "Top Label",

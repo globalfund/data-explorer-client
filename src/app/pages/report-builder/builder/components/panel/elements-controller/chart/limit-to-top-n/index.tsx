@@ -33,7 +33,7 @@ const LimitToTopN = () => {
       ...selectedItem,
       id: selectedController?.id || "",
       type: "chart",
-      open: selectedItem.open || false,
+      initialized: selectedItem?.initialized || false,
       options: {
         ...selectedItem?.options,
         ...options,

@@ -29,7 +29,7 @@ export function PaddingSize() {
     editItem({
       ...currentItem,
       id: selectedItemController?.id || "",
-      open: currentItem?.open || false,
+      initialized: currentItem?.initialized || false,
       type: "image",
     });
   };
@@ -43,7 +43,7 @@ export function PaddingSize() {
     editItem({
       ...selectedItem,
       id: selectedItemController?.id || "",
-      open: selectedItem?.open || false,
+      initialized: selectedItem?.initialized || false,
       type: "image",
       options: {
         ...selectedItem?.options,
@@ -72,7 +72,7 @@ export function PaddingSize() {
     editItem({
       ...selectedItem,
       id: selectedItemController?.id || "",
-      open: selectedItem?.open || false,
+      initialized: selectedItem?.initialized || false,
       type: "image",
       options: {
         ...selectedItem?.options,

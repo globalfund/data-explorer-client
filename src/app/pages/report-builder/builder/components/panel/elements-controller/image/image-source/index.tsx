@@ -17,7 +17,7 @@ export function ImageSource() {
   const handleImageSelect = (url: string) => {
     editItem({
       ...selectedItem,
-      open: selectedItem?.open || false,
+      initialized: selectedItem?.initialized || false,
       id: selectedItemController?.id || "",
       type: "image",
       data: {

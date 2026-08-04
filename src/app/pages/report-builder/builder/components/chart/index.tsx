@@ -95,7 +95,7 @@ export const ReportBuilderPageChart: React.FC<{
               ...selectedItem,
               id,
               type: "chart",
-              open: selectedItem?.open || true,
+              initialized: selectedItem?.initialized || true,
               data: {
                 ...selectedItem?.data,
                 renderedChartData: rendered,
@@ -143,7 +143,7 @@ export const ReportBuilderPageChart: React.FC<{
             ...selectedItem,
             id,
             type: "chart",
-            open: true,
+            initialized: true,
           });
           if (parent?.id) {
             setSelectedController({
@@ -177,7 +177,7 @@ export const ReportBuilderPageChart: React.FC<{
         },
       }}
     >
-      {selectedItem?.open && chartExtra?.chartType ? (
+      {selectedItem?.initialized && chartExtra?.chartType ? (
         canRender ? (
           <Box
             sx={{

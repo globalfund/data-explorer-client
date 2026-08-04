@@ -28,8 +28,8 @@ export const Component: React.FC = () => {
 
   useTitle(`The Data Explorer - ${reportData?.name ?? "Report"}`);
 
-  const setActiveReport = useStoreActions(
-    (actions) => actions.RBReportItemsState.setReport,
+  const hydrateActiveReport = useStoreActions(
+    (actions) => actions.RBReportItemsState.hydrateReport,
   );
 
   const resetReport = useStoreActions(
@@ -43,12 +43,7 @@ export const Component: React.FC = () => {
       case "text":
         return (
           <ViewModeContainer>
-            <ReportBuilderPageText
-              id={item.id}
-              focus={item.focus}
-              initialKey={item.key}
-              viewMode
-            />
+            <ReportBuilderPageText id={item.id} viewMode />
           </ViewModeContainer>
         );
       case "chart":
@@ -118,7 +113,7 @@ export const Component: React.FC = () => {
 
   React.useEffect(() => {
     if (reportData) {
-      setActiveReport(reportData);
+      hydrateActiveReport(reportData);
     }
     return () => {
       resetReport();

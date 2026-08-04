@@ -27,7 +27,7 @@ export function GridLayoutTab() {
     editItem({
       ...currentItem,
       id: selectedItemController?.parent?.id || "",
-      open: currentItem?.open || false,
+      initialized: currentItem?.initialized || false,
       type: "grid",
     });
   };
@@ -53,13 +53,18 @@ export function GridLayoutTab() {
       newItems = items.slice(0, required);
     } else if (items.length < required) {
       // expand
-      const extra: RBReportItem[] = Array(required - items.length).fill({
-        id: uniqueId(),
-        type: "unknown",
-        open: false,
-        data: null,
-        options: {},
-      });
+      const extra: RBReportItem[] = Array.from(
+        {
+          length: required - items.length,
+        },
+        () => ({
+          id: uniqueId(),
+          type: "unknown",
+          initialized: false,
+          data: null,
+          options: {},
+        }),
+      );
       newItems = [...items, ...extra];
     } else {
       newItems = items;
@@ -68,7 +73,7 @@ export function GridLayoutTab() {
     editItem({
       ...selectedItem,
       id: selectedItemController?.parent?.id || "",
-      open: selectedItem?.open || false,
+      initialized: selectedItem?.initialized || false,
       type: "grid",
       options: {
         ...selectedItem?.options,
