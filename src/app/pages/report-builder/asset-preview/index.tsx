@@ -7,16 +7,10 @@ import { PageLoader } from "app/components/page-loader";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useGetAsset } from "app/hooks/queries/report-builder";
 import { withAuthenticationRequired } from "@auth0/auth0-react";
-import KPIBox from "app/pages/report-builder/builder/components/kpi";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { RBReportItem } from "app/state/api/action-reducers/report-builder/sync";
-import { ReportBuilderPageGrid } from "app/pages/report-builder/builder/components/grid";
-import { ReportBuilderPageText } from "app/pages/report-builder/builder/components/text";
-import SectionDivider from "app/pages/report-builder/builder/components/section-divider";
-import { ReportBuilderPageChart } from "app/pages/report-builder/builder/components/chart";
-import { ReportBuilderPageTable } from "app/pages/report-builder/builder/components/table";
-import { ReportBuilderPageImage } from "app/pages/report-builder/builder/components/image";
 import ViewModeContainer from "app/pages/report-builder/builder/components/order-container/view";
+import { isReportItemComplete } from "app/pages/report-builder/component-registry/model";
+import { ReportItemContent } from "app/pages/report-builder/component-registry/renderer";
 
 export const Component: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -26,8 +20,8 @@ export const Component: React.FC = () => {
 
   useTitle(`The Data Explorer - ${assetData?.name ?? "Asset"}`);
 
-  const setActiveReport = useStoreActions(
-    (actions) => actions.RBReportItemsState.setReport,
+  const hydrateActiveReport = useStoreActions(
+    (actions) => actions.RBReportItemsState.hydrateReport,
   );
 
   const resetReport = useStoreActions(
@@ -36,111 +30,16 @@ export const Component: React.FC = () => {
 
   const reportState = useStoreState((state) => state.RBReportItemsState);
 
-  const checkEmptyItem = (item: RBReportItem): boolean => {
-    if (item.type === "unknown") return false;
-    switch (item.type) {
-      case "text":
-        return !!item.data.rte;
-      case "chart":
-        return (
-          !!item.data.chartType &&
-          !!item.data.dataset &&
-          !!item.data.renderedChartData
-        );
-      case "kpi_box":
-        return item.open;
-      case "table":
-        return !!item.data?.dataset;
-      case "grid":
-        return item.data.items.some((child) => checkEmptyItem(child));
-      case "column":
-        return item.data.items.some((child) => checkEmptyItem(child));
-      case "image":
-        return !!item.data.src;
-      default:
-        return false;
-    }
-  };
-
-  const getItemByType = (item: RBReportItem) => {
-    switch (item.type) {
-      case "text":
-        return (
-          <ViewModeContainer>
-            <ReportBuilderPageText
-              id={item.id}
-              focus={item.focus}
-              initialKey={item.key}
-              viewMode
-            />
-          </ViewModeContainer>
-        );
-      case "chart":
-        return (
-          <ViewModeContainer>
-            <ReportBuilderPageChart id={item.id} viewMode />
-          </ViewModeContainer>
-        );
-      case "table":
-        return (
-          <ViewModeContainer>
-            <ReportBuilderPageTable id={item.id} viewMode />
-          </ViewModeContainer>
-        );
-      case "image":
-        return (
-          <ViewModeContainer>
-            <ReportBuilderPageImage id={item.id} viewMode />
-          </ViewModeContainer>
-        );
-      case "grid":
-        return (
-          <ViewModeContainer>
-            <ReportBuilderPageGrid
-              columns={item.data.columns}
-              rows={item.data.rows}
-              id={item.id}
-              viewMode
-            />
-          </ViewModeContainer>
-        );
-      case "kpi_box":
-        return (
-          <ViewModeContainer>
-            <KPIBox id={item.id} viewMode />
-          </ViewModeContainer>
-        );
-      case "column":
-        return (
-          <ViewModeContainer>
-            <ReportBuilderPageGrid
-              rows={1}
-              columns={item.data.columns}
-              id={item.id}
-              viewMode
-            />
-          </ViewModeContainer>
-        );
-      case "section_divider":
-        return (
-          <ViewModeContainer>
-            <SectionDivider id={item.id} viewMode />
-          </ViewModeContainer>
-        );
-      default:
-        return <React.Fragment />;
-    }
-  };
-
   const items = React.useMemo(() => {
     return reportState.items.filter((item) => {
-      return checkEmptyItem(item);
+      return isReportItemComplete(item);
     });
   }, [reportState.items]);
 
   React.useEffect(() => {
     if (assetData) {
-      setActiveReport({
+      hydrateActiveReport({
+        id: assetData.id,
         name: assetData.name,
         description: assetData.description,
         settings: {
@@ -158,7 +57,7 @@ export const Component: React.FC = () => {
         items: [
           {
             ...assetData,
-            open: false,
+            initialized: false,
           },
         ],
       });
@@ -239,9 +138,9 @@ export const Component: React.FC = () => {
             }}
           >
             {items.map((item) => (
-              <React.Fragment key={item.id}>
-                {getItemByType(item)}
-              </React.Fragment>
+              <ViewModeContainer key={item.id}>
+                <ReportItemContent item={item} viewMode />
+              </ViewModeContainer>
             ))}
           </Box>
           <Box

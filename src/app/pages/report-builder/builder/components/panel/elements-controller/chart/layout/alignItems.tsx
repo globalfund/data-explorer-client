@@ -45,7 +45,7 @@ export default function AlignItems() {
     editItem({
       ...selectedItem,
       id: selectedItemController?.id || "",
-      open: selectedItem?.open || false,
+      initialized: selectedItem?.initialized || false,
       type: "chart",
       options: {
         ...selectedItem?.options,
@@ -74,7 +74,7 @@ export default function AlignItems() {
       ...selectedItem,
       id: selectedItemController?.id || "",
       type: "chart",
-      open: selectedItem?.open || false,
+      initialized: selectedItem?.initialized || false,
       options: {
         ...selectedItem?.options,
         display: "flex",

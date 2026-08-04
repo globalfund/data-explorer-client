@@ -17,6 +17,7 @@ export interface ResizeableGridProps<TData> {
   minWidth?: string;
   minHeight?: string;
   setGridItems: (newGridItems: IGridItem<TData>[]) => void;
+  setFinalGridItems: (newGridItems: IGridItem<TData>[]) => void;
   children: (
     item: IGridItem<TData>,
     index: number,
@@ -34,6 +35,7 @@ const ResizableGrid = <TData,>({
   minWidth = "10%",
   minHeight = "10%",
   setGridItems,
+  setFinalGridItems,
   children,
   sx,
   ref,
@@ -136,7 +138,7 @@ const ResizableGrid = <TData,>({
   };
 
   const handleResize =
-    (rowIndex: number, colIndex: number) =>
+    (rowIndex: number, colIndex: number, stop: boolean) =>
     (event: any, { size, handle }: any) => {
       let newGridItems = gridItems.map((item) => ({
         ...item,
@@ -178,6 +180,7 @@ const ResizableGrid = <TData,>({
           );
           break;
         case "ne":
+          newGridItems = handleHorizontalResize(data, "e");
           newGridItems = handleVerticalResize(
             {
               ...data,
@@ -185,9 +188,9 @@ const ResizableGrid = <TData,>({
             },
             "n",
           );
-          newGridItems = handleHorizontalResize(data, "e");
           break;
         case "nw":
+          newGridItems = handleHorizontalResize(data, "w");
           newGridItems = handleVerticalResize(
             {
               ...data,
@@ -195,19 +198,22 @@ const ResizableGrid = <TData,>({
             },
             "n",
           );
-          newGridItems = handleHorizontalResize(data, "w");
           break;
         default:
           break;
       }
 
-      setGridItems(
-        newGridItems.map((item) => ({
-          ...item,
-          width: `${(item.width / availableWidth) * 100}%`, // Convert width back to percentage string
-          height: `${(item.height / availableHeight) * 100}%`, // Convert height back to percentage string
-        })),
-      );
+      const updatedGridItems = newGridItems.map((item) => ({
+        ...item,
+        width: `${(item.width / availableWidth) * 100}%`, // Convert width back to percentage string
+        height: `${(item.height / availableHeight) * 100}%`, // Convert height back to percentage string
+      }));
+
+      if (stop) {
+        setFinalGridItems(updatedGridItems);
+      } else {
+        setGridItems(updatedGridItems);
+      }
     };
 
   return (
@@ -244,7 +250,8 @@ const ResizableGrid = <TData,>({
             // TODO: using numbers can cause issues with precision, consider using a more robust method for handling sizes
             height={(parseFloat(item.height) * availableHeight) / 100} // Convert height from percentage string to number
             width={(parseFloat(item.width) * availableWidth) / 100} // Convert width from percentage string to number
-            onResize={handleResize(rowindex, columnIndex)}
+            onResize={handleResize(rowindex, columnIndex, false)}
+            onResizeStop={handleResize(rowindex, columnIndex, true)}
             resizeHandles={
               disabled
                 ? []

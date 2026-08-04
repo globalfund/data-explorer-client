@@ -1,7 +1,10 @@
 import { Editor } from "@tiptap/react";
 import { action, Action, debug } from "easy-peasy";
 import { uniqueId } from "app/utils/uniqueId";
-import { syncGridSize } from "app/utils/syncGridSize";
+import {
+  hydrateReportItems,
+  persistedReportItemsChanged,
+} from "app/utils/reportBuilderState";
 
 export type RBReportItemTypes =
   | "text"
@@ -132,9 +135,7 @@ type RBReportItemDataByType = {
 type RBReportItemBase<T extends RBReportItemTypes> = {
   id: string;
   type: T;
-  open: boolean;
-  focus?: boolean;
-  key?: string;
+  initialized: boolean;
   options?: Record<string, any>;
   name?: string;
 };
@@ -183,6 +184,9 @@ export interface RBReportItemControllerModel {
 }
 
 export interface RBReportItemsModel {
+  id: string;
+  dirty: boolean;
+  markClean: Action<RBReportItemsModel>;
   items: RBReportItem[];
   settings: {
     width: string;
@@ -194,6 +198,7 @@ export interface RBReportItemsModel {
     borderRadius: string;
   };
   name: string;
+  setName: Action<RBReportItemsModel, string>;
   description: string;
   clearItems: Action<RBReportItemsModel>;
   addItem: Action<RBReportItemsModel, RBReportItem>;
@@ -215,7 +220,11 @@ export interface RBReportItemsModel {
   duplicateItem: Action<RBReportItemsModel, string>;
   resetSettings: Action<RBReportItemsModel>;
   resetReport: Action<RBReportItemsModel>;
-  setReport: Action<RBReportItemsModel, RBReportModel>;
+  hydrateReport: Action<RBReportItemsModel, RBReportModel>;
+  setReportSettings: Action<
+    RBReportItemsModel,
+    Omit<RBReportModel, "id" | "items">
+  >;
 }
 
 export interface RBReportRTEModel {
@@ -306,7 +315,7 @@ export interface RBRenderChartDataRequest {
 }
 
 export interface RBReportModel {
-  id?: string;
+  id: string;
   items: RBReportItem[];
   settings: RBReportItemsModel["settings"];
   name: string;
@@ -457,6 +466,11 @@ export interface RBFilteredDatasetResponse {
 }
 
 export const RBReportItemsState: RBReportItemsModel = {
+  id: "",
+  dirty: false,
+  markClean: action((state) => {
+    state.dirty = false;
+  }),
   items: [],
   settings: {
     width: "0",
@@ -468,22 +482,41 @@ export const RBReportItemsState: RBReportItemsModel = {
     borderRadius: "0",
   },
   name: "",
+  setName: action((state, payload) => {
+    if (state.name !== payload) {
+      state.dirty = true;
+    }
+    state.name = payload;
+  }),
   description: "",
   addItem: action((state, payload) => {
     state.items.push(payload);
+    state.dirty = true;
   }),
   removeItem: action((state, payload) => {
+    if (state.items.some((item) => item.id === payload)) {
+      state.dirty = true;
+    }
     state.items = state.items.filter((item) => item.id !== payload);
   }),
   setItems: action((state, payload) => {
+    if (persistedReportItemsChanged(state.items, payload)) {
+      state.dirty = true;
+    }
     state.items = payload;
   }),
   clearItems: action((state) => {
+    if (state.items.length > 0) {
+      state.dirty = true;
+    }
     state.items = [];
   }),
   editItem: action((state, payload) => {
     const index = state.items.findIndex((item) => item.id === payload.id);
     if (index !== -1) {
+      if (persistedReportItemsChanged([state.items[index]], [payload])) {
+        state.dirty = true;
+      }
       state.items[index] = payload;
     }
   }),
@@ -503,13 +536,14 @@ export const RBReportItemsState: RBReportItemsModel = {
         state.items[gridIndex].data.items.splice(itemIndex, 1, {
           id: itemId,
           type: "unknown",
-          open: false,
+          initialized: false,
           options: {
             width: itemToDelete.options?.width || "100%",
             height: itemToDelete.options?.height || "100%",
           },
           data: null,
         });
+        state.dirty = true;
       }
     }
   }),
@@ -527,15 +561,10 @@ export const RBReportItemsState: RBReportItemsModel = {
       if (itemIndex !== -1) {
         const prevItem = debug(state.items[gridIndex].data.items[itemIndex]);
 
-        const prevData = debug(state.items[gridIndex]);
-        state.items[gridIndex].data.items[itemIndex] = item;
-
-        if (
-          prevItem?.options?.width !== item.options?.width ||
-          prevItem?.options?.height !== item.options?.height
-        ) {
-          state.items[gridIndex] = syncGridSize(prevData, item, itemIndex);
+        if (persistedReportItemsChanged([prevItem], [item])) {
+          state.dirty = true;
         }
+        state.items[gridIndex].data.items[itemIndex] = item;
       }
     }
   }),
@@ -559,6 +588,7 @@ export const RBReportItemsState: RBReportItemsModel = {
           : {}),
       };
       state.items.splice(index + 1, 0, newItem as RBReportItem);
+      state.dirty = true;
     }
   }),
   duplicateGridItem: action((state, payload) => {
@@ -591,6 +621,7 @@ export const RBReportItemsState: RBReportItemsModel = {
             },
           })),
         };
+        state.dirty = true;
       }
     }
   }),
@@ -604,14 +635,25 @@ export const RBReportItemsState: RBReportItemsModel = {
       backgroundColor: "#FFFFFF",
       borderRadius: "0",
     };
+    state.dirty = true;
   }),
-  setReport: action((state, payload) => {
+  setReportSettings: action((state, payload) => {
     state.settings = payload.settings;
     state.name = payload.name;
     state.description = payload.description;
-    state.items = payload.items;
+    state.dirty = true;
+  }),
+  hydrateReport: action((state, payload) => {
+    state.id = payload.id;
+    state.dirty = false;
+    state.settings = payload.settings;
+    state.name = payload.name;
+    state.description = payload.description;
+    state.items = hydrateReportItems(payload.items);
   }),
   resetReport: action((state) => {
+    state.id = "";
+    state.dirty = false;
     state.items = [];
     state.name = "";
     state.description = "";

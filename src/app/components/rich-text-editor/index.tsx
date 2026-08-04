@@ -12,7 +12,6 @@ import { ActionCreator } from "easy-peasy";
 
 export const RichEditor: React.FC<{
   itemId: string;
-  initialContent?: string;
   viewMode?: boolean;
   editItem: (payload: RBReportItem) => void;
   selectedItem: ReportItemOf<"text">;

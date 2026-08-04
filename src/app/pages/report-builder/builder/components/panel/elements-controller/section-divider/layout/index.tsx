@@ -27,7 +27,7 @@ export default function LayoutTab() {
     editItem({
       ...currentItem,
       id: selectedItemController?.id || "",
-      open: currentItem?.open || false,
+      initialized: currentItem?.initialized || false,
       type: "section_divider",
     });
   };

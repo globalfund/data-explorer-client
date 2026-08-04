@@ -77,7 +77,7 @@ export default function KPIController() {
       ...selectedItem,
       id: selectedController?.id || "",
       type: "kpi_box",
-      open: selectedItem.open || false,
+      initialized: selectedItem?.initialized || false,
       data: {
         ...selectedItem.data,
         source,

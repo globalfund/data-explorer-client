@@ -88,7 +88,7 @@ export const ReportBuilderPageImage: React.FC<{
     editItem({
       ...selectedItem,
       id: id || "",
-      open: selectedItem?.open || false,
+      initialized: selectedItem?.initialized || false,
       type: "image",
       data: {
         ...selectedItem?.data,
@@ -106,7 +106,7 @@ export const ReportBuilderPageImage: React.FC<{
     editItem({
       ...selectedItem,
       id: id || "",
-      open: selectedItem?.open || false,
+      initialized: selectedItem?.initialized || false,
       type: "image",
       data: {
         ...selectedItem?.data,

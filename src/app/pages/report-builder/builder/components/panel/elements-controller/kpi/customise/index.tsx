@@ -24,7 +24,7 @@ export function Customise() {
   // const handleBackgroundColorChange = (color: IColor) => {
   //   editItem({
   //     ...selectedItem,
-  //     open: selectedItem?.open || false,
+  //     initialized: selectedItem?.initialized || false,
   //     id: selectedController?.id || "",
   //     type: "kpi_box",
   //     settings: {
@@ -36,7 +36,7 @@ export function Customise() {
   // const handleBorderColorChange = (color: IColor) => {
   //   editItem({
   //     ...selectedItem,
-  //     open: selectedItem?.open || false,
+  //     initialized: selectedItem?.initialized || false,
   //     id: selectedController?.id || "",
   //     type: "kpi_box",
   //     settings: {
@@ -53,7 +53,7 @@ export function Customise() {
     set(currentItem, key, value);
     editItem({
       ...currentItem,
-      open: selectedItem?.open || false,
+      initialized: selectedItem?.initialized || false,
       id: selectedController?.id || "",
       type: "kpi_box",
     });
@@ -89,7 +89,7 @@ export function Customise() {
     }
     editItem({
       ...selectedItem,
-      open: selectedItem?.open || false,
+      initialized: selectedItem?.initialized || false,
       id: selectedController?.id || "",
       type: "kpi_box",
       options: {

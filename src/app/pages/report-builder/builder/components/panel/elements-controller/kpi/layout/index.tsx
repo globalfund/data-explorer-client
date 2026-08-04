@@ -37,7 +37,7 @@ export function PaddingSize() {
     editItem({
       ...currentItem,
       id: selectedItemController?.id || "",
-      open: currentItem?.open || false,
+      initialized: currentItem?.initialized || false,
       type: "kpi_box",
     });
   };
@@ -57,7 +57,7 @@ export function PaddingSize() {
     }
     editItem({
       ...selectedItem,
-      open: selectedItem?.open || false,
+      initialized: selectedItem?.initialized || false,
       id: selectedItemController?.id || "",
       type: "kpi_box",
       options: {
@@ -85,7 +85,7 @@ export function PaddingSize() {
     }
     editItem({
       ...selectedItem,
-      open: selectedItem?.open || false,
+      initialized: selectedItem?.initialized || false,
       id: selectedItemController?.id || "",
       type: "kpi_box",
       options: {

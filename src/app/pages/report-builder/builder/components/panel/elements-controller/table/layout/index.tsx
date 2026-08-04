@@ -56,7 +56,7 @@ export default function LayoutTab() {
       ...selectedItem,
       id: selectedController?.id || "",
       type: "table",
-      open: selectedItem.open || false,
+      initialized: selectedItem?.initialized || false,
       options: {
         ...tableOptions,
         ...options,

@@ -2,7 +2,7 @@ import { RBReportItem } from "app/state/api/action-reducers/report-builder/sync"
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 
 type EditReportItemPayload = Partial<
-  Pick<RBReportItem, "open" | "focus" | "key" | "options" | "name">
+  Pick<RBReportItem, "initialized" | "options" | "name">
 > & {
   parentId?: string;
   id: string;

@@ -47,7 +47,7 @@ export default function KPIBox({ id, viewMode, parent }: Readonly<Props>) {
           ...selectedItem,
           id,
           type: "kpi_box",
-          open: true,
+          initialized: true,
         });
         if (parent) {
           setSelectedController({
@@ -69,7 +69,7 @@ export default function KPIBox({ id, viewMode, parent }: Readonly<Props>) {
         }
       }}
     >
-      {!selectedItem?.open && (
+      {!selectedItem?.initialized && (
         <Box
           sx={{
             gap: "10px",
@@ -107,7 +107,7 @@ export default function KPIBox({ id, viewMode, parent }: Readonly<Props>) {
           </Typography>
         </Box>
       )}
-      {selectedItem?.open && (
+      {selectedItem?.initialized && (
         <Box
           sx={{
             padding: "10px",

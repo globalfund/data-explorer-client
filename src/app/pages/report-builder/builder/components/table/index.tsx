@@ -79,7 +79,7 @@ export const ReportBuilderPageTable: React.FC<{
       ...selectedItem,
       id,
       type: "table",
-      open: true,
+      initialized: true,
     });
 
     if (parent?.id) {
@@ -114,7 +114,7 @@ export const ReportBuilderPageTable: React.FC<{
       ...selectedItem,
       id,
       type: "table",
-      open: selectedItem.open || false,
+      initialized: selectedItem?.initialized || false,
       data: {
         ...selectedItem.data,
         columns: currentColumns.map((currentColumn, index) =>
@@ -233,7 +233,7 @@ export const ReportBuilderPageTable: React.FC<{
             alignItems: "flex-start",
             justifyContent: "center",
             border:
-              selectedItem?.open && !viewMode
+              selectedItem?.initialized && !viewMode
                 ? "0.5px solid #3154F4"
                 : "0.5px solid transparent",
           }}

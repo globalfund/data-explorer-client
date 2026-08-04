@@ -25,14 +25,14 @@ export default function StyleTab() {
     editItem({
       ...currentItem,
       id: selectedController?.id || "",
-      open: currentItem?.open || false,
+      initialized: currentItem?.initialized || false,
       type: "text",
     });
   };
   const handleBackgroundColorChange = (color: IColor) => {
     editItem({
       ...item,
-      open: selectedController?.open || false,
+      initialized: item?.initialized || false,
       id: selectedController?.id || "",
       type: "text",
       options: {
@@ -44,7 +44,7 @@ export default function StyleTab() {
   const handleBorderColorChange = (color: IColor) => {
     editItem({
       ...item,
-      open: selectedController?.open || false,
+      initialized: item?.initialized || false,
       id: selectedController?.id || "",
       type: "text",
       options: {

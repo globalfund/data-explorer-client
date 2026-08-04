@@ -20,7 +20,7 @@ export function Customise() {
     editItem({
       ...item,
       id: selectedItemController?.id || "",
-      open: item?.open || false,
+      initialized: item?.initialized || false,
       type: "image",
       options: {
         ...item?.options,
@@ -33,7 +33,7 @@ export function Customise() {
     editItem({
       ...item,
       id: selectedItemController?.id || "",
-      open: item?.open || false,
+      initialized: item?.initialized || false,
       type: "image",
       options: {
         ...item?.options,

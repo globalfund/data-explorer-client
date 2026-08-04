@@ -272,7 +272,7 @@ export const AssetLibraryModal: React.FC<{
     if (!selectedAsset) return;
     addItem({
       ...selectedAsset,
-      open: true,
+      initialized: true,
       id: uniqueId(),
     });
     onClose();

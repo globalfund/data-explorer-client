@@ -317,12 +317,12 @@ const storeContent: StoreModel = {
   TempAppliedFiltersState: persist(TempAppliedFiltersState),
   // report builder
   RBReportItemsState: persist(RBReportItemsState),
-  RBTooltipTriggerState: persist(RBTooltipTriggerState),
-  RBReportItemsControllerState: persist(RBReportItemsControllerState),
+  RBTooltipTriggerState: RBTooltipTriggerState,
+  RBReportItemsControllerState: RBReportItemsControllerState,
   RBReportRTEState: RBReportRTEState,
-  RBReportItemOrderState: persist(RBReportItemOrderState),
-  RBReportNotesState: persist(RBReportNotesState),
-  FilterOptionGroupsState: persist(FilterOptionGroupsState),
+  RBReportItemOrderState: RBReportItemOrderState,
+  RBReportNotesState: RBReportNotesState,
+  FilterOptionGroupsState: FilterOptionGroupsState,
   // CMS API
   CMSData: persist(CMSData),
   cms: {

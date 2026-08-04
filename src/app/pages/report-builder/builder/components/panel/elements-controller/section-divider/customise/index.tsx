@@ -29,7 +29,7 @@ export default function Customise() {
     editItem({
       ...currentItem,
       id: selectedController?.id || "",
-      open: currentItem?.open || false,
+      initialized: currentItem?.initialized || false,
       type: "section_divider",
     });
   };
@@ -37,7 +37,7 @@ export default function Customise() {
   const handleBorderColorChange = (color: IColor) => {
     editItem({
       ...item,
-      open: selectedController?.open || false,
+      initialized: item?.initialized || false,
       id: selectedController?.id || "",
       type: "section_divider",
       options: {

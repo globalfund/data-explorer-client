@@ -10,21 +10,21 @@ import ColumnController from "./column";
 import TableController from "./table";
 
 export default function ElementsController() {
-  const selectedItem = useStoreState(
+  const selectedItemController = useStoreState(
     (state) => state.RBReportItemsControllerState.item,
   );
   const activeRTE = useStoreState((state) => state.RBReportRTEState.activeRTE);
 
   const renderItem = () => {
-    if (selectedItem?.parent?.open) {
-      if (selectedItem?.parent?.type === "grid") {
+    if (selectedItemController?.parent?.open) {
+      if (selectedItemController?.parent?.type === "grid") {
         return <GridController />;
-      } else if (selectedItem?.parent?.type === "column") {
+      } else if (selectedItemController?.parent?.type === "column") {
         return <ColumnController />;
       }
     }
 
-    switch (selectedItem?.type) {
+    switch (selectedItemController?.type) {
       case "text":
         return activeRTE && <TextController />;
       case "image":
@@ -42,5 +42,5 @@ export default function ElementsController() {
     }
   };
 
-  return selectedItem?.open ? renderItem() : null;
+  return selectedItemController?.open ? renderItem() : null;
 }
