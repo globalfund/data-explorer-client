@@ -2,10 +2,7 @@ import React from "react";
 import Box from "@mui/material/Box";
 import { Typography, Button } from "@mui/material";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import {
-  RBReportItem,
-  ReportItemOf,
-} from "app/state/api/action-reducers/report-builder/sync";
+import { ReportItemOf } from "app/state/api/action-reducers/report-builder/sync";
 import TextIcon from "./assets/TextIcon.svg?react";
 import ChartIcon from "./assets/ChartIcon.svg?react";
 import TableIcon from "./assets/TableIcon.svg?react";
@@ -13,7 +10,10 @@ import ImageIcon from "./assets/ImageIcon.svg?react";
 import KPIIcon from "./assets/KPIIcon.svg?react";
 import { useCMSData } from "app/hooks/useCMSData";
 import { getCMSDataField } from "app/utils/getCMSDataField";
-import { DEFAULT_TABLE_OPTIONS } from "app/pages/report-builder/builder/components/table/options";
+import {
+  createReportItem,
+  isCreatableReportItemType,
+} from "app/pages/report-builder/component-registry/model";
 
 export default function GridElementsList(props: { type: "grid" | "column" }) {
   const cmsData = useCMSData({ returnData: true });
@@ -99,215 +99,17 @@ export default function GridElementsList(props: { type: "grid" | "column" }) {
       }
       return;
     }
-    let newItem: Omit<RBReportItem, "id"> | null = null;
-    switch (selectedElementType) {
-      case "text":
-        newItem = {
-          type: "text",
-          initialized: false,
-          data: { rte: null },
-          options: {
-            paddingTop: "10px",
-            paddingLeft: "10px",
-            paddingRight: "10px",
-            paddingBottom: "10px",
-            borderWidth: "0px",
-            borderColor: "#98A1AA",
-            borderRadius: "4px",
-            borderStyle: "solid",
-            backgroundColor: "#ffffff",
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            flexDirection: "column",
-          },
-        };
-        break;
-      case "chart":
-        newItem = {
-          type: "chart",
-          initialized: false,
-          options: {
-            paddingTop: "10px",
-            paddingLeft: "10px",
-            paddingRight: "10px",
-            paddingBottom: "10px",
-            borderWidth: "0px",
-            borderColor: "#98A1AA",
-            borderRadius: "4px",
-            backgroundColor: "#ffffff",
-            borderStyle: "solid",
-            width: "100%",
-            height: "100%",
-            justifyContent: "start",
-            orderList: ["title", "chart", "legend"],
-          },
-          data: {
-            dataset: null,
-            chartType: undefined,
-            mapping: {},
-          },
-        };
-        break;
-      case "table":
-        newItem = {
-          type: "table",
-          initialized: false,
-          options: DEFAULT_TABLE_OPTIONS,
-          data: {
-            dataset: null,
-            columns: [],
-          },
-        };
-        break;
-      case "image":
-        newItem = {
-          type: "image",
-          initialized: false,
-          options: {
-            paddingTop: "10px",
-            paddingLeft: "10px",
-            paddingRight: "10px",
-            paddingBottom: "10px",
-            borderStyle: "solid",
-            width: "100%",
-            height: "100%",
-            imgOpacity: 1,
-            imgBorderWidth: "0px",
-            imgBorderColor: "#98A1AA",
-            imgBorderRadius: "0px",
-            imgBackgroundColor: "#ffffff",
-            sizingMode: "fit-proportional",
-            enableCrop: true,
-          },
-          data: {
-            src: "",
-            cropCoordinates: {
-              left: 0,
-              top: 0,
-              width: 1000,
-              height: 1000,
-            },
-            transformCoordinates: {
-              scale: 1,
-              positionX: 0,
-              positionY: 0,
-            },
-          },
-        };
-        break;
-      case "section_divider":
-        newItem = {
-          type: "section_divider",
-          initialized: false,
-          data: null,
-          options: {
-            paddingLeft: "10px",
-            paddingTop: "10px",
-            paddingRight: "10px",
-            paddingBottom: "10px",
-            width: "100%",
-            borderWidth: "1px",
-            borderRadius: "1px",
-            borderColor: "#373D43",
-            borderStyle: "solid",
-            strokeLinecap: "round",
-          },
-        };
-        break;
-      case "kpi_box":
-        newItem = {
-          type: "kpi_box",
-          initialized: false,
-          data: {
-            topLabel: {
-              value: "Top Label",
-              fontFamily: "Arial",
-              fontWeightLabel: "400",
-              fontStyle: "normal",
-              fontWeight: "400",
-              fontSize: "14px",
-              color: "#70777E",
-              bgColor: "#ffffff00",
-              enabled: true,
-            },
-            bigNumberText: {
-              value: "BN",
-              fontFamily: "Arial",
-              fontWeight: "700",
-              fontWeightLabel: "400",
-              fontStyle: "normal",
-              fontSize: "44px",
-              color: "#000000",
-              bgColor: "#ffffff",
-              enabled: true,
-            },
-            bottomLabel: {
-              value: "Bottom Label",
-              fontFamily: "Arial",
-              fontWeightLabel: "400",
-              fontStyle: "normal",
-              fontWeight: "400",
-              fontSize: "16px",
-              color: "#70777E",
-              bgColor: "#ffffff",
-              enabled: true,
-            },
-            optionalText: {
-              value: "Optional Text",
-              fontFamily: "Arial",
-              fontWeightLabel: "400",
-              fontStyle: "normal",
-              fontWeight: "400",
-              fontSize: "14px",
-              color: "#70777E",
-              bgColor: "#ffffff",
-              enabled: true,
-            },
-            dataset: null,
-            datasetColumn: null,
-            source: "manual",
-            aggregation: "sum",
-          },
-          options: {
-            paddingTop: "10px",
-            paddingLeft: "10px",
-            paddingRight: "10px",
-            paddingBottom: "10px",
-            borderWidth: "0.5px",
-            borderColor: "#98A1AA",
-            borderRadius: "4px",
-            backgroundColor: "#ffffff",
-            borderStyle: "solid",
-            width: "100%",
-            height: "100%",
-            justifyContent: "start",
-            alignItems: "center",
-            alignVertical: "middle",
-            alignHorizontal: "left",
-            innerLine: {
-              type: "line",
-              borderWidth: "0.5px",
-              borderColor: "#98A1AA",
-            },
-          },
-        };
-        break;
-      default:
-        break;
-    }
-    if (!newItem) return;
+    if (!isCreatableReportItemType(selectedElementType)) return;
+
+    const newItem = createReportItem(selectedElementType, {
+      context: "grid",
+      id: selectedController?.id || "",
+      options: selectedGridItem?.options,
+    });
 
     editGridItem({
       gridId: selectedItem.id,
-      item: {
-        ...newItem,
-        id: selectedController?.id || "",
-        options: {
-          ...newItem.options,
-          ...selectedGridItem?.options,
-        },
-      } as RBReportItem,
+      item: newItem,
     });
     setSelectedController({
       open: true,

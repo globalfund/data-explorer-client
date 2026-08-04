@@ -4,17 +4,10 @@ import Typography from "@mui/material/Typography";
 import { useParams, useSearchParams } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useGetReport } from "app/hooks/queries/report-builder";
-import KPIBox from "app/pages/report-builder/builder/components/kpi";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { RBReportItem } from "app/state/api/action-reducers/report-builder/sync";
-import { ReportBuilderPageGrid } from "app/pages/report-builder/builder/components/grid";
-import { ReportBuilderPageText } from "app/pages/report-builder/builder/components/text";
-import SectionDivider from "app/pages/report-builder/builder/components/section-divider";
-import { ReportBuilderPageChart } from "app/pages/report-builder/builder/components/chart";
-import { ReportBuilderPageTable } from "app/pages/report-builder/builder/components/table";
-import { ReportBuilderPageImage } from "app/pages/report-builder/builder/components/image";
 import ViewModeContainer from "app/pages/report-builder/builder/components/order-container/view";
-import { checkEmptyItem } from "app/utils/checkEmptyRBItem";
+import { isReportItemComplete } from "app/pages/report-builder/component-registry/model";
+import { ReportItemContent } from "app/pages/report-builder/component-registry/renderer";
 
 export const ReportBuilderExportViewPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -36,74 +29,9 @@ export const ReportBuilderExportViewPage: React.FC = () => {
 
   const reportState = useStoreState((state) => state.RBReportItemsState);
 
-  const getItemByType = (item: RBReportItem) => {
-    switch (item.type) {
-      case "text":
-        return (
-          <ViewModeContainer>
-            <ReportBuilderPageText id={item.id} viewMode />
-          </ViewModeContainer>
-        );
-      case "chart":
-        return (
-          <ViewModeContainer>
-            <ReportBuilderPageChart id={item.id} viewMode />
-          </ViewModeContainer>
-        );
-      case "table":
-        return (
-          <ViewModeContainer>
-            <ReportBuilderPageTable id={item.id} viewMode />
-          </ViewModeContainer>
-        );
-      case "image":
-        return (
-          <ViewModeContainer>
-            <ReportBuilderPageImage id={item.id} viewMode />
-          </ViewModeContainer>
-        );
-      case "grid":
-        return (
-          <ViewModeContainer>
-            <ReportBuilderPageGrid
-              columns={item.data.columns}
-              rows={item.data.rows}
-              id={item.id}
-              viewMode
-            />
-          </ViewModeContainer>
-        );
-      case "kpi_box":
-        return (
-          <ViewModeContainer>
-            <KPIBox id={item.id} viewMode />
-          </ViewModeContainer>
-        );
-      case "column":
-        return (
-          <ViewModeContainer>
-            <ReportBuilderPageGrid
-              rows={1}
-              columns={item.data.columns}
-              id={item.id}
-              viewMode
-            />
-          </ViewModeContainer>
-        );
-      case "section_divider":
-        return (
-          <ViewModeContainer>
-            <SectionDivider id={item.id} viewMode />
-          </ViewModeContainer>
-        );
-      default:
-        return <React.Fragment />;
-    }
-  };
-
   const items = React.useMemo(() => {
     return reportState.items.filter((item) => {
-      return checkEmptyItem(item);
+      return isReportItemComplete(item);
     });
   }, [reportState.items]);
 
@@ -193,7 +121,9 @@ export const ReportBuilderExportViewPage: React.FC = () => {
           }}
         >
           {items.map((item) => (
-            <React.Fragment key={item.id}>{getItemByType(item)}</React.Fragment>
+            <ViewModeContainer key={item.id}>
+              <ReportItemContent item={item} viewMode />
+            </ViewModeContainer>
           ))}
         </Box>
       )}

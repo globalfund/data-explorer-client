@@ -323,7 +323,7 @@ export default function KPITextFormatting({ source }: KPITextFormattingProps) {
                 </Typography>
               </Box>{" "}
               <TextField
-                value={selectedItem.data?.[option as TextOption]?.value ?? ""}
+                value={selectedItem?.data?.[option as TextOption]?.value ?? ""}
                 width="100%"
                 onChange={(value) =>
                   editItem({

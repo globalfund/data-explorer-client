@@ -39,7 +39,7 @@ import { AssetLibraryModal } from "app/pages/report-builder/builder/components/a
 import { Add } from "@mui/icons-material";
 import { ReportBuilderUseAssetModal } from "app/pages/report-builder/main/components/use-asset-modal";
 import { ReportBuilderNewReportModal } from "app/pages/report-builder/main/components/new-report-modal";
-import { checkEmptyItem } from "app/utils/checkEmptyRBItem";
+import { isReportItemComplete } from "app/pages/report-builder/component-registry/model";
 import { ReportBuilderReportIssueModal } from "app/pages/report-builder/main/components/report-issue-modal";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { prepareReportItemsForSave } from "app/utils/reportBuilderState";
@@ -202,7 +202,7 @@ export const ReportBuilderPageHeader: React.FC = () => {
 
   const items = React.useMemo(() => {
     return reportState.items.filter((item) => {
-      return checkEmptyItem(item);
+      return isReportItemComplete(item);
     });
   }, [reportState.items]);
 
@@ -1013,7 +1013,12 @@ export const ReportBuilderPageHeader: React.FC = () => {
 
   useDebounce(
     () => {
-      if (!previewMode && reportState.id === id && reportState.dirty) {
+      if (
+        !previewMode &&
+        !updateReport.isPending &&
+        reportState.id === id &&
+        reportState.dirty
+      ) {
         const savedFingerprint = reportPayloadFingerprint;
 
         updateReport.mutate(reportPayload, {
@@ -1026,7 +1031,13 @@ export const ReportBuilderPageHeader: React.FC = () => {
       }
     },
     2000,
-    [reportState.id, reportState.dirty, reportPayloadFingerprint, previewMode],
+    [
+      reportState.id,
+      reportState.dirty,
+      reportPayloadFingerprint,
+      previewMode,
+      updateReport.isPending,
+    ],
   );
 
   React.useEffect(() => {

@@ -5,10 +5,6 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import MoreVert from "@mui/icons-material/MoreVert";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { ReportBuilderPageText } from "app/pages/report-builder/builder/components/text";
-import { ReportBuilderPageChart } from "app/pages/report-builder/builder/components/chart";
-import { ReportBuilderPageImage } from "app/pages/report-builder/builder/components/image";
-import { ReportBuilderPageTable } from "app/pages/report-builder/builder/components/table";
 import { ReportBuilderPageItemMenu } from "app/pages/report-builder/builder/components/item-menu";
 import {
   RBReportItem,
@@ -17,12 +13,11 @@ import {
 } from "app/state/api/action-reducers/report-builder/sync";
 import { ActionCreator } from "easy-peasy";
 import { useClickOutsideEditor } from "app/hooks/useClickOutsideEditorComponent";
-import KPIBox from "../kpi";
 import ResizableGrid, { IGridItem } from "./resizable";
 import { isEqual } from "lodash";
+import { ReportItemContent } from "app/pages/report-builder/component-registry/content";
 
 const GridItem: React.FC<{
-  index: number;
   item: RBReportItem;
   viewMode?: boolean;
   setSelectedController: ActionCreator<RBReportItemController>;
@@ -92,78 +87,6 @@ const GridItem: React.FC<{
     </Box>
   );
 
-  const content = React.useMemo(() => {
-    switch (item.type) {
-      case "text":
-        return (
-          <Box sx={containerSx}>
-            <ReportBuilderPageText
-              id={item.id}
-              viewMode={viewMode}
-              parent={{
-                id: parentItem.id,
-                type: parentItem.type as "grid" | "column",
-              }}
-            />
-          </Box>
-        );
-      case "chart":
-        return (
-          <Box sx={containerSx}>
-            <ReportBuilderPageChart
-              id={item.id}
-              viewMode={viewMode}
-              parent={{
-                id: parentItem.id,
-                type: parentItem.type as "grid" | "column",
-              }}
-            />
-          </Box>
-        );
-      case "table":
-        return (
-          <Box sx={containerSx}>
-            <ReportBuilderPageTable
-              id={item.id}
-              viewMode={viewMode}
-              parent={{
-                id: parentItem.id,
-                type: parentItem.type as "grid" | "column",
-              }}
-            />
-          </Box>
-        );
-      case "image":
-        return (
-          <Box sx={containerSx}>
-            <ReportBuilderPageImage
-              id={item.id}
-              viewMode={viewMode}
-              parent={{
-                id: parentItem.id,
-                type: parentItem.type as "grid" | "column",
-              }}
-            />
-          </Box>
-        );
-      case "kpi_box":
-        return (
-          <Box sx={containerSx}>
-            <KPIBox
-              id={item.id}
-              viewMode={viewMode}
-              parent={{
-                id: parentItem.id,
-                type: parentItem.type as "grid" | "column",
-              }}
-            />
-          </Box>
-        );
-      default:
-        return viewMode ? null : empty;
-    }
-  }, [item.type, active, viewMode, parentItem.id]);
-
   if (viewMode && item.type === "unknown") {
     return null;
   }
@@ -193,7 +116,16 @@ const GridItem: React.FC<{
         }
       }}
     >
-      {content}
+      <Box sx={containerSx}>
+        <ReportItemContent
+          item={item}
+          viewMode={viewMode}
+          parent={{
+            id: parentItem.id,
+            type: parentItem.type as "grid" | "column",
+          }}
+        />
+      </Box>
     </Box>
   );
 };
@@ -217,6 +149,40 @@ export const ReportBuilderPageGrid: React.FC<{
   >;
 
   const containerRef = React.useRef<HTMLDivElement>(null);
+  const [containerSize, setContainerSize] = React.useState({
+    width: 0,
+    height: 0,
+  });
+
+  React.useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const updateContainerSize = (width: number, height: number) => {
+      setContainerSize((current) => {
+        if (current.width === width && current.height === height) {
+          return current;
+        }
+        return { width, height };
+      });
+    };
+
+    updateContainerSize(container.offsetWidth, container.offsetHeight);
+
+    if (typeof ResizeObserver === "undefined") return;
+
+    const observer = new ResizeObserver(([entry]) => {
+      if (entry) {
+        updateContainerSize(
+          entry.borderBoxSize?.[0]?.inlineSize ?? entry.target.clientWidth,
+          entry.borderBoxSize?.[0]?.blockSize ?? entry.target.clientHeight,
+        );
+      }
+    });
+
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, []);
 
   const editItem = useStoreActions(
     (actions) => actions.RBReportItemsState.editItem,
@@ -252,7 +218,6 @@ export const ReportBuilderPageGrid: React.FC<{
   const gap = 10; // Gap between items in pixels
 
   const containerHeight = React.useMemo(() => {
-    if (!containerRef.current) return 0;
     const verticalPadding =
       parseFloat(selectedItem?.options?.paddingTop?.replace("px", "") || "0") +
       parseFloat(
@@ -260,23 +225,22 @@ export const ReportBuilderPageGrid: React.FC<{
       );
 
     const totalGap = gap * (rows - 1);
-    return containerRef.current.offsetHeight - totalGap - verticalPadding; // Subtract padding from available size
+    return Math.max(0, containerSize.height - totalGap - verticalPadding);
   }, [
-    containerRef.current,
+    containerSize.height,
     selectedItem?.options?.paddingTop,
     selectedItem?.options?.paddingBottom,
     rows,
   ]);
 
   const containerWidth = React.useMemo(() => {
-    if (!containerRef.current) return 0;
     const horizontalPadding =
       parseFloat(selectedItem?.options?.paddingLeft?.replace("px", "") || "0") +
       parseFloat(selectedItem?.options?.paddingRight?.replace("px", "") || "0");
     const totalGap = gap * (columns - 1);
-    return containerRef.current.offsetWidth - totalGap - horizontalPadding; // Subtract padding from available size
+    return Math.max(0, containerSize.width - totalGap - horizontalPadding);
   }, [
-    containerRef.current,
+    containerSize.width,
     columns,
     selectedItem?.options?.paddingLeft,
     selectedItem?.options?.paddingRight,
@@ -388,7 +352,6 @@ export const ReportBuilderPageGrid: React.FC<{
               }}
             >
               <GridItem
-                index={index}
                 item={item}
                 viewMode={viewMode}
                 setSelectedController={setSelectedController}

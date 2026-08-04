@@ -14,7 +14,7 @@ import { useStoreState } from "app/state/store/hooks";
 
 export const ReportBuilderPageReportSettings: React.FC = () => {
   const [isExpanded, setIsExpanded] = React.useState(true);
-  const [value, setValue] = React.useState<"file" | "settings">("settings");
+  const [value, setValue] = React.useState<"file" | "settings">("file");
   const cmsData = useCMSData({ returnData: true });
 
   const report = useStoreState((state) => state.RBReportItemsState);

@@ -9,26 +9,20 @@ import Typography from "@mui/material/Typography";
 import { DragDropProvider } from "@dnd-kit/react";
 import { PageLoader } from "app/components/page-loader";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import SectionDivider from "./components/section-divider";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useGetReport } from "app/hooks/queries/report-builder";
 import { withAuthenticationRequired } from "@auth0/auth0-react";
-import KPIBox from "app/pages/report-builder/builder/components/kpi";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { Empty } from "app/pages/report-builder/builder/components/empty";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { ReportBuilderPageReportSettings } from "./components/report-settings";
-import { RBReportItem } from "app/state/api/action-reducers/report-builder/sync";
 import CopyIcon from "app/assets/vectors/report-builder-responsive/copy.svg?react";
 import MonitorIcon from "app/assets/vectors/report-builder-responsive/monitor.svg?react";
-import { ReportBuilderPageGrid } from "app/pages/report-builder/builder/components/grid";
-import { ReportBuilderPageText } from "app/pages/report-builder/builder/components/text";
-import { ReportBuilderPageChart } from "app/pages/report-builder/builder/components/chart";
-import { ReportBuilderPageTable } from "app/pages/report-builder/builder/components/table";
-import { ReportBuilderPageImage } from "app/pages/report-builder/builder/components/image";
 import { ItemComponent } from "app/pages/report-builder/builder/components/order-container";
 import ElementsController from "app/pages/report-builder/builder/components/panel/elements-controller";
 import { ReportBuilderMobileBottomBar } from "app/pages/report-builder/main/components/mobile-bottom-bar";
+import { createReportItem } from "app/pages/report-builder/component-registry/model";
+import { ReportItemContent } from "app/pages/report-builder/component-registry/renderer";
 
 const ReportBuilderDesktopPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -57,86 +51,40 @@ const ReportBuilderDesktopPage: React.FC = () => {
     (actions) => actions.RBReportItemsState.addItem,
   );
 
+  const hydratedReportIdRef = React.useRef<string>();
+
+  React.useEffect(() => {
+    if (!reportData || reportQuery.isFetching) return;
+    if (hydratedReportIdRef.current === reportData.id) return;
+
+    hydratedReportIdRef.current = reportData.id;
+
+    const hasMatchingDirtyDraft =
+      reportState.id === reportData.id && reportState.dirty;
+
+    if (!hasMatchingDirtyDraft) {
+      hydrateActiveReport(reportData);
+    }
+  }, [
+    reportData,
+    reportQuery.isFetching,
+    reportState.id,
+    reportState.dirty,
+    hydrateActiveReport,
+  ]);
+
   React.useEffect(() => {
     const assetToInsert = localStorage.getItem("assetToInsert");
-    if (reportData) {
+    if (reportState.id) {
       if (assetToInsert) {
         const { asset, reportId } = JSON.parse(assetToInsert);
-        if (reportId === reportData.id) {
-          hydrateActiveReport(reportData);
-          addItem({ ...asset, open: false, id: uniqueId() });
-        } else {
-          hydrateActiveReport(reportData);
+        if (reportId === reportState.id) {
+          addItem({ ...asset, initialized: true, id: uniqueId() });
+          localStorage.removeItem("assetToInsert");
         }
-        localStorage.removeItem("assetToInsert");
-      } else {
-        hydrateActiveReport(reportData);
       }
     }
-  }, [reportData]);
-
-  const getItemByType = (item: RBReportItem, index: number) => {
-    switch (item.type) {
-      case "text":
-        return (
-          <ItemComponent id={item.id} index={index} childrenData={[]}>
-            <ReportBuilderPageText id={item.id} />
-          </ItemComponent>
-        );
-      case "chart":
-        return (
-          <ItemComponent id={item.id} index={index} childrenData={[]}>
-            <ReportBuilderPageChart id={item.id} />
-          </ItemComponent>
-        );
-      case "table":
-        return (
-          <ItemComponent id={item.id} index={index} childrenData={[]}>
-            <ReportBuilderPageTable id={item.id} />
-          </ItemComponent>
-        );
-      case "image":
-        return (
-          <ItemComponent id={item.id} index={index} childrenData={[]}>
-            <ReportBuilderPageImage id={item.id} />
-          </ItemComponent>
-        );
-      case "grid":
-        return (
-          <ItemComponent id={item.id} index={index} childrenData={[]}>
-            <ReportBuilderPageGrid
-              columns={item.data.columns}
-              rows={item.data.rows}
-              id={item.id}
-            />
-          </ItemComponent>
-        );
-      case "kpi_box":
-        return (
-          <ItemComponent id={item.id} index={index} childrenData={[]}>
-            <KPIBox id={item.id} />
-          </ItemComponent>
-        );
-      case "column":
-        return (
-          <ItemComponent id={item.id} index={index} childrenData={[]}>
-            <ReportBuilderPageGrid
-              rows={1}
-              columns={item.data.columns}
-              id={item.id}
-            />
-          </ItemComponent>
-        );
-      case "section_divider":
-        return (
-          <ItemComponent id={item.id} index={index} childrenData={[]}>
-            <SectionDivider id={item.id} />
-          </ItemComponent>
-        );
-      default:
-        return <React.Fragment />;
-    }
-  };
+  }, [reportState.id, addItem]);
 
   const handleKeyDown = (e: KeyboardEvent) => {
     if (
@@ -147,23 +95,16 @@ const ReportBuilderDesktopPage: React.FC = () => {
       /^[a-zA-Z0-9]$/.test(e.key) &&
       document.activeElement?.tagName !== "INPUT"
     ) {
-      addItem({
-        id: uniqueId(),
-        type: "text",
-        initialized: true,
-        data: { rte: null },
-        options: {
-          paddingTop: "10px",
-          paddingLeft: "10px",
-          paddingRight: "10px",
-          paddingBottom: "10px",
-          borderWidth: "0px",
-          borderColor: "#000000",
-          borderRadius: "8px",
-          backgroundColor: "#ffffff00",
-          width: "100%",
-        },
-      });
+      addItem(
+        createReportItem("text", {
+          initialized: true,
+          options: {
+            borderColor: "#000000",
+            borderRadius: "8px",
+            backgroundColor: "#ffffff00",
+          },
+        }),
+      );
       addedItemRef.current = true;
     }
   };
@@ -296,9 +237,14 @@ const ReportBuilderDesktopPage: React.FC = () => {
             >
               {items.length === 0 && <Empty />}
               {items.map((item, index) => (
-                <React.Fragment key={item.id}>
-                  {getItemByType(item, index)}
-                </React.Fragment>
+                <ItemComponent
+                  key={item.id}
+                  id={item.id}
+                  index={index}
+                  childrenData={[]}
+                >
+                  <ReportItemContent item={item} />
+                </ItemComponent>
               ))}
             </Box>
           )}
