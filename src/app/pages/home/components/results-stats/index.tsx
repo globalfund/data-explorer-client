@@ -1,5 +1,6 @@
 import React from "react";
 import Box from "@mui/material/Box";
+import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 import TBIcon from "app/assets/vectors/TB.svg?react";
 import HIVIcon from "app/assets/vectors/HIV.svg?react";
@@ -41,18 +42,32 @@ const StatComp: React.FC<StatCompProps> = (props: StatCompProps) => {
     >
       {icon}
       <Box>
-        <Typography
-          variant="h3"
-          sx={{
-            fontSize: "36px",
-            fontWeight: "700",
-            "@media (max-width: 1200px)": {
-              fontSize: "32px",
-            },
-          }}
-        >
-          {value.number} {value.text}
-        </Typography>
+        {!props.loading ? (
+          <Typography
+            variant="h3"
+            sx={{
+              fontSize: "36px",
+              fontWeight: "700",
+              "@media (max-width: 1200px)": {
+                fontSize: "32px",
+              },
+            }}
+          >
+            {value.number} {value.text}
+          </Typography>
+        ) : (
+          <Skeleton
+            variant="text"
+            sx={{
+              width: "300px",
+              lineHeight: 1.2,
+              fontSize: "36px",
+              "@media (max-width: 1200px)": {
+                fontSize: "32px",
+              },
+            }}
+          />
+        )}
         <Typography
           component="div"
           fontSize="14px"
@@ -111,7 +126,9 @@ export const HomeResultsStats: React.FC<HomeResultsStatsProps> = (
       {props.stats.length > 0 &&
         statsOrder.map((o) => {
           const stat = props.stats.find((s) => s.label.includes(o));
-          return stat ? <StatComp key={stat.label} {...stat} /> : null;
+          return stat ? (
+            <StatComp key={stat.label} {...stat} loading={props.loading} />
+          ) : null;
         })}
     </Box>
   );

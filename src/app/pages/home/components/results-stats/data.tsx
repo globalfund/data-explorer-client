@@ -5,6 +5,7 @@ import MalariaIcon from "app/assets/vectors/Malaria.svg?react";
 export interface StatCompProps {
   value: number;
   label: string;
+  loading?: boolean;
   icon?: React.ReactNode;
 }
 

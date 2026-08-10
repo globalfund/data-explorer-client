@@ -2,11 +2,11 @@ import React from "react";
 import get from "lodash/get";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
+import Skeleton from "@mui/material/Skeleton";
 import { useCMSData } from "app/hooks/useCMSData";
 import Typography from "@mui/material/Typography";
 import { Dropdown } from "app/components/dropdown";
 import { getCMSDataField } from "app/utils/getCMSDataField";
-import CircularProgress from "@mui/material/CircularProgress";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 
@@ -130,31 +130,25 @@ export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
           marginLeft: "-16px",
         }}
       >
-        {loadingStats && (
-          <Box
-            width="100%"
-            height="100%"
-            display="flex"
-            position="absolute"
-            alignItems="center"
-            justifyContent="center"
-            bgcolor="rgba(255, 255, 255, 0.8)"
-          >
-            <CircularProgress />
-          </Box>
-        )}
         {dataStats.map((item) => (
           <Grid item key={item.name} xs={12} sm={6} md={3}>
             <Box padding="15px" bgcolor="#F1F3F5">
               <Typography variant="h4">{item.value}</Typography>
-              <Typography fontSize="16px">
-                {getCMSDataField(
-                  cmsData,
-                  "pagesDatasetsAccessToFunding.countriesEligible",
-                  "Countries Eligible for",
-                )}{" "}
-                {item.name}
-              </Typography>
+              {!loadingStats ? (
+                <Typography fontSize="16px">
+                  {getCMSDataField(
+                    cmsData,
+                    "pagesDatasetsAccessToFunding.countriesEligible",
+                    "Countries Eligible for",
+                  )}{" "}
+                  {item.name}
+                </Typography>
+              ) : (
+                <Skeleton
+                  variant="text"
+                  sx={{ width: "100%", lineHeight: 1.2, fontSize: "16px" }}
+                />
+              )}
             </Box>
           </Grid>
         ))}

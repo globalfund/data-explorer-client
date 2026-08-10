@@ -1,10 +1,10 @@
 import React from "react";
 import get from "lodash/get";
 import Box from "@mui/material/Box";
+import Skeleton from "@mui/material/Skeleton";
 import { useCMSData } from "app/hooks/useCMSData";
 import Typography from "@mui/material/Typography";
 import { getCMSDataField } from "app/utils/getCMSDataField";
-import CircularProgress from "@mui/material/CircularProgress";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
@@ -100,25 +100,17 @@ export const GrantImplementationPageBlock1: React.FC<
           },
         }}
       >
-        {loadingStats && (
-          <Box
-            height="100%"
-            display="flex"
-            position="absolute"
-            alignItems="center"
-            justifyContent="center"
-            bgcolor="rgba(255, 255, 255, 0.8)"
-            sx={{
-              width: "100% !important",
-            }}
-          >
-            <CircularProgress />
-          </Box>
-        )}
         <Box>
-          <Typography variant="h3">
-            {formatFinancialValue(dataFinancialInsightsStats.signed)}
-          </Typography>
+          {!loadingStats ? (
+            <Typography variant="h3">
+              {formatFinancialValue(dataFinancialInsightsStats.signed)}
+            </Typography>
+          ) : (
+            <Skeleton
+              variant="text"
+              sx={{ width: "400px", lineHeight: 1.2, fontSize: "36px" }}
+            />
+          )}
           <Typography fontSize="16px">
             {getCMSDataField(
               cmsData,
@@ -128,9 +120,16 @@ export const GrantImplementationPageBlock1: React.FC<
           </Typography>
         </Box>
         <Box>
-          <Typography variant="h3">
-            {formatFinancialValue(dataFinancialInsightsStats.committed)}
-          </Typography>
+          {!loadingStats ? (
+            <Typography variant="h3">
+              {formatFinancialValue(dataFinancialInsightsStats.committed)}
+            </Typography>
+          ) : (
+            <Skeleton
+              variant="text"
+              sx={{ width: "400px", lineHeight: 1.2, fontSize: "36px" }}
+            />
+          )}
           <Typography fontSize="16px">
             {getCMSDataField(
               cmsData,
@@ -140,9 +139,16 @@ export const GrantImplementationPageBlock1: React.FC<
           </Typography>
         </Box>
         <Box>
-          <Typography variant="h3">
-            {formatFinancialValue(dataFinancialInsightsStats.disbursed)}
-          </Typography>
+          {!loadingStats ? (
+            <Typography variant="h3">
+              {formatFinancialValue(dataFinancialInsightsStats.disbursed)}
+            </Typography>
+          ) : (
+            <Skeleton
+              variant="text"
+              sx={{ width: "400px", lineHeight: 1.2, fontSize: "36px" }}
+            />
+          )}
           <Typography fontSize="16px">
             {getCMSDataField(
               cmsData,
