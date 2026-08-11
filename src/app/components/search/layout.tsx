@@ -84,8 +84,8 @@ export function SearchLayout(props: SearchLayoutProps) {
     props.results.forEach((tab: SearchResultsTabModel) => {
       allData = [...allData, ...tab.results];
     });
-    if (props.category && props.category !== categories[0].label) {
-      const fIndex = findIndex(categories, { label: props.category }) - 1;
+    if (props.category && props.category !== get(categories, "[0].label", "")) {
+      const fIndex = findIndex(categories, { label: props.category });
       if (props.results[fIndex]) {
         setData(props.results[fIndex].results);
       }
