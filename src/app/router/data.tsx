@@ -17,6 +17,7 @@ import { ROUTE_CONFIGS } from "./paths";
 import { Debug } from "app/pages/debug";
 import { GlossaryPage } from "app/pages/glossary";
 import { ChangelogPage } from "app/pages/changelog";
+import Button from "@mui/material/Button";
 
 const DetailPageRedirect: React.FC<{
   type: "location" | "partner" | "grant";
@@ -132,6 +133,20 @@ export const ROUTES: RouteObject[] = [
               contact us
             </a>{" "}
             if the issue persists.
+            <br />
+            <Button
+              sx={{
+                marginTop: "10px",
+                borderRadius: "4px",
+                padding: "2px 16px",
+                fontWeight: "normal",
+                textTransform: "none",
+                border: "1px solid #000",
+              }}
+              onClick={() => window.location.reload()}
+            >
+              Refresh
+            </Button>
           </div>
         </div>
         <Footer />
