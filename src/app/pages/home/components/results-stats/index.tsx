@@ -44,6 +44,7 @@ const StatComp: React.FC<StatCompProps> = (props: StatCompProps) => {
       <Box>
         {!props.loading ? (
           <Typography
+            component="p"
             variant="h3"
             sx={{
               fontSize: "36px",

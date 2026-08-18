@@ -11,6 +11,7 @@ export const HomeHero: React.FC = () => {
         {getCMSDataField(cmsData, "pagesHome.title", "Data Explorer")}
       </Typography>
       <Typography
+        component="p"
         variant="h4"
         marginBottom="50px"
         maxWidth="80%"

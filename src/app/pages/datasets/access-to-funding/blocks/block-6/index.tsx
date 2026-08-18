@@ -91,7 +91,7 @@ export const AccessToFundingBlock6: React.FC<AccessToFundingBlock6Props> = (
         },
       }}
     >
-      <Typography variant="h3" lineHeight={1.2}>
+      <Typography component="h2" variant="h3" lineHeight={1.2}>
         {get(
           cmsData,
           "pagesDatasetsAccessToFunding.documentsTitle",

@@ -22,7 +22,9 @@ export const FinancialMetric: React.FC<FinancialMetricProps> = (
       flexDirection="column"
       data-cy="financial-metric"
     >
-      <Typography variant="h5">{props.title}</Typography>
+      <Typography component="h3" variant="h5">
+        {props.title}
+      </Typography>
       <Box
         gap="13px"
         display="flex"

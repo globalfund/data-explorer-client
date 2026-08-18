@@ -79,7 +79,7 @@ export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
         }}
       >
         <Box>
-          <Typography variant="h3">
+          <Typography component="h2" variant="h3">
             {getCMSDataField(
               cmsData,
               "pagesDatasetsAccessToFunding.statsTitle",
@@ -133,7 +133,9 @@ export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
         {dataStats.map((item) => (
           <Grid item key={item.name} xs={12} sm={6} md={3}>
             <Box padding="15px" bgcolor="#F1F3F5">
-              <Typography variant="h4">{item.value}</Typography>
+              <Typography component="p" variant="h4">
+                {item.value}
+              </Typography>
               {!loadingStats ? (
                 <Typography fontSize="16px">
                   {getCMSDataField(

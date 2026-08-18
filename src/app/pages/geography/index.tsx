@@ -22,6 +22,7 @@ const GeoCategory: React.FC<GeoCategoryProps> = (props: GeoCategoryProps) => {
   return (
     <Box marginBottom="48px">
       <Typography
+        component="h2"
         variant="h6"
         lineHeight={1}
         fontSize="20px"
@@ -60,6 +61,7 @@ const GeoSubCategory: React.FC<GeoSubCategoryProps> = (
   return (
     <Box>
       <Typography
+        component="h3"
         lineHeight={1}
         fontSize="14px"
         fontWeight="700"

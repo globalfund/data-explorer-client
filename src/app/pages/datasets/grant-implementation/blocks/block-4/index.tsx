@@ -110,7 +110,7 @@ export const GrantImplementationPageBlock4: React.FC<
         justifyContent="space-between"
       >
         <Box>
-          <Typography variant="h3">
+          <Typography component="h2" variant="h3">
             {getCMSDataField(
               cmsData,
               "pagesDatasetsGrantImplementation.budgetBreakdownTitle",

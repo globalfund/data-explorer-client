@@ -390,10 +390,10 @@ export const AccessToFunding: React.FC = () => {
           justifyContent="center"
         >
           <Box display="flex" alignItems="center" flexDirection="column">
-            <Typography variant="h4" fontWeight="900">
+            <Typography component="p" variant="h4" fontWeight="900">
               US${totalAllocationAmount}
             </Typography>
-            <Typography variant="subtitle2">
+            <Typography component="p" variant="subtitle2">
               {getCMSDataField(
                 cmsData,
                 "pagesLocationAccessToFunding.allocationRadialChartSubtitle",

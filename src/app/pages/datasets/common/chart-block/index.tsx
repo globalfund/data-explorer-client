@@ -132,7 +132,11 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
           position: "absolute",
         }}
       />
-      <Typography variant={props.titleVariant ?? "h2"} lineHeight={1.2}>
+      <Typography
+        component="h2"
+        variant={props.titleVariant ?? "h2"}
+        lineHeight={1.2}
+      >
         {props.title}
       </Typography>
       {!props.loading ? (

@@ -94,6 +94,7 @@ export const GlossaryPage: React.FC = () => {
           {getCMSDataField(cmsData, "pagesGlossary.title", "Glossary")}
         </Typography>
         <Typography
+          component="p"
           variant="h4"
           sx={{
             "@media (max-width: 767px)": {
@@ -184,7 +185,7 @@ export const GlossaryPage: React.FC = () => {
                 flexDirection: "row",
               }}
             >
-              <Typography variant="h4" color="#144BC0">
+              <Typography component="h2" variant="h4" color="#144BC0">
                 {item.letter}
               </Typography>
               <Divider
@@ -202,7 +203,9 @@ export const GlossaryPage: React.FC = () => {
               >
                 {item.items.map((item2) => (
                   <Box key={item2.keyword} sx={{ pb: "24px" }}>
-                    <Typography variant="h4">{item2.keyword}</Typography>
+                    <Typography component="h3" variant="h4">
+                      {item2.keyword}
+                    </Typography>
                     <Typography fontSize="16px">{item2.content}</Typography>
                   </Box>
                 ))}

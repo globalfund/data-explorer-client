@@ -610,7 +610,7 @@ export const ResourceMobilizationPage: React.FC = () => {
             <Divider /> */}
               <Box>
                 {!loadingStats ? (
-                  <Typography variant="h3">
+                  <Typography component="p" variant="h3">
                     {formatFinancialValue(get(dataStats, "totalPledges", 0))}
                   </Typography>
                 ) : (
@@ -630,7 +630,7 @@ export const ResourceMobilizationPage: React.FC = () => {
               <Divider orientation={tabletScreen ? "vertical" : "horizontal"} />
               <Box>
                 {!loadingStats ? (
-                  <Typography variant="h3">
+                  <Typography component="p" variant="h3">
                     {formatFinancialValue(
                       get(dataStats, "totalContributions", 0),
                     )}
@@ -662,7 +662,7 @@ export const ResourceMobilizationPage: React.FC = () => {
               }}
             >
               <Box marginBottom="20px">
-                <Typography variant="h3">
+                <Typography component="h2" variant="h3">
                   {getCMSDataField(
                     cmsData,
                     "pagesDatasetsResourceMobilization.statsText4Title",

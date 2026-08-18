@@ -542,6 +542,7 @@ export const Location: React.FC = () => {
           {loading && <CircularProgress sx={{ marginLeft: "16px" }} />}
         </Typography>
         <Typography
+          component="p"
           variant="h4"
           lineHeight={1}
           marginBottom="50px"

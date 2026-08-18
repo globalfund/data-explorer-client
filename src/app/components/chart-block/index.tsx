@@ -77,7 +77,12 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
         }}
       />
       {!props.loading ? (
-        <Typography variant="h3" lineHeight={1.2} fontSize="44px">
+        <Typography
+          component={props.subtitle ? "p" : "h2"}
+          variant="h3"
+          lineHeight={1.2}
+          fontSize="44px"
+        >
           {props.title}
         </Typography>
       ) : (
@@ -86,11 +91,21 @@ export const ChartBlock: React.FC<ChartBlockProps> = (
           sx={{ width: "300px", lineHeight: 1.2, fontSize: "44px" }}
         />
       )}
-      <Typography variant="h5" marginBottom="5px" fontSize="24px">
-        {props.subtitle}
-      </Typography>
+      {props.subtitle ? (
+        <Typography
+          component="h2"
+          variant="h5"
+          marginBottom="5px"
+          fontSize="24px"
+        >
+          {props.subtitle}
+        </Typography>
+      ) : (
+        <Box height="5px" aria-hidden="true" />
+      )}
       {props.text && props.text.length > 0 && (
         <Typography
+          component="div"
           fontSize="18px"
           variant="subtitle2"
           lineHeight="normal"

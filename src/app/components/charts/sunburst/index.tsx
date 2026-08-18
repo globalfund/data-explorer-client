@@ -391,12 +391,12 @@ export function SunburstChart(props: SunburstProps) {
             },
           }}
         >
-          <Typography variant="h4" textAlign="center">
+          <Typography component="div" variant="h4" textAlign="center">
             {props.centerLabel}
             <br />
             {centerLabel}
           </Typography>
-          <Typography variant="h4" fontWeight="400">
+          <Typography component="div" variant="h4" fontWeight="400">
             {formatFinancialValue(centerValue)}
           </Typography>
         </Box>

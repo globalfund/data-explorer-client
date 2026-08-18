@@ -61,6 +61,7 @@ const ChangelogItem: React.FC<{
         }}
       >
         <Typography
+          component="span"
           variant="h6"
           sx={{
             fontSize: "16px",
@@ -80,7 +81,9 @@ const ChangelogItem: React.FC<{
           })}
         </Typography>
       </Box>
-      <Typography variant="h4">{props.title}</Typography>
+      <Typography component="h2" variant="h4">
+        {props.title}
+      </Typography>
       <Box
         sx={{
           pl: "20px",
@@ -158,6 +161,7 @@ export const ChangelogPage: React.FC = () => {
           {getCMSDataField(cmsData, "pagesChangelog.title", "Changelog")}
         </Typography>
         <Typography
+          component="p"
           variant="h4"
           sx={{
             "@media (max-width: 767px)": {

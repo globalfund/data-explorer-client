@@ -102,7 +102,7 @@ export const GrantImplementationPageBlock1: React.FC<
       >
         <Box>
           {!loadingStats ? (
-            <Typography variant="h3">
+            <Typography component="p" variant="h3">
               {formatFinancialValue(dataFinancialInsightsStats.signed)}
             </Typography>
           ) : (
@@ -121,7 +121,7 @@ export const GrantImplementationPageBlock1: React.FC<
         </Box>
         <Box>
           {!loadingStats ? (
-            <Typography variant="h3">
+            <Typography component="p" variant="h3">
               {formatFinancialValue(dataFinancialInsightsStats.committed)}
             </Typography>
           ) : (
@@ -140,7 +140,7 @@ export const GrantImplementationPageBlock1: React.FC<
         </Box>
         <Box>
           {!loadingStats ? (
-            <Typography variant="h3">
+            <Typography component="p" variant="h3">
               {formatFinancialValue(dataFinancialInsightsStats.disbursed)}
             </Typography>
           ) : (

@@ -182,7 +182,7 @@ export const HomeBlock1: React.FC = () => {
           flexDirection="column"
         >
           {!loadingPledgesContributionsBarChart ? (
-            <Typography variant="h3" fontWeight="700">
+            <Typography component="p" variant="h3" fontWeight="700">
               {totalPledge}
             </Typography>
           ) : (
@@ -191,7 +191,7 @@ export const HomeBlock1: React.FC = () => {
               sx={{ width: "250px", fontSize: "36px" }}
             />
           )}
-          <Typography variant="subtitle2">
+          <Typography component="p" variant="subtitle2">
             {getCMSDataField(
               cmsData,
               "pagesHome.pledgesContributionsLabel1",
@@ -206,7 +206,7 @@ export const HomeBlock1: React.FC = () => {
           flexDirection="column"
         >
           {!loadingPledgesContributionsBarChart ? (
-            <Typography variant="h3" fontWeight="700">
+            <Typography component="p" variant="h3" fontWeight="700">
               {totalContribution}
             </Typography>
           ) : (
@@ -215,7 +215,7 @@ export const HomeBlock1: React.FC = () => {
               sx={{ width: "250px", fontSize: "36px" }}
             />
           )}
-          <Typography variant="subtitle2">
+          <Typography component="p" variant="subtitle2">
             {getCMSDataField(
               cmsData,
               "pagesHome.pledgesContributionsLabel2",

@@ -73,7 +73,7 @@ export const AccessToFundingBlock4: React.FC<AccessToFundingBlock4Props> = (
       }}
       data-cy="allocation-block-2"
     >
-      <Typography variant="h4" fontSize="36px">
+      <Typography component="h2" variant="h4" fontSize="36px">
         {getCMSDataField(
           cmsData,
           "pagesDatasetsAccessToFunding.cumulativeAllocationTitle",

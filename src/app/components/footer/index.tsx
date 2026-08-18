@@ -86,7 +86,7 @@ export const Footer: React.FC = () => {
               }}
             >
               <Grid item sm={4} md={4}>
-                <FooterHeader>
+                <FooterHeader component="h2">
                   {getCMSDataField(
                     cmsData,
                     "componentsFooter.connectTitle",
@@ -146,7 +146,7 @@ export const Footer: React.FC = () => {
                 </FooterExternalLink>
               </Grid>
               <Grid item sm={4} md={4}>
-                <FooterHeader>
+                <FooterHeader component="h2">
                   {getCMSDataField(
                     cmsData,
                     "componentsFooter.aboutWebsiteTitle",
@@ -209,7 +209,7 @@ export const Footer: React.FC = () => {
                 </FooterExternalLink>
               </Grid>
               <Grid item sm={4} md={4}>
-                <FooterHeader>
+                <FooterHeader component="h2">
                   {getCMSDataField(
                     cmsData,
                     "componentsFooter.moreGlobalFundSitesTitle",

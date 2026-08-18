@@ -160,10 +160,10 @@ export const ResourceMobilization: React.FC = () => {
           alignItems="center"
           flexDirection="column"
         >
-          <Typography variant="h3" fontWeight="900">
+          <Typography component="p" variant="h3" fontWeight="900">
             US${totalPledge}
           </Typography>
-          <Typography variant="subtitle2">
+          <Typography component="p" variant="subtitle2">
             {getCMSDataField(
               cmsData,
               "pagesLocationResourceMobilization.statsLabel1",
@@ -180,10 +180,10 @@ export const ResourceMobilization: React.FC = () => {
           alignItems="center"
           flexDirection="column"
         >
-          <Typography variant="h3" fontWeight="900">
+          <Typography component="p" variant="h3" fontWeight="900">
             US${totalContribution}
           </Typography>
-          <Typography variant="subtitle2">
+          <Typography component="p" variant="subtitle2">
             {getCMSDataField(
               cmsData,
               "pagesLocationResourceMobilization.statsLabel2",
