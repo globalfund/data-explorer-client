@@ -102,12 +102,16 @@ export const fontFamilyOptions = [
   },
 ];
 
-export const fontSizeOptions = Array.from({ length: 72 }, (_, i) => i + 8).map(
-  (size) => ({
-    label: `${size}px`,
-    value: size.toString(),
-  }),
-);
+export const MIN_FONT_SIZE = 8;
+export const MAX_FONT_SIZE = 79;
+
+export const fontSizeOptions = Array.from(
+  { length: MAX_FONT_SIZE - MIN_FONT_SIZE + 1 },
+  (_, i) => i + 8,
+).map((size) => ({
+  label: `${size}px`,
+  value: size.toString(),
+}));
 
 export const lineHeightOptions = [
   {

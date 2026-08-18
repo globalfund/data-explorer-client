@@ -31,13 +31,13 @@ declare module "@tiptap/core" {
 
 declare module "@tiptap/extension-text-style" {
   interface TextStyleAttributes {
-    fontWeight?: string | null;
+    letterSpacing?: string | null;
   }
 }
 
 /**
  * This extension allows you to set a letter spacing for text.
- * @see https://www.tiptap.dev/api/extensions/font-weight
+ * @see https://www.tiptap.dev/api/extensions/letter-spacing
  */
 export const LetterSpacing = Extension.create<LetterSpacingOptions>({
   name: "letterSpacing",
@@ -55,7 +55,7 @@ export const LetterSpacing = Extension.create<LetterSpacingOptions>({
         attributes: {
           letterSpacing: {
             default: null,
-            parseHTML: (element) => element.style.letterSpacing,
+            parseHTML: (element) => element.style.letterSpacing || null,
             renderHTML: (attributes) => {
               if (!attributes.letterSpacing) {
                 return {};

@@ -9,6 +9,7 @@ import {
   ReportItemOf,
 } from "app/state/api/action-reducers/report-builder/sync";
 import { ActionCreator } from "easy-peasy";
+import { normalisePastedHTML } from "./paste";
 
 export const RichEditor: React.FC<{
   itemId: string;
@@ -33,6 +34,9 @@ export const RichEditor: React.FC<{
     autofocus: true,
     content: selectedItem?.data?.rte || "",
     editable: !viewMode,
+    editorProps: {
+      transformPastedHTML: normalisePastedHTML,
+    },
     onUpdate: ({ editor: updatedEditor }) => {
       if (selectedItem) {
         editItem({
