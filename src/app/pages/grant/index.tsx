@@ -143,7 +143,30 @@ export const Grant: React.FC = () => {
   };
 
   const titleSplits = React.useMemo(() => {
-    return splitStringInMiddle(dropdownSelected?.title || "");
+    let title = dropdownSelected?.title ?? "";
+    // check if title has a period of 2 dates at the end of the string, like "Grant Title (01-Jan-2020-31-Dec-2020)", and if so, extract it and reformat it to "Grant Title (01 Jan 2020 - 31 Dec 2020)"
+    const dateRangeMatch = title.match(
+      /\((\d{2}-[A-Za-z]{3}-\d{4})-(\d{2}-[A-Za-z]{3}-\d{4})\)$/,
+    );
+    if (dateRangeMatch) {
+      const startDate = new Date(dateRangeMatch[1]);
+      const endDate = new Date(dateRangeMatch[2]);
+      const formattedStartDate = startDate.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      });
+      const formattedEndDate = endDate.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      });
+      title = title.replace(
+        dateRangeMatch[0],
+        `(${formattedStartDate} - ${formattedEndDate})`,
+      );
+    }
+    return splitStringInMiddle(title);
   }, [dropdownSelected?.title]);
 
   const view = React.useMemo(() => {
