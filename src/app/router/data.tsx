@@ -18,6 +18,7 @@ import { Debug } from "app/pages/debug";
 import { GlossaryPage } from "app/pages/glossary";
 import { ChangelogPage } from "app/pages/changelog";
 import Button from "@mui/material/Button";
+import { NotFoundPage } from "app/pages/not-found";
 
 const DetailPageRedirect: React.FC<{
   type: "location" | "partner" | "grant";
@@ -157,19 +158,7 @@ export const ROUTES: RouteObject[] = [
       ...REDIRECT_ROUTES,
       {
         path: "*",
-        element: (
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              height: "calc(100vh - 91px - 256px - 150px)",
-            }}
-          >
-            Page not found
-          </div>
-        ),
+        element: <NotFoundPage variant="default" />,
       },
     ],
   },

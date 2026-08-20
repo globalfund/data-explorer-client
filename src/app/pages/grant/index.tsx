@@ -7,9 +7,10 @@ import Divider from "@mui/material/Divider";
 import { Helmet } from "react-helmet-async";
 import Typography from "@mui/material/Typography";
 import { useCMSData } from "app/hooks/useCMSData";
+import { NotFoundPage } from "app/pages/not-found";
 import { PageLoader } from "app/components/page-loader";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { GrantTargetsResults } from "./views/targets-results";
 import { GrantOverview } from "app/pages/grant/views/overview";
 import { DetailPageTabs } from "app/components/detail-page-tabs";
@@ -319,21 +320,7 @@ export const Grant: React.FC = () => {
   );
 
   if (notFound) {
-    return (
-      <Box
-        sx={{
-          gap: "2px",
-          width: "100%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          height: "calc(100vh - 91px - 256px - 150px)",
-        }}
-      >
-        Grant page with code "{params.id}" not found.
-        <Link to="/grants">Go to grants page</Link>
-      </Box>
-    );
+    return <NotFoundPage code={params.id} variant="grant" />;
   }
 
   return (
