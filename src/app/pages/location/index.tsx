@@ -8,6 +8,7 @@ import { useParams } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import { useCMSData } from "app/hooks/useCMSData";
 import { NotFoundPage } from "app/pages/not-found";
+import { Breadcrumbs } from "app/components/breadcrumbs";
 import { Results } from "app/pages/location/views/results";
 import CircularProgress from "@mui/material/CircularProgress";
 import { DetailPageTabs } from "app/components/detail-page-tabs";
@@ -508,6 +509,17 @@ export const Location: React.FC = () => {
           href={`${window.location.origin}/location/${paramsId}/${params.tab}`}
         />
       </Helmet>
+      <Breadcrumbs
+        items={[
+          { label: "Homepage", path: "/" },
+          { label: "/" },
+          { label: "Geography", path: "/geography" },
+          { label: "/" },
+          {
+            label: dataOverview.name,
+          },
+        ]}
+      />
       <Box
         padding="50px 0"
         sx={{

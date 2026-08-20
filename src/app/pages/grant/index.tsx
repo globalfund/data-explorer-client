@@ -10,6 +10,7 @@ import { useCMSData } from "app/hooks/useCMSData";
 import { NotFoundPage } from "app/pages/not-found";
 import { PageLoader } from "app/components/page-loader";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { Breadcrumbs } from "app/components/breadcrumbs";
 import { useNavigate, useParams } from "react-router-dom";
 import { GrantTargetsResults } from "./views/targets-results";
 import { GrantOverview } from "app/pages/grant/views/overview";
@@ -331,6 +332,17 @@ export const Grant: React.FC = () => {
           href={`${window.location.origin}/grant/${params.id}/${params.ip}/${params.tab}`}
         />
       </Helmet>
+      <Breadcrumbs
+        items={[
+          { label: "Homepage", path: "/" },
+          { label: "/" },
+          { label: "Grants", path: "/grants" },
+          { label: "/" },
+          {
+            label: params.id ?? "",
+          },
+        ]}
+      />
       <Box padding="50px 0">
         <Typography variant="h1" lineHeight={1.2}>
           {params.id}
