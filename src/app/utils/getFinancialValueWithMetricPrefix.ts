@@ -85,7 +85,10 @@ export function getFinancialValueWithMetricPrefix(
   toFixed = 0,
 ): string {
   if (rangeIndex > -1) {
-    return (n / ranges[rangeIndex].divider).toFixed(toFixed).toString();
+    return (n / ranges[rangeIndex].divider)
+      .toFixed(toFixed)
+      .toString()
+      .replace(/\.0+$/, "");
   }
   for (const range of ranges) {
     if (n >= range.divider) {

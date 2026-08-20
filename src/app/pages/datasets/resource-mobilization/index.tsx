@@ -3,15 +3,16 @@ import get from "lodash/get";
 import uniq from "lodash/uniq";
 import sumBy from "lodash/sumBy";
 import Box from "@mui/material/Box";
+import orderBy from "lodash/orderBy";
 import isEqual from "lodash/isEqual";
 import Grid from "@mui/material/Grid";
 import { Helmet } from "react-helmet-async";
 import Divider from "@mui/material/Divider";
+import Skeleton from "@mui/material/Skeleton";
 import { useLocation } from "react-router-dom";
 import { useTitle, useUnmount } from "react-use";
 import { useCMSData } from "app/hooks/useCMSData";
 import Typography from "@mui/material/Typography";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import { getCMSDataField } from "app/utils/getCMSDataField";
 import { DatasetPage } from "app/pages/datasets/common/page";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -27,7 +28,10 @@ import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filter
 import BarChartIcon from "app/assets/vectors/Select_BarChart.svg?react";
 import { ExpandableHorizontalBar } from "app/components/charts/expandable-horizontal-bar";
 import { ExpandableHorizontalBarChartDataItem } from "app/components/charts/expandable-horizontal-bar/data";
-import Skeleton from "@mui/material/Skeleton";
+import {
+  getFinancialValueWithMetricPrefix,
+  getRange,
+} from "app/utils/getFinancialValueWithMetricPrefix";
 
 export const ResourceMobilizationPage: React.FC = () => {
   useTitle("The Data Explorer - Resource Mobilization");
@@ -39,9 +43,6 @@ export const ResourceMobilizationPage: React.FC = () => {
   const latestUpdateDate = useGetDatasetLatestUpdate({
     dataset: "pledges-contributions",
   });
-  const tabletScreen = useMediaQuery(
-    "(min-width: 768px) and (max-width:920px)",
-  );
 
   const dropdownItems = React.useMemo(
     () => [
@@ -382,6 +383,24 @@ export const ResourceMobilizationPage: React.FC = () => {
     fetchTable({ filterString });
   };
 
+  const totalPledges = React.useMemo(() => {
+    const raw = get(dataStats, "totalPledges", 0);
+    const range = getRange([{ raw }], ["raw"]);
+    return {
+      raw: formatFinancialValue(raw),
+      formatted: `US$ ${getFinancialValueWithMetricPrefix(raw, range.index, 1)} ${range.full}`,
+    };
+  }, [dataStats]);
+
+  const totalContributions = React.useMemo(() => {
+    const raw = get(dataStats, "totalContributions", 0);
+    const range = getRange([{ raw }], ["raw"]);
+    return {
+      raw: formatFinancialValue(raw),
+      formatted: `US$ ${getFinancialValueWithMetricPrefix(raw, range.index, 1)} ${range.full}`,
+    };
+  }, [dataStats]);
+
   const chartContent = React.useMemo(() => {
     switch (dropdownSelected) {
       case dropdownItems[0].value:
@@ -515,6 +534,19 @@ export const ResourceMobilizationPage: React.FC = () => {
     }
   }, [location.hash]);
 
+  const donorsByType = React.useMemo(() => {
+    const data = get(dataStats, "donorTypesCount", []);
+    const total = sumBy(data, "value");
+    return orderBy(
+      data.map((item) => ({
+        ...item,
+        percentage: total > 0 ? (item.value / total) * 100 : 0,
+      })),
+      "value",
+      "desc",
+    );
+  }, [dataStats]);
+
   return (
     <>
       <Helmet>
@@ -541,222 +573,252 @@ export const ResourceMobilizationPage: React.FC = () => {
         handleCancelFilters={handleCancelFilters}
       >
         <Box width="100%" marginTop="50px">
-          <Grid
-            container
-            marginBottom="50px"
+          <Box
+            width="100%"
+            display="flex"
+            flexDirection="row"
+            marginBottom="25px"
             position="relative"
             sx={{
+              "> div": {
+                width: "calc(100% / 3)",
+                padding: "0 10px 0 32px",
+                "&:not(:last-child)": {
+                  borderRight: "1px solid #CFD4DA",
+                },
+                "&:first-of-type": {
+                  paddingLeft: 0,
+                },
+                "@media (max-width: 920px)": {
+                  padding: "0 15px",
+                  h5: {
+                    fontSize: "20px",
+                  },
+                },
+                "@media (max-width: 767px)": {
+                  width: "100%",
+                  padding: "16px 0",
+                  "&:not(:last-child)": {
+                    borderRightStyle: "none",
+                    borderBottom: "1px solid #98A1AA",
+                  },
+                },
+              },
               "@media (max-width: 767px)": {
-                marginBottom: "16px",
+                marginBottom: 0,
+                flexDirection: "column",
               },
             }}
           >
-            {loadingStats && (
-              <Box
-                width="100%"
-                height="100%"
-                display="flex"
-                position="absolute"
-                alignItems="center"
-                justifyContent="center"
-                bgcolor="rgba(255, 255, 255, 0.8)"
-              >
-                <CircularProgress />
-              </Box>
-            )}
-            <Grid
-              item
-              sm={12}
-              md={4}
-              // gap="20px"
-              display="flex"
-              flexDirection="column"
-              sx={{
-                paddingRight: "21px",
-                borderRight: "1px solid #CFD4DA",
-                "> div": {
-                  height: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                },
-                "@media (max-width: 920px)": {
-                  paddingRight: "0px",
-                  flexDirection: "row",
-                  marginBottom: "50px",
-                  borderRightStyle: "none",
-                  justifyContent: "space-around",
-                },
-                "@media (max-width: 767px)": {
-                  gap: "16px",
-                  width: "100%",
-                  marginBottom: "64px",
-                  flexDirection: "column",
-                },
-              }}
-            >
-              {/* <Box>
-              <Typography variant="h5">
-                {get(dataStats, "percentage", 0).toFixed(2).replace(".00", "")}%
-              </Typography>
-              <Typography fontSize="14px" fontWeight="700">
+            <Box>
+              {!loadingStats ? (
+                <Typography variant="h3">{totalPledges.formatted}</Typography>
+              ) : (
+                <Skeleton
+                  variant="text"
+                  sx={{ width: "400px", lineHeight: 1.2, fontSize: "36px" }}
+                />
+              )}
+              <Typography fontSize="16px">
                 {getCMSDataField(
                   cmsData,
-                  "pagesDatasetsResourceMobilization.statsText1",
-                  "Pledge Conversion based on the announce pledge"
+                  "pagesDatasetsResourceMobilization.statsText2",
+                  "Total Pledged",
+                )}
+              </Typography>
+              {!loadingStats ? (
+                <Typography fontSize="14px" color="#373D43">
+                  {totalPledges.raw}
+                </Typography>
+              ) : (
+                <Skeleton
+                  variant="text"
+                  sx={{ width: "250px", fontSize: "14px" }}
+                />
+              )}
+            </Box>
+            <Box>
+              {!loadingStats ? (
+                <Typography variant="h3">
+                  {totalContributions.formatted}
+                </Typography>
+              ) : (
+                <Skeleton
+                  variant="text"
+                  sx={{ width: "400px", lineHeight: 1.2, fontSize: "36px" }}
+                />
+              )}
+              <Typography fontSize="16px">
+                {getCMSDataField(
+                  cmsData,
+                  "pagesDatasetsResourceMobilization.statsText3",
+                  "Total Contributed",
+                )}
+              </Typography>
+              {!loadingStats ? (
+                <Typography fontSize="14px" color="#373D43">
+                  {totalContributions.raw}
+                </Typography>
+              ) : (
+                <Skeleton
+                  variant="text"
+                  sx={{ width: "250px", fontSize: "14px" }}
+                />
+              )}
+            </Box>
+            <Box>
+              {!loadingStats ? (
+                <Typography variant="h3">
+                  {sumBy(get(dataStats, "donorTypesCount", []), "value")}
+                </Typography>
+              ) : (
+                <Skeleton
+                  variant="text"
+                  sx={{ width: "400px", lineHeight: 1.2, fontSize: "36px" }}
+                />
+              )}
+              <Typography fontSize="16px">
+                {getCMSDataField(
+                  cmsData,
+                  "pagesDatasetsResourceMobilization.statsText4Titlee",
+                  "Donors Mobilized",
+                )}
+              </Typography>
+              {!loadingStats ? (
+                <Typography fontSize="14px" color="#373D43">
+                  Across {get(dataStats, "donorTypesCount", []).length} donor
+                  types
+                </Typography>
+              ) : (
+                <Skeleton
+                  variant="text"
+                  sx={{ width: "250px", fontSize: "14px" }}
+                />
+              )}
+            </Box>
+          </Box>
+          <Divider
+            sx={{
+              margin: "15px 0 30px 0",
+              borderColor: "#CFD4DA",
+            }}
+          />
+          {loadingStats && (
+            <Box
+              width="100%"
+              height="100%"
+              display="flex"
+              position="absolute"
+              alignItems="center"
+              justifyContent="center"
+              bgcolor="rgba(255, 255, 255, 0.8)"
+            >
+              <CircularProgress />
+            </Box>
+          )}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              marginBottom: "20px",
+              alignItems: "flex-start",
+              justifyContent: "space-between",
+            }}
+          >
+            <Box>
+              <Typography variant="h3">
+                {getCMSDataField(
+                  cmsData,
+                  "pagesDatasetsResourceMobilization.statsText4Titlee",
+                  "Donors by type",
+                )}
+              </Typography>
+              <Typography variant="body2" fontSize="20px">
+                {getCMSDataField(
+                  cmsData,
+                  "pagesDatasetsResourceMobilization.statsText4Subtitlee",
+                  "Public sector donors account for more than half of all donors mobilized.",
                 )}
               </Typography>
             </Box>
-            <Divider /> */}
-              <Box>
-                {!loadingStats ? (
-                  <Typography variant="h3">
-                    {formatFinancialValue(get(dataStats, "totalPledges", 0))}
-                  </Typography>
-                ) : (
-                  <Skeleton
-                    variant="text"
-                    sx={{ width: "100%", fontSize: "36px" }}
-                  />
-                )}
-                <Typography fontSize="16px">
-                  {getCMSDataField(
-                    cmsData,
-                    "pagesDatasetsResourceMobilization.statsText2",
-                    "Total Pledged",
-                  )}
-                </Typography>
-              </Box>
-              <Divider orientation={tabletScreen ? "vertical" : "horizontal"} />
-              <Box>
-                {!loadingStats ? (
-                  <Typography variant="h3">
-                    {formatFinancialValue(
-                      get(dataStats, "totalContributions", 0),
-                    )}
-                  </Typography>
-                ) : (
-                  <Skeleton
-                    variant="text"
-                    sx={{ width: "100%", fontSize: "36px" }}
-                  />
-                )}
-                <Typography fontSize="14px">
-                  {getCMSDataField(
-                    cmsData,
-                    "pagesDatasetsResourceMobilization.statsText3",
-                    "Total Contributed",
-                  )}
-                </Typography>
-              </Box>
-            </Grid>
-            <Grid
-              item
-              sm={12}
-              md={8}
+            <Box
               sx={{
-                paddingLeft: "21px",
-                "@media (max-width: 920px)": {
-                  paddingLeft: "0px",
-                },
+                gap: "6px",
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
               }}
             >
-              <Box marginBottom="20px">
-                <Typography variant="h3">
-                  {getCMSDataField(
-                    cmsData,
-                    "pagesDatasetsResourceMobilization.statsText4Title",
-                    "Number of Donors Mobilized",
-                  )}
-                </Typography>
-                <Typography variant="body2" fontSize="20px">
-                  {getCMSDataField(
-                    cmsData,
-                    "pagesDatasetsResourceMobilization.statsText4Subtitle",
-                    "Grouped by their Donor types",
-                  )}
-                </Typography>
-              </Box>
-              <Grid
-                container
-                spacing={2}
+              <Box
                 sx={{
-                  minHeight: "200px",
+                  width: "12px",
+                  height: "12px",
+                  borderRadius: "50%",
+                  bgcolor: "#108E09",
                 }}
-              >
-                <Grid item xs={4} sm={4} md={3} lg={2}>
-                  <Box
-                    height="100%"
-                    bgcolor="#F1F3F5"
-                    padding="5px 10px"
-                    borderRadius="5px"
-                  >
-                    {!loadingStats ? (
-                      <Typography fontSize="40px" fontWeight="700">
-                        {sumBy(get(dataStats, "donorTypesCount", []), "value")}
-                      </Typography>
-                    ) : (
-                      <Skeleton
-                        variant="text"
-                        sx={{ width: "100%", fontSize: "40px" }}
-                      />
-                    )}
-                    <Typography variant="body2" fontSize="14px">
-                      {getCMSDataField(
-                        cmsData,
-                        "pagesDatasetsResourceMobilization.statsText5",
-                        "Total number of donors",
-                      )}
-                    </Typography>
-                  </Box>
-                </Grid>
-                <Grid
-                  item
-                  container
-                  spacing={2}
-                  xs={8}
-                  sm={8}
-                  md={9}
-                  lg={10}
-                  height="100%"
+              />
+              <Typography fontSize="16px" color="#373D43">
+                = 1 donor
+              </Typography>
+            </Box>
+          </Box>
+          <Grid container spacing={4} marginBottom="40px">
+            {donorsByType.map((item) => (
+              <Grid item xs={12} sm={3} md={3} lg={3} key={item.name}>
+                <Box
                   sx={{
-                    "> div": {
-                      "> div": {
-                        height: "84px",
-                        borderRadius: "5px",
-                        "> *": {
-                          lineHeight: "normal",
-                        },
-                        "@media (max-width: 920px)": {
-                          height: "104px",
-                        },
-                        "@media (max-width: 767px)": {
-                          height: "auto",
-                          padding: "10px",
-                        },
-                      },
-                    },
+                    gap: "6px",
+                    display: "flex",
+                    flexDirection: "column",
                   }}
                 >
-                  {get(dataStats, "donorTypesCount", []).map((item) => (
-                    <Grid item xs={12} sm={3} md={3} lg={3} key={item.name}>
-                      <Box bgcolor="#F1F3F5" padding="5px 10px">
-                        <Typography fontSize="24px" fontWeight="700">
-                          {item.value}
-                        </Typography>
-                        <Typography fontSize="12px">{item.name}</Typography>
-                      </Box>
-                    </Grid>
-                  ))}
-                </Grid>
+                  <Box
+                    sx={{
+                      gap: "6px",
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "flex-end",
+                    }}
+                  >
+                    <Typography variant="h4" fontSize="24px" fontWeight="700">
+                      {item.value}
+                    </Typography>
+                    <Typography fontSize="16px" color="#373D43">
+                      {item.percentage.toFixed(1)}%
+                    </Typography>
+                  </Box>
+                  <Typography fontSize="16px" color="#373D43" minHeight="48px">
+                    {item.name}
+                  </Typography>
+                  <Box
+                    sx={{
+                      gap: "6px",
+                      width: "100%",
+                      display: "flex",
+                      flexWrap: "wrap",
+                      flexDirection: "row",
+                    }}
+                  >
+                    {Array.from({ length: item.value }, (_, index) => (
+                      <Box
+                        key={index}
+                        sx={{
+                          width: "12px",
+                          height: "12px",
+                          borderRadius: "50%",
+                          bgcolor: "#108E09",
+                        }}
+                      />
+                    ))}
+                  </Box>
+                </Box>
               </Grid>
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="overline" fontSize="14px">
-                Latest Update: <b>{latestUpdateDate}</b>
-              </Typography>
-            </Grid>
+            ))}
           </Grid>
+          <Typography variant="overline" fontSize="14px">
+            Latest Update: <b>{latestUpdateDate}</b>
+          </Typography>
+          <Box width="100%" height="50px" />
           <Divider
             sx={{
               left: 0,
