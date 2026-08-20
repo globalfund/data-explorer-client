@@ -487,6 +487,11 @@ export const AccessToFunding: React.FC = () => {
           flexDirection="row"
           justifyContent="flex-end"
           sx={{
+            zIndex: 1,
+            top: "77px",
+            bgcolor: "#fff",
+            padding: "10px 0",
+            position: "sticky",
             "> div": {
               display: "flex",
               flexDirection: "column",
