@@ -1,6 +1,8 @@
 import { colors } from "app/theme";
 import { getCMSDataField } from "app/utils/getCMSDataField";
 
+export const HEADER_HEIGHT = "67px";
+
 export interface HeaderMenuProps {
   mobileMenuOpen: boolean;
   setMobileMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;

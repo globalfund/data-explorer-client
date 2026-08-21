@@ -18,6 +18,7 @@ import { getCMSDataField } from "app/utils/getCMSDataField";
 import useUpdateEffect from "react-use/lib/useUpdateEffect";
 import { RaceBarChart } from "app/components/charts/race-bar";
 import { TableContainer } from "app/components/table-container";
+import { HEADER_HEIGHT } from "app/components/header-menu/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { RadialChartDataItem } from "app/components/charts/radial/data";
 import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
@@ -488,9 +489,9 @@ export const AccessToFunding: React.FC = () => {
           justifyContent="flex-end"
           sx={{
             zIndex: 1,
-            top: "77px",
             bgcolor: "#fff",
             padding: "10px 0",
+            top: HEADER_HEIGHT,
             position: "sticky",
             "> div": {
               display: "flex",

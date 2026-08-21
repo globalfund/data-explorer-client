@@ -13,6 +13,7 @@ import ChevronRight from "@mui/icons-material/ChevronRight";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   getPages,
+  HEADER_HEIGHT,
   HeaderMenuPage,
   HeaderMenuProps,
   isNavButtonActive,
@@ -68,6 +69,7 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (
 
   const onScroll = () => {
     setAnchorEl(null);
+    setSelectedPage(null);
   };
 
   React.useEffect(() => {
@@ -82,8 +84,8 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (
       <Collapse
         sx={{
           left: 0,
-          top: "77px",
           width: "100vw",
+          top: HEADER_HEIGHT,
           position: "absolute",
         }}
         in={props.mobileMenuOpen}
@@ -92,9 +94,9 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (
           sx={{
             width: "100vw",
             padding: "0 16px",
-            height: "calc(100vh - 77px)",
-            bgcolor: colors.primary.gray,
+            bgcolor: colors.primary.white,
             borderBottom: "1px solid #cfd4da",
+            height: `calc(100vh - ${HEADER_HEIGHT})`,
             "> button": {
               width: "100%",
               padding: "10px",
@@ -249,7 +251,7 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (
           "& .MuiPopover-paper": {
             maxWidth: "100vw",
             left: "0 !important",
-            top: "77px !important",
+            top: `${HEADER_HEIGHT} !important`,
           },
         }}
       >
@@ -258,7 +260,8 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (
             width: "100vw",
             height: "100%",
             padding: "10px 0 1px 0",
-            background: "#F8F8F8",
+            background: colors.primary.white,
+            borderBottom: "1px solid #cfd4da",
           }}
         >
           <Container maxWidth="lg" sx={{ padding: "0px !important" }}>
