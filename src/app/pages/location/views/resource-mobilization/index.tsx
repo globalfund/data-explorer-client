@@ -168,6 +168,11 @@ export const ResourceMobilization: React.FC = () => {
           flexDirection="column"
           alignItems="flex-start"
           borderRight="1px solid #CFD4DA"
+          sx={{
+            "@media (max-width: 767px)": {
+              borderRightStyle: "none !important",
+            },
+          }}
         >
           <Typography variant="h3" fontWeight="700">
             US${totalPledge.formatted}

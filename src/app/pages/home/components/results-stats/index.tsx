@@ -125,6 +125,7 @@ export const HomeResultsStats: React.FC<HomeResultsStatsProps> = (
           flexDirection: "column",
           "> div": {
             width: "100%",
+            borderRightStyle: "none !important",
           },
         },
       }}

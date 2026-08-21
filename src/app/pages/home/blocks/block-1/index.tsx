@@ -177,6 +177,11 @@ export const HomeBlock1: React.FC = () => {
           flexDirection="column"
           alignItems="flex-start"
           borderRight="1px solid #CFD4DA"
+          sx={{
+            "@media (max-width: 767px)": {
+              borderRightStyle: "none !important",
+            },
+          }}
         >
           {!loadingPledgesContributionsBarChart ? (
             <Typography variant="h3" fontWeight="700">

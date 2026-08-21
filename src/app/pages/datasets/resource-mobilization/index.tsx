@@ -595,6 +595,7 @@ export const ResourceMobilizationPage: React.FC = () => {
                 "@media (max-width: 767px)": {
                   width: "100%",
                   padding: "16px 0",
+                  borderRightStyle: "none !important",
                   "&:not(:last-child)": {
                     borderRightStyle: "none",
                     borderBottom: "1px solid #98A1AA",
