@@ -36,6 +36,13 @@ export const HeaderSearch: React.FC<HeaderSearchProps> = (props) => {
   };
 
   const handleKeyPress = (e: KeyboardEvent) => {
+    if (
+      e.target instanceof HTMLInputElement ||
+      e.target instanceof HTMLTextAreaElement ||
+      // @ts-expect-error because editor is not a standard property of EventTarget, we need to ignore this error
+      e.target?.editor
+    )
+      return;
     if (e.key === "/") {
       e.preventDefault();
       props.setSearchOpen(true);
