@@ -28,9 +28,9 @@ const StatComp: React.FC<StatCompProps> = (props: StatCompProps) => {
     <Box
       gap="10px"
       display="flex"
+      padding="0 10px"
       flexDirection="row"
       alignItems="flex-start"
-      justifyContent="center"
       sx={{
         b: {
           fontWeight: 900,
@@ -70,12 +70,21 @@ const StatComp: React.FC<StatCompProps> = (props: StatCompProps) => {
         )}
         <Typography
           component="div"
-          fontSize="14px"
+          fontSize="16px"
           variant="overline"
+          marginBottom="2px"
           lineHeight="normal"
         >
           {props.label}
         </Typography>
+        {!props.loading ? (
+          <Typography fontSize="14px" color="#373D43">
+            Reported by {props.geographies} countr
+            {props.geographies === 1 ? "y" : "ies"} in {props.yearSelected}
+          </Typography>
+        ) : (
+          <Skeleton variant="text" sx={{ width: "250px", fontSize: "14px" }} />
+        )}
       </Box>
     </Box>
   );
@@ -93,6 +102,9 @@ export const HomeResultsStats: React.FC<HomeResultsStatsProps> = (
       sx={{
         "> div": {
           width: "calc(100% / 3)",
+          ":not(:last-child)": {
+            borderRight: "1px solid #CFD4DA",
+          },
         },
         "@media (max-width: 920px)": {
           justifyContent: "space-around",
@@ -127,7 +139,12 @@ export const HomeResultsStats: React.FC<HomeResultsStatsProps> = (
         statsOrder.map((o) => {
           const stat = props.stats.find((s) => s.label.includes(o));
           return stat ? (
-            <StatComp key={stat.label} {...stat} loading={props.loading} />
+            <StatComp
+              key={stat.label}
+              {...stat}
+              loading={props.loading}
+              yearSelected={props.yearSelected}
+            />
           ) : null;
         })}
     </Box>

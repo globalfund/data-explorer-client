@@ -440,14 +440,14 @@ export const GrantImplementation: React.FC = () => {
             alignItems="center"
             flexDirection="column"
           >
-            <Typography variant="body2" fontWeight="700">
+            <Typography variant="body1" fontWeight="700">
               {getCMSDataField(
                 cmsData,
                 "pagesGrantGrantImplementation.dateStat1",
                 "Board Approved Date",
               )}
             </Typography>
-            <Typography variant="overline">
+            <Typography variant="body2">
               {dataProgrameDates.boardApprovedDate}
             </Typography>
           </Box>
@@ -459,7 +459,7 @@ export const GrantImplementation: React.FC = () => {
             alignItems="center"
             flexDirection="column"
           >
-            <Typography variant="body2" fontWeight="700">
+            <Typography variant="body1" fontWeight="700">
               {getCMSDataField(
                 cmsData,
                 "pagesGrantGrantImplementation.dateStat2",
@@ -469,7 +469,7 @@ export const GrantImplementation: React.FC = () => {
             <Typography
               gap="4px"
               display="flex"
-              variant="overline"
+              variant="body2"
               alignItems="center"
             >
               {dataProgrameDates.programStartDate}
@@ -483,14 +483,14 @@ export const GrantImplementation: React.FC = () => {
             alignItems="center"
             flexDirection="column"
           >
-            <Typography variant="body2" fontWeight="700">
+            <Typography variant="body1" fontWeight="700">
               {getCMSDataField(
                 cmsData,
                 "pagesGrantGrantImplementation.dateStat3",
                 "Program End Date",
               )}
             </Typography>
-            <Typography variant="overline">
+            <Typography variant="body2">
               {dataProgrameDates.programEndDate}
             </Typography>
           </Box>

@@ -18,6 +18,7 @@ import {
   getRange,
   getFinancialValueWithMetricPrefix,
 } from "app/utils/getFinancialValueWithMetricPrefix";
+import { formatFinancialValue } from "app/utils/formatFinancialValue";
 
 export const ResourceMobilization: React.FC = () => {
   const cmsData = useCMSData({ returnData: true });
@@ -82,17 +83,23 @@ export const ResourceMobilization: React.FC = () => {
   const totalPledge = React.useMemo(() => {
     const value = sumBy(dataRMBarChart, "value");
     const range = getRange([{ value }], ["value"]);
-    return `${getFinancialValueWithMetricPrefix(value, range.index, 2)} ${
-      range.full
-    }`;
+    return {
+      raw: formatFinancialValue(value),
+      formatted: `${getFinancialValueWithMetricPrefix(value, range.index, 2)} ${
+        range.full
+      }`,
+    };
   }, [dataRMBarChart]);
 
   const totalContribution = React.useMemo(() => {
     const value = sumBy(dataRMBarChart, "value1");
     const range = getRange([{ value }], ["value"]);
-    return `${getFinancialValueWithMetricPrefix(value, range.index, 2)} ${
-      range.full
-    }`;
+    return {
+      raw: formatFinancialValue(value),
+      formatted: `${getFinancialValueWithMetricPrefix(value, range.index, 2)} ${
+        range.full
+      }`,
+    };
   }, [dataRMBarChart]);
 
   const exportChartData = React.useMemo(() => {
@@ -109,7 +116,7 @@ export const ResourceMobilization: React.FC = () => {
         id="resource-mobilization"
         exportName="pledges-contributions"
         loading={loadingRMBarChart}
-        title={`US$${totalPledge}`}
+        title={`US$${totalPledge.formatted}`}
         selectedCycles={chart1Cycles}
         latestUpdate={latestUpdateDate}
         subtitle={getCMSDataField(
@@ -157,11 +164,13 @@ export const ResourceMobilization: React.FC = () => {
         <Box
           width="50%"
           display="flex"
-          alignItems="center"
+          paddingRight="40px"
           flexDirection="column"
+          alignItems="flex-start"
+          borderRight="1px solid #CFD4DA"
         >
-          <Typography variant="h3" fontWeight="900">
-            US${totalPledge}
+          <Typography variant="h3" fontWeight="700">
+            US${totalPledge.formatted}
           </Typography>
           <Typography variant="subtitle2">
             {getCMSDataField(
@@ -173,15 +182,19 @@ export const ResourceMobilization: React.FC = () => {
               ? ` ${chart1Cycles.map((c) => c.name).join(",")}`
               : ""}
           </Typography>
+          <Typography fontSize="14px" color="#373D43">
+            {totalPledge.raw}
+          </Typography>
         </Box>
         <Box
           width="50%"
           display="flex"
-          alignItems="center"
+          paddingLeft="40px"
           flexDirection="column"
+          alignItems="flex-start"
         >
-          <Typography variant="h3" fontWeight="900">
-            US${totalContribution}
+          <Typography variant="h3" fontWeight="700">
+            US${totalContribution.formatted}
           </Typography>
           <Typography variant="subtitle2">
             {getCMSDataField(
@@ -192,6 +205,9 @@ export const ResourceMobilization: React.FC = () => {
             {chart1Cycles.length > 0
               ? ` ${chart1Cycles.map((c) => c.name).join(",")}`
               : ""}
+          </Typography>
+          <Typography fontSize="14px" color="#373D43">
+            {totalContribution.raw}
           </Typography>
         </Box>
       </Box>

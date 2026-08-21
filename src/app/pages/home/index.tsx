@@ -71,6 +71,7 @@ export const Home: React.FC = () => {
       <HomeResultsStats
         stats={dataResultsStats}
         loading={loadingResultsStats}
+        yearSelected={annualResultsCycles[0]?.value?.toString() ?? ""}
       />
       <Box height="64px" />
       <Box display="flex" flexDirection="row" justifyContent="center">

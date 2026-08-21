@@ -96,7 +96,7 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
                   return props.formatLabel
                     ? [
                         `{name|${params.name}: }`,
-                        `{value|US$ ${getFinancialValueWithMetricPrefix(
+                        `{value|US$${getFinancialValueWithMetricPrefix(
                           params.value,
                           range.index,
                           3,
@@ -135,7 +135,7 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
                   return props.formatLabel
                     ? [
                         `{name|${params.name}: }`,
-                        `{value|US$ ${getFinancialValueWithMetricPrefix(
+                        `{value|US$${getFinancialValueWithMetricPrefix(
                           params.value,
                           range.index,
                           3,
@@ -180,7 +180,7 @@ export const SankeyChart: React.FC<SankeyChartProps> = (
                   return props.formatLabel
                     ? [
                         `{name|${params.name}: }`,
-                        `{value|US$ ${getFinancialValueWithMetricPrefix(
+                        `{value|US$${getFinancialValueWithMetricPrefix(
                           params.value,
                           range.index,
                           3,

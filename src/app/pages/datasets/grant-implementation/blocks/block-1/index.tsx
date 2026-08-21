@@ -9,6 +9,10 @@ import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import { defaultComponentsGroupingOptions } from "app/pages/datasets/grant-implementation/data";
+import {
+  getRange,
+  getFinancialValueWithMetricPrefix,
+} from "app/utils/getFinancialValueWithMetricPrefix";
 
 interface GrantImplementationPageBlock1Props {
   filterString: string;
@@ -24,16 +28,6 @@ export const GrantImplementationPageBlock1: React.FC<
     dataset: "disbursements",
   });
 
-  const componentsGroupingOptions = React.useMemo(
-    () =>
-      getCMSDataField(
-        cmsData,
-        "pagesDatasetsGrantImplementation.componentsGroupingDropdownOptions",
-        defaultComponentsGroupingOptions,
-      ),
-    [cmsData],
-  );
-
   const dataFinancialInsightsStats = useStoreState((state) =>
     get(state.FinancialInsightsStats, "data.data[0]", {
       signed: 0,
@@ -47,6 +41,46 @@ export const GrantImplementationPageBlock1: React.FC<
   const fetchFinancialInsightsStats = useStoreActions(
     (actions) => actions.FinancialInsightsStats.fetch,
   );
+
+  const componentsGroupingOptions = React.useMemo(
+    () =>
+      getCMSDataField(
+        cmsData,
+        "pagesDatasetsGrantImplementation.componentsGroupingDropdownOptions",
+        defaultComponentsGroupingOptions,
+      ),
+    [cmsData],
+  );
+
+  const totalSigned = React.useMemo(() => {
+    const rawValue = dataFinancialInsightsStats.signed;
+    const range = getRange([{ rawValue }], ["rawValue"]);
+    const value = getFinancialValueWithMetricPrefix(rawValue, range.index, 1);
+    return {
+      raw: formatFinancialValue(rawValue),
+      formatted: `US$${value} ${range.full}`,
+    };
+  }, [dataFinancialInsightsStats]);
+
+  const totalCommitted = React.useMemo(() => {
+    const rawValue = dataFinancialInsightsStats.committed;
+    const range = getRange([{ rawValue }], ["rawValue"]);
+    const value = getFinancialValueWithMetricPrefix(rawValue, range.index, 1);
+    return {
+      raw: formatFinancialValue(rawValue),
+      formatted: `US$${value} ${range.full}`,
+    };
+  }, [dataFinancialInsightsStats]);
+
+  const totalDisbursed = React.useMemo(() => {
+    const rawValue = dataFinancialInsightsStats.disbursed;
+    const range = getRange([{ rawValue }], ["rawValue"]);
+    const value = getFinancialValueWithMetricPrefix(rawValue, range.index, 1);
+    return {
+      raw: formatFinancialValue(rawValue),
+      formatted: `US$${value} ${range.full}`,
+    };
+  }, [dataFinancialInsightsStats]);
 
   React.useEffect(() => {
     fetchFinancialInsightsStats({
@@ -72,7 +106,7 @@ export const GrantImplementationPageBlock1: React.FC<
         sx={{
           "> div": {
             width: "calc(100% / 3)",
-            padding: "0 10px",
+            padding: "0 32px",
             "&:not(:last-child)": {
               borderRight: "1px solid #98A1AA",
             },
@@ -102,9 +136,7 @@ export const GrantImplementationPageBlock1: React.FC<
       >
         <Box>
           {!loadingStats ? (
-            <Typography variant="h3">
-              {formatFinancialValue(dataFinancialInsightsStats.signed)}
-            </Typography>
+            <Typography variant="h3">{totalSigned.formatted}</Typography>
           ) : (
             <Skeleton
               variant="text"
@@ -118,12 +150,20 @@ export const GrantImplementationPageBlock1: React.FC<
               "Total Signed Amount",
             )}
           </Typography>
+          {!loadingStats ? (
+            <Typography fontSize="14px" color="#373D43">
+              {totalSigned.raw}
+            </Typography>
+          ) : (
+            <Skeleton
+              variant="text"
+              sx={{ width: "250px", fontSize: "14px" }}
+            />
+          )}
         </Box>
         <Box>
           {!loadingStats ? (
-            <Typography variant="h3">
-              {formatFinancialValue(dataFinancialInsightsStats.committed)}
-            </Typography>
+            <Typography variant="h3">{totalCommitted.formatted}</Typography>
           ) : (
             <Skeleton
               variant="text"
@@ -137,12 +177,20 @@ export const GrantImplementationPageBlock1: React.FC<
               "Total Committed Amount",
             )}
           </Typography>
+          {!loadingStats ? (
+            <Typography fontSize="14px" color="#373D43">
+              {totalCommitted.raw}
+            </Typography>
+          ) : (
+            <Skeleton
+              variant="text"
+              sx={{ width: "250px", fontSize: "14px" }}
+            />
+          )}
         </Box>
         <Box>
           {!loadingStats ? (
-            <Typography variant="h3">
-              {formatFinancialValue(dataFinancialInsightsStats.disbursed)}
-            </Typography>
+            <Typography variant="h3">{totalDisbursed.formatted}</Typography>
           ) : (
             <Skeleton
               variant="text"
@@ -156,6 +204,16 @@ export const GrantImplementationPageBlock1: React.FC<
               "Total Disbursed Amount",
             )}
           </Typography>
+          {!loadingStats ? (
+            <Typography fontSize="14px" color="#373D43">
+              {totalDisbursed.raw}
+            </Typography>
+          ) : (
+            <Skeleton
+              variant="text"
+              sx={{ width: "250px", fontSize: "14px" }}
+            />
+          )}
         </Box>
       </Box>
       <Box marginBottom="50px">

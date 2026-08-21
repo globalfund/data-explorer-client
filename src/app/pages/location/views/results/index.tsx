@@ -121,7 +121,12 @@ export const Results: React.FC<ResultsProps> = (props: ResultsProps) => {
 
   return (
     <Box gap="24px" display="flex" flexDirection="column">
-      {showStats && <HomeResultsStats stats={dataResultStats} />}
+      {showStats && (
+        <HomeResultsStats
+          stats={dataResultStats}
+          yearSelected={props.resultsYear.value?.toString() ?? ""}
+        />
+      )}
       {showStats && fullWidthDivider}
       <ChartBlock
         id="results"

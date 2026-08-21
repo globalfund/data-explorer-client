@@ -102,6 +102,7 @@ export const AnnualResultsPage: React.FC = () => {
       get(state.AnnualResultsStats, "data.stats", []) as {
         label: string;
         value: number;
+        geographies: number;
       }[],
   );
   const fetchStats = useStoreActions(
@@ -545,7 +546,11 @@ export const AnnualResultsPage: React.FC = () => {
         handleCancelFilters={handleCancelFilters}
       >
         <Box width="100%" marginTop="50px">
-          <HomeResultsStats stats={dataStats} loading={loadingResults} />
+          <HomeResultsStats
+            stats={dataStats}
+            loading={loadingResults}
+            yearSelected={yearSelected ?? ""}
+          />
           <Box height="50px" />
           <Divider
             sx={{

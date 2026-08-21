@@ -17,21 +17,18 @@ import { getCMSDataField } from "app/utils/getCMSDataField";
 import { DatasetPage } from "app/pages/datasets/common/page";
 import CircularProgress from "@mui/material/CircularProgress";
 import { TableContainer } from "app/components/table-container";
+import TableIcon from "app/assets/vectors/Select_Table.svg?react";
 import { FilterGroupModel } from "app/components/filters/list/data";
 import { TABLE_VARIATION_8_COLUMNS } from "app/components/table/data";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
-import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
-import TableIcon from "app/assets/vectors/Select_Table.svg?react";
-import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 import BarChartIcon from "app/assets/vectors/Select_BarChart.svg?react";
+import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
+import { applyResultValueFormula } from "app/utils/applyResultValueFormula";
+import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
+import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 import { ExpandableHorizontalBar } from "app/components/charts/expandable-horizontal-bar";
 import { ExpandableHorizontalBarChartDataItem } from "app/components/charts/expandable-horizontal-bar/data";
-import {
-  getFinancialValueWithMetricPrefix,
-  getRange,
-} from "app/utils/getFinancialValueWithMetricPrefix";
 
 export const ResourceMobilizationPage: React.FC = () => {
   useTitle("The Data Explorer - Resource Mobilization");
@@ -385,20 +382,33 @@ export const ResourceMobilizationPage: React.FC = () => {
 
   const totalPledges = React.useMemo(() => {
     const raw = get(dataStats, "totalPledges", 0);
-    const range = getRange([{ raw }], ["raw"]);
+    const v = applyResultValueFormula(raw, 3);
     return {
       raw: formatFinancialValue(raw),
-      formatted: `US$ ${getFinancialValueWithMetricPrefix(raw, range.index, 1)} ${range.full}`,
+      formatted: `US$${v.number} ${v.text}`,
     };
   }, [dataStats]);
 
   const totalContributions = React.useMemo(() => {
     const raw = get(dataStats, "totalContributions", 0);
-    const range = getRange([{ raw }], ["raw"]);
+    const v = applyResultValueFormula(raw, 3);
     return {
       raw: formatFinancialValue(raw),
-      formatted: `US$ ${getFinancialValueWithMetricPrefix(raw, range.index, 1)} ${range.full}`,
+      formatted: `US$${v.number} ${v.text}`,
     };
+  }, [dataStats]);
+
+  const donorsByType = React.useMemo(() => {
+    const data = get(dataStats, "donorTypesCount", []);
+    const total = sumBy(data, "value");
+    return orderBy(
+      data.map((item) => ({
+        ...item,
+        percentage: total > 0 ? (item.value / total) * 100 : 0,
+      })),
+      "value",
+      "desc",
+    );
   }, [dataStats]);
 
   const chartContent = React.useMemo(() => {
@@ -533,19 +543,6 @@ export const ResourceMobilizationPage: React.FC = () => {
       }
     }
   }, [location.hash]);
-
-  const donorsByType = React.useMemo(() => {
-    const data = get(dataStats, "donorTypesCount", []);
-    const total = sumBy(data, "value");
-    return orderBy(
-      data.map((item) => ({
-        ...item,
-        percentage: total > 0 ? (item.value / total) * 100 : 0,
-      })),
-      "value",
-      "desc",
-    );
-  }, [dataStats]);
 
   return (
     <>
