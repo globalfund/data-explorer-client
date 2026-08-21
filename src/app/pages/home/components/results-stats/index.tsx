@@ -30,7 +30,7 @@ const StatComp: React.FC<StatCompProps> = (props: StatCompProps) => {
       display="flex"
       padding="0 10px"
       flexDirection="row"
-      alignItems="flex-start"
+      alignItems={props.hideGeographies ? "center" : "flex-start"}
       sx={{
         b: {
           fontWeight: 900,
@@ -76,14 +76,22 @@ const StatComp: React.FC<StatCompProps> = (props: StatCompProps) => {
           lineHeight="normal"
         >
           {props.label}
+          {props.hideGeographies ? ` in ${props.yearSelected}` : ""}
         </Typography>
-        {!props.loading ? (
-          <Typography fontSize="14px" color="#373D43">
-            Reported by {props.geographies} countr
-            {props.geographies === 1 ? "y" : "ies"} in {props.yearSelected}
-          </Typography>
-        ) : (
-          <Skeleton variant="text" sx={{ width: "250px", fontSize: "14px" }} />
+        {!props.hideGeographies && (
+          <React.Fragment>
+            {!props.loading ? (
+              <Typography fontSize="14px" color="#373D43">
+                Reported by {props.geographies} countr
+                {props.geographies === 1 ? "y" : "ies"} in {props.yearSelected}
+              </Typography>
+            ) : (
+              <Skeleton
+                variant="text"
+                sx={{ width: "250px", fontSize: "14px" }}
+              />
+            )}
+          </React.Fragment>
         )}
       </Box>
     </Box>
@@ -144,6 +152,7 @@ export const HomeResultsStats: React.FC<HomeResultsStatsProps> = (
               {...stat}
               loading={props.loading}
               yearSelected={props.yearSelected}
+              hideGeographies={props.hideGeographies}
             />
           ) : null;
         })}

@@ -69,6 +69,7 @@ export const Home: React.FC = () => {
         }}
       />
       <HomeResultsStats
+        hideGeographies
         stats={dataResultsStats}
         loading={loadingResultsStats}
         yearSelected={annualResultsCycles[0]?.value?.toString() ?? ""}

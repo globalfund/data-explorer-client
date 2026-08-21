@@ -7,14 +7,16 @@ export interface StatCompProps {
   label: string;
   loading?: boolean;
   geographies: number;
-  yearSelected?: string;
+  yearSelected: string;
   icon?: React.ReactNode;
+  hideGeographies?: boolean;
 }
 
 export interface HomeResultsStatsProps {
   stats: StatCompProps[];
   loading?: boolean;
   yearSelected: string;
+  hideGeographies?: boolean;
 }
 
 export const stats: StatCompProps[] = [
