@@ -547,6 +547,7 @@ export const AnnualResultsPage: React.FC = () => {
       >
         <Box width="100%" marginTop="50px">
           <HomeResultsStats
+            hideGeographies
             stats={dataStats}
             loading={loadingResults}
             yearSelected={yearSelected ?? ""}

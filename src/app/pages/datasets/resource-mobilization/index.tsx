@@ -30,6 +30,64 @@ import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filter
 import { ExpandableHorizontalBar } from "app/components/charts/expandable-horizontal-bar";
 import { ExpandableHorizontalBarChartDataItem } from "app/components/charts/expandable-horizontal-bar/data";
 
+const DonorByTypeComponent: React.FC<{
+  name: string;
+  value: number;
+  percentage: number;
+}> = (props) => {
+  return (
+    <Grid item xs={12} sm={12} md={3} lg={3}>
+      <Box
+        sx={{
+          gap: "6px",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <Box
+          sx={{
+            gap: "6px",
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "flex-end",
+          }}
+        >
+          <Typography variant="h4" fontSize="24px" fontWeight="700">
+            {props.value}
+          </Typography>
+          <Typography fontSize="16px" color="#373D43">
+            {props.percentage.toFixed(1)}%
+          </Typography>
+        </Box>
+        <Typography fontSize="16px" color="#373D43">
+          {props.name}
+        </Typography>
+        <Box
+          sx={{
+            gap: "6px",
+            width: "70%",
+            display: "flex",
+            flexWrap: "wrap",
+            flexDirection: "row",
+          }}
+        >
+          {Array.from({ length: props.value }, (_, index) => (
+            <Box
+              key={index}
+              sx={{
+                width: "12px",
+                height: "12px",
+                borderRadius: "50%",
+                bgcolor: "#108E09",
+              }}
+            />
+          ))}
+        </Box>
+      </Box>
+    </Grid>
+  );
+};
+
 export const ResourceMobilizationPage: React.FC = () => {
   useTitle("The Data Explorer - Resource Mobilization");
   useUnmount(() => {
@@ -760,58 +818,18 @@ export const ResourceMobilizationPage: React.FC = () => {
               </Typography>
             </Box>
           </Box>
-          <Grid container spacing={4} marginBottom="40px">
-            {donorsByType.map((item) => (
-              <Grid item xs={12} sm={3} md={3} lg={3} key={item.name}>
-                <Box
-                  sx={{
-                    gap: "6px",
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
-                >
-                  <Box
-                    sx={{
-                      gap: "6px",
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "flex-end",
-                    }}
-                  >
-                    <Typography variant="h4" fontSize="24px" fontWeight="700">
-                      {item.value}
-                    </Typography>
-                    <Typography fontSize="16px" color="#373D43">
-                      {item.percentage.toFixed(1)}%
-                    </Typography>
-                  </Box>
-                  <Typography fontSize="16px" color="#373D43" minHeight="48px">
-                    {item.name}
-                  </Typography>
-                  <Box
-                    sx={{
-                      gap: "6px",
-                      width: "100%",
-                      display: "flex",
-                      flexWrap: "wrap",
-                      flexDirection: "row",
-                    }}
-                  >
-                    {Array.from({ length: item.value }, (_, index) => (
-                      <Box
-                        key={index}
-                        sx={{
-                          width: "12px",
-                          height: "12px",
-                          borderRadius: "50%",
-                          bgcolor: "#108E09",
-                        }}
-                      />
-                    ))}
-                  </Box>
-                </Box>
-              </Grid>
-            ))}
+          <Grid container spacing={2} marginBottom="40px">
+            {donorsByType.length > 0 && (
+              <DonorByTypeComponent
+                {...donorsByType[0]}
+                key={donorsByType[0].name}
+              />
+            )}
+            <Grid item container rowSpacing={4} xs={12} sm={12} md={9} lg={9}>
+              {donorsByType.slice(1).map((item) => (
+                <DonorByTypeComponent key={item.name} {...item} />
+              ))}
+            </Grid>
           </Grid>
           <Typography variant="overline" fontSize="14px">
             Latest Update: <b>{latestUpdateDate}</b>
