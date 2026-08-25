@@ -83,11 +83,11 @@ export const RTEToolbar: React.FC<{ editor: Editor }> = ({ editor }) => {
         isFontFamilyCourierNew: ctx.editor.isActive("textStyle", {
           fontFamily: "Courier New",
         }),
-        fontFamily: ctx.editor.getAttributes("textStyle").fontFamily ?? "Inter",
-        fontWeight: ctx.editor.getAttributes("textStyle").fontWeight ?? "400",
+        fontFamily: ctx.editor.getAttributes("textStyle").fontFamily || "Inter",
+        fontWeight: ctx.editor.getAttributes("textStyle").fontWeight || "400",
         letterSpacing:
-          ctx.editor.getAttributes("textStyle").letterSpacing ?? "0px",
-        lineHeight: ctx.editor.getAttributes("textStyle").lineHeight ?? "Auto",
+          ctx.editor.getAttributes("textStyle").letterSpacing || "0px",
+        lineHeight: ctx.editor.getAttributes("textStyle").lineHeight || "Auto",
       };
     },
   });
