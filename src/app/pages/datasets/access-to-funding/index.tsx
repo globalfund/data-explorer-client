@@ -174,7 +174,7 @@ export const AccessToFundingPage: React.FC = () => {
         handleCancelFilters={handleCancelFilters}
       >
         <Box width="100%" marginTop="50px">
-          {/* Eligible Countries by Numbers */}
+          {/* Eligible Countries */}
           <AccessToFundingBlock1
             filterString={filterString}
             eligibilityYear={eligibilityYear}

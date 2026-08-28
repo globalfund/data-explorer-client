@@ -1,7 +1,6 @@
 import React from "react";
 import get from "lodash/get";
 import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
 import Skeleton from "@mui/material/Skeleton";
 import { useCMSData } from "app/hooks/useCMSData";
 import Typography from "@mui/material/Typography";
@@ -33,6 +32,10 @@ export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
       get(state.AccessToFundingStats, "data.data", []) as {
         name: string;
         value: string;
+        incomeLevelCounts: {
+          incomeLevel: string;
+          count: number;
+        }[];
       }[],
   );
   const loadingStats = useStoreState(
@@ -64,7 +67,7 @@ export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
   }, [props.filterString, props.eligibilityYear]);
 
   return (
-    <Box>
+    <Box marginBottom="25px">
       <Box
         width="100%"
         display="flex"
@@ -83,14 +86,14 @@ export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
             {getCMSDataField(
               cmsData,
               "pagesDatasetsAccessToFunding.statsTitle",
-              "Eligible Countries by Numbers",
+              "Eligible Countries",
             )}
           </Typography>
           <Typography variant="body2" fontSize="20px">
             {getCMSDataField(
               cmsData,
               "pagesDatasetsAccessToFunding.statsSubtitle",
-              "Segmented by Components.",
+              "Assessed against disease burden and income level. Countries may qualify for more than one component.",
             )}
           </Typography>
         </Box>
@@ -121,43 +124,83 @@ export const AccessToFundingBlock1: React.FC<AccessToFundingBlock1Props> = (
           />
         </Box>
       </Box>
-      <Grid
-        container
-        spacing={2}
+      <Box
+        width="100%"
+        display="flex"
+        flexDirection="row"
         position="relative"
-        margin="4px 0 50px 0"
+        margin="32px 0 25px 0"
         sx={{
-          marginLeft: "-16px",
+          "> div": {
+            width: "calc(100% / 3)",
+            padding: "0 32px",
+            "&:not(:last-child)": {
+              borderRight: "1px solid #98A1AA",
+            },
+            "&:first-of-type": {
+              paddingLeft: 0,
+            },
+            "@media (max-width: 920px)": {
+              padding: "0 15px",
+              h5: {
+                fontSize: "20px",
+              },
+            },
+            "@media (max-width: 767px)": {
+              width: "100%",
+              padding: "16px 0",
+              borderRightStyle: "none !important",
+              "&:not(:last-child)": {
+                borderBottom: "1px solid #98A1AA",
+              },
+            },
+          },
+          "@media (max-width: 767px)": {
+            marginBottom: 0,
+            flexDirection: "column",
+          },
         }}
       >
         {dataStats.map((item) => (
-          <Grid item key={item.name} xs={12} sm={6} md={3}>
-            <Box padding="15px" bgcolor="#F1F3F5">
-              <Typography variant="h4">{item.value}</Typography>
-              {!loadingStats ? (
-                <Typography fontSize="16px">
-                  {getCMSDataField(
-                    cmsData,
-                    "pagesDatasetsAccessToFunding.countriesEligible",
-                    "Countries Eligible for",
-                  )}{" "}
-                  {item.name}
-                </Typography>
-              ) : (
-                <Skeleton
-                  variant="text"
-                  sx={{ width: "100%", lineHeight: 1.2, fontSize: "16px" }}
-                />
-              )}
-            </Box>
-          </Grid>
+          <Box key={item.name}>
+            {!loadingStats ? (
+              <Typography variant="h3">{item.value}</Typography>
+            ) : (
+              <Skeleton
+                variant="text"
+                sx={{ width: "400px", lineHeight: 1.2, fontSize: "36px" }}
+              />
+            )}
+            <Typography fontSize="16px">
+              {getCMSDataField(
+                cmsData,
+                "pagesDatasetsAccessToFunding.countriesEligible",
+                "Countries Eligible for",
+              )}{" "}
+              {item.name}
+            </Typography>
+            {!loadingStats ? (
+              <Typography fontSize="14px" color="#373D43">
+                {item.incomeLevelCounts
+                  .map((incomeLevelCount) => (
+                    <React.Fragment key={incomeLevelCount.incomeLevel}>
+                      {incomeLevelCount.count} {incomeLevelCount.incomeLevel}
+                    </React.Fragment>
+                  ))
+                  .join(" · ")}
+              </Typography>
+            ) : (
+              <Skeleton
+                variant="text"
+                sx={{ width: "250px", fontSize: "14px" }}
+              />
+            )}
+          </Box>
         ))}
-        <Grid item xs={12}>
-          <Typography variant="overline" fontSize="14px">
-            Latest Update: <b>{latestUpdateDate}</b>
-          </Typography>
-        </Grid>
-      </Grid>
+      </Box>
+      <Typography variant="overline" fontSize="14px">
+        Latest Update: <b>{latestUpdateDate}</b>
+      </Typography>
     </Box>
   );
 };
