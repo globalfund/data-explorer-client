@@ -18,6 +18,7 @@ export interface DatasetChartBlockProps {
   dropdownSelected?: string;
   disableCollapse?: boolean;
   unitButtons?: React.ReactNode;
+  extraToolbar?: React.ReactNode;
   handleResetFilters: () => void;
   filterGroups: FilterGroupModel[];
   extraDropdown?: React.ReactElement;

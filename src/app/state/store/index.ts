@@ -141,10 +141,11 @@ import {
   glossary,
   changelog,
   countrySummary,
-} from "../api/action-reducers/cms/collections";
-import { formattedCollections } from "../api/action-reducers/cms/formatted";
-import componentHeader from "../api/action-reducers/cms/componentsHeader";
-import componentFooter from "../api/action-reducers/cms/componentsFooter";
+} from "app/state/api/action-reducers/cms/collections";
+import { formattedCollections } from "app/state/api/action-reducers/cms/formatted";
+import componentHeader from "app/state/api/action-reducers/cms/componentsHeader";
+import componentFooter from "app/state/api/action-reducers/cms/componentsFooter";
+import { AnnualResultsGroupedByComponent } from "app/state/api/action-reducers/annual-results/grouped-by-component";
 
 const storeContent: StoreModel = {
   // homepage
@@ -214,6 +215,7 @@ const storeContent: StoreModel = {
   AnnualResultsStats: persist(AnnualResultsStats),
   AnnualResultsPolyline: persist(AnnualResultsPolyline),
   AnnualResultsTable: persist(AnnualResultsTable),
+  AnnualResultsGroupedByComponent: persist(AnnualResultsGroupedByComponent),
   AnnualResultsDocumentsTable: persist(ResultsDocuments),
   // grants
   GrantList: persist(GrantList),

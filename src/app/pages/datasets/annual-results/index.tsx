@@ -14,17 +14,22 @@ import { Dropdown } from "app/components/dropdown";
 import { getCMSDataField } from "app/utils/getCMSDataField";
 import { DatasetPage } from "app/pages/datasets/common/page";
 import CircularProgress from "@mui/material/CircularProgress";
+import TableIcon from "app/assets/vectors/TableView.svg?react";
 import { TableContainer } from "app/components/table-container";
-import TableIcon from "app/assets/vectors/Select_Table.svg?react";
+import PolylineIcon from "app/assets/vectors/Polyline.svg?react";
 import { PolylineTree } from "app/components/charts/polyline-tree";
 import { FilterGroupModel } from "app/components/filters/list/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import BarChartIcon from "app/assets/vectors/Select_BarChart.svg?react";
+import GroupedViewIcon from "app/assets/vectors/GroupedView.svg?react";
 import { DatasetChartBlock } from "app/pages/datasets/common/chart-block";
 import { HomeResultsStats } from "app/pages/home/components/results-stats";
 import { useGetDatasetLatestUpdate } from "app/hooks/useGetDatasetLatestUpdate";
 import { PolylineTreeDataItem } from "app/components/charts/polyline-tree/data";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
+import {
+  ToolbarComponent,
+  GroupedByComponentTable,
+} from "app/components/results-grouped-table";
 import {
   TABLE_VARIATION_9_COLUMNS,
   TABLE_VARIATION_6_COLUMNS as DOCUMENTS_TABLE_COLUMNS,
@@ -44,11 +49,20 @@ export const AnnualResultsPage: React.FC = () => {
       {
         label: getCMSDataField(
           cmsData,
+          "pagesDatasetsAnnualResults.groupedDropdownOptionLabel",
+          "Grouped",
+        ),
+        value: "Grouped",
+        icon: <GroupedViewIcon />,
+      },
+      {
+        label: getCMSDataField(
+          cmsData,
           "generic.polylineChartDropdownOptionLabel",
           "Polyline Tree",
         ),
         value: "Polyline Tree",
-        icon: <BarChartIcon />,
+        icon: <PolylineIcon />,
       },
       {
         label: getCMSDataField(
@@ -96,6 +110,10 @@ export const AnnualResultsPage: React.FC = () => {
 
   const [tableSearch, setTableSearch] = React.useState("");
   const [tableSearch2, setTableSearch2] = React.useState("");
+  const [groupedByComponentSearch, setGroupedByComponentSearch] =
+    React.useState("");
+  const [groupedByComponentExpanded, setGroupedByComponentExpanded] =
+    React.useState<string[]>(["TB/HIV", "RSSH"]);
 
   const dataStats = useStoreState(
     (state) =>
@@ -132,12 +150,29 @@ export const AnnualResultsPage: React.FC = () => {
   const fetchTable = useStoreActions(
     (actions) => actions.AnnualResultsTable.fetch,
   );
+  const dataGroupedByComponent = useStoreState(
+    (state) =>
+      get(state.AnnualResultsGroupedByComponent, "data.data", []) as {
+        name: string;
+        indicators: {
+          name: string;
+          value: number;
+          numOfCountries: number;
+        }[];
+        numOfCountries: number;
+      }[],
+  );
+  const fetchGroupedByComponent = useStoreActions(
+    (actions) => actions.AnnualResultsGroupedByComponent.fetch,
+  );
   const loadingResults = useStoreState((state) => {
     switch (dropdownSelected) {
       case dropdownItems[0].value:
         return state.AnnualResultsPolyline.loading;
       case dropdownItems[1].value:
         return state.AnnualResultsTable.loading;
+      case dropdownItems[2].value:
+        return state.AnnualResultsGroupedByComponent.loading;
       default:
         return false;
     }
@@ -294,10 +329,18 @@ export const AnnualResultsPage: React.FC = () => {
         );
       case dropdownItems[1].value:
         return (!dataTable || !dataTable.length) && tableSearch.length === 0;
+      case dropdownItems[2].value:
+        return !dataGroupedByComponent || !dataGroupedByComponent.length;
       default:
         return false;
     }
-  }, [tableSearch, dropdownSelected, dataPolyline, dataTable]);
+  }, [
+    tableSearch,
+    dropdownSelected,
+    dataPolyline,
+    dataTable,
+    dataGroupedByComponent,
+  ]);
 
   const filterGroups = React.useMemo(() => {
     return [dataLocationFilterOptions, dataComponentFilterOptions];
@@ -406,11 +449,37 @@ export const AnnualResultsPage: React.FC = () => {
     fetchDocumentsTable({ filterString: filterString2 });
   };
 
+  const groupedByComponentData = React.useMemo(() => {
+    return dataGroupedByComponent
+      .map((component) => {
+        const filteredIndicators = component.indicators.filter((indicator) =>
+          indicator.name
+            .toLowerCase()
+            .includes(groupedByComponentSearch.toLowerCase()),
+        );
+        return {
+          ...component,
+          indicators: filteredIndicators,
+        };
+      })
+      .filter(
+        (component) => component.indicators && component.indicators.length > 0,
+      );
+  }, [dataGroupedByComponent, groupedByComponentSearch]);
+
   const chartContent = React.useMemo(() => {
     switch (dropdownSelected) {
       case dropdownItems[0].value:
-        return <PolylineTree data={dataPolyline} />;
+        return (
+          <GroupedByComponentTable
+            data={groupedByComponentData}
+            expanded={groupedByComponentExpanded}
+            setExpanded={setGroupedByComponentExpanded}
+          />
+        );
       case dropdownItems[1].value:
+        return <PolylineTree data={dataPolyline} />;
+      case dropdownItems[2].value:
         return (
           <TableContainer
             dataTree
@@ -434,12 +503,31 @@ export const AnnualResultsPage: React.FC = () => {
       default:
         return null;
     }
-  }, [dropdownSelected, dataPolyline, dataTable, yearSelected]);
+  }, [
+    dataTable,
+    yearSelected,
+    dataPolyline,
+    dropdownSelected,
+    groupedByComponentData,
+    groupedByComponentExpanded,
+  ]);
 
   const exportChartData = React.useMemo(() => {
     const result: (string | number)[][] = [];
     switch (dropdownSelected) {
       case dropdownItems[0].value:
+        groupedByComponentData.forEach((component) => {
+          component.indicators.forEach((indicator) => {
+            result.push([
+              yearSelected ?? "",
+              `"${component.name}"`,
+              `"${indicator.name}"`,
+              indicator.value ?? "",
+            ]);
+          });
+        });
+        break;
+      case dropdownItems[1].value:
         dataPolyline.children?.forEach((component) => {
           component.children?.forEach((indicator) => {
             result.push([
@@ -451,7 +539,7 @@ export const AnnualResultsPage: React.FC = () => {
           });
         });
         break;
-      case dropdownItems[1].value:
+      case dropdownItems[2].value:
         dataTable.forEach((year) => {
           if (year !== null) {
             // @ts-expect-error object is possibly null
@@ -475,7 +563,51 @@ export const AnnualResultsPage: React.FC = () => {
       headers: ["Year", "Component", "Indicator", "Amount"],
       data: result,
     };
-  }, [dropdownSelected, dataPolyline, dataTable]);
+  }, [
+    dataTable,
+    yearSelected,
+    dataPolyline,
+    dropdownSelected,
+    groupedByComponentData,
+  ]);
+
+  const groupedByComponentExpandAll = () => {
+    setGroupedByComponentExpanded(
+      dataGroupedByComponent.map((component) => component.name),
+    );
+  };
+
+  const groupedByComponentCollapseAll = () => {
+    setGroupedByComponentExpanded([]);
+  };
+
+  const groupedByComponentToolbar = React.useMemo(() => {
+    const indicatorCount = dataGroupedByComponent.reduce((acc, component) => {
+      return acc + component.indicators.length;
+    }, 0);
+
+    const allExpanded =
+      dataGroupedByComponent.length === groupedByComponentExpanded.length;
+
+    return (
+      <ToolbarComponent
+        searchValue={groupedByComponentSearch}
+        setSearchValue={setGroupedByComponentSearch}
+        buttonLabel={allExpanded ? "Collapse All" : "Expand All"}
+        label={`${indicatorCount} indicators reported in ${yearSelected}`}
+        onExpandAll={
+          allExpanded
+            ? groupedByComponentCollapseAll
+            : groupedByComponentExpandAll
+        }
+      />
+    );
+  }, [
+    yearSelected,
+    dataGroupedByComponent,
+    groupedByComponentSearch,
+    groupedByComponentExpanded,
+  ]);
 
   React.useEffect(() => {
     if (annualResultsCycles.length > 0) {
@@ -507,6 +639,10 @@ export const AnnualResultsPage: React.FC = () => {
         },
       });
       fetchTable({ filterString: chartFilterString });
+      fetchGroupedByComponent({
+        filterString: chartFilterString,
+        routeParams: { cycle: yearSelected },
+      });
     }
   }, [chartFilterString, yearSelected]);
 
@@ -519,6 +655,16 @@ export const AnnualResultsPage: React.FC = () => {
       }
     }
   }, [location.hash]);
+
+  React.useEffect(() => {
+    if (dropdownSelected === dropdownItems[0].value) {
+      setGroupedByComponentExpanded(
+        groupedByComponentSearch.length > 0
+          ? dataGroupedByComponent.map((component) => component.name)
+          : [],
+      );
+    }
+  }, [groupedByComponentSearch]);
 
   const canonicalUrl = `${window.location.origin}/annual-results`;
 
@@ -599,6 +745,11 @@ export const AnnualResultsPage: React.FC = () => {
               appliedFilters={chartTempAppliedFilters}
               tempAppliedFiltersData={chartTempAppliedFiltersData}
               infoType="global"
+              extraToolbar={
+                dropdownSelected === dropdownItems[0].value
+                  ? groupedByComponentToolbar
+                  : undefined
+              }
             >
               {chartContent}
             </DatasetChartBlock>

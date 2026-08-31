@@ -209,6 +209,7 @@ export const DatasetChartBlock: React.FC<DatasetChartBlockProps> = (
           >
             {filterPopoverContent}
           </Popover>
+          {props.extraToolbar}
           {/* <Button variant="outlined" startIcon={<SettingsIcon />}>
             Settings
           </Button> */}
