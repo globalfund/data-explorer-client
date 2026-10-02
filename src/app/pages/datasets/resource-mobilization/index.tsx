@@ -1,4 +1,7 @@
 import React from "react";
+import { PageNarrativesProvider } from "app/hooks/usePageNarratives";
+import { PageNarrativePanel } from "app/components/narrative-section";
+import type { PageNarrativeRef } from "app/types/narratives";
 import get from "lodash/get";
 import uniq from "lodash/uniq";
 import sumBy from "lodash/sumBy";
@@ -88,7 +91,20 @@ const DonorByTypeComponent: React.FC<{
   );
 };
 
-export const ResourceMobilizationPage: React.FC = () => {
+const narrativeRef: PageNarrativeRef = {
+  page_type: "resource-mobilization",
+  page_id: "global",
+  locale: "en",
+  scope_key: "default",
+};
+
+export const ResourceMobilizationPage: React.FC = () => (
+  <PageNarrativesProvider pageRef={narrativeRef}>
+    <ResourceMobilizationContent />
+  </PageNarrativesProvider>
+);
+
+const ResourceMobilizationContent: React.FC = () => {
   useTitle("The Data Explorer - Resource Mobilization");
   useUnmount(() => {
     tempAppliedFiltersActions.clearAll();
@@ -831,6 +847,10 @@ export const ResourceMobilizationPage: React.FC = () => {
               ))}
             </Grid>
           </Grid>
+          <PageNarrativePanel
+            sectionId="resource_mobilization.funding_summary"
+            scopeMatches={appliedFilterString.length === 0}
+          />
           <Typography variant="overline" fontSize="14px">
             Latest Update: <b>{latestUpdateDate}</b>
           </Typography>
@@ -891,6 +911,14 @@ export const ResourceMobilizationPage: React.FC = () => {
             >
               {chartContent}
             </DatasetChartBlock>
+            <PageNarrativePanel
+              sectionId="resource_mobilization.donor_composition"
+              scopeMatches={
+                appliedFilterString.length === 0 &&
+                chartFilterString.length === 0 &&
+                tableSearch.length === 0
+              }
+            />
           </Box>
         </Box>
       </DatasetPage>
