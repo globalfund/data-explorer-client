@@ -5,6 +5,7 @@ import {
   expandNarrativeCitations,
   parseCountryNarrativeBundle,
 } from "../src/app/types/narratives";
+import { contextClaim, contextSpanMutations } from "./context-span-cases";
 
 const fixturePath = process.argv[2] || "tests/fixtures/country-bundle-moz.json";
 const fixture = JSON.parse(fs.readFileSync(fixturePath, "utf8")) as Record<
@@ -118,3 +119,62 @@ for (const sourceUrl of [
 }
 
 console.log(`Narrative contract checks passed for ${bundle.country}`);
+
+const contextFixture = JSON.parse(
+  fs.readFileSync("tests/fixtures/country-bundle-moz-context.json", "utf8"),
+);
+const contextBundle = parseCountryNarrativeBundle(contextFixture);
+assert.ok(contextBundle, "the NE country bundle with context spans validates");
+const spanClaims = [
+  ...contextBundle.sections.flatMap((section) => section.claims),
+  ...(contextBundle.overview?.claims ?? []),
+].filter((claim) => claim.context_spans);
+assert.equal(spanClaims.length, 1);
+const [span] = spanClaims[0].context_spans!;
+assert.ok(spanClaims[0].text.includes(span.text));
+const contextSourceIds = contextBundle.sources
+  .filter((source) => source.kind === "external_context")
+  .map((source) => source.id);
+assert.equal(contextSourceIds.length, 5);
+assert.ok(span.evidence_ids.every((id) => contextSourceIds.includes(id)));
+
+const withOverviewSpan = structuredClone(contextFixture);
+withOverviewSpan.overview.claims.push(
+  structuredClone(contextClaim(withOverviewSpan)),
+);
+assert.ok(
+  parseCountryNarrativeBundle(withOverviewSpan),
+  "an Overview claim may carry context spans",
+);
+const withoutSpans = structuredClone(contextFixture);
+delete contextClaim(withoutSpans).context_spans;
+assert.ok(parseCountryNarrativeBundle(withoutSpans), "spans stay optional");
+const listKind = structuredClone(contextFixture);
+const listKindId = contextClaim(listKind).context_spans[0].evidence_ids[0];
+listKind.sources.find(
+  (source: { id: string }) => source.id === listKindId,
+).kind = ["external_context"];
+assert.equal(parseCountryNarrativeBundle(listKind), null);
+
+for (const [label, mutate] of contextSpanMutations) {
+  const sectionCase = structuredClone(contextFixture);
+  const claim = contextClaim(sectionCase);
+  mutate(claim.context_spans[0], claim, sectionCase);
+  assert.equal(
+    parseCountryNarrativeBundle(sectionCase),
+    null,
+    `section context spans with ${label}`,
+  );
+  const overviewCase = structuredClone(contextFixture);
+  const repeated = structuredClone(contextClaim(overviewCase));
+  overviewCase.overview.claims.push(repeated);
+  mutate(repeated.context_spans[0], repeated, overviewCase);
+  assert.equal(
+    parseCountryNarrativeBundle(overviewCase),
+    null,
+    `Overview context spans with ${label}`,
+  );
+}
+console.log(
+  `Context span contract checks passed for ${contextBundle.country} (${contextSpanMutations.length} malformed cases)`,
+);

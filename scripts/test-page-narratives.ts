@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import * as contracts from "../src/app/types/narratives";
+import { contextClaim, contextSpanMutations } from "./context-span-cases";
 
 assert.equal(
   typeof contracts.parsePageNarrativeBundle,
@@ -305,4 +306,59 @@ const accessUiFixture = JSON.parse(
 assert.ok(
   parse(accessUiFixture, accessRef),
   "synthetic Access to Funding UI fixture must parse",
+);
+
+const countryPageFixture = JSON.parse(
+  fs.readFileSync(
+    "tests/fixtures/page-bundle-country-moz-context.json",
+    "utf8",
+  ),
+);
+const countryRef = { ...ref, page_type: "country", page_id: "MOZ" };
+const countryPage = parse(countryPageFixture, countryRef);
+assert.ok(countryPage, "the NE country page bundle with context spans parses");
+const pageSpanClaim = contextClaim(countryPage);
+assert.ok(pageSpanClaim, "the fixture carries one context span claim");
+assert.ok(
+  pageSpanClaim.context_spans.every(
+    (span: { text: string; evidence_ids: string[] }) =>
+      pageSpanClaim.text.includes(span.text) &&
+      span.evidence_ids.every((id) =>
+        countryPage.sources.some(
+          (source) => source.id === id && source.kind === "external_context",
+        ),
+      ),
+  ),
+);
+const pageWithoutSpans = structuredClone(countryPageFixture);
+delete contextClaim(pageWithoutSpans).context_spans;
+assert.ok(parse(pageWithoutSpans, countryRef), "spans stay optional");
+const pageSummary = structuredClone(countryPageFixture);
+const summaryClaim = structuredClone(contextClaim(pageSummary));
+summaryClaim.heading = null;
+pageSummary.summary.claims.push(summaryClaim);
+assert.ok(
+  parse(pageSummary, countryRef),
+  "a summary claim may carry context spans",
+);
+for (const [label, mutate] of contextSpanMutations) {
+  const sectionCase = structuredClone(countryPageFixture);
+  const claim = contextClaim(sectionCase);
+  mutate(claim.context_spans[0], claim, sectionCase);
+  assert.equal(
+    parse(sectionCase, countryRef),
+    null,
+    `page context spans with ${label}`,
+  );
+  const summaryCase = structuredClone(pageSummary);
+  const repeated = summaryCase.summary.claims.at(-1);
+  mutate(repeated.context_spans[0], repeated, summaryCase);
+  assert.equal(
+    parse(summaryCase, countryRef),
+    null,
+    `summary context spans with ${label}`,
+  );
+}
+console.log(
+  `Country page context span contract passed (${contextSpanMutations.length} malformed cases)`,
 );
