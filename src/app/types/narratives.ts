@@ -54,10 +54,16 @@ export interface NarrativeCalculation<Scope = NarrativeScope> {
   scope: Scope;
 }
 
+export interface NarrativeContextSpan {
+  text: string;
+  evidence_ids: string[];
+}
+
 export interface NarrativeClaim {
   text: string;
   evidence_ids: string[];
   heading?: string | null;
+  context_spans?: NarrativeContextSpan[];
 }
 
 export interface NarrativeSection {
@@ -171,7 +177,48 @@ const isScope = (value: unknown, country: string): value is NarrativeScope => {
   );
 };
 
-const isClaim = (value: unknown): value is NarrativeClaim => {
+const contextSourceIds = (sources: unknown[]): ReadonlySet<unknown> =>
+  new Set(
+    sources
+      .filter((item) => isRecord(item) && item.kind === "external_context")
+      .map((item) => (item as Record<string, unknown>).id),
+  );
+
+const isContextSpan = (
+  value: unknown,
+  claim: Record<string, unknown>,
+  contextIds: ReadonlySet<unknown>,
+): value is NarrativeContextSpan =>
+  isRecord(value) &&
+  Object.keys(value).every((key) => ["text", "evidence_ids"].includes(key)) &&
+  isNonEmptyString(value.text) &&
+  (claim.text as string).includes(value.text) &&
+  isArray(value.evidence_ids) &&
+  value.evidence_ids.length > 0 &&
+  value.evidence_ids.every(
+    (id) =>
+      isString(id) &&
+      contextIds.has(id) &&
+      (claim.evidence_ids as unknown[]).includes(id),
+  ) &&
+  new Set(value.evidence_ids).size === value.evidence_ids.length;
+
+// The engine omits the key when there are no spans, so an empty list is malformed.
+const hasValidContextSpans = (
+  claim: Record<string, unknown>,
+  contextIds: ReadonlySet<unknown>,
+) =>
+  !("context_spans" in claim) ||
+  (isArray(claim.context_spans) &&
+    claim.context_spans.length > 0 &&
+    claim.context_spans.every((span) =>
+      isContextSpan(span, claim, contextIds),
+    ));
+
+const isClaim = (
+  value: unknown,
+  contextIds: ReadonlySet<unknown>,
+): value is NarrativeClaim => {
   if (!isRecord(value)) return false;
   return (
     isNonEmptyString(value.text) &&
@@ -185,11 +232,15 @@ const isClaim = (value: unknown): value is NarrativeClaim => {
       ].includes(value.heading as string)) &&
     isArray(value.evidence_ids) &&
     value.evidence_ids.length > 0 &&
-    value.evidence_ids.every(isNonEmptyString)
+    value.evidence_ids.every(isNonEmptyString) &&
+    hasValidContextSpans(value, contextIds)
   );
 };
 
-const isSection = (value: unknown): value is NarrativeSection => {
+const isSection = (
+  value: unknown,
+  contextIds: ReadonlySet<unknown>,
+): value is NarrativeSection => {
   if (
     !isRecord(value) ||
     !isString(value.id) ||
@@ -208,7 +259,11 @@ const isSection = (value: unknown): value is NarrativeSection => {
     !["ready", "insufficient_evidence", "not_applicable"].includes(value.status)
   )
     return false;
-  if (!isArray(value.claims) || !value.claims.every(isClaim)) return false;
+  if (
+    !isArray(value.claims) ||
+    !value.claims.every((claim) => isClaim(claim, contextIds))
+  )
+    return false;
   return value.status === "ready"
     ? value.claims.length > 0
     : value.claims.length === 0;
@@ -312,7 +367,12 @@ export function parseCountryNarrativeBundle(
     !value.calculations.every((item) => isCalculation(item, country))
   )
     return null;
-  if (!isArray(value.sections) || !value.sections.every(isSection)) return null;
+  const contextIds = contextSourceIds(value.sources);
+  if (
+    !isArray(value.sections) ||
+    !value.sections.every((item) => isSection(item, contextIds))
+  )
+    return null;
   const overview = value.overview;
   if (overview !== null && overview !== undefined) {
     if (
@@ -323,7 +383,7 @@ export function parseCountryNarrativeBundle(
       overview.status !== "ready" ||
       !isArray(overview.claims) ||
       overview.claims.length === 0 ||
-      !overview.claims.every(isClaim) ||
+      !overview.claims.every((claim) => isClaim(claim, contextIds)) ||
       !isArray(overview.contributing_section_ids) ||
       !overview.contributing_section_ids.every(isString)
     )
@@ -719,6 +779,7 @@ const references = (section: SavedNarrativeSection) =>
 function isPageSection(
   value: unknown,
   configured: PageSectionPresentation | PageSummaryPresentation,
+  contextIds: ReadonlySet<unknown>,
   summary = false,
 ): value is PageNarrativeSection | PageNarrativeSummary {
   return (
@@ -745,7 +806,7 @@ function isPageSection(
     value.claims.every(
       (claim) =>
         isRecord(claim) &&
-        onlyKeys(claim, ["text", "evidence_ids", "heading"]) &&
+        onlyKeys(claim, ["text", "evidence_ids", "heading", "context_spans"]) &&
         isNonEmptyString(claim.text) &&
         (claim.heading == null ||
           (isString(claim.heading) &&
@@ -753,7 +814,8 @@ function isPageSection(
         isArray(claim.evidence_ids) &&
         claim.evidence_ids.length > 0 &&
         claim.evidence_ids.every(identifier) &&
-        unique(claim.evidence_ids),
+        unique(claim.evidence_ids) &&
+        hasValidContextSpans(claim, contextIds),
     )
   );
 }
@@ -881,6 +943,7 @@ export function parsePageNarrativeBundle(
   const sourceIds = new Set(sources.map((item) => item.id));
   const calculationIds = new Set(calculations.map((item) => item.id));
   const evidenceIds = new Set([...sourceIds, ...calculationIds]);
+  const contextIds = contextSourceIds(sources);
   if (
     sourceIds.size !== sources.length ||
     calculationIds.size !== calculations.length ||
@@ -888,7 +951,7 @@ export function parsePageNarrativeBundle(
     value.sections.length !== configured.length ||
     !value.sections.every(
       (item, index) =>
-        isPageSection(item, configured[index]) &&
+        isPageSection(item, configured[index], contextIds) &&
         references(item).every((id) => evidenceIds.has(id)),
     )
   )
@@ -899,6 +962,7 @@ export function parsePageNarrativeBundle(
       !isPageSection(
         value.summary,
         summaryConfig as unknown as PageSummaryPresentation,
+        contextIds,
         true,
       )
     )

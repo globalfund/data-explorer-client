@@ -1,0 +1,1485 @@
+{
+  "country": "MOZ",
+  "locale": "en",
+  "metadata": {
+    "snapshot_id": "offline-context-fixture",
+    "revision_id": "offline-context-fixture",
+    "model": "offline/reference-provider",
+    "prompt_version": "offline-context-fixture",
+    "style_version": "offline-context-fixture",
+    "generated_at": "2026-10-13T00:00:00Z"
+  },
+  "sources": [
+    {
+      "id": "structured.b2b342af82ad3e1ed781654c",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/allocations/radial/MOZ?periods=2026-2028",
+      "document_locator": null,
+      "content_hash": "41a2ca22d33102a234f6662788aa5d2e6d85fc9b803b8709888d9035a8f375b4",
+      "retrieved_at": "2026-09-21T09:36:14Z",
+      "value": "446058953",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "2026-2028",
+            "start": "2026-01-01",
+            "end": "2028-12-31"
+          }
+        ],
+        "unit": "reference-rate amount",
+        "currency": "USD",
+        "source_dates": [
+          "2026-06-09"
+        ]
+      }
+    },
+    {
+      "id": "structured.76b5c59107784acfc40805bb",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/allocations/radial/MOZ?periods=2026-2028",
+      "document_locator": null,
+      "content_hash": "41a2ca22d33102a234f6662788aa5d2e6d85fc9b803b8709888d9035a8f375b4",
+      "retrieved_at": "2026-09-21T09:36:14Z",
+      "value": "0",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "2026-2028",
+            "start": "2026-01-01",
+            "end": "2028-12-31"
+          }
+        ],
+        "unit": "reference-rate amount",
+        "currency": "USD",
+        "source_dates": [
+          "2026-06-09"
+        ]
+      }
+    },
+    {
+      "id": "structured.d2ed61fbc8f9f9cb76471354",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/funding-requests/MOZ?periods=2023",
+      "document_locator": null,
+      "content_hash": "a000f7e450b4c92688ea65a2013f9c6c22f079ba041de2156c589422b6f9b8b6",
+      "retrieved_at": "2026-09-21T09:36:14Z",
+      "value": "Grant Making",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "2023 - 2025",
+            "start": "2023-01-01",
+            "end": "2025-12-31"
+          }
+        ],
+        "unit": "status",
+        "currency": null,
+        "source_dates": [
+          "2025-04-15"
+        ]
+      }
+    },
+    {
+      "id": "structured.12bfc7451f7354cd79da1b68",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/funding-requests/MOZ?periods=2023",
+      "document_locator": null,
+      "content_hash": "a000f7e450b4c92688ea65a2013f9c6c22f079ba041de2156c589422b6f9b8b6",
+      "retrieved_at": "2026-09-21T09:36:14Z",
+      "value": "MOZ-S-MOH",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "2023 - 2025",
+            "start": "2023-01-01",
+            "end": "2025-12-31"
+          }
+        ],
+        "unit": "grant record",
+        "currency": null,
+        "source_dates": [
+          "2025-04-15"
+        ]
+      }
+    },
+    {
+      "id": "structured.6095a1bd63d69749216d671d",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/funding-requests/MOZ?periods=2023",
+      "document_locator": null,
+      "content_hash": "a000f7e450b4c92688ea65a2013f9c6c22f079ba041de2156c589422b6f9b8b6",
+      "retrieved_at": "2026-09-21T09:36:14Z",
+      "value": "1",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "2023 - 2025",
+            "start": "2023-01-01",
+            "end": "2025-12-31"
+          }
+        ],
+        "unit": "count",
+        "currency": null,
+        "source_dates": [
+          "2025-04-15"
+        ]
+      }
+    },
+    {
+      "id": "structured.942836a35f9ec11d535bb177",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/funding-requests/MOZ?periods=2023",
+      "document_locator": null,
+      "content_hash": "a000f7e450b4c92688ea65a2013f9c6c22f079ba041de2156c589422b6f9b8b6",
+      "retrieved_at": "2026-09-21T09:36:14Z",
+      "value": "1",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "2023 - 2025",
+            "start": "2023-01-01",
+            "end": "2025-12-31"
+          }
+        ],
+        "unit": "count",
+        "currency": null,
+        "source_dates": [
+          "2025-04-15"
+        ]
+      }
+    },
+    {
+      "id": "structured.7f81dc9f7e96fac415b2de16",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/eligibility/table?geographies=MOZ",
+      "document_locator": null,
+      "content_hash": "71c18e5917d636c7bf1a3bf196b13deafe188b86068af5f40ffcc15906027eb2",
+      "retrieved_at": "2026-09-21T09:36:14Z",
+      "value": "High",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "2026",
+            "start": "2026-01-01",
+            "end": "2026-12-31"
+          }
+        ],
+        "unit": "category",
+        "currency": null,
+        "source_dates": [
+          "2026-02-06"
+        ]
+      }
+    },
+    {
+      "id": "structured.ff19309d00dd0eafd928c01f",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/eligibility/table?geographies=MOZ",
+      "document_locator": null,
+      "content_hash": "71c18e5917d636c7bf1a3bf196b13deafe188b86068af5f40ffcc15906027eb2",
+      "retrieved_at": "2026-09-21T09:36:14Z",
+      "value": "High",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "2025",
+            "start": "2025-01-01",
+            "end": "2025-12-31"
+          }
+        ],
+        "unit": "category",
+        "currency": null,
+        "source_dates": [
+          "2026-02-06"
+        ]
+      }
+    },
+    {
+      "id": "structured.30446a3ade5d78e5e624ba3f",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/eligibility/table?geographies=MOZ",
+      "document_locator": null,
+      "content_hash": "71c18e5917d636c7bf1a3bf196b13deafe188b86068af5f40ffcc15906027eb2",
+      "retrieved_at": "2026-09-21T09:36:14Z",
+      "value": "Eligible",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "2026",
+            "start": "2026-01-01",
+            "end": "2026-12-31"
+          }
+        ],
+        "unit": "category",
+        "currency": null,
+        "source_dates": [
+          "2026-02-06"
+        ]
+      }
+    },
+    {
+      "id": "structured.fd7c4cbc1b1c6d8a019c9c57",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/eligibility/table?geographies=MOZ",
+      "document_locator": null,
+      "content_hash": "71c18e5917d636c7bf1a3bf196b13deafe188b86068af5f40ffcc15906027eb2",
+      "retrieved_at": "2026-09-21T09:36:14Z",
+      "value": "Eligible",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "2025",
+            "start": "2025-01-01",
+            "end": "2025-12-31"
+          }
+        ],
+        "unit": "category",
+        "currency": null,
+        "source_dates": [
+          "2026-02-06"
+        ]
+      }
+    },
+    {
+      "id": "structured.7d92568a9fc7e89dce73d87c",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/documents?types=Application&geographies=MOZ",
+      "document_locator": null,
+      "content_hash": "e2f39f4f6f29dd64caab3eac69f942a5cf4baa59ea292a2e137564a15829d34b",
+      "retrieved_at": "2026-09-21T09:36:14Z",
+      "value": "https://example.test/application.zip",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "period not stated by source",
+            "start": null,
+            "end": null
+          }
+        ],
+        "unit": "document link",
+        "currency": null,
+        "source_dates": []
+      }
+    },
+    {
+      "id": "structured.67af2264bc08e56eb662168c",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/disbursements/line-chart/activityAreaGroup/Standard%20View?geographies=MOZ",
+      "document_locator": null,
+      "content_hash": "8988890cef44888d722bd13a8477109cf3f5df2f6802d32ca163af180a8843db",
+      "retrieved_at": "2026-09-21T09:36:14Z",
+      "value": "100",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "2024",
+            "start": "2024-01-01",
+            "end": "2024-12-31"
+          }
+        ],
+        "unit": "reference-rate amount",
+        "currency": "USD",
+        "source_dates": [
+          "2026-09-19"
+        ]
+      }
+    },
+    {
+      "id": "structured.96b6d02dd3eb4491d7bde781",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/disbursements/line-chart/activityAreaGroup/Standard%20View?geographies=MOZ",
+      "document_locator": null,
+      "content_hash": "8988890cef44888d722bd13a8477109cf3f5df2f6802d32ca163af180a8843db",
+      "retrieved_at": "2026-09-21T09:36:14Z",
+      "value": "0",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "2025",
+            "start": "2025-01-01",
+            "end": "2025-12-31"
+          }
+        ],
+        "unit": "reference-rate amount",
+        "currency": "USD",
+        "source_dates": [
+          "2026-09-19"
+        ]
+      }
+    },
+    {
+      "id": "structured.08bea6e1029b222b1e5c80b7",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/disbursements/line-chart/activityAreaGroup/Standard%20View?geographies=MOZ",
+      "document_locator": null,
+      "content_hash": "8988890cef44888d722bd13a8477109cf3f5df2f6802d32ca163af180a8843db",
+      "retrieved_at": "2026-09-21T09:36:14Z",
+      "value": "25",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "2025",
+            "start": "2025-01-01",
+            "end": "2025-12-31"
+          }
+        ],
+        "unit": "reference-rate amount",
+        "currency": "USD",
+        "source_dates": [
+          "2026-09-19"
+        ]
+      }
+    },
+    {
+      "id": "structured.dba564d4f898e594635160af",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/budgets/sankey/activityAreaGroup/Standard%20View?geographies=MOZ&cycleNames=Grant+Cycle+7",
+      "document_locator": null,
+      "content_hash": "5aeecdc4117c18da4044c825756991ea07f34c1472067f7da2f3460b3d3a7dcc",
+      "retrieved_at": "2026-09-21T09:36:14Z",
+      "value": "100",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "Grant Cycle 7",
+            "start": "2023-01-01",
+            "end": "2025-12-31"
+          }
+        ],
+        "unit": "reference-rate amount",
+        "currency": "USD",
+        "source_dates": [
+          "2026-07-10"
+        ]
+      }
+    },
+    {
+      "id": "structured.51db5bab50342b2cd81bf1a7",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/expenditures/heatmap/principalRecipientType,principalRecipientSubType,principalRecipient/component/activityAreaGroup/Standard%20View?geographies=MOZ&cycleNames=Grant+Cycle+7",
+      "document_locator": null,
+      "content_hash": "d5c56fa6b7cd2fb7cddab704d9615e4580390641d2c41e327c298bf34ba8b085",
+      "retrieved_at": "2026-09-21T09:36:14Z",
+      "value": "100",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "Grant Cycle 7",
+            "start": "2023-01-01",
+            "end": "2025-12-31"
+          }
+        ],
+        "unit": "reference-rate amount",
+        "currency": "USD",
+        "source_dates": [
+          "2026-07-10"
+        ]
+      }
+    },
+    {
+      "id": "structured.c62672346ef94f29e8209a9f",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/expenditures/heatmap/principalRecipientType,principalRecipientSubType,principalRecipient/component/activityAreaGroup/Standard%20View?geographies=MOZ&cycleNames=Grant+Cycle+7",
+      "document_locator": null,
+      "content_hash": "d5c56fa6b7cd2fb7cddab704d9615e4580390641d2c41e327c298bf34ba8b085",
+      "retrieved_at": "2026-09-21T09:36:14Z",
+      "value": "50",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "Grant Cycle 7",
+            "start": "2023-01-01",
+            "end": "2025-12-31"
+          }
+        ],
+        "unit": "reference-rate amount",
+        "currency": "USD",
+        "source_dates": [
+          "2026-07-10"
+        ]
+      }
+    },
+    {
+      "id": "structured.f76b9b07f7e7ed49ec902ca7",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/expenditures/heatmap/principalRecipientType,principalRecipientSubType,principalRecipient/component/activityAreaGroup/Standard%20View?geographies=MOZ&cycleNames=Grant+Cycle+7",
+      "document_locator": null,
+      "content_hash": "d5c56fa6b7cd2fb7cddab704d9615e4580390641d2c41e327c298bf34ba8b085",
+      "retrieved_at": "2026-09-21T09:36:14Z",
+      "value": "0",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "Grant Cycle 7",
+            "start": "2023-01-01",
+            "end": "2025-12-31"
+          }
+        ],
+        "unit": "reference-rate amount",
+        "currency": "USD",
+        "source_dates": [
+          "2026-07-10"
+        ]
+      }
+    },
+    {
+      "id": "structured.a8750ac832d77227e4211582",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/expenditures/heatmap/principalRecipientType,principalRecipientSubType,principalRecipient/component/activityAreaGroup/Standard%20View?geographies=MOZ&cycleNames=Grant+Cycle+7",
+      "document_locator": null,
+      "content_hash": "d5c56fa6b7cd2fb7cddab704d9615e4580390641d2c41e327c298bf34ba8b085",
+      "retrieved_at": "2026-09-21T09:36:14Z",
+      "value": "0",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "Grant Cycle 7",
+            "start": "2023-01-01",
+            "end": "2025-12-31"
+          }
+        ],
+        "unit": "reference-rate amount",
+        "currency": "USD",
+        "source_dates": [
+          "2026-07-10"
+        ]
+      }
+    },
+    {
+      "id": "structured.51dced2a813c704445c25895",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/grants/1/2?geographies=MOZ",
+      "document_locator": null,
+      "content_hash": "622de0881c1cb49bf1d6b9e7f6db6c2970f38d81c721a27e45d6805beb6288b6",
+      "retrieved_at": "2026-09-21T09:36:14Z",
+      "value": "100",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "MOZ-H-ONE",
+            "start": "2024-01-01",
+            "end": "2026-12-31"
+          }
+        ],
+        "unit": "reference-rate amount",
+        "currency": "USD",
+        "source_dates": [
+          "2026-07-04"
+        ]
+      }
+    },
+    {
+      "id": "structured.c082660cfe6671b2967aaaa7",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/grants/1/2?geographies=MOZ",
+      "document_locator": null,
+      "content_hash": "622de0881c1cb49bf1d6b9e7f6db6c2970f38d81c721a27e45d6805beb6288b6",
+      "retrieved_at": "2026-09-21T09:36:14Z",
+      "value": "50",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "MOZ-H-ONE",
+            "start": "2024-01-01",
+            "end": "2026-12-31"
+          }
+        ],
+        "unit": "reference-rate amount",
+        "currency": "USD",
+        "source_dates": [
+          "2026-07-04"
+        ]
+      }
+    },
+    {
+      "id": "structured.b5e42550a23fc3b13a1738af",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/grants/1/2?geographies=MOZ",
+      "document_locator": null,
+      "content_hash": "622de0881c1cb49bf1d6b9e7f6db6c2970f38d81c721a27e45d6805beb6288b6",
+      "retrieved_at": "2026-09-21T09:36:14Z",
+      "value": "80",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "MOZ-H-ONE",
+            "start": "2024-01-01",
+            "end": "2026-12-31"
+          }
+        ],
+        "unit": "reference-rate amount",
+        "currency": "USD",
+        "source_dates": [
+          "2026-07-04"
+        ]
+      }
+    },
+    {
+      "id": "structured.39a58a56c4bb9a2ee2166d11",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/grants/1/2?geographies=MOZ",
+      "document_locator": null,
+      "content_hash": "622de0881c1cb49bf1d6b9e7f6db6c2970f38d81c721a27e45d6805beb6288b6",
+      "retrieved_at": "2026-09-21T09:36:14Z",
+      "value": "0",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "MOZ-M-TWO",
+            "start": "2024-01-01",
+            "end": "2026-12-31"
+          }
+        ],
+        "unit": "reference-rate amount",
+        "currency": "USD",
+        "source_dates": [
+          "2026-07-04"
+        ]
+      }
+    },
+    {
+      "id": "structured.569821c385259a258631f78b",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/grants/1/2?geographies=MOZ",
+      "document_locator": null,
+      "content_hash": "622de0881c1cb49bf1d6b9e7f6db6c2970f38d81c721a27e45d6805beb6288b6",
+      "retrieved_at": "2026-09-21T09:36:14Z",
+      "value": "0",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "MOZ-M-TWO",
+            "start": "2024-01-01",
+            "end": "2026-12-31"
+          }
+        ],
+        "unit": "reference-rate amount",
+        "currency": "USD",
+        "source_dates": [
+          "2026-07-04"
+        ]
+      }
+    },
+    {
+      "id": "structured.76ebe880dd14a4bdecf4debc",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/grants/1/2?geographies=MOZ",
+      "document_locator": null,
+      "content_hash": "622de0881c1cb49bf1d6b9e7f6db6c2970f38d81c721a27e45d6805beb6288b6",
+      "retrieved_at": "2026-09-21T09:36:14Z",
+      "value": "0",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "MOZ-M-TWO",
+            "start": "2024-01-01",
+            "end": "2026-12-31"
+          }
+        ],
+        "unit": "reference-rate amount",
+        "currency": "USD",
+        "source_dates": [
+          "2026-07-04"
+        ]
+      }
+    },
+    {
+      "id": "structured.1057483227007a724c34a4e2",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/grants/2/2?geographies=MOZ",
+      "document_locator": null,
+      "content_hash": "1b24a2cc76d84dfd01d0168001118662f47dc51bca89b86253ac3d1116142aa0",
+      "retrieved_at": "2026-09-21T09:36:14Z",
+      "value": "20",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "MOZ-T-THREE",
+            "start": "2021-01-01",
+            "end": "2023-12-31"
+          }
+        ],
+        "unit": "reference-rate amount",
+        "currency": "USD",
+        "source_dates": [
+          "2026-07-04"
+        ]
+      }
+    },
+    {
+      "id": "structured.358a1314112b92de1bee4e5c",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/grants/2/2?geographies=MOZ",
+      "document_locator": null,
+      "content_hash": "1b24a2cc76d84dfd01d0168001118662f47dc51bca89b86253ac3d1116142aa0",
+      "retrieved_at": "2026-09-21T09:36:14Z",
+      "value": "20",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "MOZ-T-THREE",
+            "start": "2021-01-01",
+            "end": "2023-12-31"
+          }
+        ],
+        "unit": "reference-rate amount",
+        "currency": "USD",
+        "source_dates": [
+          "2026-07-04"
+        ]
+      }
+    },
+    {
+      "id": "structured.7a9ed95f25d6e7459f723106",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/grants/2/2?geographies=MOZ",
+      "document_locator": null,
+      "content_hash": "1b24a2cc76d84dfd01d0168001118662f47dc51bca89b86253ac3d1116142aa0",
+      "retrieved_at": "2026-09-21T09:36:14Z",
+      "value": "20",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "MOZ-T-THREE",
+            "start": "2021-01-01",
+            "end": "2023-12-31"
+          }
+        ],
+        "unit": "reference-rate amount",
+        "currency": "USD",
+        "source_dates": [
+          "2026-07-04"
+        ]
+      }
+    },
+    {
+      "id": "structured.780ff55016929da6eae7b7d3",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/location/MOZ/grants/pie-charts",
+      "document_locator": null,
+      "content_hash": "1ab19ef0f5f7064a19569a78cc43dd568e92c00d12a3e42ea0c7abe0e6c89e1a",
+      "retrieved_at": "2026-09-21T09:36:14Z",
+      "value": "70",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "all returned grants; period not stated by source",
+            "start": null,
+            "end": null
+          }
+        ],
+        "unit": "reference-rate amount",
+        "currency": "USD",
+        "source_dates": [
+          "2026-07-04"
+        ]
+      }
+    },
+    {
+      "id": "structured.838f1d4bf8a328cba42f8368",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/location/MOZ/grants/pie-charts",
+      "document_locator": null,
+      "content_hash": "1ab19ef0f5f7064a19569a78cc43dd568e92c00d12a3e42ea0c7abe0e6c89e1a",
+      "retrieved_at": "2026-09-21T09:36:14Z",
+      "value": "70",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "all returned grants; period not stated by source",
+            "start": null,
+            "end": null
+          }
+        ],
+        "unit": "reference-rate amount",
+        "currency": "USD",
+        "source_dates": [
+          "2026-07-04"
+        ]
+      }
+    },
+    {
+      "id": "structured.e0b667b0648ef1504d81c0fd",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/location/MOZ/grants/pie-charts",
+      "document_locator": null,
+      "content_hash": "1ab19ef0f5f7064a19569a78cc43dd568e92c00d12a3e42ea0c7abe0e6c89e1a",
+      "retrieved_at": "2026-09-21T09:36:14Z",
+      "value": "70",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "all returned grants; period not stated by source",
+            "start": null,
+            "end": null
+          }
+        ],
+        "unit": "reference-rate amount",
+        "currency": "USD",
+        "source_dates": [
+          "2026-07-04"
+        ]
+      }
+    },
+    {
+      "id": "structured.4cb90b1e52b88f86a67f122b",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/location/MOZ/grants/pie-charts",
+      "document_locator": null,
+      "content_hash": "1ab19ef0f5f7064a19569a78cc43dd568e92c00d12a3e42ea0c7abe0e6c89e1a",
+      "retrieved_at": "2026-09-21T09:36:14Z",
+      "value": "100",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "all returned grants; period not stated by source",
+            "start": null,
+            "end": null
+          }
+        ],
+        "unit": "reference-rate amount",
+        "currency": "USD",
+        "source_dates": [
+          "2026-07-04"
+        ]
+      }
+    },
+    {
+      "id": "structured.0cff5425c324e840ce4aa62a",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/results/stats?geographies=MOZ&cycle=2024",
+      "document_locator": null,
+      "content_hash": "83f337936f3ca129fa7ba4952691ed02c8cb4b25f9ca4557cf2205ed8b532a0e",
+      "retrieved_at": "2026-09-21T09:36:14Z",
+      "value": "1930000",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "2024",
+            "start": "2024-01-01",
+            "end": "2024-12-31"
+          }
+        ],
+        "unit": "indicator: People on antiretroviral therapy for HIV",
+        "currency": null,
+        "source_dates": [
+          "2026-09-16"
+        ]
+      }
+    },
+    {
+      "id": "structured.9ecf396230f7a4b1894744ff",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/results/table/MOZ/2024",
+      "document_locator": null,
+      "content_hash": "542ba925b0d1763d5636342e79c61642602ac49dd49dec3aa445d2b9497578b7",
+      "retrieved_at": "2026-09-21T09:36:14Z",
+      "value": "11900000",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "2024",
+            "start": "2024-01-01",
+            "end": "2024-12-31"
+          }
+        ],
+        "unit": "indicator: Cases of malaria treated",
+        "currency": null,
+        "source_dates": [
+          "2026-09-16"
+        ]
+      }
+    },
+    {
+      "id": "structured.b4300201e82388922c5d72fa",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/results/stats?geographies=MOZ&cycle=2025",
+      "document_locator": null,
+      "content_hash": "a46e57374d231a215dbd68d52d273da54df400325a434e190504303e3710a5ea",
+      "retrieved_at": "2026-09-21T09:36:14Z",
+      "value": "2070974",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "2025",
+            "start": "2025-01-01",
+            "end": "2025-12-31"
+          }
+        ],
+        "unit": "indicator: People on antiretroviral therapy for HIV",
+        "currency": null,
+        "source_dates": [
+          "2026-09-16"
+        ]
+      }
+    },
+    {
+      "id": "structured.c9b52c46309e8294db399ef8",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/results/table/MOZ/2025",
+      "document_locator": null,
+      "content_hash": "c899fb7f62b8610fb83667d65b71accd3e4ac3cc4f1a30253e74bce8a4248ab3",
+      "retrieved_at": "2026-09-21T09:36:14Z",
+      "value": "12730499",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "2025",
+            "start": "2025-01-01",
+            "end": "2025-12-31"
+          }
+        ],
+        "unit": "indicator: Cases of malaria treated",
+        "currency": null,
+        "source_dates": [
+          "2026-09-16"
+        ]
+      }
+    },
+    {
+      "id": "context.moz.unaids-2025-04-08-f1db2eb4-p2-s7.196b69667f15dab6",
+      "kind": "external_context",
+      "source_url": "https://www.unaids.org/sites/default/files/2025-04/20250408-USstop-sitrep.pdf",
+      "document_locator": {
+        "title": "20250408 USstop sitrep",
+        "location": "UNAIDS, published 8 April 2025, national, page 2, segment 1"
+      },
+      "content_hash": "f1db2eb46d68d4be65a502f5e5908a8e44e604a33077e7eb4ae829b69cd2ce4b",
+      "retrieved_at": "2026-10-13T08:35:34Z",
+      "value": null,
+      "excerpt": "In Mozambique, providers of HIV testing for pregnant women and HIV-exposed newborns are working at reduced capacity.",
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "as of 8 April 2025",
+            "start": "2025-04-08",
+            "end": "2025-04-08"
+          }
+        ],
+        "unit": null,
+        "currency": null,
+        "source_dates": [
+          "2025-04-08"
+        ]
+      }
+    },
+    {
+      "id": "context.moz.ocha-2025-03-19-6516b672-p14-s1.f03ff2fb8326530e",
+      "kind": "external_context",
+      "source_url": "https://www.unocha.org/publications/report/mozambique/mozambique-tropical-cyclone-jude-flash-update-no-5-19-march-2025",
+      "document_locator": {
+        "title": "Mozambique - Tropical Cyclone Jude Flash Update No. 5 (as of 19 March 2025) [EN/PT]",
+        "location": "OCHA, published 19 March 2025, Nampula, paragraph 4 under heading 'SITUATION OVERVIEW'"
+      },
+      "content_hash": "6516b672cef025a5cb3d4ae0b0280f8a4fba704e1866eb95b8b5487f8be08421",
+      "retrieved_at": "2026-10-13T08:35:30Z",
+      "value": null,
+      "excerpt": "The Nampula Provincial Health Directorate (DPS) reports significant disruption in the provision of health services as 81 health units were affected and medical supply shortages limit the availability of emergency response and routine care.",
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "as of 19 March 2025",
+            "start": "2025-03-19",
+            "end": "2025-03-19"
+          }
+        ],
+        "unit": null,
+        "currency": null,
+        "source_dates": [
+          "2025-03-19"
+        ]
+      }
+    },
+    {
+      "id": "context.moz.hiv-prevalence-15-49-2025.c25052c120c28379",
+      "kind": "external_context",
+      "source_url": "https://www.unaids.org/en/resources/documents/2025/HIV_estimates_with_uncertainty_bounds_1990-present",
+      "document_locator": {
+        "title": "UNAIDS HIV estimates with uncertainty bounds 1990-2025 - Mozambique",
+        "location": "UNAIDS, 2025 value, updated 27 July 2026; original source UNAIDS 2026 HIV estimates"
+      },
+      "content_hash": "e1578cf0f93f9598fee75cfb21ab6844ffe284e058caa8f6401fa1fb07ba5b2a",
+      "retrieved_at": "2026-10-13T08:35:27Z",
+      "value": "11",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "2025",
+            "start": "2025-01-01",
+            "end": "2025-12-31"
+          }
+        ],
+        "unit": "% of adults aged 15-49",
+        "currency": null,
+        "source_dates": [
+          "2026-07-27"
+        ]
+      }
+    },
+    {
+      "id": "context.moz.population-2025.8df1d5b7f7b3261d",
+      "kind": "external_context",
+      "source_url": "https://data.worldbank.org/indicator/SP.POP.TOTL?locations=MZ",
+      "document_locator": {
+        "title": "Population, total - Mozambique (World Development Indicators)",
+        "location": "World Bank, 2025 value, updated 8 October 2026; original source World Population Prospects, United Nations (UN); Statistical databases and publications from national statistical offices, National Statistical Offices (NSOs); Eurostat: Demographic Statistics, Eurostat (ESTAT); Population and Vital Statistics Report (various years), United Nations (UN)"
+      },
+      "content_hash": "c8b17feca9413d56ea159ca189ff87607070dae1836787eca65d11a206f0f1ec",
+      "retrieved_at": "2026-10-13T08:35:17Z",
+      "value": "35631653",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "2025",
+            "start": "2025-01-01",
+            "end": "2025-12-31"
+          }
+        ],
+        "unit": "people",
+        "currency": null,
+        "source_dates": [
+          "2026-10-08"
+        ]
+      }
+    },
+    {
+      "id": "context.moz.health-expenditure-gdp-2023.af0ae71d8bfe3591",
+      "kind": "external_context",
+      "source_url": "https://data.worldbank.org/indicator/SH.XPD.CHEX.GD.ZS?locations=MZ",
+      "document_locator": {
+        "title": "Current health expenditure (% of GDP) - Mozambique (World Development Indicators)",
+        "location": "World Bank, 2023 value, updated 8 October 2026; original source Global Health Expenditure Database, updated December 12th, 2025, World Health Organization (WHO)"
+      },
+      "content_hash": "abcf8cbb88996196f1b1ad4a6a4de9d6edb4550b52142ab36149d7ae1379a7b8",
+      "retrieved_at": "2026-10-13T08:35:19Z",
+      "value": "8.50",
+      "excerpt": null,
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "2023",
+            "start": "2023-01-01",
+            "end": "2023-12-31"
+          }
+        ],
+        "unit": "% of GDP",
+        "currency": null,
+        "source_dates": [
+          "2026-10-08"
+        ]
+      }
+    }
+  ],
+  "calculations": [
+    {
+      "id": "calculation.expenditure.0.utilization",
+      "source_ids": [
+        "structured.c62672346ef94f29e8209a9f",
+        "structured.51db5bab50342b2cd81bf1a7"
+      ],
+      "formula": "actual / budget * 100",
+      "result": "50.00",
+      "unit": "percent",
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "Grant Cycle 7",
+            "start": "2023-01-01",
+            "end": "2025-12-31"
+          }
+        ],
+        "unit": "percent",
+        "currency": "USD",
+        "source_dates": [
+          "2026-07-10"
+        ]
+      }
+    },
+    {
+      "id": "calculation.grant.moz-h-one.disbursement",
+      "source_ids": [
+        "structured.c082660cfe6671b2967aaaa7",
+        "structured.51dced2a813c704445c25895"
+      ],
+      "formula": "disbursed / signed * 100",
+      "result": "50.00",
+      "unit": "percent",
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "MOZ-H-ONE",
+            "start": "2024-01-01",
+            "end": "2026-12-31"
+          }
+        ],
+        "unit": "percent",
+        "currency": "USD",
+        "source_dates": [
+          "2026-07-04"
+        ]
+      }
+    },
+    {
+      "id": "calculation.grant.moz-t-three.disbursement",
+      "source_ids": [
+        "structured.358a1314112b92de1bee4e5c",
+        "structured.1057483227007a724c34a4e2"
+      ],
+      "formula": "disbursed / signed * 100",
+      "result": "100.00",
+      "unit": "percent",
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "MOZ-T-THREE",
+            "start": "2021-01-01",
+            "end": "2023-12-31"
+          }
+        ],
+        "unit": "percent",
+        "currency": "USD",
+        "source_dates": [
+          "2026-07-04"
+        ]
+      }
+    },
+    {
+      "id": "calculation.allocation-returned-total",
+      "source_ids": [
+        "structured.b2b342af82ad3e1ed781654c",
+        "structured.76b5c59107784acfc40805bb"
+      ],
+      "formula": "sum of returned allocation components",
+      "result": "446058953",
+      "unit": "reference-rate amount",
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "2026-2028",
+            "start": "2026-01-01",
+            "end": "2028-12-31"
+          }
+        ],
+        "unit": "reference-rate amount",
+        "currency": "USD",
+        "source_dates": [
+          "2026-06-09"
+        ]
+      }
+    },
+    {
+      "id": "calculation.allocation-share.hiv",
+      "source_ids": [
+        "structured.b2b342af82ad3e1ed781654c",
+        "structured.76b5c59107784acfc40805bb"
+      ],
+      "formula": "structured.b2b342af82ad3e1ed781654c / sum of returned allocation components * 100; round half up to 2 decimals",
+      "result": "100.00",
+      "unit": "percent",
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "2026-2028",
+            "start": "2026-01-01",
+            "end": "2028-12-31"
+          }
+        ],
+        "unit": "percent",
+        "currency": "USD",
+        "source_dates": [
+          "2026-06-09"
+        ]
+      }
+    },
+    {
+      "id": "calculation.allocation-share.tuberculosis",
+      "source_ids": [
+        "structured.b2b342af82ad3e1ed781654c",
+        "structured.76b5c59107784acfc40805bb"
+      ],
+      "formula": "structured.76b5c59107784acfc40805bb / sum of returned allocation components * 100; round half up to 2 decimals",
+      "result": "0.00",
+      "unit": "percent",
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "2026-2028",
+            "start": "2026-01-01",
+            "end": "2028-12-31"
+          }
+        ],
+        "unit": "percent",
+        "currency": "USD",
+        "source_dates": [
+          "2026-06-09"
+        ]
+      }
+    },
+    {
+      "id": "calculation.allocation-largest",
+      "source_ids": [
+        "structured.b2b342af82ad3e1ed781654c",
+        "structured.76b5c59107784acfc40805bb"
+      ],
+      "formula": "max of returned allocation components; unique largest component HIV",
+      "result": "446058953",
+      "unit": "reference-rate amount",
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "2026-2028",
+            "start": "2026-01-01",
+            "end": "2028-12-31"
+          }
+        ],
+        "unit": "reference-rate amount",
+        "currency": "USD",
+        "source_dates": [
+          "2026-06-09"
+        ]
+      }
+    },
+    {
+      "id": "calculation.result-change.987500e7d892.1",
+      "source_ids": [
+        "structured.0cff5425c324e840ce4aa62a",
+        "structured.b4300201e82388922c5d72fa"
+      ],
+      "formula": "(result newer - result older) / result older * 100",
+      "result": "7.30",
+      "unit": "percent",
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "2024",
+            "start": "2024-01-01",
+            "end": "2024-12-31"
+          },
+          {
+            "label": "2025",
+            "start": "2025-01-01",
+            "end": "2025-12-31"
+          }
+        ],
+        "unit": "percent",
+        "currency": null,
+        "source_dates": [
+          "2026-09-16"
+        ]
+      }
+    },
+    {
+      "id": "calculation.result-change.ffd56de2760c.1",
+      "source_ids": [
+        "structured.9ecf396230f7a4b1894744ff",
+        "structured.c9b52c46309e8294db399ef8"
+      ],
+      "formula": "(result newer - result older) / result older * 100",
+      "result": "6.98",
+      "unit": "percent",
+      "scope": {
+        "country": "MOZ",
+        "periods": [
+          {
+            "label": "2024",
+            "start": "2024-01-01",
+            "end": "2024-12-31"
+          },
+          {
+            "label": "2025",
+            "start": "2025-01-01",
+            "end": "2025-12-31"
+          }
+        ],
+        "unit": "percent",
+        "currency": null,
+        "source_dates": [
+          "2026-09-16"
+        ]
+      }
+    }
+  ],
+  "sections": [
+    {
+      "id": "resource_mobilization.pledges_contributions",
+      "tab": "resource-mobilization",
+      "title": "Pledges and contributions",
+      "status": "not_applicable",
+      "claims": []
+    },
+    {
+      "id": "access_to_funding.allocations",
+      "tab": "access-to-funding",
+      "title": "Allocations",
+      "status": "ready",
+      "claims": [
+        {
+          "text": "For 2026-2028, Mozambique reported HIV allocation of US$446.06 million.",
+          "evidence_ids": [
+            "structured.b2b342af82ad3e1ed781654c"
+          ],
+          "heading": null
+        }
+      ]
+    },
+    {
+      "id": "access_to_funding.funding_requests",
+      "tab": "access-to-funding",
+      "title": "Funding requests",
+      "status": "ready",
+      "claims": [
+        {
+          "text": "For 2023 - 2025, Mozambique reported Malaria,RSSH funding request as Grant Making.",
+          "evidence_ids": [
+            "structured.d2ed61fbc8f9f9cb76471354"
+          ],
+          "heading": null
+        }
+      ]
+    },
+    {
+      "id": "access_to_funding.eligibility",
+      "tab": "access-to-funding",
+      "title": "Eligibility",
+      "status": "ready",
+      "claims": [
+        {
+          "text": "For 2026, Mozambique reported HIV eligibility as High.",
+          "evidence_ids": [
+            "structured.7f81dc9f7e96fac415b2de16"
+          ],
+          "heading": null
+        }
+      ]
+    },
+    {
+      "id": "access_to_funding.application_documents",
+      "tab": "access-to-funding",
+      "title": "Application context",
+      "status": "insufficient_evidence",
+      "claims": []
+    },
+    {
+      "id": "financial_insights.disbursements",
+      "tab": "financial-insights",
+      "title": "Disbursements",
+      "status": "ready",
+      "claims": [
+        {
+          "text": "For 2025, Mozambique reported HIV disbursement of US$0.",
+          "evidence_ids": [
+            "structured.96b6d02dd3eb4491d7bde781"
+          ],
+          "heading": null
+        }
+      ]
+    },
+    {
+      "id": "financial_insights.budgets",
+      "tab": "financial-insights",
+      "title": "Budgets",
+      "status": "ready",
+      "claims": [
+        {
+          "text": "For Grant Cycle 7, Mozambique reported Program management planned budget of US$100.",
+          "evidence_ids": [
+            "structured.dba564d4f898e594635160af"
+          ],
+          "heading": null
+        }
+      ]
+    },
+    {
+      "id": "financial_insights.expenditures",
+      "tab": "financial-insights",
+      "title": "Expenditure",
+      "status": "ready",
+      "claims": [
+        {
+          "text": "For Grant Cycle 7, Mozambique reported Governmental Organization HIV budget expenditure of US$100.",
+          "evidence_ids": [
+            "structured.51db5bab50342b2cd81bf1a7"
+          ],
+          "heading": null
+        }
+      ]
+    },
+    {
+      "id": "financial_insights.grants",
+      "tab": "financial-insights",
+      "title": "Grants",
+      "status": "ready",
+      "claims": [
+        {
+          "text": "For all returned grants; period not stated by source, Mozambique reported HIV grant component composition of US$70.",
+          "evidence_ids": [
+            "structured.780ff55016929da6eae7b7d3"
+          ],
+          "heading": null
+        }
+      ]
+    },
+    {
+      "id": "results.annual_results",
+      "tab": "results",
+      "title": "Annual results",
+      "status": "ready",
+      "claims": [
+        {
+          "text": "For 2025, Mozambique reported People on antiretroviral therapy for HIV headline result of 2.07 million.",
+          "evidence_ids": [
+            "structured.b4300201e82388922c5d72fa"
+          ],
+          "heading": null
+        },
+        {
+          "text": "About 2.07 million people were on antiretroviral therapy in Mozambique in 2025. As of 8 April 2025, UNAIDS reported that providers of HIV testing for pregnant women and HIV-exposed newborns were working at reduced capacity.",
+          "evidence_ids": [
+            "structured.b4300201e82388922c5d72fa",
+            "context.moz.unaids-2025-04-08-f1db2eb4-p2-s7.196b69667f15dab6"
+          ],
+          "context_spans": [
+            {
+              "text": "As of 8 April 2025, UNAIDS reported that providers of HIV testing for pregnant women and HIV-exposed newborns were working at reduced capacity",
+              "evidence_ids": [
+                "context.moz.unaids-2025-04-08-f1db2eb4-p2-s7.196b69667f15dab6"
+              ]
+            }
+          ],
+          "heading": null
+        }
+      ]
+    },
+    {
+      "id": "results.profile_documents",
+      "tab": "results",
+      "title": "Results context",
+      "status": "insufficient_evidence",
+      "claims": []
+    }
+  ],
+  "overview": {
+    "id": "overview.summary",
+    "tab": "overview",
+    "title": "Country overview",
+    "status": "ready",
+    "claims": [
+      {
+        "text": "Across the reported topics for the diseases, For 2026-2028, Mozambique recorded HIV allocation of US$446.06 million. For 2025, Mozambique recorded HIV disbursement of US$0. For 2025, Mozambique recorded People on antiretroviral therapy for HIV headline result of 2.07 million.",
+        "evidence_ids": [
+          "structured.b2b342af82ad3e1ed781654c",
+          "structured.96b6d02dd3eb4491d7bde781",
+          "structured.b4300201e82388922c5d72fa"
+        ],
+        "heading": null
+      },
+      {
+        "text": "As of 8 April 2025, UNAIDS reported that providers of HIV testing for pregnant women and HIV-exposed newborns were working at reduced capacity.",
+        "evidence_ids": [
+          "context.moz.unaids-2025-04-08-f1db2eb4-p2-s7.196b69667f15dab6"
+        ],
+        "context_spans": [
+          {
+            "text": "As of 8 April 2025, UNAIDS reported that providers of HIV testing for pregnant women and HIV-exposed newborns were working at reduced capacity",
+            "evidence_ids": [
+              "context.moz.unaids-2025-04-08-f1db2eb4-p2-s7.196b69667f15dab6"
+            ]
+          }
+        ],
+        "heading": "Challenges"
+      }
+    ],
+    "contributing_section_ids": [
+      "access_to_funding.allocations",
+      "financial_insights.disbursements",
+      "results.annual_results"
+    ]
+  }
+}
