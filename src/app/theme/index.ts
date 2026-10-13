@@ -240,7 +240,7 @@ const theme = createTheme({
             width: "100vw",
           },
           "@media (max-width: 920px)": {
-            padding: "0 48px",
+            padding: "0 24px",
           },
           "@media (max-width: 768px)": {
             padding: "0 24px",
