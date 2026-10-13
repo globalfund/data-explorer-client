@@ -70,6 +70,18 @@ BROWSER=none VITE_ENABLE_NARRATIVES=false VITE_API=http://api.test VITE_CMS_API=
 VITE_BASE_URL=http://127.0.0.1:4175 yarn cypress run --config-file cypress.narratives-off.config.ts --browser electron
 ```
 
+#### Local review flag: web context highlight
+
+`VITE_HIGHLIGHT_WEB_CONTEXT=true` is a local review flag for country context. With it, each `context_spans` phrase of a saved claim (text that comes from reviewed web context) is shown with a soft yellow background, a hover title "Web context: {source title}, {location}" and a screen reader announcement; text, citations and Source links are unchanged. Without it (the default) claims render exactly as before. Never set it in a committed environment, configuration or deployment file; pass it only on a local start command, for example:
+
+```sh
+BROWSER=none VITE_ENABLE_NARRATIVES=true VITE_HIGHLIGHT_WEB_CONTEXT=true VITE_API=http://api.test VITE_CMS_API=http://cms.test yarn start --host 127.0.0.1 --port 4177 --strictPort
+# In another terminal:
+VITE_BASE_URL=http://127.0.0.1:4177 yarn cypress run --config-file cypress.narratives-web-context.config.ts --browser electron
+```
+
+That configuration runs the enabled suites against the flagged instance and expects highlights; the enabled configuration above expects none. The span fixtures and their provenance are in `tests/fixtures/country-context-bundles.md`.
+
 The narrative specs live in `cypress/narratives/`, outside default `cypress/e2e/` discovery. The existing `yarn e2e` command and its tests remain unchanged. The enabled configuration selects the country and page suites; the disabled configuration selects the no-fetch suite. These specs intercept data and CMS requests, so neither a real CMS nor an API key is needed. The Vite-only `provider-harness.html` exercises real provider hooks with implicit and explicit identities, scope/page transitions and stale responses, without a production test route.
 
 ---

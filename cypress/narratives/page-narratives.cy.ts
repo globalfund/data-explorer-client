@@ -189,6 +189,7 @@ describe("saved page narratives", () => {
       .should("be.visible")
       .and("contain", "default global view");
     cy.get('[data-cy="narrative-section"]').should("have.length", 2);
+    cy.get('[data-cy="narrative-section"] mark').should("not.exist");
     cy.contains("Total Pledged").should("be.visible");
     cy.contains("Pledges & Contributions").should("be.visible");
     cy.get('[data-cy="narrative-section"]')

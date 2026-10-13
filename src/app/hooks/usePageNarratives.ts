@@ -38,6 +38,9 @@ const NarrativesContext = React.createContext<NarrativesContextValue | null>(
   null,
 );
 const enabledFlag = () => import.meta.env.VITE_ENABLE_NARRATIVES === "true";
+// Local review aid only; never set in committed or deployed environments.
+export const highlightWebContextFlag = () =>
+  import.meta.env.VITE_HIGHLIGHT_WEB_CONTEXT === "true";
 const validRef = (ref?: SavedNarrativeRef | null): SavedNarrativeRef | null => {
   if (!ref) return null;
   if ("country" in ref)
