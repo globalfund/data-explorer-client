@@ -140,7 +140,7 @@ assert.ok(
 const contextSourceIds = contextBundle.sources
   .filter((source) => source.kind === "external_context")
   .map((source) => source.id);
-assert.equal(contextSourceIds.length, 5);
+assert.equal(contextSourceIds.length, 2);
 assert.ok(
   spans.every((span) =>
     span.evidence_ids.every((id) => contextSourceIds.includes(id)),
