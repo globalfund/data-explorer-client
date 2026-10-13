@@ -4,6 +4,7 @@ import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import {
   CountryNarrativeBundle,
+  NarrativeClaim,
   NarrativeOverview,
   NarrativeSection as NarrativeSectionModel,
   SavedNarrativeBundle,
@@ -16,6 +17,7 @@ import {
 } from "app/hooks/useCountryNarratives";
 import {
   NarrativesState,
+  highlightWebContextFlag,
   usePageNarratives,
 } from "app/hooks/usePageNarratives";
 
@@ -49,6 +51,70 @@ const periodLabel = (
     )
     .filter(Boolean);
   return Array.from(new Set(periods)).join(", ");
+};
+
+const visuallyHidden = {
+  position: "absolute",
+  width: "1px",
+  height: "1px",
+  overflow: "hidden",
+  clipPath: "inset(50%)",
+  whiteSpace: "nowrap",
+} as const;
+
+const webContextLabel = (bundle: SavedNarrativeBundle, ids: string[]) =>
+  `Web context: ${expandNarrativeCitations(bundle, ids)
+    .filter((citation) => citation.kind === "external_context")
+    .map((citation) =>
+      [citation.label, citation.location].filter(Boolean).join(", "),
+    )
+    .join("; ")}`;
+
+const claimContent = (
+  bundle: SavedNarrativeBundle,
+  claim: NarrativeClaim,
+): React.ReactNode => {
+  if (!highlightWebContextFlag() || !claim.context_spans?.length)
+    return claim.text;
+  const spans = claim.context_spans
+    .filter((span) => span.text)
+    .map((span) => ({ span, start: claim.text.indexOf(span.text) }))
+    .filter(({ start }) => start >= 0)
+    .sort((left, right) => left.start - right.start);
+  const content: React.ReactNode[] = [];
+  let cursor = 0;
+  for (const { span, start } of spans) {
+    if (start < cursor) continue;
+    if (start > cursor) content.push(claim.text.slice(cursor, start));
+    const label = webContextLabel(bundle, span.evidence_ids);
+    content.push(
+      <Box
+        key={start}
+        component="mark"
+        title={label}
+        data-context-label={label}
+        data-cy="narrative-web-context"
+        sx={{
+          backgroundColor: "#FFF1B8",
+          color: "inherit",
+          borderRadius: "2px",
+          boxDecorationBreak: "clone",
+          WebkitBoxDecorationBreak: "clone",
+          "&::before": {
+            ...visuallyHidden,
+            content: '"[" attr(data-context-label) "] "',
+          },
+          "&::after": { ...visuallyHidden, content: '" [End of web context]"' },
+        }}
+      >
+        {span.text}
+      </Box>,
+    );
+    cursor = start + span.text.length;
+  }
+  if (!content.length) return claim.text;
+  if (cursor < claim.text.length) content.push(claim.text.slice(cursor));
+  return content;
 };
 
 const SavedNarrativeText: React.FC<{
@@ -161,7 +227,7 @@ const SavedNarrativeText: React.FC<{
                 data-cy="narrative-claim"
               >
                 <Typography component="p" variant="body1" sx={{ m: 0 }}>
-                  {claim.text}
+                  {claimContent(bundle, claim)}
                 </Typography>
                 {citations.length > 0 && (
                   <Box

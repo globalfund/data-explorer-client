@@ -227,6 +227,7 @@ describe("Access to Funding saved narratives", () => {
     stub();
     visit();
     shown(...topics);
+    cy.get('[data-cy="narrative-section"] mark').should("not.exist");
     for (const [topic, anchor] of [
       ["eligibility", "#eligibility"],
       ["allocation", "#allocation"],

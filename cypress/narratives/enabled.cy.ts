@@ -9,6 +9,10 @@ type CountryOptions = {
 const apiUrl = "http://api.test";
 const cmsUrl = "http://cms.test";
 const realMozambiqueBundle = "tests/fixtures/country-bundle-moz.json";
+const contextMozambiqueBundle =
+  "tests/fixtures/country-bundle-moz-context.json";
+// Set only by cypress.narratives-web-context.config.ts, whose Vite instance runs with the flag.
+const highlightWebContext = Cypress.expose("highlight_web_context") === true;
 const countryNames: Record<string, string> = {
   KEN: "Kenya",
   MOZ: "Mozambique",
@@ -137,6 +141,160 @@ const stubRealMozambiqueBundle = () => {
 const visitCountry = (country: string, tab: string) => {
   cy.visit(`/location/${country}/${tab}`);
 };
+
+type ContextClaim = {
+  text: string;
+  evidence_ids: string[];
+  context_spans?: { text: string; evidence_ids: string[] }[];
+};
+type ContextBundle = {
+  sources: {
+    id: string;
+    kind: string;
+    source_url?: string | null;
+    document_locator?: { title: string; location: string } | null;
+  }[];
+  sections: { id: string; claims: ContextClaim[] }[];
+  overview: { claims: ContextClaim[] };
+};
+
+const expectWebContext = (
+  bundle: ContextBundle,
+  claim: ContextClaim,
+  sectionTitle: string,
+) => {
+  cy.contains('[data-cy="narrative-section"]', sectionTitle)
+    .should("be.visible")
+    .contains('[data-cy="narrative-claim"] > p', claim.text.slice(0, 40))
+    .then(($paragraph) => {
+      expect($paragraph.text()).to.equal(claim.text);
+      expect($paragraph[0].scrollWidth).to.be.at.most(
+        $paragraph[0].clientWidth,
+      );
+      const marks = $paragraph.find("mark");
+      if (!highlightWebContext) {
+        expect(marks).to.have.length(0);
+        expect($paragraph.children()).to.have.length(0);
+        return;
+      }
+      const spans = claim.context_spans!;
+      expect(marks).to.have.length(spans.length);
+      spans.forEach((span, index) => {
+        const mark = marks.eq(index);
+        const sources = span.evidence_ids.map((id) =>
+          bundle.sources.find((source) => source.id === id),
+        );
+        const label = `Web context: ${sources
+          .map(
+            (source) =>
+              `${source!.document_locator!.title}, ${source!.document_locator!.location}`,
+          )
+          .join("; ")}`;
+        expect(mark.text()).to.equal(span.text);
+        expect(mark.attr("title")).to.equal(label);
+        expect(mark.attr("data-context-label")).to.equal(label);
+        expect(mark.css("background-color")).to.equal("rgb(255, 241, 184)");
+        expect(
+          mark[0].ownerDocument.defaultView!.getComputedStyle(
+            mark[0],
+            "::before",
+          ).content,
+        ).not.to.equal("none");
+        expect(mark.find("a")).to.have.length(0);
+        const paragraphBox = $paragraph[0].getBoundingClientRect();
+        for (const rect of Array.from(mark[0].getClientRects())) {
+          expect(rect.left).to.be.at.least(paragraphBox.left - 1);
+          expect(rect.right).to.be.at.most(paragraphBox.right + 1);
+        }
+      });
+    })
+    .parent()
+    .find('[data-cy="narrative-sources"] a')
+    .should("have.length.at.least", 1)
+    .then(($links) => {
+      $links.each((index, link) =>
+        expect(link.textContent).to.equal(`Source ${index + 1}`),
+      );
+      const hrefs = $links.toArray().map((link) => link.getAttribute("href"));
+      (claim.context_spans ?? [])
+        .flatMap((span) => span.evidence_ids)
+        .forEach((id) =>
+          expect(hrefs).to.include(
+            bundle.sources.find((source) => source.id === id)!.source_url,
+          ),
+        );
+    });
+  cy.get("mark").should(
+    "have.length",
+    highlightWebContext ? claim.context_spans!.length : 0,
+  );
+};
+
+describe(`web context highlight with the review flag ${highlightWebContext ? "on" : "off"}`, () => {
+  beforeEach(() => {
+    stubCountryPage({ MOZ: { hasResults: true } });
+  });
+
+  for (const [device, viewport] of [
+    ["desktop", [1280, 900]],
+    ["mobile", [375, 812]],
+  ] as const) {
+    it(`renders the fixture's Results and Overview spans on ${device}`, () => {
+      cy.viewport(viewport[0], viewport[1]);
+      cy.readFile(contextMozambiqueBundle).then((bundle: ContextBundle) => {
+        cy.intercept(
+          "GET",
+          `${apiUrl}/location/MOZ/narratives?locale=en`,
+          bundle,
+        ).as("contextNarrativeMOZ");
+        const results = bundle.sections
+          .find((section) => section.id === "results.annual_results")!
+          .claims.find((claim) => claim.context_spans)!;
+        const overview = bundle.overview.claims.find(
+          (claim) => claim.context_spans,
+        )!;
+        expect(results, "Results span claim").to.exist;
+        expect(overview, "Overview span claim").to.exist;
+
+        visitCountry("MOZ", "results");
+        cy.wait("@contextNarrativeMOZ");
+        expectWebContext(bundle, results, "Annual results");
+        cy.contains(
+          '[data-cy="narrative-claim"]',
+          results.text.slice(0, 40),
+        ).scrollIntoView({ offset: { top: -300, left: 0 } });
+        cy.screenshot(
+          `web-context-results-${device}-${highlightWebContext ? "on" : "off"}`,
+          { capture: "viewport" },
+        );
+
+        visitCountry("MOZ", "overview");
+        cy.wait("@contextNarrativeMOZ");
+        expectWebContext(bundle, overview, "Country overview");
+      });
+    });
+  }
+
+  it("leaves bundles without spans unchanged", () => {
+    stubRealMozambiqueBundle();
+    for (const tab of ["overview", "results"]) {
+      visitCountry("MOZ", tab);
+      cy.wait("@narrativeMOZ");
+      cy.get('[data-cy="narrative-claim"] > p').should(
+        "have.length.at.least",
+        1,
+      );
+      cy.get("mark").should("not.exist");
+    }
+    stubNarrativeFixture("KEN", "narratives/recipient.json");
+    visitCountry("KEN", "access-to-funding");
+    cy.wait("@narrativeKEN");
+    cy.contains('[data-cy="narrative-section"]', "Application context").should(
+      "be.visible",
+    );
+    cy.get("mark").should("not.exist");
+  });
+});
 
 describe("country narratives with the rollout flag enabled", () => {
   beforeEach(() => {
