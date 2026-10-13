@@ -317,30 +317,35 @@ const countryPageFixture = JSON.parse(
 const countryRef = { ...ref, page_type: "country", page_id: "MOZ" };
 const countryPage = parse(countryPageFixture, countryRef);
 assert.ok(countryPage, "the NE country page bundle with context spans parses");
-const pageSpanClaim = contextClaim(countryPage);
-assert.ok(pageSpanClaim, "the fixture carries one context span claim");
+const summarySpanClaim = (data: typeof countryPageFixture) =>
+  data.summary.claims.find(
+    (claim: { context_spans?: unknown }) => claim.context_spans,
+  );
+const pageSpanClaims = [
+  contextClaim(countryPage),
+  summarySpanClaim(countryPage),
+];
 assert.ok(
-  pageSpanClaim.context_spans.every(
-    (span: { text: string; evidence_ids: string[] }) =>
-      pageSpanClaim.text.includes(span.text) &&
-      span.evidence_ids.every((id) =>
-        countryPage.sources.some(
-          (source) => source.id === id && source.kind === "external_context",
+  pageSpanClaims.every(Boolean),
+  "the fixture carries a section and a summary context span claim",
+);
+assert.ok(
+  pageSpanClaims.every((claim) =>
+    claim.context_spans.every(
+      (span: { text: string; evidence_ids: string[] }) =>
+        claim.text.includes(span.text) &&
+        span.evidence_ids.every((id) =>
+          countryPage.sources.some(
+            (source) => source.id === id && source.kind === "external_context",
+          ),
         ),
-      ),
+    ),
   ),
 );
 const pageWithoutSpans = structuredClone(countryPageFixture);
 delete contextClaim(pageWithoutSpans).context_spans;
+delete summarySpanClaim(pageWithoutSpans).context_spans;
 assert.ok(parse(pageWithoutSpans, countryRef), "spans stay optional");
-const pageSummary = structuredClone(countryPageFixture);
-const summaryClaim = structuredClone(contextClaim(pageSummary));
-summaryClaim.heading = null;
-pageSummary.summary.claims.push(summaryClaim);
-assert.ok(
-  parse(pageSummary, countryRef),
-  "a summary claim may carry context spans",
-);
 for (const [label, mutate] of contextSpanMutations) {
   const sectionCase = structuredClone(countryPageFixture);
   const claim = contextClaim(sectionCase);
@@ -350,9 +355,9 @@ for (const [label, mutate] of contextSpanMutations) {
     null,
     `page context spans with ${label}`,
   );
-  const summaryCase = structuredClone(pageSummary);
-  const repeated = summaryCase.summary.claims.at(-1);
-  mutate(repeated.context_spans[0], repeated, summaryCase);
+  const summaryCase = structuredClone(countryPageFixture);
+  const summaryClaim = summarySpanClaim(summaryCase);
+  mutate(summaryClaim.context_spans[0], summaryClaim, summaryCase);
   assert.equal(
     parse(summaryCase, countryRef),
     null,

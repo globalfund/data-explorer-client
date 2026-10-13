@@ -129,25 +129,31 @@ const spanClaims = [
   ...contextBundle.sections.flatMap((section) => section.claims),
   ...(contextBundle.overview?.claims ?? []),
 ].filter((claim) => claim.context_spans);
-assert.equal(spanClaims.length, 1);
-const [span] = spanClaims[0].context_spans!;
-assert.ok(spanClaims[0].text.includes(span.text));
+assert.equal(spanClaims.length, 2, "one Results and one Overview claim");
+assert.ok(contextBundle.overview?.claims.some((claim) => claim.context_spans));
+const spans = spanClaims.flatMap((claim) => claim.context_spans!);
+assert.ok(
+  spanClaims.every((claim) =>
+    claim.context_spans!.every((span) => claim.text.includes(span.text)),
+  ),
+);
 const contextSourceIds = contextBundle.sources
   .filter((source) => source.kind === "external_context")
   .map((source) => source.id);
 assert.equal(contextSourceIds.length, 5);
-assert.ok(span.evidence_ids.every((id) => contextSourceIds.includes(id)));
-
-const withOverviewSpan = structuredClone(contextFixture);
-withOverviewSpan.overview.claims.push(
-  structuredClone(contextClaim(withOverviewSpan)),
-);
 assert.ok(
-  parseCountryNarrativeBundle(withOverviewSpan),
-  "an Overview claim may carry context spans",
+  spans.every((span) =>
+    span.evidence_ids.every((id) => contextSourceIds.includes(id)),
+  ),
 );
+const overviewSpanClaim = (data: typeof contextFixture) =>
+  data.overview.claims.find(
+    (claim: { context_spans?: unknown }) => claim.context_spans,
+  );
+
 const withoutSpans = structuredClone(contextFixture);
 delete contextClaim(withoutSpans).context_spans;
+delete overviewSpanClaim(withoutSpans).context_spans;
 assert.ok(parseCountryNarrativeBundle(withoutSpans), "spans stay optional");
 const listKind = structuredClone(contextFixture);
 const listKindId = contextClaim(listKind).context_spans[0].evidence_ids[0];
@@ -166,9 +172,8 @@ for (const [label, mutate] of contextSpanMutations) {
     `section context spans with ${label}`,
   );
   const overviewCase = structuredClone(contextFixture);
-  const repeated = structuredClone(contextClaim(overviewCase));
-  overviewCase.overview.claims.push(repeated);
-  mutate(repeated.context_spans[0], repeated, overviewCase);
+  const overviewClaim = overviewSpanClaim(overviewCase);
+  mutate(overviewClaim.context_spans[0], overviewClaim, overviewCase);
   assert.equal(
     parseCountryNarrativeBundle(overviewCase),
     null,
