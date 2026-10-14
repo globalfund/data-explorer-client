@@ -165,7 +165,9 @@ const expectWebContext = (
 ) => {
   cy.contains('[data-cy="narrative-section"]', sectionTitle)
     .should("be.visible")
-    .contains('[data-cy="narrative-claim"] > p', claim.text.slice(0, 40))
+    .find('[data-cy="narrative-claim"] > p')
+    .filter((_index, paragraph) => paragraph.textContent === claim.text)
+    .should("have.length", 1)
     .then(($paragraph) => {
       expect($paragraph.text()).to.equal(claim.text);
       expect($paragraph[0].scrollWidth).to.be.at.most(
