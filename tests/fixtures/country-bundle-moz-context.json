@@ -963,34 +963,6 @@
           "2025-03-19"
         ]
       }
-    },
-    {
-      "id": "context.moz.unicef-2024-03-08-cd21f7df-p8-s2.3a2e2aed770f6895",
-      "kind": "external_context",
-      "source_url": "https://www.unicef.org/press-releases/amid-escalating-violence-mozambique-60000-children-displaced-within-month",
-      "document_locator": {
-        "title": "Amid escalating violence in Mozambique, 60,000 children displaced within a month",
-        "location": "UNICEF, published 8 March 2024, Chiure district, paragraph 6 under heading 'Amid escalating violence in Mozambique, 60,000 children displaced within a month'"
-      },
-      "content_hash": "cd21f7dfae9bfa35f1957b99dd67ef153d61a767a0bf73385d593f5536e275dd",
-      "retrieved_at": "2026-10-13T08:35:31Z",
-      "value": null,
-      "excerpt": "UNICEF has so far registered 182 cases of separated children since the latest attacks in Chiure district on February 24.",
-      "scope": {
-        "country": "MOZ",
-        "periods": [
-          {
-            "label": "February to March 2024",
-            "start": "2024-02-24",
-            "end": "2024-03-08"
-          }
-        ],
-        "unit": null,
-        "currency": null,
-        "source_dates": [
-          "2024-03-08"
-        ]
-      }
     }
   ],
   "calculations": [
@@ -1364,29 +1336,22 @@
           "heading": null
         },
         {
-          "text": "As of 8 April 2025, UNAIDS reported that providers of HIV testing for pregnant women and HIV-exposed newborns were working at reduced capacity. As of 19 March 2025, the Nampula Provincial Health Directorate reported significant disruption in the provision of health services as 81 health units were affected. In Chiure district, UNICEF registered 182 cases of separated children after attacks on 24 February 2024.",
+          "text": "On people on antiretroviral therapy for HIV, UNAIDS reported that, as of 8 April 2025, providers of HIV testing for pregnant women and HIV-exposed newborns were working at reduced capacity. On people on antiretroviral therapy for HIV, the Nampula Provincial Health Directorate reported significant disruption in the provision of health services as of 19 March 2025, as 81 health units were affected.",
           "evidence_ids": [
             "context.moz.unaids-2025-04-08-f1db2eb4-p2-s7.196b69667f15dab6",
-            "context.moz.ocha-2025-03-19-6516b672-p14-s1.f03ff2fb8326530e",
-            "context.moz.unicef-2024-03-08-cd21f7df-p8-s2.3a2e2aed770f6895"
+            "context.moz.ocha-2025-03-19-6516b672-p14-s1.f03ff2fb8326530e"
           ],
           "context_spans": [
             {
-              "text": "As of 8 April 2025, UNAIDS reported that providers of HIV testing for pregnant women and HIV-exposed newborns were working at reduced capacity",
+              "text": "UNAIDS reported that, as of 8 April 2025, providers of HIV testing for pregnant women and HIV-exposed newborns were working at reduced capacity",
               "evidence_ids": [
                 "context.moz.unaids-2025-04-08-f1db2eb4-p2-s7.196b69667f15dab6"
               ]
             },
             {
-              "text": "As of 19 March 2025, the Nampula Provincial Health Directorate reported significant disruption in the provision of health services as 81 health units were affected",
+              "text": "the Nampula Provincial Health Directorate reported significant disruption in the provision of health services as of 19 March 2025, as 81 health units were affected",
               "evidence_ids": [
                 "context.moz.ocha-2025-03-19-6516b672-p14-s1.f03ff2fb8326530e"
-              ]
-            },
-            {
-              "text": "In Chiure district, UNICEF registered 182 cases of separated children after attacks on 24 February 2024",
-              "evidence_ids": [
-                "context.moz.unicef-2024-03-08-cd21f7df-p8-s2.3a2e2aed770f6895"
               ]
             }
           ],
@@ -1418,19 +1383,20 @@
         "heading": null
       },
       {
-        "text": "As of 8 April 2025, UNAIDS reported that providers of HIV testing for pregnant women and HIV-exposed newborns were working at reduced capacity.",
+        "text": "People on antiretroviral therapy for HIV reached 2.07 million in 2025, and UNAIDS reported that, as of 8 April 2025, providers of HIV testing for pregnant women and HIV-exposed newborns were working at reduced capacity.",
         "evidence_ids": [
+          "structured.b4300201e82388922c5d72fa",
           "context.moz.unaids-2025-04-08-f1db2eb4-p2-s7.196b69667f15dab6"
         ],
         "context_spans": [
           {
-            "text": "As of 8 April 2025, UNAIDS reported that providers of HIV testing for pregnant women and HIV-exposed newborns were working at reduced capacity",
+            "text": "UNAIDS reported that, as of 8 April 2025, providers of HIV testing for pregnant women and HIV-exposed newborns were working at reduced capacity",
             "evidence_ids": [
               "context.moz.unaids-2025-04-08-f1db2eb4-p2-s7.196b69667f15dab6"
             ]
           }
         ],
-        "heading": "Challenges"
+        "heading": null
       }
     ],
     "contributing_section_ids": [
