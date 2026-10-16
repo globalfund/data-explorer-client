@@ -3,7 +3,12 @@ import Box from "@mui/material/Box";
 import * as echarts from "echarts/core";
 import { SVGRenderer } from "echarts/renderers";
 import { GridComponent } from "echarts/components";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { LineChartProps } from "app/pages/datasets/opex/charts/line/data";
+import {
+  useOpexInView,
+  opexChartAnimationOptions,
+} from "app/pages/datasets/opex/blocks/common/animate-in-view";
 import { useChartResizeObserver } from "app/hooks/useChartResizeObserver";
 import { LineSeriesOption, LineChart as EChartsLine } from "echarts/charts";
 import {
@@ -19,6 +24,8 @@ export const SmallLineChart: React.FC<LineChartProps> = (
 ) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const containerId = React.useId();
+  const inView = useOpexInView();
+  const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
 
   const [stateChart, setStateChart] =
     React.useState<echarts.EChartsType | null>(null);
@@ -30,7 +37,7 @@ export const SmallLineChart: React.FC<LineChartProps> = (
   });
 
   React.useEffect(() => {
-    if (containerRef.current) {
+    if (containerRef.current && inView) {
       const chart = echarts.init(containerRef.current, undefined, {
         renderer: "svg",
       });
@@ -100,6 +107,7 @@ export const SmallLineChart: React.FC<LineChartProps> = (
         | YAXisComponentOption
         | XAXisComponentOption
       > = {
+        ...opexChartAnimationOptions(reducedMotion),
         grid: {
           top: 0,
           left: 0,
@@ -145,7 +153,7 @@ export const SmallLineChart: React.FC<LineChartProps> = (
       chart.setOption(option);
       setStateChart(chart);
     }
-  }, [props.data, props.xAxisKeys, containerRef.current]);
+  }, [props.data, props.xAxisKeys, containerRef.current, inView]);
 
   return (
     <React.Fragment>

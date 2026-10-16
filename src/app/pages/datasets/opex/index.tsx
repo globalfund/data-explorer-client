@@ -19,6 +19,7 @@ import { OpexPageBlock5 } from "app/pages/datasets/opex/blocks/block-5";
 import { OpexPageBlock6 } from "app/pages/datasets/opex/blocks/block-6";
 import { OpexPageBlock7 } from "app/pages/datasets/opex/blocks/block-7";
 import { OpexPageBlock8 } from "app/pages/datasets/opex/blocks/block-8";
+import { OpexAnimateInView } from "app/pages/datasets/opex/blocks/common/animate-in-view";
 
 export const OpexPage = () => {
   useTitle("The Data Explorer - Financial Insights");
@@ -84,23 +85,39 @@ export const OpexPage = () => {
           marginTop="50px"
           sx={{ "> hr": { margin: "60px 0" } }}
         >
-          <OpexPageBlock1 />
+          <OpexAnimateInView>
+            <OpexPageBlock1 />
+          </OpexAnimateInView>
           <Divider />
-          <OpexPageBlock2 />
+          <OpexAnimateInView>
+            <OpexPageBlock2 />
+          </OpexAnimateInView>
           <Divider />
-          <OpexPageBlock3 />
+          <OpexAnimateInView>
+            <OpexPageBlock3 />
+          </OpexAnimateInView>
           <Divider />
-          <OpexPageBlock3B />
+          <OpexAnimateInView>
+            <OpexPageBlock3B />
+          </OpexAnimateInView>
           <Divider />
           {/* <OpexPageBlock4 />
           <Divider /> */}
-          <OpexPageBlock5 />
+          <OpexAnimateInView>
+            <OpexPageBlock5 />
+          </OpexAnimateInView>
           <Divider />
-          <OpexPageBlock6 />
+          <OpexAnimateInView>
+            <OpexPageBlock6 />
+          </OpexAnimateInView>
           <Divider />
-          <OpexPageBlock7 />
+          <OpexAnimateInView>
+            <OpexPageBlock7 />
+          </OpexAnimateInView>
           <Divider />
-          <OpexPageBlock8 />
+          <OpexAnimateInView>
+            <OpexPageBlock8 />
+          </OpexAnimateInView>
         </Box>
       </DatasetPage>
     </>

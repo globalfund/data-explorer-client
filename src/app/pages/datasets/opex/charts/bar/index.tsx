@@ -11,6 +11,10 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { BarChartProps } from "app/pages/datasets/opex/charts/bar/data";
 import { BarSeriesOption, BarChart as EChartsBar } from "echarts/charts";
+import {
+  useOpexInView,
+  opexChartAnimationOptions,
+} from "app/pages/datasets/opex/blocks/common/animate-in-view";
 import { useChartResizeObserver } from "app/hooks/useChartResizeObserver";
 import { chartTooltipCommonConfig } from "app/components/charts/common/tooltip/config";
 import {
@@ -96,6 +100,8 @@ const Tooltip = (props: any) => {
 export const BarChart: React.FC<BarChartProps> = (props: BarChartProps) => {
   const isTouch = useMediaQuery("(hover: none)");
   const mobile = useMediaQuery("(max-width: 767px)");
+  const inView = useOpexInView();
+  const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   const [stateChart, setStateChart] =
@@ -108,7 +114,7 @@ export const BarChart: React.FC<BarChartProps> = (props: BarChartProps) => {
   });
 
   React.useEffect(() => {
-    if (containerRef.current) {
+    if (containerRef.current && inView) {
       const chart = echarts.init(containerRef.current, undefined, {
         renderer: "svg",
       });
@@ -122,6 +128,7 @@ export const BarChart: React.FC<BarChartProps> = (props: BarChartProps) => {
         | TooltipComponentOption
         | DataZoomComponentOption
       > = {
+        ...opexChartAnimationOptions(reducedMotion),
         grid: {
           top: 40,
           left: 20,
@@ -214,6 +221,7 @@ export const BarChart: React.FC<BarChartProps> = (props: BarChartProps) => {
           },
         ],
         series: props.categories.map((category, ci) => ({
+          ...opexChartAnimationOptions(reducedMotion),
           type: "bar",
           name: category,
           stack: props.stack ? "total" : undefined,
@@ -287,11 +295,12 @@ export const BarChart: React.FC<BarChartProps> = (props: BarChartProps) => {
       chart.setOption(option);
       setStateChart(chart);
     }
-  }, [containerRef.current]);
+  }, [containerRef.current, inView]);
 
   React.useEffect(() => {
     if (stateChart) {
       stateChart.setOption({
+        ...opexChartAnimationOptions(reducedMotion),
         grid: {
           bottom: mobile ? 50 : 20,
         },
@@ -340,6 +349,7 @@ export const BarChart: React.FC<BarChartProps> = (props: BarChartProps) => {
           },
         ],
         series: props.categories.map((category, ci) => ({
+          ...opexChartAnimationOptions(reducedMotion),
           name: category,
           data: props.xAxisKeys.map((_, xi) => props.data[xi][ci]),
           barWidth: "34px",

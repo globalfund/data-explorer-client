@@ -13,6 +13,10 @@ import { useChartResizeObserver } from "app/hooks/useChartResizeObserver";
 import { LineSeriesOption, LineChart as EChartsLine } from "echarts/charts";
 import { chartTooltipCommonConfig } from "app/components/charts/common/tooltip/config";
 import {
+  useOpexInView,
+  opexChartAnimationOptions,
+} from "app/pages/datasets/opex/blocks/common/animate-in-view";
+import {
   GridComponent,
   LegendComponent,
   TooltipComponent,
@@ -114,6 +118,8 @@ const Tooltip: React.FC<{
 export const LineChart: React.FC<LineChartProps> = (props: LineChartProps) => {
   const isTouch = useMediaQuery("(hover: none)");
   const mobile = useMediaQuery("(max-width: 767px)");
+  const inView = useOpexInView();
+  const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   const [stateChart, setStateChart] =
@@ -126,7 +132,7 @@ export const LineChart: React.FC<LineChartProps> = (props: LineChartProps) => {
   });
 
   React.useEffect(() => {
-    if (containerRef.current) {
+    if (containerRef.current && inView) {
       const chart = echarts.init(containerRef.current, undefined, {
         renderer: "svg",
       });
@@ -139,6 +145,7 @@ export const LineChart: React.FC<LineChartProps> = (props: LineChartProps) => {
         | LegendComponentOption
         | TooltipComponentOption
       > = {
+        ...opexChartAnimationOptions(reducedMotion),
         grid: {
           top: mobile && props.showLegend ? 70 : 40,
           left: 60,
@@ -331,6 +338,7 @@ export const LineChart: React.FC<LineChartProps> = (props: LineChartProps) => {
     props.cumulativeLineValue,
     containerRef.current,
     mobile,
+    inView,
   ]);
 
   return (

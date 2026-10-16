@@ -15,6 +15,10 @@ import {
   LineChart2Props,
 } from "app/pages/datasets/opex/charts/line-2/data";
 import {
+  useOpexInView,
+  opexChartAnimationOptions,
+} from "app/pages/datasets/opex/blocks/common/animate-in-view";
+import {
   GridComponent,
   LegendComponent,
   TooltipComponent,
@@ -99,6 +103,8 @@ export const LineChart2: React.FC<LineChart2Props> = (
 ) => {
   const isTouch = useMediaQuery("(hover: none)");
   const mobile = useMediaQuery("(max-width: 767px)");
+  const inView = useOpexInView();
+  const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   const [stateChart, setStateChart] =
@@ -111,7 +117,7 @@ export const LineChart2: React.FC<LineChart2Props> = (
   });
 
   React.useEffect(() => {
-    if (containerRef.current) {
+    if (containerRef.current && inView) {
       const chart = echarts.init(containerRef.current, undefined, {
         renderer: "svg",
       });
@@ -187,6 +193,7 @@ export const LineChart2: React.FC<LineChart2Props> = (
         | LegendComponentOption
         | TooltipComponentOption
       > = {
+        ...opexChartAnimationOptions(reducedMotion),
         grid: {
           top: 40,
           left: 60,
@@ -297,6 +304,7 @@ export const LineChart2: React.FC<LineChart2Props> = (
     props.xAxisSubLabels,
     props.cumulativeLineValue,
     containerRef.current,
+    inView,
   ]);
 
   return (

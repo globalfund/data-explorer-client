@@ -5,55 +5,63 @@ import Divider from "@mui/material/Divider";
 import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useOpexInView } from "app/pages/datasets/opex/blocks/common/animate-in-view";
 import {
   GridItem,
   gridItems,
   simpleFormatter,
 } from "app/pages/datasets/opex/blocks/block-1/data";
 
-const ItemBox = ({ item }: { item: GridItem }) => (
-  <Box>
-    <Typography fontWeight="700" fontSize={item.titleFontSize}>
-      {item.title}
-    </Typography>
-    <Typography fontSize={16}>{item.subtitle}</Typography>
-    <Typography fontSize={14} color="#373D43">
-      {item.text}
-    </Typography>
-    {item.percentageValue && (
-      <Box
-        sx={{
-          gap: "16px",
-          width: "100%",
-          display: "flex",
-          marginTop: "8px",
-          alignItems: "center",
-        }}
-      >
+const ItemBox = ({ item }: { item: GridItem }) => {
+  const inView = useOpexInView();
+  return (
+    <Box>
+      <Typography fontWeight="700" fontSize={item.titleFontSize}>
+        {item.title}
+      </Typography>
+      <Typography fontSize={16}>{item.subtitle}</Typography>
+      <Typography fontSize={14} color="#373D43">
+        {item.text}
+      </Typography>
+      {item.percentageValue && (
         <Box
           sx={{
-            flex: 1,
-            height: "8px",
-            borderRadius: "4px",
-            bgcolor: "#DFE3E5",
+            gap: "16px",
+            width: "100%",
+            display: "flex",
+            marginTop: "8px",
+            alignItems: "center",
           }}
         >
           <Box
             sx={{
+              flex: 1,
               height: "8px",
               borderRadius: "4px",
-              bgcolor: "#0A2840",
-              width: `${item.percentageValue}%`,
+              bgcolor: "#DFE3E5",
             }}
-          />
+          >
+            <Box
+              sx={{
+                height: "8px",
+                borderRadius: "4px",
+                bgcolor: "#0A2840",
+                width: inView ? `${item.percentageValue}%` : 0,
+                transition: "width 1.2s cubic-bezier(0.33, 1, 0.68, 1) 0.2s",
+                "@media (prefers-reduced-motion: reduce)": {
+                  transition: "none",
+                },
+              }}
+            />
+          </Box>
+          <Typography fontSize={12} color="#70777E">
+            {item.percentageValue.toFixed(1)}% used
+          </Typography>
         </Box>
-        <Typography fontSize={12} color="#70777E">
-          {item.percentageValue.toFixed(1)}% used
-        </Typography>
-      </Box>
-    )}
-  </Box>
-);
+      )}
+    </Box>
+  );
+};
 
 const ContainerBox = ({
   children,

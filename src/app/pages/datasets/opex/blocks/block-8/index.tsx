@@ -19,7 +19,7 @@ export const OpexPageBlock8: React.FC = () => {
   const loadingTable = useStoreState((state) => state.OpexTable.loading);
 
   const items = get(dataTable, "data", []) as TableProps["data"];
-  const years = get(dataTable, "years", []);
+  const years = get(dataTable, "years", []) as string[];
 
   const onSearchChange = (search: string) => {
     setTableSearch(search);
@@ -42,22 +42,32 @@ export const OpexPageBlock8: React.FC = () => {
   }, [items]);
 
   const columns: ColumnDefinition[] = React.useMemo(() => {
+    const yearItems = selectedView === VIEWS[2] ? years.slice(0, -1) : years;
+    // Year columns share ~80% using integer percentages; the first column
+    // takes the remainder so the total is always exactly 100%.
+    const yearColumnWidth = yearItems.length
+      ? Math.floor(80 / yearItems.length)
+      : 0;
+    const firstColumnWidth = 100 - yearColumnWidth * yearItems.length;
     return [
       {
         title: "Line item ($M)",
         field: "name",
-        width: "20%",
+        width: `${firstColumnWidth}%`,
         minWidth: 150,
         headerSort: false,
       },
-      ...years.map((year) => ({
+      ...yearItems.map((year) => ({
         title: year,
-        field: `${year}.${selectedView.toLowerCase()}`,
-        width: "8%",
         minWidth: 70,
         headerSort: false,
+        hozAlign: "right" as const,
+        headerHozAlign: "right" as const,
+        width: `${yearColumnWidth}%`,
+        field: `${year}.${selectedView.toLowerCase()}`,
         formatter: (v: CellComponent) => {
-          const value = simpleFormatter(v.getValue());
+          const value =
+            v.getValue() === 0 ? "0" : simpleFormatter(v.getValue());
           if (selectedView !== VIEWS[2]) {
             return value;
           }
@@ -71,11 +81,12 @@ export const OpexPageBlock8: React.FC = () => {
   }, [selectedView, years]);
 
   const exportData = React.useMemo(() => {
+    const yearItems = selectedView === VIEWS[2] ? years.slice(0, -1) : years;
     const data: (number | string)[][] = [];
     items.forEach((item) => {
       data.push([
         item.name,
-        ...years.map((year) =>
+        ...yearItems.map((year) =>
           get(item, `[${year}].[${selectedView.toLowerCase()}]`),
         ),
       ]);
@@ -84,7 +95,7 @@ export const OpexPageBlock8: React.FC = () => {
       data,
       headers: [
         "Line item ($M)",
-        ...years.map((year) => `${year} ${selectedView}`),
+        ...yearItems.map((year) => `${year} ${selectedView}`),
       ],
     };
   }, [items, years, selectedView]);
@@ -113,10 +124,12 @@ export const OpexPageBlock8: React.FC = () => {
         data={items}
         columns={columns}
         search={tableSearch}
-        dataTreeStartExpanded
         noColumnVisibilitySelection
         id="opex-cost-breakdown-table"
         onSearchChange={onSearchChange}
+        dataTreeStartExpandedFn={(row) => {
+          return row.getData().name === "Costs Secretariat and OIG";
+        }}
         rowFormatter={(row) => {
           const isLastRow = row.getPosition() === numberOfAllRows;
           if (isLastRow) {
