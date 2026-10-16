@@ -3,7 +3,7 @@ export interface GridItem {
   title: string;
   titleFontSize: number;
   subtitle: string;
-  text: string;
+  text: string | React.ReactNode;
   percentageValue?: number;
 }
 
@@ -93,5 +93,53 @@ export const gridItems: GridItem[] = [
     subtitle: "of $1.33B budget absorbed",
     text: "Cumulative non-workforce, 2017-25",
     percentageValue: 98.4,
+  },
+];
+
+export const defaultGridItems: GridItem[] = [
+  {
+    id: 1,
+    title: "$310.3M",
+    titleFontSize: 36,
+    subtitle: "Forecast landing 2026",
+    text: "Total",
+  },
+  {
+    id: 2,
+    title: "$173.0M",
+    titleFontSize: 36,
+    subtitle: "Workforce actuals to 30 June 2026",
+    text: "Workforce",
+  },
+  {
+    id: 3,
+    title: "$137.3M",
+    titleFontSize: 36,
+    subtitle: "Non-workforce actuals to 30 June 2026",
+    text: "Non-workforce",
+  },
+  {
+    id: 4,
+    title: "$143.8M",
+    titleFontSize: 36,
+    subtitle: "Actuals to 30 June 2026",
+    text: "Total",
+    percentageValue: 46.3,
+  },
+  {
+    id: 5,
+    title: "$85.6M",
+    titleFontSize: 36,
+    subtitle: "Actuals to 30 June 2026",
+    text: "Workforce",
+    percentageValue: 48.4,
+  },
+  {
+    id: 6,
+    title: "$58.2M",
+    titleFontSize: 36,
+    subtitle: "Actuals to 30 June 2026",
+    text: "Non-workforce",
+    percentageValue: 43.7,
   },
 ];
