@@ -86,15 +86,15 @@ export const OpexPage = () => {
           sx={{ "> hr": { margin: "60px 0" } }}
         >
           <OpexAnimateInView>
+            <OpexPageBlock1 />
+          </OpexAnimateInView>
+          <Divider />
+          <OpexAnimateInView>
             <OpexPageBlock3B />
           </OpexAnimateInView>
           <Divider />
           <OpexAnimateInView>
             <OpexPageBlock3 />
-          </OpexAnimateInView>
-          <Divider />
-          <OpexAnimateInView>
-            <OpexPageBlock1 />
           </OpexAnimateInView>
           <Divider />
           <OpexAnimateInView>
