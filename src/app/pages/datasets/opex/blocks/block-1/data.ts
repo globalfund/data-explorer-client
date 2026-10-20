@@ -106,16 +106,16 @@ export const defaultGridItems: GridItem[] = [
   },
   {
     id: 2,
-    title: "$173.0M",
+    title: "$177.3M",
     titleFontSize: 36,
-    subtitle: "Workforce actuals to 30 June 2026",
+    subtitle: "Forecast landing 2026",
     text: "Workforce",
   },
   {
     id: 3,
-    title: "$137.3M",
+    title: "$133.0M",
     titleFontSize: 36,
-    subtitle: "Non-workforce actuals to 30 June 2026",
+    subtitle: "Forecast landing 2026",
     text: "Non-workforce",
   },
   {
