@@ -228,9 +228,9 @@ export const OpexPageBlock1: React.FC = () => {
               subtitle: "2026 full-year budget",
               text: (
                 <Box mt={2}>
-                  Workforce $177.0M
+                  Workforce $177.3M
                   <br />
-                  Non-workforce $133.3M
+                  Non-workforce $133.0M
                 </Box>
               ),
             }}
