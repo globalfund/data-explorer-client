@@ -3,13 +3,18 @@ import { TableDataItem } from "app/components/table/data";
 
 export const VIEWS = ["Actual", "Budget", "Variance"];
 
+const toFixed = (number: number, decimals: number) => {
+  const x = Math.pow(10, Number(decimals) + 2);
+  return (Number(number) + 1 / x).toFixed(decimals);
+};
+
 export const simpleFormatter = (value: number) => {
   const isNegative = value < 0;
   value = Math.abs(value);
   if (value === 0) {
     return "";
   }
-  return `${isNegative ? "-" : ""}${(Math.abs(value) / 1e6).toFixed(1)}`.replace(
+  return `${isNegative ? "-" : ""}${toFixed(Math.abs(value) / 1e6, 1)}`.replace(
     ".0",
     "",
   );
