@@ -224,7 +224,7 @@ export const OpexPageBlock3: React.FC = () => {
       </Box>
       <Box>
         <Typography fontSize="24px" fontWeight="700">
-          OPEX cents per $1 disbursed, by grant cycle
+          OPEX cents per $1 disbursed, by disbursement year
         </Typography>
         <Typography fontSize="16px" color="#373D43">
           Scale zoomed to {yAxisValues[0]}-{yAxisValues[yAxisValues.length - 1]}
