@@ -90,7 +90,7 @@ export const OpexPage = () => {
           </OpexAnimateInView>
           <Divider />
           <OpexAnimateInView>
-            <OpexPageBlock2 />
+            <OpexPageBlock3B />
           </OpexAnimateInView>
           <Divider />
           <OpexAnimateInView>
@@ -98,7 +98,7 @@ export const OpexPage = () => {
           </OpexAnimateInView>
           <Divider />
           <OpexAnimateInView>
-            <OpexPageBlock3B />
+            <OpexPageBlock2 />
           </OpexAnimateInView>
           <Divider />
           {/* <OpexPageBlock4 />
