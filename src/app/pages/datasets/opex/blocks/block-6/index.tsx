@@ -120,7 +120,9 @@ export const OpexPageBlock6: React.FC = () => {
             >
               <Typography fontSize="20px" fontWeight="700">
                 {selectedView === VIEWS[0]
-                  ? simpleFormatter(item.endYearBudget)
+                  ? item.endYearBudget
+                    ? simpleFormatter(item.endYearBudget)
+                    : "$0M"
                   : item.endYearBudgetPercentage.toFixed(2).replace(".00", "") +
                     "%"}
               </Typography>
