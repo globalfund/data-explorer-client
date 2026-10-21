@@ -173,37 +173,42 @@ describe("OPEX saved narratives", () => {
     ["cost-breakdown", "cost_table", "Budget", "Actual"],
     ["cost-breakdown", "cost_table", "Variance", "Actual"],
   ]) {
-    it(`hides ${topic} for the ${other} view and restores it on ${initial}`, () => {
+    it(`keeps ${topic} on the ${other} view and back on ${initial}`, () => {
       stub();
       visit();
       shown(...topics);
       view(block, other);
-      hidden(topic);
-      shown(...others(topic));
+      cy.get(`#${block}`)
+        .find(`[data-narrative-id="opex.${topic}"]`)
+        .should("have.length", 1);
+      shown(...topics);
       panel("summary").should("exist");
       view(block, initial);
       shown(...topics);
       cy.get("@saved.all").should("have.length", 1);
     });
   }
-  it("hides the table panel during search and restores it when cleared", () => {
-    stub();
-    visit();
-    shown(...topics);
-    cy.get("#cost-breakdown")
-      .find('[aria-label="Search button"]')
-      .click({ force: true });
-    cy.get("#cost-breakdown")
-      .find('[aria-label="Search input"]')
-      .type("Total", { force: true });
-    hidden("cost_table");
-    shown(...others("cost_table"));
-    cy.get("#cost-breakdown")
-      .find('[aria-label="Search input"]')
-      .clear({ force: true });
-    shown(...topics);
-    cy.get("@saved.all").should("have.length", 1);
-  });
+  for (const tableView of ["Actual", "Budget"]) {
+    it(`hides the table panel during search on ${tableView} and restores it when cleared`, () => {
+      stub();
+      visit();
+      shown(...topics);
+      view("cost-breakdown", tableView);
+      cy.get("#cost-breakdown")
+        .find('[aria-label="Search button"]')
+        .click({ force: true });
+      cy.get("#cost-breakdown")
+        .find('[aria-label="Search input"]')
+        .type("Total", { force: true });
+      hidden("cost_table");
+      shown(...others("cost_table"));
+      cy.get("#cost-breakdown")
+        .find('[aria-label="Search input"]')
+        .clear({ force: true });
+      shown(...topics);
+      cy.get("@saved.all").should("have.length", 1);
+    });
+  }
   it("renders citations with source links", () => {
     stub();
     visit();

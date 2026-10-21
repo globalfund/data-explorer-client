@@ -100,10 +100,7 @@ export const OpexPageBlock2: React.FC = () => {
       loading={false}
       infoType="opex"
       narrative={
-        <PageNarrativePanel
-          sectionId="opex.actual_vs_budget"
-          scopeMatches={selectedView === VIEWS[0]}
-        />
+        <PageNarrativePanel sectionId="opex.actual_vs_budget" scopeMatches />
       }
       data={exportData}
       id="operating-costs"

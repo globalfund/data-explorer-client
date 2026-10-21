@@ -66,12 +66,7 @@ export const OpexPageBlock6: React.FC = () => {
       data={exportData}
       loading={loadingKeyCosts}
       infoType="opex"
-      narrative={
-        <PageNarrativePanel
-          sectionId="opex.key_costs"
-          scopeMatches={selectedView === VIEWS[0]}
-        />
-      }
+      narrative={<PageNarrativePanel sectionId="opex.key_costs" scopeMatches />}
       id="key-costs"
       // title={`Key costs over time, ${get(xAxisKeys, "[0]", "")}-${get(xAxisKeys, `[${xAxisKeys.length - 1}]`, "")}`}
       title="Key costs over time, 2017-2026" // Just ensuring everything is static

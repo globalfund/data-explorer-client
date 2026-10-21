@@ -121,10 +121,7 @@ export const OpexPageBlock5: React.FC = () => {
       loading={loadingCostComposition}
       infoType="opex"
       narrative={
-        <PageNarrativePanel
-          sectionId="opex.cost_breakdown"
-          scopeMatches={selectedView === VIEWS[0]}
-        />
+        <PageNarrativePanel sectionId="opex.cost_breakdown" scopeMatches />
       }
       id="cost-composition"
       title="Cost breakdown over time" // Modified

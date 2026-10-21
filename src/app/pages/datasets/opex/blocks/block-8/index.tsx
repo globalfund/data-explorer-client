@@ -115,7 +115,7 @@ export const OpexPageBlock8: React.FC = () => {
       narrative={
         <PageNarrativePanel
           sectionId="opex.cost_table"
-          scopeMatches={selectedView === VIEWS[0] && tableSearch.length === 0}
+          scopeMatches={tableSearch.length === 0}
         />
       }
       id="cost-breakdown"
