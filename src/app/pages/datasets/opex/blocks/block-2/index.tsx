@@ -3,6 +3,7 @@ import get from "lodash/get";
 import { BarChart, LineChart } from "app/pages/datasets/opex/charts";
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
 import { OpexPageChartBlock } from "app/pages/datasets/opex/blocks/common";
+import { PageNarrativePanel } from "app/components/narrative-section";
 import {
   VIEWS,
   operatingCostsData,
@@ -98,6 +99,12 @@ export const OpexPageBlock2: React.FC = () => {
       empty={false}
       loading={false}
       infoType="opex"
+      narrative={
+        <PageNarrativePanel
+          sectionId="opex.actual_vs_budget"
+          scopeMatches={selectedView === VIEWS[0]}
+        />
+      }
       data={exportData}
       id="operating-costs"
       title="Operating Expenditures"

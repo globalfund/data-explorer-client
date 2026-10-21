@@ -3,6 +3,7 @@ import get from "lodash/get";
 import { LineChart2 } from "app/pages/datasets/opex/charts";
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
 import { OpexPageChartBlock } from "app/pages/datasets/opex/blocks/common";
+import { PageNarrativePanel } from "app/components/narrative-section";
 
 export const OpexPageBlock7: React.FC = () => {
   const dataIndexedTrends = useStoreState(
@@ -44,6 +45,9 @@ export const OpexPageBlock7: React.FC = () => {
       data={exportData}
       loading={loadingIndexedTrends}
       infoType="opex"
+      narrative={
+        <PageNarrativePanel sectionId="opex.indexed_trends" scopeMatches />
+      }
       id="indexed-trends"
       title="Indexed trends (2017 = 100)" // Modified
       subtitle=""

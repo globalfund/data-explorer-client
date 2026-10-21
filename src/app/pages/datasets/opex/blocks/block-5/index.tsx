@@ -4,6 +4,7 @@ import { BarChart } from "app/pages/datasets/opex/charts";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { OpexPageChartBlock } from "app/pages/datasets/opex/blocks/common";
+import { PageNarrativePanel } from "app/components/narrative-section";
 import {
   VIEWS,
   tooltipFormatterBar,
@@ -119,6 +120,12 @@ export const OpexPageBlock5: React.FC = () => {
       data={exportData}
       loading={loadingCostComposition}
       infoType="opex"
+      narrative={
+        <PageNarrativePanel
+          sectionId="opex.cost_breakdown"
+          scopeMatches={selectedView === VIEWS[0]}
+        />
+      }
       id="cost-composition"
       title="Cost breakdown over time" // Modified
       viewSelected={selectedView}

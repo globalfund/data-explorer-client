@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 // import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
+import { PageNarrativePanel } from "app/components/narrative-section";
 // import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { useOpexInView } from "app/pages/datasets/opex/blocks/common/animate-in-view";
 import {
@@ -281,6 +282,7 @@ export const OpexPageBlock1: React.FC = () => {
           )}
         </Box>
       </Box>
+      <PageNarrativePanel sectionId="opex.budget_position" scopeMatches />
     </React.Fragment>
   );
 };

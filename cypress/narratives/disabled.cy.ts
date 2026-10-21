@@ -137,3 +137,28 @@ describe("Access to Funding with narratives disabled", () => {
     cy.then(() => expect(requests).to.equal(0));
   });
 });
+
+describe("OPEX with narratives disabled", () => {
+  it("preserves all blocks without requesting saved narratives", () => {
+    let requests = 0;
+    cy.intercept("GET", "http://cms.test/**", { body: { data: [] } });
+    cy.intercept("GET", "http://api.test/**", (req) => {
+      if (req.url.includes("/narratives")) requests += 1;
+      req.reply({ count: 0, data: [] });
+    });
+    cy.visit("/opex");
+    cy.contains("2026 OPERATING BUDGET").should("exist");
+    for (const block of [
+      "opex-efficiency",
+      "opex-vs-grant-disbursement",
+      "operating-costs",
+      "cost-composition",
+      "key-costs",
+      "indexed-trends",
+      "cost-breakdown",
+    ])
+      cy.get(`#${block}`).should("exist");
+    cy.get('[data-cy^="narrative-"]').should("not.exist");
+    cy.then(() => expect(requests).to.equal(0));
+  });
+});

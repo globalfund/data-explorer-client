@@ -1,0 +1,598 @@
+{
+  "schema_version": 2,
+  "page": {
+    "page_type": "opex",
+    "page_id": "global",
+    "locale": "en",
+    "scope_key": "default"
+  },
+  "metadata": {
+    "snapshot_id": "99e8226a4e78e0c2f15409e319cde95baac204200ac9047b048ef0097c7b45b0",
+    "revision_id": "opex-synthetic-ui",
+    "model": "offline/synthetic",
+    "prompt_version": "synthetic-ui-v1",
+    "style_version": "synthetic-ui-v1",
+    "generated_at": "2026-10-21T08:00:00Z",
+    "profile_fingerprint": "synthetic-ui-v1"
+  },
+  "presentation": {
+    "page_type": "opex",
+    "groups": [
+      {
+        "id": "opex",
+        "title": "Operating Expenditure"
+      }
+    ],
+    "sections": [
+      {
+        "id": "opex.budget_position",
+        "group": "opex",
+        "title": "2026 operating budget position",
+        "allowed_headings": []
+      },
+      {
+        "id": "opex.efficiency",
+        "group": "opex",
+        "title": "OPEX efficiency",
+        "allowed_headings": []
+      },
+      {
+        "id": "opex.vs_disbursement",
+        "group": "opex",
+        "title": "OPEX vs grant disbursement",
+        "allowed_headings": []
+      },
+      {
+        "id": "opex.actual_vs_budget",
+        "group": "opex",
+        "title": "Actual vs budget",
+        "allowed_headings": []
+      },
+      {
+        "id": "opex.cost_breakdown",
+        "group": "opex",
+        "title": "Cost breakdown over time",
+        "allowed_headings": []
+      },
+      {
+        "id": "opex.key_costs",
+        "group": "opex",
+        "title": "Key costs over time",
+        "allowed_headings": []
+      },
+      {
+        "id": "opex.indexed_trends",
+        "group": "opex",
+        "title": "Indexed trends (2017 = 100)",
+        "allowed_headings": []
+      },
+      {
+        "id": "opex.cost_table",
+        "group": "opex",
+        "title": "Detailed cost breakdown",
+        "allowed_headings": []
+      }
+    ],
+    "summary": {
+      "id": "opex.summary",
+      "title": "OPEX summary",
+      "allowed_headings": []
+    }
+  },
+  "sources": [
+    {
+      "id": "opex.test.total.2025.actual",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/opex/table",
+      "document_locator": null,
+      "content_hash": "1a6a0a05cac3a1f578be327f2cad099f2eb32d8a979346e14a62dad9bd82fb4a",
+      "retrieved_at": "2026-10-21T08:00:00Z",
+      "value": 346.0,
+      "excerpt": null,
+      "scope": {
+        "page_type": "opex",
+        "page_id": "global",
+        "scope_key": "default",
+        "periods": [
+          {
+            "label": "2025",
+            "start": null,
+            "end": null
+          }
+        ],
+        "unit": "USD millions",
+        "currency": "USD",
+        "source_dates": [],
+        "dimensions": [
+          {
+            "name": "metric",
+            "value": "total operating costs actual"
+          }
+        ]
+      }
+    },
+    {
+      "id": "opex.test.total.2025.budget",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/opex/table",
+      "document_locator": null,
+      "content_hash": "62057b1c88b36a3578c43d1764e331df430ee86669750e10b860a3c1603e9a8d",
+      "retrieved_at": "2026-10-21T08:00:00Z",
+      "value": 346.0,
+      "excerpt": null,
+      "scope": {
+        "page_type": "opex",
+        "page_id": "global",
+        "scope_key": "default",
+        "periods": [
+          {
+            "label": "2025",
+            "start": null,
+            "end": null
+          }
+        ],
+        "unit": "USD millions",
+        "currency": "USD",
+        "source_dates": [],
+        "dimensions": [
+          {
+            "name": "metric",
+            "value": "total operating costs budget"
+          }
+        ]
+      }
+    },
+    {
+      "id": "opex.test.total.2026.budget",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/opex/table",
+      "document_locator": null,
+      "content_hash": "2dd54b84e660e0ff4a2b03e68abb4d16229ad16fc8f33fe69f865540fca8ef4d",
+      "retrieved_at": "2026-10-21T08:00:00Z",
+      "value": 310.3,
+      "excerpt": null,
+      "scope": {
+        "page_type": "opex",
+        "page_id": "global",
+        "scope_key": "default",
+        "periods": [
+          {
+            "label": "2026",
+            "start": null,
+            "end": null
+          }
+        ],
+        "unit": "USD millions",
+        "currency": "USD",
+        "source_dates": [],
+        "dimensions": [
+          {
+            "name": "metric",
+            "value": "total operating costs budget"
+          }
+        ]
+      }
+    },
+    {
+      "id": "opex.test.total.2026.forecast",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/opex/table",
+      "document_locator": null,
+      "content_hash": "9f53dddcc9a2afa4a8d2cfaa9e7e89982eca52b7ab47f0aa900f8aef06c50fbe",
+      "retrieved_at": "2026-10-21T08:00:00Z",
+      "value": 310.3,
+      "excerpt": null,
+      "scope": {
+        "page_type": "opex",
+        "page_id": "global",
+        "scope_key": "default",
+        "periods": [
+          {
+            "label": "2026",
+            "start": null,
+            "end": null
+          }
+        ],
+        "unit": "USD millions",
+        "currency": "USD",
+        "source_dates": [],
+        "dimensions": [
+          {
+            "name": "metric",
+            "value": "total operating costs forecast"
+          }
+        ]
+      }
+    },
+    {
+      "id": "opex.test.workforce.2026.budget",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/opex/table",
+      "document_locator": null,
+      "content_hash": "545464a3f4212e9ff47f01cc6b6694008671ffa4f35c0fac8c6297fa118f7bad",
+      "retrieved_at": "2026-10-21T08:00:00Z",
+      "value": 177.0,
+      "excerpt": null,
+      "scope": {
+        "page_type": "opex",
+        "page_id": "global",
+        "scope_key": "default",
+        "periods": [
+          {
+            "label": "2026",
+            "start": null,
+            "end": null
+          }
+        ],
+        "unit": "USD millions",
+        "currency": "USD",
+        "source_dates": [],
+        "dimensions": [
+          {
+            "name": "metric",
+            "value": "workforce budget"
+          }
+        ]
+      }
+    },
+    {
+      "id": "opex.test.non-workforce.2026.budget",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/opex/table",
+      "document_locator": null,
+      "content_hash": "4e8882ab7cd34bf337ec93b08bb9fe5119ab39b509fc00b1ef8c9959bd61131a",
+      "retrieved_at": "2026-10-21T08:00:00Z",
+      "value": 133.3,
+      "excerpt": null,
+      "scope": {
+        "page_type": "opex",
+        "page_id": "global",
+        "scope_key": "default",
+        "periods": [
+          {
+            "label": "2026",
+            "start": null,
+            "end": null
+          }
+        ],
+        "unit": "USD millions",
+        "currency": "USD",
+        "source_dates": [],
+        "dimensions": [
+          {
+            "name": "metric",
+            "value": "non-workforce budget"
+          }
+        ]
+      }
+    },
+    {
+      "id": "opex.test.pledge-efficiency.2017-2019",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/opex/efficiency/pledge",
+      "document_locator": null,
+      "content_hash": "f0f08f741e11b63cb14194695c6047783b8ae987509cff5604aafa08533a3fdd",
+      "retrieved_at": "2026-10-21T08:00:00Z",
+      "value": 7.28,
+      "excerpt": null,
+      "scope": {
+        "page_type": "opex",
+        "page_id": "global",
+        "scope_key": "default",
+        "periods": [
+          {
+            "label": "2017-2019",
+            "start": null,
+            "end": null
+          }
+        ],
+        "unit": "percent",
+        "currency": null,
+        "source_dates": [],
+        "dimensions": [
+          {
+            "name": "metric",
+            "value": "operating costs as a share of announced pledges"
+          }
+        ]
+      }
+    },
+    {
+      "id": "opex.test.pledge-efficiency.2020-2022",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/opex/efficiency/pledge",
+      "document_locator": null,
+      "content_hash": "a7cb47936db76977346e8948931563153fcdeb490f48f91c1d8f746b7341425c",
+      "retrieved_at": "2026-10-21T08:00:00Z",
+      "value": 6.5,
+      "excerpt": null,
+      "scope": {
+        "page_type": "opex",
+        "page_id": "global",
+        "scope_key": "default",
+        "periods": [
+          {
+            "label": "2020-2022",
+            "start": null,
+            "end": null
+          }
+        ],
+        "unit": "percent",
+        "currency": null,
+        "source_dates": [],
+        "dimensions": [
+          {
+            "name": "metric",
+            "value": "operating costs as a share of announced pledges"
+          }
+        ]
+      }
+    },
+    {
+      "id": "opex.test.pledge-efficiency.2023-2025",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/opex/efficiency/pledge",
+      "document_locator": null,
+      "content_hash": "2851ab971a003ab28342e63a726f11be1d7bfda650625b864fb5d253c613c049",
+      "retrieved_at": "2026-10-21T08:00:00Z",
+      "value": 6.44,
+      "excerpt": null,
+      "scope": {
+        "page_type": "opex",
+        "page_id": "global",
+        "scope_key": "default",
+        "periods": [
+          {
+            "label": "2023-2025",
+            "start": null,
+            "end": null
+          }
+        ],
+        "unit": "percent",
+        "currency": null,
+        "source_dates": [],
+        "dimensions": [
+          {
+            "name": "metric",
+            "value": "operating costs as a share of announced pledges"
+          }
+        ]
+      }
+    },
+    {
+      "id": "opex.test.disbursement-efficiency.2025",
+      "kind": "structured_data",
+      "source_url": "https://data.api.theglobalfund.org/opex/efficiency/disbursement",
+      "document_locator": null,
+      "content_hash": "bae8a48a9632db94be2ae5741d5d87026a38f8609488e3933ecf3de5ea6484bf",
+      "retrieved_at": "2026-10-21T08:00:00Z",
+      "value": 8.9,
+      "excerpt": null,
+      "scope": {
+        "page_type": "opex",
+        "page_id": "global",
+        "scope_key": "default",
+        "periods": [
+          {
+            "label": "2025",
+            "start": null,
+            "end": null
+          }
+        ],
+        "unit": "US cents per US$1 disbursed",
+        "currency": null,
+        "source_dates": [],
+        "dimensions": [
+          {
+            "name": "metric",
+            "value": "operating costs per US$1 disbursed"
+          }
+        ]
+      }
+    }
+  ],
+  "calculations": [
+    {
+      "id": "opex.test.total.2025.variance",
+      "source_ids": [
+        "opex.test.total.2025.actual",
+        "opex.test.total.2025.budget"
+      ],
+      "formula": "actual - budget",
+      "result": 0.0,
+      "unit": "USD millions",
+      "scope": {
+        "page_type": "opex",
+        "page_id": "global",
+        "scope_key": "default",
+        "periods": [
+          {
+            "label": "2025",
+            "start": null,
+            "end": null
+          }
+        ],
+        "unit": "USD millions",
+        "currency": "USD",
+        "source_dates": [],
+        "dimensions": [
+          {
+            "name": "metric",
+            "value": "total operating costs variance"
+          }
+        ]
+      }
+    }
+  ],
+  "sections": [
+    {
+      "id": "opex.budget_position",
+      "group": "opex",
+      "title": "2026 operating budget position",
+      "status": "ready",
+      "claims": [
+        {
+          "text": "The 2026 operating budget is US$310.3 million, and the full-year forecast is US$310.3 million.",
+          "evidence_ids": [
+            "opex.test.total.2026.budget",
+            "opex.test.total.2026.forecast"
+          ],
+          "heading": null
+        },
+        {
+          "text": "Workforce accounts for US$177.0 million of the 2026 budget and non-workforce costs for US$133.3 million.",
+          "evidence_ids": [
+            "opex.test.workforce.2026.budget",
+            "opex.test.non-workforce.2026.budget"
+          ],
+          "heading": null
+        }
+      ]
+    },
+    {
+      "id": "opex.efficiency",
+      "group": "opex",
+      "title": "OPEX efficiency",
+      "status": "ready",
+      "claims": [
+        {
+          "text": "Operating costs were 7.28% of announced pledges in 2017-2019, 6.50% in 2020-2022 and 6.44% in 2023-2025.",
+          "evidence_ids": [
+            "opex.test.pledge-efficiency.2017-2019",
+            "opex.test.pledge-efficiency.2020-2022",
+            "opex.test.pledge-efficiency.2023-2025"
+          ],
+          "heading": null
+        }
+      ]
+    },
+    {
+      "id": "opex.vs_disbursement",
+      "group": "opex",
+      "title": "OPEX vs grant disbursement",
+      "status": "ready",
+      "claims": [
+        {
+          "text": "In 2025, operating costs were 8.9 cents for every US$1 disbursed.",
+          "evidence_ids": [
+            "opex.test.disbursement-efficiency.2025"
+          ],
+          "heading": null
+        }
+      ]
+    },
+    {
+      "id": "opex.actual_vs_budget",
+      "group": "opex",
+      "title": "Actual vs budget",
+      "status": "ready",
+      "claims": [
+        {
+          "text": "Total operating costs in 2025 were US$346.0 million against a budget of US$346.0 million, a difference of US$0.0 million.",
+          "evidence_ids": [
+            "opex.test.total.2025.actual",
+            "opex.test.total.2025.budget",
+            "opex.test.total.2025.variance"
+          ],
+          "heading": null
+        }
+      ]
+    },
+    {
+      "id": "opex.cost_breakdown",
+      "group": "opex",
+      "title": "Cost breakdown over time",
+      "status": "ready",
+      "claims": [
+        {
+          "text": "Workforce is budgeted at US$177.0 million in 2026, the larger of the two 2026 budget lines.",
+          "evidence_ids": [
+            "opex.test.workforce.2026.budget",
+            "opex.test.non-workforce.2026.budget"
+          ],
+          "heading": null
+        }
+      ]
+    },
+    {
+      "id": "opex.key_costs",
+      "group": "opex",
+      "title": "Key costs over time",
+      "status": "ready",
+      "claims": [
+        {
+          "text": "Non-workforce costs are budgeted at US$133.3 million for 2026.",
+          "evidence_ids": [
+            "opex.test.non-workforce.2026.budget"
+          ],
+          "heading": null
+        }
+      ]
+    },
+    {
+      "id": "opex.indexed_trends",
+      "group": "opex",
+      "title": "Indexed trends (2017 = 100)",
+      "status": "ready",
+      "claims": [
+        {
+          "text": "Total operating costs were US$346.0 million in 2025, the latest full year of actuals.",
+          "evidence_ids": [
+            "opex.test.total.2025.actual"
+          ],
+          "heading": null
+        }
+      ]
+    },
+    {
+      "id": "opex.cost_table",
+      "group": "opex",
+      "title": "Detailed cost breakdown",
+      "status": "ready",
+      "claims": [
+        {
+          "text": "The detailed table records 2025 actuals of US$346.0 million and a 2026 forecast of US$310.3 million.",
+          "evidence_ids": [
+            "opex.test.total.2025.actual",
+            "opex.test.total.2026.forecast"
+          ],
+          "heading": null
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "id": "opex.summary",
+    "title": "OPEX summary",
+    "status": "ready",
+    "claims": [
+      {
+        "text": "The 2026 operating budget is US$310.3 million.",
+        "evidence_ids": [
+          "opex.test.total.2026.budget"
+        ],
+        "heading": null
+      },
+      {
+        "text": "Operating costs moved from 7.28% of announced pledges in 2017-2019 to 6.44% in 2023-2025.",
+        "evidence_ids": [
+          "opex.test.pledge-efficiency.2017-2019",
+          "opex.test.pledge-efficiency.2023-2025"
+        ],
+        "heading": null
+      },
+      {
+        "text": "Operating costs in 2025 matched their budget of US$346.0 million.",
+        "evidence_ids": [
+          "opex.test.total.2025.variance"
+        ],
+        "heading": null
+      }
+    ],
+    "contributing_section_ids": [
+      "opex.budget_position",
+      "opex.efficiency",
+      "opex.actual_vs_budget"
+    ]
+  }
+}

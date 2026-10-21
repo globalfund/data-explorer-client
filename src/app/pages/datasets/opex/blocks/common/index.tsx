@@ -188,6 +188,7 @@ export const OpexPageChartBlock: React.FC<OpexPageChartBlockData> = (props) => {
           />
         </Box>
       </Box>
+      {props.narrative}
     </Box>
   );
 };

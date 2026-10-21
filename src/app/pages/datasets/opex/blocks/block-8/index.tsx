@@ -5,6 +5,7 @@ import { TableContainer } from "app/components/table-container";
 import { ColumnDefinition, CellComponent } from "tabulator-tables";
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
 import { OpexPageChartBlock } from "app/pages/datasets/opex/blocks/common";
+import { PageNarrativePanel } from "app/components/narrative-section";
 import {
   VIEWS,
   simpleFormatter,
@@ -111,6 +112,12 @@ export const OpexPageBlock8: React.FC = () => {
       data={exportData}
       loading={loadingTable}
       infoType="opex"
+      narrative={
+        <PageNarrativePanel
+          sectionId="opex.cost_table"
+          scopeMatches={selectedView === VIEWS[0] && tableSearch.length === 0}
+        />
+      }
       id="cost-breakdown"
       viewSelected={selectedView}
       onViewChange={setSelectedView}

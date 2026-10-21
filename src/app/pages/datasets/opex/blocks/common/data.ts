@@ -13,5 +13,6 @@ export interface OpexPageChartBlockData {
   viewSelected?: string;
   infoType: InfoPanelType;
   children?: React.ReactNode;
+  narrative?: React.ReactNode;
   onViewChange?: (view: string) => void;
 }

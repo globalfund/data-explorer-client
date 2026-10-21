@@ -9,6 +9,7 @@ export default defineConfig({
       "cypress/narratives/enabled.cy.ts",
       "cypress/narratives/page-narratives.cy.ts",
       "cypress/narratives/access-to-funding.cy.ts",
+      "cypress/narratives/opex.cy.ts",
     ],
   },
 });

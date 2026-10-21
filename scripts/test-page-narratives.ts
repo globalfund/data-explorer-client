@@ -367,3 +367,73 @@ for (const [label, mutate] of contextSpanMutations) {
 console.log(
   `Country page context span contract passed (${contextSpanMutations.length} malformed cases)`,
 );
+
+const opexFixture = JSON.parse(
+  fs.readFileSync("tests/fixtures/page-bundle-opex.json", "utf8"),
+);
+const opexRef = { ...ref, page_type: "opex" };
+const opexBundle = parse(opexFixture, opexRef);
+assert.ok(opexBundle, "synthetic OPEX bundle must parse");
+assert.deepEqual(
+  opexBundle.sections.map((item) => item.id),
+  [
+    "opex.budget_position",
+    "opex.efficiency",
+    "opex.vs_disbursement",
+    "opex.actual_vs_budget",
+    "opex.cost_breakdown",
+    "opex.key_costs",
+    "opex.indexed_trends",
+    "opex.cost_table",
+  ],
+);
+assert.equal(opexBundle.summary?.id, "opex.summary");
+assert.ok(
+  opexBundle.summary?.claims.some((claim) =>
+    claim.evidence_ids.some((id) =>
+      opexBundle.calculations.some((item) => item.id === id),
+    ),
+  ),
+  "the OPEX summary carries a calculation citation from a contributor",
+);
+assert.equal(parse(opexFixture, ref), null, "OPEX page type mismatch");
+const rejectsOpex = (
+  name: string,
+  mutate: (value: typeof opexFixture) => void,
+) => {
+  const value = structuredClone(opexFixture);
+  mutate(value);
+  assert.equal(parse(value, opexRef), null, name);
+};
+rejectsOpex("OPEX section order", (value) => value.sections.reverse());
+rejectsOpex(
+  "OPEX summary evidence outside contributors",
+  (value) =>
+    (value.summary.claims[0].evidence_ids = [
+      "opex.test.disbursement-efficiency.2025",
+    ]),
+);
+rejectsOpex(
+  "OPEX summary unknown contributor",
+  (value) => (value.summary.contributing_section_ids = ["opex.unknown"]),
+);
+rejectsOpex(
+  "OPEX summary without configuration",
+  (value) => (value.presentation.summary = null),
+);
+const opexWithoutSummary = structuredClone(opexFixture);
+opexWithoutSummary.summary = null;
+assert.ok(
+  parse(opexWithoutSummary, opexRef),
+  "an OPEX bundle without a saved summary still parses",
+);
+assert.ok(
+  parse(
+    JSON.parse(
+      fs.readFileSync("cypress/fixtures/narratives/opex-page.json", "utf8"),
+    ),
+    opexRef,
+  ),
+  "the OPEX Cypress fixture must parse",
+);
+console.log("OPEX page contract passed");

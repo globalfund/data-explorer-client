@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 import { BarChart2 } from "app/pages/datasets/opex/charts/bar-2";
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
 import { OpexPageChartBlock } from "app/pages/datasets/opex/blocks/common";
+import { PageNarrativePanel } from "app/components/narrative-section";
 
 export const OpexPageBlock3B: React.FC = () => {
   const dataEfficiency = useStoreState((state) => state.OpexEfficiencyB.data);
@@ -54,6 +55,9 @@ export const OpexPageBlock3B: React.FC = () => {
       empty={false}
       loading={loadingEfficiency}
       infoType="opex"
+      narrative={
+        <PageNarrativePanel sectionId="opex.efficiency" scopeMatches />
+      }
       id="opex-efficiency"
       title="OPEX Efficiency"
       subtitle=""

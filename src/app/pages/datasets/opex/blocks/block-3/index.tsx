@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import { LineChart } from "app/pages/datasets/opex/charts";
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
 import { OpexPageChartBlock } from "app/pages/datasets/opex/blocks/common";
+import { PageNarrativePanel } from "app/components/narrative-section";
 import { useOpexInView } from "app/pages/datasets/opex/blocks/common/animate-in-view";
 import {
   simpleFormatter,
@@ -100,6 +101,9 @@ export const OpexPageBlock3: React.FC = () => {
       empty={false}
       loading={loadingEfficiency}
       infoType="opex"
+      narrative={
+        <PageNarrativePanel sectionId="opex.vs_disbursement" scopeMatches />
+      }
       id="opex-vs-grant-disbursement"
       title="OPEX vs. Grant Disbursement"
       subtitle=""

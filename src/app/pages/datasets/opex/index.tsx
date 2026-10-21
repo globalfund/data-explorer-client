@@ -7,6 +7,9 @@ import { Helmet } from "react-helmet-async";
 import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 import { useCMSData } from "app/hooks/useCMSData";
+import type { PageNarrativeRef } from "app/types/narratives";
+import { PageNarrativesProvider } from "app/hooks/usePageNarratives";
+import { PageNarrativePanel } from "app/components/narrative-section";
 import { useStoreState } from "app/state/store/hooks";
 import { getCMSDataField } from "app/utils/getCMSDataField";
 import { DatasetPage } from "app/pages/datasets/common/page";
@@ -21,7 +24,20 @@ import { OpexPageBlock7 } from "app/pages/datasets/opex/blocks/block-7";
 import { OpexPageBlock8 } from "app/pages/datasets/opex/blocks/block-8";
 import { OpexAnimateInView } from "app/pages/datasets/opex/blocks/common/animate-in-view";
 
-export const OpexPage = () => {
+const narrativeRef: PageNarrativeRef = {
+  page_type: "opex",
+  page_id: "global",
+  locale: "en",
+  scope_key: "default",
+};
+
+export const OpexPage: React.FC = () => (
+  <PageNarrativesProvider pageRef={narrativeRef}>
+    <OpexContent />
+  </PageNarrativesProvider>
+);
+
+const OpexContent: React.FC = () => {
   useTitle("The Data Explorer - Financial Insights");
   const cmsData = useCMSData({ returnData: true });
 
@@ -85,6 +101,7 @@ export const OpexPage = () => {
           marginTop="50px"
           sx={{ "> hr": { margin: "60px 0" } }}
         >
+          <PageNarrativePanel sectionId="opex.summary" scopeMatches />
           <OpexAnimateInView>
             <OpexPageBlock1 />
           </OpexAnimateInView>
