@@ -86,6 +86,7 @@
     "webpack": "^5.91.0"
   },
   "scripts": {
+    "prebuild": "npx tsx scripts/version-inject.ts",
     "start": "vite",
     "build": "vite build",
     "preview": "vite preview",
