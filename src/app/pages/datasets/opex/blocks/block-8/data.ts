@@ -1,5 +1,5 @@
-import { CellComponent, ColumnDefinition, Tabulator } from "tabulator-tables";
 import { TableDataItem } from "app/components/table/data";
+import { CellComponent, ColumnDefinition } from "tabulator-tables";
 
 export const VIEWS = ["Actual", "Budget", "Variance"];
 
@@ -23,46 +23,46 @@ export const simpleFormatter = (value: number) => {
 const yearCellFormatter = (cell: CellComponent) => {
   return simpleFormatter(cell.getValue());
   // use this if we decide to show all values in a cell sub-table
-  const tableEl = document.createElement("div");
-  tableEl.style.width = "100%";
-  tableEl.style.height = "100%";
-  cell.getElement().appendChild(tableEl);
-  const data = cell.getValue();
+  // const tableEl = document.createElement("div");
+  // tableEl.style.width = "100%";
+  // tableEl.style.height = "100%";
+  // cell.getElement().appendChild(tableEl);
+  // const data = cell.getValue();
 
-  if (!cell.getValue()) {
-    return "";
-  }
+  // if (!cell.getValue()) {
+  //   return "";
+  // }
 
-  new Tabulator(tableEl, {
-    data: [data],
-    layout: "fitDataTable",
-    height: "fit-content",
-    columns: [
-      {
-        title: "Actual",
-        field: "actual",
-        headerSort: false,
-        formatter: (v) => simpleFormatter(v.getValue()),
-      },
-      {
-        title: "Budget",
-        field: "budget",
-        headerSort: false,
-        formatter: (v) => simpleFormatter(v.getValue()),
-      },
-      {
-        title: "Variance",
-        field: "variance",
-        headerSort: false,
-        formatter: (v) => simpleFormatter(v.getValue()),
-      },
-    ],
-  });
+  // new Tabulator(tableEl, {
+  //   data: [data],
+  //   layout: "fitDataTable",
+  //   height: "fit-content",
+  //   columns: [
+  //     {
+  //       title: "Actual",
+  //       field: "actual",
+  //       headerSort: false,
+  //       formatter: (v) => simpleFormatter(v.getValue()),
+  //     },
+  //     {
+  //       title: "Budget",
+  //       field: "budget",
+  //       headerSort: false,
+  //       formatter: (v) => simpleFormatter(v.getValue()),
+  //     },
+  //     {
+  //       title: "Variance",
+  //       field: "variance",
+  //       headerSort: false,
+  //       formatter: (v) => simpleFormatter(v.getValue()),
+  //     },
+  //   ],
+  // });
 
-  cell.getElement().style.padding = "0";
-  cell.getElement().style.background = "#fff !important";
+  // cell.getElement().style.padding = "0";
+  // cell.getElement().style.background = "#fff !important";
 
-  return tableEl;
+  // return tableEl;
 };
 
 export const tableColumns: ColumnDefinition[] = [
