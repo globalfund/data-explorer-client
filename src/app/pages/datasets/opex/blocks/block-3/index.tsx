@@ -42,17 +42,30 @@ export const OpexPageBlock3: React.FC = () => {
   const remainingValue = (100 - efficiencyValue).toFixed(2);
   efficiencyValue = parseFloat(efficiencyValue.toFixed(2));
 
+  const xAxisKeys = React.useMemo(() => {
+    return items.map((item) => item.name);
+  }, [items]);
+
   const lineChartData = React.useMemo(() => {
+    const data = items.map((item) => parseFloat(item.efficiency.toFixed(2)));
     return [
       {
         name: "OPEX efficiency",
-        data: items.map((item) => parseFloat(item.efficiency.toFixed(2))),
+        data: data.slice(0, items.length - 1),
+      },
+      {
+        name: "OPEX efficiency",
+        data: data.map((v, i) => {
+          if (i < xAxisKeys.length - 2) {
+            return null;
+          }
+          return v;
+        }),
+        itemStyle: {
+          borderType: "dotted",
+        },
       },
     ];
-  }, [items]);
-
-  const xAxisKeys = React.useMemo(() => {
-    return items.map((item) => item.name);
   }, [items]);
 
   const rateImprovement = React.useMemo(() => {
@@ -62,8 +75,9 @@ export const OpexPageBlock3: React.FC = () => {
   }, [items]);
 
   const yAxisValues = React.useMemo(() => {
-    return calculateYAxisTicks(lineChartData[0].data);
-  }, [lineChartData]);
+    const data = items.map((item) => parseFloat(item.efficiency.toFixed(2)));
+    return calculateYAxisTicks(data);
+  }, [items]);
 
   const cumulativeText = React.useMemo(() => {
     if (items.length === 0) {

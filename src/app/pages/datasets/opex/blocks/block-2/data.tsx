@@ -1,7 +1,7 @@
 import Divider from "@mui/material/Divider";
 import ReactDOMServer from "react-dom/server";
-import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { LineChartDataItem } from "app/pages/datasets/opex/charts/line/data";
+import { simpleFormatter } from "app/pages/datasets/opex/blocks/block-8/data";
 
 export const VIEWS = ["Total OPEX", "Workforce", "Non-workforce"];
 
@@ -64,9 +64,9 @@ export const tooltipFormatter = (lines: any[]) => {
     .filter((line: any) => line.value !== undefined)
     .map((line: any) => {
       return {
-        name: line.seriesName,
-        value: formatFinancialValue(line.value).replace("US$", "$"),
         marker: line.marker,
+        name: line.seriesName,
+        value: `$${simpleFormatter(line.value)}M`,
       };
     });
   return ReactDOMServer.renderToString(
@@ -144,7 +144,7 @@ export const tooltipFormatterBar = (params: any) => {
           className="chart-tooltip-marker"
           dangerouslySetInnerHTML={{ __html: params.marker }}
         />
-        {formatFinancialValue(params.value).replace("US$", "$")} vs budget
+        ${`${simpleFormatter(params.value)}`}M vs budget
       </div>
     </div>,
   );

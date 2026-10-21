@@ -106,14 +106,14 @@ export const defaultGridItems: GridItem[] = [
   },
   {
     id: 2,
-    title: "$177.3M",
+    title: "$173.0M",
     titleFontSize: 36,
     subtitle: "Forecast landing 2026",
     text: "Workforce",
   },
   {
     id: 3,
-    title: "$133.0M",
+    title: "$133.3M",
     titleFontSize: 36,
     subtitle: "Forecast landing 2026",
     text: "Non-workforce",

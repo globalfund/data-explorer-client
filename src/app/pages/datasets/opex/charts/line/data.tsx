@@ -3,7 +3,7 @@ export interface LineChartDataItem {
   data: (number | null)[];
   symbol?: "circle" | "rect" | "triangle" | "diamond";
   itemStyle?: {
-    color: string;
+    color?: string;
     borderType?: "solid" | "dotted" | "dashed";
   };
   areaStyle?: {

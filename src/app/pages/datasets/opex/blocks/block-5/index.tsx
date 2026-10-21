@@ -1,9 +1,9 @@
 import React from "react";
 import get from "lodash/get";
 import { BarChart } from "app/pages/datasets/opex/charts";
-import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { OpexPageChartBlock } from "app/pages/datasets/opex/blocks/common";
+import { simpleFormatter } from "app/pages/datasets/opex/blocks/block-8/data";
 import {
   VIEWS,
   tooltipFormatterBar,
@@ -105,7 +105,7 @@ export const OpexPageBlock5: React.FC = () => {
 
   const tooltipValueFormatter = (value: number) =>
     selectedView === VIEWS[0]
-      ? formatFinancialValue(value).replace("US$", "$")
+      ? `$${simpleFormatter(value)}M`
       : `${value.toFixed(1).replace(".0", "")}%`;
 
   React.useEffect(() => {

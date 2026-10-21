@@ -7,10 +7,10 @@ import Divider from "@mui/material/Divider";
 import ReactDOMServer from "react-dom/server";
 import { SVGRenderer } from "echarts/renderers";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { LineChartProps } from "app/pages/datasets/opex/charts/line/data";
 import { useChartResizeObserver } from "app/hooks/useChartResizeObserver";
 import { LineSeriesOption, LineChart as EChartsLine } from "echarts/charts";
+import { simpleFormatter } from "app/pages/datasets/opex/blocks/block-8/data";
 import { chartTooltipCommonConfig } from "app/components/charts/common/tooltip/config";
 import {
   useOpexInView,
@@ -304,7 +304,7 @@ export const LineChart: React.FC<LineChartProps> = (props: LineChartProps) => {
                 return {
                   name: line.seriesName,
                   value: !props.cumulativeLineValue
-                    ? formatFinancialValue(line.value)
+                    ? simpleFormatter(line.value)
                     : `${line.value}¢`,
                 };
               },
