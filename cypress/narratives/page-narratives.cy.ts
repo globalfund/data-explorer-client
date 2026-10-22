@@ -174,7 +174,7 @@ const selectView = (name: string) => {
 
 describe("saved page narratives", () => {
   beforeEach(stubPage);
-  it("loads once and renders both placements with periods and expanded calculation Source links", () => {
+  it("loads once and renders both placements with periods and expanded calculation source links shown once", () => {
     stubNarrative();
     cy.visit("/resource-mobilization");
     cy.wait("@pageNarrative").then(({ request }) => {
@@ -213,7 +213,12 @@ describe("saved page narratives", () => {
     cy.get('[data-cy="narrative-claim"]')
       .first()
       .find("a")
-      .should("have.length.at.least", 2);
+      .should("have.length", 1)
+      .and("have.text", "Pledges and contributions statistics");
+    cy.get('[data-cy="narrative-claim"]')
+      .last()
+      .find("a")
+      .should("have.length", 2);
     cy.get("@pageNarrative.all").should("have.length", 1);
     selectView("Table View");
     section("Funding summary").should("be.visible");
@@ -346,7 +351,7 @@ describe("saved page narratives", () => {
     cy.screenshot("resource-mobilization-donor-composition-mobile", {
       capture: "viewport",
     });
-    cy.get('[aria-label^="Source 1:"]').first().focus().should("have.focus");
+    cy.get('[aria-label^="Source: "]').first().focus().should("have.focus");
   });
 });
 

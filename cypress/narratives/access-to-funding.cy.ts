@@ -438,8 +438,9 @@ describe("Access to Funding saved narratives", () => {
     shown(...topics);
     panel("funding_requests").scrollIntoView().should("be.visible");
     panel("eligibility")
-      .find('[aria-label^="Source 1:"]')
+      .find('[aria-label^="Source: "]')
       .first()
+      .should("have.text", "Eligibility statistics, 2026")
       .focus()
       .should("have.focus");
   });

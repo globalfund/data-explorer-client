@@ -214,10 +214,11 @@ const expectWebContext = (
     .find('[data-cy="narrative-sources"] a')
     .should("have.length.at.least", 1)
     .then(($links) => {
-      $links.each((index, link) =>
-        expect(link.textContent).to.equal(`Source ${index + 1}`),
-      );
       const hrefs = $links.toArray().map((link) => link.getAttribute("href"));
+      expect(new Set(hrefs).size).to.equal(hrefs.length);
+      $links.each((_, link) =>
+        expect(link.textContent).to.match(/^(?!Source \d)\S/),
+      );
       (claim.context_spans ?? [])
         .flatMap((span) => span.evidence_ids)
         .forEach((id) =>
@@ -327,8 +328,14 @@ describe("country narratives with the rollout flag enabled", () => {
           .find('[data-cy="narrative-sources"]')
           .should("exist")
           .within(() => {
-            cy.get("a").each(($link, index) => {
-              expect($link.text()).to.equal(`Source ${index + 1}`);
+            cy.get("a").then(($links) => {
+              const hrefs = $links
+                .toArray()
+                .map((link) => link.getAttribute("href"));
+              expect(new Set(hrefs).size).to.equal(hrefs.length);
+              $links.each((_, link) =>
+                expect(link.textContent).to.match(/^(?!Source \d)\S/),
+              );
             });
             cy.contains("Sources:").should("not.exist");
           });
@@ -383,7 +390,8 @@ describe("country narratives with the rollout flag enabled", () => {
       .should("exist")
       .find("a")
       .first()
-      .should("contain.text", "Source 1");
+      .invoke("text")
+      .should("match", /^(?!Source \d)\S/);
   });
 
   it("renders mapped narratives across every applicable country tab", () => {
@@ -521,22 +529,39 @@ describe("country narratives with the rollout flag enabled", () => {
       .should("be.visible")
       .and("have.prop", "tagName", "P");
     cy.get("body").should("not.have.attr", "data-unsafe");
-    cy.get('[aria-label^="Source 1:"]')
-      .should("have.text", "Source 1")
+    cy.get('[aria-label^="Source: "]')
+      .first()
       .should("have.attr", "href")
       .and("match", /^https:\/\//);
-    cy.get('[aria-label^="Source 1:"]')
+    cy.get('[aria-label^="Source: "]')
+      .first()
       .focus()
       .should("have.focus")
       .and("have.attr", "rel", "noreferrer");
   });
 
-  it("numbers only linkable citations and keeps source location available on the link", () => {
+  it("shows each linkable source once by name and keeps its locations on the link", () => {
     cy.readFile(realMozambiqueBundle).then((bundle) => {
       const linked = bundle.sources[0];
       linked.document_locator = {
         title: "Linked source title",
         location: "Paragraph 4",
+      };
+      const repeated = {
+        ...linked,
+        id: "document.repeated-test-source",
+        document_locator: {
+          title: "Linked source title",
+          location: "Paragraph 5",
+        },
+        content_hash: "b".repeat(64),
+      };
+      const route = {
+        ...linked,
+        id: "structured.route-test-source",
+        source_url: "https://example.org/new-route/2024",
+        document_locator: null,
+        content_hash: "c".repeat(64),
       };
       const unlinked = {
         ...linked,
@@ -550,12 +575,17 @@ describe("country narratives with the rollout flag enabled", () => {
         content_hash: "a".repeat(64),
         excerpt: "A supporting document excerpt.",
       };
-      bundle.sources.push(unlinked);
+      bundle.sources.push(repeated, route, unlinked);
       const allocations = bundle.sections.find(
         (section) => section.id === "access_to_funding.allocations",
       );
       if (!allocations) throw new Error("MOZ allocations narrative is missing");
-      allocations.claims[0].evidence_ids = [unlinked.id, linked.id];
+      allocations.claims[0].evidence_ids = [
+        unlinked.id,
+        linked.id,
+        repeated.id,
+        route.id,
+      ];
       cy.intercept(
         "GET",
         `${apiUrl}/location/MOZ/narratives?locale=en`,
@@ -567,15 +597,19 @@ describe("country narratives with the rollout flag enabled", () => {
     cy.get('[data-cy="narrative-claim"]')
       .first()
       .within(() => {
-        cy.get('[data-cy="narrative-sources"] a')
-          .should("have.length", 1)
-          .each(($link, index) => {
-            expect($link.text()).to.equal(`Source ${index + 1}`);
-          });
+        cy.get('[data-cy="narrative-sources"] a').should("have.length", 2);
         cy.get('[data-cy="narrative-sources"] a')
           .first()
-          .should("have.text", "Source 1")
-          .and("have.attr", "title", "Linked source title - Paragraph 4");
+          .should("have.text", "Linked source title")
+          .and(
+            "have.attr",
+            "title",
+            "Linked source title - Paragraph 4, Paragraph 5",
+          );
+        cy.get('[data-cy="narrative-sources"] a')
+          .last()
+          .should("have.text", "New route data, 2024")
+          .and("have.attr", "href", "https://example.org/new-route/2024");
         cy.contains("Calculation:").should("not.exist");
       });
   });
@@ -620,7 +654,7 @@ describe("country narratives with the rollout flag enabled", () => {
     cy.contains('[data-cy="narrative-section"]', "Country overview").should(
       "be.visible",
     );
-    cy.get('[aria-label^="Source 1:"]').should("be.visible");
+    cy.get('[aria-label^="Source: "]').first().should("be.visible");
     cy.get('[data-cy="narrative-section"]').screenshot(
       "narrative-overview-mobile",
     );

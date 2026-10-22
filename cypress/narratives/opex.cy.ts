@@ -214,23 +214,21 @@ describe("OPEX saved narratives", () => {
     visit();
     panel("actual_vs_budget")
       .find('[data-cy="narrative-sources"] a')
-      .should("have.length", 2)
+      .should("have.length", 1)
       .first()
-      .should(
-        "have.attr",
-        "href",
-        "https://data.api.theglobalfund.org/opex/table",
-      )
+      .should("have.text", "OPEX table")
+      .and("have.attr", "href", "https://data.api.theglobalfund.org/opex/table")
       .and("have.attr", "rel", "noreferrer");
     panel("summary")
       .find('[data-cy="narrative-claim"]')
       .should("have.length", 3)
       .last()
       .find('[data-cy="narrative-sources"] a')
-      .should("have.length", 2);
+      .should("have.length", 1);
     panel("efficiency")
-      .find('[aria-label^="Source 1:"]')
-      .should(
+      .find('[aria-label^="Source: "]')
+      .should("have.text", "OPEX vs pledge data")
+      .and(
         "have.attr",
         "href",
         "https://data.api.theglobalfund.org/opex/efficiency/pledge",
@@ -287,7 +285,7 @@ describe("OPEX saved narratives", () => {
     shown(...topics);
     panel("cost_table").scrollIntoView().should("be.visible");
     panel("budget_position")
-      .find('[aria-label^="Source 1:"]')
+      .find('[aria-label^="Source: "]')
       .first()
       .focus()
       .should("have.focus");
