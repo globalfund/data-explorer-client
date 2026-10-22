@@ -446,6 +446,87 @@ export function parseCountryNarrativeBundle(
   return value as unknown as CountryNarrativeBundle;
 }
 
+const ROUTE_LABELS: [RegExp, string][] = [
+  [/^\/opex\/table/, "OPEX table"],
+  [/^\/opex\/efficiency\/disbursement/, "OPEX vs disbursement data"],
+  [/^\/opex\/efficiency\/pledge/, "OPEX vs pledge data"],
+  [/^\/opex/, "OPEX data"],
+  [/^\/eligibility\/table/, "Eligibility table"],
+  [/^\/eligibility\/stats/, "Eligibility statistics"],
+  [/^\/eligibility/, "Eligibility data"],
+  [/^\/results\/table/, "Results table"],
+  [/^\/results\/stats/, "Results statistics"],
+  [/^\/results/, "Results data"],
+  [/^\/pledges-contributions\/stats/, "Pledges and contributions statistics"],
+  [
+    /^\/pledges-contributions\/expandable-bar/,
+    "Pledges and contributions breakdown",
+  ],
+  [/^\/pledges-contributions/, "Pledges and contributions data"],
+  [/^\/allocations\/cumulative-by-cycles/, "Allocations by cycle"],
+  [/^\/allocations\/(radial|treemap)/, "Allocations by component"],
+  [/^\/allocations\/sunburst/, "Allocations by region and country"],
+  [/^\/allocations/, "Allocations data"],
+  [/^\/location\/[^/]+\/grants/, "Grants summary"],
+  [/^\/grants/, "Grants list"],
+  [/^\/funding-requests/, "Funding requests"],
+  [/^\/disbursements/, "Disbursements data"],
+  [/^\/expenditures/, "Expenditures data"],
+  [/^\/budgets/, "Budgets data"],
+  [/^\/documents/, "Documents list"],
+];
+
+// Middleware filters that select exactly one period or cycle.
+const PERIOD_PARAMS = ["cycle", "cycles", "periods", "cycleNames"];
+
+export function sourceRouteLabel(url: string): string {
+  const parsed = new URL(url);
+  let path = parsed.pathname;
+  try {
+    path = decodeURIComponent(path);
+  } catch {
+    // Keep the encoded path when it is not valid percent-encoding.
+  }
+  const segments = path.split("/").filter(Boolean);
+  const named = ROUTE_LABELS.find(([pattern]) => pattern.test(path))?.[1];
+  const label =
+    named ||
+    (segments.length
+      ? `${segments[0].charAt(0).toUpperCase()}${segments[0].slice(1).replace(/[-_]+/g, " ")} data`
+      : parsed.hostname);
+  const period =
+    segments.filter((segment) => /^\d{4}$/.test(segment)).pop() ||
+    PERIOD_PARAMS.map((name) => parsed.searchParams.get(name)).find(
+      (value) => value && !value.includes(","),
+    );
+  return period ? `${label}, ${period}` : label;
+}
+
+export interface NarrativeSourceLink {
+  url: string;
+  label: string;
+  locations: string[];
+}
+
+export function narrativeSourceLinks(
+  bundle: SavedNarrativeBundle,
+  ids: string[],
+): NarrativeSourceLink[] {
+  const links = new Map<string, NarrativeSourceLink>();
+  for (const citation of expandNarrativeCitations(bundle, ids)) {
+    if (!citation.url) continue;
+    const link = links.get(citation.url) || {
+      url: citation.url,
+      label: citation.label,
+      locations: [],
+    };
+    if (citation.location && !link.locations.includes(citation.location))
+      link.locations.push(citation.location);
+    links.set(citation.url, link);
+  }
+  return Array.from(links.values());
+}
+
 export function expandNarrativeCitations(
   bundle: SavedNarrativeBundle,
   ids: string[],
@@ -465,7 +546,7 @@ export function expandNarrativeCitations(
       if (sourceUrl && isSafeUrl(sourceUrl))
         result.push({
           id,
-          label: source.document_locator?.title || new URL(sourceUrl).hostname,
+          label: source.document_locator?.title || sourceRouteLabel(sourceUrl),
           url: sourceUrl,
           location: source.document_locator?.location,
           kind: source.kind,

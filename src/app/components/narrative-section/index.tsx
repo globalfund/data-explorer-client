@@ -10,6 +10,7 @@ import {
   SavedNarrativeBundle,
   SavedNarrativeSection,
   expandNarrativeCitations,
+  narrativeSourceLinks,
 } from "app/types/narratives";
 import {
   CountryNarrativesState,
@@ -205,10 +206,7 @@ const SavedNarrativeText: React.FC<{
               ? (configured.allowed_headings ?? []).includes(heading)
               : "tab" in section && section.tab === "overview");
           previousHeading = heading;
-          const citations = expandNarrativeCitations(
-            bundle,
-            claim.evidence_ids,
-          ).filter((citation) => Boolean(citation.url));
+          const links = narrativeSourceLinks(bundle, claim.evidence_ids);
           return (
             <React.Fragment key={`${section.id}-${index}`}>
               {showHeading && (
@@ -229,28 +227,28 @@ const SavedNarrativeText: React.FC<{
                 <Typography component="p" variant="body1" sx={{ m: 0 }}>
                   {claimContent(bundle, claim)}
                 </Typography>
-                {citations.length > 0 && (
+                {links.length > 0 && (
                   <Box
                     component="div"
                     sx={{ mt: 0.5 }}
                     aria-label="Sources"
                     data-cy="narrative-sources"
                   >
-                    {citations.map((citation, citationIndex) => {
-                      const details = [citation.label, citation.location]
+                    {links.map((link) => {
+                      const details = [link.label, link.locations.join(", ")]
                         .filter(Boolean)
                         .join(" - ");
                       return (
                         <Link
-                          key={citation.id}
-                          href={citation.url}
+                          key={link.url}
+                          href={link.url}
                           target="_blank"
                           rel="noreferrer"
                           sx={{ mr: 1 }}
                           title={details}
-                          aria-label={`Source ${citationIndex + 1}: ${details}`}
+                          aria-label={`Source: ${details}`}
                         >
-                          Source {citationIndex + 1}
+                          {link.label}
                         </Link>
                       );
                     })}

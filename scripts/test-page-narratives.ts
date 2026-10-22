@@ -186,6 +186,61 @@ const noSummary = structuredClone(headed);
 delete noSummary.summary;
 delete noSummary.presentation.summary;
 assert.ok(parse(noSummary, ref), "omitted optional summary is supported");
+for (const [url, label] of [
+  ["https://data.api.theglobalfund.org/opex/table", "OPEX table"],
+  [
+    "https://data.api.theglobalfund.org/opex/efficiency/disbursement",
+    "OPEX vs disbursement data",
+  ],
+  [
+    "https://data.api.theglobalfund.org/eligibility/stats/2026",
+    "Eligibility statistics, 2026",
+  ],
+  [
+    "https://data.api.theglobalfund.org/results/table/KEN/2024",
+    "Results table, 2024",
+  ],
+  [
+    "https://data.api.theglobalfund.org/location/MOZ/grants/pie-charts",
+    "Grants summary",
+  ],
+  [
+    "https://data.api.theglobalfund.org/allocations/sunburst?cycles=2026-2028",
+    "Allocations by region and country, 2026-2028",
+  ],
+  [
+    "https://data.api.theglobalfund.org/allocations/treemap?cycles=2026-2028",
+    "Allocations by component, 2026-2028",
+  ],
+  [
+    "https://data.api.theglobalfund.org/results/stats?geographies=KEN&cycle=2024",
+    "Results statistics, 2024",
+  ],
+  [
+    "https://data.api.theglobalfund.org/budgets/sankey/x?geographies=KEN&cycleNames=Grant+Cycle+7",
+    "Budgets data, Grant Cycle 7",
+  ],
+  [
+    "https://data.api.theglobalfund.org/funding-requests/KEN?periods=2023,2026",
+    "Funding requests",
+  ],
+  ["https://data.api.theglobalfund.org/new_route/x", "New route data"],
+  ["https://data.api.theglobalfund.org/", "data.api.theglobalfund.org"],
+])
+  assert.equal(contracts.sourceRouteLabel(url), label, url);
+for (const item of bundle.sections)
+  for (const claim of item.claims) {
+    const urls = contracts
+      .expandNarrativeCitations(bundle, claim.evidence_ids)
+      .flatMap((citation) => (citation.url ? [citation.url] : []));
+    assert.deepEqual(
+      contracts
+        .narrativeSourceLinks(bundle, claim.evidence_ids)
+        .map((link) => link.url),
+      Array.from(new Set(urls)),
+      "each source link appears once per paragraph",
+    );
+  }
 for (const calculation of bundle.calculations) {
   const citations = contracts.expandNarrativeCitations(bundle, [
     calculation.id,
