@@ -118,7 +118,7 @@ const stub = (
       },
     };
     const body = url.pathname.startsWith("/eligibility/stats/")
-      ? { data: [{ name: "HIV", value: 1 }] }
+      ? { data: [{ name: "HIV", value: 1, incomeLevelCounts: [] }] }
       : (replies[decodeURIComponent(url.pathname)] ?? {
           count: 0,
           data: [],
